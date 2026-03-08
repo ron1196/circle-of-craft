@@ -1,0 +1,90 @@
+package io.github.ron1196.thelionking.block;
+
+import io.github.ron1196.thelionking.block.entity.BongoDrumBlockEntity;
+import io.github.ron1196.thelionking.registry.LKItems;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
+
+import javax.annotation.Nullable;
+
+public class BongoDrumBlock extends BaseEntityBlock {
+
+    private static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 12.0D, 15.0D);
+
+    public BongoDrumBlock(BlockBehaviour.Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+        return SHAPE;
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new BongoDrumBlockEntity(pos, state);
+    }
+
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
+                                 InteractionHand hand, BlockHitResult hit) {
+        if (level.getBlockEntity(pos) instanceof BongoDrumBlockEntity drum) {
+            // If holding a staff, open enchanting GUI
+            if (player.getItemInHand(hand).is(LKItems.STAFF.get())) {
+                if (!level.isClientSide()) {
+                    NetworkHooks.openScreen((ServerPlayer) player, drum, pos);
+                }
+                return InteractionResult.sidedSuccess(level.isClientSide());
+            }
+
+            // Otherwise, play a note
+            if (!level.isClientSide()) {
+                drum.cycleNote();
+                float pitch = (float) Math.pow(2.0D, (double) (drum.getNote() - 12) / 12.0D);
+                level.playSound(null, pos, SoundEvents.NOTE_BLOCK_BASEDRUM.get(), SoundSource.BLOCKS, 3.0F, pitch);
+            }
+            if (level.isClientSide()) {
+                double noteColor = (double) drum.getNote() / 24.0D;
+                level.addParticle(ParticleTypes.NOTE, pos.getX() + 0.5D, pos.getY() + 1.2D, pos.getZ() + 0.5D,
+                        noteColor, 0.0D, 0.0D);
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide());
+        }
+        return InteractionResult.PASS;
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!state.is(newState.getBlock())) {
+            if (level.getBlockEntity(pos) instanceof BongoDrumBlockEntity drum) {
+                Containers.dropContents(level, pos, drum.getDrops());
+            }
+            super.onRemove(state, level, pos, newState, isMoving);
+        }
+    }
+}

@@ -399,4 +399,25 @@ public class LKBlocks {
     public static final RegistryObject<Block> GRINDING_BOWL = BLOCKS.register("grinding_bowl",
             () -> new GrindingBowlBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.STONE).strength(2.0F).requiresCorrectToolForDrops()));
+
+    // ========== Bug Trap ==========
+    public static final RegistryObject<Block> BUG_TRAP = BLOCKS.register("bug_trap",
+            () -> new BugTrapBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.WOOD).strength(1.0F).sound(SoundType.WOOD).noOcclusion()));
+
+    // ========== Bongo Drum ==========
+    public static final RegistryObject<Block> BONGO_DRUM = BLOCKS.register("bongo_drum",
+            () -> new BongoDrumBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.WOOD).strength(1.5F).sound(SoundType.WOOD).noOcclusion()));
+
+    // ========== Outlands Pool ==========
+    public static final RegistryObject<Block> OUTLANDS_POOL = BLOCKS.register("outlands_pool",
+            () -> new OutlandsPoolBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE).strength(50.0F, 1200.0F)
+                    .lightLevel(s -> 14).noOcclusion()));
+
+    // ========== LK Spawner ==========
+    public static final RegistryObject<Block> LK_SPAWNER = BLOCKS.register("lk_spawner",
+            () -> new LKSpawnerBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE).strength(5.0F).requiresCorrectToolForDrops().noOcclusion()));
 }

@@ -1,6 +1,8 @@
 package io.github.ron1196.thelionking.event;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
+import io.github.ron1196.thelionking.client.gui.BongoDrumScreen;
+import io.github.ron1196.thelionking.client.gui.BugTrapScreen;
 import io.github.ron1196.thelionking.client.gui.GrindingBowlScreen;
 import io.github.ron1196.thelionking.client.model.*;
 import io.github.ron1196.thelionking.client.renderer.LKAnimalRenderer;
@@ -155,6 +157,8 @@ public class LKClientEvents {
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             MenuScreens.register(LKMenuTypes.GRINDING_BOWL_MENU.get(), GrindingBowlScreen::new);
+            MenuScreens.register(LKMenuTypes.BUG_TRAP_MENU.get(), BugTrapScreen::new);
+            MenuScreens.register(LKMenuTypes.BONGO_DRUM_MENU.get(), BongoDrumScreen::new);
         });
     }
 }

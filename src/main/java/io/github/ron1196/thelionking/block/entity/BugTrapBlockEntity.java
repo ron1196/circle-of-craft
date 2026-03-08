@@ -1,0 +1,150 @@
+package io.github.ron1196.thelionking.block.entity;
+
+import io.github.ron1196.thelionking.menu.BugTrapMenu;
+import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import io.github.ron1196.thelionking.registry.LKItems;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.items.ItemStackHandler;
+
+import javax.annotation.Nullable;
+
+public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
+
+    private final ItemStackHandler items = new ItemStackHandler(5) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            if (slot == 4) return false; // output slot
+            return stack.getItem().isEdible();
+        }
+    };
+
+    private int trapTimer = 0;
+    private static final int TRAP_INTERVAL = 4000; // ~200 seconds
+
+    private final ContainerData data = new ContainerData() {
+        @Override
+        public int get(int index) {
+            return index == 0 ? trapTimer : 0;
+        }
+
+        @Override
+        public void set(int index, int value) {
+            if (index == 0) trapTimer = value;
+        }
+
+        @Override
+        public int getCount() { return 1; }
+    };
+
+    public BugTrapBlockEntity(BlockPos pos, BlockState state) {
+        super(LKBlockEntityTypes.BUG_TRAP.get(), pos, state);
+    }
+
+    public void serverTick() {
+        if (level == null || level.isClientSide()) return;
+
+        boolean hasBait = false;
+        for (int i = 0; i < 4; i++) {
+            if (!items.getStackInSlot(i).isEmpty()) {
+                hasBait = true;
+                break;
+            }
+        }
+        if (!hasBait) return;
+
+        trapTimer++;
+        if (trapTimer >= TRAP_INTERVAL) {
+            trapTimer = 0;
+
+            // Check if output slot can accept a bug
+            ItemStack output = items.getStackInSlot(4);
+            if (output.isEmpty() || (output.is(LKItems.BUG.get()) && output.getCount() < output.getMaxStackSize())) {
+                // Random chance based on bait count
+                float chance = 0.0F;
+                int baitCount = 0;
+                for (int i = 0; i < 4; i++) {
+                    if (!items.getStackInSlot(i).isEmpty()) baitCount++;
+                }
+                chance = 0.15F * baitCount; // 15% per bait slot filled
+
+                if (level.random.nextFloat() < chance) {
+                    // Consume one bait item from a random filled slot
+                    int slot = -1;
+                    for (int attempts = 0; attempts < 10; attempts++) {
+                        int s = level.random.nextInt(4);
+                        if (!items.getStackInSlot(s).isEmpty()) {
+                            slot = s;
+                            break;
+                        }
+                    }
+                    if (slot >= 0) {
+                        items.getStackInSlot(slot).shrink(1);
+
+                        // Add bug to output
+                        if (output.isEmpty()) {
+                            items.setStackInSlot(4, new ItemStack(LKItems.BUG.get()));
+                        } else {
+                            output.grow(1);
+                        }
+                        setChanged();
+                    }
+                }
+            }
+        }
+    }
+
+    public ItemStackHandler getInventory() {
+        return items;
+    }
+
+    public NonNullList<ItemStack> getDrops() {
+        NonNullList<ItemStack> drops = NonNullList.create();
+        for (int i = 0; i < items.getSlots(); i++) {
+            ItemStack stack = items.getStackInSlot(i);
+            if (!stack.isEmpty()) drops.add(stack);
+        }
+        return drops;
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.put("Items", items.serializeNBT());
+        tag.putInt("TrapTimer", trapTimer);
+    }
+
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        items.deserializeNBT(tag.getCompound("Items"));
+        trapTimer = tag.getInt("TrapTimer");
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.translatable("container.thelionking.bug_trap");
+    }
+
+    @Nullable
+    @Override
+    public AbstractContainerMenu createMenu(int containerId, Inventory playerInv, Player player) {
+        return new BugTrapMenu(containerId, playerInv, this);
+    }
+}

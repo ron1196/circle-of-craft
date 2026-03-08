@@ -1,6 +1,8 @@
 package io.github.ron1196.thelionking.registry;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
+import io.github.ron1196.thelionking.menu.BongoDrumMenu;
+import io.github.ron1196.thelionking.menu.BugTrapMenu;
 import io.github.ron1196.thelionking.menu.GrindingBowlMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
@@ -17,4 +19,14 @@ public class LKMenuTypes {
             MENU_TYPES.register("grinding_bowl",
                     () -> IForgeMenuType.create((containerId, playerInv, buf) ->
                             new GrindingBowlMenu(containerId, playerInv)));
+
+    public static final RegistryObject<MenuType<BugTrapMenu>> BUG_TRAP_MENU =
+            MENU_TYPES.register("bug_trap",
+                    () -> IForgeMenuType.create((containerId, playerInv, buf) ->
+                            new BugTrapMenu(containerId, playerInv)));
+
+    public static final RegistryObject<MenuType<BongoDrumMenu>> BONGO_DRUM_MENU =
+            MENU_TYPES.register("bongo_drum",
+                    () -> IForgeMenuType.create((containerId, playerInv, buf) ->
+                            new BongoDrumMenu(containerId, playerInv)));
 }

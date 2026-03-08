@@ -50,6 +50,10 @@ public class LKCreativeTabs {
                         output.accept(LKItems.TERMITE_MOUND_ITEM.get());
                         output.accept(LKItems.PUMBAA_BOX_ITEM.get());
                         output.accept(LKItems.GRINDING_BOWL_ITEM.get());
+                        output.accept(LKItems.BUG_TRAP_ITEM.get());
+                        output.accept(LKItems.BONGO_DRUM_ITEM.get());
+                        output.accept(LKItems.OUTLANDS_POOL_ITEM.get());
+                        output.accept(LKItems.LK_SPAWNER_ITEM.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> DECO_TAB = TABS.register("decorations",
@@ -184,6 +188,16 @@ public class LKCreativeTabs {
                         output.accept(LKItems.LION_FUR.get());
                         output.accept(LKItems.BUG.get());
                         output.accept(LKItems.CRYSTAL.get());
+                        // Notes
+                        output.accept(LKItems.NOTE_A.get());
+                        output.accept(LKItems.NOTE_B.get());
+                        output.accept(LKItems.NOTE_C.get());
+                        output.accept(LKItems.NOTE_D.get());
+                        output.accept(LKItems.NOTE_E.get());
+                        // Coins & feather
+                        output.accept(LKItems.RAFIKI_COIN.get());
+                        output.accept(LKItems.ZIRA_COIN.get());
+                        output.accept(LKItems.WAYWARD_FEATHER.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> TOOLS_TAB = TABS.register("tools",
@@ -282,5 +296,6 @@ public class LKCreativeTabs {
                     .title(Component.translatable("itemGroup.thelionking.quest"))
                     .icon(() -> new ItemStack(LKItems.CRYSTAL.get()))
                     .displayItems((params, output) -> {
+                        output.accept(LKItems.STAFF.get());
                     }).build());
 }

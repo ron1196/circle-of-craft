@@ -240,5 +240,21 @@
   "enchantment.thelionking.precision": "Precision",
 
   "block.thelionking.grinding_bowl": "Grinding Bowl",
-  "container.thelionking.grinding_bowl": "Grinding Bowl"
+  "container.thelionking.grinding_bowl": "Grinding Bowl",
+
+  "block.thelionking.bug_trap": "Bug Trap",
+  "block.thelionking.bongo_drum": "Bongo Drum",
+  "block.thelionking.outlands_pool": "Outlands Pool",
+  "block.thelionking.lk_spawner": "Lion King Spawner",
+  "container.thelionking.bug_trap": "Bug Trap",
+  "container.thelionking.bongo_drum": "Bongo Drum",
+  "item.thelionking.staff": "Staff",
+  "item.thelionking.rafiki_coin": "Rafiki Coin",
+  "item.thelionking.zira_coin": "Zira Coin",
+  "item.thelionking.wayward_feather": "Wayward Feather",
+  "item.thelionking.note_a": "Note A",
+  "item.thelionking.note_b": "Note B",
+  "item.thelionking.note_c": "Note C",
+  "item.thelionking.note_d": "Note D",
+  "item.thelionking.note_e": "Note E"
 }

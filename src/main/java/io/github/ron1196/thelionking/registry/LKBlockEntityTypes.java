@@ -1,9 +1,7 @@
 package io.github.ron1196.thelionking.registry;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
-import io.github.ron1196.thelionking.block.entity.FurRugBlockEntity;
-import io.github.ron1196.thelionking.block.entity.GrindingBowlBlockEntity;
-import io.github.ron1196.thelionking.block.entity.HyenaHeadBlockEntity;
+import io.github.ron1196.thelionking.block.entity.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -28,4 +26,24 @@ public class LKBlockEntityTypes {
             BLOCK_ENTITY_TYPES.register("fur_rug",
                     () -> BlockEntityType.Builder.of(FurRugBlockEntity::new,
                             LKBlocks.FUR_RUG.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<BugTrapBlockEntity>> BUG_TRAP =
+            BLOCK_ENTITY_TYPES.register("bug_trap",
+                    () -> BlockEntityType.Builder.of(BugTrapBlockEntity::new,
+                            LKBlocks.BUG_TRAP.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<BongoDrumBlockEntity>> BONGO_DRUM =
+            BLOCK_ENTITY_TYPES.register("bongo_drum",
+                    () -> BlockEntityType.Builder.of(BongoDrumBlockEntity::new,
+                            LKBlocks.BONGO_DRUM.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<OutlandsPoolBlockEntity>> OUTLANDS_POOL =
+            BLOCK_ENTITY_TYPES.register("outlands_pool",
+                    () -> BlockEntityType.Builder.of(OutlandsPoolBlockEntity::new,
+                            LKBlocks.OUTLANDS_POOL.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<LKSpawnerBlockEntity>> LK_SPAWNER =
+            BLOCK_ENTITY_TYPES.register("lk_spawner",
+                    () -> BlockEntityType.Builder.of(LKSpawnerBlockEntity::new,
+                            LKBlocks.LK_SPAWNER.get()).build(null));
 }

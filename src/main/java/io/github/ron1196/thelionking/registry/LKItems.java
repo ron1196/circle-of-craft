@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.registry;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.item.DartShooterItem;
+import io.github.ron1196.thelionking.item.NoteItem;
 import io.github.ron1196.thelionking.item.PumbaaBombItem;
 import io.github.ron1196.thelionking.item.SpearItem;
 import io.github.ron1196.thelionking.item.tier.LKArmorMaterials;
@@ -482,4 +483,33 @@ public class LKItems {
 
     // ========== Block Entity Items ==========
     public static final RegistryObject<BlockItem> GRINDING_BOWL_ITEM = registerBlockItem("grinding_bowl", LKBlocks.GRINDING_BOWL);
+    public static final RegistryObject<BlockItem> BUG_TRAP_ITEM = registerBlockItem("bug_trap", LKBlocks.BUG_TRAP);
+    public static final RegistryObject<BlockItem> BONGO_DRUM_ITEM = registerBlockItem("bongo_drum", LKBlocks.BONGO_DRUM);
+    public static final RegistryObject<BlockItem> OUTLANDS_POOL_ITEM = registerBlockItem("outlands_pool", LKBlocks.OUTLANDS_POOL);
+    public static final RegistryObject<BlockItem> LK_SPAWNER_ITEM = registerBlockItem("lk_spawner", LKBlocks.LK_SPAWNER);
+
+    // ========== Quest / NPC Items ==========
+    public static final RegistryObject<Item> STAFF = ITEMS.register("staff",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> RAFIKI_COIN = ITEMS.register("rafiki_coin",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> ZIRA_COIN = ITEMS.register("zira_coin",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> WAYWARD_FEATHER = ITEMS.register("wayward_feather",
+            () -> new Item(new Item.Properties()));
+
+    // ========== Notes (for Bongo Drum) ==========
+    public static final RegistryObject<Item> NOTE_A = ITEMS.register("note_a",
+            () -> new NoteItem(1, new Item.Properties()));
+    public static final RegistryObject<Item> NOTE_B = ITEMS.register("note_b",
+            () -> new NoteItem(2, new Item.Properties()));
+    public static final RegistryObject<Item> NOTE_C = ITEMS.register("note_c",
+            () -> new NoteItem(3, new Item.Properties()));
+    public static final RegistryObject<Item> NOTE_D = ITEMS.register("note_d",
+            () -> new NoteItem(4, new Item.Properties()));
+    public static final RegistryObject<Item> NOTE_E = ITEMS.register("note_e",
+            () -> new NoteItem(5, new Item.Properties()));
 }
