@@ -1,0 +1,210 @@
+package io.github.ron1196.thelionking.registry;
+
+import io.github.ron1196.thelionking.TheLionKingMod;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
+
+public class LKCreativeTabs {
+
+    public static final DeferredRegister<CreativeModeTab> TABS =
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TheLionKingMod.MOD_ID);
+
+    public static final RegistryObject<CreativeModeTab> BLOCKS_TAB = TABS.register("blocks",
+            () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.thelionking.blocks"))
+                    .icon(() -> new ItemStack(LKBlocks.PRIDE_BRICK.get()))
+                    .displayItems((params, output) -> {
+                        output.accept(LKItems.PRIDESTONE_BLOCK_ITEM.get());
+                        output.accept(LKItems.CORRUPT_PRIDESTONE_BLOCK_ITEM.get());
+                        output.accept(LKItems.PRIDE_BRICK_ITEM.get());
+                        output.accept(LKItems.CORRUPT_PRIDE_BRICK_ITEM.get());
+                        output.accept(LKItems.MOSSY_PRIDE_BRICK_ITEM.get());
+                        output.accept(LKItems.MOSSY_CORRUPT_PRIDE_BRICK_ITEM.get());
+                        output.accept(LKItems.PRIDE_PILLAR_ITEM.get());
+                        output.accept(LKItems.CORRUPT_PRIDE_PILLAR_ITEM.get());
+                        output.accept(LKItems.PRIDESTONE_STAIRS_ITEM.get());
+                        output.accept(LKItems.PRIDESTONE_SLAB_ITEM.get());
+                        output.accept(LKItems.PRIDE_BRICK_STAIRS_ITEM.get());
+                        output.accept(LKItems.PRIDE_BRICK_SLAB_ITEM.get());
+                        output.accept(LKItems.CORRUPT_PRIDESTONE_STAIRS_ITEM.get());
+                        output.accept(LKItems.CORRUPT_PRIDESTONE_SLAB_ITEM.get());
+                        output.accept(LKItems.CORRUPT_PRIDE_BRICK_STAIRS_ITEM.get());
+                        output.accept(LKItems.CORRUPT_PRIDE_BRICK_SLAB_ITEM.get());
+                        output.accept(LKItems.PRIDESTONE_WALL_ITEM.get());
+                        output.accept(LKItems.PRIDE_BRICK_WALL_ITEM.get());
+                        output.accept(LKItems.CORRUPT_PRIDESTONE_WALL_ITEM.get());
+                        output.accept(LKItems.PRIDESTONE_PRESSURE_PLATE_ITEM.get());
+                        output.accept(LKItems.PRIDESTONE_BUTTON_ITEM.get());
+                        output.accept(LKItems.PRIDE_COAL_ORE_ITEM.get());
+                        output.accept(LKItems.SILVER_ORE_ITEM.get());
+                        output.accept(LKItems.PEACOCK_ORE_ITEM.get());
+                        output.accept(LKItems.SILVER_BLOCK_ITEM.get());
+                        output.accept(LKItems.PEACOCK_BLOCK_ITEM.get());
+                        output.accept(LKItems.OUTSAND_ITEM.get());
+                        output.accept(LKItems.OUTGLASS_ITEM.get());
+                        output.accept(LKItems.OUTGLASS_PANE_ITEM.get());
+                        output.accept(LKItems.TERMITE_MOUND_ITEM.get());
+                        output.accept(LKItems.PUMBAA_BOX_ITEM.get());
+                    }).build());
+
+    public static final RegistryObject<CreativeModeTab> DECO_TAB = TABS.register("decorations",
+            () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.thelionking.decorations"))
+                    .icon(() -> new ItemStack(LKBlocks.ACACIA_LOG.get()))
+                    .displayItems((params, output) -> {
+                        // Logs
+                        output.accept(LKItems.ACACIA_LOG_ITEM.get());
+                        output.accept(LKItems.RAINFOREST_LOG_ITEM.get());
+                        output.accept(LKItems.MANGO_LOG_ITEM.get());
+                        output.accept(LKItems.PASSION_LOG_ITEM.get());
+                        output.accept(LKItems.BANANA_LOG_ITEM.get());
+                        output.accept(LKItems.DEADWOOD_LOG_ITEM.get());
+                        // Planks
+                        output.accept(LKItems.ACACIA_PLANKS_ITEM.get());
+                        output.accept(LKItems.RAINFOREST_PLANKS_ITEM.get());
+                        output.accept(LKItems.MANGO_PLANKS_ITEM.get());
+                        output.accept(LKItems.PASSION_PLANKS_ITEM.get());
+                        output.accept(LKItems.BANANA_PLANKS_ITEM.get());
+                        output.accept(LKItems.DEADWOOD_PLANKS_ITEM.get());
+                        // Stairs
+                        output.accept(LKItems.ACACIA_STAIRS_ITEM.get());
+                        output.accept(LKItems.RAINFOREST_STAIRS_ITEM.get());
+                        output.accept(LKItems.MANGO_STAIRS_ITEM.get());
+                        output.accept(LKItems.PASSION_STAIRS_ITEM.get());
+                        output.accept(LKItems.BANANA_STAIRS_ITEM.get());
+                        output.accept(LKItems.DEADWOOD_STAIRS_ITEM.get());
+                        // Slabs
+                        output.accept(LKItems.ACACIA_SLAB_ITEM.get());
+                        output.accept(LKItems.RAINFOREST_SLAB_ITEM.get());
+                        output.accept(LKItems.MANGO_SLAB_ITEM.get());
+                        output.accept(LKItems.PASSION_SLAB_ITEM.get());
+                        output.accept(LKItems.BANANA_SLAB_ITEM.get());
+                        output.accept(LKItems.DEADWOOD_SLAB_ITEM.get());
+                        // Dried Maize
+                        output.accept(LKItems.DRIED_MAIZE_BLOCK_ITEM.get());
+                        output.accept(LKItems.DRIED_MAIZE_STAIRS_ITEM.get());
+                        output.accept(LKItems.DRIED_MAIZE_SLAB_ITEM.get());
+                    }).build());
+
+    public static final RegistryObject<CreativeModeTab> FOOD_TAB = TABS.register("food",
+            () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.thelionking.food"))
+                    .icon(() -> new ItemStack(LKItems.ZEBRA_RAW.get()))
+                    .displayItems((params, output) -> {
+                        output.accept(LKItems.LION_RAW.get());
+                        output.accept(LKItems.LION_COOKED.get());
+                        output.accept(LKItems.ZEBRA_RAW.get());
+                        output.accept(LKItems.ZEBRA_COOKED.get());
+                        output.accept(LKItems.RHINO_RAW.get());
+                        output.accept(LKItems.RHINO_COOKED.get());
+                        output.accept(LKItems.MANGO.get());
+                        output.accept(LKItems.BANANA.get());
+                        output.accept(LKItems.CORN.get());
+                        output.accept(LKItems.POPCORN.get());
+                        output.accept(LKItems.KIWANO.get());
+                        output.accept(LKItems.OUTLANDER_MEAT.get());
+                        output.accept(LKItems.CROCODILE_MEAT.get());
+                        output.accept(LKItems.ROAST_YAM.get());
+                        output.accept(LKItems.BANANA_BREAD.get());
+                        output.accept(LKItems.CHOCOLATE_MUFASA.get());
+                    }).build());
+
+    public static final RegistryObject<CreativeModeTab> MATERIALS_TAB = TABS.register("materials",
+            () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.thelionking.materials"))
+                    .icon(() -> new ItemStack(LKItems.HYENA_BONE.get()))
+                    .displayItems((params, output) -> {
+                        output.accept(LKItems.PRIDESTONE_ITEM.get());
+                        output.accept(LKItems.CORRUPT_PRIDESTONE_ITEM.get());
+                        output.accept(LKItems.SILVER_INGOT.get());
+                        output.accept(LKItems.PEACOCK_GEM.get());
+                        output.accept(LKItems.KIVULITE.get());
+                        output.accept(LKItems.HYENA_BONE.get());
+                        output.accept(LKItems.HYENA_BONE_SHARD.get());
+                        output.accept(LKItems.TERMITE_DUST.get());
+                        output.accept(LKItems.MANGO_DUST.get());
+                        output.accept(LKItems.FEATHER_BLUE.get());
+                        output.accept(LKItems.FEATHER_YELLOW.get());
+                        output.accept(LKItems.FEATHER_RED.get());
+                        output.accept(LKItems.FEATHER_BLACK.get());
+                        output.accept(LKItems.FEATHER_PINK.get());
+                        output.accept(LKItems.POISON.get());
+                        output.accept(LKItems.NUKA_SHARD.get());
+                        output.accept(LKItems.OUTLANDER_FUR.get());
+                        output.accept(LKItems.ZEBRA_HIDE.get());
+                        output.accept(LKItems.GEMSBOK_HIDE.get());
+                        output.accept(LKItems.GEMSBOK_HORN.get());
+                        output.accept(LKItems.RHINO_HORN.get());
+                        output.accept(LKItems.GROUND_RHINO_HORN.get());
+                        output.accept(LKItems.CORN_KERNELS.get());
+                        output.accept(LKItems.DRIED_MAIZE.get());
+                        output.accept(LKItems.LION_FUR.get());
+                        output.accept(LKItems.BUG.get());
+                        output.accept(LKItems.CRYSTAL.get());
+                    }).build());
+
+    public static final RegistryObject<CreativeModeTab> TOOLS_TAB = TABS.register("tools",
+            () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.thelionking.tools"))
+                    .icon(() -> new ItemStack(LKItems.SILVER_PICKAXE.get()))
+                    .displayItems((params, output) -> {
+                        // Pridestone
+                        output.accept(LKItems.PRIDESTONE_SWORD.get());
+                        output.accept(LKItems.PRIDESTONE_PICKAXE.get());
+                        output.accept(LKItems.PRIDESTONE_AXE.get());
+                        output.accept(LKItems.PRIDESTONE_SHOVEL.get());
+                        output.accept(LKItems.PRIDESTONE_HOE.get());
+                        // Silver
+                        output.accept(LKItems.SILVER_SWORD.get());
+                        output.accept(LKItems.SILVER_PICKAXE.get());
+                        output.accept(LKItems.SILVER_AXE.get());
+                        output.accept(LKItems.SILVER_SHOVEL.get());
+                        output.accept(LKItems.SILVER_HOE.get());
+                        // Peacock
+                        output.accept(LKItems.PEACOCK_SWORD.get());
+                        output.accept(LKItems.PEACOCK_PICKAXE.get());
+                        output.accept(LKItems.PEACOCK_AXE.get());
+                        output.accept(LKItems.PEACOCK_SHOVEL.get());
+                        output.accept(LKItems.PEACOCK_HOE.get());
+                    }).build());
+
+    public static final RegistryObject<CreativeModeTab> COMBAT_TAB = TABS.register("combat",
+            () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.thelionking.combat"))
+                    .icon(() -> new ItemStack(LKItems.SILVER_SWORD.get()))
+                    .displayItems((params, output) -> {
+                        // Silver Armor
+                        output.accept(LKItems.SILVER_HELMET.get());
+                        output.accept(LKItems.SILVER_CHESTPLATE.get());
+                        output.accept(LKItems.SILVER_LEGGINGS.get());
+                        output.accept(LKItems.SILVER_BOOTS.get());
+                        // Gemsbok Armor
+                        output.accept(LKItems.GEMSBOK_HELMET.get());
+                        output.accept(LKItems.GEMSBOK_CHESTPLATE.get());
+                        output.accept(LKItems.GEMSBOK_LEGGINGS.get());
+                        output.accept(LKItems.GEMSBOK_BOOTS.get());
+                        // Peacock Armor
+                        output.accept(LKItems.PEACOCK_HELMET.get());
+                        output.accept(LKItems.PEACOCK_CHESTPLATE.get());
+                        output.accept(LKItems.PEACOCK_LEGGINGS.get());
+                        output.accept(LKItems.PEACOCK_BOOTS.get());
+                    }).build());
+
+    public static final RegistryObject<CreativeModeTab> MISC_TAB = TABS.register("misc",
+            () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.thelionking.misc"))
+                    .icon(() -> new ItemStack(LKItems.BUG.get()))
+                    .displayItems((params, output) -> {
+                    }).build());
+
+    public static final RegistryObject<CreativeModeTab> QUEST_TAB = TABS.register("quest",
+            () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.thelionking.quest"))
+                    .icon(() -> new ItemStack(LKItems.CRYSTAL.get()))
+                    .displayItems((params, output) -> {
+                    }).build());
+}

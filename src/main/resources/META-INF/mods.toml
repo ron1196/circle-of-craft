@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "${loader_version_range}"
-license = "GPL-3.0-or-later"
+license = "${mod_license}"
 
 [[mods]]
 modId = "${mod_id}"
