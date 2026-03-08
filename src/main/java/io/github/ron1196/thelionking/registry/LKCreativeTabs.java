@@ -88,6 +88,41 @@ public class LKCreativeTabs {
                         output.accept(LKItems.DRIED_MAIZE_BLOCK_ITEM.get());
                         output.accept(LKItems.DRIED_MAIZE_STAIRS_ITEM.get());
                         output.accept(LKItems.DRIED_MAIZE_SLAB_ITEM.get());
+                        // Leaves
+                        output.accept(LKItems.ACACIA_LEAVES_ITEM.get());
+                        output.accept(LKItems.RAINFOREST_LEAVES_ITEM.get());
+                        output.accept(LKItems.MANGO_LEAVES_ITEM.get());
+                        output.accept(LKItems.PASSION_LEAVES_ITEM.get());
+                        output.accept(LKItems.BANANA_LEAVES_ITEM.get());
+                        output.accept(LKItems.RAFIKI_LEAVES_ITEM.get());
+                        // Saplings
+                        output.accept(LKItems.ACACIA_SAPLING_ITEM.get());
+                        output.accept(LKItems.RAINFOREST_SAPLING_ITEM.get());
+                        output.accept(LKItems.MANGO_SAPLING_ITEM.get());
+                        output.accept(LKItems.PASSION_SAPLING_ITEM.get());
+                        output.accept(LKItems.BANANA_SAPLING_ITEM.get());
+                        // Rafiki Wood
+                        output.accept(LKItems.RAFIKI_WOOD_ITEM.get());
+                        // Flowers
+                        output.accept(LKItems.WHITE_FLOWER_ITEM.get());
+                        output.accept(LKItems.BLUE_FLOWER_ITEM.get());
+                        output.accept(LKItems.PURPLE_FLOWER_ITEM.get());
+                        output.accept(LKItems.RED_FLOWER_ITEM.get());
+                        // Lilies
+                        output.accept(LKItems.RED_LILY_ITEM.get());
+                        output.accept(LKItems.VIOLET_LILY_ITEM.get());
+                        output.accept(LKItems.WHITE_LILY_ITEM.get());
+                        // Mushrooms
+                        output.accept(LKItems.OUTSHROOM_ITEM.get());
+                        output.accept(LKItems.OUTSHROOM_GLOWING_ITEM.get());
+                        // Misc
+                        output.accept(LKItems.ARID_GRASS_ITEM.get());
+                        output.accept(LKItems.HYENA_TORCH_ITEM.get());
+                        output.accept(LKItems.HANGING_BANANA_ITEM.get());
+                        output.accept(LKItems.KIWANO_BLOCK_ITEM.get());
+                        output.accept(LKItems.KIWANO_SEEDS.get());
+                        output.accept(LKItems.YAM.get());
+                        output.accept(LKItems.MAIZE_STALKS.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> FOOD_TAB = TABS.register("food",

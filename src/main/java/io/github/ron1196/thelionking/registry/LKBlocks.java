@@ -1,6 +1,8 @@
 package io.github.ron1196.thelionking.registry;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
+import io.github.ron1196.thelionking.block.*;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -249,4 +251,138 @@ public class LKBlocks {
     public static final RegistryObject<Block> PUMBAA_BOX = BLOCKS.register("pumbaa_box",
             () -> new Block(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.WOOD).strength(1.0F).sound(SoundType.WOOD)));
+
+    // ========== Leaves ==========
+    private static BlockBehaviour.Properties leavesProperties() {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.PLANT)
+                .strength(0.2F).randomTicks().sound(SoundType.GRASS)
+                .noOcclusion().isValidSpawn((s, g, p, e) -> false)
+                .isSuffocating((s, g, p) -> false).isViewBlocking((s, g, p) -> false);
+    }
+
+    public static final RegistryObject<LeavesBlock> ACACIA_LEAVES = BLOCKS.register("pride_acacia_leaves",
+            () -> new LKLeavesBlock(leavesProperties()));
+
+    public static final RegistryObject<LeavesBlock> RAINFOREST_LEAVES = BLOCKS.register("rainforest_leaves",
+            () -> new LKLeavesBlock(leavesProperties()));
+
+    public static final RegistryObject<LeavesBlock> MANGO_LEAVES = BLOCKS.register("mango_leaves",
+            () -> new LKLeavesBlock(leavesProperties()));
+
+    public static final RegistryObject<LeavesBlock> PASSION_LEAVES = BLOCKS.register("passion_leaves",
+            () -> new LKLeavesBlock(leavesProperties().lightLevel(s -> 11)));
+
+    public static final RegistryObject<LeavesBlock> BANANA_LEAVES = BLOCKS.register("banana_leaves",
+            () -> new LKLeavesBlock(leavesProperties()));
+
+    public static final RegistryObject<LeavesBlock> RAFIKI_LEAVES = BLOCKS.register("rafiki_leaves",
+            () -> new LKLeavesBlock(leavesProperties().strength(-1.0F, 3600000.0F)));
+
+    // ========== Saplings ==========
+    private static BlockBehaviour.Properties saplingProperties() {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.PLANT)
+                .noCollission().randomTicks().instabreak().sound(SoundType.GRASS);
+    }
+
+    public static final RegistryObject<Block> ACACIA_SAPLING = BLOCKS.register("pride_acacia_sapling",
+            () -> new LKSaplingBlock(LKTreeGrowers.ACACIA, saplingProperties()));
+
+    public static final RegistryObject<Block> RAINFOREST_SAPLING = BLOCKS.register("rainforest_sapling",
+            () -> new LKSaplingBlock(LKTreeGrowers.RAINFOREST, saplingProperties()));
+
+    public static final RegistryObject<Block> MANGO_SAPLING = BLOCKS.register("mango_sapling",
+            () -> new LKSaplingBlock(LKTreeGrowers.MANGO, saplingProperties()));
+
+    public static final RegistryObject<Block> PASSION_SAPLING = BLOCKS.register("passion_sapling",
+            () -> new LKSaplingBlock(LKTreeGrowers.PASSION, saplingProperties().lightLevel(s -> 11)));
+
+    public static final RegistryObject<Block> BANANA_SAPLING = BLOCKS.register("banana_sapling",
+            () -> new LKSaplingBlock(LKTreeGrowers.BANANA, saplingProperties()));
+
+    // ========== Rafiki Wood ==========
+    public static final RegistryObject<Block> RAFIKI_WOOD = BLOCKS.register("rafiki_wood",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.WOOD).strength(-1.0F, 3600000.0F).sound(SoundType.WOOD)));
+
+    // ========== Flowers ==========
+    public static final RegistryObject<Block> WHITE_FLOWER = BLOCKS.register("white_flower",
+            () -> new LKFlowerBlock(MobEffects.HEAL, 5, BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+
+    public static final RegistryObject<Block> BLUE_FLOWER = BLOCKS.register("blue_flower",
+            () -> new LKFlowerBlock(MobEffects.NIGHT_VISION, 5, BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+
+    // ========== Tall Flowers ==========
+    public static final RegistryObject<Block> PURPLE_FLOWER = BLOCKS.register("purple_flower",
+            () -> new DoublePlantBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+
+    public static final RegistryObject<Block> RED_FLOWER = BLOCKS.register("red_flower",
+            () -> new DoublePlantBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+
+    // ========== Waterlilies ==========
+    public static final RegistryObject<Block> RED_LILY = BLOCKS.register("red_lily",
+            () -> new WaterlilyBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT).instabreak().sound(SoundType.LILY_PAD).noOcclusion()));
+
+    public static final RegistryObject<Block> VIOLET_LILY = BLOCKS.register("violet_lily",
+            () -> new WaterlilyBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT).instabreak().sound(SoundType.LILY_PAD).noOcclusion()));
+
+    public static final RegistryObject<Block> WHITE_LILY = BLOCKS.register("white_lily",
+            () -> new WaterlilyBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT).instabreak().sound(SoundType.LILY_PAD).noOcclusion()));
+
+    // ========== Mushrooms ==========
+    public static final RegistryObject<Block> OUTSHROOM = BLOCKS.register("outshroom",
+            () -> new LKMushroomBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+
+    public static final RegistryObject<Block> OUTSHROOM_GLOWING = BLOCKS.register("outshroom_glowing",
+            () -> new LKMushroomBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)
+                    .lightLevel(s -> 12)));
+
+    // ========== Arid Grass ==========
+    public static final RegistryObject<Block> ARID_GRASS = BLOCKS.register("arid_grass",
+            () -> new AridGrassBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)
+                    .offsetType(BlockBehaviour.OffsetType.XZ)));
+
+    // ========== Hyena Torch ==========
+    public static final RegistryObject<Block> HYENA_TORCH = BLOCKS.register("hyena_torch",
+            () -> new TorchBlock(BlockBehaviour.Properties.of()
+                    .noCollission().instabreak().sound(SoundType.WOOD)
+                    .lightLevel(s -> 14),
+                    net.minecraft.core.particles.ParticleTypes.FLAME));
+
+    public static final RegistryObject<Block> HYENA_WALL_TORCH = BLOCKS.register("hyena_wall_torch",
+            () -> new WallTorchBlock(BlockBehaviour.Properties.of()
+                    .noCollission().instabreak().sound(SoundType.WOOD)
+                    .lightLevel(s -> 14).lootFrom(HYENA_TORCH),
+                    net.minecraft.core.particles.ParticleTypes.FLAME));
+
+    // ========== Hanging Banana ==========
+    public static final RegistryObject<Block> HANGING_BANANA = BLOCKS.register("hanging_banana",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_YELLOW).instabreak().sound(SoundType.WOOD)));
+
+    // ========== Crops ==========
+    public static final RegistryObject<Block> MAIZE_CROP = BLOCKS.register("maize_crop",
+            () -> new CropBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.CROP)));
+
+    public static final RegistryObject<Block> YAM_CROP = BLOCKS.register("yam_crop",
+            () -> new CropBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.CROP)));
+
+    public static final RegistryObject<Block> KIWANO_STEM = BLOCKS.register("kiwano_stem",
+            () -> new CropBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.WOOD)));
+
+    public static final RegistryObject<Block> KIWANO_BLOCK = BLOCKS.register("kiwano_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WOOD)));
 }

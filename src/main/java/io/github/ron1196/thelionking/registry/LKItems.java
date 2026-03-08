@@ -342,4 +342,54 @@ public class LKItems {
     public static final RegistryObject<BlockItem> OUTGLASS_PANE_ITEM = registerBlockItem("outglass_pane", LKBlocks.OUTGLASS_PANE);
     public static final RegistryObject<BlockItem> TERMITE_MOUND_ITEM = registerBlockItem("termite_mound", LKBlocks.TERMITE_MOUND);
     public static final RegistryObject<BlockItem> PUMBAA_BOX_ITEM = registerBlockItem("pumbaa_box", LKBlocks.PUMBAA_BOX);
+
+    // ========== Phase 2: Nature Block Items ==========
+    // Leaves
+    public static final RegistryObject<BlockItem> ACACIA_LEAVES_ITEM = registerBlockItem("pride_acacia_leaves", LKBlocks.ACACIA_LEAVES);
+    public static final RegistryObject<BlockItem> RAINFOREST_LEAVES_ITEM = registerBlockItem("rainforest_leaves", LKBlocks.RAINFOREST_LEAVES);
+    public static final RegistryObject<BlockItem> MANGO_LEAVES_ITEM = registerBlockItem("mango_leaves", LKBlocks.MANGO_LEAVES);
+    public static final RegistryObject<BlockItem> PASSION_LEAVES_ITEM = registerBlockItem("passion_leaves", LKBlocks.PASSION_LEAVES);
+    public static final RegistryObject<BlockItem> BANANA_LEAVES_ITEM = registerBlockItem("banana_leaves", LKBlocks.BANANA_LEAVES);
+    public static final RegistryObject<BlockItem> RAFIKI_LEAVES_ITEM = registerBlockItem("rafiki_leaves", LKBlocks.RAFIKI_LEAVES);
+
+    // Saplings
+    public static final RegistryObject<BlockItem> ACACIA_SAPLING_ITEM = registerBlockItem("pride_acacia_sapling", LKBlocks.ACACIA_SAPLING);
+    public static final RegistryObject<BlockItem> RAINFOREST_SAPLING_ITEM = registerBlockItem("rainforest_sapling", LKBlocks.RAINFOREST_SAPLING);
+    public static final RegistryObject<BlockItem> MANGO_SAPLING_ITEM = registerBlockItem("mango_sapling", LKBlocks.MANGO_SAPLING);
+    public static final RegistryObject<BlockItem> PASSION_SAPLING_ITEM = registerBlockItem("passion_sapling", LKBlocks.PASSION_SAPLING);
+    public static final RegistryObject<BlockItem> BANANA_SAPLING_ITEM = registerBlockItem("banana_sapling", LKBlocks.BANANA_SAPLING);
+
+    // Rafiki Wood
+    public static final RegistryObject<BlockItem> RAFIKI_WOOD_ITEM = registerBlockItem("rafiki_wood", LKBlocks.RAFIKI_WOOD);
+
+    // Flowers
+    public static final RegistryObject<BlockItem> WHITE_FLOWER_ITEM = registerBlockItem("white_flower", LKBlocks.WHITE_FLOWER);
+    public static final RegistryObject<BlockItem> BLUE_FLOWER_ITEM = registerBlockItem("blue_flower", LKBlocks.BLUE_FLOWER);
+    public static final RegistryObject<BlockItem> PURPLE_FLOWER_ITEM = registerBlockItem("purple_flower", LKBlocks.PURPLE_FLOWER);
+    public static final RegistryObject<BlockItem> RED_FLOWER_ITEM = registerBlockItem("red_flower", LKBlocks.RED_FLOWER);
+
+    // Waterlilies
+    public static final RegistryObject<BlockItem> RED_LILY_ITEM = registerBlockItem("red_lily", LKBlocks.RED_LILY);
+    public static final RegistryObject<BlockItem> VIOLET_LILY_ITEM = registerBlockItem("violet_lily", LKBlocks.VIOLET_LILY);
+    public static final RegistryObject<BlockItem> WHITE_LILY_ITEM = registerBlockItem("white_lily", LKBlocks.WHITE_LILY);
+
+    // Mushrooms
+    public static final RegistryObject<BlockItem> OUTSHROOM_ITEM = registerBlockItem("outshroom", LKBlocks.OUTSHROOM);
+    public static final RegistryObject<BlockItem> OUTSHROOM_GLOWING_ITEM = registerBlockItem("outshroom_glowing", LKBlocks.OUTSHROOM_GLOWING);
+
+    // Misc nature
+    public static final RegistryObject<BlockItem> ARID_GRASS_ITEM = registerBlockItem("arid_grass", LKBlocks.ARID_GRASS);
+    public static final RegistryObject<BlockItem> HYENA_TORCH_ITEM = registerBlockItem("hyena_torch", LKBlocks.HYENA_TORCH);
+    public static final RegistryObject<BlockItem> HANGING_BANANA_ITEM = registerBlockItem("hanging_banana", LKBlocks.HANGING_BANANA);
+    public static final RegistryObject<BlockItem> KIWANO_BLOCK_ITEM = registerBlockItem("kiwano_block", LKBlocks.KIWANO_BLOCK);
+
+    // Crop seeds
+    public static final RegistryObject<Item> KIWANO_SEEDS = ITEMS.register("kiwano_seeds",
+            () -> new net.minecraft.world.item.ItemNameBlockItem(LKBlocks.KIWANO_STEM.get(), new Item.Properties()));
+
+    public static final RegistryObject<Item> YAM = ITEMS.register("yam",
+            () -> new net.minecraft.world.item.ItemNameBlockItem(LKBlocks.YAM_CROP.get(), new Item.Properties()));
+
+    public static final RegistryObject<Item> MAIZE_STALKS = ITEMS.register("maize_stalks",
+            () -> new net.minecraft.world.item.ItemNameBlockItem(LKBlocks.MAIZE_CROP.get(), new Item.Properties()));
 }
