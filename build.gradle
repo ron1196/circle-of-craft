@@ -1,0 +1,68 @@
+plugins {
+    id 'java-library'
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.neoforged.gradle.userdev' version '7.0.80'
+}
+
+version = '1.0.0'
+group = 'io.github.ron1196'
+
+base {
+    archivesName = 'thelionking'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+runs {
+    configureEach {
+        systemProperty 'forge.logging.markers', 'REGISTRIES'
+        systemProperty 'forge.logging.console.level', 'debug'
+        modSource project.sourceSets.main
+    }
+
+    client {
+        systemProperty 'forge.enabledGameTestNamespaces', 'thelionking'
+    }
+
+    server {
+        systemProperty 'forge.enabledGameTestNamespaces', 'thelionking'
+        programArgument '--nogui'
+    }
+
+    data {
+        programArguments.addAll '--mod', 'thelionking', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+dependencies {
+    implementation 'net.neoforged:forge:1.20.1-47.1.106'
+}
+
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+            minecraft_version   : '1.20.1',
+            minecraft_version_range: '[1.20.1,1.21)',
+            neo_version         : '47.1.106',
+            neo_version_range   : '[47.1,)',
+            loader_version_range: '[47,)',
+            mod_id              : 'thelionking',
+            mod_name            : 'The Lion King Mod',
+            mod_license         : 'All Rights Reserved',
+            mod_version         : project.version,
+            mod_authors         : 'Mevans',
+            mod_description     : 'A massive total-conversion mod inspired by The Lion King, adding dimensions, mobs, quests, and more.'
+    ]
+    inputs.properties(replaceProperties)
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

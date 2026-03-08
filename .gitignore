@@ -1,0 +1,28 @@
+# Gradle
+.gradle/
+build/
+out/
+src/generated/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.eclipse/
+.settings/
+.classpath
+.project
+bin/
+
+# Minecraft
+run/
+runs/
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+*.env
