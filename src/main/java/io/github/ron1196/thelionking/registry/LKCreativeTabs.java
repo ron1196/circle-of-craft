@@ -49,6 +49,7 @@ public class LKCreativeTabs {
                         output.accept(LKItems.OUTGLASS_PANE_ITEM.get());
                         output.accept(LKItems.TERMITE_MOUND_ITEM.get());
                         output.accept(LKItems.PUMBAA_BOX_ITEM.get());
+                        output.accept(LKItems.GRINDING_BOWL_ITEM.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> DECO_TAB = TABS.register("decorations",
@@ -123,6 +124,9 @@ public class LKCreativeTabs {
                         output.accept(LKItems.KIWANO_SEEDS.get());
                         output.accept(LKItems.YAM.get());
                         output.accept(LKItems.MAIZE_STALKS.get());
+                        // Decorative block entities
+                        output.accept(LKItems.HYENA_HEAD_ITEM.get());
+                        output.accept(LKItems.FUR_RUG_ITEM.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> FOOD_TAB = TABS.register("food",

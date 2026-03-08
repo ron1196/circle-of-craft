@@ -1,11 +1,14 @@
 package io.github.ron1196.thelionking.event;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
+import io.github.ron1196.thelionking.client.gui.GrindingBowlScreen;
 import io.github.ron1196.thelionking.client.model.*;
 import io.github.ron1196.thelionking.client.renderer.LKAnimalRenderer;
 import io.github.ron1196.thelionking.client.renderer.LKMobRenderer;
 import io.github.ron1196.thelionking.client.renderer.LKScaledMobRenderer;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.LKMenuTypes;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -13,6 +16,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(modid = TheLionKingMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class LKClientEvents {
@@ -37,6 +41,9 @@ public class LKClientEvents {
     public static final ModelLayerLocation VULTURE_LAYER = layer("vulture");
     public static final ModelLayerLocation CROCODILE_LAYER = layer("crocodile");
     public static final ModelLayerLocation TERMITE_LAYER = layer("termite");
+
+    // Block entity layers
+    public static final ModelLayerLocation HYENA_HEAD_LAYER = layer("hyena_head");
 
     private static ModelLayerLocation layer(String name) {
         return new ModelLayerLocation(new ResourceLocation(TheLionKingMod.MOD_ID, name), "main");
@@ -64,6 +71,10 @@ public class LKClientEvents {
         event.registerLayerDefinition(VULTURE_LAYER, VultureModel::createBodyLayer);
         event.registerLayerDefinition(CROCODILE_LAYER, CrocodileModel::createBodyLayer);
         event.registerLayerDefinition(TERMITE_LAYER, TermiteModel::createBodyLayer);
+
+        // Block entity layers
+        event.registerLayerDefinition(HYENA_HEAD_LAYER,
+                io.github.ron1196.thelionking.client.renderer.HyenaHeadBlockEntityRenderer::createHeadLayer);
     }
 
     @SubscribeEvent
@@ -134,5 +145,16 @@ public class LKClientEvents {
                     }
                 });
         event.registerEntityRenderer(LKEntityTypes.PUMBAA_BOMB.get(), ThrownItemRenderer::new);
+
+        // Block entity renderers
+        event.registerBlockEntityRenderer(io.github.ron1196.thelionking.registry.LKBlockEntityTypes.HYENA_HEAD.get(),
+                io.github.ron1196.thelionking.client.renderer.HyenaHeadBlockEntityRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void onClientSetup(FMLClientSetupEvent event) {
+        event.enqueueWork(() -> {
+            MenuScreens.register(LKMenuTypes.GRINDING_BOWL_MENU.get(), GrindingBowlScreen::new);
+        });
     }
 }

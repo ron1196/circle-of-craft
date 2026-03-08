@@ -385,4 +385,18 @@ public class LKBlocks {
     public static final RegistryObject<Block> KIWANO_BLOCK = BLOCKS.register("kiwano_block",
             () -> new Block(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WOOD)));
+
+    // ========== Decorative Block Entities ==========
+    public static final RegistryObject<Block> HYENA_HEAD = BLOCKS.register("hyena_head",
+            () -> new HyenaHeadBlock(BlockBehaviour.Properties.of()
+                    .strength(1.0F).noCollission()));
+
+    public static final RegistryObject<Block> FUR_RUG = BLOCKS.register("fur_rug",
+            () -> new FurRugBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.WOOL).strength(0.5F).sound(SoundType.WOOL)));
+
+    // ========== Grinding Bowl ==========
+    public static final RegistryObject<Block> GRINDING_BOWL = BLOCKS.register("grinding_bowl",
+            () -> new GrindingBowlBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE).strength(2.0F).requiresCorrectToolForDrops()));
 }

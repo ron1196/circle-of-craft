@@ -229,10 +229,16 @@
   "entity.thelionking.spear": "Spear",
   "entity.thelionking.pumbaa_bomb": "Pumbaa Bomb",
 
+  "block.thelionking.hyena_head": "Hyena Head",
+  "block.thelionking.fur_rug": "Fur Rug",
+
   "enchantment.thelionking.scourge_of_hyenas": "Scourge of Hyenas",
   "enchantment.thelionking.rafiki_damage": "Rafiki Damage",
   "enchantment.thelionking.rafiki_durability": "Rafiki Durability",
   "enchantment.thelionking.rafiki_thunder": "Rafiki Thunder",
   "enchantment.thelionking.biggah_diggah": "Biggah Diggah",
-  "enchantment.thelionking.precision": "Precision"
+  "enchantment.thelionking.precision": "Precision",
+
+  "block.thelionking.grinding_bowl": "Grinding Bowl",
+  "container.thelionking.grinding_bowl": "Grinding Bowl"
 }

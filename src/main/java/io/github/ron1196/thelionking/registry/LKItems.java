@@ -396,6 +396,10 @@ public class LKItems {
     public static final RegistryObject<Item> MAIZE_STALKS = ITEMS.register("maize_stalks",
             () -> new net.minecraft.world.item.ItemNameBlockItem(LKBlocks.MAIZE_CROP.get(), new Item.Properties()));
 
+    // Decorative block entities
+    public static final RegistryObject<BlockItem> HYENA_HEAD_ITEM = registerBlockItem("hyena_head", LKBlocks.HYENA_HEAD);
+    public static final RegistryObject<BlockItem> FUR_RUG_ITEM = registerBlockItem("fur_rug", LKBlocks.FUR_RUG);
+
     // ========== Outlands Armor ==========
     public static final RegistryObject<ArmorItem> OUTLANDS_HELMET = ITEMS.register("outlands_helmet",
             () -> new ArmorItem(LKArmorMaterials.OUTLANDS, ArmorItem.Type.HELMET, new Item.Properties()));
@@ -475,4 +479,7 @@ public class LKItems {
             () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.CROCODILE, 0x3B5323, 0x1A2E0A, new Item.Properties()));
     public static final RegistryObject<Item> TERMITE_SPAWN_EGG = ITEMS.register("termite_spawn_egg",
             () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.TERMITE, 0xD2B48C, 0x8B6914, new Item.Properties()));
+
+    // ========== Block Entity Items ==========
+    public static final RegistryObject<BlockItem> GRINDING_BOWL_ITEM = registerBlockItem("grinding_bowl", LKBlocks.GRINDING_BOWL);
 }

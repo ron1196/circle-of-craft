@@ -1,11 +1,13 @@
 package io.github.ron1196.thelionking;
 
 import com.mojang.logging.LogUtils;
+import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
 import io.github.ron1196.thelionking.registry.LKBlocks;
 import io.github.ron1196.thelionking.registry.LKCreativeTabs;
 import io.github.ron1196.thelionking.registry.LKEnchantments;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.LKMenuTypes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -23,7 +25,9 @@ public class TheLionKingMod {
 
         LKBlocks.BLOCKS.register(modEventBus);
         LKItems.ITEMS.register(modEventBus);
+        LKBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
         LKEntityTypes.ENTITY_TYPES.register(modEventBus);
+        LKMenuTypes.MENU_TYPES.register(modEventBus);
         LKEnchantments.ENCHANTMENTS.register(modEventBus);
         LKCreativeTabs.TABS.register(modEventBus);
 

@@ -1,0 +1,21 @@
+{
+  "parent": "minecraft:block/thin_block",
+  "textures": {
+    "particle": "thelionking:block/fur_rug",
+    "top": "thelionking:block/fur_rug"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 1, 16],
+      "faces": {
+        "down":  {"texture": "#top", "cullface": "down"},
+        "up":    {"texture": "#top"},
+        "north": {"texture": "#top", "cullface": "north"},
+        "south": {"texture": "#top", "cullface": "south"},
+        "west":  {"texture": "#top", "cullface": "west"},
+        "east":  {"texture": "#top", "cullface": "east"}
+      }
+    }
+  ]
+}
