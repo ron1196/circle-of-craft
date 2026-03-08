@@ -51,7 +51,7 @@ tasks.withType(ProcessResources).configureEach {
             loader_version_range: '[47,)',
             mod_id              : 'thelionking',
             mod_name            : 'The Lion King Mod',
-            mod_license         : 'All Rights Reserved',
+            mod_license         : 'GPL-3.0-or-later',
             mod_version         : project.version,
             mod_authors         : 'Mevans',
             mod_description     : 'A massive total-conversion mod inspired by The Lion King, adding dimensions, mobs, quests, and more.'
