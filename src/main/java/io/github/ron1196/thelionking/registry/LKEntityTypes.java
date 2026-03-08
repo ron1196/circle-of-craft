@@ -116,7 +116,7 @@ public class LKEntityTypes {
 
     public static final RegistryObject<EntityType<PumbaaEntity>> PUMBAA = ENTITY_TYPES.register("pumbaa",
             () -> EntityType.Builder.of(PumbaaEntity::new, MobCategory.CREATURE)
-                    .sized(1.0F, 0.9F).clientTrackingRange(10).build("pumbaa"));
+                    .sized(1.2F, 1.3F).clientTrackingRange(10).build("pumbaa"));
 
     public static final RegistryObject<EntityType<ScarEntity>> SCAR = ENTITY_TYPES.register("scar",
             () -> EntityType.Builder.of(ScarEntity::new, MobCategory.MONSTER)

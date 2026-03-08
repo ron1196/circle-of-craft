@@ -136,19 +136,19 @@ public class LKClientEvents {
         event.registerEntityRenderer(LKEntityTypes.TERMITE.get(),
                 ctx -> new LKScaledMobRenderer<>(ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_LAYER)), "termite", 0.15F, 0.4F));
 
-        // NPCs — proper models ported from original mod
+        // NPCs — proper models ported from original mod (shadow, scale from old code)
         event.registerEntityRenderer(LKEntityTypes.RAFIKI.get(),
-                ctx -> new LKNpcRenderer(ctx, new RafikiModel(ctx.bakeLayer(RAFIKI_LAYER)), "rafiki", 0.5F));
+                ctx -> new LKNpcRenderer(ctx, new RafikiModel(ctx.bakeLayer(RAFIKI_LAYER)), "rafiki", 0.35F, 0.5F));
         event.registerEntityRenderer(LKEntityTypes.SIMBA.get(),
-                ctx -> new LKNpcRenderer(ctx, new SimbaModel(ctx.bakeLayer(SIMBA_LAYER)), "simba", 0.7F));
+                ctx -> new LKNpcRenderer(ctx, new SimbaModel(ctx.bakeLayer(SIMBA_LAYER)), "simba", 0.5F, 0.5F));
         event.registerEntityRenderer(LKEntityTypes.TIMON.get(),
-                ctx -> new LKNpcRenderer(ctx, new TimonModel(ctx.bakeLayer(TIMON_LAYER)), "timon", 0.3F));
+                ctx -> new LKNpcRenderer(ctx, new TimonModel(ctx.bakeLayer(TIMON_LAYER)), "timon", 0.2F, 0.5F));
         event.registerEntityRenderer(LKEntityTypes.PUMBAA.get(),
                 ctx -> new LKNpcRenderer(ctx, new PumbaaModel(ctx.bakeLayer(PUMBAA_LAYER)), "pumbaa", 0.6F));
         event.registerEntityRenderer(LKEntityTypes.SCAR.get(),
                 ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(SCAR_LAYER)), "scar", 0.7F));
         event.registerEntityRenderer(LKEntityTypes.ZIRA.get(),
-                ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(ZIRA_LAYER)), "zira", 0.6F));
+                ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(ZIRA_LAYER)), "zira", 0.5F, 0.5F));
 
         // Projectiles
         event.registerEntityRenderer(LKEntityTypes.DART.get(),
