@@ -3,6 +3,7 @@ package io.github.ron1196.thelionking;
 import com.mojang.logging.LogUtils;
 import io.github.ron1196.thelionking.registry.LKBlocks;
 import io.github.ron1196.thelionking.registry.LKCreativeTabs;
+import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -21,6 +22,7 @@ public class TheLionKingMod {
 
         LKBlocks.BLOCKS.register(modEventBus);
         LKItems.ITEMS.register(modEventBus);
+        LKEntityTypes.ENTITY_TYPES.register(modEventBus);
         LKCreativeTabs.TABS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);

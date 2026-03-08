@@ -172,5 +172,26 @@
   "block.thelionking.kiwano_block": "Kiwano Block",
   "item.thelionking.kiwano_seeds": "Kiwano Seeds",
   "item.thelionking.yam": "Yam",
-  "item.thelionking.maize_stalks": "Maize Stalks"
+  "item.thelionking.maize_stalks": "Maize Stalks",
+
+  "entity.thelionking.lion": "Lion",
+  "entity.thelionking.lioness": "Lioness",
+  "entity.thelionking.zebra": "Zebra",
+  "entity.thelionking.giraffe": "Giraffe",
+  "entity.thelionking.rhino": "Rhino",
+  "entity.thelionking.gemsbok": "Gemsbok",
+  "entity.thelionking.dikdik": "Dik-dik",
+  "entity.thelionking.flamingo": "Flamingo",
+  "entity.thelionking.zazu": "Zazu",
+  "entity.thelionking.bug_entity": "Bug",
+  "item.thelionking.lion_spawn_egg": "Lion Spawn Egg",
+  "item.thelionking.lioness_spawn_egg": "Lioness Spawn Egg",
+  "item.thelionking.zebra_spawn_egg": "Zebra Spawn Egg",
+  "item.thelionking.giraffe_spawn_egg": "Giraffe Spawn Egg",
+  "item.thelionking.rhino_spawn_egg": "Rhino Spawn Egg",
+  "item.thelionking.gemsbok_spawn_egg": "Gemsbok Spawn Egg",
+  "item.thelionking.dikdik_spawn_egg": "Dik-dik Spawn Egg",
+  "item.thelionking.flamingo_spawn_egg": "Flamingo Spawn Egg",
+  "item.thelionking.zazu_spawn_egg": "Zazu Spawn Egg",
+  "item.thelionking.bug_spawn_egg": "Bug Spawn Egg"
 }

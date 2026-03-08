@@ -1,0 +1,42 @@
+package io.github.ron1196.thelionking.entity.animal;
+
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.level.Level;
+
+import javax.annotation.Nullable;
+
+public class RhinoEntity extends LKAnimal {
+
+    public RhinoEntity(EntityType<? extends Animal> type, Level level) {
+        super(type, level);
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2, false));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+    }
+
+    public static AttributeSupplier.Builder createAttributes() {
+        return LKAnimal.createLKAnimalAttributes()
+                .add(Attributes.MAX_HEALTH, 30.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.2)
+                .add(Attributes.ATTACK_DAMAGE, 5.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
+                .add(Attributes.ATTACK_KNOCKBACK, 2.0);
+    }
+
+    @Nullable
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mate) {
+        return null;
+    }
+}

@@ -392,4 +392,26 @@ public class LKItems {
 
     public static final RegistryObject<Item> MAIZE_STALKS = ITEMS.register("maize_stalks",
             () -> new net.minecraft.world.item.ItemNameBlockItem(LKBlocks.MAIZE_CROP.get(), new Item.Properties()));
+
+    // ========== Phase 3: Spawn Eggs ==========
+    public static final RegistryObject<Item> LION_SPAWN_EGG = ITEMS.register("lion_spawn_egg",
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.LION, 0xD4A030, 0x8B6914, new Item.Properties()));
+    public static final RegistryObject<Item> LIONESS_SPAWN_EGG = ITEMS.register("lioness_spawn_egg",
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.LIONESS, 0xD4A030, 0xC8A848, new Item.Properties()));
+    public static final RegistryObject<Item> ZEBRA_SPAWN_EGG = ITEMS.register("zebra_spawn_egg",
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.ZEBRA, 0xFFFFFF, 0x222222, new Item.Properties()));
+    public static final RegistryObject<Item> GIRAFFE_SPAWN_EGG = ITEMS.register("giraffe_spawn_egg",
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.GIRAFFE, 0xE8B84B, 0x8B5E3C, new Item.Properties()));
+    public static final RegistryObject<Item> RHINO_SPAWN_EGG = ITEMS.register("rhino_spawn_egg",
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.RHINO, 0x808080, 0x505050, new Item.Properties()));
+    public static final RegistryObject<Item> GEMSBOK_SPAWN_EGG = ITEMS.register("gemsbok_spawn_egg",
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.GEMSBOK, 0xC8A878, 0x4A3B2A, new Item.Properties()));
+    public static final RegistryObject<Item> DIKDIK_SPAWN_EGG = ITEMS.register("dikdik_spawn_egg",
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.DIKDIK, 0xB8956A, 0x8B7355, new Item.Properties()));
+    public static final RegistryObject<Item> FLAMINGO_SPAWN_EGG = ITEMS.register("flamingo_spawn_egg",
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.FLAMINGO, 0xFF69B4, 0xFF1493, new Item.Properties()));
+    public static final RegistryObject<Item> ZAZU_SPAWN_EGG = ITEMS.register("zazu_spawn_egg",
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.ZAZU, 0x4169E1, 0xFFD700, new Item.Properties()));
+    public static final RegistryObject<Item> BUG_SPAWN_EGG = ITEMS.register("bug_spawn_egg",
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.BUG, 0x4B3621, 0x2E1F0F, new Item.Properties()));
 }

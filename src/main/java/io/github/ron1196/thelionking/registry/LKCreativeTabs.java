@@ -234,6 +234,16 @@ public class LKCreativeTabs {
                     .title(Component.translatable("itemGroup.thelionking.misc"))
                     .icon(() -> new ItemStack(LKItems.BUG.get()))
                     .displayItems((params, output) -> {
+                        output.accept(LKItems.LION_SPAWN_EGG.get());
+                        output.accept(LKItems.LIONESS_SPAWN_EGG.get());
+                        output.accept(LKItems.ZEBRA_SPAWN_EGG.get());
+                        output.accept(LKItems.GIRAFFE_SPAWN_EGG.get());
+                        output.accept(LKItems.RHINO_SPAWN_EGG.get());
+                        output.accept(LKItems.GEMSBOK_SPAWN_EGG.get());
+                        output.accept(LKItems.DIKDIK_SPAWN_EGG.get());
+                        output.accept(LKItems.FLAMINGO_SPAWN_EGG.get());
+                        output.accept(LKItems.ZAZU_SPAWN_EGG.get());
+                        output.accept(LKItems.BUG_SPAWN_EGG.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> QUEST_TAB = TABS.register("quest",
