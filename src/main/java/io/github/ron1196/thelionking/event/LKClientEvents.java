@@ -3,6 +3,8 @@ package io.github.ron1196.thelionking.event;
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.client.model.*;
 import io.github.ron1196.thelionking.client.renderer.LKAnimalRenderer;
+import io.github.ron1196.thelionking.client.renderer.LKMobRenderer;
+import io.github.ron1196.thelionking.client.renderer.LKScaledMobRenderer;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
@@ -14,29 +16,34 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = TheLionKingMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class LKClientEvents {
 
-    public static final ModelLayerLocation LION_LAYER = new ModelLayerLocation(
-            new ResourceLocation(TheLionKingMod.MOD_ID, "lion"), "main");
-    public static final ModelLayerLocation LIONESS_LAYER = new ModelLayerLocation(
-            new ResourceLocation(TheLionKingMod.MOD_ID, "lioness"), "main");
-    public static final ModelLayerLocation ZEBRA_LAYER = new ModelLayerLocation(
-            new ResourceLocation(TheLionKingMod.MOD_ID, "zebra"), "main");
-    public static final ModelLayerLocation GIRAFFE_LAYER = new ModelLayerLocation(
-            new ResourceLocation(TheLionKingMod.MOD_ID, "giraffe"), "main");
-    public static final ModelLayerLocation RHINO_LAYER = new ModelLayerLocation(
-            new ResourceLocation(TheLionKingMod.MOD_ID, "rhino"), "main");
-    public static final ModelLayerLocation GEMSBOK_LAYER = new ModelLayerLocation(
-            new ResourceLocation(TheLionKingMod.MOD_ID, "gemsbok"), "main");
-    public static final ModelLayerLocation DIKDIK_LAYER = new ModelLayerLocation(
-            new ResourceLocation(TheLionKingMod.MOD_ID, "dikdik"), "main");
-    public static final ModelLayerLocation FLAMINGO_LAYER = new ModelLayerLocation(
-            new ResourceLocation(TheLionKingMod.MOD_ID, "flamingo"), "main");
-    public static final ModelLayerLocation ZAZU_LAYER = new ModelLayerLocation(
-            new ResourceLocation(TheLionKingMod.MOD_ID, "zazu"), "main");
-    public static final ModelLayerLocation BUG_LAYER = new ModelLayerLocation(
-            new ResourceLocation(TheLionKingMod.MOD_ID, "bug_entity"), "main");
+    // Passive animal layers
+    public static final ModelLayerLocation LION_LAYER = layer("lion");
+    public static final ModelLayerLocation LIONESS_LAYER = layer("lioness");
+    public static final ModelLayerLocation ZEBRA_LAYER = layer("zebra");
+    public static final ModelLayerLocation GIRAFFE_LAYER = layer("giraffe");
+    public static final ModelLayerLocation RHINO_LAYER = layer("rhino");
+    public static final ModelLayerLocation GEMSBOK_LAYER = layer("gemsbok");
+    public static final ModelLayerLocation DIKDIK_LAYER = layer("dikdik");
+    public static final ModelLayerLocation FLAMINGO_LAYER = layer("flamingo");
+    public static final ModelLayerLocation ZAZU_LAYER = layer("zazu");
+    public static final ModelLayerLocation BUG_LAYER = layer("bug_entity");
+
+    // Hostile entity layers
+    public static final ModelLayerLocation HYENA_LAYER = layer("hyena");
+    public static final ModelLayerLocation SKELETAL_HYENA_LAYER = layer("skeletal_hyena");
+    public static final ModelLayerLocation OUTLANDER_LAYER = layer("outlander");
+    public static final ModelLayerLocation OUTLANDESS_LAYER = layer("outlandess");
+    public static final ModelLayerLocation VULTURE_LAYER = layer("vulture");
+    public static final ModelLayerLocation CROCODILE_LAYER = layer("crocodile");
+    public static final ModelLayerLocation TERMITE_LAYER = layer("termite");
+
+    private static ModelLayerLocation layer(String name) {
+        return new ModelLayerLocation(new ResourceLocation(TheLionKingMod.MOD_ID, name), "main");
+    }
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        // Passive
         event.registerLayerDefinition(LION_LAYER, LionModel::createBodyLayer);
         event.registerLayerDefinition(LIONESS_LAYER, LionModel::createBodyLayer);
         event.registerLayerDefinition(ZEBRA_LAYER, ZebraModel::createBodyLayer);
@@ -47,10 +54,20 @@ public class LKClientEvents {
         event.registerLayerDefinition(FLAMINGO_LAYER, FlamingoModel::createBodyLayer);
         event.registerLayerDefinition(ZAZU_LAYER, ZazuModel::createBodyLayer);
         event.registerLayerDefinition(BUG_LAYER, BugModel::createBodyLayer);
+
+        // Hostile
+        event.registerLayerDefinition(HYENA_LAYER, HyenaModel::createBodyLayer);
+        event.registerLayerDefinition(SKELETAL_HYENA_LAYER, HyenaModel::createBodyLayer);
+        event.registerLayerDefinition(OUTLANDER_LAYER, OutlanderModel::createBodyLayer);
+        event.registerLayerDefinition(OUTLANDESS_LAYER, OutlanderModel::createBodyLayer);
+        event.registerLayerDefinition(VULTURE_LAYER, VultureModel::createBodyLayer);
+        event.registerLayerDefinition(CROCODILE_LAYER, CrocodileModel::createBodyLayer);
+        event.registerLayerDefinition(TERMITE_LAYER, TermiteModel::createBodyLayer);
     }
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        // Passive
         event.registerEntityRenderer(LKEntityTypes.LION.get(),
                 ctx -> new LKAnimalRenderer<>(ctx, new LionModel<>(ctx.bakeLayer(LION_LAYER)), "lion", 0.7F));
         event.registerEntityRenderer(LKEntityTypes.LIONESS.get(),
@@ -71,5 +88,21 @@ public class LKClientEvents {
                 ctx -> new LKAnimalRenderer<>(ctx, new ZazuModel<>(ctx.bakeLayer(ZAZU_LAYER)), "zazu", 0.25F));
         event.registerEntityRenderer(LKEntityTypes.BUG.get(),
                 ctx -> new LKAnimalRenderer<>(ctx, new BugModel<>(ctx.bakeLayer(BUG_LAYER)), "bug", 0.15F));
+
+        // Hostile
+        event.registerEntityRenderer(LKEntityTypes.HYENA.get(),
+                ctx -> new LKMobRenderer<>(ctx, new HyenaModel<>(ctx.bakeLayer(HYENA_LAYER)), "hyena", 0.5F));
+        event.registerEntityRenderer(LKEntityTypes.SKELETAL_HYENA.get(),
+                ctx -> new LKMobRenderer<>(ctx, new HyenaModel<>(ctx.bakeLayer(SKELETAL_HYENA_LAYER)), "skeletal_hyena", 0.5F));
+        event.registerEntityRenderer(LKEntityTypes.OUTLANDER.get(),
+                ctx -> new LKMobRenderer<>(ctx, new OutlanderModel<>(ctx.bakeLayer(OUTLANDER_LAYER)), "outlander", 0.7F));
+        event.registerEntityRenderer(LKEntityTypes.OUTLANDESS.get(),
+                ctx -> new LKMobRenderer<>(ctx, new OutlanderModel<>(ctx.bakeLayer(OUTLANDESS_LAYER)), "outlandess", 0.6F));
+        event.registerEntityRenderer(LKEntityTypes.VULTURE.get(),
+                ctx -> new LKMobRenderer<>(ctx, new VultureModel<>(ctx.bakeLayer(VULTURE_LAYER)), "vulture", 0.5F));
+        event.registerEntityRenderer(LKEntityTypes.CROCODILE.get(),
+                ctx -> new LKMobRenderer<>(ctx, new CrocodileModel<>(ctx.bakeLayer(CROCODILE_LAYER)), "crocodile", 0.7F));
+        event.registerEntityRenderer(LKEntityTypes.TERMITE.get(),
+                ctx -> new LKScaledMobRenderer<>(ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_LAYER)), "termite", 0.15F, 0.4F));
     }
 }

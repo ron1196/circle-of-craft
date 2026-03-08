@@ -193,5 +193,20 @@
   "item.thelionking.dikdik_spawn_egg": "Dik-dik Spawn Egg",
   "item.thelionking.flamingo_spawn_egg": "Flamingo Spawn Egg",
   "item.thelionking.zazu_spawn_egg": "Zazu Spawn Egg",
-  "item.thelionking.bug_spawn_egg": "Bug Spawn Egg"
+  "item.thelionking.bug_spawn_egg": "Bug Spawn Egg",
+
+  "entity.thelionking.hyena": "Hyena",
+  "entity.thelionking.skeletal_hyena": "Skeletal Hyena",
+  "entity.thelionking.outlander": "Outlander",
+  "entity.thelionking.outlandess": "Outlandess",
+  "entity.thelionking.vulture": "Vulture",
+  "entity.thelionking.crocodile": "Crocodile",
+  "entity.thelionking.termite": "Termite",
+  "item.thelionking.hyena_spawn_egg": "Hyena Spawn Egg",
+  "item.thelionking.skeletal_hyena_spawn_egg": "Skeletal Hyena Spawn Egg",
+  "item.thelionking.outlander_spawn_egg": "Outlander Spawn Egg",
+  "item.thelionking.outlandess_spawn_egg": "Outlandess Spawn Egg",
+  "item.thelionking.vulture_spawn_egg": "Vulture Spawn Egg",
+  "item.thelionking.crocodile_spawn_egg": "Crocodile Spawn Egg",
+  "item.thelionking.termite_spawn_egg": "Termite Spawn Egg"
 }

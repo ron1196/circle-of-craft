@@ -244,6 +244,14 @@ public class LKCreativeTabs {
                         output.accept(LKItems.FLAMINGO_SPAWN_EGG.get());
                         output.accept(LKItems.ZAZU_SPAWN_EGG.get());
                         output.accept(LKItems.BUG_SPAWN_EGG.get());
+                        // Hostile
+                        output.accept(LKItems.HYENA_SPAWN_EGG.get());
+                        output.accept(LKItems.SKELETAL_HYENA_SPAWN_EGG.get());
+                        output.accept(LKItems.OUTLANDER_SPAWN_EGG.get());
+                        output.accept(LKItems.OUTLANDESS_SPAWN_EGG.get());
+                        output.accept(LKItems.VULTURE_SPAWN_EGG.get());
+                        output.accept(LKItems.CROCODILE_SPAWN_EGG.get());
+                        output.accept(LKItems.TERMITE_SPAWN_EGG.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> QUEST_TAB = TABS.register("quest",

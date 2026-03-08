@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "conditions": [
+        { "condition": "minecraft:killed_by_player" }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "thelionking:termite_dust",
+          "functions": [
+            { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 0, "max": 1 } }
+          ]
+        }
+      ]
+    }
+  ]
+}
