@@ -208,5 +208,31 @@
   "item.thelionking.outlandess_spawn_egg": "Outlandess Spawn Egg",
   "item.thelionking.vulture_spawn_egg": "Vulture Spawn Egg",
   "item.thelionking.crocodile_spawn_egg": "Crocodile Spawn Egg",
-  "item.thelionking.termite_spawn_egg": "Termite Spawn Egg"
+  "item.thelionking.termite_spawn_egg": "Termite Spawn Egg",
+
+  "item.thelionking.outlands_helmet": "Outlands Helmet",
+  "item.thelionking.ticket_lion_head": "Ticket Lion Head",
+  "item.thelionking.ticket_lion_suit": "Ticket Lion Suit",
+  "item.thelionking.ticket_lion_legs": "Ticket Lion Legs",
+  "item.thelionking.ticket_lion_feet": "Ticket Lion Feet",
+  "item.thelionking.dart_blue": "Blue Dart",
+  "item.thelionking.dart_red": "Red Dart",
+  "item.thelionking.dart_yellow": "Yellow Dart",
+  "item.thelionking.dart_pink": "Pink Dart",
+  "item.thelionking.dart_black": "Black Dart",
+  "item.thelionking.dart_shooter": "Dart Shooter",
+  "item.thelionking.dart_shooter_silver": "Silver Dart Shooter",
+  "item.thelionking.gemsbok_spear": "Gemsbok Spear",
+  "item.thelionking.poisoned_spear": "Poisoned Spear",
+  "item.thelionking.pumbaa_bomb": "Pumbaa Bomb",
+  "entity.thelionking.dart": "Dart",
+  "entity.thelionking.spear": "Spear",
+  "entity.thelionking.pumbaa_bomb": "Pumbaa Bomb",
+
+  "enchantment.thelionking.scourge_of_hyenas": "Scourge of Hyenas",
+  "enchantment.thelionking.rafiki_damage": "Rafiki Damage",
+  "enchantment.thelionking.rafiki_durability": "Rafiki Durability",
+  "enchantment.thelionking.rafiki_thunder": "Rafiki Thunder",
+  "enchantment.thelionking.biggah_diggah": "Biggah Diggah",
+  "enchantment.thelionking.precision": "Precision"
 }

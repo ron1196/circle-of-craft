@@ -3,6 +3,9 @@ package io.github.ron1196.thelionking.registry;
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.entity.animal.*;
 import io.github.ron1196.thelionking.entity.hostile.*;
+import io.github.ron1196.thelionking.entity.projectile.DartEntity;
+import io.github.ron1196.thelionking.entity.projectile.PumbaaBombEntity;
+import io.github.ron1196.thelionking.entity.projectile.SpearEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
@@ -54,6 +57,19 @@ public class LKEntityTypes {
     public static final RegistryObject<EntityType<BugEntity>> BUG = ENTITY_TYPES.register("bug_entity",
             () -> EntityType.Builder.of(BugEntity::new, MobCategory.CREATURE)
                     .sized(0.4F, 0.4F).clientTrackingRange(8).build("bug_entity"));
+
+    // ========== Projectile Entities ==========
+    public static final RegistryObject<EntityType<DartEntity>> DART = ENTITY_TYPES.register("dart",
+            () -> EntityType.Builder.<DartEntity>of(DartEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("dart"));
+
+    public static final RegistryObject<EntityType<SpearEntity>> SPEAR = ENTITY_TYPES.register("spear",
+            () -> EntityType.Builder.<SpearEntity>of(SpearEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("spear"));
+
+    public static final RegistryObject<EntityType<PumbaaBombEntity>> PUMBAA_BOMB = ENTITY_TYPES.register("pumbaa_bomb",
+            () -> EntityType.Builder.<PumbaaBombEntity>of(PumbaaBombEntity::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("pumbaa_bomb"));
 
     // ========== Hostile Entities ==========
     public static final RegistryObject<EntityType<HyenaEntity>> HYENA = ENTITY_TYPES.register("hyena",

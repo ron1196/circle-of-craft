@@ -227,6 +227,25 @@ public class LKCreativeTabs {
                         output.accept(LKItems.PEACOCK_CHESTPLATE.get());
                         output.accept(LKItems.PEACOCK_LEGGINGS.get());
                         output.accept(LKItems.PEACOCK_BOOTS.get());
+                        // Outlands Armor
+                        output.accept(LKItems.OUTLANDS_HELMET.get());
+                        // Ticket Lion Suit
+                        output.accept(LKItems.TICKET_LION_HEAD.get());
+                        output.accept(LKItems.TICKET_LION_SUIT.get());
+                        output.accept(LKItems.TICKET_LION_LEGS.get());
+                        output.accept(LKItems.TICKET_LION_FEET.get());
+                        // Darts
+                        output.accept(LKItems.DART_BLUE.get());
+                        output.accept(LKItems.DART_RED.get());
+                        output.accept(LKItems.DART_YELLOW.get());
+                        output.accept(LKItems.DART_PINK.get());
+                        output.accept(LKItems.DART_BLACK.get());
+                        output.accept(LKItems.DART_SHOOTER.get());
+                        output.accept(LKItems.DART_SHOOTER_SILVER.get());
+                        // Spears & Bombs
+                        output.accept(LKItems.GEMSBOK_SPEAR.get());
+                        output.accept(LKItems.POISONED_SPEAR.get());
+                        output.accept(LKItems.PUMBAA_BOMB.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> MISC_TAB = TABS.register("misc",

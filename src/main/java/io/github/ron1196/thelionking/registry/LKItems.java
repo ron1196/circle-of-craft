@@ -1,6 +1,9 @@
 package io.github.ron1196.thelionking.registry;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
+import io.github.ron1196.thelionking.item.DartShooterItem;
+import io.github.ron1196.thelionking.item.PumbaaBombItem;
+import io.github.ron1196.thelionking.item.SpearItem;
 import io.github.ron1196.thelionking.item.tier.LKArmorMaterials;
 import io.github.ron1196.thelionking.item.tier.LKToolTiers;
 import net.minecraft.world.food.FoodProperties;
@@ -392,6 +395,48 @@ public class LKItems {
 
     public static final RegistryObject<Item> MAIZE_STALKS = ITEMS.register("maize_stalks",
             () -> new net.minecraft.world.item.ItemNameBlockItem(LKBlocks.MAIZE_CROP.get(), new Item.Properties()));
+
+    // ========== Outlands Armor ==========
+    public static final RegistryObject<ArmorItem> OUTLANDS_HELMET = ITEMS.register("outlands_helmet",
+            () -> new ArmorItem(LKArmorMaterials.OUTLANDS, ArmorItem.Type.HELMET, new Item.Properties()));
+
+    // ========== Ticket Lion Suit ==========
+    public static final RegistryObject<ArmorItem> TICKET_LION_HEAD = ITEMS.register("ticket_lion_head",
+            () -> new ArmorItem(LKArmorMaterials.TICKET_LION, ArmorItem.Type.HELMET, new Item.Properties()));
+    public static final RegistryObject<ArmorItem> TICKET_LION_SUIT = ITEMS.register("ticket_lion_suit",
+            () -> new ArmorItem(LKArmorMaterials.TICKET_LION, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+    public static final RegistryObject<ArmorItem> TICKET_LION_LEGS = ITEMS.register("ticket_lion_legs",
+            () -> new ArmorItem(LKArmorMaterials.TICKET_LION, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+    public static final RegistryObject<ArmorItem> TICKET_LION_FEET = ITEMS.register("ticket_lion_feet",
+            () -> new ArmorItem(LKArmorMaterials.TICKET_LION, ArmorItem.Type.BOOTS, new Item.Properties()));
+
+    // ========== Darts ==========
+    public static final RegistryObject<Item> DART_BLUE = ITEMS.register("dart_blue",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> DART_RED = ITEMS.register("dart_red",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> DART_YELLOW = ITEMS.register("dart_yellow",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> DART_PINK = ITEMS.register("dart_pink",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> DART_BLACK = ITEMS.register("dart_black",
+            () -> new Item(new Item.Properties()));
+
+    // ========== Dart Shooters ==========
+    public static final RegistryObject<Item> DART_SHOOTER = ITEMS.register("dart_shooter",
+            () -> new DartShooterItem(false));
+    public static final RegistryObject<Item> DART_SHOOTER_SILVER = ITEMS.register("dart_shooter_silver",
+            () -> new DartShooterItem(true));
+
+    // ========== Spears ==========
+    public static final RegistryObject<Item> GEMSBOK_SPEAR = ITEMS.register("gemsbok_spear",
+            () -> new SpearItem(false));
+    public static final RegistryObject<Item> POISONED_SPEAR = ITEMS.register("poisoned_spear",
+            () -> new SpearItem(true));
+
+    // ========== Bombs ==========
+    public static final RegistryObject<Item> PUMBAA_BOMB = ITEMS.register("pumbaa_bomb",
+            () -> new PumbaaBombItem());
 
     // ========== Phase 3: Spawn Eggs ==========
     public static final RegistryObject<Item> LION_SPAWN_EGG = ITEMS.register("lion_spawn_egg",

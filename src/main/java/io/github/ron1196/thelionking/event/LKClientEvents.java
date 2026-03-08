@@ -8,6 +8,7 @@ import io.github.ron1196.thelionking.client.renderer.LKScaledMobRenderer;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -104,5 +105,34 @@ public class LKClientEvents {
                 ctx -> new LKMobRenderer<>(ctx, new CrocodileModel<>(ctx.bakeLayer(CROCODILE_LAYER)), "crocodile", 0.7F));
         event.registerEntityRenderer(LKEntityTypes.TERMITE.get(),
                 ctx -> new LKScaledMobRenderer<>(ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_LAYER)), "termite", 0.15F, 0.4F));
+
+        // Projectiles
+        event.registerEntityRenderer(LKEntityTypes.DART.get(),
+                ctx -> new net.minecraft.client.renderer.entity.ArrowRenderer<>(ctx) {
+                    private final ResourceLocation BLUE = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_blue.png");
+                    private final ResourceLocation RED = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_red.png");
+                    private final ResourceLocation YELLOW = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_yellow.png");
+                    private final ResourceLocation PINK = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_pink.png");
+                    private final ResourceLocation BLACK = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_black.png");
+                    @Override
+                    public ResourceLocation getTextureLocation(io.github.ron1196.thelionking.entity.projectile.DartEntity entity) {
+                        return switch (entity.getDartType()) {
+                            case RED -> RED;
+                            case YELLOW -> YELLOW;
+                            case PINK -> PINK;
+                            case BLACK -> BLACK;
+                            default -> BLUE;
+                        };
+                    }
+                });
+        event.registerEntityRenderer(LKEntityTypes.SPEAR.get(),
+                ctx -> new net.minecraft.client.renderer.entity.ArrowRenderer<>(ctx) {
+                    private final ResourceLocation SPEAR = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/spear.png");
+                    @Override
+                    public ResourceLocation getTextureLocation(io.github.ron1196.thelionking.entity.projectile.SpearEntity entity) {
+                        return SPEAR;
+                    }
+                });
+        event.registerEntityRenderer(LKEntityTypes.PUMBAA_BOMB.get(), ThrownItemRenderer::new);
     }
 }
