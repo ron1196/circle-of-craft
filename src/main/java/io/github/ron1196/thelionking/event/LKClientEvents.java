@@ -45,6 +45,14 @@ public class LKClientEvents {
     public static final ModelLayerLocation CROCODILE_LAYER = layer("crocodile");
     public static final ModelLayerLocation TERMITE_LAYER = layer("termite");
 
+    // NPC layers (reuse animal mesh definitions)
+    public static final ModelLayerLocation RAFIKI_LAYER = layer("rafiki");
+    public static final ModelLayerLocation SIMBA_LAYER = layer("simba");
+    public static final ModelLayerLocation TIMON_LAYER = layer("timon");
+    public static final ModelLayerLocation PUMBAA_LAYER = layer("pumbaa");
+    public static final ModelLayerLocation SCAR_LAYER = layer("scar");
+    public static final ModelLayerLocation ZIRA_LAYER = layer("zira");
+
     // Block entity layers
     public static final ModelLayerLocation HYENA_HEAD_LAYER = layer("hyena_head");
 
@@ -74,6 +82,14 @@ public class LKClientEvents {
         event.registerLayerDefinition(VULTURE_LAYER, VultureModel::createBodyLayer);
         event.registerLayerDefinition(CROCODILE_LAYER, CrocodileModel::createBodyLayer);
         event.registerLayerDefinition(TERMITE_LAYER, TermiteModel::createBodyLayer);
+
+        // NPC layers (same mesh as animals, but separate layer locations)
+        event.registerLayerDefinition(RAFIKI_LAYER, LionModel::createBodyLayer);
+        event.registerLayerDefinition(SIMBA_LAYER, LionModel::createBodyLayer);
+        event.registerLayerDefinition(TIMON_LAYER, BugModel::createBodyLayer);
+        event.registerLayerDefinition(PUMBAA_LAYER, RhinoModel::createBodyLayer);
+        event.registerLayerDefinition(SCAR_LAYER, LionModel::createBodyLayer);
+        event.registerLayerDefinition(ZIRA_LAYER, OutlanderModel::createBodyLayer);
 
         // Block entity layers
         event.registerLayerDefinition(HYENA_HEAD_LAYER,
@@ -120,19 +136,19 @@ public class LKClientEvents {
         event.registerEntityRenderer(LKEntityTypes.TERMITE.get(),
                 ctx -> new LKScaledMobRenderer<>(ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_LAYER)), "termite", 0.15F, 0.4F));
 
-        // NPCs — reuse existing models as placeholders (LKNpcRenderer bypasses model generic bounds)
+        // NPCs — use NpcPlaceholderModel (typed to Mob, avoids ClassCastException with animal models)
         event.registerEntityRenderer(LKEntityTypes.RAFIKI.get(),
-                ctx -> new LKNpcRenderer<>(ctx, new LionModel<>(ctx.bakeLayer(LION_LAYER)), "rafiki", 0.5F));
+                ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(RAFIKI_LAYER)), "rafiki", 0.5F));
         event.registerEntityRenderer(LKEntityTypes.SIMBA.get(),
-                ctx -> new LKNpcRenderer<>(ctx, new LionModel<>(ctx.bakeLayer(LION_LAYER)), "simba", 0.7F));
+                ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(SIMBA_LAYER)), "simba", 0.7F));
         event.registerEntityRenderer(LKEntityTypes.TIMON.get(),
-                ctx -> new LKNpcRenderer<>(ctx, new BugModel<>(ctx.bakeLayer(BUG_LAYER)), "timon", 0.3F));
+                ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(TIMON_LAYER)), "timon", 0.3F));
         event.registerEntityRenderer(LKEntityTypes.PUMBAA.get(),
-                ctx -> new LKNpcRenderer<>(ctx, new RhinoModel<>(ctx.bakeLayer(RHINO_LAYER)), "pumbaa", 0.6F));
+                ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(PUMBAA_LAYER)), "pumbaa", 0.6F));
         event.registerEntityRenderer(LKEntityTypes.SCAR.get(),
-                ctx -> new LKNpcRenderer<>(ctx, new LionModel<>(ctx.bakeLayer(LION_LAYER)), "scar", 0.7F));
+                ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(SCAR_LAYER)), "scar", 0.7F));
         event.registerEntityRenderer(LKEntityTypes.ZIRA.get(),
-                ctx -> new LKNpcRenderer<>(ctx, new OutlanderModel<>(ctx.bakeLayer(OUTLANDER_LAYER)), "zira", 0.6F));
+                ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(ZIRA_LAYER)), "zira", 0.6F));
 
         // Projectiles
         event.registerEntityRenderer(LKEntityTypes.DART.get(),
