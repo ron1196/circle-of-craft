@@ -7,6 +7,7 @@ import io.github.ron1196.thelionking.client.gui.GrindingBowlScreen;
 import io.github.ron1196.thelionking.client.model.*;
 import io.github.ron1196.thelionking.client.renderer.LKAnimalRenderer;
 import io.github.ron1196.thelionking.client.renderer.LKMobRenderer;
+import io.github.ron1196.thelionking.client.renderer.LKNpcRenderer;
 import io.github.ron1196.thelionking.client.renderer.LKScaledMobRenderer;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import io.github.ron1196.thelionking.registry.LKMenuTypes;
@@ -118,6 +119,20 @@ public class LKClientEvents {
                 ctx -> new LKMobRenderer<>(ctx, new CrocodileModel<>(ctx.bakeLayer(CROCODILE_LAYER)), "crocodile", 0.7F));
         event.registerEntityRenderer(LKEntityTypes.TERMITE.get(),
                 ctx -> new LKScaledMobRenderer<>(ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_LAYER)), "termite", 0.15F, 0.4F));
+
+        // NPCs — reuse existing models as placeholders (LKNpcRenderer bypasses model generic bounds)
+        event.registerEntityRenderer(LKEntityTypes.RAFIKI.get(),
+                ctx -> new LKNpcRenderer<>(ctx, new LionModel<>(ctx.bakeLayer(LION_LAYER)), "rafiki", 0.5F));
+        event.registerEntityRenderer(LKEntityTypes.SIMBA.get(),
+                ctx -> new LKNpcRenderer<>(ctx, new LionModel<>(ctx.bakeLayer(LION_LAYER)), "simba", 0.7F));
+        event.registerEntityRenderer(LKEntityTypes.TIMON.get(),
+                ctx -> new LKNpcRenderer<>(ctx, new BugModel<>(ctx.bakeLayer(BUG_LAYER)), "timon", 0.3F));
+        event.registerEntityRenderer(LKEntityTypes.PUMBAA.get(),
+                ctx -> new LKNpcRenderer<>(ctx, new RhinoModel<>(ctx.bakeLayer(RHINO_LAYER)), "pumbaa", 0.6F));
+        event.registerEntityRenderer(LKEntityTypes.SCAR.get(),
+                ctx -> new LKNpcRenderer<>(ctx, new LionModel<>(ctx.bakeLayer(LION_LAYER)), "scar", 0.7F));
+        event.registerEntityRenderer(LKEntityTypes.ZIRA.get(),
+                ctx -> new LKNpcRenderer<>(ctx, new OutlanderModel<>(ctx.bakeLayer(OUTLANDER_LAYER)), "zira", 0.6F));
 
         // Projectiles
         event.registerEntityRenderer(LKEntityTypes.DART.get(),

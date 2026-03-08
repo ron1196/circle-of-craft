@@ -256,5 +256,18 @@
   "item.thelionking.note_b": "Note B",
   "item.thelionking.note_c": "Note C",
   "item.thelionking.note_d": "Note D",
-  "item.thelionking.note_e": "Note E"
+  "item.thelionking.note_e": "Note E",
+
+  "entity.thelionking.rafiki": "Rafiki",
+  "entity.thelionking.simba": "Simba",
+  "entity.thelionking.timon": "Timon",
+  "entity.thelionking.pumbaa": "Pumbaa",
+  "entity.thelionking.scar": "Scar",
+  "entity.thelionking.zira": "Zira",
+  "item.thelionking.rafiki_spawn_egg": "Rafiki Spawn Egg",
+  "item.thelionking.simba_spawn_egg": "Simba Spawn Egg",
+  "item.thelionking.timon_spawn_egg": "Timon Spawn Egg",
+  "item.thelionking.pumbaa_spawn_egg": "Pumbaa Spawn Egg",
+  "item.thelionking.scar_spawn_egg": "Scar Spawn Egg",
+  "item.thelionking.zira_spawn_egg": "Zira Spawn Egg"
 }

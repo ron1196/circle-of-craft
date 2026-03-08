@@ -3,6 +3,7 @@ package io.github.ron1196.thelionking.event;
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.entity.animal.*;
 import io.github.ron1196.thelionking.entity.hostile.*;
+import io.github.ron1196.thelionking.entity.npc.*;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -32,5 +33,13 @@ public class LKCommonEvents {
         event.put(LKEntityTypes.VULTURE.get(), VultureEntity.createAttributes().build());
         event.put(LKEntityTypes.CROCODILE.get(), CrocodileEntity.createAttributes().build());
         event.put(LKEntityTypes.TERMITE.get(), TermiteEntity.createAttributes().build());
+
+        // NPC entities
+        event.put(LKEntityTypes.RAFIKI.get(), RafikiEntity.createAttributes().build());
+        event.put(LKEntityTypes.SIMBA.get(), SimbaEntity.createAttributes().build());
+        event.put(LKEntityTypes.TIMON.get(), TimonEntity.createAttributes().build());
+        event.put(LKEntityTypes.PUMBAA.get(), PumbaaEntity.createAttributes().build());
+        event.put(LKEntityTypes.SCAR.get(), ScarEntity.createAttributes().build());
+        event.put(LKEntityTypes.ZIRA.get(), ZiraEntity.createAttributes().build());
     }
 }

@@ -289,6 +289,13 @@ public class LKCreativeTabs {
                         output.accept(LKItems.VULTURE_SPAWN_EGG.get());
                         output.accept(LKItems.CROCODILE_SPAWN_EGG.get());
                         output.accept(LKItems.TERMITE_SPAWN_EGG.get());
+                        // NPCs
+                        output.accept(LKItems.RAFIKI_SPAWN_EGG.get());
+                        output.accept(LKItems.SIMBA_SPAWN_EGG.get());
+                        output.accept(LKItems.TIMON_SPAWN_EGG.get());
+                        output.accept(LKItems.PUMBAA_SPAWN_EGG.get());
+                        output.accept(LKItems.SCAR_SPAWN_EGG.get());
+                        output.accept(LKItems.ZIRA_SPAWN_EGG.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> QUEST_TAB = TABS.register("quest",

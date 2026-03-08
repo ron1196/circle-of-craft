@@ -3,6 +3,7 @@ package io.github.ron1196.thelionking.registry;
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.entity.animal.*;
 import io.github.ron1196.thelionking.entity.hostile.*;
+import io.github.ron1196.thelionking.entity.npc.*;
 import io.github.ron1196.thelionking.entity.projectile.DartEntity;
 import io.github.ron1196.thelionking.entity.projectile.PumbaaBombEntity;
 import io.github.ron1196.thelionking.entity.projectile.SpearEntity;
@@ -99,4 +100,29 @@ public class LKEntityTypes {
     public static final RegistryObject<EntityType<TermiteEntity>> TERMITE = ENTITY_TYPES.register("termite",
             () -> EntityType.Builder.of(TermiteEntity::new, MobCategory.MONSTER)
                     .sized(0.4F, 0.4F).clientTrackingRange(8).build("termite"));
+
+    // ========== NPC Entities ==========
+    public static final RegistryObject<EntityType<RafikiEntity>> RAFIKI = ENTITY_TYPES.register("rafiki",
+            () -> EntityType.Builder.of(RafikiEntity::new, MobCategory.CREATURE)
+                    .sized(0.7F, 1.6F).clientTrackingRange(10).build("rafiki"));
+
+    public static final RegistryObject<EntityType<SimbaEntity>> SIMBA = ENTITY_TYPES.register("simba",
+            () -> EntityType.Builder.of(SimbaEntity::new, MobCategory.CREATURE)
+                    .sized(1.3F, 1.6F).clientTrackingRange(10).build("simba"));
+
+    public static final RegistryObject<EntityType<TimonEntity>> TIMON = ENTITY_TYPES.register("timon",
+            () -> EntityType.Builder.of(TimonEntity::new, MobCategory.CREATURE)
+                    .sized(0.4F, 0.9F).clientTrackingRange(10).build("timon"));
+
+    public static final RegistryObject<EntityType<PumbaaEntity>> PUMBAA = ENTITY_TYPES.register("pumbaa",
+            () -> EntityType.Builder.of(PumbaaEntity::new, MobCategory.CREATURE)
+                    .sized(1.0F, 0.9F).clientTrackingRange(10).build("pumbaa"));
+
+    public static final RegistryObject<EntityType<ScarEntity>> SCAR = ENTITY_TYPES.register("scar",
+            () -> EntityType.Builder.of(ScarEntity::new, MobCategory.MONSTER)
+                    .sized(1.3F, 1.6F).clientTrackingRange(10).build("scar"));
+
+    public static final RegistryObject<EntityType<ZiraEntity>> ZIRA = ENTITY_TYPES.register("zira",
+            () -> EntityType.Builder.of(ZiraEntity::new, MobCategory.MONSTER)
+                    .sized(1.2F, 1.3F).clientTrackingRange(10).build("zira"));
 }
