@@ -83,11 +83,11 @@ public class LKClientEvents {
         event.registerLayerDefinition(CROCODILE_LAYER, CrocodileModel::createBodyLayer);
         event.registerLayerDefinition(TERMITE_LAYER, TermiteModel::createBodyLayer);
 
-        // NPC layers (same mesh as animals, but separate layer locations)
-        event.registerLayerDefinition(RAFIKI_LAYER, LionModel::createBodyLayer);
-        event.registerLayerDefinition(SIMBA_LAYER, LionModel::createBodyLayer);
-        event.registerLayerDefinition(TIMON_LAYER, BugModel::createBodyLayer);
-        event.registerLayerDefinition(PUMBAA_LAYER, RhinoModel::createBodyLayer);
+        // NPC layers (proper models ported from original mod)
+        event.registerLayerDefinition(RAFIKI_LAYER, RafikiModel::createBodyLayer);
+        event.registerLayerDefinition(SIMBA_LAYER, SimbaModel::createBodyLayer);
+        event.registerLayerDefinition(TIMON_LAYER, TimonModel::createBodyLayer);
+        event.registerLayerDefinition(PUMBAA_LAYER, PumbaaModel::createBodyLayer);
         event.registerLayerDefinition(SCAR_LAYER, LionModel::createBodyLayer);
         event.registerLayerDefinition(ZIRA_LAYER, OutlanderModel::createBodyLayer);
 
@@ -136,15 +136,15 @@ public class LKClientEvents {
         event.registerEntityRenderer(LKEntityTypes.TERMITE.get(),
                 ctx -> new LKScaledMobRenderer<>(ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_LAYER)), "termite", 0.15F, 0.4F));
 
-        // NPCs — use NpcPlaceholderModel with matching animal textures until proper NPC models exist
+        // NPCs — proper models ported from original mod
         event.registerEntityRenderer(LKEntityTypes.RAFIKI.get(),
-                ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(RAFIKI_LAYER)), "lion", 0.5F));
+                ctx -> new LKNpcRenderer(ctx, new RafikiModel(ctx.bakeLayer(RAFIKI_LAYER)), "rafiki", 0.5F));
         event.registerEntityRenderer(LKEntityTypes.SIMBA.get(),
-                ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(SIMBA_LAYER)), "lion", 0.7F));
+                ctx -> new LKNpcRenderer(ctx, new SimbaModel(ctx.bakeLayer(SIMBA_LAYER)), "simba", 0.7F));
         event.registerEntityRenderer(LKEntityTypes.TIMON.get(),
-                ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(TIMON_LAYER)), "bug", 0.3F));
+                ctx -> new LKNpcRenderer(ctx, new TimonModel(ctx.bakeLayer(TIMON_LAYER)), "timon", 0.3F));
         event.registerEntityRenderer(LKEntityTypes.PUMBAA.get(),
-                ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(PUMBAA_LAYER)), "rhino", 0.6F));
+                ctx -> new LKNpcRenderer(ctx, new PumbaaModel(ctx.bakeLayer(PUMBAA_LAYER)), "pumbaa", 0.6F));
         event.registerEntityRenderer(LKEntityTypes.SCAR.get(),
                 ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(SCAR_LAYER)), "scar", 0.7F));
         event.registerEntityRenderer(LKEntityTypes.ZIRA.get(),
