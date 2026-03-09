@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -18,6 +19,20 @@ import java.util.Optional;
  * The actual building is done by LKStructurePiece which delegates to existing Feature classes.
  */
 public class LKCodeStructure extends Structure {
+
+    private enum PlacementStrategy {
+        FOUR_CORNERS,
+        ABOVE_SEA_LEVEL,
+        NO_FLUID
+    }
+
+    private static final Map<String, PlacementStrategy> PLACEMENT_STRATEGIES = Map.of(
+            "rafiki_tree", PlacementStrategy.FOUR_CORNERS,
+            "zira_mound", PlacementStrategy.ABOVE_SEA_LEVEL,
+            "treasure_mound", PlacementStrategy.ABOVE_SEA_LEVEL,
+            "ticket_booth", PlacementStrategy.ABOVE_SEA_LEVEL,
+            "timon_pumbaa_lodge", PlacementStrategy.ABOVE_SEA_LEVEL
+    );
 
     public static final Codec<LKCodeStructure> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
@@ -60,16 +75,19 @@ public class LKCodeStructure extends Structure {
     }
 
     private boolean isValidPlacement(GenerationContext context, String path, int x, int y, int z) {
-        return switch (path) {
-            case "rafiki_tree" -> checkFourCorners(context, x, z, 6);
-            case "zira_mound", "treasure_mound" -> checkAboveSeaLevel(context, y);
-            case "ticket_booth", "timon_pumbaa_lodge" -> checkAboveSeaLevel(context, y);
-            default -> checkNoFluid(context, x, y, z);
+        PlacementStrategy strategy = PLACEMENT_STRATEGIES.getOrDefault(path, PlacementStrategy.NO_FLUID);
+        return switch (strategy) {
+            case FOUR_CORNERS -> checkFourCorners(context, x, z);
+            case ABOVE_SEA_LEVEL -> checkAboveSeaLevel(context, y);
+            case NO_FLUID -> checkNoFluid(context, x, y, z);
         };
     }
 
-    /** Large footprint — all 4 corners must be above sea level */
-    private boolean checkFourCorners(GenerationContext context, int x, int z, int radius) {
+    /**
+     * Large footprint — all 4 corners must be above sea level
+     */
+    private boolean checkFourCorners(GenerationContext context, int x, int z) {
+        int radius = 6;
         int seaLevel = context.chunkGenerator().getSeaLevel();
         int h1 = getHeight(context, x - radius, z - radius);
         int h2 = getHeight(context, x + radius, z - radius);
@@ -78,15 +96,20 @@ public class LKCodeStructure extends Structure {
         return Math.min(Math.min(h1, h2), Math.min(h3, h4)) > seaLevel;
     }
 
-    /** Y minimum check — reject at or below sea level (avoids lava lakes / ocean) */
+    /**
+     * Y minimum check — reject at or below sea level (avoids lava lakes / ocean)
+     */
     private boolean checkAboveSeaLevel(GenerationContext context, int y) {
         return y > context.chunkGenerator().getSeaLevel();
     }
 
-    /** Fallback — check surface block isn't fluid */
+    /**
+     * Fallback — check surface block isn't fluid
+     */
     private boolean checkNoFluid(GenerationContext context, int x, int y, int z) {
         NoiseColumn column = context.chunkGenerator().getBaseColumn(
-                x, z, context.heightAccessor(), context.randomState());
+                x, z, context.heightAccessor(), context.randomState()
+        );
         return column.getBlock(y - 1).getFluidState().isEmpty();
     }
 
