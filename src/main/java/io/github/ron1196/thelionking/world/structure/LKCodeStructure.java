@@ -61,30 +61,33 @@ public class LKCodeStructure extends Structure {
 
     private boolean isValidPlacement(GenerationContext context, String path, int x, int y, int z) {
         return switch (path) {
-            // Rafiki Tree: large footprint — check all 4 corners are above sea level
-            case "rafiki_tree" -> {
-                int seaLevel = context.chunkGenerator().getSeaLevel();
-                int radius = 6; // canopy radius
-                int h1 = getHeight(context, x - radius, z - radius);
-                int h2 = getHeight(context, x + radius, z - radius);
-                int h3 = getHeight(context, x - radius, z + radius);
-                int h4 = getHeight(context, x + radius, z + radius);
-                yield Math.min(Math.min(h1, h2), Math.min(h3, h4)) > seaLevel;
-            }
-            // Outlands structures: Y minimum check — avoid lava lakes
-            case "zira_mound", "treasure_mound" ->
-                    y > context.chunkGenerator().getSeaLevel();
-            // Small Pride Lands structures: heightmap-only (WORLD_SURFACE_WG already excludes liquids)
-            // Just verify not at or below sea level as a safety net
-            case "ticket_booth", "timon_pumbaa_lodge" ->
-                    y > context.chunkGenerator().getSeaLevel();
-            // Unknown structures: basic fluid check
-            default -> {
-                NoiseColumn column = context.chunkGenerator().getBaseColumn(
-                        x, z, context.heightAccessor(), context.randomState());
-                yield column.getBlock(y - 1).getFluidState().isEmpty();
-            }
+            case "rafiki_tree" -> checkFourCorners(context, x, z, 6);
+            case "zira_mound", "treasure_mound" -> checkAboveSeaLevel(context, y);
+            case "ticket_booth", "timon_pumbaa_lodge" -> checkAboveSeaLevel(context, y);
+            default -> checkNoFluid(context, x, y, z);
         };
+    }
+
+    /** Large footprint — all 4 corners must be above sea level */
+    private boolean checkFourCorners(GenerationContext context, int x, int z, int radius) {
+        int seaLevel = context.chunkGenerator().getSeaLevel();
+        int h1 = getHeight(context, x - radius, z - radius);
+        int h2 = getHeight(context, x + radius, z - radius);
+        int h3 = getHeight(context, x - radius, z + radius);
+        int h4 = getHeight(context, x + radius, z + radius);
+        return Math.min(Math.min(h1, h2), Math.min(h3, h4)) > seaLevel;
+    }
+
+    /** Y minimum check — reject at or below sea level (avoids lava lakes / ocean) */
+    private boolean checkAboveSeaLevel(GenerationContext context, int y) {
+        return y > context.chunkGenerator().getSeaLevel();
+    }
+
+    /** Fallback — check surface block isn't fluid */
+    private boolean checkNoFluid(GenerationContext context, int x, int y, int z) {
+        NoiseColumn column = context.chunkGenerator().getBaseColumn(
+                x, z, context.heightAccessor(), context.randomState());
+        return column.getBlock(y - 1).getFluidState().isEmpty();
     }
 
     private int getHeight(GenerationContext context, int x, int z) {
