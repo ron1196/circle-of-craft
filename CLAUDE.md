@@ -38,7 +38,7 @@ public static final RegistryObject<Block> PRIDESTONE = BLOCKS.register("pridesto
 Each block needs: blockstate JSON, block model JSON, item model JSON, loot table JSON, lang entry. Recipes go in `data/thelionking/recipes/`.
 
 ### Workaround Policy
-**Never use temporary workarounds without tracking them.** Every "for now" substitution must be recorded in `TODO_WORKAROUNDS.md`.
+**Never use temporary workarounds without tracking them.** Every "for now" substitution must be recorded in `docs/TODO_WORKAROUNDS.md`.
 
 ## Project Structure
 
@@ -60,8 +60,8 @@ src/main/java/io/github/ron1196/thelionking/
   quest/                     — Quest system (LKQuestBase, LKQuestRafiki, LKQuestOutlands)
   data/                      — LKLevelData (SavedData), custom recipes
   menu/                      — Container menus
-  network/                   — Packet handling (not yet implemented)
-  event/                     — Event handlers (LKCommonEvents, LKClientEvents)
+  network/                   — Packet handling (LKNetworking, SimbaSitPacket, QuestSyncPacket, QuestCheckPacket)
+  event/                     — Event handlers (LKCommonEvents, LKClientEvents, LKForgeEvents)
   client/gui/                — Screens
   client/model/              — Entity models
   client/renderer/           — Entity & block entity renderers
@@ -101,13 +101,17 @@ src/main/resources/
 | `registry/LKItems.java`      | All item registrations + block items     |
 | `registry/LKEntityTypes.java`| All entity type registrations            |
 | `registry/LKSoundEvents.java`| Sound event registrations                |
+| `registry/LKFeatures.java`   | Custom worldgen feature registrations    |
 | `event/LKCommonEvents.java`  | Entity attribute registration            |
 | `event/LKClientEvents.java`  | Renderers, models, GUI screens           |
+| `event/LKForgeEvents.java`   | Forge bus events (combat, NPC interaction, ticks) |
+| `network/LKNetworking.java`  | SimpleChannel packet registration        |
 | `data/LKLevelData.java`      | World-level saved data (quests, state)   |
+| `data/LKCriteriaTriggers.java`| Custom advancement triggers             |
 | `sounds.json`                | Maps sound event names to file paths     |
 | `lang/en_us.json`            | All translatable strings                 |
 
 ## Related Docs
 
 - `docs/MIGRATION_AUDIT.md` — Full audit of what's ported vs missing, with priority roadmap
-- `TODO_WORKAROUNDS.md` — Tracked temporary substitutions and placeholder items
+- `docs/TODO_WORKAROUNDS.md` — Tracked temporary substitutions and placeholder items

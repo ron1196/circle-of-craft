@@ -57,6 +57,13 @@ public class LKCreativeTabs {
                         // Portal frames
                         output.accept(LKItems.PRIDE_PORTAL_FRAME_ITEM.get());
                         output.accept(LKItems.OUTLANDS_PORTAL_FRAME_ITEM.get());
+                        // Phase 12 blocks
+                        output.accept(LKItems.BANANA_CAKE_ITEM.get());
+                        output.accept(LKItems.MOUNTED_SHOOTER_ITEM.get());
+                        output.accept(LKItems.STAR_ALTAR_ITEM.get());
+                        output.accept(LKItems.OUTLANDS_ALTAR_ITEM.get());
+                        output.accept(LKItems.TILLED_SAND_ITEM.get());
+                        output.accept(LKItems.VASE_ITEM.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> DECO_TAB = TABS.register("decorations",
@@ -203,6 +210,10 @@ public class LKCreativeTabs {
                         output.accept(LKItems.RAFIKI_COIN.get());
                         output.accept(LKItems.ZIRA_COIN.get());
                         output.accept(LKItems.WAYWARD_FEATHER.get());
+                        // Jar items
+                        output.accept(LKItems.JAR_EMPTY.get());
+                        output.accept(LKItems.JAR_WATER.get());
+                        output.accept(LKItems.JAR_MILK.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> TOOLS_TAB = TABS.register("tools",
@@ -228,6 +239,18 @@ public class LKCreativeTabs {
                         output.accept(LKItems.PEACOCK_AXE.get());
                         output.accept(LKItems.PEACOCK_SHOVEL.get());
                         output.accept(LKItems.PEACOCK_HOE.get());
+                        // Kivulite
+                        output.accept(LKItems.KIVULITE_SWORD.get());
+                        output.accept(LKItems.KIVULITE_PICKAXE.get());
+                        output.accept(LKItems.KIVULITE_AXE.get());
+                        output.accept(LKItems.KIVULITE_SHOVEL.get());
+                        output.accept(LKItems.KIVULITE_HOE.get());
+                        // Corrupt
+                        output.accept(LKItems.CORRUPT_SWORD.get());
+                        output.accept(LKItems.CORRUPT_PICKAXE.get());
+                        output.accept(LKItems.CORRUPT_AXE.get());
+                        output.accept(LKItems.CORRUPT_SHOVEL.get());
+                        output.accept(LKItems.CORRUPT_HOE.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> COMBAT_TAB = TABS.register("combat",
@@ -302,6 +325,7 @@ public class LKCreativeTabs {
                         output.accept(LKItems.SCAR_SPAWN_EGG.get());
                         output.accept(LKItems.ZIRA_SPAWN_EGG.get());
                         output.accept(LKItems.TICKET_LION_SPAWN_EGG.get());
+                        output.accept(LKItems.TERMITE_QUEEN_SPAWN_EGG.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> QUEST_TAB = TABS.register("quest",
@@ -316,5 +340,13 @@ public class LKCreativeTabs {
                         output.accept(LKItems.ZIRA_COIN.get());
                         output.accept(LKItems.WAYWARD_FEATHER.get());
                         output.accept(LKItems.CRYSTAL.get());
+                        // Quest items (Phase 10)
+                        output.accept(LKItems.AMULET.get());
+                        output.accept(LKItems.SIMBA_CHARM.get());
+                        output.accept(LKItems.GIRAFFE_SADDLE.get());
+                        output.accept(LKItems.DART_QUIVER.get());
+                        output.accept(LKItems.PASSION_FRUIT.get());
+                        output.accept(LKItems.ZAZU_EGG.get());
                     }).build());
+
 }

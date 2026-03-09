@@ -102,7 +102,7 @@ public class LKForgeEvents {
             }
             player.sendSystemMessage(Component.literal("Rafiki greets you!"));
         } else if (target instanceof TimonEntity) {
-            // TODO: Placeholder for Timon trading — tracked in TODO_WORKAROUNDS.md
+            // TODO: Placeholder for Timon trading — tracked in docs/TODO_WORKAROUNDS.md
             player.sendSystemMessage(Component.literal("Timon is ready to trade with you!"));
         } else if (target instanceof TicketLionEntity) {
             player.sendSystemMessage(Component.literal("The Ticket Lion can sell you passage to the Pride Lands!"));

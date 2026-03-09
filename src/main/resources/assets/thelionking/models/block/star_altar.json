@@ -1,1 +1,1 @@
-{"parent":"minecraft:block/cube_all","textures":{"all":"thelionking:block/star_altar"}}
+{"parent":"minecraft:block/cube_column","textures":{"end":"thelionking:block/star_altar_top","side":"thelionking:block/star_altar_side"}}
