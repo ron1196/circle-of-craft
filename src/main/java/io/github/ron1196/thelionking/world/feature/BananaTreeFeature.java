@@ -26,9 +26,15 @@ public class BananaTreeFeature extends Feature<NoneFeatureConfiguration> {
 
         int height = 4 + random.nextInt(3);
 
-        // Check space
+        // Must be on solid ground (dirt/grass), not on leaves or other trees
+        BlockState below = level.getBlockState(pos.below());
+        if (!below.is(net.minecraft.tags.BlockTags.DIRT)) {
+            return false;
+        }
+
+        // Check space — only air allowed, no building on top of existing trees
         for (int y = 0; y < height + 3; y++) {
-            if (!level.isStateAtPosition(pos.above(y), s -> s.isAir() || s.is(LKBlocks.BANANA_LEAVES.get()))) {
+            if (!level.isStateAtPosition(pos.above(y), BlockState::isAir)) {
                 return false;
             }
         }
