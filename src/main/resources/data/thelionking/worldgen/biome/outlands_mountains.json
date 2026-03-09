@@ -1,0 +1,46 @@
+{
+  "temperature": 1.4,
+  "downfall": 0.0,
+  "has_precipitation": false,
+  "effects": {
+    "sky_color": 6046464,
+    "fog_color": 6046464,
+    "water_color": 4159204,
+    "water_fog_color": 329011,
+    "grass_color": 10066227,
+    "foliage_color": 8552064
+  },
+  "spawners": {
+    "monster": [
+      { "type": "thelionking:outlander", "weight": 12, "minCount": 1, "maxCount": 3 },
+      { "type": "thelionking:outlandess", "weight": 12, "minCount": 1, "maxCount": 3 },
+      { "type": "thelionking:vulture", "weight": 8, "minCount": 1, "maxCount": 2 },
+      { "type": "thelionking:skeletal_hyena", "weight": 10, "minCount": 2, "maxCount": 4 }
+    ],
+    "creature": [],
+    "ambient": [],
+    "axolotls": [],
+    "underground_water_creature": [],
+    "water_creature": [],
+    "water_ambient": [],
+    "misc": []
+  },
+  "spawn_costs": {},
+  "carvers": {
+    "air": ["minecraft:cave", "minecraft:cave_extra_underground", "minecraft:canyon"]
+  },
+  "features": [
+    [],
+    ["minecraft:lake_lava_underground"],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    ["minecraft:patch_dead_bush"],
+    [],
+    []
+  ]
+}

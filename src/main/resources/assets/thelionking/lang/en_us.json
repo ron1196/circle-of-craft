@@ -274,5 +274,25 @@
   "item.thelionking.quest_book": "Quest Book",
   "item.thelionking.ticket": "Lion King Ticket",
   "entity.thelionking.ticket_lion": "Ticket Lion",
-  "item.thelionking.ticket_lion_spawn_egg": "Ticket Lion Spawn Egg"
+  "item.thelionking.ticket_lion_spawn_egg": "Ticket Lion Spawn Egg",
+
+  "block.thelionking.pride_portal_frame": "Pride Lands Portal Frame",
+  "block.thelionking.outlands_portal_frame": "Outlands Portal Frame",
+  "block.thelionking.pride_lands_portal": "Pride Lands Portal",
+  "block.thelionking.outlands_portal": "Outlands Portal",
+
+  "biome.thelionking.savannah": "Savannah",
+  "biome.thelionking.rainforest": "Rainforest",
+  "biome.thelionking.pride_mountains": "Pride Mountains",
+  "biome.thelionking.wooded_savannah": "Wooded Savannah",
+  "biome.thelionking.rainforest_hills": "Rainforest Hills",
+  "biome.thelionking.pride_river": "Pride River",
+  "biome.thelionking.arid_savannah": "Arid Savannah",
+  "biome.thelionking.pride_desert": "Pride Desert",
+  "biome.thelionking.grassland_savannah": "Grassland Savannah",
+  "biome.thelionking.banana_forest": "Banana Forest",
+  "biome.thelionking.outlands": "Outlands",
+  "biome.thelionking.outlands_mountains": "Outlands Mountains",
+  "biome.thelionking.outlands_river": "Outlands River",
+  "biome.thelionking.upendi": "Upendi"
 }

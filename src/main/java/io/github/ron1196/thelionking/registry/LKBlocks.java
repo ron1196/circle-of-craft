@@ -420,4 +420,27 @@ public class LKBlocks {
     public static final RegistryObject<Block> LK_SPAWNER = BLOCKS.register("lk_spawner",
             () -> new LKSpawnerBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.STONE).strength(5.0F).requiresCorrectToolForDrops().noOcclusion()));
+
+    // ========== Portal Blocks ==========
+    public static final RegistryObject<Block> PRIDE_PORTAL_FRAME = BLOCKS.register("pride_portal_frame",
+            () -> new PortalFrameBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE).strength(-1.0F, 3600000.0F)
+                    .noLootTable(), false));
+
+    public static final RegistryObject<Block> OUTLANDS_PORTAL_FRAME = BLOCKS.register("outlands_portal_frame",
+            () -> new PortalFrameBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE).strength(-1.0F, 3600000.0F)
+                    .noLootTable(), true));
+
+    public static final RegistryObject<Block> PRIDE_LANDS_PORTAL = BLOCKS.register("pride_lands_portal",
+            () -> new LKPortalBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_GREEN).noCollission().strength(-1.0F)
+                    .lightLevel(s -> 11).noLootTable().noOcclusion()
+                    .pushReaction(PushReaction.BLOCK), false));
+
+    public static final RegistryObject<Block> OUTLANDS_PORTAL = BLOCKS.register("outlands_portal",
+            () -> new LKPortalBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE).noCollission().strength(-1.0F)
+                    .lightLevel(s -> 11).noLootTable().noOcclusion()
+                    .pushReaction(PushReaction.BLOCK), true));
 }

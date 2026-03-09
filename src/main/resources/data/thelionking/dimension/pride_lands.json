@@ -1,0 +1,132 @@
+{
+  "type": "thelionking:pride_lands",
+  "generator": {
+    "type": "minecraft:noise",
+    "biome_source": {
+      "type": "minecraft:multi_noise",
+      "biomes": [
+        {
+          "biome": "thelionking:savannah",
+          "parameters": {
+            "temperature": [0.2, 0.55],
+            "humidity": [-0.1, 0.3],
+            "continentalness": [-0.11, 0.55],
+            "erosion": [-0.78, 0.45],
+            "weirdness": [-1.0, 1.0],
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "thelionking:rainforest",
+          "parameters": {
+            "temperature": [0.2, 0.55],
+            "humidity": [0.3, 1.0],
+            "continentalness": [-0.11, 0.55],
+            "erosion": [-0.375, 0.45],
+            "weirdness": [-1.0, 1.0],
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "thelionking:pride_mountains",
+          "parameters": {
+            "temperature": [-0.15, 0.2],
+            "humidity": [-0.35, 0.1],
+            "continentalness": [0.03, 1.0],
+            "erosion": [-1.0, -0.375],
+            "weirdness": [-1.0, 1.0],
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "thelionking:wooded_savannah",
+          "parameters": {
+            "temperature": [0.2, 0.55],
+            "humidity": [0.1, 0.3],
+            "continentalness": [0.03, 0.55],
+            "erosion": [-0.78, 0.45],
+            "weirdness": [-1.0, 1.0],
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "thelionking:rainforest_hills",
+          "parameters": {
+            "temperature": [0.2, 0.55],
+            "humidity": [0.3, 1.0],
+            "continentalness": [0.03, 1.0],
+            "erosion": [-1.0, -0.375],
+            "weirdness": [-1.0, 1.0],
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "thelionking:pride_river",
+          "parameters": {
+            "temperature": [-0.45, 0.55],
+            "humidity": [0.1, 1.0],
+            "continentalness": [-0.19, -0.11],
+            "erosion": [-1.0, 1.0],
+            "weirdness": [-1.0, 1.0],
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "thelionking:arid_savannah",
+          "parameters": {
+            "temperature": [0.55, 1.0],
+            "humidity": [-1.0, -0.35],
+            "continentalness": [-0.11, 1.0],
+            "erosion": [-0.78, 1.0],
+            "weirdness": [-1.0, 1.0],
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "thelionking:pride_desert",
+          "parameters": {
+            "temperature": [0.55, 1.0],
+            "humidity": [-1.0, -0.35],
+            "continentalness": [0.03, 1.0],
+            "erosion": [0.45, 1.0],
+            "weirdness": [-1.0, 1.0],
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "thelionking:grassland_savannah",
+          "parameters": {
+            "temperature": [0.2, 0.55],
+            "humidity": [-0.35, -0.1],
+            "continentalness": [-0.11, 0.55],
+            "erosion": [0.05, 0.45],
+            "weirdness": [-1.0, 1.0],
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "thelionking:banana_forest",
+          "parameters": {
+            "temperature": [0.2, 0.55],
+            "humidity": [0.3, 1.0],
+            "continentalness": [0.03, 0.55],
+            "erosion": [-0.375, 0.05],
+            "weirdness": [-1.0, 1.0],
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        }
+      ]
+    },
+    "settings": "minecraft:overworld"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "temperature": 1.0,
+  "downfall": 1.0,
+  "has_precipitation": true,
+  "effects": {
+    "sky_color": 16747775,
+    "fog_color": 16747775,
+    "water_color": 4445678,
+    "water_fog_color": 270131,
+    "grass_color": 5470985,
+    "foliage_color": 5470985
+  },
+  "spawners": {
+    "monster": [],
+    "creature": [
+      { "type": "thelionking:lion", "weight": 10, "minCount": 1, "maxCount": 3 },
+      { "type": "thelionking:lioness", "weight": 12, "minCount": 2, "maxCount": 4 },
+      { "type": "thelionking:flamingo", "weight": 15, "minCount": 3, "maxCount": 6 },
+      { "type": "thelionking:dikdik", "weight": 8, "minCount": 2, "maxCount": 4 },
+      { "type": "thelionking:zazu", "weight": 20, "minCount": 4, "maxCount": 8 }
+    ],
+    "ambient": [],
+    "axolotls": [],
+    "underground_water_creature": [],
+    "water_creature": [],
+    "water_ambient": [],
+    "misc": []
+  },
+  "spawn_costs": {},
+  "carvers": {
+    "air": ["minecraft:cave", "minecraft:cave_extra_underground", "minecraft:canyon"]
+  },
+  "features": [
+    [],
+    ["minecraft:lake_lava_underground"],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    ["minecraft:trees_jungle"],
+    ["minecraft:patch_grass_jungle", "minecraft:patch_tall_grass"],
+    [],
+    []
+  ]
+}

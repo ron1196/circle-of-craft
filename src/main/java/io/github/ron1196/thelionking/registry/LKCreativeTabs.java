@@ -54,6 +54,9 @@ public class LKCreativeTabs {
                         output.accept(LKItems.BONGO_DRUM_ITEM.get());
                         output.accept(LKItems.OUTLANDS_POOL_ITEM.get());
                         output.accept(LKItems.LK_SPAWNER_ITEM.get());
+                        // Portal frames
+                        output.accept(LKItems.PRIDE_PORTAL_FRAME_ITEM.get());
+                        output.accept(LKItems.OUTLANDS_PORTAL_FRAME_ITEM.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> DECO_TAB = TABS.register("decorations",

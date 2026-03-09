@@ -526,6 +526,10 @@ public class LKItems {
     public static final RegistryObject<Item> WAYWARD_FEATHER = ITEMS.register("wayward_feather",
             () -> new Item(new Item.Properties()));
 
+    // ========== Portal Frame Items ==========
+    public static final RegistryObject<BlockItem> PRIDE_PORTAL_FRAME_ITEM = registerBlockItem("pride_portal_frame", LKBlocks.PRIDE_PORTAL_FRAME);
+    public static final RegistryObject<BlockItem> OUTLANDS_PORTAL_FRAME_ITEM = registerBlockItem("outlands_portal_frame", LKBlocks.OUTLANDS_PORTAL_FRAME);
+
     // ========== Notes (for Bongo Drum) ==========
     public static final RegistryObject<Item> NOTE_A = ITEMS.register("note_a",
             () -> new NoteItem(1, new Item.Properties()));
