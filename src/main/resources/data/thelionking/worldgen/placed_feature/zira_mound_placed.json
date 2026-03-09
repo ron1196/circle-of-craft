@@ -1,9 +1,0 @@
-{
-  "feature": "thelionking:zira_mound",
-  "placement": [
-    { "type": "minecraft:rarity_filter", "chance": 256 },
-    { "type": "minecraft:in_square" },
-    { "type": "minecraft:heightmap", "heightmap": "OCEAN_FLOOR" },
-    { "type": "minecraft:biome" }
-  ]
-}

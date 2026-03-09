@@ -11,6 +11,7 @@ import io.github.ron1196.thelionking.registry.LKFeatures;
 import io.github.ron1196.thelionking.registry.LKItems;
 import io.github.ron1196.thelionking.registry.LKMenuTypes;
 import io.github.ron1196.thelionking.registry.LKSoundEvents;
+import io.github.ron1196.thelionking.world.structure.LKStructureTypes;
 import io.github.ron1196.thelionking.network.LKNetworking;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -35,6 +36,8 @@ public class TheLionKingMod {
         LKMenuTypes.MENU_TYPES.register(modEventBus);
         LKEnchantments.ENCHANTMENTS.register(modEventBus);
         LKFeatures.FEATURES.register(modEventBus);
+        LKStructureTypes.STRUCTURE_TYPES.register(modEventBus);
+        LKStructureTypes.STRUCTURE_PIECE_TYPES.register(modEventBus);
         LKSoundEvents.SOUND_EVENTS.register(modEventBus);
         LKCreativeTabs.TABS.register(modEventBus);
 

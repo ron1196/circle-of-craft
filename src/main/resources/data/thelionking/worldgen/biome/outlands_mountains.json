@@ -73,10 +73,7 @@
     [
       "minecraft:patch_dead_bush"
     ],
-    [
-      "thelionking:zira_mound_placed",
-      "thelionking:treasure_mound_placed"
-    ],
+    [],
     []
   ]
 }

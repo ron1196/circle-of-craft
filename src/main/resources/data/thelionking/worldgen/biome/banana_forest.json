@@ -101,9 +101,7 @@
       "minecraft:patch_grass_jungle",
       "minecraft:patch_tall_grass"
     ],
-    [
-      "thelionking:timon_pumbaa_lodge_placed"
-    ],
+    [],
     []
   ]
 }

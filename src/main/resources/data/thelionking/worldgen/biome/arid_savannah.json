@@ -64,11 +64,7 @@
       "minecraft:patch_dead_bush",
       "thelionking:kiwano_patch_placed"
     ],
-    [
-      "thelionking:rafiki_tree_placed",
-      "thelionking:ticket_booth_placed",
-      "thelionking:timon_pumbaa_lodge_placed"
-    ],
+    [],
     []
   ]
 }
