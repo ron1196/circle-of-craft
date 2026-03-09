@@ -46,6 +46,12 @@ public class LKStructurePiece extends StructurePiece {
     public void postProcess(WorldGenLevel level, StructureManager structureManager,
                             ChunkGenerator generator, RandomSource random,
                             BoundingBox box, ChunkPos chunkPos, BlockPos pos) {
+        // Only run once — when the origin chunk is being processed
+        // postProcess is called for every chunk the bounding box overlaps
+        int originX = (this.boundingBox.minX() + this.boundingBox.maxX()) / 2;
+        int originZ = (this.boundingBox.minZ() + this.boundingBox.maxZ()) / 2;
+        if (chunkPos.x != (originX >> 4) || chunkPos.z != (originZ >> 4)) return;
+
         Feature<NoneFeatureConfiguration> feature = resolveFeature();
         if (feature == null) return;
 

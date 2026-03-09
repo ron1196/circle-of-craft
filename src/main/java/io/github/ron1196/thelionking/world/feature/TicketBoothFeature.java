@@ -28,10 +28,7 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         BlockState bricks = LKBlocks.PRIDE_BRICK.get().defaultBlockState();
         BlockState roof = LKBlocks.RAFIKI_WOOD.get().defaultBlockState();
 
-        // Check ground
-        if (!level.getBlockState(pos.below()).is(net.minecraft.tags.BlockTags.DIRT)) {
-            return false;
-        }
+        // No strict ground check — structure system handles terrain placement
 
         // Floor 3x3
         for (int x = 0; x < 3; x++) {

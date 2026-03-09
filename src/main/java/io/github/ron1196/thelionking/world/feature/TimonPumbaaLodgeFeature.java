@@ -30,9 +30,7 @@ public class TimonPumbaaLodgeFeature extends Feature<NoneFeatureConfiguration> {
         BlockState planks = LKBlocks.MANGO_PLANKS.get().defaultBlockState();
         BlockState leaves = LKBlocks.MANGO_LEAVES.get().defaultBlockState();
 
-        if (!level.getBlockState(pos.below()).is(net.minecraft.tags.BlockTags.DIRT)) {
-            return false;
-        }
+        // No strict ground check — structure system handles terrain placement
 
         // Floor 5x5
         for (int x = 0; x < 5; x++) {

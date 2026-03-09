@@ -33,10 +33,7 @@ public class RafikiTreeFeature extends Feature<NoneFeatureConfiguration> {
 
         int trunkHeight = 16;
 
-        // Check ground
-        if (!level.getBlockState(pos.below()).is(net.minecraft.tags.BlockTags.DIRT)) {
-            return false;
-        }
+        // No strict ground check — structure system handles terrain placement
 
         // Main trunk — 2x2
         for (int y = 0; y < trunkHeight; y++) {
