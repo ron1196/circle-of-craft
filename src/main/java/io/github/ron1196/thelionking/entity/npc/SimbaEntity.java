@@ -1,15 +1,17 @@
 package io.github.ron1196.thelionking.entity.npc;
 
+import io.github.ron1196.thelionking.entity.ai.SimbaAttackGoal;
+import io.github.ron1196.thelionking.entity.ai.SimbaAttackPlayerAttackerGoal;
+import io.github.ron1196.thelionking.entity.ai.SimbaAttackPlayerTargetGoal;
+import io.github.ron1196.thelionking.entity.ai.SimbaFollowOwnerGoal;
+import io.github.ron1196.thelionking.entity.ai.SimbaWanderGoal;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -52,12 +54,14 @@ public class SimbaEntity extends PathfinderMob {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.3D, true));
-        this.goalSelector.addGoal(2, new FollowOwnerGoal());
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.goalSelector.addGoal(2, new SimbaAttackGoal(this));
+        this.goalSelector.addGoal(4, new SimbaFollowOwnerGoal(this));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(7, new SimbaWanderGoal(this));
+        this.targetSelector.addGoal(1, new SimbaAttackPlayerAttackerGoal(this));
+        this.targetSelector.addGoal(2, new SimbaAttackPlayerTargetGoal(this));
+        this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
     }
 
     // Owner management
@@ -133,30 +137,4 @@ public class SimbaEntity extends PathfinderMob {
         setBaby(tag.getBoolean("Baby"));
     }
 
-    // Follow owner goal - follows the owner player
-    private class FollowOwnerGoal extends Goal {
-        @Override
-        public boolean canUse() {
-            if (SimbaEntity.this.isSitting()) return false;
-            Player owner = SimbaEntity.this.getOwner();
-            if (owner == null) return false;
-            return SimbaEntity.this.distanceToSqr(owner) > 100.0; // 10 blocks
-        }
-
-        @Override
-        public void tick() {
-            Player owner = SimbaEntity.this.getOwner();
-            if (owner != null) {
-                SimbaEntity.this.getNavigation().moveTo(owner, 1.3D);
-            }
-        }
-
-        @Override
-        public boolean canContinueToUse() {
-            if (SimbaEntity.this.isSitting()) return false;
-            Player owner = SimbaEntity.this.getOwner();
-            if (owner == null) return false;
-            return SimbaEntity.this.distanceToSqr(owner) > 9.0; // 3 blocks
-        }
-    }
 }

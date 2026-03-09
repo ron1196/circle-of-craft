@@ -4,10 +4,8 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 ## Recipes
 
-- [ ] **Bug Stew recipe uses `minecraft:milk_bucket` instead of `thelionking:jar_milk`**
+- [x] ~~**Bug Stew recipe uses `minecraft:milk_bucket` instead of `thelionking:jar_milk`**~~ — RESOLVED: updated to `thelionking:jar_milk`
   - File: `src/main/resources/data/thelionking/recipes/bug_stew.json`
-  - Original recipe used `jar_milk` (a custom item from the old mod)
-  - Jar milk item needs to be created first, then update this recipe
 
 ## Items
 
@@ -25,22 +23,20 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 ## Missing Items (from old mod, not yet ported)
 
-- [ ] **Jar items** — `jar_empty`, `jar_milk`, `jar_water` (used in multiple recipes)
-- [ ] **Zazu Egg** — used in banana cake recipe
-- [ ] **Nuka Shard** — smelted from pride_coal_ore (meta 1, needs separate ore block?)
-- [ ] **Kivulite** — smelted from silver_ore (meta 1, needs separate ore block?)
+- [x] ~~**Jar items** — `jar_empty`, `jar_milk`, `jar_water`~~ — RESOLVED: all three items now registered in LKItems
+- [x] ~~**Zazu Egg**~~ — RESOLVED: now registered in LKItems
+- [x] ~~**Nuka Shard**~~ — RESOLVED: now registered in LKItems
+- [x] ~~**Kivulite**~~ — RESOLVED: now registered in LKItems
 
 ## Advancements
 
-- [ ] **21 advancements use `minecraft:impossible` trigger** — need custom criteria or event-based granting
-  - morning_report, shoot_dart, kill_scar, hyena_heads, simba_quest, hakuna_matata, rhino_horn,
-    termite_dart, fart_bomb, hakuna_crystal, rug_collector, fire_tool, enchant_tunnah, bug_trap,
-    ticket_lion_suit, kill_zira, teleport_simba, animal_quest, drum_enchant, master_drummer,
-    ride_giraffe, behead_hyena, peacock_wings
-- [ ] **Advancement icon substitutions** (items not yet registered):
+- [x] ~~**21 advancements use `minecraft:impossible` trigger**~~ — DONE (Phase 13): replaced with custom criteria triggers and vanilla triggers
+- [ ] **Remaining advancement icon substitutions** (items not yet registered):
   - `lion_dust` → `termite_dust`, `outlandish_dart` → `dart_black`
-  - `hakuna_matata_crystal` → `crystal`, `kivulite_pickaxe` → `kivulite`
   - `tunnah_diggah` → `pridestone_shovel`, `ticket_lion_helmet` → `ticket_lion_head`
-  - `simba_charm` → `rafiki_coin`, `passion_fruit` → `kiwano`
-  - `animalspeak_amulet` → `crystal`, `giraffe_saddle` → `minecraft:saddle`
   - `peacock_wings` → `peacock_gem`
+- [x] ~~`kivulite_pickaxe` → `kivulite`~~ — DONE: updated to `thelionking:kivulite_pickaxe`
+- [x] ~~`simba_charm` → `rafiki_coin`~~ — DONE: updated to `thelionking:simba_charm`
+- [x] ~~`passion_fruit` → `kiwano`~~ — DONE: updated to `thelionking:passion_fruit`
+- [x] ~~`animalspeak_amulet` → `crystal`~~ — DONE: updated to `thelionking:amulet`
+- [x] ~~`giraffe_saddle` → `minecraft:saddle`~~ — DONE: updated to `thelionking:giraffe_saddle`

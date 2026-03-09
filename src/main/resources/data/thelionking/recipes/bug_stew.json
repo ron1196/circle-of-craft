@@ -4,7 +4,7 @@
     { "item": "minecraft:bowl" },
     { "item": "thelionking:bug" },
     { "item": "thelionking:mango" },
-    { "item": "minecraft:milk_bucket" }
+    { "item": "thelionking:jar_milk" }
   ],
   "result": {
     "item": "thelionking:bug_stew",

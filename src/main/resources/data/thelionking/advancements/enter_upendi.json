@@ -1,7 +1,7 @@
 {
   "parent": "thelionking:get_staff",
   "display": {
-    "icon": { "item": "thelionking:kiwano" },
+    "icon": { "item": "thelionking:passion_fruit" },
     "title": { "translate": "advancement.thelionking.enter_upendi.title" },
     "description": { "translate": "advancement.thelionking.enter_upendi.description" },
     "frame": "challenge",

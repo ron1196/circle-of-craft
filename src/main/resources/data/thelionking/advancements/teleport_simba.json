@@ -1,7 +1,7 @@
 {
   "parent": "thelionking:simba_quest",
   "display": {
-    "icon": { "item": "thelionking:rafiki_coin" },
+    "icon": { "item": "thelionking:simba_charm" },
     "title": { "translate": "advancement.thelionking.teleport_simba.title" },
     "description": { "translate": "advancement.thelionking.teleport_simba.description" },
     "frame": "task",
@@ -9,8 +9,9 @@
     "announce_to_chat": true
   },
   "criteria": {
-    "custom": {
-      "trigger": "minecraft:impossible"
+    "requirement": {
+      "trigger": "thelionking:quest_complete",
+      "conditions": {}
     }
   }
 }

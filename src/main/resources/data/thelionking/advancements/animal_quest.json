@@ -1,7 +1,7 @@
 {
   "parent": "thelionking:hakuna_matata",
   "display": {
-    "icon": { "item": "thelionking:crystal" },
+    "icon": { "item": "thelionking:amulet" },
     "title": { "translate": "advancement.thelionking.animal_quest.title" },
     "description": { "translate": "advancement.thelionking.animal_quest.description" },
     "frame": "task",
@@ -9,8 +9,9 @@
     "announce_to_chat": true
   },
   "criteria": {
-    "custom": {
-      "trigger": "minecraft:impossible"
+    "requirement": {
+      "trigger": "thelionking:quest_complete",
+      "conditions": {}
     }
   }
 }

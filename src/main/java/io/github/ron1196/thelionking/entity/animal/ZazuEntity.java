@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.entity.animal;
 
+import io.github.ron1196.thelionking.entity.ai.ZazuMateGoal;
 import io.github.ron1196.thelionking.registry.LKSoundEvents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -22,6 +23,7 @@ public class ZazuEntity extends LKAnimal {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(3, new ZazuMateGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {

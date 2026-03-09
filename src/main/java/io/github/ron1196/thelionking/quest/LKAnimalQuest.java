@@ -1,10 +1,13 @@
 package io.github.ron1196.thelionking.quest;
 
+import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 import java.util.Random;
 
@@ -88,6 +91,40 @@ public class LKAnimalQuest {
         this.hasQuest = false;
         this.requiredItem = null;
         this.requiredAmount = 0;
+    }
+
+    /**
+     * Gives a reward to the player based on the type of animal that gave the quest.
+     * Called when the player completes an animal's mini-quest by bringing the requested item.
+     *
+     * @param player    the player receiving the reward
+     * @param animalType the registry name of the animal (e.g., "lion", "zebra", "giraffe")
+     */
+    public static void giveReward(ServerPlayer player, String animalType) {
+        ItemStack reward = switch (animalType) {
+            case "lion" -> new ItemStack(Items.GOLD_INGOT, 2 + RANDOM.nextInt(3));
+            case "zebra" -> new ItemStack(Items.LEATHER, 3 + RANDOM.nextInt(3));
+            case "giraffe" -> new ItemStack(LKItems.GIRAFFE_SADDLE.get(), 1);
+            case "elephant" -> new ItemStack(Items.IRON_INGOT, 2 + RANDOM.nextInt(4));
+            case "rhino" -> new ItemStack(Items.IRON_INGOT, 3 + RANDOM.nextInt(3));
+            case "hippo" -> new ItemStack(Items.COD, 3 + RANDOM.nextInt(5));
+            case "crocodile" -> new ItemStack(Items.GOLD_NUGGET, 5 + RANDOM.nextInt(6));
+            case "warthog" -> new ItemStack(Items.CARROT, 4 + RANDOM.nextInt(5));
+            case "meerkat" -> new ItemStack(LKItems.RAFIKI_COIN.get(), 1 + RANDOM.nextInt(2));
+            case "ostrich" -> new ItemStack(Items.FEATHER, 4 + RANDOM.nextInt(5));
+            case "flamingo" -> new ItemStack(Items.PINK_DYE, 3 + RANDOM.nextInt(4));
+            case "gorilla" -> new ItemStack(Items.DIAMOND, 1);
+            case "leopard" -> new ItemStack(LKItems.AMULET.get(), 1);
+            case "peacock" -> new ItemStack(LKItems.PEACOCK_GEM.get(), 1 + RANDOM.nextInt(2));
+            case "buffalo" -> new ItemStack(Items.LEATHER, 4 + RANDOM.nextInt(4));
+            default -> new ItemStack(Items.GOLD_NUGGET, 3 + RANDOM.nextInt(4));
+        };
+
+        player.getInventory().placeItemBackInInventory(reward);
+        player.displayClientMessage(
+                Component.literal("\u00a7aYou received " + reward.getCount() + "x " + reward.getHoverName().getString() + " as a reward!"),
+                false
+        );
     }
 
     public void save(CompoundTag tag) {

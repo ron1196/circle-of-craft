@@ -1,6 +1,7 @@
 package io.github.ron1196.thelionking;
 
 import com.mojang.logging.LogUtils;
+import io.github.ron1196.thelionking.data.LKCriteriaTriggers;
 import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
 import io.github.ron1196.thelionking.registry.LKBlocks;
 import io.github.ron1196.thelionking.registry.LKCreativeTabs;
@@ -45,6 +46,9 @@ public class TheLionKingMod {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(LKNetworking::register);
+        event.enqueueWork(() -> {
+            LKNetworking.register();
+            LKCriteriaTriggers.register();
+        });
     }
 }

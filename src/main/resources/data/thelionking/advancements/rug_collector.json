@@ -9,8 +9,11 @@
     "announce_to_chat": true
   },
   "criteria": {
-    "custom": {
-      "trigger": "minecraft:impossible"
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["thelionking:fur_rug"]}]
+      }
     }
   }
 }

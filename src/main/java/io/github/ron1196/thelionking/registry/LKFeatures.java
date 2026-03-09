@@ -5,8 +5,13 @@ import io.github.ron1196.thelionking.world.feature.BananaTreeFeature;
 import io.github.ron1196.thelionking.world.feature.DeadTreeFeature;
 import io.github.ron1196.thelionking.world.feature.MangoTreeFeature;
 import io.github.ron1196.thelionking.world.feature.PassionTreeFeature;
+import io.github.ron1196.thelionking.world.feature.RafikiTreeFeature;
 import io.github.ron1196.thelionking.world.feature.RainforestTreeFeature;
 import io.github.ron1196.thelionking.world.feature.TermiteMoundFeature;
+import io.github.ron1196.thelionking.world.feature.TicketBoothFeature;
+import io.github.ron1196.thelionking.world.feature.TimonPumbaaLodgeFeature;
+import io.github.ron1196.thelionking.world.feature.TreasureMoundFeature;
+import io.github.ron1196.thelionking.world.feature.ZiraMoundFeature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -39,6 +44,22 @@ public class LKFeatures {
 
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> TERMITE_MOUND =
             FEATURES.register("termite_mound", () -> new TermiteMoundFeature(NoneFeatureConfiguration.CODEC));
+
+    // Landmark structures
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> RAFIKI_TREE =
+            FEATURES.register("rafiki_tree", () -> new RafikiTreeFeature(NoneFeatureConfiguration.CODEC));
+
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> ZIRA_MOUND =
+            FEATURES.register("zira_mound", () -> new ZiraMoundFeature(NoneFeatureConfiguration.CODEC));
+
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> TICKET_BOOTH =
+            FEATURES.register("ticket_booth", () -> new TicketBoothFeature(NoneFeatureConfiguration.CODEC));
+
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> TIMON_PUMBAA_LODGE =
+            FEATURES.register("timon_pumbaa_lodge", () -> new TimonPumbaaLodgeFeature(NoneFeatureConfiguration.CODEC));
+
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> TREASURE_MOUND =
+            FEATURES.register("treasure_mound", () -> new TreasureMoundFeature(NoneFeatureConfiguration.CODEC));
 
     // ResourceKeys for configured features (referenced by tree growers and placed features)
     public static final ResourceKey<ConfiguredFeature<?, ?>> PRIDE_ACACIA_TREE_KEY =

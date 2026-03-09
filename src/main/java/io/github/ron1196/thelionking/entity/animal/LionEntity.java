@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.entity.animal;
 
+import io.github.ron1196.thelionking.entity.ai.LionAttackGoal;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import io.github.ron1196.thelionking.registry.LKSoundEvents;
 import net.minecraft.server.level.ServerLevel;
@@ -27,6 +28,7 @@ public class LionEntity extends LKAnimal {
         super.registerGoals();
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2, false));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new LionAttackGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {

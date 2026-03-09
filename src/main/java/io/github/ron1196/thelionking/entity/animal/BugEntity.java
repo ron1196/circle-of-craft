@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.entity.animal;
 
+import io.github.ron1196.thelionking.entity.ai.BugFindTrapGoal;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
@@ -19,6 +20,7 @@ public class BugEntity extends LKAnimal {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(2, new BugFindTrapGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {

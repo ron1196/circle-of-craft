@@ -12,16 +12,56 @@
   },
   "spawners": {
     "monster": [
-      { "type": "thelionking:hyena", "weight": 10, "minCount": 2, "maxCount": 4 },
-      { "type": "thelionking:crocodile", "weight": 5, "minCount": 1, "maxCount": 2 }
+      {
+        "type": "thelionking:hyena",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "thelionking:crocodile",
+        "weight": 5,
+        "minCount": 1,
+        "maxCount": 2
+      }
     ],
     "creature": [
-      { "type": "thelionking:lion", "weight": 10, "minCount": 1, "maxCount": 3 },
-      { "type": "thelionking:lioness", "weight": 12, "minCount": 2, "maxCount": 4 },
-      { "type": "thelionking:zebra", "weight": 10, "minCount": 2, "maxCount": 5 },
-      { "type": "thelionking:rhino", "weight": 6, "minCount": 1, "maxCount": 2 },
-      { "type": "thelionking:gemsbok", "weight": 8, "minCount": 2, "maxCount": 4 },
-      { "type": "thelionking:dikdik", "weight": 8, "minCount": 2, "maxCount": 4 }
+      {
+        "type": "thelionking:lion",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "thelionking:lioness",
+        "weight": 12,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "thelionking:zebra",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 5
+      },
+      {
+        "type": "thelionking:rhino",
+        "weight": 6,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "thelionking:gemsbok",
+        "weight": 8,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "thelionking:dikdik",
+        "weight": 8,
+        "minCount": 2,
+        "maxCount": 4
+      }
     ],
     "ambient": [],
     "axolotls": [],
@@ -32,20 +72,38 @@
   },
   "spawn_costs": {},
   "carvers": {
-    "air": ["minecraft:cave", "minecraft:cave_extra_underground", "minecraft:canyon"]
+    "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon"
+    ]
   },
   "features": [
     [],
-    ["minecraft:lake_lava_underground"],
-    ["thelionking:pride_coal_ore_placed", "thelionking:silver_ore_placed", "thelionking:peacock_ore_placed"],
+    [
+      "minecraft:lake_lava_underground"
+    ],
+    [
+      "thelionking:pride_coal_ore_placed",
+      "thelionking:silver_ore_placed",
+      "thelionking:peacock_ore_placed"
+    ],
     [],
     [],
     [],
     [],
     [],
-    ["thelionking:banana_tree_placed", "thelionking:mango_tree_placed"],
-    ["minecraft:patch_grass_jungle", "minecraft:patch_tall_grass"],
-    [],
+    [
+      "thelionking:banana_tree_placed",
+      "thelionking:mango_tree_placed"
+    ],
+    [
+      "minecraft:patch_grass_jungle",
+      "minecraft:patch_tall_grass"
+    ],
+    [
+      "thelionking:timon_pumbaa_lodge_placed"
+    ],
     []
   ]
 }

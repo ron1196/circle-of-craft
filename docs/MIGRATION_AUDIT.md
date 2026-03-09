@@ -20,7 +20,7 @@ Old metadata blocks became separate block IDs:
 - `pridestone` meta 0,1 → `pridestone`, `corrupt_pridestone`
 - `planks` meta 0-5 → `acacia_planks`, `rainforest_planks`, `mango_planks`, `passion_planks`, `banana_planks`, `deadwood_planks`
 
-## Completed Phases (0-8)
+## Completed Phases (0-13)
 
 - Phase 0: Project skeleton — mod loads in-game
 - Phase 1: Core blocks, items, tool tiers, creative tabs
@@ -31,6 +31,11 @@ Old metadata blocks became separate block IDs:
 - Phase 6: NPCs, quest system, dialogue
 - Phase 7: Dimensions, world generation, biomes, portals
 - Phase 8: Sounds, music, advancements, polish
+- Phase 9: Events, networking, tick handlers
+- Phase 10: Crafting recipes (~100), missing items (~20), ore gen, tree features, grinding bowl expansion
+- Phase 11: 16 custom AI goals, Outlands lava fix, Termite Queen boss, projectile entities
+- Phase 12: 6 missing blocks, 3 GUIs/menus, 5 landmark structures
+- Phase 13: Custom advancement triggers, quest logic completion, workaround fixes
 
 ---
 

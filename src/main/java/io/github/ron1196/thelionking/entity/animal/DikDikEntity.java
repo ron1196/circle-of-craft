@@ -1,5 +1,7 @@
 package io.github.ron1196.thelionking.entity.animal;
 
+import io.github.ron1196.thelionking.entity.ai.AmbientAvoidGoal;
+import io.github.ron1196.thelionking.entity.ai.AmbientPanicGoal;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -52,6 +54,8 @@ public class DikDikEntity extends LKAnimal {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(1, new AmbientPanicGoal(this));
+        this.goalSelector.addGoal(2, new AmbientAvoidGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
