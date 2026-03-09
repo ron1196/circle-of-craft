@@ -157,6 +157,8 @@ public class LKCreativeTabs {
                         output.accept(LKItems.ROAST_YAM.get());
                         output.accept(LKItems.BANANA_BREAD.get());
                         output.accept(LKItems.CHOCOLATE_MUFASA.get());
+                        output.accept(LKItems.BUG_STEW.get());
+                        output.accept(LKItems.EXPERIENCE_GRUB.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> MATERIALS_TAB = TABS.register("materials",

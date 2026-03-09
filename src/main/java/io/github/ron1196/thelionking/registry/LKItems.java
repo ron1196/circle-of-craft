@@ -172,6 +172,17 @@ public class LKItems {
             () -> new Item(new Item.Properties().food(
                     new FoodProperties.Builder().nutrition(16).saturationMod(0.8F).build())));
 
+    public static final RegistryObject<Item> BUG_STEW = ITEMS.register("bug_stew",
+            () -> new Item(new Item.Properties().food(
+                    new FoodProperties.Builder().nutrition(8).saturationMod(0.5F)
+                            .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 160, 0), 0.4F)
+                            .effect(() -> new MobEffectInstance(MobEffects.POISON, 60, 0), 0.12F)
+                            .build()).stacksTo(1).craftRemainder(net.minecraft.world.item.Items.BOWL)));
+
+    public static final RegistryObject<Item> EXPERIENCE_GRUB = ITEMS.register("experience_grub",
+            () -> new io.github.ron1196.thelionking.item.ExperienceGrubItem(new Item.Properties().food(
+                    new FoodProperties.Builder().nutrition(0).saturationMod(0.0F).alwaysEat().build())));
+
     // ========== Pridestone Tools ==========
     public static final RegistryObject<SwordItem> PRIDESTONE_SWORD = ITEMS.register("pridestone_sword",
             () -> new SwordItem(LKToolTiers.PRIDESTONE, 3, -2.4F, new Item.Properties()));

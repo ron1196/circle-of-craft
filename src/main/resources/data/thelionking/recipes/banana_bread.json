@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XYX"
+  ],
+  "key": {
+    "X": { "item": "minecraft:wheat" },
+    "Y": { "item": "thelionking:banana" }
+  },
+  "result": {
+    "item": "thelionking:banana_bread",
+    "count": 1
+  }
+}

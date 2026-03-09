@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": { "item": "thelionking:peacock_ore" },
+  "result": "thelionking:peacock_gem",
+  "experience": 1.0,
+  "cookingtime": 200
+}

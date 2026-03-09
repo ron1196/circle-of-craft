@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": { "item": "thelionking:rhino_raw" },
+  "result": "thelionking:rhino_cooked",
+  "experience": 0.35,
+  "cookingtime": 200
+}
