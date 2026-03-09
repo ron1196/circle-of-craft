@@ -58,9 +58,9 @@ public class LKEntityTypes {
             () -> EntityType.Builder.of(ZazuEntity::new, MobCategory.CREATURE)
                     .sized(0.6F, 0.7F).clientTrackingRange(10).build("zazu"));
 
-    public static final RegistryObject<EntityType<BugEntity>> BUG = ENTITY_TYPES.register("bug_entity",
+    public static final RegistryObject<EntityType<BugEntity>> BUG = ENTITY_TYPES.register("bug",
             () -> EntityType.Builder.of(BugEntity::new, MobCategory.CREATURE)
-                    .sized(0.4F, 0.4F).clientTrackingRange(8).build("bug_entity"));
+                    .sized(0.4F, 0.4F).clientTrackingRange(8).build("bug"));
 
     // ========== Projectile Entities ==========
     public static final RegistryObject<EntityType<DartEntity>> DART = ENTITY_TYPES.register("dart",
@@ -83,9 +83,9 @@ public class LKEntityTypes {
             () -> EntityType.Builder.<CoinEntity>of(CoinEntity::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("coin"));
 
-    public static final RegistryObject<EntityType<ZazuEggEntity>> ZAZU_EGG = ENTITY_TYPES.register("zazu_egg_entity",
+    public static final RegistryObject<EntityType<ZazuEggEntity>> ZAZU_EGG = ENTITY_TYPES.register("zazu_egg",
             () -> EntityType.Builder.<ZazuEggEntity>of(ZazuEggEntity::new, MobCategory.MISC)
-                    .sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("zazu_egg_entity"));
+                    .sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("zazu_egg"));
 
     // ========== Hostile Entities ==========
     public static final RegistryObject<EntityType<HyenaEntity>> HYENA = ENTITY_TYPES.register("hyena",

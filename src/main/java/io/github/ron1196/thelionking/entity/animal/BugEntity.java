@@ -20,6 +20,7 @@ public class BugEntity extends LKAnimal {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.PanicGoal(this, 1.5));
         this.goalSelector.addGoal(2, new BugFindTrapGoal(this));
     }
 

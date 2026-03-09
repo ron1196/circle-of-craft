@@ -15,9 +15,11 @@ public class SimbaFollowOwnerGoal extends Goal {
 
     private final SimbaEntity simba;
     private Player owner;
-    private static final double START_DISTANCE_SQ = 100.0; // 10 blocks squared
-    private static final double STOP_DISTANCE_SQ = 9.0;    // 3 blocks squared
+    private static final double START_DISTANCE_SQ = 16.0;  // 4 blocks squared
+    private static final double STOP_DISTANCE_SQ = 4.0;    // 2 blocks squared
+    private static final double TELEPORT_DISTANCE_SQ = 400.0; // 20 blocks squared
     private static final double SPEED = 1.3D;
+    private int timeToRecalcPath;
 
     public SimbaFollowOwnerGoal(SimbaEntity simba) {
         this.simba = simba;
@@ -29,6 +31,7 @@ public class SimbaFollowOwnerGoal extends Goal {
         if (simba.isSitting()) return false;
         owner = simba.getOwner();
         if (owner == null) return false;
+        if (simba.getTarget() != null && simba.getTarget().isAlive()) return false;
         return simba.distanceToSqr(owner) > START_DISTANCE_SQ;
     }
 
@@ -36,21 +39,30 @@ public class SimbaFollowOwnerGoal extends Goal {
     public boolean canContinueToUse() {
         if (simba.isSitting()) return false;
         if (owner == null || !owner.isAlive()) return false;
+        if (simba.getTarget() != null && simba.getTarget().isAlive()) return false;
         return simba.distanceToSqr(owner) > STOP_DISTANCE_SQ;
     }
 
     @Override
     public void start() {
-        simba.getNavigation().moveTo(owner, SPEED);
+        timeToRecalcPath = 0;
     }
 
     @Override
     public void tick() {
-        if (owner != null) {
-            simba.getLookControl().setLookAt(owner, 10.0F, simba.getMaxHeadXRot());
-            if (simba.getNavigation().isDone()) {
-                simba.getNavigation().moveTo(owner, SPEED);
-            }
+        if (owner == null) return;
+        simba.getLookControl().setLookAt(owner, 10.0F, simba.getMaxHeadXRot());
+
+        // Teleport to owner if too far
+        if (simba.distanceToSqr(owner) > TELEPORT_DISTANCE_SQ) {
+            simba.moveTo(owner.getX(), owner.getY(), owner.getZ(), simba.getYRot(), simba.getXRot());
+            simba.getNavigation().stop();
+            return;
+        }
+
+        if (--timeToRecalcPath <= 0) {
+            timeToRecalcPath = 10;
+            simba.getNavigation().moveTo(owner, SPEED);
         }
     }
 

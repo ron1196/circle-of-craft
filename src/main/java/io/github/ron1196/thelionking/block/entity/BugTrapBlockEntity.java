@@ -16,6 +16,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fml.Logging;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
@@ -36,7 +37,7 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
     };
 
     private int trapTimer = 0;
-    private static final int TRAP_INTERVAL = 4000; // ~200 seconds
+    private static final int TRAP_INTERVAL = 600; // 30 seconds
 
     private final ContainerData data = new ContainerData() {
         @Override
@@ -70,19 +71,17 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
         if (!hasBait) return;
 
         trapTimer++;
-        if (trapTimer >= TRAP_INTERVAL) {
+        if (trapTimer >= 5) {
             trapTimer = 0;
 
-            // Check if output slot can accept a bug
             ItemStack output = items.getStackInSlot(4);
             if (output.isEmpty() || (output.is(LKItems.BUG.get()) && output.getCount() < output.getMaxStackSize())) {
-                // Random chance based on bait count
                 float chance = 0.0F;
                 int baitCount = 0;
                 for (int i = 0; i < 4; i++) {
                     if (!items.getStackInSlot(i).isEmpty()) baitCount++;
                 }
-                chance = 0.15F * baitCount; // 15% per bait slot filled
+                chance = 0.25F * baitCount; // 25% per bait slot filled
 
                 if (level.random.nextFloat() < chance) {
                     // Consume one bait item from a random filled slot

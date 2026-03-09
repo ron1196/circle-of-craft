@@ -1,1 +1,22 @@
-{"parent":"minecraft:block/cube_column","textures":{"end":"thelionking:block/vase_top","side":"thelionking:block/vase"}}
+{
+  "textures": {
+    "side": "thelionking:block/vase",
+    "top": "thelionking:block/vase_top",
+    "bottom": "thelionking:block/vase_top",
+    "particle": "thelionking:block/vase"
+  },
+  "elements": [
+    {
+      "from": [3, 0, 3],
+      "to": [13, 12, 13],
+      "faces": {
+        "north": {"uv": [3, 4, 13, 16], "texture": "#side"},
+        "south": {"uv": [3, 4, 13, 16], "texture": "#side"},
+        "east":  {"uv": [3, 4, 13, 16], "texture": "#side"},
+        "west":  {"uv": [3, 4, 13, 16], "texture": "#side"},
+        "up":    {"uv": [3, 3, 13, 13], "texture": "#top"},
+        "down":  {"uv": [3, 3, 13, 13], "texture": "#bottom", "cullface": "down"}
+      }
+    }
+  ]
+}

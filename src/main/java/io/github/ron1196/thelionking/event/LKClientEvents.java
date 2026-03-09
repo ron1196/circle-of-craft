@@ -37,7 +37,7 @@ public class LKClientEvents {
     public static final ModelLayerLocation DIKDIK_LAYER = layer("dikdik");
     public static final ModelLayerLocation FLAMINGO_LAYER = layer("flamingo");
     public static final ModelLayerLocation ZAZU_LAYER = layer("zazu");
-    public static final ModelLayerLocation BUG_LAYER = layer("bug_entity");
+    public static final ModelLayerLocation BUG_LAYER = layer("bug");
 
     // Hostile entity layers
     public static final ModelLayerLocation HYENA_LAYER = layer("hyena");

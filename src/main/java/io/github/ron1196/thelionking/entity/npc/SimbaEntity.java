@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -100,6 +101,7 @@ public class SimbaEntity extends PathfinderMob {
 
         if (getOwnerUUID().isEmpty()) {
             setOwnerUUID(player.getUUID());
+            player.sendSystemMessage(Component.literal("Simba is now following you!"));
             return InteractionResult.SUCCESS;
         }
 
@@ -107,6 +109,7 @@ public class SimbaEntity extends PathfinderMob {
             // Toggle sitting
             setSitting(!isSitting());
             this.navigation.stop();
+            player.sendSystemMessage(Component.literal(isSitting() ? "Simba sits down." : "Simba stands up and follows you."));
             return InteractionResult.SUCCESS;
         }
 

@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.entity.hostile;
 
+import io.github.ron1196.thelionking.entity.animal.*;
 import io.github.ron1196.thelionking.registry.LKBlocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -8,6 +9,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -50,7 +52,7 @@ public class HyenaEntity extends Monster {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
-                                         MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable CompoundTag tag) {
+                                        MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable CompoundTag tag) {
         setVariant(this.random.nextInt(3));
         return super.finalizeSpawn(level, difficulty, spawnType, groupData, tag);
     }
@@ -70,21 +72,42 @@ public class HyenaEntity extends Monster {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, false));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
 
-        Predicate<Player> nightOrUnderground = player -> {
-            int skyLight = this.level().getBrightness(LightLayer.SKY, this.blockPosition());
-            return skyLight <= 4 || !this.level().canSeeSky(this.blockPosition());
-        };
-        // Only target players at nighttime or underground
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false,
-                livingEntity -> {
-                    int skyLight = this.level().getBrightness(LightLayer.SKY, this.blockPosition());
-                    return skyLight <= 4 || !this.level().canSeeSky(this.blockPosition());
-                }));
+        // Flee from lions when alone (not in a pack of 3+)
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(
+                        this, LivingEntity.class,
+                        12.0F, 1.0D, 1.5D,
+                        e -> (e instanceof LionEntity || e instanceof LionessEntity)
+                                && this.level().getEntitiesOfClass(HyenaEntity.class, this.getBoundingBox().inflate(16.0)).size() < 3
+                )
+        );
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2, false));
+        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+
+        this.targetSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+
+        // Hyenas only attack lions when in a pack (3+ nearby)
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(
+                        this, LivingEntity.class,
+                        2, true, false,
+                        e -> (e instanceof LionEntity || e instanceof LionessEntity)
+                                && this.level().getEntitiesOfClass(HyenaEntity.class, this.getBoundingBox().inflate(16.0)).size() >= 3
+                )
+        );
+
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(
+                this, LivingEntity.class,
+                2, true, false,
+                e -> e instanceof ZebraEntity
+                        || e instanceof DikDikEntity
+                        || e instanceof GemsbokEntity
+                        || e instanceof FlamingoEntity
+                        || e instanceof ZazuEntity
+                        || e instanceof BugEntity)
+        );
     }
 
     public static AttributeSupplier.Builder createAttributes() {

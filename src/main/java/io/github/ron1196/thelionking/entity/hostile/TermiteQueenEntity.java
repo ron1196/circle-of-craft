@@ -70,12 +70,20 @@ public class TermiteQueenEntity extends Monster {
     }
 
     private void spawnTermite() {
-        TermiteEntity termite = LKEntityTypes.TERMITE.get().create(this.level());
-        if (termite != null) {
-            termite.moveTo(this.getX() + this.getRandom().nextGaussian() * 2.0,
-                    this.getY(), this.getZ() + this.getRandom().nextGaussian() * 2.0,
-                    this.getRandom().nextFloat() * 360.0F, 0.0F);
-            this.level().addFreshEntity(termite);
+        // Cap at 8 nearby termites
+        int nearbyTermites = this.level().getEntitiesOfClass(TermiteEntity.class,
+                this.getBoundingBox().inflate(24.0)).size();
+        if (nearbyTermites >= 8) return;
+
+        int count = 1 + this.getRandom().nextInt(3); // 1-3 termites per spawn
+        for (int i = 0; i < count && (nearbyTermites + i) < 8; i++) {
+            TermiteEntity termite = LKEntityTypes.TERMITE.get().create(this.level());
+            if (termite != null) {
+                termite.moveTo(this.getX() + this.getRandom().nextGaussian() * 2.0,
+                        this.getY(), this.getZ() + this.getRandom().nextGaussian() * 2.0,
+                        this.getRandom().nextFloat() * 360.0F, 0.0F);
+                this.level().addFreshEntity(termite);
+            }
         }
     }
 

@@ -17,8 +17,8 @@ public class PumbaaFollowTimonGoal extends Goal {
     private final PumbaaEntity pumbaa;
     private TimonEntity timon;
     private static final double SEARCH_RANGE = 32.0;
-    private static final double START_DISTANCE_SQ = 64.0; // 8 blocks squared
-    private static final double STOP_DISTANCE_SQ = 9.0;   // 3 blocks squared
+    private static final double START_DISTANCE_SQ = 9.0;  // 3 blocks squared
+    private static final double STOP_DISTANCE_SQ = 4.0;   // 2 blocks squared
     private static final double SPEED = 1.2D;
     private int recheckTimer;
 
