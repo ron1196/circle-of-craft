@@ -40,7 +40,7 @@ public class RainforestTreeFeature extends Feature<NoneFeatureConfiguration> {
 
         // Trunk
         for (int y = 0; y < height; y++) {
-            level.setBlock(pos.above(y), log, 3);
+            level.setBlock(pos.above(y), log, 2);
         }
 
         // Wide canopy at top — 3 layers
@@ -52,14 +52,14 @@ public class RainforestTreeFeature extends Feature<NoneFeatureConfiguration> {
                     if (Math.abs(x) == radius && Math.abs(z) == radius) continue; // corners
                     BlockPos leafPos = pos.offset(x, y, z);
                     if (level.getBlockState(leafPos).isAir()) {
-                        level.setBlock(leafPos, leaves, 3);
+                        level.setBlock(leafPos, leaves, 2);
                     }
                 }
             }
         }
 
         // Top cap
-        level.setBlock(pos.above(height + 2), leaves, 3);
+        level.setBlock(pos.above(height + 2), leaves, 2);
 
         return true;
     }

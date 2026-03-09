@@ -41,23 +41,8 @@ public class TreasureMoundFeature extends Feature<NoneFeatureConfiguration> {
         RandomSource random = context.random();
 
         int i = origin.getX();
-        int j = origin.getY();
+        int j = origin.getY() + 1;
         int k = origin.getZ();
-
-        // Ground check: 4x4 area at (i+1..i+4, j-1, k+1..k+4) must be sand-like and air above
-        for (int dx = 1; dx <= 4; dx++) {
-            for (int dz = 1; dz <= 4; dz++) {
-                BlockPos groundPos = new BlockPos(i + dx, j - 1, k + dz);
-                BlockState groundState = level.getBlockState(groundPos);
-                if (!isSandLike(groundState)) {
-                    return false;
-                }
-                BlockPos abovePos = new BlockPos(i + dx, j, k + dz);
-                if (!level.getBlockState(abovePos).isAir()) {
-                    return false;
-                }
-            }
-        }
 
         BlockState termite = LKBlocks.TERMITE_MOUND.get().defaultBlockState();
         BlockState outsand = LKBlocks.OUTSAND.get().defaultBlockState();

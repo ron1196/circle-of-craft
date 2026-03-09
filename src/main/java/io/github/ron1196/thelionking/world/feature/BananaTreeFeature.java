@@ -44,28 +44,28 @@ public class BananaTreeFeature extends Feature<NoneFeatureConfiguration> {
 
         // Trunk (extends one block into the canopy so leaves stay within distance 7)
         for (int y = 0; y <= height; y++) {
-            level.setBlock(pos.above(y), log, 3);
+            level.setBlock(pos.above(y), log, 2);
         }
 
         // Top leaves above log
         BlockPos top = pos.above(height);
-        level.setBlock(top, leaves, 3);
+        level.setBlock(top, leaves, 2);
 
         // Four directional leaf clusters hanging down from top
         Direction[] dirs = {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
         for (Direction dir : dirs) {
             BlockPos branch = top.relative(dir);
             int hangLength = 1 + random.nextInt(2); // max 2 down to stay within distance
-            level.setBlock(branch, leaves, 3);
+            level.setBlock(branch, leaves, 2);
             for (int y = 1; y <= hangLength; y++) {
-                level.setBlock(branch.below(y), leaves, 3);
+                level.setBlock(branch.below(y), leaves, 2);
             }
             // Second block outward
             BlockPos outer = branch.relative(dir);
-            level.setBlock(outer, leaves, 3);
+            level.setBlock(outer, leaves, 2);
             int outerHang = random.nextInt(2) + 1;
             for (int y = 1; y <= outerHang; y++) {
-                level.setBlock(outer.below(y), leaves, 3);
+                level.setBlock(outer.below(y), leaves, 2);
             }
         }
 
@@ -75,7 +75,7 @@ public class BananaTreeFeature extends Feature<NoneFeatureConfiguration> {
             BlockPos bananaPos = pos.above(height - 1 - random.nextInt(2)).relative(dir);
             if (level.getBlockState(bananaPos).isAir()) {
                 level.setBlock(bananaPos, LKBlocks.HANGING_BANANA.get().defaultBlockState()
-                        .setValue(HorizontalDirectionalBlock.FACING, dir), 3);
+                        .setValue(HorizontalDirectionalBlock.FACING, dir), 2);
             }
         }
 

@@ -39,7 +39,7 @@ public class RafikiTreeFeature extends Feature<NoneFeatureConfiguration> {
         for (int y = 0; y < trunkHeight; y++) {
             for (int x = 0; x <= 1; x++) {
                 for (int z = 0; z <= 1; z++) {
-                    level.setBlock(pos.offset(x, y, z), log, 3);
+                    level.setBlock(pos.offset(x, y, z), log, 2);
                 }
             }
         }
@@ -50,9 +50,9 @@ public class RafikiTreeFeature extends Feature<NoneFeatureConfiguration> {
                 if ((dx >= 0 && dx <= 1) && (dz >= 0 && dz <= 1)) continue;
                 double dist = Math.sqrt(dx * dx + dz * dz);
                 if (dist <= 3.0 && random.nextFloat() < 0.6F) {
-                    level.setBlock(pos.offset(dx, 0, dz), log, 3);
+                    level.setBlock(pos.offset(dx, 0, dz), log, 2);
                     if (random.nextFloat() < 0.4F) {
-                        level.setBlock(pos.offset(dx, 1, dz), log, 3);
+                        level.setBlock(pos.offset(dx, 1, dz), log, 2);
                     }
                 }
             }
@@ -64,7 +64,7 @@ public class RafikiTreeFeature extends Feature<NoneFeatureConfiguration> {
             for (int z = -2; z <= 3; z++) {
                 BlockPos platformPos = pos.offset(x, platformY, z);
                 if (level.getBlockState(platformPos).isAir()) {
-                    level.setBlock(platformPos, platform, 3);
+                    level.setBlock(platformPos, platform, 2);
                 }
             }
         }
@@ -78,7 +78,7 @@ public class RafikiTreeFeature extends Feature<NoneFeatureConfiguration> {
                     if (x * x + z * z > radius * radius + 1) continue;
                     BlockPos leafPos = pos.offset(x, y, z);
                     if (level.getBlockState(leafPos).isAir()) {
-                        level.setBlock(leafPos, leaves, 3);
+                        level.setBlock(leafPos, leaves, 2);
                     }
                 }
             }

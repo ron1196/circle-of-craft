@@ -5,6 +5,9 @@ import io.github.ron1196.thelionking.registry.LKBlocks;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
@@ -67,11 +70,11 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
                 for (int y = -3; y < 0; y++) {
                     BlockPos fillPos = origin.offset(x, y, z);
                     if (!level.getBlockState(fillPos).isSolidRender(level, fillPos)) {
-                        level.setBlock(fillPos, pridestone, 3);
+                        level.setBlock(fillPos, pridestone, 2);
                     }
                 }
                 // Floor level
-                level.setBlock(origin.offset(x, 0, z), pridestone, 3);
+                level.setBlock(origin.offset(x, 0, z), pridestone, 2);
             }
         }
 
@@ -81,7 +84,7 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         for (int x = 0; x < width; x++) {
             for (int z = 0; z < depth; z++) {
                 for (int y = 1; y <= 6; y++) {
-                    level.setBlock(origin.offset(x, y, z), air, 3);
+                    level.setBlock(origin.offset(x, y, z), air, 2);
                 }
             }
         }
@@ -94,15 +97,15 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
 
             // Left wall (x=0)
             for (int z = 0; z < depth; z++) {
-                level.setBlock(origin.offset(0, y, z), wallBlock, 3);
+                level.setBlock(origin.offset(0, y, z), wallBlock, 2);
             }
             // Right wall (x=width-1)
             for (int z = 0; z < depth; z++) {
-                level.setBlock(origin.offset(width - 1, y, z), wallBlock, 3);
+                level.setBlock(origin.offset(width - 1, y, z), wallBlock, 2);
             }
             // Back wall (z=depth-1) — the screen end
             for (int x = 0; x < width; x++) {
-                level.setBlock(origin.offset(x, y, depth - 1), wallBlock, 3);
+                level.setBlock(origin.offset(x, y, depth - 1), wallBlock, 2);
             }
             // Front wall (z=0) — with door opening
             for (int x = 0; x < width; x++) {
@@ -110,26 +113,26 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
                 if (x == 6 || x == 7) {
                     if (y <= 2) continue; // Door opening 2 blocks high
                 }
-                level.setBlock(origin.offset(x, y, 0), wallBlock, 3);
+                level.setBlock(origin.offset(x, y, 0), wallBlock, 2);
             }
         }
 
         // ============================================================
         // GLOWSTONE at 4 corner pillars at Y+2
         // ============================================================
-        level.setBlock(origin.offset(0, 2, 0), glowstone, 3);
-        level.setBlock(origin.offset(width - 1, 2, 0), glowstone, 3);
-        level.setBlock(origin.offset(0, 2, depth - 1), glowstone, 3);
-        level.setBlock(origin.offset(width - 1, 2, depth - 1), glowstone, 3);
+        level.setBlock(origin.offset(0, 2, 0), glowstone, 2);
+        level.setBlock(origin.offset(width - 1, 2, 0), glowstone, 2);
+        level.setBlock(origin.offset(0, 2, depth - 1), glowstone, 2);
+        level.setBlock(origin.offset(width - 1, 2, depth - 1), glowstone, 2);
 
         // ============================================================
         // GLASS PANES: Windows on side walls at Y+3
         // ============================================================
         for (int z = 2; z <= depth - 3; z += 2) {
             // Left wall windows
-            level.setBlock(origin.offset(0, 3, z), glassPane, 3);
+            level.setBlock(origin.offset(0, 3, z), glassPane, 2);
             // Right wall windows
-            level.setBlock(origin.offset(width - 1, 3, z), glassPane, 3);
+            level.setBlock(origin.offset(width - 1, 3, z), glassPane, 2);
         }
 
         // ============================================================
@@ -138,26 +141,26 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         BlockPos doorPos = origin.offset(6, 1, 0);
         level.setBlock(doorPos, Blocks.OAK_DOOR.defaultBlockState()
                 .setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER)
-                .setValue(DoorBlock.FACING, Direction.SOUTH), 3);
+                .setValue(DoorBlock.FACING, Direction.SOUTH), 2);
         level.setBlock(doorPos.above(), Blocks.OAK_DOOR.defaultBlockState()
                 .setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER)
-                .setValue(DoorBlock.FACING, Direction.SOUTH), 3);
+                .setValue(DoorBlock.FACING, Direction.SOUTH), 2);
 
         // Second door leaf
         BlockPos doorPos2 = origin.offset(7, 1, 0);
         level.setBlock(doorPos2, Blocks.OAK_DOOR.defaultBlockState()
                 .setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER)
-                .setValue(DoorBlock.FACING, Direction.SOUTH), 3);
+                .setValue(DoorBlock.FACING, Direction.SOUTH), 2);
         level.setBlock(doorPos2.above(), Blocks.OAK_DOOR.defaultBlockState()
                 .setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER)
-                .setValue(DoorBlock.FACING, Direction.SOUTH), 3);
+                .setValue(DoorBlock.FACING, Direction.SOUTH), 2);
 
         // ============================================================
         // ROOF: Wool flat roof at Y+5
         // ============================================================
         for (int x = 0; x < width; x++) {
             for (int z = 0; z < depth; z++) {
-                level.setBlock(origin.offset(x, 5, z), wool, 3);
+                level.setBlock(origin.offset(x, 5, z), wool, 2);
             }
         }
 
@@ -169,28 +172,28 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
             level.setBlock(origin.offset(x, 5, -1),
                     Blocks.OAK_STAIRS.defaultBlockState()
                             .setValue(StairBlock.FACING, Direction.SOUTH)
-                            .setValue(StairBlock.HALF, Half.TOP), 3);
+                            .setValue(StairBlock.HALF, Half.TOP), 2);
         }
         // Back overhang (z=depth), stairs facing north (outward)
         for (int x = -1; x <= width; x++) {
             level.setBlock(origin.offset(x, 5, depth),
                     Blocks.OAK_STAIRS.defaultBlockState()
                             .setValue(StairBlock.FACING, Direction.NORTH)
-                            .setValue(StairBlock.HALF, Half.TOP), 3);
+                            .setValue(StairBlock.HALF, Half.TOP), 2);
         }
         // Left overhang (x=-1), stairs facing east (outward)
         for (int z = 0; z < depth; z++) {
             level.setBlock(origin.offset(-1, 5, z),
                     Blocks.OAK_STAIRS.defaultBlockState()
                             .setValue(StairBlock.FACING, Direction.EAST)
-                            .setValue(StairBlock.HALF, Half.TOP), 3);
+                            .setValue(StairBlock.HALF, Half.TOP), 2);
         }
         // Right overhang (x=width), stairs facing west (outward)
         for (int z = 0; z < depth; z++) {
             level.setBlock(origin.offset(width, 5, z),
                     Blocks.OAK_STAIRS.defaultBlockState()
                             .setValue(StairBlock.FACING, Direction.WEST)
-                            .setValue(StairBlock.HALF, Half.TOP), 3);
+                            .setValue(StairBlock.HALF, Half.TOP), 2);
         }
 
         // ============================================================
@@ -202,7 +205,7 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
             for (int sy = 0; sy < 5; sy++) {
                 // Frame is the border; interior could be air or portal
                 // Place full frame for now (4x5 solid portal frame blocks)
-                level.setBlock(origin.offset(screenStartX + sx, 1 + sy, depth - 2), portalFrame, 3);
+                level.setBlock(origin.offset(screenStartX + sx, 1 + sy, depth - 2), portalFrame, 2);
             }
         }
 
@@ -216,7 +219,7 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
                 if (x == 6 || x == 7) continue;
                 level.setBlock(origin.offset(x, 1, rowZ),
                         Blocks.OAK_STAIRS.defaultBlockState()
-                                .setValue(StairBlock.FACING, Direction.NORTH), 3);
+                                .setValue(StairBlock.FACING, Direction.NORTH), 2);
             }
         }
 
@@ -225,7 +228,7 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         // ============================================================
         for (int x = 1; x < width - 1; x++) {
             if (x == 6 || x == 7) continue; // center aisle gap
-            level.setBlock(origin.offset(x, 1, 2), fence, 3);
+            level.setBlock(origin.offset(x, 1, 2), fence, 2);
         }
 
         // ============================================================
@@ -235,13 +238,13 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         for (int z = 2; z <= depth - 3; z += 3) {
             level.setBlock(origin.offset(1, 3, z),
                     Blocks.WALL_TORCH.defaultBlockState()
-                            .setValue(WallTorchBlock.FACING, Direction.EAST), 3);
+                            .setValue(WallTorchBlock.FACING, Direction.EAST), 2);
         }
         // Right wall torches (facing west, into the room)
         for (int z = 2; z <= depth - 3; z += 3) {
             level.setBlock(origin.offset(width - 2, 3, z),
                     Blocks.WALL_TORCH.defaultBlockState()
-                            .setValue(WallTorchBlock.FACING, Direction.WEST), 3);
+                            .setValue(WallTorchBlock.FACING, Direction.WEST), 2);
         }
 
         // ============================================================
@@ -250,22 +253,31 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         BlockPos signPos = origin.offset(5, 3, -1);
         // Place as a wall sign facing south (outward from front wall)
         level.setBlock(signPos, Blocks.OAK_WALL_SIGN.defaultBlockState()
-                .setValue(WallSignBlock.FACING, Direction.SOUTH), 3);
+                .setValue(WallSignBlock.FACING, Direction.SOUTH), 2);
 
-        // Set sign text
+        // Set sign text via NBT load to avoid markUpdated() NPE during worldgen
         if (level.getBlockEntity(signPos) instanceof SignBlockEntity sign) {
-            sign.setText(sign.getFrontText()
-                    .setMessage(0, Component.literal("---------------"))
-                    .setMessage(1, Component.literal("Now showing:"))
-                    .setMessage(2, Component.literal("The Lion King"))
-                    .setMessage(3, Component.literal("---------------")), true);
+            ListTag messages = new ListTag();
+            messages.add(StringTag.valueOf(Component.Serializer.toJson(Component.literal("---------------"))));
+            messages.add(StringTag.valueOf(Component.Serializer.toJson(Component.literal("Now showing:"))));
+            messages.add(StringTag.valueOf(Component.Serializer.toJson(Component.literal("The Lion King"))));
+            messages.add(StringTag.valueOf(Component.Serializer.toJson(Component.literal("---------------"))));
+            ListTag colors = new ListTag();
+            for (int ci = 0; ci < 4; ci++) colors.add(StringTag.valueOf("black"));
+            CompoundTag frontText = new CompoundTag();
+            frontText.put("messages", messages);
+            frontText.put("color", StringTag.valueOf("black"));
+            frontText.putBoolean("has_glowing_text", false);
+            CompoundTag tag = sign.saveWithId();
+            tag.put("front_text", frontText);
+            sign.load(tag);
         }
 
         // ============================================================
         // CHEST with loot near the entrance
         // ============================================================
         BlockPos chestPos = origin.offset(2, 1, 1);
-        level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
+        level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 2);
 
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
             // Sticks
@@ -296,7 +308,7 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
 
         // Second chest on other side
         BlockPos chestPos2 = origin.offset(width - 3, 1, 1);
-        level.setBlock(chestPos2, Blocks.CHEST.defaultBlockState(), 3);
+        level.setBlock(chestPos2, Blocks.CHEST.defaultBlockState(), 2);
 
         if (level.getBlockEntity(chestPos2) instanceof ChestBlockEntity chest2) {
             chest2.setItem(0, new ItemStack(Items.STICK, 1 + random.nextInt(4)));

@@ -65,12 +65,14 @@ public class LKStructurePiece extends StructurePiece {
         if (!isOriginChunk) return;
 
         Feature<NoneFeatureConfiguration> feature = resolveFeature();
-        LOGGER.info("[LKPiece] {} — feature: {}, pos={}", featureId.getPath(),
-                feature != null ? feature.getClass().getSimpleName() : "NULL", pos);
         if (feature == null) return;
 
+        // Use bounding box center for X/Z (matches findGenerationPoint), pos.getY()-1 for ground level
+        BlockPos origin = new BlockPos(originX, pos.getY() - 1, originZ);
+        LOGGER.info("[LKPiece] {} — origin={}, pos={}", featureId.getPath(), origin, pos);
+
         FeaturePlaceContext<NoneFeatureConfiguration> context = new FeaturePlaceContext<>(
-                Optional.empty(), level, generator, random, pos, NoneFeatureConfiguration.INSTANCE);
+                Optional.empty(), level, generator, random, origin, NoneFeatureConfiguration.INSTANCE);
         feature.place(context);
     }
 

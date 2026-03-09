@@ -35,25 +35,25 @@ public class TimonPumbaaLodgeFeature extends Feature<NoneFeatureConfiguration> {
         // Floor 5x5
         for (int x = 0; x < 5; x++) {
             for (int z = 0; z < 5; z++) {
-                level.setBlock(pos.offset(x, 0, z), planks, 3);
+                level.setBlock(pos.offset(x, 0, z), planks, 2);
             }
         }
 
         // Log pillars at corners, 3 high
         for (int[] corner : new int[][]{{0, 0}, {0, 4}, {4, 0}, {4, 4}}) {
             for (int y = 1; y <= 3; y++) {
-                level.setBlock(pos.offset(corner[0], y, corner[1]), log, 3);
+                level.setBlock(pos.offset(corner[0], y, corner[1]), log, 2);
             }
         }
 
         // Walls — planks on 3 sides, open front (z=0)
         for (int y = 1; y <= 3; y++) {
             for (int x = 1; x < 4; x++) {
-                level.setBlock(pos.offset(x, y, 4), planks, 3); // Back
+                level.setBlock(pos.offset(x, y, 4), planks, 2); // Back
             }
             for (int z = 1; z < 4; z++) {
-                level.setBlock(pos.offset(0, y, z), planks, 3); // Left
-                level.setBlock(pos.offset(4, y, z), planks, 3); // Right
+                level.setBlock(pos.offset(0, y, z), planks, 2); // Left
+                level.setBlock(pos.offset(4, y, z), planks, 2); // Right
             }
         }
 
@@ -62,7 +62,7 @@ public class TimonPumbaaLodgeFeature extends Feature<NoneFeatureConfiguration> {
             for (int z = -1; z <= 5; z++) {
                 BlockPos roofPos = pos.offset(x, 4, z);
                 if (level.getBlockState(roofPos).isAir()) {
-                    level.setBlock(roofPos, leaves, 3);
+                    level.setBlock(roofPos, leaves, 2);
                 }
             }
         }

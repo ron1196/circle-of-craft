@@ -40,7 +40,7 @@ public class MangoTreeFeature extends Feature<NoneFeatureConfiguration> {
 
         // Trunk
         for (int y = 0; y < height; y++) {
-            level.setBlock(pos.above(y), log, 3);
+            level.setBlock(pos.above(y), log, 2);
         }
 
         // Rounded canopy — 2 layers
@@ -52,7 +52,7 @@ public class MangoTreeFeature extends Feature<NoneFeatureConfiguration> {
                     if (Math.abs(x) == radius && Math.abs(z) == radius) continue;
                     BlockPos leafPos = pos.offset(x, y, z);
                     if (level.getBlockState(leafPos).isAir()) {
-                        level.setBlock(leafPos, leaves, 3);
+                        level.setBlock(leafPos, leaves, 2);
                     }
                 }
             }
@@ -64,7 +64,7 @@ public class MangoTreeFeature extends Feature<NoneFeatureConfiguration> {
                 if (Math.abs(x) == 1 && Math.abs(z) == 1 && random.nextBoolean()) continue;
                 BlockPos leafPos = pos.offset(x, height + 1, z);
                 if (level.getBlockState(leafPos).isAir()) {
-                    level.setBlock(leafPos, leaves, 3);
+                    level.setBlock(leafPos, leaves, 2);
                 }
             }
         }

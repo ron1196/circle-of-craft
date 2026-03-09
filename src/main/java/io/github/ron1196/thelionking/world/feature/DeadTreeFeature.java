@@ -43,7 +43,7 @@ public class DeadTreeFeature extends Feature<NoneFeatureConfiguration> {
 
         // Trunk
         for (int y = 0; y < height; y++) {
-            level.setBlock(pos.above(y), log, 3);
+            level.setBlock(pos.above(y), log, 2);
         }
 
         // 4 branch stubs at various heights
@@ -52,10 +52,10 @@ public class DeadTreeFeature extends Feature<NoneFeatureConfiguration> {
             int branchY = 3 + random.nextInt(height - 3);
             Direction dir = dirs[i];
             BlockPos branchPos = pos.above(branchY).relative(dir);
-            level.setBlock(branchPos, log, 3);
+            level.setBlock(branchPos, log, 2);
             // Extend branch 1-2 blocks
             if (random.nextBoolean()) {
-                level.setBlock(branchPos.relative(dir), log, 3);
+                level.setBlock(branchPos.relative(dir), log, 2);
             }
         }
 

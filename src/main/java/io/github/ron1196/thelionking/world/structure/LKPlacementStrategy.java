@@ -78,6 +78,8 @@ public abstract class LKPlacementStrategy {
     static class NoFluidStrategy extends LKPlacementStrategy {
         @Override
         boolean isValid(GenerationContext context, int x, int y, int z) {
+            // Reject at or below sea level (catches rivers/lakes in land biomes)
+            if (y <= context.chunkGenerator().getSeaLevel()) return false;
             NoiseColumn column = context.chunkGenerator().getBaseColumn(
                     x, z, context.heightAccessor(), context.randomState()
             );

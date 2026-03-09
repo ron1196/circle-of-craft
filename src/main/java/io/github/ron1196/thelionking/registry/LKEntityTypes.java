@@ -110,15 +110,15 @@ public class LKEntityTypes {
 
     public static final RegistryObject<EntityType<CrocodileEntity>> CROCODILE = ENTITY_TYPES.register("crocodile",
             () -> EntityType.Builder.of(CrocodileEntity::new, MobCategory.MONSTER)
-                    .sized(1.7F, 0.57F).clientTrackingRange(10).build("crocodile"));
+                    .sized(3.0F, 0.7F).clientTrackingRange(10).build("crocodile"));
 
     public static final RegistryObject<EntityType<TermiteEntity>> TERMITE = ENTITY_TYPES.register("termite",
             () -> EntityType.Builder.of(TermiteEntity::new, MobCategory.MONSTER)
-                    .sized(0.4F, 0.4F).clientTrackingRange(8).build("termite"));
+                    .sized(0.7F, 0.5F).clientTrackingRange(8).build("termite"));
 
     public static final RegistryObject<EntityType<TermiteQueenEntity>> TERMITE_QUEEN = ENTITY_TYPES.register("termite_queen",
             () -> EntityType.Builder.of(TermiteQueenEntity::new, MobCategory.MONSTER)
-                    .sized(1.2F, 1.0F).clientTrackingRange(10).build("termite_queen"));
+                    .sized(2.5F, 2.0F).clientTrackingRange(10).build("termite_queen"));
 
     // ========== Ticket Lion ==========
     public static final RegistryObject<EntityType<io.github.ron1196.thelionking.entity.npc.TicketLionEntity>> TICKET_LION = ENTITY_TYPES.register("ticket_lion",

@@ -38,7 +38,7 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
                     if (x * x + z * z <= radius * radius) {
                         BlockState block = (y == moundHeight - 1 || (y > 0 && random.nextFloat() < 0.3F))
                                 ? corruptBrick : corruptStone;
-                        level.setBlock(pos.offset(x, y, z), block, 3);
+                        level.setBlock(pos.offset(x, y, z), block, 2);
                     }
                 }
             }
@@ -47,14 +47,14 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
         // Flat platform at top
         for (int x = -2; x <= 2; x++) {
             for (int z = -2; z <= 2; z++) {
-                level.setBlock(pos.offset(x, moundHeight, z), corruptBrick, 3);
+                level.setBlock(pos.offset(x, moundHeight, z), corruptBrick, 2);
             }
         }
 
         // Four pillars at corners
         for (int[] corner : new int[][]{{-2, -2}, {-2, 2}, {2, -2}, {2, 2}}) {
             for (int y = moundHeight + 1; y < moundHeight + 4; y++) {
-                level.setBlock(pos.offset(corner[0], y, corner[1]), corruptBrick, 3);
+                level.setBlock(pos.offset(corner[0], y, corner[1]), corruptBrick, 2);
             }
         }
 
