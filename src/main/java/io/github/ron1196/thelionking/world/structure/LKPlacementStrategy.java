@@ -21,10 +21,10 @@ public abstract class LKPlacementStrategy {
         static final LKPlacementStrategy DEFAULT = new NoFluidStrategy();
 
         static final Map<String, LKPlacementStrategy> STRATEGIES = Map.of(
-                "rafiki_tree", new FourCornersStrategy(6),
+                "rafiki_tree", new FourCornersStrategy(3),
                 "zira_mound", new AboveSeaLevelStrategy(),
                 "treasure_mound", new AboveSeaLevelStrategy(),
-                "ticket_booth", new AboveSeaLevelStrategy(),
+                "ticket_booth", new NoFluidStrategy(),
                 "timon_pumbaa_lodge", new AboveSeaLevelStrategy()
         );
     }
@@ -58,7 +58,7 @@ public abstract class LKPlacementStrategy {
             int h2 = getHeight(context, x + radius, z - radius);
             int h3 = getHeight(context, x - radius, z + radius);
             int h4 = getHeight(context, x + radius, z + radius);
-            return Math.min(Math.min(h1, h2), Math.min(h3, h4)) > seaLevel;
+            return Math.min(Math.min(h1, h2), Math.min(h3, h4)) >= seaLevel;
         }
     }
 

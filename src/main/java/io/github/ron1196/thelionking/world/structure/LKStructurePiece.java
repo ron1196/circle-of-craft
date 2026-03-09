@@ -16,12 +16,18 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Optional;
 
 /**
  * A structure piece that delegates building to an existing Feature class.
  */
 public class LKStructurePiece extends StructurePiece {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LKStructurePiece.class);
 
     private final ResourceLocation featureId;
 
@@ -43,16 +49,24 @@ public class LKStructurePiece extends StructurePiece {
     }
 
     @Override
-    public void postProcess(WorldGenLevel level, StructureManager structureManager,
-                            ChunkGenerator generator, RandomSource random,
-                            BoundingBox box, ChunkPos chunkPos, BlockPos pos) {
-        // Only run once — when the origin chunk is being processed
-        // postProcess is called for every chunk the bounding box overlaps
+    public void postProcess(
+            @NotNull WorldGenLevel level,
+            @NotNull StructureManager structureManager,
+            @NotNull ChunkGenerator generator,
+            @NotNull RandomSource random,
+            @NotNull BoundingBox box,
+            ChunkPos chunkPos,
+            @NotNull BlockPos pos
+    ) {
+        // run once for structure — postProcess is called for every chunk the bounding box overlaps
         int originX = (this.boundingBox.minX() + this.boundingBox.maxX()) / 2;
         int originZ = (this.boundingBox.minZ() + this.boundingBox.maxZ()) / 2;
-        if (chunkPos.x != (originX >> 4) || chunkPos.z != (originZ >> 4)) return;
+        boolean isOriginChunk = chunkPos.x == (originX >> 4) && chunkPos.z == (originZ >> 4);
+        if (!isOriginChunk) return;
 
         Feature<NoneFeatureConfiguration> feature = resolveFeature();
+        LOGGER.info("[LKPiece] {} — feature: {}, pos={}", featureId.getPath(),
+                feature != null ? feature.getClass().getSimpleName() : "NULL", pos);
         if (feature == null) return;
 
         FeaturePlaceContext<NoneFeatureConfiguration> context = new FeaturePlaceContext<>(

@@ -9,6 +9,9 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Optional;
 
 /**
@@ -16,6 +19,8 @@ import java.util.Optional;
  * The actual building is done by LKStructurePiece which delegates to existing Feature classes.
  */
 public class LKCodeStructure extends Structure {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LKCodeStructure.class);
 
     public static final Codec<LKCodeStructure> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
@@ -47,14 +52,22 @@ public class LKCodeStructure extends Structure {
         String path = featureId.getPath();
 
         // Per-structure terrain validation
-        if (!isValidPlacement(context, path, x, y, z)) {
+        boolean valid = isValidPlacement(context, path, x, y, z);
+        LOGGER.info("[LKStructure] {} at ({}, {}, {}) — placement {}", path, x, y, z, valid ? "ACCEPTED" : "REJECTED");
+        if (!valid) {
             return Optional.empty();
         }
 
         BlockPos pos = new BlockPos(x, y, z);
 
-        return Optional.of(new GenerationStub(pos, builder ->
-                builder.addPiece(new LKStructurePiece(pos, featureId))));
+        return Optional.of(
+                new GenerationStub(
+                        pos,
+                        builder -> builder.addPiece(
+                                new LKStructurePiece(pos, featureId)
+                        )
+                )
+        );
     }
 
     private boolean isValidPlacement(GenerationContext context, String path, int x, int y, int z) {
