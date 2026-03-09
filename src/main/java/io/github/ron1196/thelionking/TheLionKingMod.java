@@ -10,9 +10,11 @@ import io.github.ron1196.thelionking.registry.LKFeatures;
 import io.github.ron1196.thelionking.registry.LKItems;
 import io.github.ron1196.thelionking.registry.LKMenuTypes;
 import io.github.ron1196.thelionking.registry.LKSoundEvents;
+import io.github.ron1196.thelionking.network.LKNetworking;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
@@ -35,8 +37,14 @@ public class TheLionKingMod {
         LKSoundEvents.SOUND_EVENTS.register(modEventBus);
         LKCreativeTabs.TABS.register(modEventBus);
 
+        modEventBus.addListener(this::commonSetup);
+
         MinecraftForge.EVENT_BUS.register(this);
 
         LOGGER.info("The Lion King Mod is loading!");
+    }
+
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(LKNetworking::register);
     }
 }
