@@ -5,6 +5,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -42,6 +44,13 @@ public class LKCodeStructure extends Structure {
         int z = chunkPos.getMiddleBlockZ();
         int y = context.chunkGenerator().getFirstOccupiedHeight(
                 x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
+
+        // Reject if surface is water/ocean
+        NoiseColumn column = context.chunkGenerator().getBaseColumn(x, z, context.heightAccessor(), context.randomState());
+        BlockState surfaceState = column.getBlock(y - 1);
+        if (!surfaceState.getFluidState().isEmpty()) {
+            return Optional.empty();
+        }
 
         BlockPos pos = new BlockPos(x, y, z);
 
