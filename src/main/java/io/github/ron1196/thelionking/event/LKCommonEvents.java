@@ -34,6 +34,9 @@ public class LKCommonEvents {
         event.put(LKEntityTypes.CROCODILE.get(), CrocodileEntity.createAttributes().build());
         event.put(LKEntityTypes.TERMITE.get(), TermiteEntity.createAttributes().build());
 
+        // Ticket Lion
+        event.put(LKEntityTypes.TICKET_LION.get(), io.github.ron1196.thelionking.entity.npc.TicketLionEntity.createAttributes().build());
+
         // NPC entities
         event.put(LKEntityTypes.RAFIKI.get(), RafikiEntity.createAttributes().build());
         event.put(LKEntityTypes.SIMBA.get(), SimbaEntity.createAttributes().build());

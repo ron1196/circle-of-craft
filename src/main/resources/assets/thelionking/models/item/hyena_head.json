@@ -1,3 +1,3 @@
 {
-  "parent": "thelionking:block/hyena_head"
+  "parent": "minecraft:builtin/entity"
 }

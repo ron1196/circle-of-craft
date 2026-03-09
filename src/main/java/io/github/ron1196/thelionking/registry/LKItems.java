@@ -398,7 +398,8 @@ public class LKItems {
             () -> new net.minecraft.world.item.ItemNameBlockItem(LKBlocks.MAIZE_CROP.get(), new Item.Properties()));
 
     // Decorative block entities
-    public static final RegistryObject<BlockItem> HYENA_HEAD_ITEM = registerBlockItem("hyena_head", LKBlocks.HYENA_HEAD);
+    public static final RegistryObject<BlockItem> HYENA_HEAD_ITEM = ITEMS.register("hyena_head",
+            () -> new io.github.ron1196.thelionking.item.HyenaHeadBlockItem(LKBlocks.HYENA_HEAD.get(), new Item.Properties()));
     public static final RegistryObject<BlockItem> FUR_RUG_ITEM = registerBlockItem("fur_rug", LKBlocks.FUR_RUG);
 
     // ========== Outlands Armor ==========
@@ -481,6 +482,10 @@ public class LKItems {
     public static final RegistryObject<Item> TERMITE_SPAWN_EGG = ITEMS.register("termite_spawn_egg",
             () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.TERMITE, 0xD2B48C, 0x8B6914, new Item.Properties()));
 
+    // ========== Ticket Lion Spawn Egg ==========
+    public static final RegistryObject<Item> TICKET_LION_SPAWN_EGG = ITEMS.register("ticket_lion_spawn_egg",
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.TICKET_LION, 0xD4A030, 0x4169E1, new Item.Properties()));
+
     // ========== NPC Spawn Eggs ==========
     public static final RegistryObject<Item> RAFIKI_SPAWN_EGG = ITEMS.register("rafiki_spawn_egg",
             () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.RAFIKI, 0x8B4513, 0xFFD700, new Item.Properties()));
@@ -503,6 +508,12 @@ public class LKItems {
     public static final RegistryObject<BlockItem> LK_SPAWNER_ITEM = registerBlockItem("lk_spawner", LKBlocks.LK_SPAWNER);
 
     // ========== Quest / NPC Items ==========
+    public static final RegistryObject<Item> QUEST_BOOK = ITEMS.register("quest_book",
+            () -> new io.github.ron1196.thelionking.item.QuestBookItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> TICKET = ITEMS.register("ticket",
+            () -> new io.github.ron1196.thelionking.item.TicketItem(new Item.Properties()));
+
     public static final RegistryObject<Item> STAFF = ITEMS.register("staff",
             () -> new Item(new Item.Properties().stacksTo(1)));
 

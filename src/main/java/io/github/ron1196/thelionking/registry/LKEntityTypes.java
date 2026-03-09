@@ -101,6 +101,11 @@ public class LKEntityTypes {
             () -> EntityType.Builder.of(TermiteEntity::new, MobCategory.MONSTER)
                     .sized(0.4F, 0.4F).clientTrackingRange(8).build("termite"));
 
+    // ========== Ticket Lion ==========
+    public static final RegistryObject<EntityType<io.github.ron1196.thelionking.entity.npc.TicketLionEntity>> TICKET_LION = ENTITY_TYPES.register("ticket_lion",
+            () -> EntityType.Builder.of(io.github.ron1196.thelionking.entity.npc.TicketLionEntity::new, MobCategory.CREATURE)
+                    .sized(1.3F, 1.6F).clientTrackingRange(10).build("ticket_lion"));
+
     // ========== NPC Entities ==========
     public static final RegistryObject<EntityType<RafikiEntity>> RAFIKI = ENTITY_TYPES.register("rafiki",
             () -> EntityType.Builder.of(RafikiEntity::new, MobCategory.CREATURE)

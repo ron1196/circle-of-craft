@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.entity.npc;
 
+import io.github.ron1196.thelionking.data.LKLevelData;
 import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
 import io.github.ron1196.thelionking.quest.LKQuestBase;
 import io.github.ron1196.thelionking.registry.LKItems;
@@ -64,6 +65,16 @@ public class RafikiEntity extends PathfinderMob {
 
         int questStage = LKQuestBase.RAFIKI_QUEST.getQuestStage();
         ItemStack held = player.getItemInHand(hand);
+
+        // Give quest book on first meeting
+        if (level() instanceof ServerLevel serverLevel) {
+            LKLevelData data = LKLevelData.get(serverLevel);
+            if (!data.receivedQuestBook) {
+                data.receivedQuestBook = true;
+                data.setDirty();
+                player.addItem(new ItemStack(LKItems.QUEST_BOOK.get()));
+            }
+        }
 
         // Stage 0: First meeting
         if (questStage == 0) {

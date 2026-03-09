@@ -296,13 +296,20 @@ public class LKCreativeTabs {
                         output.accept(LKItems.PUMBAA_SPAWN_EGG.get());
                         output.accept(LKItems.SCAR_SPAWN_EGG.get());
                         output.accept(LKItems.ZIRA_SPAWN_EGG.get());
+                        output.accept(LKItems.TICKET_LION_SPAWN_EGG.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> QUEST_TAB = TABS.register("quest",
             () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.thelionking.quest"))
-                    .icon(() -> new ItemStack(LKItems.CRYSTAL.get()))
+                    .icon(() -> new ItemStack(LKItems.QUEST_BOOK.get()))
                     .displayItems((params, output) -> {
+                        output.accept(LKItems.QUEST_BOOK.get());
+                        output.accept(LKItems.TICKET.get());
                         output.accept(LKItems.STAFF.get());
+                        output.accept(LKItems.RAFIKI_COIN.get());
+                        output.accept(LKItems.ZIRA_COIN.get());
+                        output.accept(LKItems.WAYWARD_FEATHER.get());
+                        output.accept(LKItems.CRYSTAL.get());
                     }).build());
 }

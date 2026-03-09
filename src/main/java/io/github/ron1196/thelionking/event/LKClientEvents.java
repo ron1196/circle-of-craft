@@ -53,6 +53,9 @@ public class LKClientEvents {
     public static final ModelLayerLocation SCAR_LAYER = layer("scar");
     public static final ModelLayerLocation ZIRA_LAYER = layer("zira");
 
+    // Ticket Lion (uses lion mesh)
+    public static final ModelLayerLocation TICKET_LION_LAYER = layer("ticket_lion");
+
     // Block entity layers
     public static final ModelLayerLocation HYENA_HEAD_LAYER = layer("hyena_head");
 
@@ -91,6 +94,9 @@ public class LKClientEvents {
         event.registerLayerDefinition(SCAR_LAYER, LionModel::createBodyLayer);
         event.registerLayerDefinition(ZIRA_LAYER, OutlanderModel::createBodyLayer);
 
+        // Ticket Lion (lion mesh)
+        event.registerLayerDefinition(TICKET_LION_LAYER, LionModel::createBodyLayer);
+
         // Block entity layers
         event.registerLayerDefinition(HYENA_HEAD_LAYER,
                 io.github.ron1196.thelionking.client.renderer.HyenaHeadBlockEntityRenderer::createHeadLayer);
@@ -112,7 +118,7 @@ public class LKClientEvents {
         event.registerEntityRenderer(LKEntityTypes.GEMSBOK.get(),
                 ctx -> new LKAnimalRenderer<>(ctx, new GemsbokModel<>(ctx.bakeLayer(GEMSBOK_LAYER)), "gemsbok", 0.6F));
         event.registerEntityRenderer(LKEntityTypes.DIKDIK.get(),
-                ctx -> new LKAnimalRenderer<>(ctx, new DikDikModel<>(ctx.bakeLayer(DIKDIK_LAYER)), "dikdik", 0.3F));
+                ctx -> new io.github.ron1196.thelionking.client.renderer.DikDikRenderer(ctx, new DikDikModel<>(ctx.bakeLayer(DIKDIK_LAYER)), 0.3F));
         event.registerEntityRenderer(LKEntityTypes.FLAMINGO.get(),
                 ctx -> new LKAnimalRenderer<>(ctx, new FlamingoModel<>(ctx.bakeLayer(FLAMINGO_LAYER)), "flamingo", 0.3F));
         event.registerEntityRenderer(LKEntityTypes.ZAZU.get(),
@@ -122,7 +128,7 @@ public class LKClientEvents {
 
         // Hostile
         event.registerEntityRenderer(LKEntityTypes.HYENA.get(),
-                ctx -> new LKMobRenderer<>(ctx, new HyenaModel<>(ctx.bakeLayer(HYENA_LAYER)), "hyena", 0.5F));
+                ctx -> new io.github.ron1196.thelionking.client.renderer.HyenaRenderer(ctx, new HyenaModel<>(ctx.bakeLayer(HYENA_LAYER)), 0.5F));
         event.registerEntityRenderer(LKEntityTypes.SKELETAL_HYENA.get(),
                 ctx -> new LKMobRenderer<>(ctx, new HyenaModel<>(ctx.bakeLayer(SKELETAL_HYENA_LAYER)), "skeletal_hyena", 0.5F));
         event.registerEntityRenderer(LKEntityTypes.OUTLANDER.get(),
@@ -149,6 +155,10 @@ public class LKClientEvents {
                 ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(SCAR_LAYER)), "scar", 0.7F));
         event.registerEntityRenderer(LKEntityTypes.ZIRA.get(),
                 ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(ZIRA_LAYER)), "zira", 0.5F, 0.5F));
+
+        // Ticket Lion
+        event.registerEntityRenderer(LKEntityTypes.TICKET_LION.get(),
+                ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(TICKET_LION_LAYER)), "ticket_lion", 0.7F));
 
         // Projectiles
         event.registerEntityRenderer(LKEntityTypes.DART.get(),
@@ -190,6 +200,18 @@ public class LKClientEvents {
             MenuScreens.register(LKMenuTypes.GRINDING_BOWL_MENU.get(), GrindingBowlScreen::new);
             MenuScreens.register(LKMenuTypes.BUG_TRAP_MENU.get(), BugTrapScreen::new);
             MenuScreens.register(LKMenuTypes.BONGO_DRUM_MENU.get(), BongoDrumScreen::new);
+
+            // Hyena head item variant property
+            net.minecraft.client.renderer.item.ItemProperties.register(
+                    io.github.ron1196.thelionking.registry.LKItems.HYENA_HEAD_ITEM.get(),
+                    new ResourceLocation(TheLionKingMod.MOD_ID, "hyena_type"),
+                    (stack, level, entity, seed) -> {
+                        net.minecraft.nbt.CompoundTag tag = stack.getTag();
+                        if (tag != null && tag.contains("BlockEntityTag")) {
+                            return tag.getCompound("BlockEntityTag").getInt("HyenaType");
+                        }
+                        return 0.0F;
+                    });
         });
     }
 }

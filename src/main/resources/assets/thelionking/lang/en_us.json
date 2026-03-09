@@ -269,5 +269,10 @@
   "item.thelionking.timon_spawn_egg": "Timon Spawn Egg",
   "item.thelionking.pumbaa_spawn_egg": "Pumbaa Spawn Egg",
   "item.thelionking.scar_spawn_egg": "Scar Spawn Egg",
-  "item.thelionking.zira_spawn_egg": "Zira Spawn Egg"
+  "item.thelionking.zira_spawn_egg": "Zira Spawn Egg",
+
+  "item.thelionking.quest_book": "Quest Book",
+  "item.thelionking.ticket": "Lion King Ticket",
+  "entity.thelionking.ticket_lion": "Ticket Lion",
+  "item.thelionking.ticket_lion_spawn_egg": "Ticket Lion Spawn Egg"
 }

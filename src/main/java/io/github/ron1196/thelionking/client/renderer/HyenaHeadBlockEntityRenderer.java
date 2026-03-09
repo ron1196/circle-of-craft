@@ -19,8 +19,12 @@ import net.minecraft.resources.ResourceLocation;
 
 public class HyenaHeadBlockEntityRenderer implements BlockEntityRenderer<HyenaHeadBlockEntity> {
 
-    private static final ResourceLocation TEXTURE =
-            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena.png");
+    private static final ResourceLocation[] TEXTURES = {
+            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_0.png"),
+            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_1.png"),
+            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_2.png"),
+            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/skeletal_hyena.png")
+    };
 
     private final ModelPart head;
 
@@ -63,7 +67,9 @@ public class HyenaHeadBlockEntityRenderer implements BlockEntityRenderer<HyenaHe
         // Move head down (in flipped space, this moves it up visually)
         poseStack.translate(0.0F, -0.25F, 0.0F);
 
-        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
+        int hyenaType = blockEntity.getHyenaType();
+        if (hyenaType < 0 || hyenaType >= TEXTURES.length) hyenaType = 0;
+        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURES[hyenaType]));
         head.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
         poseStack.popPose();
