@@ -1,113 +1,113 @@
 # The Lion King Mod — NeoForge 1.20.1
 
-## Project Overview
+## Quick Reference
 
-A massive total-conversion Minecraft mod ported from 1.6.4 Forge to 1.20.1 NeoForge.
-Original code: `old/code/`, Original assets: `old/assets/`.
-
-## Stack
-
-- **Minecraft:** 1.20.1
-- **Mod Loader:** NeoForge 47.1.x
-- **Java:** 17
-- **Build:** Gradle 8.1.1 with NeoGradle
-- **Mappings:** Official (Mojang)
 - **Mod ID:** `thelionking`
 - **Package:** `io.github.ron1196.thelionking`
-
-## Key Conventions
-
-### Registration Pattern
-Use `DeferredRegister` for all registries. Register in dedicated classes under `registry/`:
-```java
-public class LKBlocks {
-    public static final DeferredRegister<Block> BLOCKS =
-        DeferredRegister.create(ForgeRegistries.BLOCKS, TheLionKingMod.MOD_ID);
-    public static final RegistryObject<Block> PRIDESTONE = BLOCKS.register("pridestone",
-        () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(1.5F, 10.0F)));
-}
-```
-Register the DeferredRegister to the mod event bus in the main mod class constructor.
-
-### Naming
-- Block/item registry names: `snake_case` (e.g., `corrupt_pridestone`, `mango_planks`)
-- Java classes: `PascalCase` with `LK` prefix for mod-specific base classes
-- Package structure follows the plan in the project spec
-
-### Metadata Splitting
-Old metadata blocks become separate block IDs. Example:
-- `pridestone` meta 0,1 → `pridestone`, `corrupt_pridestone`
-- `planks` meta 0-5 → `acacia_planks`, `rainforest_planks`, `mango_planks`, `passion_planks`, `banana_planks`, `deadwood_planks`
-
-### Data Files Per Block
-Each block needs: blockstate JSON, block model JSON, item model JSON, loot table JSON, lang entry.
-Recipes go in `data/thelionking/recipes/`.
-
-### Asset Paths
-- Block textures: `assets/thelionking/textures/block/`
-- Item textures: `assets/thelionking/textures/item/`
-- Entity textures: `assets/thelionking/textures/entity/`
-- GUI textures: `assets/thelionking/textures/gui/`
-- Sounds: `assets/thelionking/sounds/`
-  - Entity sounds: `sounds/entity/<mob_name>/`
-  - Block sounds: `sounds/block/`
-  - Item sounds: `sounds/item/`
-  - Music: `sounds/music/`
-
-### Old Code Reference
-- Main class (all registrations): `old/code/common/mod_LionKing.java`
-- Entity AI template: `old/code/common/LKEntityLionBase.java`
-- Block entity template: `old/code/common/LKTileEntityGrindingBowl.java`
-- Biome template: `old/code/common/LKPrideLandsBiome.java`
-- Quest system: `old/code/common/LKQuestBase.java`
+- **Minecraft:** 1.20.1 | **NeoForge:** 47.1.x | **Java:** 17
+- **Mappings:** Official (Mojang)
 
 ## Build & Run
 
 ```bash
+export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
 ./gradlew build          # Build the mod JAR
+./gradlew compileJava    # Compile only (fast check)
 ./gradlew runClient      # Launch Minecraft with the mod
 ./gradlew runServer      # Launch dedicated server
 ./gradlew runData        # Run data generators
 ```
 
-## Phase Plan
+## Code Conventions
 
-- [x] Phase 0: Project skeleton — mod loads in-game
-- [x] Phase 1: Core blocks, items, tool tiers, creative tabs
-- [x] Phase 2: Wood types, nature blocks, crops
-- [x] Phase 3: Passive entities (lions, zebras, giraffes, etc.)
-- [x] Phase 4: Hostile entities, combat items, armor, enchantments
-- [x] Phase 5: Block entities, GUIs, custom recipes
-- [x] Phase 6: NPCs, quest system, dialogue
-- [x] Phase 7: Dimensions, world generation, biomes, portals
-- [x] Phase 8: Sounds, music, advancements, polish
+### Registration
+All registries use `DeferredRegister` in dedicated classes under `registry/`. Register to the mod event bus in `TheLionKingMod` constructor.
 
-## Package Structure
+```java
+public static final DeferredRegister<Block> BLOCKS =
+    DeferredRegister.create(ForgeRegistries.BLOCKS, TheLionKingMod.MOD_ID);
+public static final RegistryObject<Block> PRIDESTONE = BLOCKS.register("pridestone",
+    () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(1.5F, 10.0F)));
+```
+
+### Naming
+- Registry names: `snake_case` (e.g., `corrupt_pridestone`, `mango_planks`)
+- Java classes: `PascalCase`, prefix `LK` for mod-specific base classes (e.g., `LKAnimal`, `LKPortalBlock`)
+
+### Data Files Per Block
+Each block needs: blockstate JSON, block model JSON, item model JSON, loot table JSON, lang entry. Recipes go in `data/thelionking/recipes/`.
+
+### Workaround Policy
+**Never use temporary workarounds without tracking them.** Every "for now" substitution must be recorded in `TODO_WORKAROUNDS.md`.
+
+## Project Structure
 
 ```
-io.github.ron1196.thelionking/
-├── TheLionKingMod.java
-├── registry/          — DeferredRegister classes
-├── block/             — Block subclasses
-├── block/entity/      — BlockEntity classes
-├── item/              — Item subclasses
-├── item/tier/         — Tool tiers, armor materials
-├── entity/animal/     — Passive mobs
-├── entity/hostile/    — Hostile mobs
-├── entity/npc/        — Named NPCs
-├── entity/projectile/ — Darts, spears, bombs
-├── entity/ai/         — Custom AI goals
-├── world/dimension/   — ChunkGenerators, Teleporter
-├── world/feature/     — Custom worldgen features
-├── quest/             — Quest system
-├── data/              — SavedData, custom recipes
-├── menu/              — Container menus
-├── network/           — Packet handling
-├── event/             — Event handlers
-└── client/            — Client-only code
-    ├── gui/           — Screens
-    ├── model/         — Entity models
-    ├── renderer/      — Entity & block entity renderers
-    ├── particle/      — Custom particles
-    └── sound/         — Music handler
+src/main/java/io/github/ron1196/thelionking/
+  TheLionKingMod.java        — Main mod class, event bus registration
+  registry/                  — DeferredRegister classes (LKBlocks, LKItems, LKEntityTypes, etc.)
+  block/                     — Block subclasses
+  block/entity/              — BlockEntity classes
+  item/                      — Item subclasses
+  item/tier/                 — LKToolTiers, LKArmorMaterials
+  entity/animal/             — Passive mobs (LKAnimal base class)
+  entity/hostile/            — Hostile mobs
+  entity/npc/                — Named NPCs (Rafiki, Simba, etc.)
+  entity/projectile/         — Darts, spears, bombs
+  entity/ai/                 — Custom AI goals
+  world/dimension/           — Teleporter
+  world/feature/             — Custom worldgen features
+  quest/                     — Quest system (LKQuestBase, LKQuestRafiki, LKQuestOutlands)
+  data/                      — LKLevelData (SavedData), custom recipes
+  menu/                      — Container menus
+  network/                   — Packet handling (not yet implemented)
+  event/                     — Event handlers (LKCommonEvents, LKClientEvents)
+  client/gui/                — Screens
+  client/model/              — Entity models
+  client/renderer/           — Entity & block entity renderers
+  client/sound/              — Music handler
+
+src/main/resources/
+  assets/thelionking/
+    blockstates/             — Blockstate JSONs
+    lang/en_us.json          — All translations
+    models/block/            — Block model JSONs
+    models/item/             — Item model JSONs
+    sounds.json              — Sound event definitions
+    sounds/entity/<mob>/     — Entity sound files
+    sounds/block/            — Block sound files
+    sounds/item/             — Item sound files
+    sounds/music/            — Music tracks (streamed)
+    textures/block/          — Block textures
+    textures/item/           — Item textures
+    textures/entity/         — Entity textures
+    textures/gui/            — GUI textures
+  data/thelionking/
+    advancements/            — 33 advancement JSONs
+    dimension/               — 3 dimensions (pride_lands, outlands, upendi)
+    dimension_type/          — Dimension type configs
+    loot_tables/             — Block & entity loot tables
+    recipes/                 — Smelting/cooking recipes
+    worldgen/biome/          — 14 biome JSONs
+    worldgen/configured_feature/
+    worldgen/placed_feature/
 ```
+
+## Key Files
+
+| File                          | Purpose                                  |
+|-------------------------------|------------------------------------------|
+| `registry/LKBlocks.java`     | All block registrations                  |
+| `registry/LKItems.java`      | All item registrations + block items     |
+| `registry/LKEntityTypes.java`| All entity type registrations            |
+| `registry/LKSoundEvents.java`| Sound event registrations                |
+| `event/LKCommonEvents.java`  | Entity attribute registration            |
+| `event/LKClientEvents.java`  | Renderers, models, GUI screens           |
+| `data/LKLevelData.java`      | World-level saved data (quests, state)   |
+| `sounds.json`                | Maps sound event names to file paths     |
+| `lang/en_us.json`            | All translatable strings                 |
+
+## Related Docs
+
+- `docs/MIGRATION_AUDIT.md` — Full audit of what's ported vs missing, with priority roadmap
+- `TODO_WORKAROUNDS.md` — Tracked temporary substitutions and placeholder items

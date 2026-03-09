@@ -6,7 +6,7 @@
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
-    "background": "thelionking:textures/gui/advancements_background.png"
+    "background": "thelionking:textures/block/pridestone.png"
   },
   "criteria": {
     "enter": {
