@@ -2,150 +2,150 @@
   "entity.lion.ambient": {
     "subtitle": "subtitles.thelionking.entity.lion.ambient",
     "sounds": [
-      "thelionking:lion"
+      "thelionking:entity/lion/lion"
     ]
   },
   "entity.lion.angry": {
     "subtitle": "subtitles.thelionking.entity.lion.angry",
     "sounds": [
-      "thelionking:lion_angry"
+      "thelionking:entity/lion/lion_angry"
     ]
   },
   "entity.lion.roar": {
     "subtitle": "subtitles.thelionking.entity.lion.roar",
     "sounds": [
-      "thelionking:lion_roar"
+      "thelionking:entity/lion/lion_roar"
     ]
   },
   "entity.lion.death": {
     "subtitle": "subtitles.thelionking.entity.lion.death",
     "sounds": [
-      "thelionking:lion_death"
+      "thelionking:entity/lion/lion_death"
     ]
   },
   "entity.zebra.ambient": {
     "subtitle": "subtitles.thelionking.entity.zebra.ambient",
     "sounds": [
-      "thelionking:zebra"
+      "thelionking:entity/zebra/zebra"
     ]
   },
   "entity.zebra.hurt": {
     "subtitle": "subtitles.thelionking.entity.zebra.hurt",
     "sounds": [
-      "thelionking:zebra_hurt"
+      "thelionking:entity/zebra/zebra_hurt"
     ]
   },
   "entity.zebra.death": {
     "subtitle": "subtitles.thelionking.entity.zebra.death",
     "sounds": [
-      "thelionking:zebra_death"
+      "thelionking:entity/zebra/zebra_death"
     ]
   },
   "entity.rhino.ambient": {
     "subtitle": "subtitles.thelionking.entity.rhino.ambient",
     "sounds": [
-      "thelionking:rhino"
+      "thelionking:entity/rhino/rhino"
     ]
   },
   "entity.rhino.hurt": {
     "subtitle": "subtitles.thelionking.entity.rhino.hurt",
     "sounds": [
-      "thelionking:rhino_hurt"
+      "thelionking:entity/rhino/rhino_hurt"
     ]
   },
   "entity.rhino.death": {
     "subtitle": "subtitles.thelionking.entity.rhino.death",
     "sounds": [
-      "thelionking:rhino_death"
+      "thelionking:entity/rhino/rhino_death"
     ]
   },
   "entity.zazu.ambient": {
     "subtitle": "subtitles.thelionking.entity.zazu.ambient",
     "sounds": [
-      "thelionking:zazu_live"
+      "thelionking:entity/zazu/zazu_live"
     ]
   },
   "entity.zazu.hurt": {
     "subtitle": "subtitles.thelionking.entity.zazu.hurt",
     "sounds": [
-      "thelionking:zazu_hurt"
+      "thelionking:entity/zazu/zazu_hurt"
     ]
   },
   "entity.crocodile.ambient": {
     "subtitle": "subtitles.thelionking.entity.crocodile.ambient",
     "sounds": [
-      "thelionking:crocodile"
+      "thelionking:entity/crocodile/crocodile"
     ]
   },
   "entity.crocodile.snap": {
     "subtitle": "subtitles.thelionking.entity.crocodile.snap",
     "sounds": [
-      "thelionking:crocodile_snap"
+      "thelionking:entity/crocodile/crocodile_snap"
     ]
   },
   "entity.crocodile.death": {
     "subtitle": "subtitles.thelionking.entity.crocodile.death",
     "sounds": [
-      "thelionking:crocodile_death"
+      "thelionking:entity/crocodile/crocodile_death"
     ]
   },
   "entity.vulture.ambient": {
     "subtitle": "subtitles.thelionking.entity.vulture.ambient",
     "sounds": [
-      "thelionking:vulture"
+      "thelionking:entity/vulture/vulture"
     ]
   },
   "entity.vulture.hurt": {
     "subtitle": "subtitles.thelionking.entity.vulture.hurt",
     "sounds": [
-      "thelionking:vulture_hurt"
+      "thelionking:entity/vulture/vulture_hurt"
     ]
   },
   "entity.rafiki_bird.ambient": {
     "subtitle": "subtitles.thelionking.entity.rafiki_bird.ambient",
     "sounds": [
-      "thelionking:rafiki",
-      "thelionking:rafiki1",
-      "thelionking:rafiki2",
-      "thelionking:rafiki3"
+      "thelionking:entity/rafiki/rafiki",
+      "thelionking:entity/rafiki/rafiki1",
+      "thelionking:entity/rafiki/rafiki2",
+      "thelionking:entity/rafiki/rafiki3"
     ]
   },
   "entity.flamingo.ambient": {
     "subtitle": "subtitles.thelionking.entity.flamingo.ambient",
     "sounds": [
-      "thelionking:flamingo",
-      "thelionking:flamingo1"
+      "thelionking:entity/flamingo/flamingo",
+      "thelionking:entity/flamingo/flamingo1"
     ]
   },
   "entity.flamingo.hurt": {
     "subtitle": "subtitles.thelionking.entity.flamingo.hurt",
     "sounds": [
-      "thelionking:flamingo_hurt",
-      "thelionking:flamingo_hurt1"
+      "thelionking:entity/flamingo/flamingo_hurt",
+      "thelionking:entity/flamingo/flamingo_hurt1"
     ]
   },
   "entity.flamingo.death": {
     "subtitle": "subtitles.thelionking.entity.flamingo.death",
     "sounds": [
-      "thelionking:flamingo_death"
+      "thelionking:entity/flamingo/flamingo_death"
     ]
   },
   "block.bongo_drum.hit": {
     "subtitle": "subtitles.thelionking.block.bongo_drum.hit",
     "sounds": [
-      "thelionking:bongo"
+      "thelionking:block/bongo"
     ]
   },
   "item.flatulence": {
     "subtitle": "subtitles.thelionking.item.flatulence",
     "sounds": [
-      "thelionking:flatulence"
+      "thelionking:item/flatulence"
     ]
   },
   "item.pop": {
     "subtitle": "subtitles.thelionking.item.pop",
     "sounds": [
-      "thelionking:pop"
+      "thelionking:item/pop"
     ]
   },
   "music.circle_of_life": {

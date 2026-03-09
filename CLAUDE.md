@@ -49,6 +49,10 @@ Recipes go in `data/thelionking/recipes/`.
 - Entity textures: `assets/thelionking/textures/entity/`
 - GUI textures: `assets/thelionking/textures/gui/`
 - Sounds: `assets/thelionking/sounds/`
+  - Entity sounds: `sounds/entity/<mob_name>/`
+  - Block sounds: `sounds/block/`
+  - Item sounds: `sounds/item/`
+  - Music: `sounds/music/`
 
 ### Old Code Reference
 - Main class (all registrations): `old/code/common/mod_LionKing.java`
@@ -69,14 +73,14 @@ Recipes go in `data/thelionking/recipes/`.
 ## Phase Plan
 
 - [x] Phase 0: Project skeleton — mod loads in-game
-- [ ] Phase 1: Core blocks, items, tool tiers, creative tabs
-- [ ] Phase 2: Wood types, nature blocks, crops
-- [ ] Phase 3: Passive entities (lions, zebras, giraffes, etc.)
-- [ ] Phase 4: Hostile entities, combat items, armor, enchantments
-- [ ] Phase 5: Block entities, GUIs, custom recipes
-- [ ] Phase 6: NPCs, quest system, dialogue
-- [ ] Phase 7: Dimensions, world generation, biomes, portals
-- [ ] Phase 8: Sounds, music, advancements, polish
+- [x] Phase 1: Core blocks, items, tool tiers, creative tabs
+- [x] Phase 2: Wood types, nature blocks, crops
+- [x] Phase 3: Passive entities (lions, zebras, giraffes, etc.)
+- [x] Phase 4: Hostile entities, combat items, armor, enchantments
+- [x] Phase 5: Block entities, GUIs, custom recipes
+- [x] Phase 6: NPCs, quest system, dialogue
+- [x] Phase 7: Dimensions, world generation, biomes, portals
+- [x] Phase 8: Sounds, music, advancements, polish
 
 ## Package Structure
 
