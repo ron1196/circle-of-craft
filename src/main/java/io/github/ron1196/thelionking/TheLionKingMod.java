@@ -6,6 +6,7 @@ import io.github.ron1196.thelionking.registry.LKBlocks;
 import io.github.ron1196.thelionking.registry.LKCreativeTabs;
 import io.github.ron1196.thelionking.registry.LKEnchantments;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.LKFeatures;
 import io.github.ron1196.thelionking.registry.LKItems;
 import io.github.ron1196.thelionking.registry.LKMenuTypes;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,6 +30,7 @@ public class TheLionKingMod {
         LKEntityTypes.ENTITY_TYPES.register(modEventBus);
         LKMenuTypes.MENU_TYPES.register(modEventBus);
         LKEnchantments.ENCHANTMENTS.register(modEventBus);
+        LKFeatures.FEATURES.register(modEventBus);
         LKCreativeTabs.TABS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);

@@ -43,7 +43,7 @@
     [],
     [],
     [],
-    ["minecraft:trees_jungle"],
+    ["thelionking:rainforest_tree_placed", "thelionking:mango_tree_placed"],
     ["minecraft:patch_tall_grass"],
     [],
     []

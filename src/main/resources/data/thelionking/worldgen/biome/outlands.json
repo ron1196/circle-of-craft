@@ -38,7 +38,7 @@
     [],
     [],
     [],
-    [],
+    ["thelionking:dead_tree_placed", "thelionking:termite_mound_placed"],
     ["minecraft:patch_dead_bush"],
     [],
     []
