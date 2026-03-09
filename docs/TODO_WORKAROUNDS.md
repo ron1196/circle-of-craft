@@ -9,10 +9,7 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 ## Items
 
-- [ ] **Banana Cake item/block not yet implemented**
-  - Original mod had a placeable cake block (`LKBlockBananaCake`) and item (`bananaCake`)
-  - Recipe: milk jars + bananas + zazu egg + wheat (cake-style)
-  - Needs: block class, block entity(?), item, textures, recipe
+- [x] ~~**Banana Cake item/block not yet implemented**~~ — RESOLVED (Phase 12): `BananaCakeBlock`, block item, textures from old mod, blockstate with 7 bite variants
 
 ## Models / Rendering
 
@@ -40,3 +37,43 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 - [x] ~~`passion_fruit` → `kiwano`~~ — DONE: updated to `thelionking:passion_fruit`
 - [x] ~~`animalspeak_amulet` → `crystal`~~ — DONE: updated to `thelionking:amulet`
 - [x] ~~`giraffe_saddle` → `minecraft:saddle`~~ — DONE: updated to `thelionking:giraffe_saddle`
+
+## Placeholder Textures
+
+Items using generated placeholder textures (not from old mod):
+
+- [ ] **`kivulite_hoe`** — Old mod had no kivulite hoe; using generated teal placeholder
+- [ ] **`corrupt_hoe`** — Old mod had no corrupt hoe; using generated purple placeholder
+- [ ] **`mounted_shooter` block textures** — Old mod only had item textures (`mountedShooter_wood.png`, `mountedShooter_silver.png`); block front/side/top are solid-color placeholders
+- [ ] **`outlands_altar` block texture** — No old texture exists; reusing `corrupt_pridestone.png`
+- [ ] **`tilled_sand` item texture** — Generated sandy placeholder; block textures from old mod are correct
+- [ ] **`star_altar` item texture** — Generated placeholder; block textures (side/top) from old mod are correct
+- [ ] **`outlands_altar` item texture** — Generated dark placeholder
+
+## Networking (Not Fully Wired)
+
+Packets are registered and defined, but client-side send triggers are missing:
+
+- [ ] **`SimbaSitPacket`** — Needs client-side right-click handler or keybind to call `LKNetworking.CHANNEL.sendToServer()`
+- [ ] **`QuestSyncPacket`** — Needs server code to send on quest state change via `PacketDistributor.PLAYER`
+- [ ] **`QuestCheckPacket`** — Needs client GUI button to send
+
+## GUIs (Not Fully Wired)
+
+Menu + Screen classes exist but opening triggers are incomplete:
+
+- [ ] **Quiver GUI** — Needs right-click handler on `dart_quiver` item to call `player.openMenu()`
+- [ ] **Timon Merchant GUI** — Needs `player.openMenu()` call in Timon NPC interaction (currently shows chat message only)
+- [ ] **Simba Inventory GUI** — Needs right-click handler on Simba entity to open menu
+
+## Advancement Triggers (Not Fully Wired)
+
+Custom `PlayerTrigger` instances are registered but some are never fired from game events:
+
+- [ ] **`SHOOT_DART`** — Needs `LKCriteriaTriggers.SHOOT_DART.trigger(player)` in dart shooter use code
+- [ ] **`USE_GRINDING_BOWL`** — Needs trigger in `GrindingBowlBlockEntity` when grinding completes
+- [ ] **`RIDE_GIRAFFE`** — Needs trigger when player mounts giraffe
+- [ ] **`PLAY_BONGO_DRUM`** — Needs trigger in bongo drum interaction
+- [ ] **`ENTER_PRIDE_LANDS` / `ENTER_OUTLANDS` / `ENTER_UPENDI`** — Need triggers in player tick when dimension changes
+- [ ] **`BEHEAD_HYENA`** — Needs trigger in `LKForgeEvents.onLivingDeath` when hyena head drops
+- [ ] **`KILL_SCAR` / `KILL_ZIRA`** — Need triggers in death event when Scar/Zira die
