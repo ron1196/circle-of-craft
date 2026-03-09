@@ -14,23 +14,31 @@ public abstract class LKPlacementStrategy {
 
     abstract boolean isValid(GenerationContext context, int x, int y, int z);
 
-    static final LKPlacementStrategy DEFAULT = new NoFluidStrategy();
+    /**
+     * Lazy holder — avoids class loading deadlock from superclass referencing subclasses.
+     */
+    private static class Registry {
+        static final LKPlacementStrategy DEFAULT = new NoFluidStrategy();
 
-    static final Map<String, LKPlacementStrategy> STRATEGIES = Map.of(
-            "rafiki_tree", new FourCornersStrategy(6),
-            "zira_mound", new AboveSeaLevelStrategy(),
-            "treasure_mound", new AboveSeaLevelStrategy(),
-            "ticket_booth", new AboveSeaLevelStrategy(),
-            "timon_pumbaa_lodge", new AboveSeaLevelStrategy()
-    );
+        static final Map<String, LKPlacementStrategy> STRATEGIES = Map.of(
+                "rafiki_tree", new FourCornersStrategy(6),
+                "zira_mound", new AboveSeaLevelStrategy(),
+                "treasure_mound", new AboveSeaLevelStrategy(),
+                "ticket_booth", new AboveSeaLevelStrategy(),
+                "timon_pumbaa_lodge", new AboveSeaLevelStrategy()
+        );
+    }
 
     static LKPlacementStrategy forStructure(String path) {
-        return STRATEGIES.getOrDefault(path, DEFAULT);
+        return Registry.STRATEGIES.getOrDefault(path, Registry.DEFAULT);
     }
 
     static int getHeight(GenerationContext context, int x, int z) {
         return context.chunkGenerator().getFirstOccupiedHeight(
-                x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
+                x, z, Heightmap.Types.WORLD_SURFACE_WG,
+                context.heightAccessor(),
+                context.randomState()
+        );
     }
 
     /**
@@ -71,7 +79,8 @@ public abstract class LKPlacementStrategy {
         @Override
         boolean isValid(GenerationContext context, int x, int y, int z) {
             NoiseColumn column = context.chunkGenerator().getBaseColumn(
-                    x, z, context.heightAccessor(), context.randomState());
+                    x, z, context.heightAccessor(), context.randomState()
+            );
             return column.getBlock(y - 1).getFluidState().isEmpty();
         }
     }
