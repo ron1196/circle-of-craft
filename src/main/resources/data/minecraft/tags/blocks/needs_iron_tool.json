@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "thelionking:silver_ore",
+    "thelionking:peacock_ore",
+    "thelionking:silver_block",
+    "thelionking:peacock_block"
+  ]
+}

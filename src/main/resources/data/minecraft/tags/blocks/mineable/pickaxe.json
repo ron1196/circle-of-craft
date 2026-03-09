@@ -1,0 +1,33 @@
+{
+  "replace": false,
+  "values": [
+    "thelionking:pridestone",
+    "thelionking:corrupt_pridestone",
+    "thelionking:pride_brick",
+    "thelionking:corrupt_pride_brick",
+    "thelionking:mossy_pride_brick",
+    "thelionking:mossy_corrupt_pride_brick",
+    "thelionking:pride_pillar",
+    "thelionking:corrupt_pride_pillar",
+    "thelionking:pride_coal_ore",
+    "thelionking:silver_ore",
+    "thelionking:peacock_ore",
+    "thelionking:silver_block",
+    "thelionking:peacock_block",
+    "thelionking:pridestone_stairs",
+    "thelionking:pride_brick_stairs",
+    "thelionking:corrupt_pridestone_stairs",
+    "thelionking:corrupt_pride_brick_stairs",
+    "thelionking:pridestone_slab",
+    "thelionking:pride_brick_slab",
+    "thelionking:corrupt_pridestone_slab",
+    "thelionking:corrupt_pride_brick_slab",
+    "thelionking:pridestone_wall",
+    "thelionking:pride_brick_wall",
+    "thelionking:corrupt_pridestone_wall",
+    "thelionking:grinding_bowl",
+    "thelionking:lk_spawner",
+    "thelionking:pride_portal_frame",
+    "thelionking:outlands_portal_frame"
+  ]
+}

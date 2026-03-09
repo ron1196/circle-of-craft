@@ -366,8 +366,9 @@ public class LKBlocks {
 
     // ========== Hanging Banana ==========
     public static final RegistryObject<Block> HANGING_BANANA = BLOCKS.register("hanging_banana",
-            () -> new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_YELLOW).instabreak().sound(SoundType.WOOD)));
+            () -> new io.github.ron1196.thelionking.block.HangingBananaBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_YELLOW).instabreak().sound(SoundType.WOOD)
+                    .noCollission().noOcclusion()));
 
     // ========== Crops ==========
     public static final RegistryObject<Block> MAIZE_CROP = BLOCKS.register("maize_crop",

@@ -1,0 +1,33 @@
+{
+  "replace": false,
+  "values": [
+    "thelionking:pride_acacia_log",
+    "thelionking:rainforest_log",
+    "thelionking:mango_log",
+    "thelionking:passion_log",
+    "thelionking:banana_log",
+    "thelionking:deadwood_log",
+    "thelionking:rafiki_wood",
+    "thelionking:pride_acacia_planks",
+    "thelionking:rainforest_planks",
+    "thelionking:mango_planks",
+    "thelionking:passion_planks",
+    "thelionking:banana_planks",
+    "thelionking:deadwood_planks",
+    "thelionking:pride_acacia_stairs",
+    "thelionking:rainforest_stairs",
+    "thelionking:mango_stairs",
+    "thelionking:passion_stairs",
+    "thelionking:banana_stairs",
+    "thelionking:deadwood_stairs",
+    "thelionking:pride_acacia_slab",
+    "thelionking:rainforest_slab",
+    "thelionking:mango_slab",
+    "thelionking:passion_slab",
+    "thelionking:banana_slab",
+    "thelionking:deadwood_slab",
+    "thelionking:bug_trap",
+    "thelionking:bongo_drum",
+    "thelionking:pumbaa_box"
+  ]
+}

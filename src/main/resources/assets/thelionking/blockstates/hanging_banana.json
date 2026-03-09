@@ -1,1 +1,8 @@
-{"variants":{"":{"model":"thelionking:block/hanging_banana"}}}
+{
+  "variants": {
+    "facing=north": { "model": "thelionking:block/hanging_banana" },
+    "facing=south": { "model": "thelionking:block/hanging_banana", "y": 180 },
+    "facing=west":  { "model": "thelionking:block/hanging_banana", "y": 270 },
+    "facing=east":  { "model": "thelionking:block/hanging_banana", "y": 90 }
+  }
+}
