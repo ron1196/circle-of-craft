@@ -1,0 +1,16 @@
+{
+  "parent": "thelionking:hakuna_matata",
+  "display": {
+    "icon": { "item": "thelionking:pridestone_shovel" },
+    "title": { "translate": "advancement.thelionking.enchant_tunnah.title" },
+    "description": { "translate": "advancement.thelionking.enchant_tunnah.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "custom": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

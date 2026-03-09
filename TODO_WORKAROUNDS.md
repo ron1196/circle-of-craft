@@ -29,3 +29,18 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 - [ ] **Zazu Egg** — used in banana cake recipe
 - [ ] **Nuka Shard** — smelted from pride_coal_ore (meta 1, needs separate ore block?)
 - [ ] **Kivulite** — smelted from silver_ore (meta 1, needs separate ore block?)
+
+## Advancements
+
+- [ ] **21 advancements use `minecraft:impossible` trigger** — need custom criteria or event-based granting
+  - morning_report, shoot_dart, kill_scar, hyena_heads, simba_quest, hakuna_matata, rhino_horn,
+    termite_dart, fart_bomb, hakuna_crystal, rug_collector, fire_tool, enchant_tunnah, bug_trap,
+    ticket_lion_suit, kill_zira, teleport_simba, animal_quest, drum_enchant, master_drummer,
+    ride_giraffe, behead_hyena, peacock_wings
+- [ ] **Advancement icon substitutions** (items not yet registered):
+  - `lion_dust` → `termite_dust`, `outlandish_dart` → `dart_black`
+  - `hakuna_matata_crystal` → `crystal`, `kivulite_pickaxe` → `kivulite`
+  - `tunnah_diggah` → `pridestone_shovel`, `ticket_lion_helmet` → `ticket_lion_head`
+  - `simba_charm` → `rafiki_coin`, `passion_fruit` → `kiwano`
+  - `animalspeak_amulet` → `crystal`, `giraffe_saddle` → `minecraft:saddle`
+  - `peacock_wings` → `peacock_gem`

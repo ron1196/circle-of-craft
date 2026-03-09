@@ -1,0 +1,16 @@
+{
+  "parent": "thelionking:kill_hyena",
+  "display": {
+    "icon": { "item": "thelionking:hyena_head" },
+    "title": { "translate": "advancement.thelionking.hyena_heads.title" },
+    "description": { "translate": "advancement.thelionking.hyena_heads.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "custom": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

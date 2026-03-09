@@ -1,6 +1,9 @@
 package io.github.ron1196.thelionking.entity.animal;
 
+import io.github.ron1196.thelionking.registry.LKSoundEvents;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -25,6 +28,21 @@ public class ZazuEntity extends LKAnimal {
         return LKAnimal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 8.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25);
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return LKSoundEvents.ZAZU_AMBIENT.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return LKSoundEvents.ZAZU_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return LKSoundEvents.ZAZU_HURT.get();
     }
 
     @Nullable

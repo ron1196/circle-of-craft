@@ -1,6 +1,9 @@
 package io.github.ron1196.thelionking.entity.animal;
 
+import io.github.ron1196.thelionking.registry.LKSoundEvents;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -32,6 +35,21 @@ public class RhinoEntity extends LKAnimal {
                 .add(Attributes.ATTACK_DAMAGE, 5.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
                 .add(Attributes.ATTACK_KNOCKBACK, 2.0);
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return LKSoundEvents.RHINO_AMBIENT.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return LKSoundEvents.RHINO_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return LKSoundEvents.RHINO_DEATH.get();
     }
 
     @Nullable

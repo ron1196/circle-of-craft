@@ -1,0 +1,17 @@
+{
+  "display": {
+    "icon": { "item": "thelionking:ticket" },
+    "title": { "translate": "advancement.thelionking.enter_pride_lands.title" },
+    "description": { "translate": "advancement.thelionking.enter_pride_lands.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "thelionking:textures/gui/advancements_background.png"
+  },
+  "criteria": {
+    "enter": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": { "to": "thelionking:pride_lands" }
+    }
+  }
+}

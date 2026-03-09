@@ -1,0 +1,16 @@
+{
+  "parent": "thelionking:enter_pride_lands",
+  "display": {
+    "icon": { "item": "minecraft:saddle" },
+    "title": { "translate": "advancement.thelionking.ride_giraffe.title" },
+    "description": { "translate": "advancement.thelionking.ride_giraffe.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "custom": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

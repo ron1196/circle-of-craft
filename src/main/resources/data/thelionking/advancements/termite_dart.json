@@ -1,0 +1,16 @@
+{
+  "parent": "thelionking:enter_outlands",
+  "display": {
+    "icon": { "item": "thelionking:dart_black" },
+    "title": { "translate": "advancement.thelionking.termite_dart.title" },
+    "description": { "translate": "advancement.thelionking.termite_dart.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "custom": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

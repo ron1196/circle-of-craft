@@ -1,0 +1,191 @@
+{
+  "entity.lion.ambient": {
+    "subtitle": "subtitles.thelionking.entity.lion.ambient",
+    "sounds": [
+      "thelionking:lion"
+    ]
+  },
+  "entity.lion.angry": {
+    "subtitle": "subtitles.thelionking.entity.lion.angry",
+    "sounds": [
+      "thelionking:lion_angry"
+    ]
+  },
+  "entity.lion.roar": {
+    "subtitle": "subtitles.thelionking.entity.lion.roar",
+    "sounds": [
+      "thelionking:lion_roar"
+    ]
+  },
+  "entity.lion.death": {
+    "subtitle": "subtitles.thelionking.entity.lion.death",
+    "sounds": [
+      "thelionking:lion_death"
+    ]
+  },
+  "entity.zebra.ambient": {
+    "subtitle": "subtitles.thelionking.entity.zebra.ambient",
+    "sounds": [
+      "thelionking:zebra"
+    ]
+  },
+  "entity.zebra.hurt": {
+    "subtitle": "subtitles.thelionking.entity.zebra.hurt",
+    "sounds": [
+      "thelionking:zebra_hurt"
+    ]
+  },
+  "entity.zebra.death": {
+    "subtitle": "subtitles.thelionking.entity.zebra.death",
+    "sounds": [
+      "thelionking:zebra_death"
+    ]
+  },
+  "entity.rhino.ambient": {
+    "subtitle": "subtitles.thelionking.entity.rhino.ambient",
+    "sounds": [
+      "thelionking:rhino"
+    ]
+  },
+  "entity.rhino.hurt": {
+    "subtitle": "subtitles.thelionking.entity.rhino.hurt",
+    "sounds": [
+      "thelionking:rhino_hurt"
+    ]
+  },
+  "entity.rhino.death": {
+    "subtitle": "subtitles.thelionking.entity.rhino.death",
+    "sounds": [
+      "thelionking:rhino_death"
+    ]
+  },
+  "entity.zazu.ambient": {
+    "subtitle": "subtitles.thelionking.entity.zazu.ambient",
+    "sounds": [
+      "thelionking:zazu_live"
+    ]
+  },
+  "entity.zazu.hurt": {
+    "subtitle": "subtitles.thelionking.entity.zazu.hurt",
+    "sounds": [
+      "thelionking:zazu_hurt"
+    ]
+  },
+  "entity.crocodile.ambient": {
+    "subtitle": "subtitles.thelionking.entity.crocodile.ambient",
+    "sounds": [
+      "thelionking:crocodile"
+    ]
+  },
+  "entity.crocodile.snap": {
+    "subtitle": "subtitles.thelionking.entity.crocodile.snap",
+    "sounds": [
+      "thelionking:crocodile_snap"
+    ]
+  },
+  "entity.crocodile.death": {
+    "subtitle": "subtitles.thelionking.entity.crocodile.death",
+    "sounds": [
+      "thelionking:crocodile_death"
+    ]
+  },
+  "entity.vulture.ambient": {
+    "subtitle": "subtitles.thelionking.entity.vulture.ambient",
+    "sounds": [
+      "thelionking:vulture"
+    ]
+  },
+  "entity.vulture.hurt": {
+    "subtitle": "subtitles.thelionking.entity.vulture.hurt",
+    "sounds": [
+      "thelionking:vulture_hurt"
+    ]
+  },
+  "entity.rafiki_bird.ambient": {
+    "subtitle": "subtitles.thelionking.entity.rafiki_bird.ambient",
+    "sounds": [
+      "thelionking:rafiki",
+      "thelionking:rafiki1",
+      "thelionking:rafiki2",
+      "thelionking:rafiki3"
+    ]
+  },
+  "entity.flamingo.ambient": {
+    "subtitle": "subtitles.thelionking.entity.flamingo.ambient",
+    "sounds": [
+      "thelionking:flamingo",
+      "thelionking:flamingo1"
+    ]
+  },
+  "entity.flamingo.hurt": {
+    "subtitle": "subtitles.thelionking.entity.flamingo.hurt",
+    "sounds": [
+      "thelionking:flamingo_hurt",
+      "thelionking:flamingo_hurt1"
+    ]
+  },
+  "entity.flamingo.death": {
+    "subtitle": "subtitles.thelionking.entity.flamingo.death",
+    "sounds": [
+      "thelionking:flamingo_death"
+    ]
+  },
+  "block.bongo_drum.hit": {
+    "subtitle": "subtitles.thelionking.block.bongo_drum.hit",
+    "sounds": [
+      "thelionking:bongo"
+    ]
+  },
+  "item.flatulence": {
+    "subtitle": "subtitles.thelionking.item.flatulence",
+    "sounds": [
+      "thelionking:flatulence"
+    ]
+  },
+  "item.pop": {
+    "subtitle": "subtitles.thelionking.item.pop",
+    "sounds": [
+      "thelionking:pop"
+    ]
+  },
+  "music.circle_of_life": {
+    "sounds": [
+      {
+        "name": "thelionking:music/circle_of_life",
+        "stream": true
+      }
+    ]
+  },
+  "music.cant_wait_to_be_king": {
+    "sounds": [
+      {
+        "name": "thelionking:music/cant_wait_to_be_king",
+        "stream": true
+      }
+    ]
+  },
+  "music.be_prepared": {
+    "sounds": [
+      {
+        "name": "thelionking:music/be_prepared",
+        "stream": true
+      }
+    ]
+  },
+  "music.hakuna_matata": {
+    "sounds": [
+      {
+        "name": "thelionking:music/hakuna_matata",
+        "stream": true
+      }
+    ]
+  },
+  "music.can_you_feel_the_love": {
+    "sounds": [
+      {
+        "name": "thelionking:music/can_you_feel_the_love",
+        "stream": true
+      }
+    ]
+  }
+}

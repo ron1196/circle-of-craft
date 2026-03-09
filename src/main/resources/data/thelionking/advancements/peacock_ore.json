@@ -1,0 +1,19 @@
+{
+  "parent": "thelionking:enter_pride_lands",
+  "display": {
+    "icon": { "item": "thelionking:peacock_gem" },
+    "title": { "translate": "advancement.thelionking.peacock_ore.title" },
+    "description": { "translate": "advancement.thelionking.peacock_ore.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "get": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "items": ["thelionking:peacock_gem"] }]
+      }
+    }
+  }
+}

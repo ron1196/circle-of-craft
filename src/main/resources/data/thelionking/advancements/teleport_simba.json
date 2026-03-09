@@ -1,0 +1,16 @@
+{
+  "parent": "thelionking:simba_quest",
+  "display": {
+    "icon": { "item": "thelionking:rafiki_coin" },
+    "title": { "translate": "advancement.thelionking.teleport_simba.title" },
+    "description": { "translate": "advancement.thelionking.teleport_simba.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "custom": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "parent": "thelionking:hakuna_matata",
+  "display": {
+    "icon": { "item": "thelionking:pumbaa_bomb" },
+    "title": { "translate": "advancement.thelionking.fart_bomb.title" },
+    "description": { "translate": "advancement.thelionking.fart_bomb.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "custom": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

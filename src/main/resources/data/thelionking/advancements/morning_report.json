@@ -1,0 +1,16 @@
+{
+  "parent": "thelionking:enter_pride_lands",
+  "display": {
+    "icon": { "item": "thelionking:feather_blue" },
+    "title": { "translate": "advancement.thelionking.morning_report.title" },
+    "description": { "translate": "advancement.thelionking.morning_report.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "custom": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

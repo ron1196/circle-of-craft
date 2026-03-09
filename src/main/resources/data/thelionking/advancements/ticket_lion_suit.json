@@ -1,0 +1,16 @@
+{
+  "parent": "thelionking:enter_pride_lands",
+  "display": {
+    "icon": { "item": "thelionking:ticket_lion_head" },
+    "title": { "translate": "advancement.thelionking.ticket_lion_suit.title" },
+    "description": { "translate": "advancement.thelionking.ticket_lion_suit.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "custom": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

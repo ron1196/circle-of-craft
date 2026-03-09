@@ -1,0 +1,16 @@
+{
+  "parent": "thelionking:simba_quest",
+  "display": {
+    "icon": { "item": "thelionking:wayward_feather" },
+    "title": { "translate": "advancement.thelionking.kill_zira.title" },
+    "description": { "translate": "advancement.thelionking.kill_zira.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "custom": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

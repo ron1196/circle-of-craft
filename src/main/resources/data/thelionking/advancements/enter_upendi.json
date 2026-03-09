@@ -1,0 +1,17 @@
+{
+  "parent": "thelionking:get_staff",
+  "display": {
+    "icon": { "item": "thelionking:kiwano" },
+    "title": { "translate": "advancement.thelionking.enter_upendi.title" },
+    "description": { "translate": "advancement.thelionking.enter_upendi.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "enter": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": { "to": "thelionking:upendi" }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "parent": "thelionking:peacock_ore",
+  "display": {
+    "icon": { "item": "thelionking:bongo_drum" },
+    "title": { "translate": "advancement.thelionking.drum_enchant.title" },
+    "description": { "translate": "advancement.thelionking.drum_enchant.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "custom": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

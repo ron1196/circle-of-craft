@@ -1,0 +1,16 @@
+{
+  "parent": "thelionking:get_staff",
+  "display": {
+    "icon": { "item": "thelionking:fur_rug" },
+    "title": { "translate": "advancement.thelionking.kill_scar.title" },
+    "description": { "translate": "advancement.thelionking.kill_scar.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "custom": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

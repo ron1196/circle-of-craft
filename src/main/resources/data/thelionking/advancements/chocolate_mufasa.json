@@ -1,0 +1,19 @@
+{
+  "parent": "thelionking:enter_pride_lands",
+  "display": {
+    "icon": { "item": "thelionking:chocolate_mufasa" },
+    "title": { "translate": "advancement.thelionking.chocolate_mufasa.title" },
+    "description": { "translate": "advancement.thelionking.chocolate_mufasa.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "get": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "items": ["thelionking:chocolate_mufasa"] }]
+      }
+    }
+  }
+}

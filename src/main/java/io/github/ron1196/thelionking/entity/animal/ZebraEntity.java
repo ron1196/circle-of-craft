@@ -1,6 +1,9 @@
 package io.github.ron1196.thelionking.entity.animal;
 
+import io.github.ron1196.thelionking.registry.LKSoundEvents;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -25,6 +28,21 @@ public class ZebraEntity extends LKAnimal {
         return LKAnimal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 12.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.22);
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return LKSoundEvents.ZEBRA_AMBIENT.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return LKSoundEvents.ZEBRA_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return LKSoundEvents.ZEBRA_DEATH.get();
     }
 
     @Nullable

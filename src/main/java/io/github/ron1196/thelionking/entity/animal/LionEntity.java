@@ -1,7 +1,10 @@
 package io.github.ron1196.thelionking.entity.animal;
 
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.LKSoundEvents;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -31,6 +34,21 @@ public class LionEntity extends LKAnimal {
                 .add(Attributes.MAX_HEALTH, 20.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.ATTACK_DAMAGE, 4.0);
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return LKSoundEvents.LION_AMBIENT.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return LKSoundEvents.LION_ANGRY.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return LKSoundEvents.LION_DEATH.get();
     }
 
     @Nullable

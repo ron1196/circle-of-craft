@@ -1,0 +1,16 @@
+{
+  "parent": "thelionking:enter_outlands",
+  "display": {
+    "icon": { "item": "thelionking:termite_dust" },
+    "title": { "translate": "advancement.thelionking.simba_quest.title" },
+    "description": { "translate": "advancement.thelionking.simba_quest.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "custom": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

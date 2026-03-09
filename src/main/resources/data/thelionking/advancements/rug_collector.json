@@ -1,0 +1,16 @@
+{
+  "parent": "thelionking:craft_grinding_bowl",
+  "display": {
+    "icon": { "item": "thelionking:fur_rug" },
+    "title": { "translate": "advancement.thelionking.rug_collector.title" },
+    "description": { "translate": "advancement.thelionking.rug_collector.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "custom": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

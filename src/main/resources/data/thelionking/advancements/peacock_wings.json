@@ -1,0 +1,16 @@
+{
+  "parent": "thelionking:peacock_ore",
+  "display": {
+    "icon": { "item": "thelionking:peacock_gem" },
+    "title": { "translate": "advancement.thelionking.peacock_wings.title" },
+    "description": { "translate": "advancement.thelionking.peacock_wings.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "custom": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}
