@@ -4,6 +4,9 @@ import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.client.gui.BongoDrumScreen;
 import io.github.ron1196.thelionking.client.gui.BugTrapScreen;
 import io.github.ron1196.thelionking.client.gui.GrindingBowlScreen;
+import io.github.ron1196.thelionking.client.gui.QuiverScreen;
+import io.github.ron1196.thelionking.client.gui.SimbaInventoryScreen;
+import io.github.ron1196.thelionking.client.gui.TimonMerchantScreen;
 import io.github.ron1196.thelionking.client.model.*;
 import io.github.ron1196.thelionking.client.renderer.LKAnimalRenderer;
 import io.github.ron1196.thelionking.client.renderer.LKMobRenderer;
@@ -44,6 +47,7 @@ public class LKClientEvents {
     public static final ModelLayerLocation VULTURE_LAYER = layer("vulture");
     public static final ModelLayerLocation CROCODILE_LAYER = layer("crocodile");
     public static final ModelLayerLocation TERMITE_LAYER = layer("termite");
+    public static final ModelLayerLocation TERMITE_QUEEN_LAYER = layer("termite_queen");
 
     // NPC layers (reuse animal mesh definitions)
     public static final ModelLayerLocation RAFIKI_LAYER = layer("rafiki");
@@ -85,6 +89,7 @@ public class LKClientEvents {
         event.registerLayerDefinition(VULTURE_LAYER, VultureModel::createBodyLayer);
         event.registerLayerDefinition(CROCODILE_LAYER, CrocodileModel::createBodyLayer);
         event.registerLayerDefinition(TERMITE_LAYER, TermiteModel::createBodyLayer);
+        event.registerLayerDefinition(TERMITE_QUEEN_LAYER, TermiteModel::createBodyLayer);
 
         // NPC layers (proper models ported from original mod)
         event.registerLayerDefinition(RAFIKI_LAYER, RafikiModel::createBodyLayer);
@@ -141,6 +146,8 @@ public class LKClientEvents {
                 ctx -> new LKMobRenderer<>(ctx, new CrocodileModel<>(ctx.bakeLayer(CROCODILE_LAYER)), "crocodile", 0.7F));
         event.registerEntityRenderer(LKEntityTypes.TERMITE.get(),
                 ctx -> new LKScaledMobRenderer<>(ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_LAYER)), "termite", 0.15F, 0.4F));
+        event.registerEntityRenderer(LKEntityTypes.TERMITE_QUEEN.get(),
+                ctx -> new LKScaledMobRenderer<>(ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_QUEEN_LAYER)), "termite", 0.5F, 2.0F));
 
         // NPCs — proper models ported from original mod (shadow, scale from old code)
         event.registerEntityRenderer(LKEntityTypes.RAFIKI.get(),
@@ -188,6 +195,9 @@ public class LKClientEvents {
                     }
                 });
         event.registerEntityRenderer(LKEntityTypes.PUMBAA_BOMB.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(LKEntityTypes.THROWN_TERMITE.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(LKEntityTypes.COIN.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(LKEntityTypes.ZAZU_EGG.get(), ThrownItemRenderer::new);
 
         // Block entity renderers
         event.registerBlockEntityRenderer(io.github.ron1196.thelionking.registry.LKBlockEntityTypes.HYENA_HEAD.get(),
@@ -200,6 +210,9 @@ public class LKClientEvents {
             MenuScreens.register(LKMenuTypes.GRINDING_BOWL_MENU.get(), GrindingBowlScreen::new);
             MenuScreens.register(LKMenuTypes.BUG_TRAP_MENU.get(), BugTrapScreen::new);
             MenuScreens.register(LKMenuTypes.BONGO_DRUM_MENU.get(), BongoDrumScreen::new);
+            MenuScreens.register(LKMenuTypes.QUIVER_MENU.get(), QuiverScreen::new);
+            MenuScreens.register(LKMenuTypes.TIMON_MERCHANT_MENU.get(), TimonMerchantScreen::new);
+            MenuScreens.register(LKMenuTypes.SIMBA_INVENTORY_MENU.get(), SimbaInventoryScreen::new);
 
             // Hyena head item variant property
             net.minecraft.client.renderer.item.ItemProperties.register(

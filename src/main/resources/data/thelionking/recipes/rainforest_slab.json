@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": { "item": "thelionking:rainforest_planks" }
+  },
+  "result": {
+    "item": "thelionking:rainforest_slab",
+    "count": 6
+  }
+}

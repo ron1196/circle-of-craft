@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "X",
+    "S"
+  ],
+  "key": {
+    "X": { "item": "thelionking:kivulite" },
+    "S": { "item": "minecraft:stick" }
+  },
+  "result": {
+    "item": "thelionking:kivulite_sword",
+    "count": 1
+  }
+}

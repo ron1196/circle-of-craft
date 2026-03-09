@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    " S ",
+    " S "
+  ],
+  "key": {
+    "X": { "item": "thelionking:corrupt_pridestone_item" },
+    "S": { "item": "minecraft:stick" }
+  },
+  "result": {
+    "item": "thelionking:corrupt_pickaxe",
+    "count": 1
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": { "item": "thelionking:pride_acacia_planks" }
+  },
+  "result": {
+    "item": "thelionking:pride_acacia_slab",
+    "count": 6
+  }
+}

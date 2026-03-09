@@ -231,6 +231,30 @@ public class LKItems {
     public static final RegistryObject<HoeItem> PEACOCK_HOE = ITEMS.register("peacock_hoe",
             () -> new HoeItem(LKToolTiers.PEACOCK, -3, 0.0F, new Item.Properties()));
 
+    // ========== Kivulite Tools ==========
+    public static final RegistryObject<SwordItem> KIVULITE_SWORD = ITEMS.register("kivulite_sword",
+            () -> new SwordItem(LKToolTiers.KIVULITE, 3, -2.4F, new Item.Properties()));
+    public static final RegistryObject<PickaxeItem> KIVULITE_PICKAXE = ITEMS.register("kivulite_pickaxe",
+            () -> new PickaxeItem(LKToolTiers.KIVULITE, 1, -2.8F, new Item.Properties()));
+    public static final RegistryObject<AxeItem> KIVULITE_AXE = ITEMS.register("kivulite_axe",
+            () -> new AxeItem(LKToolTiers.KIVULITE, 6.0F, -3.1F, new Item.Properties()));
+    public static final RegistryObject<ShovelItem> KIVULITE_SHOVEL = ITEMS.register("kivulite_shovel",
+            () -> new ShovelItem(LKToolTiers.KIVULITE, 1.5F, -3.0F, new Item.Properties()));
+    public static final RegistryObject<HoeItem> KIVULITE_HOE = ITEMS.register("kivulite_hoe",
+            () -> new HoeItem(LKToolTiers.KIVULITE, -2, -1.0F, new Item.Properties()));
+
+    // ========== Corrupt Pridestone Tools ==========
+    public static final RegistryObject<SwordItem> CORRUPT_SWORD = ITEMS.register("corrupt_sword",
+            () -> new SwordItem(LKToolTiers.CORRUPT_PRIDESTONE, 3, -2.4F, new Item.Properties()));
+    public static final RegistryObject<PickaxeItem> CORRUPT_PICKAXE = ITEMS.register("corrupt_pickaxe",
+            () -> new PickaxeItem(LKToolTiers.CORRUPT_PRIDESTONE, 1, -2.8F, new Item.Properties()));
+    public static final RegistryObject<AxeItem> CORRUPT_AXE = ITEMS.register("corrupt_axe",
+            () -> new AxeItem(LKToolTiers.CORRUPT_PRIDESTONE, 6.0F, -3.1F, new Item.Properties()));
+    public static final RegistryObject<ShovelItem> CORRUPT_SHOVEL = ITEMS.register("corrupt_shovel",
+            () -> new ShovelItem(LKToolTiers.CORRUPT_PRIDESTONE, 1.5F, -3.0F, new Item.Properties()));
+    public static final RegistryObject<HoeItem> CORRUPT_HOE = ITEMS.register("corrupt_hoe",
+            () -> new HoeItem(LKToolTiers.CORRUPT_PRIDESTONE, -1, -2.0F, new Item.Properties()));
+
     // ========== Silver Armor ==========
     public static final RegistryObject<ArmorItem> SILVER_HELMET = ITEMS.register("silver_helmet",
             () -> new ArmorItem(LKArmorMaterials.SILVER, ArmorItem.Type.HELMET, new Item.Properties()));
@@ -492,6 +516,8 @@ public class LKItems {
             () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.CROCODILE, 0x3B5323, 0x1A2E0A, new Item.Properties()));
     public static final RegistryObject<Item> TERMITE_SPAWN_EGG = ITEMS.register("termite_spawn_egg",
             () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.TERMITE, 0xD2B48C, 0x8B6914, new Item.Properties()));
+    public static final RegistryObject<Item> TERMITE_QUEEN_SPAWN_EGG = ITEMS.register("termite_queen_spawn_egg",
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.TERMITE_QUEEN, 0xD2B48C, 0xFF4500, new Item.Properties()));
 
     // ========== Ticket Lion Spawn Egg ==========
     public static final RegistryObject<Item> TICKET_LION_SPAWN_EGG = ITEMS.register("ticket_lion_spawn_egg",
@@ -510,6 +536,29 @@ public class LKItems {
             () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.SCAR, 0x2F1A00, 0x000000, new Item.Properties()));
     public static final RegistryObject<Item> ZIRA_SPAWN_EGG = ITEMS.register("zira_spawn_egg",
             () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.ZIRA, 0x5C3A1E, 0x8B0000, new Item.Properties()));
+
+    // ========== Jar Items ==========
+    public static final RegistryObject<Item> JAR_EMPTY = ITEMS.register("jar_empty",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> JAR_WATER = ITEMS.register("jar_water",
+            () -> new Item(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> JAR_MILK = ITEMS.register("jar_milk",
+            () -> new Item(new Item.Properties().stacksTo(16)));
+
+    // ========== Quest & Special Items ==========
+    public static final RegistryObject<Item> AMULET = ITEMS.register("amulet",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> SIMBA_CHARM = ITEMS.register("simba_charm",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> GIRAFFE_SADDLE = ITEMS.register("giraffe_saddle",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> DART_QUIVER = ITEMS.register("dart_quiver",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> PASSION_FRUIT = ITEMS.register("passion_fruit",
+            () -> new Item(new Item.Properties().food(
+                    new FoodProperties.Builder().nutrition(3).saturationMod(0.3F).build())));
+    public static final RegistryObject<Item> ZAZU_EGG = ITEMS.register("zazu_egg",
+            () -> new Item(new Item.Properties()));
 
     // ========== Block Entity Items ==========
     public static final RegistryObject<BlockItem> GRINDING_BOWL_ITEM = registerBlockItem("grinding_bowl", LKBlocks.GRINDING_BOWL);
@@ -536,6 +585,14 @@ public class LKItems {
 
     public static final RegistryObject<Item> WAYWARD_FEATHER = ITEMS.register("wayward_feather",
             () -> new Item(new Item.Properties()));
+
+    // ========== Phase 12: Missing Block Items ==========
+    public static final RegistryObject<BlockItem> BANANA_CAKE_ITEM = registerBlockItem("banana_cake", LKBlocks.BANANA_CAKE);
+    public static final RegistryObject<BlockItem> MOUNTED_SHOOTER_ITEM = registerBlockItem("mounted_shooter", LKBlocks.MOUNTED_SHOOTER);
+    public static final RegistryObject<BlockItem> STAR_ALTAR_ITEM = registerBlockItem("star_altar", LKBlocks.STAR_ALTAR);
+    public static final RegistryObject<BlockItem> OUTLANDS_ALTAR_ITEM = registerBlockItem("outlands_altar", LKBlocks.OUTLANDS_ALTAR);
+    public static final RegistryObject<BlockItem> TILLED_SAND_ITEM = registerBlockItem("tilled_sand", LKBlocks.TILLED_SAND);
+    public static final RegistryObject<BlockItem> VASE_ITEM = registerBlockItem("vase", LKBlocks.VASE);
 
     // ========== Portal Frame Items ==========
     public static final RegistryObject<BlockItem> PRIDE_PORTAL_FRAME_ITEM = registerBlockItem("pride_portal_frame", LKBlocks.PRIDE_PORTAL_FRAME);

@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.block.entity;
 
 import io.github.ron1196.thelionking.menu.GrindingBowlMenu;
 import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import io.github.ron1196.thelionking.registry.LKBlocks;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -42,11 +43,46 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
 
     private static Map<Item, Item> getRecipes() {
         if (RECIPES.isEmpty()) {
+            // Bone grinding
             RECIPES.put(LKItems.HYENA_BONE.get(), LKItems.HYENA_BONE_SHARD.get());
+            RECIPES.put(Items.BONE, Items.BONE_MEAL);
+
+            // Fruit/plant grinding
             RECIPES.put(LKItems.MANGO.get(), LKItems.MANGO_DUST.get());
             RECIPES.put(LKItems.RHINO_HORN.get(), LKItems.GROUND_RHINO_HORN.get());
             RECIPES.put(LKItems.NUKA_SHARD.get(), LKItems.POISON.get());
+            RECIPES.put(LKItems.CORN.get(), LKItems.CORN_KERNELS.get());
+            RECIPES.put(LKItems.DRIED_MAIZE.get(), LKItems.CORN_KERNELS.get());
+
+            // Stone grinding
             RECIPES.put(LKItems.PRIDESTONE_ITEM.get(), Items.SAND);
+            RECIPES.put(LKItems.CORRUPT_PRIDESTONE_ITEM.get(), Items.SAND);
+            RECIPES.put(Items.COBBLESTONE, Items.GRAVEL);
+            RECIPES.put(Items.GRAVEL, Items.SAND);
+
+            // Feather → dye recipes
+            RECIPES.put(LKItems.FEATHER_BLUE.get(), Items.BLUE_DYE);
+            RECIPES.put(LKItems.FEATHER_YELLOW.get(), Items.YELLOW_DYE);
+            RECIPES.put(LKItems.FEATHER_RED.get(), Items.RED_DYE);
+            RECIPES.put(LKItems.FEATHER_BLACK.get(), Items.BLACK_DYE);
+            RECIPES.put(LKItems.FEATHER_PINK.get(), Items.PINK_DYE);
+
+            // Flower → dye recipes
+            RECIPES.put(LKBlocks.WHITE_FLOWER.get().asItem(), Items.WHITE_DYE);
+            RECIPES.put(LKBlocks.BLUE_FLOWER.get().asItem(), Items.BLUE_DYE);
+            RECIPES.put(LKBlocks.PURPLE_FLOWER.get().asItem(), Items.PURPLE_DYE);
+            RECIPES.put(LKBlocks.RED_FLOWER.get().asItem(), Items.RED_DYE);
+
+            // Leaf → dye recipes
+            RECIPES.put(LKBlocks.ACACIA_LEAVES.get().asItem(), Items.GREEN_DYE);
+            RECIPES.put(LKBlocks.RAINFOREST_LEAVES.get().asItem(), Items.GREEN_DYE);
+            RECIPES.put(LKBlocks.MANGO_LEAVES.get().asItem(), Items.GREEN_DYE);
+
+            // Termite grinding
+            RECIPES.put(LKItems.BUG.get(), LKItems.TERMITE_DUST.get());
+
+            // Wheat → flour (vanilla compatibility)
+            RECIPES.put(Items.WHEAT, Items.BREAD);
         }
         return RECIPES;
     }

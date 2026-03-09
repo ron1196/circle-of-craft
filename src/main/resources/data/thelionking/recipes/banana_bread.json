@@ -1,11 +1,11 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "XYX"
+    "BWB"
   ],
   "key": {
-    "X": { "item": "minecraft:wheat" },
-    "Y": { "item": "thelionking:banana" }
+    "B": { "item": "thelionking:banana" },
+    "W": { "item": "minecraft:wheat" }
   },
   "result": {
     "item": "thelionking:banana_bread",

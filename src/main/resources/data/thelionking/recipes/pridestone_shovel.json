@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "S",
+    "S"
+  ],
+  "key": {
+    "X": { "item": "thelionking:pridestone_item" },
+    "S": { "item": "minecraft:stick" }
+  },
+  "result": {
+    "item": "thelionking:pridestone_shovel",
+    "count": 1
+  }
+}

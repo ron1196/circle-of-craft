@@ -38,14 +38,14 @@
   "features": [
     [],
     ["minecraft:lake_lava_underground"],
+    ["thelionking:pride_coal_ore_placed", "thelionking:silver_ore_placed", "thelionking:peacock_ore_placed"],
     [],
     [],
     [],
     [],
     [],
     [],
-    [],
-    ["minecraft:patch_grass_savanna", "minecraft:patch_tall_grass"],
+    ["minecraft:patch_grass_savanna", "minecraft:patch_tall_grass", "thelionking:maize_patch_placed"],
     [],
     []
   ]

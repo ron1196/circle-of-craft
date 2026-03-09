@@ -3,6 +3,9 @@ package io.github.ron1196.thelionking.registry;
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.world.feature.BananaTreeFeature;
 import io.github.ron1196.thelionking.world.feature.DeadTreeFeature;
+import io.github.ron1196.thelionking.world.feature.MangoTreeFeature;
+import io.github.ron1196.thelionking.world.feature.PassionTreeFeature;
+import io.github.ron1196.thelionking.world.feature.RainforestTreeFeature;
 import io.github.ron1196.thelionking.world.feature.TermiteMoundFeature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -24,6 +27,15 @@ public class LKFeatures {
 
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> DEAD_TREE =
             FEATURES.register("dead_tree", () -> new DeadTreeFeature(NoneFeatureConfiguration.CODEC));
+
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> RAINFOREST_TREE =
+            FEATURES.register("rainforest_tree", () -> new RainforestTreeFeature(NoneFeatureConfiguration.CODEC));
+
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> MANGO_TREE =
+            FEATURES.register("mango_tree", () -> new MangoTreeFeature(NoneFeatureConfiguration.CODEC));
+
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> PASSION_TREE =
+            FEATURES.register("passion_tree", () -> new PassionTreeFeature(NoneFeatureConfiguration.CODEC));
 
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> TERMITE_MOUND =
             FEATURES.register("termite_mound", () -> new TermiteMoundFeature(NoneFeatureConfiguration.CODEC));

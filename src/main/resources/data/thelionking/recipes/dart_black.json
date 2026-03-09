@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "F",
+    "S",
+    "F"
+  ],
+  "key": {
+    "F": { "item": "thelionking:feather_black" },
+    "S": { "item": "minecraft:stick" }
+  },
+  "result": {
+    "item": "thelionking:dart_black",
+    "count": 4
+  }
+}

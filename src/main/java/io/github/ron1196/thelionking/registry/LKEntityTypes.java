@@ -4,9 +4,12 @@ import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.entity.animal.*;
 import io.github.ron1196.thelionking.entity.hostile.*;
 import io.github.ron1196.thelionking.entity.npc.*;
+import io.github.ron1196.thelionking.entity.projectile.CoinEntity;
 import io.github.ron1196.thelionking.entity.projectile.DartEntity;
 import io.github.ron1196.thelionking.entity.projectile.PumbaaBombEntity;
 import io.github.ron1196.thelionking.entity.projectile.SpearEntity;
+import io.github.ron1196.thelionking.entity.projectile.ThrownTermiteEntity;
+import io.github.ron1196.thelionking.entity.projectile.ZazuEggEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
@@ -72,6 +75,18 @@ public class LKEntityTypes {
             () -> EntityType.Builder.<PumbaaBombEntity>of(PumbaaBombEntity::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("pumbaa_bomb"));
 
+    public static final RegistryObject<EntityType<ThrownTermiteEntity>> THROWN_TERMITE = ENTITY_TYPES.register("thrown_termite",
+            () -> EntityType.Builder.<ThrownTermiteEntity>of(ThrownTermiteEntity::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("thrown_termite"));
+
+    public static final RegistryObject<EntityType<CoinEntity>> COIN = ENTITY_TYPES.register("coin",
+            () -> EntityType.Builder.<CoinEntity>of(CoinEntity::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("coin"));
+
+    public static final RegistryObject<EntityType<ZazuEggEntity>> ZAZU_EGG = ENTITY_TYPES.register("zazu_egg_entity",
+            () -> EntityType.Builder.<ZazuEggEntity>of(ZazuEggEntity::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("zazu_egg_entity"));
+
     // ========== Hostile Entities ==========
     public static final RegistryObject<EntityType<HyenaEntity>> HYENA = ENTITY_TYPES.register("hyena",
             () -> EntityType.Builder.of(HyenaEntity::new, MobCategory.MONSTER)
@@ -100,6 +115,10 @@ public class LKEntityTypes {
     public static final RegistryObject<EntityType<TermiteEntity>> TERMITE = ENTITY_TYPES.register("termite",
             () -> EntityType.Builder.of(TermiteEntity::new, MobCategory.MONSTER)
                     .sized(0.4F, 0.4F).clientTrackingRange(8).build("termite"));
+
+    public static final RegistryObject<EntityType<TermiteQueenEntity>> TERMITE_QUEEN = ENTITY_TYPES.register("termite_queen",
+            () -> EntityType.Builder.of(TermiteQueenEntity::new, MobCategory.MONSTER)
+                    .sized(1.2F, 1.0F).clientTrackingRange(10).build("termite_queen"));
 
     // ========== Ticket Lion ==========
     public static final RegistryObject<EntityType<io.github.ron1196.thelionking.entity.npc.TicketLionEntity>> TICKET_LION = ENTITY_TYPES.register("ticket_lion",

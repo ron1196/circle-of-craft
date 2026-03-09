@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "GGG"
+  ],
+  "key": {
+    "G": { "item": "thelionking:outglass" }
+  },
+  "result": {
+    "item": "thelionking:outglass_pane",
+    "count": 16
+  }
+}

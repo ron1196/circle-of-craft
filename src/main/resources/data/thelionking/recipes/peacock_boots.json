@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    "X X"
+  ],
+  "key": {
+    "X": { "item": "thelionking:peacock_gem" }
+  },
+  "result": {
+    "item": "thelionking:peacock_boots",
+    "count": 1
+  }
+}

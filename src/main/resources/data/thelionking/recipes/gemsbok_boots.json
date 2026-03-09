@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    "X X"
+  ],
+  "key": {
+    "X": { "item": "thelionking:gemsbok_hide" }
+  },
+  "result": {
+    "item": "thelionking:gemsbok_boots",
+    "count": 1
+  }
+}
