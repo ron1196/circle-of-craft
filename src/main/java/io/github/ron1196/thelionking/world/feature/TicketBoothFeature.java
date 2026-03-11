@@ -26,6 +26,8 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Ticket Booth — a ~14x13 theater building with seating, a portal frame screen,
@@ -33,6 +35,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
  * Faithfully ported from the original Lion King mod's LKWorldGenTicketBooth.
  */
 public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TicketBoothFeature.class);
 
     public TicketBoothFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
@@ -43,6 +47,8 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         WorldGenLevel level = context.level();
         BlockPos origin = context.origin();
         RandomSource random = context.random();
+
+        LOGGER.info("Ticket Booth generating at ({}, {}, {})", origin.getX(), origin.getY(), origin.getZ());
 
         // Block palette
         BlockState pridestone = LKBlocks.PRIDESTONE.get().defaultBlockState();
@@ -318,21 +324,9 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
             chest2.setItem(8, new ItemStack(Items.BREAD, 1 + random.nextInt(2)));
         }
 
-        // ============================================================
-        // TICKET LION NPC: Spawn near the entrance inside the booth
-        // ============================================================
-        if (!level.isClientSide()) {
-            var ticketLion = LKEntityTypes.TICKET_LION.get().create(level.getLevel());
-            if (ticketLion != null) {
-                ticketLion.moveTo(
-                        origin.getX() + 7.0,
-                        origin.getY() + 1,
-                        origin.getZ() + 1.5,
-                        180, 0);
-                ticketLion.setPersistenceRequired();
-                level.addFreshEntityWithPassengers(ticketLion);
-            }
-        }
+        // Ticket Lion NPC near entrance
+        FeatureHelper.spawnEntity(level, LKEntityTypes.TICKET_LION.get(),
+                origin.getX() + 7.0, origin.getY() + 1, origin.getZ() + 1.5);
 
         return true;
     }

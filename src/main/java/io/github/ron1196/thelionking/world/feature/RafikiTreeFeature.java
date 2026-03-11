@@ -3,7 +3,6 @@ package io.github.ron1196.thelionking.world.feature;
 import com.mojang.serialization.Codec;
 import io.github.ron1196.thelionking.registry.LKBlocks;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
-import io.github.ron1196.thelionking.world.structure.LKStructurePiece;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -12,7 +11,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Giant Rafiki Tree — the iconic landmark of the Pride Lands.
@@ -21,12 +22,15 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
  */
 public class RafikiTreeFeature extends Feature<NoneFeatureConfiguration> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RafikiTreeFeature.class);
+
     private static final BlockState WOOD = LKBlocks.RAFIKI_WOOD.get().defaultBlockState();
     private static final BlockState LEAVES = LKBlocks.RAFIKI_LEAVES.get().defaultBlockState()
             .setValue(LeavesBlock.PERSISTENT, true);
     private static final BlockState TORCH = Blocks.TORCH.defaultBlockState();
     private static final BlockState PORTAL_FRAME = LKBlocks.OUTLANDS_PORTAL_FRAME.get().defaultBlockState();
     private static final BlockState AIR = Blocks.AIR.defaultBlockState();
+
 
     public RafikiTreeFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
@@ -39,6 +43,8 @@ public class RafikiTreeFeature extends Feature<NoneFeatureConfiguration> {
         int i = origin.getX();
         int j = origin.getY();
         int k = origin.getZ();
+
+        LOGGER.info("Rafiki Tree generating at ({}, {}, {})", i, j, k);
 
         // Trunk: 40 layers of filled circles with Bresenham algorithm
         for (int j1 = 0; j1 < 40; j1++) {
@@ -101,19 +107,7 @@ public class RafikiTreeFeature extends Feature<NoneFeatureConfiguration> {
         finishGeneration15(level, i, j, k);
         finishGeneration16(level, i, j, k);
 
-        // Spawn Rafiki (only when the spawn position is within current chunk box)
-        BoundingBox box = LKStructurePiece.CURRENT_BOX.get();
-        if (box != null && !box.isInside(new BlockPos(i, j + 39, k))) {
-            return true;
-        }
-        if (!level.isClientSide()) {
-            var rafiki = LKEntityTypes.RAFIKI.get().create(level.getLevel());
-            if (rafiki != null) {
-                rafiki.moveTo(i + 0.5, j + 39, k + 0.5, 0, 0);
-                rafiki.setPersistenceRequired();
-                level.addFreshEntityWithPassengers(rafiki);
-            }
-        }
+        FeatureHelper.spawnEntity(level, LKEntityTypes.RAFIKI.get(), i + 0.5, j + 39, k + 0.5);
 
         return true;
     }
@@ -123,9 +117,7 @@ public class RafikiTreeFeature extends Feature<NoneFeatureConfiguration> {
     }
 
     private static void placeAt(WorldGenLevel level, int x, int y, int z, BlockState state) {
-        BoundingBox box = LKStructurePiece.CURRENT_BOX.get();
-        if (box != null && !box.isInside(x, y, z)) return;
-        level.setBlock(new BlockPos(x, y, z), state, 2);
+        FeatureHelper.placeBlock(level, x, y, z, state);
     }
 
     /**

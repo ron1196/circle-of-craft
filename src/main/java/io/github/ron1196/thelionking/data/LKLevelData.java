@@ -5,6 +5,7 @@ import io.github.ron1196.thelionking.quest.LKQuestBase;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,11 +20,6 @@ public class LKLevelData extends SavedData {
     public boolean outlandersHostile = false;
     public boolean defeatedScar = false;
     public boolean receivedQuestBook = false;
-    public boolean generatedMound = false;
-
-    // Mound location
-    public int moundX = 0, moundY = 0, moundZ = 0;
-
     // Home portal location
     public int homePortalX = 0, homePortalY = 0, homePortalZ = 0;
 
@@ -44,10 +40,6 @@ public class LKLevelData extends SavedData {
         data.outlandersHostile = tag.getBoolean("OutlandersHostile");
         data.defeatedScar = tag.getBoolean("DefeatedScar");
         data.receivedQuestBook = tag.getBoolean("ReceivedQuestBook");
-        data.generatedMound = tag.getBoolean("GeneratedMound");
-        data.moundX = tag.getInt("MoundX");
-        data.moundY = tag.getInt("MoundY");
-        data.moundZ = tag.getInt("MoundZ");
         data.homePortalX = tag.getInt("HomePortalX");
         data.homePortalY = tag.getInt("HomePortalY");
         data.homePortalZ = tag.getInt("HomePortalZ");
@@ -67,16 +59,12 @@ public class LKLevelData extends SavedData {
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag) {
+    public @NotNull CompoundTag save(CompoundTag tag) {
         tag.putInt("ZiraStage", ziraStage);
         tag.putInt("PumbaaStage", pumbaaStage);
         tag.putBoolean("OutlandersHostile", outlandersHostile);
         tag.putBoolean("DefeatedScar", defeatedScar);
         tag.putBoolean("ReceivedQuestBook", receivedQuestBook);
-        tag.putBoolean("GeneratedMound", generatedMound);
-        tag.putInt("MoundX", moundX);
-        tag.putInt("MoundY", moundY);
-        tag.putInt("MoundZ", moundZ);
         tag.putInt("HomePortalX", homePortalX);
         tag.putInt("HomePortalY", homePortalY);
         tag.putInt("HomePortalZ", homePortalZ);

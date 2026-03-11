@@ -4,8 +4,8 @@ import com.mojang.serialization.Codec;
 import io.github.ron1196.thelionking.registry.LKBlocks;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -24,12 +24,11 @@ public class TimonPumbaaLodgeFeature extends Feature<NoneFeatureConfiguration> {
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
         WorldGenLevel level = context.level();
         BlockPos pos = context.origin();
-        RandomSource random = context.random();
 
         BlockState log = LKBlocks.MANGO_LOG.get().defaultBlockState();
         BlockState planks = LKBlocks.MANGO_PLANKS.get().defaultBlockState();
         BlockState leaves = LKBlocks.MANGO_LEAVES.get().defaultBlockState()
-                .setValue(net.minecraft.world.level.block.LeavesBlock.PERSISTENT, true);
+                .setValue(LeavesBlock.PERSISTENT, true);
 
         // No strict ground check — structure system handles terrain placement
 
@@ -69,21 +68,10 @@ public class TimonPumbaaLodgeFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         // Spawn Timon and Pumbaa inside
-        if (!level.isClientSide()) {
-            var timon = LKEntityTypes.TIMON.get().create(level.getLevel());
-            if (timon != null) {
-                timon.moveTo(pos.getX() + 2.5, pos.getY() + 1, pos.getZ() + 2.5, 180, 0);
-                timon.setPersistenceRequired();
-                level.addFreshEntityWithPassengers(timon);
-            }
-
-            var pumbaa = LKEntityTypes.PUMBAA.get().create(level.getLevel());
-            if (pumbaa != null) {
-                pumbaa.moveTo(pos.getX() + 1.5, pos.getY() + 1, pos.getZ() + 2.5, 180, 0);
-                pumbaa.setPersistenceRequired();
-                level.addFreshEntityWithPassengers(pumbaa);
-            }
-        }
+        FeatureHelper.spawnEntity(level, LKEntityTypes.TIMON.get(),
+                pos.getX() + 2.5, pos.getY() + 1, pos.getZ() + 2.5);
+        FeatureHelper.spawnEntity(level, LKEntityTypes.PUMBAA.get(),
+                pos.getX() + 1.5, pos.getY() + 1, pos.getZ() + 2.5);
 
         return true;
     }

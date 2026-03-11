@@ -1,10 +1,8 @@
 package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
-import io.github.ron1196.thelionking.data.LKLevelData;
 import io.github.ron1196.thelionking.registry.LKBlocks;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
-import io.github.ron1196.thelionking.world.structure.LKStructurePiece;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -12,17 +10,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Zira's Mound in the Outlands.
  * Direct 1:1 port of the original LKWorldGenZiraMound.java (13,666 lines).
  */
 public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(ZiraMoundFeature.class);
 
 	private static final BlockState PORTAL_FRAME = LKBlocks.OUTLANDS_PORTAL_FRAME.get().defaultBlockState();
 	private static final BlockState OUTLANDS_POOL = LKBlocks.OUTLANDS_POOL.get().defaultBlockState();
@@ -41,8 +34,6 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
 		super(codec);
 	}
 
-	private static final ThreadLocal<int[]> DEBUG_COUNTERS = ThreadLocal.withInitial(() -> new int[2]);
-
 	@Override
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
 		WorldGenLevel level = context.level();
@@ -50,13 +41,6 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
 		int i = origin.getX();
 		int j = origin.getY();
 		int k = origin.getZ();
-
-		BoundingBox box = LKStructurePiece.CURRENT_BOX.get();
-		LOGGER.info("[ZiraMound] place() called: origin=({},{},{}), box={}", i, j, k, box);
-
-		int[] counters = DEBUG_COUNTERS.get();
-		counters[0] = 0; // placed
-		counters[1] = 0; // skipped
 
 		// Place all structure blocks (generate0-32 + pool cover)
 		generate0(level, i, j, k);
@@ -94,108 +78,13 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
 		generate32(level, i, j, k);
 		generatePoolCover(level, i, j, k);
 
-		LOGGER.info("[ZiraMound] After generate: placed={}, skipped={}", counters[0], counters[1]);
-		counters[0] = 0;
-		counters[1] = 0;
-
-		// Clear terrain above the mound in a circular area
-		int radiusSq = CLEAR_RADIUS * CLEAR_RADIUS;
-		int maxClearY = level.getMaxBuildHeight() - 1;
-		for (int i1 = i - CLEAR_RADIUS; i1 <= i + CLEAR_RADIUS; i1++) {
-			for (int k1 = k - CLEAR_RADIUS; k1 <= k + CLEAR_RADIUS; k1++) {
-				int i2 = i1 - i;
-				int k2 = k1 - k;
-				if (i2 * i2 + k2 * k2 > radiusSq) continue;
-				for (int j1 = maxClearY; j1 >= j + 3; j1--) {
-					if (canReplace(level, i1, j1, k1)) {
-						placeAt(level, i1, j1, k1, AIR);
-					}
-				}
-			}
-		}
-
-		// Fill terrain underneath (portal frame base + pridestone/sandstone/sand layers)
-		// Only fill exterior positions (no solid block above within structure height).
-		int structureTop = j + 87;
-		for (int i1 = i - CLEAR_RADIUS; i1 <= i + CLEAR_RADIUS; i1++) {
-			for (int k1 = k - CLEAR_RADIUS; k1 <= k + CLEAR_RADIUS; k1++) {
-				int i2 = i1 - i;
-				int k2 = k1 - k;
-				if (i2 * i2 + k2 * k2 > radiusSq) continue;
-				placeAt(level, i1, j + 2, k1, PORTAL_FRAME);
-				for (int j1 = j + 3; j1 <= j + 51; j1++) {
-					BlockPos fillPos = new BlockPos(i1, j1, k1);
-					if (level.isEmptyBlock(fillPos) && hasOpenSkyAbove(level, i1, j1, k1, structureTop)) {
-						BlockState fill;
-						if (j1 > j + 48) {
-							fill = SAND;
-						} else if (j1 > j + 46) {
-							fill = SANDSTONE;
-						} else if (j1 > 4) {
-							fill = CORRUPT_PRIDESTONE;
-						} else {
-							fill = BEDROCK;
-						}
-						placeAt(level, i1, j1, k1, fill);
-					}
-				}
-			}
-		}
-
-		LOGGER.info("[ZiraMound] After clear+fill: placed={}, skipped={}", counters[0], counters[1]);
-
-		// Sloped edges around the mound
-		for (int x = 1; x < 6; x++) {
-			int extRadius = CLEAR_RADIUS + x * 2;
-			int extRadiusSq = extRadius * extRadius;
-			for (int i1 = i - extRadius; i1 <= i + extRadius; i1++) {
-				for (int k1 = k - extRadius; k1 <= k + extRadius; k1++) {
-					int i2 = i1 - i;
-					int k2 = k1 - k;
-					if (i2 * i2 + k2 * k2 > extRadiusSq) continue;
-					for (int j1 = j + 3; j1 <= j + (51 - x); j1++) {
-						if (j1 > 60 && level.isEmptyBlock(new BlockPos(i1, j1, k1))
-								&& hasOpenSkyAbove(level, i1, j1, k1, structureTop)) {
-							if (j1 > j + 48) {
-								placeAt(level, i1, j1, k1, SAND);
-							} else if (j1 > j + 46) {
-								placeAt(level, i1, j1, k1, SANDSTONE);
-							}
-						}
-					}
-				}
-			}
-		}
+		// Clear natural terrain that clips into the mound
+		clearTerrainAboveMound(level, i, j, k);
 
 		// Outlands Altar
 		placeAt(level, i, j + 8, k, OUTLANDS_ALTAR);
 
-		// Save mound location for commands/quests
-		if (!level.isClientSide()) {
-			LKLevelData data = LKLevelData.get(level.getLevel());
-			if (!data.generatedMound) {
-				data.moundX = i;
-				data.moundY = j;
-				data.moundZ = k;
-				data.generatedMound = true;
-				data.setDirty();
-				LOGGER.info("[ZiraMound] Saved mound location: {}, {}, {}", i, j, k);
-			}
-		}
-
-		// Spawn Zira (only when spawn position is in current chunk box)
-		BoundingBox ziraBox = LKStructurePiece.CURRENT_BOX.get();
-		if (ziraBox != null && !ziraBox.isInside(new BlockPos(i, j + ZIRA_Y_OFFSET, k))) {
-			return true;
-		}
-		if (!level.isClientSide()) {
-			var zira = LKEntityTypes.ZIRA.get().create(level.getLevel());
-			if (zira != null) {
-				zira.moveTo(i + 0.5, j + ZIRA_Y_OFFSET, k + 0.5, 0, 0);
-				zira.setPersistenceRequired();
-				level.addFreshEntityWithPassengers(zira);
-			}
-		}
+		FeatureHelper.spawnEntity(level, LKEntityTypes.ZIRA.get(), i + 0.5, j + ZIRA_Y_OFFSET, k + 0.5);
 
 		return true;
 	}
@@ -205,27 +94,24 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
 	}
 
 	private static void placeAt(WorldGenLevel level, int x, int y, int z, BlockState state) {
-		BoundingBox box = LKStructurePiece.CURRENT_BOX.get();
-		if (box != null && !box.isInside(x, y, z)) {
-			DEBUG_COUNTERS.get()[1]++;
-			return;
-		}
-		DEBUG_COUNTERS.get()[0]++;
-		level.setBlock(new BlockPos(x, y, z), state, 2);
+		FeatureHelper.placeBlock(level, x, y, z, state);
 	}
 
-	/**
-	 * Simulates the old mod's canBlockSeeTheSky — checks if there's no solid block
-	 * above this position up to the structure top. Works reliably during world gen
-	 * unlike level.canSeeSky() which depends on heightmap updates.
-	 */
-	private static boolean hasOpenSkyAbove(WorldGenLevel level, int x, int y, int z, int maxY) {
-		for (int checkY = y + 1; checkY <= maxY; checkY++) {
-			if (!level.isEmptyBlock(new BlockPos(x, checkY, z))) {
-				return false;
+	private void clearTerrainAboveMound(WorldGenLevel level, int i, int j, int k) {
+		int radiusSq = CLEAR_RADIUS * CLEAR_RADIUS;
+		int maxClearY = level.getMaxBuildHeight() - 1;
+		for (int x = i - CLEAR_RADIUS; x <= i + CLEAR_RADIUS; x++) {
+			for (int z = k - CLEAR_RADIUS; z <= k + CLEAR_RADIUS; z++) {
+				int dx = x - i;
+				int dz = z - k;
+				if (dx * dx + dz * dz > radiusSq) continue;
+				for (int y = maxClearY; y >= j + 3; y--) {
+					if (canReplace(level, x, y, z)) {
+						placeAt(level, x, y, z, AIR);
+					}
+				}
 			}
 		}
-		return true;
 	}
 
 	private boolean canReplace(WorldGenLevel level, int x, int y, int z) {
