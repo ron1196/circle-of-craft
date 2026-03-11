@@ -2,13 +2,17 @@ package io.github.ron1196.thelionking.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import io.github.ron1196.thelionking.data.LKLevelData;
+import io.github.ron1196.thelionking.world.dimension.LKDimensions;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.Heightmap;
 
 /**
  * Debug/testing commands for The Lion King mod.
@@ -19,34 +23,78 @@ public class LKCommands {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("lk")
                 .requires(source -> source.hasPermission(2))
+                .then(Commands.literal("pridelands").executes(ctx -> teleportToDimension(ctx.getSource(), LKDimensions.PRIDE_LANDS_LEVEL, "Pride Lands")))
+                .then(Commands.literal("outlands").executes(ctx -> teleportToDimension(ctx.getSource(), LKDimensions.OUTLANDS_LEVEL, "Outlands")))
+                .then(Commands.literal("upendi").executes(ctx -> teleportToDimension(ctx.getSource(), LKDimensions.UPENDI_LEVEL, "Upendi")))
+                .then(Commands.literal("overworld").executes(ctx -> teleportToDimension(ctx.getSource(), Level.OVERWORLD, "Overworld")))
                 .then(Commands.literal("tpmound").executes(ctx -> teleportToMound(ctx.getSource())))
                 .then(Commands.literal("openmound").executes(ctx -> openMound(ctx.getSource())))
                 .then(Commands.literal("moundinfo").executes(ctx -> moundInfo(ctx.getSource())))
         );
     }
 
-    private static int teleportToMound(CommandSourceStack source) {
-        ServerLevel level = source.getLevel();
-        LKLevelData data = LKLevelData.get(level);
-        if (!data.generatedMound) {
-            source.sendFailure(Component.literal("No mound has been generated yet."));
-            return 0;
-        }
+    private static int teleportToDimension(CommandSourceStack source, ResourceKey<Level> dimensionKey, String name) {
         if (!(source.getEntity() instanceof ServerPlayer player)) {
             source.sendFailure(Component.literal("Must be run by a player."));
             return 0;
         }
+        ServerLevel targetLevel = source.getServer().getLevel(dimensionKey);
+        if (targetLevel == null) {
+            source.sendFailure(Component.literal("Dimension " + name + " not found."));
+            return 0;
+        }
+        if (player.level().dimension() == dimensionKey) {
+            source.sendFailure(Component.literal("You are already in " + name + "."));
+            return 0;
+        }
+        BlockPos spawnPos = targetLevel.getSharedSpawnPos();
+        int x = spawnPos.getX();
+        int z = spawnPos.getZ();
+        int y = targetLevel.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z) + 1;
+        player.teleportTo(targetLevel, x + 0.5, y, z + 0.5, player.getYRot(), player.getXRot());
+        source.sendSuccess(() -> Component.literal("Teleported to " + name + " at " + x + ", " + y + ", " + z), true);
+        return 1;
+    }
+
+    private static int teleportToMound(CommandSourceStack source) {
+        if (!(source.getEntity() instanceof ServerPlayer player)) {
+            source.sendFailure(Component.literal("Must be run by a player."));
+            return 0;
+        }
+
+        // Ensure we're in the Outlands, or tp there first
+        ServerLevel outlands = source.getServer().getLevel(LKDimensions.OUTLANDS_LEVEL);
+        if (outlands == null) {
+            source.sendFailure(Component.literal("Outlands dimension not found."));
+            return 0;
+        }
+
+        LKLevelData data = LKLevelData.get(outlands);
+        if (!data.generatedMound) {
+            // If not in outlands yet, tp there so the mound can generate
+            if (player.level().dimension() != LKDimensions.OUTLANDS_LEVEL) {
+                source.sendFailure(Component.literal("No mound generated yet. Use '/lk outlands' first to enter the Outlands."));
+                return 0;
+            }
+            source.sendFailure(Component.literal("No mound has been generated yet. Explore the Outlands to find it."));
+            return 0;
+        }
+
         int x = data.moundX;
         int y = data.moundY + 20;
         int z = data.moundZ;
-        player.teleportTo(x + 0.5, y, z + 0.5);
+        player.teleportTo(outlands, x + 0.5, y, z + 0.5, player.getYRot(), player.getXRot());
         source.sendSuccess(() -> Component.literal("Teleported to mound at " + x + ", " + y + ", " + z), true);
         return 1;
     }
 
     private static int openMound(CommandSourceStack source) {
-        ServerLevel level = source.getLevel();
-        LKLevelData data = LKLevelData.get(level);
+        ServerLevel outlands = source.getServer().getLevel(LKDimensions.OUTLANDS_LEVEL);
+        if (outlands == null) {
+            source.sendFailure(Component.literal("Outlands dimension not found."));
+            return 0;
+        }
+        LKLevelData data = LKLevelData.get(outlands);
         if (!data.generatedMound) {
             source.sendFailure(Component.literal("No mound has been generated yet."));
             return 0;
@@ -78,8 +126,8 @@ public class LKCommands {
         int count = 0;
         for (int[] offset : poolCoverPositions) {
             BlockPos pos = new BlockPos(i + offset[0], j + offset[1], k + offset[2]);
-            if (!level.getBlockState(pos).isAir()) {
-                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+            if (!outlands.getBlockState(pos).isAir()) {
+                outlands.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
                 count++;
             }
         }
@@ -90,8 +138,8 @@ public class LKCommands {
         };
         for (int[] offset : doorPositions) {
             BlockPos pos = new BlockPos(i + offset[0], j + offset[1], k + offset[2]);
-            if (!level.getBlockState(pos).isAir()) {
-                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+            if (!outlands.getBlockState(pos).isAir()) {
+                outlands.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
                 count++;
             }
         }
@@ -105,8 +153,12 @@ public class LKCommands {
     }
 
     private static int moundInfo(CommandSourceStack source) {
-        ServerLevel level = source.getLevel();
-        LKLevelData data = LKLevelData.get(level);
+        ServerLevel outlands = source.getServer().getLevel(LKDimensions.OUTLANDS_LEVEL);
+        if (outlands == null) {
+            source.sendSuccess(() -> Component.literal("Outlands dimension not found."), false);
+            return 1;
+        }
+        LKLevelData data = LKLevelData.get(outlands);
         if (!data.generatedMound) {
             source.sendSuccess(() -> Component.literal("No mound generated yet."), false);
         } else {
