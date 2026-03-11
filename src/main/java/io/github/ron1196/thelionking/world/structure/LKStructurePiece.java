@@ -17,17 +17,51 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * A structure piece that delegates building to an existing Feature class.
  */
 public class LKStructurePiece extends StructurePiece {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LKStructurePiece.class);
+    /**
+     * Per-structure configuration: bounding box dimensions, Y offset, and feature supplier.
+     *
+     * @param halfXZ  horizontal radius of the bounding box
+     * @param belowY  how far below the placement Y the bounding box extends
+     * @param aboveY  how far above the placement Y the bounding box extends
+     * @param yOffset offset applied to recover the correct origin Y in postProcess
+     *                (-1 for new features, belowY-1 for old-mod 1:1 ports)
+     * @param feature supplier for the Feature instance
+     */
+    private record StructureConfig(int halfXZ, int belowY, int aboveY, int yOffset,
+                                   Supplier<Feature<NoneFeatureConfiguration>> feature) {
+    }
+
+    private static final StructureConfig DEFAULT_CONFIG =
+            new StructureConfig(16, 4, 32, -1, () -> null);
+
+    private static final Map<String, StructureConfig> CONFIGS = Map.of(
+            "rafiki_tree", new StructureConfig(40, 4, 95, 2, () -> LKFeatures.RAFIKI_TREE.get()),
+            "zira_mound", new StructureConfig(40, 4, 90, 4, () -> LKFeatures.ZIRA_MOUND.get()),
+            "ticket_booth", new StructureConfig(16, 4, 32, -1, () -> LKFeatures.TICKET_BOOTH.get()),
+            "timon_pumbaa_lodge", new StructureConfig(16, 4, 32, -1, () -> LKFeatures.TIMON_PUMBAA_LODGE.get()),
+            "treasure_mound", new StructureConfig(16, 4, 32, -1, () -> LKFeatures.TREASURE_MOUND.get())
+    );
+
+    private static StructureConfig configFor(String path) {
+        return CONFIGS.getOrDefault(path, DEFAULT_CONFIG);
+    }
+
+    /**
+     * Current chunk's bounding box — used by features to clip block placement per-chunk.
+     * postProcess is called once per overlapping chunk; features must filter their setBlock
+     * calls to only place blocks within this box.
+     */
+    public static final ThreadLocal<BoundingBox> CURRENT_BOX = new ThreadLocal<>();
 
     private final ResourceLocation featureId;
 
@@ -46,13 +80,6 @@ public class LKStructurePiece extends StructurePiece {
         tag.putString("FeatureId", featureId.toString());
     }
 
-    /**
-     * Current chunk's bounding box — used by features to clip block placement per-chunk.
-     * postProcess is called once per overlapping chunk; features must filter their setBlock
-     * calls to only place blocks within this box.
-     */
-    public static final ThreadLocal<BoundingBox> CURRENT_BOX = new ThreadLocal<>();
-
     @Override
     public void postProcess(
             @NotNull WorldGenLevel level,
@@ -60,19 +87,17 @@ public class LKStructurePiece extends StructurePiece {
             @NotNull ChunkGenerator generator,
             @NotNull RandomSource random,
             @NotNull BoundingBox box,
-            ChunkPos chunkPos,
+            @NotNull ChunkPos chunkPos,
             @NotNull BlockPos pos
     ) {
-        Feature<NoneFeatureConfiguration> feature = resolveFeature();
+        StructureConfig config = configFor(featureId.getPath());
+        Feature<NoneFeatureConfiguration> feature = config.feature().get();
         if (feature == null) return;
 
         int originX = (this.boundingBox.minX() + this.boundingBox.maxX()) / 2;
         int originZ = (this.boundingBox.minZ() + this.boundingBox.maxZ()) / 2;
-        // pos.getY() = boundingBox.minY() from placeInChunk; recover actual surface Y
-        int belowY = getBelowY(featureId.getPath());
-        BlockPos origin = new BlockPos(originX, pos.getY() + belowY, originZ);
+        BlockPos origin = new BlockPos(originX, pos.getY() + config.yOffset(), originZ);
 
-        // Set the chunk box so features can clip their block placements
         CURRENT_BOX.set(box);
         try {
             FeaturePlaceContext<NoneFeatureConfiguration> context = new FeaturePlaceContext<>(
@@ -89,45 +114,10 @@ public class LKStructurePiece extends StructurePiece {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private Feature<NoneFeatureConfiguration> resolveFeature() {
-        String path = featureId.getPath();
-        return switch (path) {
-            case "rafiki_tree" -> LKFeatures.RAFIKI_TREE.get();
-            case "zira_mound" -> LKFeatures.ZIRA_MOUND.get();
-            case "ticket_booth" -> LKFeatures.TICKET_BOOTH.get();
-            case "timon_pumbaa_lodge" -> LKFeatures.TIMON_PUMBAA_LODGE.get();
-            case "treasure_mound" -> LKFeatures.TREASURE_MOUND.get();
-            default -> null;
-        };
-    }
-
-    private static int getBelowY(String path) {
-        return switch (path) {
-            case "zira_mound", "rafiki_tree" -> 4;
-            default -> 4;
-        };
-    }
-
     private static BoundingBox computeBoundingBox(BlockPos pos, ResourceLocation featureId) {
-        int halfXZ;
-        int belowY;
-        int aboveY;
-        if ("zira_mound".equals(featureId.getPath())) {
-            halfXZ = 40;
-            belowY = 4;
-            aboveY = 90;
-        } else if ("rafiki_tree".equals(featureId.getPath())) {
-            halfXZ = 40;
-            belowY = 4;
-            aboveY = 95;
-        } else {
-            halfXZ = 16;
-            belowY = 4;
-            aboveY = 32;
-        }
+        StructureConfig config = configFor(featureId.getPath());
         return new BoundingBox(
-                pos.getX() - halfXZ, pos.getY() - belowY, pos.getZ() - halfXZ,
-                pos.getX() + halfXZ, pos.getY() + aboveY, pos.getZ() + halfXZ);
+                pos.getX() - config.halfXZ(), pos.getY() - config.belowY(), pos.getZ() - config.halfXZ(),
+                pos.getX() + config.halfXZ(), pos.getY() + config.aboveY(), pos.getZ() + config.halfXZ());
     }
 }
