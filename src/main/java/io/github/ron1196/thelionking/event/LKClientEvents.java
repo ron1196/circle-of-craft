@@ -145,7 +145,7 @@ public class LKClientEvents {
         event.registerEntityRenderer(LKEntityTypes.CROCODILE.get(),
                 ctx -> new LKMobRenderer<>(ctx, new CrocodileModel<>(ctx.bakeLayer(CROCODILE_LAYER)), "crocodile", 0.7F));
         event.registerEntityRenderer(LKEntityTypes.TERMITE.get(),
-                ctx -> new LKMobRenderer<>(ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_LAYER)), "termite", 0.3F));
+                ctx -> new LKScaledMobRenderer<>(ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_LAYER)), "termite", 0.15F, 0.4F));
         event.registerEntityRenderer(LKEntityTypes.TERMITE_QUEEN.get(),
                 ctx -> new LKScaledMobRenderer<>(ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_QUEEN_LAYER)), "termite", 0.7F, 1.7F));
 

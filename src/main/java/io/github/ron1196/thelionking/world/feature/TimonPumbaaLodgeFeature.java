@@ -28,7 +28,8 @@ public class TimonPumbaaLodgeFeature extends Feature<NoneFeatureConfiguration> {
 
         BlockState log = LKBlocks.MANGO_LOG.get().defaultBlockState();
         BlockState planks = LKBlocks.MANGO_PLANKS.get().defaultBlockState();
-        BlockState leaves = LKBlocks.MANGO_LEAVES.get().defaultBlockState();
+        BlockState leaves = LKBlocks.MANGO_LEAVES.get().defaultBlockState()
+                .setValue(net.minecraft.world.level.block.LeavesBlock.PERSISTENT, true);
 
         // No strict ground check — structure system handles terrain placement
 

@@ -32,9 +32,7 @@ public class LKStructurePiece extends StructurePiece {
     private final ResourceLocation featureId;
 
     public LKStructurePiece(BlockPos pos, ResourceLocation featureId) {
-        super(LKStructureTypes.LK_PIECE_TYPE.get(), 0, new BoundingBox(
-                pos.getX() - 16, pos.getY() - 4, pos.getZ() - 16,
-                pos.getX() + 16, pos.getY() + 32, pos.getZ() + 16));
+        super(LKStructureTypes.LK_PIECE_TYPE.get(), 0, computeBoundingBox(pos, featureId));
         this.featureId = featureId;
     }
 
@@ -48,6 +46,13 @@ public class LKStructurePiece extends StructurePiece {
         tag.putString("FeatureId", featureId.toString());
     }
 
+    /**
+     * Current chunk's bounding box — used by features to clip block placement per-chunk.
+     * postProcess is called once per overlapping chunk; features must filter their setBlock
+     * calls to only place blocks within this box.
+     */
+    public static final ThreadLocal<BoundingBox> CURRENT_BOX = new ThreadLocal<>();
+
     @Override
     public void postProcess(
             @NotNull WorldGenLevel level,
@@ -58,22 +63,30 @@ public class LKStructurePiece extends StructurePiece {
             ChunkPos chunkPos,
             @NotNull BlockPos pos
     ) {
-        // run once for structure — postProcess is called for every chunk the bounding box overlaps
-        int originX = (this.boundingBox.minX() + this.boundingBox.maxX()) / 2;
-        int originZ = (this.boundingBox.minZ() + this.boundingBox.maxZ()) / 2;
-        boolean isOriginChunk = chunkPos.x == (originX >> 4) && chunkPos.z == (originZ >> 4);
-        if (!isOriginChunk) return;
-
         Feature<NoneFeatureConfiguration> feature = resolveFeature();
         if (feature == null) return;
 
-        // Use bounding box center for X/Z (matches findGenerationPoint), pos.getY()-1 for ground level
-        BlockPos origin = new BlockPos(originX, pos.getY() - 1, originZ);
-        LOGGER.info("[LKPiece] {} — origin={}, pos={}", featureId.getPath(), origin, pos);
+        int originX = (this.boundingBox.minX() + this.boundingBox.maxX()) / 2;
+        int originZ = (this.boundingBox.minZ() + this.boundingBox.maxZ()) / 2;
+        // pos.getY() = boundingBox.minY() from placeInChunk; recover actual surface Y
+        int belowY = getBelowY(featureId.getPath());
+        BlockPos origin = new BlockPos(originX, pos.getY() + belowY, originZ);
 
-        FeaturePlaceContext<NoneFeatureConfiguration> context = new FeaturePlaceContext<>(
-                Optional.empty(), level, generator, random, origin, NoneFeatureConfiguration.INSTANCE);
-        feature.place(context);
+        // Set the chunk box so features can clip their block placements
+        CURRENT_BOX.set(box);
+        try {
+            FeaturePlaceContext<NoneFeatureConfiguration> context = new FeaturePlaceContext<>(
+                    Optional.empty(),
+                    level,
+                    generator,
+                    random,
+                    origin,
+                    NoneFeatureConfiguration.INSTANCE
+            );
+            feature.place(context);
+        } finally {
+            CURRENT_BOX.remove();
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -87,5 +100,34 @@ public class LKStructurePiece extends StructurePiece {
             case "treasure_mound" -> LKFeatures.TREASURE_MOUND.get();
             default -> null;
         };
+    }
+
+    private static int getBelowY(String path) {
+        return switch (path) {
+            case "zira_mound", "rafiki_tree" -> 4;
+            default -> 4;
+        };
+    }
+
+    private static BoundingBox computeBoundingBox(BlockPos pos, ResourceLocation featureId) {
+        int halfXZ;
+        int belowY;
+        int aboveY;
+        if ("zira_mound".equals(featureId.getPath())) {
+            halfXZ = 40;
+            belowY = 4;
+            aboveY = 90;
+        } else if ("rafiki_tree".equals(featureId.getPath())) {
+            halfXZ = 40;
+            belowY = 4;
+            aboveY = 95;
+        } else {
+            halfXZ = 16;
+            belowY = 4;
+            aboveY = 32;
+        }
+        return new BoundingBox(
+                pos.getX() - halfXZ, pos.getY() - belowY, pos.getZ() - halfXZ,
+                pos.getX() + halfXZ, pos.getY() + aboveY, pos.getZ() + halfXZ);
     }
 }

@@ -251,9 +251,9 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         // SIGN on front exterior wall
         // ============================================================
         BlockPos signPos = origin.offset(5, 3, -1);
-        // Place as a wall sign facing south (outward from front wall)
+        // Place as a wall sign on the outside of the front wall, facing north (toward approaching players)
         level.setBlock(signPos, Blocks.OAK_WALL_SIGN.defaultBlockState()
-                .setValue(WallSignBlock.FACING, Direction.SOUTH), 2);
+                .setValue(WallSignBlock.FACING, Direction.NORTH), 2);
 
         // Set sign text via NBT load to avoid markUpdated() NPE during worldgen
         if (level.getBlockEntity(signPos) instanceof SignBlockEntity sign) {

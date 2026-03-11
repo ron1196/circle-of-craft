@@ -3,18 +3,18 @@
   "downfall": 0.0,
   "has_precipitation": false,
   "effects": {
-    "sky_color": 6046464,
-    "fog_color": 6046464,
-    "water_color": 4159204,
-    "water_fog_color": 329011,
-    "grass_color": 10066227,
-    "foliage_color": 8552064
+    "sky_color": 5262148,
+    "fog_color": 4538944,
+    "water_color": 16740108,
+    "water_fog_color": 10043392,
+    "grass_color": 8552064,
+    "foliage_color": 7499072
   },
   "spawners": {
     "monster": [
-      { "type": "thelionking:outlander", "weight": 8, "minCount": 1, "maxCount": 2 },
-      { "type": "thelionking:outlandess", "weight": 8, "minCount": 1, "maxCount": 2 },
-      { "type": "thelionking:vulture", "weight": 6, "minCount": 1, "maxCount": 2 },
+      { "type": "thelionking:outlander", "weight": 20, "minCount": 2, "maxCount": 4 },
+      { "type": "thelionking:outlandess", "weight": 20, "minCount": 2, "maxCount": 4 },
+      { "type": "thelionking:vulture", "weight": 15, "minCount": 1, "maxCount": 3 },
       { "type": "thelionking:skeletal_hyena", "weight": 10, "minCount": 2, "maxCount": 4 }
     ],
     "creature": [],

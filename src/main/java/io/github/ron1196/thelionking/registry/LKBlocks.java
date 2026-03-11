@@ -245,7 +245,7 @@ public class LKBlocks {
                     .mapColor(MapColor.NONE).strength(0.4F).sound(SoundType.GLASS).noOcclusion()));
 
     public static final RegistryObject<Block> TERMITE_MOUND = BLOCKS.register("termite_mound",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new io.github.ron1196.thelionking.block.TermiteMoundBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.DIRT).strength(0.5F, 3.0F)));
 
     public static final RegistryObject<Block> PUMBAA_BOX = BLOCKS.register("pumbaa_box",

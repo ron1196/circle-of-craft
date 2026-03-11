@@ -46,14 +46,12 @@ public class LKCodeStructure extends Structure {
         int x = chunkPos.getMiddleBlockX();
         int z = chunkPos.getMiddleBlockZ();
         int y = context.chunkGenerator().getFirstOccupiedHeight(
-                x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()
+                x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState()
         );
 
         String path = featureId.getPath();
 
-        // Per-structure terrain validation
         boolean valid = isValidPlacement(context, path, x, y, z);
-        LOGGER.info("[LKStructure] {} at ({}, {}, {}) — placement {}", path, x, y, z, valid ? "ACCEPTED" : "REJECTED");
         if (!valid) {
             return Optional.empty();
         }

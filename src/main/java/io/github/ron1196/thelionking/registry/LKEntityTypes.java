@@ -114,7 +114,7 @@ public class LKEntityTypes {
 
     public static final RegistryObject<EntityType<TermiteEntity>> TERMITE = ENTITY_TYPES.register("termite",
             () -> EntityType.Builder.of(TermiteEntity::new, MobCategory.MONSTER)
-                    .sized(0.7F, 0.5F).clientTrackingRange(8).build("termite"));
+                    .sized(0.5F, 0.4F).clientTrackingRange(8).build("termite"));
 
     public static final RegistryObject<EntityType<TermiteQueenEntity>> TERMITE_QUEEN = ENTITY_TYPES.register("termite_queen",
             () -> EntityType.Builder.of(TermiteQueenEntity::new, MobCategory.MONSTER)

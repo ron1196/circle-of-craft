@@ -21,10 +21,10 @@ public abstract class LKPlacementStrategy {
         static final LKPlacementStrategy DEFAULT = new NoFluidStrategy();
 
         static final Map<String, LKPlacementStrategy> STRATEGIES = Map.of(
-                "rafiki_tree", new FourCornersStrategy(3),
+                "rafiki_tree", new FourCornersStrategy(30),
                 "zira_mound", new AboveSeaLevelStrategy(),
                 "treasure_mound", new AboveSeaLevelStrategy(),
-                "ticket_booth", new NoFluidStrategy(),
+                "ticket_booth", new FourCornersStrategy(7),
                 "timon_pumbaa_lodge", new AboveSeaLevelStrategy()
         );
     }

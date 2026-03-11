@@ -6,6 +6,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -20,25 +22,45 @@ import net.minecraft.world.level.Level;
 
 public class TermiteQueenEntity extends Monster {
 
+    private static final int SPAWN_INTERVAL = 100;
+    private static final int MAX_NEARBY_TERMITES = 8;
+    private static final double TERMITE_SEARCH_RADIUS = 24.0;
+    private static final double SPAWN_OFFSET_SPREAD = 2.0;
+    private static final float DAMAGE_PER_HIT = 1.0F;
+    private static final int EXPERIENCE_REWARD = 500;
+    private static final double MELEE_SPEED = 1.0;
+    private static final double WANDER_SPEED = 0.8;
+    private static final float LOOK_DISTANCE = 8.0F;
+    private static final double MAX_HEALTH = 25.0;
+    private static final double MOVEMENT_SPEED = 0.25;
+    private static final double ATTACK_DAMAGE = 3.0;
+    private static final double ARMOR = 4.0;
+    private static final double FOLLOW_RANGE = 32.0;
+    private static final double KNOCKBACK_RESISTANCE = 0.5;
+    private static final int MIN_NUKA_SHARDS = 5;
+    private static final int EXTRA_NUKA_SHARDS = 6;
+    private static final int MIN_CRYSTALS = 1;
+    private static final int EXTRA_CRYSTALS = 3;
+
     private final ServerBossEvent bossEvent = new ServerBossEvent(
             Component.translatable("entity.thelionking.termite_queen"),
             BossEvent.BossBarColor.PURPLE,
             BossEvent.BossBarOverlay.PROGRESS
     );
 
-    private int spawnCooldown = 0;
+    private int spawnCooldown;
 
     public TermiteQueenEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
-        this.xpReward = 500;
+        this.xpReward = EXPERIENCE_REWARD;
     }
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0, false));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, MELEE_SPEED, false));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, WANDER_SPEED));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, LOOK_DISTANCE));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -51,16 +73,31 @@ public class TermiteQueenEntity extends Monster {
     }
 
     @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (source.is(DamageTypes.FELL_OUT_OF_WORLD)) {
+            return super.hurt(source, amount);
+        }
+        if (!(source.getEntity() instanceof Player)) {
+            return false;
+        }
+        float healthBefore = this.getHealth();
+        boolean result = super.hurt(source, DAMAGE_PER_HIT);
+        if (result && this.getHealth() < healthBefore && !this.level().isClientSide) {
+            spawnTermite(true);
+        }
+        return result;
+    }
+
+    @Override
     public void aiStep() {
         super.aiStep();
         if (!this.level().isClientSide) {
             this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
 
             if (this.getTarget() != null && this.isAlive()) {
-                double dist = this.distanceTo(this.getTarget());
-                if (dist > 6.0 && spawnCooldown <= 0) {
-                    spawnTermite();
-                    spawnCooldown = 60;
+                if (spawnCooldown <= 0) {
+                    spawnTermite(false);
+                    spawnCooldown = SPAWN_INTERVAL;
                 }
             }
             if (spawnCooldown > 0) {
@@ -69,32 +106,33 @@ public class TermiteQueenEntity extends Monster {
         }
     }
 
-    private void spawnTermite() {
-        // Cap at 8 nearby termites
-        int nearbyTermites = this.level().getEntitiesOfClass(TermiteEntity.class,
-                this.getBoundingBox().inflate(24.0)).size();
-        if (nearbyTermites >= 8) return;
+    private void spawnTermite(boolean exploding) {
+        int nearbyCount = this.level().getEntitiesOfClass(TermiteEntity.class,
+                this.getBoundingBox().inflate(TERMITE_SEARCH_RADIUS)).size();
+        if (nearbyCount >= MAX_NEARBY_TERMITES) return;
 
-        int count = 1 + this.getRandom().nextInt(3); // 1-3 termites per spawn
-        for (int i = 0; i < count && (nearbyTermites + i) < 8; i++) {
-            TermiteEntity termite = LKEntityTypes.TERMITE.get().create(this.level());
-            if (termite != null) {
-                termite.moveTo(this.getX() + this.getRandom().nextGaussian() * 2.0,
-                        this.getY(), this.getZ() + this.getRandom().nextGaussian() * 2.0,
-                        this.getRandom().nextFloat() * 360.0F, 0.0F);
-                this.level().addFreshEntity(termite);
-            }
+        TermiteEntity termite = LKEntityTypes.TERMITE.get().create(this.level());
+        if (termite == null) return;
+        termite.setExploding(exploding);
+        termite.moveTo(
+                this.getX() + this.getRandom().nextGaussian() * SPAWN_OFFSET_SPREAD,
+                this.getY(),
+                this.getZ() + this.getRandom().nextGaussian() * SPAWN_OFFSET_SPREAD,
+                this.getRandom().nextFloat() * 360.0F, 0.0F);
+        if (this.getTarget() != null) {
+            termite.setTarget(this.getTarget());
         }
+        this.level().addFreshEntity(termite);
     }
 
     @Override
-    protected void dropCustomDeathLoot(net.minecraft.world.damagesource.DamageSource source, int lootingLevel, boolean recentlyHit) {
+    protected void dropCustomDeathLoot(DamageSource source, int lootingLevel, boolean recentlyHit) {
         super.dropCustomDeathLoot(source, lootingLevel, recentlyHit);
-        int nukShardCount = 5 + this.getRandom().nextInt(6); // 5-10
+        int nukShardCount = MIN_NUKA_SHARDS + this.getRandom().nextInt(EXTRA_NUKA_SHARDS);
         for (int i = 0; i < nukShardCount; i++) {
             this.spawnAtLocation(new ItemStack(LKItems.NUKA_SHARD.get()));
         }
-        int crystalCount = 1 + this.getRandom().nextInt(3); // 1-3
+        int crystalCount = MIN_CRYSTALS + this.getRandom().nextInt(EXTRA_CRYSTALS);
         for (int i = 0; i < crystalCount; i++) {
             this.spawnAtLocation(new ItemStack(LKItems.CRYSTAL.get()));
         }
@@ -119,11 +157,11 @@ public class TermiteQueenEntity extends Monster {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 200.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.2)
-                .add(Attributes.ATTACK_DAMAGE, 10.0)
-                .add(Attributes.ARMOR, 4.0)
-                .add(Attributes.FOLLOW_RANGE, 40.0)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5);
+                .add(Attributes.MAX_HEALTH, MAX_HEALTH)
+                .add(Attributes.MOVEMENT_SPEED, MOVEMENT_SPEED)
+                .add(Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE)
+                .add(Attributes.ARMOR, ARMOR)
+                .add(Attributes.FOLLOW_RANGE, FOLLOW_RANGE)
+                .add(Attributes.KNOCKBACK_RESISTANCE, KNOCKBACK_RESISTANCE);
     }
 }

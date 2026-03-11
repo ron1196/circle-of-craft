@@ -40,7 +40,8 @@ public class BananaTreeFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         BlockState log = LKBlocks.BANANA_LOG.get().defaultBlockState();
-        BlockState leaves = LKBlocks.BANANA_LEAVES.get().defaultBlockState();
+        BlockState leaves = LKBlocks.BANANA_LEAVES.get().defaultBlockState()
+                .setValue(net.minecraft.world.level.block.LeavesBlock.PERSISTENT, true);
 
         // Trunk (extends one block into the canopy so leaves stay within distance 7)
         for (int y = 0; y <= height; y++) {

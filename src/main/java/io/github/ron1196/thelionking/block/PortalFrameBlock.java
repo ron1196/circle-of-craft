@@ -1,19 +1,55 @@
 package io.github.ron1196.thelionking.block;
 
 import io.github.ron1196.thelionking.registry.LKBlocks;
+import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class PortalFrameBlock extends Block {
+
+    private record ActivationKey(Supplier<Item> item, boolean consumed) {
+        static ActivationKey consumed(Supplier<Item> item) {
+            return new ActivationKey(item, true);
+        }
+
+        static ActivationKey kept(Supplier<Item> item) {
+            return new ActivationKey(item, false);
+        }
+    }
+
+    private record PortalConfig(Supplier<Block> portal, List<ActivationKey> keys) {
+        static PortalConfig create(Supplier<Block> portal, ActivationKey... keys) {
+            return new PortalConfig(portal, List.of(keys));
+        }
+    }
+
+    private static final Map<Boolean, PortalConfig> ACTIVATION_KEYS = Map.of(
+            false, PortalConfig.create(
+                    LKBlocks.PRIDE_LANDS_PORTAL,
+                    ActivationKey.consumed(LKItems.TICKET),
+                    ActivationKey.kept(LKItems.STAFF)
+            ),
+            true, PortalConfig.create(
+                    LKBlocks.OUTLANDS_PORTAL,
+                    ActivationKey.consumed(LKItems.TICKET),
+                    ActivationKey.kept(LKItems.ZIRA_COIN)
+            )
+    );
 
     private final boolean isOutlands;
 
@@ -23,33 +59,28 @@ public class PortalFrameBlock extends Block {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
-                                  InteractionHand hand, BlockHitResult hit) {
+    public @NotNull InteractionResult use(
+            @NotNull BlockState state,
+            @NotNull Level level,
+            @NotNull BlockPos pos,
+            Player player,
+            @NotNull InteractionHand hand,
+            @NotNull BlockHitResult hit) {
         ItemStack stack = player.getItemInHand(hand);
-
-        // Activate with the appropriate item
-        if (isOutlands) {
-            // Outlands portal activated with Zira coin
-            if (stack.is(io.github.ron1196.thelionking.registry.LKItems.ZIRA_COIN.get())) {
-                return tryCreatePortal(level, pos);
-            }
-        } else {
-            // Pride Lands portal activated with Rafiki's staff
-            if (stack.is(io.github.ron1196.thelionking.registry.LKItems.STAFF.get())) {
-                return tryCreatePortal(level, pos);
+        PortalConfig config = ACTIVATION_KEYS.get(isOutlands);
+        for (ActivationKey key : config.keys()) {
+            if (stack.is(key.item().get())) {
+                return tryCreatePortal(level, pos, player, stack, key, config);
             }
         }
         return InteractionResult.PASS;
     }
 
-    private InteractionResult tryCreatePortal(Level level, BlockPos pos) {
+    private InteractionResult tryCreatePortal(Level level, BlockPos pos, Player player, ItemStack stack, ActivationKey key, PortalConfig config) {
         if (level.isClientSide) return InteractionResult.SUCCESS;
 
-        LKPortalBlock portalBlock = isOutlands
-                ? (LKPortalBlock) LKBlocks.OUTLANDS_PORTAL.get()
-                : (LKPortalBlock) LKBlocks.PRIDE_LANDS_PORTAL.get();
+        LKPortalBlock portalBlock = (LKPortalBlock) config.portal().get();
 
-        // Try all inner positions adjacent to this frame block
         for (BlockPos testPos : new BlockPos[]{
                 pos.above(), pos.below(),
                 pos.north(), pos.south(), pos.east(), pos.west()
@@ -57,6 +88,9 @@ public class PortalFrameBlock extends Block {
             if (level.getBlockState(testPos).isAir()) {
                 if (portalBlock.trySpawnPortal(level, testPos)) {
                     level.playSound(null, pos, SoundEvents.PORTAL_TRIGGER, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    if (key.consumed() && !player.getAbilities().instabuild) {
+                        stack.shrink(1);
+                    }
                     return InteractionResult.CONSUME;
                 }
             }
