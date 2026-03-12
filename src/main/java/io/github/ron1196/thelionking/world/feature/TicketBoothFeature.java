@@ -3,6 +3,7 @@ package io.github.ron1196.thelionking.world.feature;
 import com.mojang.serialization.Codec;
 import io.github.ron1196.thelionking.registry.LKBlocks;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -10,33 +11,28 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.WallSignBlock;
-import net.minecraft.world.level.block.WallTorchBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.github.ron1196.thelionking.world.structure.LKStructurePiece;
+import net.minecraft.world.level.material.Fluids;
 
 /**
- * Ticket Booth — a ~14x13 theater building with seating, a portal frame screen,
- * a Ticket Lion NPC, a loot chest, sign, and decorative details.
- * Faithfully ported from the original Lion King mod's LKWorldGenTicketBooth.
+ * Ticket Booth — faithful 1:1 port of LKWorldGenTicketBooth.
+ * L-shaped structure: small ticket counter + larger theater with seating and portal frame screen.
  */
 public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TicketBoothFeature.class);
 
     public TicketBoothFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
@@ -47,229 +43,278 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         WorldGenLevel level = context.level();
         BlockPos origin = context.origin();
         RandomSource random = context.random();
+        int i = origin.getX();
+        int j = origin.getY();
+        int k = origin.getZ();
 
-        LOGGER.info("Ticket Booth generating at ({}, {}, {})", origin.getX(), origin.getY(), origin.getZ());
-
-        // Block palette
-        BlockState pridestone = LKBlocks.PRIDESTONE.get().defaultBlockState();
+        // Old mod used default oak + red wool; randomBooths not implemented yet
+        BlockState stairBlock = Blocks.OAK_STAIRS.defaultBlockState();
+        BlockState seatBlock = Blocks.OAK_STAIRS.defaultBlockState();
         BlockState planks = Blocks.OAK_PLANKS.defaultBlockState();
-        BlockState stoneBricks = Blocks.STONE_BRICKS.defaultBlockState();
-        BlockState wool = Blocks.WHITE_WOOL.defaultBlockState();
+        BlockState wool = Blocks.RED_WOOL.defaultBlockState();
+        BlockState cobble = Blocks.COBBLESTONE.defaultBlockState();
+        BlockState stoneBrick = Blocks.STONE_BRICKS.defaultBlockState();
         BlockState glowstone = Blocks.GLOWSTONE.defaultBlockState();
         BlockState fence = Blocks.OAK_FENCE.defaultBlockState();
         BlockState glassPane = Blocks.GLASS_PANE.defaultBlockState();
         BlockState portalFrame = LKBlocks.PRIDE_PORTAL_FRAME.get().defaultBlockState();
+        BlockState torch = Blocks.TORCH.defaultBlockState();
         BlockState air = Blocks.AIR.defaultBlockState();
-
-        // Building dimensions: 14 wide (X: 0..13), 13 deep (Z: 0..12)
-        // origin is the front-left corner at ground level
-        // Front faces south (positive Z direction is back/screen end)
-        int width = 14;
-        int depth = 13;
+        BlockState dirt = Blocks.DIRT.defaultBlockState();
 
         // ============================================================
-        // FLOOR: Pridestone floor with support fill underneath
+        // FLOOR + WALLS: cobblestone floor, fill support below, plank walls
+        // L-shaped footprint: x=-2..15, z=-2..9 except (z>4 && x<2)
         // ============================================================
-        for (int x = 0; x < width; x++) {
-            for (int z = 0; z < depth; z++) {
-                // Fill below floor down a few blocks for support on uneven terrain
-                for (int y = -3; y < 0; y++) {
-                    BlockPos fillPos = origin.offset(x, y, z);
-                    if (!level.getBlockState(fillPos).isSolidRender(level, fillPos)) {
-                        level.setBlock(fillPos, pridestone, 2);
+        for (int i1 = -2; i1 < 16; i1++) {
+            for (int k1 = -2; k1 < 10; k1++) {
+                if (k1 > 4 && i1 < 2) continue;
+
+                // Cobblestone floor
+                FeatureHelper.placeBlock(level, i + i1, j, k + k1, cobble);
+
+                // Fill support below until solid ground
+                for (int j1 = 1; j1 < 10; j1++) {
+                    BlockPos below = new BlockPos(i + i1, j - j1, k + k1);
+                    if (level.getBlockState(below).isSolidRender(level, below)) break;
+                    FeatureHelper.placeBlock(level, i + i1, j - j1, k + k1, dirt);
+                }
+
+                // Plank walls y+1 to y+3
+                for (int j1 = 1; j1 < 4; j1++) {
+                    FeatureHelper.placeBlock(level, i + i1, j + j1, k + k1, planks);
+                }
+                // Theater section (x>2) gets taller walls y+4 to y+5
+                if (i1 > 2) {
+                    for (int j1 = 4; j1 < 6; j1++) {
+                        FeatureHelper.placeBlock(level, i + i1, j + j1, k + k1, planks);
                     }
                 }
-                // Floor level
-                level.setBlock(origin.offset(x, 0, z), pridestone, 2);
+                // Stone brick accent at y+2
+                FeatureHelper.placeBlock(level, i + i1, j + 2, k + k1, stoneBrick);
             }
         }
 
         // ============================================================
-        // CLEAR INTERIOR: Air out the building volume
+        // THEATER INTERIOR: clear, wool carpet, seats, center aisle
+        // x=3..14, z=-1..8
         // ============================================================
-        for (int x = 0; x < width; x++) {
-            for (int z = 0; z < depth; z++) {
-                for (int y = 1; y <= 6; y++) {
-                    level.setBlock(origin.offset(x, y, z), air, 2);
+        for (int i1 = 3; i1 < 15; i1++) {
+            for (int k1 = -1; k1 < 9; k1++) {
+                // Clear interior
+                for (int j1 = 1; j1 < 5; j1++) {
+                    FeatureHelper.placeBlock(level, i + i1, j + j1, k + k1, air);
+                }
+                // Wool carpet on floor (except seat rows)
+                if (!(i1 < 10 && i1 % 2 == 1)) {
+                    FeatureHelper.placeBlock(level, i + i1, j, k + k1, wool);
+                }
+                // Seats: odd x columns (3,5,7,9), not on center aisle (z=3,4)
+                if (i1 < 10 && i1 % 2 == 1 && k1 != 3 && k1 != 4) {
+                    FeatureHelper.placeBlock(level, i + i1, j + 1, k + k1,
+                            seatBlock.setValue(StairBlock.FACING, Direction.WEST));
+                }
+                // Center aisle stays cobblestone
+                if (k1 == 3 || k1 == 4) {
+                    FeatureHelper.placeBlock(level, i + i1, j, k + k1, cobble);
                 }
             }
         }
 
         // ============================================================
-        // WALLS: Plank walls, Y+1 to Y+4, with stone brick accent at Y+2
+        // PORTAL FRAME SCREEN at x+14, z=2..5, j+0..j+4
+        // Hollow frame (border only)
         // ============================================================
-        for (int y = 1; y <= 4; y++) {
-            BlockState wallBlock = (y == 2) ? stoneBricks : planks;
+        for (int j1 = 0; j1 < 5; j1++) {
+            for (int k1 = 2; k1 < 6; k1++) {
+                if (j1 > 0 && j1 < 4 && k1 > 2 && k1 < 5) continue; // hollow center
+                FeatureHelper.placeBlock(level, i + 14, j + j1, k + k1, portalFrame);
+            }
+        }
 
-            // Left wall (x=0)
-            for (int z = 0; z < depth; z++) {
-                level.setBlock(origin.offset(0, y, z), wallBlock, 2);
+        // ============================================================
+        // TICKET COUNTER: clear entrance area
+        // ============================================================
+        // Clear doorway area at z+3
+        for (int i1 = -2; i1 < 3; i1++) {
+            for (int j1 = 1; j1 < 3; j1++) {
+                FeatureHelper.placeBlock(level, i + i1, j + j1, k + 3, air);
             }
-            // Right wall (x=width-1)
-            for (int z = 0; z < depth; z++) {
-                level.setBlock(origin.offset(width - 1, y, z), wallBlock, 2);
-            }
-            // Back wall (z=depth-1) — the screen end
-            for (int x = 0; x < width; x++) {
-                level.setBlock(origin.offset(x, y, depth - 1), wallBlock, 2);
-            }
-            // Front wall (z=0) — with door opening
-            for (int x = 0; x < width; x++) {
-                // Leave door gap at center: x=6 and x=7
-                if (x == 6 || x == 7) {
-                    if (y <= 2) continue; // Door opening 2 blocks high
+        }
+
+        // Clear ticket counter interior + add details
+        for (int i1 = -1; i1 < 1; i1++) {
+            for (int j1 = 1; j1 < 3; j1++) {
+                for (int k1 = -1; k1 < 2; k1++) {
+                    FeatureHelper.placeBlock(level, i + i1, j + j1, k + k1, air);
+                    // Clear above on left side
+                    if (i1 == -1 && j1 == 2) {
+                        FeatureHelper.placeBlock(level, i + i1 - 1, j + j1, k + k1, air);
+                    }
+                    // Torches on counter
+                    if (i1 == 0 && j1 == 2 && k1 != 0) {
+                        FeatureHelper.placeBlock(level, i + i1, j + j1, k + k1, torch);
+                    }
+                    // Fence at counter window
+                    if (i1 == -1 && j1 == 1 && k1 == 0) {
+                        FeatureHelper.placeBlock(level, i + i1 - 1, j + j1, k + k1, fence);
+                    }
+                    // Glass panes at counter
+                    if (i1 == -1 && j1 == 2 && k1 != 0) {
+                        FeatureHelper.placeBlock(level, i + i1 - 1, j + j1, k + k1, glassPane);
+                    }
                 }
-                level.setBlock(origin.offset(x, y, 0), wallBlock, 2);
             }
         }
 
         // ============================================================
-        // GLOWSTONE at 4 corner pillars at Y+2
+        // THEATER ROOF: stair overhangs at y+4
         // ============================================================
-        level.setBlock(origin.offset(0, 2, 0), glowstone, 2);
-        level.setBlock(origin.offset(width - 1, 2, 0), glowstone, 2);
-        level.setBlock(origin.offset(0, 2, depth - 1), glowstone, 2);
-        level.setBlock(origin.offset(width - 1, 2, depth - 1), glowstone, 2);
-
-        // ============================================================
-        // GLASS PANES: Windows on side walls at Y+3
-        // ============================================================
-        for (int z = 2; z <= depth - 3; z += 2) {
-            // Left wall windows
-            level.setBlock(origin.offset(0, 3, z), glassPane, 2);
-            // Right wall windows
-            level.setBlock(origin.offset(width - 1, 3, z), glassPane, 2);
+        // Front and back theater overhangs
+        for (int i1 = 4; i1 < 15; i1++) {
+            // Front (z-1): upside-down stairs facing south
+            FeatureHelper.placeBlock(
+                    level, i + i1, j + 4, k - 1,
+                    stairBlock.setValue(StairBlock.FACING, Direction.SOUTH).setValue(StairBlock.HALF, Half.TOP)
+            );
+            // Back (z+8): upside-down stairs facing north
+            FeatureHelper.placeBlock(
+                    level, i + i1, j + 4, k + 8,
+                    stairBlock.setValue(StairBlock.FACING, Direction.NORTH).setValue(StairBlock.HALF, Half.TOP)
+            );
         }
 
-        // ============================================================
-        // DOOR: Oak door at front center
-        // ============================================================
-        BlockPos doorPos = origin.offset(6, 1, 0);
-        level.setBlock(doorPos, Blocks.OAK_DOOR.defaultBlockState()
-                .setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER)
-                .setValue(DoorBlock.FACING, Direction.SOUTH), 2);
-        level.setBlock(doorPos.above(), Blocks.OAK_DOOR.defaultBlockState()
-                .setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER)
-                .setValue(DoorBlock.FACING, Direction.SOUTH), 2);
-
-        // Second door leaf
-        BlockPos doorPos2 = origin.offset(7, 1, 0);
-        level.setBlock(doorPos2, Blocks.OAK_DOOR.defaultBlockState()
-                .setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER)
-                .setValue(DoorBlock.FACING, Direction.SOUTH), 2);
-        level.setBlock(doorPos2.above(), Blocks.OAK_DOOR.defaultBlockState()
-                .setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER)
-                .setValue(DoorBlock.FACING, Direction.SOUTH), 2);
-
-        // ============================================================
-        // ROOF: Wool flat roof at Y+5
-        // ============================================================
-        for (int x = 0; x < width; x++) {
-            for (int z = 0; z < depth; z++) {
-                level.setBlock(origin.offset(x, 5, z), wool, 2);
+        // Left wall overhang (x+3)
+        for (int k1 = 0; k1 < 8; k1++) {
+            FeatureHelper.placeBlock(level, i + 3, j + 4, k + k1,
+                    stairBlock.setValue(StairBlock.FACING, Direction.EAST).setValue(StairBlock.HALF, Half.TOP));
+            // Right wall overhang (x+14) only on sides, not screen area
+            if (k1 < 2 || k1 > 5) {
+                FeatureHelper.placeBlock(level, i + 14, j + 4, k + k1,
+                        stairBlock.setValue(StairBlock.FACING, Direction.WEST).setValue(StairBlock.HALF, Half.TOP));
             }
         }
 
         // ============================================================
-        // STAIR ROOF OVERHANG: Stairs around all 4 sides at Y+5
+        // CORNER PILLARS: planks with glowstone at y+2
         // ============================================================
-        // Front overhang (z=-1), stairs facing south (outward)
-        for (int x = -1; x <= width; x++) {
-            level.setBlock(origin.offset(x, 5, -1),
-                    Blocks.OAK_STAIRS.defaultBlockState()
-                            .setValue(StairBlock.FACING, Direction.SOUTH)
-                            .setValue(StairBlock.HALF, Half.TOP), 2);
-        }
-        // Back overhang (z=depth), stairs facing north (outward)
-        for (int x = -1; x <= width; x++) {
-            level.setBlock(origin.offset(x, 5, depth),
-                    Blocks.OAK_STAIRS.defaultBlockState()
-                            .setValue(StairBlock.FACING, Direction.NORTH)
-                            .setValue(StairBlock.HALF, Half.TOP), 2);
-        }
-        // Left overhang (x=-1), stairs facing east (outward)
-        for (int z = 0; z < depth; z++) {
-            level.setBlock(origin.offset(-1, 5, z),
-                    Blocks.OAK_STAIRS.defaultBlockState()
-                            .setValue(StairBlock.FACING, Direction.EAST)
-                            .setValue(StairBlock.HALF, Half.TOP), 2);
-        }
-        // Right overhang (x=width), stairs facing west (outward)
-        for (int z = 0; z < depth; z++) {
-            level.setBlock(origin.offset(width, 5, z),
-                    Blocks.OAK_STAIRS.defaultBlockState()
-                            .setValue(StairBlock.FACING, Direction.WEST)
-                            .setValue(StairBlock.HALF, Half.TOP), 2);
+        for (int j1 = 0; j1 < 5; j1++) {
+            BlockState pillar = j1 == 2 ? glowstone : planks;
+            FeatureHelper.placeBlock(level, i + 3, j + j1, k - 1, pillar);
+            FeatureHelper.placeBlock(level, i + 14, j + j1, k - 1, pillar);
+            FeatureHelper.placeBlock(level, i + 3, j + j1, k + 8, pillar);
+            FeatureHelper.placeBlock(level, i + 14, j + j1, k + 8, pillar);
         }
 
         // ============================================================
-        // PORTAL FRAME "SCREEN" at back wall (z=depth-2), 4 wide x 5 tall
-        // Centered on the back wall interior
+        // TICKET COUNTER ROOF: stairs at y+3
         // ============================================================
-        int screenStartX = (width / 2) - 2; // center a 4-wide frame
-        for (int sx = 0; sx < 4; sx++) {
-            for (int sy = 0; sy < 5; sy++) {
-                // Frame is the border; interior could be air or portal
-                // Place full frame for now (4x5 solid portal frame blocks)
-                level.setBlock(origin.offset(screenStartX + sx, 1 + sy, depth - 2), portalFrame, 2);
+        // Left side (x-3)
+        for (int k1 = -2; k1 < 5; k1++) {
+            if (k1 == 3) {
+                FeatureHelper.placeBlock(level, i - 3, j + 3, k + k1, planks); // solid above door
+            } else {
+                FeatureHelper.placeBlock(level, i - 3, j + 3, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.WEST));
             }
         }
+        // Front
+        for (int i1 = -2; i1 < 4; i1++) {
+            FeatureHelper.placeBlock(level, i + i1, j + 3, k - 3, stairBlock.setValue(StairBlock.FACING, Direction.SOUTH));
+        }
+        // Back
+        for (int i1 = -2; i1 < 1; i1++) {
+            FeatureHelper.placeBlock(level, i + i1, j + 3, k + 5, stairBlock.setValue(StairBlock.FACING, Direction.NORTH));
+        }
+        // Connection between counter and theater
+        generateSupports(level, i + 1, j + 3, k + 5, stairBlock, Direction.WEST);
+        FeatureHelper.placeBlock(level, i + 1, j + 3, k + 5, planks);
+        for (int k1 = 6; k1 < 10; k1++) {
+            FeatureHelper.placeBlock(level, i + 1, j + 3, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.WEST));
+        }
 
         // ============================================================
-        // SEATING: Stair blocks in rows, facing the screen (north)
-        // Rows at z=3, z=5, z=7, z=9 — alternating with aisles
+        // OUTER ROOF OVERHANGS at y+5
         // ============================================================
-        for (int rowZ : new int[]{3, 5, 7, 9}) {
-            for (int x = 2; x <= width - 3; x++) {
-                // Leave a center aisle at x=6 and x=7
-                if (x == 6 || x == 7) continue;
-                level.setBlock(origin.offset(x, 1, rowZ),
-                        Blocks.OAK_STAIRS.defaultBlockState()
-                                .setValue(StairBlock.FACING, Direction.NORTH), 2);
+        for (int k1 = -2; k1 < 10; k1++) {
+            FeatureHelper.placeBlock(level, i + 2, j + 5, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.WEST));
+            FeatureHelper.placeBlock(level, i + 16, j + 5, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.EAST));
+        }
+        for (int i1 = 3; i1 < 16; i1++) {
+            FeatureHelper.placeBlock(level, i + i1, j + 5, k - 3, stairBlock.setValue(StairBlock.FACING, Direction.SOUTH));
+            FeatureHelper.placeBlock(level, i + i1, j + 5, k + 10, stairBlock.setValue(StairBlock.FACING, Direction.NORTH));
+        }
+        // Extra stair connections
+        FeatureHelper.placeBlock(level, i + 2, j + 3, k + 10, stairBlock.setValue(StairBlock.FACING, Direction.NORTH));
+        FeatureHelper.placeBlock(level, i + 3, j + 3, k + 10, stairBlock.setValue(StairBlock.FACING, Direction.NORTH));
+
+        // ============================================================
+        // SUPPORTS: fence posts under overhangs
+        // ============================================================
+        generateSupports(level, i - 3, j + 3, k - 3, stairBlock, Direction.WEST);
+        generateSupports(level, i - 3, j + 3, k + 5, stairBlock, Direction.WEST);
+        generateSupports(level, i + 1, j + 3, k + 10, stairBlock, Direction.WEST);
+        generateSupports(level, i + 4, j + 3, k + 10, stairBlock, Direction.NORTH);
+        generateSupports(level, i + 4, j + 3, k - 3, stairBlock, Direction.EAST);
+        FeatureHelper.placeBlock(level, i + 2, j + 5, k - 3, stairBlock.setValue(StairBlock.FACING, Direction.WEST));
+        FeatureHelper.placeBlock(level, i + 2, j + 5, k + 10, stairBlock.setValue(StairBlock.FACING, Direction.WEST));
+        generateSupports(level, i + 16, j + 5, k - 3, stairBlock, Direction.SOUTH);
+        generateSupports(level, i + 16, j + 5, k + 10, stairBlock, Direction.NORTH);
+
+        // ============================================================
+        // DOOR at ticket counter entrance
+        // ============================================================
+        FeatureHelper.placeBlock(
+                level, i - 2, j + 1, k + 3,
+                Blocks.OAK_DOOR.defaultBlockState()
+                        .setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER)
+                        .setValue(DoorBlock.FACING, Direction.WEST)
+        );
+        FeatureHelper.placeBlock(
+                level, i - 2, j + 2, k + 3,
+                Blocks.OAK_DOOR.defaultBlockState()
+                        .setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER)
+                        .setValue(DoorBlock.FACING, Direction.WEST)
+        );
+
+        // ============================================================
+        // TORCHES
+        // ============================================================
+        // Theater interior walls
+        for (int i1 = 5; i1 < 13; i1++) {
+            if (i1 % 3 != 1) {
+                FeatureHelper.placeBlock(level, i + i1, j + 2, k - 1, torch);
+                FeatureHelper.placeBlock(level, i + i1, j + 2, k + 8, torch);
             }
         }
-
-        // ============================================================
-        // FENCE divider between seating and screen area
-        // ============================================================
-        for (int x = 1; x < width - 1; x++) {
-            if (x == 6 || x == 7) continue; // center aisle gap
-            level.setBlock(origin.offset(x, 1, 2), fence, 2);
+        // Right wall (near screen)
+        for (int k1 = 1; k1 < 7; k1++) {
+            if (k1 < 2 || k1 > 5) {
+                FeatureHelper.placeBlock(level, i + 14, j + 2, k + k1, torch);
+            }
+            if (k1 < 3 || k1 > 4) {
+                FeatureHelper.placeBlock(level, i + 3, j + 2, k + k1, torch);
+            }
         }
+        // Ticket counter torches
+        FeatureHelper.placeBlock(level, i - 3, j + 2, k - 2, torch);
+        FeatureHelper.placeBlock(level, i - 3, j + 2, k + 2, torch);
+        FeatureHelper.placeBlock(level, i - 3, j + 2, k + 4, torch);
 
         // ============================================================
-        // WALL TORCHES on interior walls
+        // SIGN on exterior
         // ============================================================
-        // Left wall torches (facing east, into the room)
-        for (int z = 2; z <= depth - 3; z += 3) {
-            level.setBlock(origin.offset(1, 3, z),
-                    Blocks.WALL_TORCH.defaultBlockState()
-                            .setValue(WallTorchBlock.FACING, Direction.EAST), 2);
-        }
-        // Right wall torches (facing west, into the room)
-        for (int z = 2; z <= depth - 3; z += 3) {
-            level.setBlock(origin.offset(width - 2, 3, z),
-                    Blocks.WALL_TORCH.defaultBlockState()
-                            .setValue(WallTorchBlock.FACING, Direction.WEST), 2);
-        }
+        BlockPos signPos = new BlockPos(i - 4, j + 3, k + 3);
+        FeatureHelper.placeBlock(
+                level, signPos.getX(), signPos.getY(), signPos.getZ(),
+                Blocks.OAK_WALL_SIGN.defaultBlockState().setValue(WallSignBlock.FACING, Direction.WEST)
+        );
 
-        // ============================================================
-        // SIGN on front exterior wall
-        // ============================================================
-        BlockPos signPos = origin.offset(5, 3, -1);
-        // Place as a wall sign on the outside of the front wall, facing north (toward approaching players)
-        level.setBlock(signPos, Blocks.OAK_WALL_SIGN.defaultBlockState()
-                .setValue(WallSignBlock.FACING, Direction.NORTH), 2);
-
-        // Set sign text via NBT load to avoid markUpdated() NPE during worldgen
         if (level.getBlockEntity(signPos) instanceof SignBlockEntity sign) {
             ListTag messages = new ListTag();
             messages.add(StringTag.valueOf(Component.Serializer.toJson(Component.literal("---------------"))));
             messages.add(StringTag.valueOf(Component.Serializer.toJson(Component.literal("Now showing:"))));
             messages.add(StringTag.valueOf(Component.Serializer.toJson(Component.literal("The Lion King"))));
             messages.add(StringTag.valueOf(Component.Serializer.toJson(Component.literal("---------------"))));
-            ListTag colors = new ListTag();
-            for (int ci = 0; ci < 4; ci++) colors.add(StringTag.valueOf("black"));
             CompoundTag frontText = new CompoundTag();
             frontText.put("messages", messages);
             frontText.put("color", StringTag.valueOf("black"));
@@ -280,54 +325,74 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         // ============================================================
-        // CHEST with loot near the entrance
+        // TICKET LION NPC at origin
         // ============================================================
-        BlockPos chestPos = origin.offset(2, 1, 1);
-        level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 2);
+        FeatureHelper.spawnEntity(level, LKEntityTypes.TICKET_LION.get(), i + 0.5, j + 1, k + 0.5);
 
-        if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
-            // Sticks
-            chest.setItem(0, new ItemStack(Items.STICK, 2 + random.nextInt(5)));
-            // Paper
-            chest.setItem(1, new ItemStack(Items.PAPER, 1 + random.nextInt(4)));
-            // Book
-            chest.setItem(3, new ItemStack(Items.BOOK, 1 + random.nextInt(2)));
-            // Bread
-            chest.setItem(5, new ItemStack(Items.BREAD, 1 + random.nextInt(3)));
-            // Compass
-            if (random.nextInt(3) == 0) {
-                chest.setItem(7, new ItemStack(Items.COMPASS, 1));
+        // ============================================================
+        // CHEST with TRAPDOOR above and loot + random ticket lion armor
+        // ============================================================
+        BlockPos chestPos = new BlockPos(i + 2, j + 1, k);
+        FeatureHelper.placeBlock(
+                level, chestPos.getX(), chestPos.getY(), chestPos.getZ(),
+                Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.WEST)
+        );
+        FeatureHelper.placeBlock(
+                level, i + 2, j + 2, k,
+                Blocks.OAK_TRAPDOOR.defaultBlockState().setValue(TrapDoorBlock.FACING, Direction.NORTH)
+        );
+
+        if (LKStructurePiece.isInCurrentChunk(chestPos) && level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
+            int lootCount = 2 + random.nextInt(4);
+            for (int l = 0; l < lootCount; l++) {
+                chest.setItem(random.nextInt(chest.getContainerSize()), getBasicLoot(random));
             }
-            // Gold nuggets
-            chest.setItem(9, new ItemStack(Items.GOLD_NUGGET, 2 + random.nextInt(6)));
-            // Apples
-            chest.setItem(11, new ItemStack(Items.APPLE, 1 + random.nextInt(3)));
-            // String
-            chest.setItem(13, new ItemStack(Items.STRING, 1 + random.nextInt(4)));
-            // Bowls
-            chest.setItem(15, new ItemStack(Items.BOWL, 1 + random.nextInt(3)));
-            // Cookies
-            chest.setItem(17, new ItemStack(Items.COOKIE, 2 + random.nextInt(4)));
-            // Coal
-            chest.setItem(19, new ItemStack(Items.COAL, 1 + random.nextInt(3)));
+            Item ticketLionArmor = switch (random.nextInt(4)) {
+                case 0 -> LKItems.TICKET_LION_HEAD.get();
+                case 1 -> LKItems.TICKET_LION_SUIT.get();
+                case 2 -> LKItems.TICKET_LION_LEGS.get();
+                default -> LKItems.TICKET_LION_FEET.get();
+            };
+            chest.setItem(random.nextInt(chest.getContainerSize()), new ItemStack(ticketLionArmor));
         }
-
-        // Second chest on other side
-        BlockPos chestPos2 = origin.offset(width - 3, 1, 1);
-        level.setBlock(chestPos2, Blocks.CHEST.defaultBlockState(), 2);
-
-        if (level.getBlockEntity(chestPos2) instanceof ChestBlockEntity chest2) {
-            chest2.setItem(0, new ItemStack(Items.STICK, 1 + random.nextInt(4)));
-            chest2.setItem(2, new ItemStack(Items.PAPER, 1 + random.nextInt(3)));
-            chest2.setItem(4, new ItemStack(Items.GOLD_NUGGET, 1 + random.nextInt(4)));
-            chest2.setItem(6, new ItemStack(Items.APPLE, 1 + random.nextInt(2)));
-            chest2.setItem(8, new ItemStack(Items.BREAD, 1 + random.nextInt(2)));
-        }
-
-        // Ticket Lion NPC near entrance
-        FeatureHelper.spawnEntity(level, LKEntityTypes.TICKET_LION.get(),
-                origin.getX() + 7.0, origin.getY() + 1, origin.getZ() + 1.5);
 
         return true;
+    }
+
+
+    private ItemStack getBasicLoot(RandomSource random) {
+        return switch (random.nextInt(11)) {
+            case 1 -> new ItemStack(Items.PAPER, 1 + random.nextInt(3));
+            case 2 -> new ItemStack(Items.BOOK, 1 + random.nextInt(2));
+            case 3 -> new ItemStack(Items.BREAD, 3 + random.nextInt(2));
+            case 4 -> new ItemStack(Items.COMPASS);
+            case 5 -> new ItemStack(Items.GOLD_NUGGET, 2 + random.nextInt(6));
+            case 6 -> new ItemStack(Items.APPLE, 1 + random.nextInt(3));
+            case 7 -> new ItemStack(Items.STRING, 2 + random.nextInt(2));
+            case 8 -> new ItemStack(Items.BOWL, 1 + random.nextInt(4));
+            case 9 -> new ItemStack(Items.COOKIE, 1 + random.nextInt(3));
+            case 10 -> new ItemStack(Items.COAL, 1 + random.nextInt(2));
+            default -> new ItemStack(Items.STICK, 2 + random.nextInt(4));
+        };
+    }
+
+    /**
+     * Creates a stair block with fence post supports extending downward to solid ground.
+     * Port of old mod's generateSupports method.
+     */
+    private void generateSupports(WorldGenLevel level, int x, int y, int z,
+                                  BlockState stairBlock, Direction facing) {
+        FeatureHelper.placeBlock(level, x, y, z, stairBlock.setValue(StairBlock.FACING, facing));
+        for (int j1 = 1; j1 < 20; j1++) {
+            BlockPos below = new BlockPos(x, y - j1, z);
+            BlockState existing = level.getBlockState(below);
+            if (existing.isSolidRender(level, below)) break;
+            // Use planks for water/lava, fence for air
+            if (!existing.getFluidState().is(Fluids.EMPTY)) {
+                FeatureHelper.placeBlock(level, x, y - j1, z, Blocks.OAK_PLANKS.defaultBlockState());
+            } else {
+                FeatureHelper.placeBlock(level, x, y - j1, z, Blocks.OAK_FENCE.defaultBlockState());
+            }
+        }
     }
 }
