@@ -33,27 +33,26 @@ public class LKStructurePiece extends StructurePiece {
 
     /**
      * Per-structure configuration: bounding box dimensions and feature supplier.
-     * belowY=0 so the bounding box bottom is at the floor level — beard_thin then
-     * fills the gap between actual terrain and the floor (the vanilla approach).
      *
      * @param halfXZ  horizontal radius of the bounding box
-     * @param aboveY  how far above the placement Y the bounding box extends
+     * @param yOffset offset from surface Y to the feature origin (e.g. -50 for underground mound)
+     * @param aboveY  how far above the origin the bounding box extends
      * @param feature supplier for the Feature instance
      */
     private record StructureConfig(
-            int halfXZ, int aboveY,
+            int halfXZ, int yOffset, int aboveY,
             Supplier<Feature<NoneFeatureConfiguration>> feature
     ) {
     }
 
-    private static final StructureConfig DEFAULT_CONFIG = new StructureConfig(16, 32, () -> null);
+    private static final StructureConfig DEFAULT_CONFIG = new StructureConfig(16, 0, 32, () -> null);
 
     private static final Map<String, StructureConfig> CONFIGS = Map.of(
-            "rafiki_tree", new StructureConfig(40, 95, LKFeatures.RAFIKI_TREE),
-            "zira_mound", new StructureConfig(40, 90, LKFeatures.ZIRA_MOUND),
-            "ticket_booth", new StructureConfig(16, 32, LKFeatures.TICKET_BOOTH),
-            "timon_pumbaa_lodge", new StructureConfig(16, 32, LKFeatures.TIMON_PUMBAA_LODGE),
-            "treasure_mound", new StructureConfig(16, 32, LKFeatures.TREASURE_MOUND)
+            "rafiki_tree", new StructureConfig(40, 0, 95, LKFeatures.RAFIKI_TREE),
+            "zira_mound", new StructureConfig(40, -50, 55, LKFeatures.ZIRA_MOUND),
+            "ticket_booth", new StructureConfig(16, 0, 32, LKFeatures.TICKET_BOOTH),
+            "timon_pumbaa_lodge", new StructureConfig(16, 0, 32, LKFeatures.TIMON_PUMBAA_LODGE),
+            "treasure_mound", new StructureConfig(16, 0, 32, LKFeatures.TREASURE_MOUND)
     );
 
     private static StructureConfig configFor(String path) {
@@ -117,8 +116,9 @@ public class LKStructurePiece extends StructurePiece {
 
         int originX = (this.boundingBox.minX() + this.boundingBox.maxX()) / 2;
         int originZ = (this.boundingBox.minZ() + this.boundingBox.maxZ()) / 2;
-        // Bounding box bottom = floor level (belowY=0). beard_thin fills the gap
-        // between actual terrain and this Y — the standard vanilla approach.
+        // Origin = surface Y + yOffset. For most structures yOffset=0 (surface level),
+        // for zira_mound yOffset=-50 (mostly underground, matching the original mod).
+        // beard_thin fills the gap between actual terrain and the bounding box bottom.
         int originY = this.boundingBox.minY();
         BlockPos origin = new BlockPos(originX, originY, originZ);
 
@@ -142,9 +142,10 @@ public class LKStructurePiece extends StructurePiece {
 
     private static BoundingBox computeBoundingBox(BlockPos pos, ResourceLocation featureId) {
         StructureConfig config = configFor(featureId.getPath());
+        int originY = pos.getY() + config.yOffset();
         return new BoundingBox(
-                pos.getX() - config.halfXZ(), pos.getY(), pos.getZ() - config.halfXZ(),
-                pos.getX() + config.halfXZ(), pos.getY() + config.aboveY(), pos.getZ() + config.halfXZ()
+                pos.getX() - config.halfXZ(), originY, pos.getZ() - config.halfXZ(),
+                pos.getX() + config.halfXZ(), originY + config.aboveY(), pos.getZ() + config.halfXZ()
         );
     }
 }

@@ -38,6 +38,10 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 - [x] ~~`animalspeak_amulet` → `crystal`~~ — DONE: updated to `thelionking:amulet`
 - [x] ~~`giraffe_saddle` → `minecraft:saddle`~~ — DONE: updated to `thelionking:giraffe_saddle`
 
+## Blocks
+
+- [ ] **Zira Mound Gate block** — Old mod used `outlandsPortalFrame` metadata 2 with "ziraMoundGate" texture. In modern MC, needs a separate `ZIRA_MOUND_GATE` block that is breakable with the Staff item (`LKItems.STAFF`, old mod's `rafikiStick`). Currently 35 gate positions in `ZiraMoundFeature` use `GATE` constant which aliases `TERMITE_MOUND`. Needed for the Outlands quest progression.
+
 ## Placeholder Textures
 
 Items using generated placeholder textures (not from old mod):
