@@ -233,7 +233,7 @@ public class LKBlocks {
             () -> new SlabBlock(BlockBehaviour.Properties.copy(DRIED_MAIZE_BLOCK.get())));
 
     public static final RegistryObject<Block> OUTSAND = BLOCKS.register("outsand",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new OutsandBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.SAND).strength(0.7F).sound(SoundType.SAND)));
 
     public static final RegistryObject<Block> OUTGLASS = BLOCKS.register("outglass",
@@ -448,6 +448,18 @@ public class LKBlocks {
     public static final RegistryObject<Block> VASE = BLOCKS.register("vase",
             () -> new VaseBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.TERRACOTTA_WHITE).strength(0.5F).sound(SoundType.STONE)));
+
+    // ========== Bed & Lever ==========
+    public static final RegistryObject<BedBlock> PRIDE_BED = BLOCKS.register("pride_bed",
+            () -> new io.github.ron1196.thelionking.block.PrideBedBlock(
+                    BlockBehaviour.Properties.of().mapColor(MapColor.WOOD)
+                            .strength(0.2F).sound(SoundType.WOOD).noOcclusion()
+                            .pushReaction(PushReaction.DESTROY)));
+
+    public static final RegistryObject<LeverBlock> PRIDE_LEVER = BLOCKS.register("pride_lever",
+            () -> new LeverBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5F).sound(SoundType.WOOD).noCollission()
+                    .pushReaction(PushReaction.DESTROY)));
 
     // ========== Portal Blocks ==========
     public static final RegistryObject<Block> PRIDE_PORTAL_FRAME = BLOCKS.register("pride_portal_frame",

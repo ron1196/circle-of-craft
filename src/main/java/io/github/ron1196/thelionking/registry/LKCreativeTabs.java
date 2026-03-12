@@ -39,6 +39,7 @@ public class LKCreativeTabs {
                         output.accept(LKItems.CORRUPT_PRIDESTONE_WALL_ITEM.get());
                         output.accept(LKItems.PRIDESTONE_PRESSURE_PLATE_ITEM.get());
                         output.accept(LKItems.PRIDESTONE_BUTTON_ITEM.get());
+                        output.accept(LKItems.PRIDE_LEVER_ITEM.get());
                         output.accept(LKItems.PRIDE_COAL_ORE_ITEM.get());
                         output.accept(LKItems.SILVER_ORE_ITEM.get());
                         output.accept(LKItems.PEACOCK_ORE_ITEM.get());
@@ -141,6 +142,8 @@ public class LKCreativeTabs {
                         // Decorative block entities
                         output.accept(LKItems.HYENA_HEAD_ITEM.get());
                         output.accept(LKItems.FUR_RUG_ITEM.get());
+                        // Bed
+                        output.accept(LKItems.PRIDE_BED_ITEM.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> FOOD_TAB = TABS.register("food",
@@ -326,6 +329,7 @@ public class LKCreativeTabs {
                         output.accept(LKItems.ZIRA_SPAWN_EGG.get());
                         output.accept(LKItems.TICKET_LION_SPAWN_EGG.get());
                         output.accept(LKItems.TERMITE_QUEEN_SPAWN_EGG.get());
+                        output.accept(LKItems.SKELETAL_HYENA_HEAD_SPAWN_EGG.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> QUEST_TAB = TABS.register("quest",
@@ -335,7 +339,7 @@ public class LKCreativeTabs {
                     .displayItems((params, output) -> {
                         output.accept(LKItems.QUEST_BOOK.get());
                         output.accept(LKItems.TICKET.get());
-                        output.accept(LKItems.STAFF.get());
+                        output.accept(LKItems.RHYTHM_STAFF.get());
                         output.accept(LKItems.RAFIKI_COIN.get());
                         output.accept(LKItems.ZIRA_COIN.get());
                         output.accept(LKItems.WAYWARD_FEATHER.get());
@@ -347,6 +351,10 @@ public class LKCreativeTabs {
                         output.accept(LKItems.DART_QUIVER.get());
                         output.accept(LKItems.PASSION_FRUIT.get());
                         output.accept(LKItems.ZAZU_EGG.get());
+                        output.accept(LKItems.SCAR_RUG.get());
+                        output.accept(LKItems.ZIRA_RUG.get());
+                        output.accept(LKItems.RAFIKI_STICK.get());
+                        output.accept(LKItems.RAFIKI_DUST.get());
                     }).build());
 
 }

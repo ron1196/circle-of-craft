@@ -3,17 +3,23 @@ package io.github.ron1196.thelionking.event;
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.command.LKCommands;
 import io.github.ron1196.thelionking.data.LKLevelData;
+import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
 import io.github.ron1196.thelionking.entity.hostile.HyenaEntity;
 import io.github.ron1196.thelionking.entity.hostile.SkeletalHyenaEntity;
 import io.github.ron1196.thelionking.entity.npc.RafikiEntity;
 import io.github.ron1196.thelionking.entity.npc.TicketLionEntity;
 import io.github.ron1196.thelionking.entity.npc.TimonEntity;
+import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
 import io.github.ron1196.thelionking.quest.LKQuestBase;
 import io.github.ron1196.thelionking.registry.LKEnchantments;
+import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
 import io.github.ron1196.thelionking.world.dimension.LKDimensions;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -26,6 +32,7 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -38,6 +45,15 @@ public class LKForgeEvents {
     @SubscribeEvent
     public static void onRegisterCommands(RegisterCommandsEvent event) {
         LKCommands.register(event.getDispatcher());
+    }
+
+    // ── AttackEntityEvent (punch Scar Rug to pick it up) ───────────────────────
+
+    @SubscribeEvent
+    public static void onAttackEntity(AttackEntityEvent event) {
+        if (event.getTarget() instanceof io.github.ron1196.thelionking.entity.ScarRugEntity rug) {
+            rug.dropAsItem();
+        }
     }
 
     // ── LivingHurtEvent ─────────────────────────────────────────────────────────
@@ -159,6 +175,48 @@ public class LKForgeEvents {
             if (data.isDirty()) {
                 data.setDirty();
             }
+        }
+
+        // Outlands: Zira stage 22 — spawn Zira with dramatic lightning when player is on surface
+        if (serverLevel.dimension() == LKDimensions.OUTLANDS_LEVEL) {
+            handleZiraSpawnEvent(serverLevel);
+        }
+    }
+
+    /**
+     * When ziraStage == 22 and a player is on the surface of the Outlands,
+     * spawn Zira nearby with a visual lightning bolt.
+     */
+    private static void handleZiraSpawnEvent(ServerLevel level) {
+        LKLevelData data = LKLevelData.get(level);
+        if (data.ziraStage != 22) return;
+        if (level.players().isEmpty()) return;
+
+        Player player = level.players().get(0);
+        int px = Mth.floor(player.getX());
+        int py = Mth.floor(player.getBoundingBox().minY);
+        int pz = Mth.floor(player.getZ());
+
+        // Player must be on the surface (can see sky and at heightmap level)
+        int surfaceY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, new BlockPos(px, 0, pz)).getY();
+        if (!level.canSeeSky(new BlockPos(px, py, pz)) || py != surfaceY) return;
+
+        // Spawn Zira at a random nearby position
+        int spawnX = px - 8 + level.random.nextInt(17);
+        int spawnZ = pz - 8 + level.random.nextInt(17);
+        int spawnY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, new BlockPos(spawnX, 0, spawnZ)).getY();
+
+        ZiraEntity zira = LKEntityTypes.ZIRA.get().create(level);
+        if (zira != null) {
+            zira.moveTo(spawnX, spawnY, spawnZ, 0.0F, 0.0F);
+            zira.getLookControl().setLookAt(player.getX(), player.getEyeY(), player.getZ(), 10.0F, 40.0F);
+            level.addFreshEntity(zira);
+
+            // Visual lightning bolt at Zira's spawn position
+            level.addFreshEntity(new LKLightningBoltEntity(level, spawnX, spawnY, spawnZ, 0, player));
+
+            data.ziraStage = 23;
+            data.setDirty();
         }
     }
 }

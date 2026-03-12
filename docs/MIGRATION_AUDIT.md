@@ -1,6 +1,6 @@
 # Migration Audit: Old 1.6.4 Mod → New 1.20.1 NeoForge Port
 
-Last updated: 2026-03-09
+Last updated: 2026-03-12
 
 This document tracks everything that has been migrated from the original Lion King mod
 and everything that still needs work.
@@ -34,19 +34,19 @@ Old metadata blocks became separate block IDs:
 - Phase 9: Events, networking, tick handlers
 - Phase 10: Crafting recipes (~100), missing items (~20), ore gen, tree features, grinding bowl expansion
 - Phase 11: 16 custom AI goals, Outlands lava fix, Termite Queen boss, projectile entities
-- Phase 12: 6 missing blocks, 3 GUIs/menus, 5 landmark structures
+- Phase 12: 6 blocks, 3 GUIs/menus, 5 landmark structures
 - Phase 13: Custom advancement triggers, quest logic completion, workaround fixes
 
 ---
 
 ## Table of Contents
 
-1. [Critical Gaps (Broken/Non-functional)](#1-critical-gaps)
-2. [Missing Entities](#2-missing-entities)
-3. [Missing AI Goals](#3-missing-ai-goals)
-4. [Missing Blocks](#4-missing-blocks)
-5. [Missing Items](#5-missing-items)
-6. [Missing GUIs](#6-missing-guis)
+1. [Critical Gaps (Resolved)](#1-critical-gaps-resolved)
+2. [Entities](#2-entities)
+3. [AI Goals](#3-ai-goals)
+4. [Blocks](#4-blocks)
+5. [Items](#5-items)
+6. [GUIs & Menus](#6-guis--menus)
 7. [Networking](#7-networking)
 8. [Event Handlers](#8-event-handlers)
 9. [World Generation](#9-world-generation)
@@ -55,193 +55,202 @@ Old metadata blocks became separate block IDs:
 
 ---
 
-## 1. Critical Gaps
+## 1. Critical Gaps (Resolved)
 
-These are systems that exist but are broken or non-functional:
+All previously critical gaps have been addressed:
 
-- [ ] **Networking — ZERO packets implemented**
-  - Quest state won't sync in multiplayer
-  - Old packets: `lk.questDoStage`, `lk.questDelay`, `lk.questCheck`, `lk.questStage`
-  - Login sync packet (`lk.login`, 333-byte full world state) missing
-  - Simba sit toggle, armor damage, quest check packets missing
-  - Impact: Multiplayer is broken for quests and world state
+- [x] **Networking — 3 packets implemented** (Phase 9)
+  - `SimbaSitPacket` (C→S), `QuestSyncPacket` (S→C), `QuestCheckPacket` (C→S)
+  - SimpleChannel on port "main", protocol version "1"
+  - Remaining: Login sync, world state, damage item, simba ownership packets not yet implemented
 
-- [ ] **Grinding Bowl — No recipe processing logic**
-  - Block entity exists, GUI exists, but no recipes are processed
-  - Old `LKGrindingRecipes.java` had 29 hardcoded recipes
-  - Need: Custom recipe type OR hardcoded logic in block entity
-  - Recipes include: hyena bones → shards, mangoes → dust, termites → dust, flowers → dyes
+- [x] **Grinding Bowl — 29 recipes implemented** (Phase 10)
+  - Full recipe processing in `GrindingBowlBlockEntity`
+  - 200-tick grind time, input/output slot logic
 
-- [ ] **Server-side Event Handlers — Missing**
-  - No `AttackEntityEvent` handler (Scar rug interaction)
-  - No `LivingHurtEvent` handler (fire damage immunity with boots)
-  - No `LivingDeathEvent` handler (special death drops)
-  - No `UseHoeEvent` handler (Tilled Sand creation)
-  - No `BonemealEvent` handler (prevent bonemeal in Pride Lands)
-  - No server tick handler (quest updates, periodic mechanics)
+- [x] **Server-side Event Handlers — Implemented** (Phase 9)
+  - `LKForgeEvents.java` handles: LivingHurtEvent, LivingDeathEvent, PlayerInteractEvent, player tick, level tick
+  - Enchantment effects, special drops, NPC dialogue, quest updates
 
-- [ ] **Outlands Dimension — Water instead of lava**
-  - Uses `minecraft:overworld` noise settings
-  - Should generate lava below Y=63, not water
-  - Need: Custom noise settings or chunk generator override
+- [x] **Outlands Dimension — Lava generation fixed** (Phase 11)
 
 ---
 
-## 2. Missing Entities
+## 2. Entities
 
-| Entity | Old Class | Description | Priority |
-|--------|-----------|-------------|----------|
-| Termite Queen | `LKEntityTermiteQueen` | Boss mob with dynamic scaling, spawns projectiles | High |
-| Thrown Termite | `LKEntityThrownTermite` | Projectile spawned by Termite Queen | High |
-| Zazu Egg | `LKEntityZazuEgg` | Throwable egg projectile | Medium |
-| Coin | `LKEntityCoin` | Teleportation entity (2 types: Paradise Peak, Mound) | Medium |
-| Lightning | `LKEntityLightning` | Custom weather/magic effect with fire creation | Low |
-| Outsand | `LKEntityOutsand` | Falling sand block entity for physics | Low |
-| Scar Rug | `LKEntityScarRug` | Interactive corpse entity (post-boss defeat) | Low |
-| Skeletal Hyena Head | `LKEntitySkeletalHyenaHead` | Decorative mob variant | Low |
+**Status: 36 entities registered** — all entities ported (Lightning, Outsand resolved).
 
----
+### Implemented
 
-## 3. Missing AI Goals
+| Category | Entities |
+|----------|----------|
+| Passive (10) | Lion, Lioness, Zebra, Giraffe, Rhino, Gemsbok, DikDik, Flamingo, Zazu, Bug |
+| Hostile (8) | Hyena, SkeletalHyena, Outlander, Outlandess, Vulture, Crocodile, Termite, TermiteQueen |
+| NPCs (7+) | Rafiki, Simba, Timon, Pumbaa, Scar, Zira, TicketLion |
+| Projectiles (6) | Dart, Spear, PumbaaBomb, ThrownTermite, Coin, ZazuEgg |
+| Interactive (1) | ScarRug (Scar/Zira types) |
+| Other Hostile (1) | SkeletalHyenaHead |
+| Magic (1) | LKLightningBolt (extends vanilla LightningBolt) |
 
-16 custom AI goal classes not ported. Entities use generic vanilla AI instead.
+### Previously Not Ported — Now Done
 
-| AI Goal | Old Class | Used By | Priority |
-|---------|-----------|---------|----------|
-| Lion Attack | `LKEntityAILionAttack` | Lions | High |
-| Simba Attack | `LKEntityAISimbaAttack` | Simba | High |
-| Simba Follow | `LKEntityAISimbaFollow` | Simba | High |
-| Simba Wander | `LKEntityAISimbaWander` | Simba | Medium |
-| Simba Attack Player Attacker | `LKEntityAISimbaAttackPlayerAttacker` | Simba | Medium |
-| Simba Attack Player Target | `LKEntityAISimbaAttackPlayerTarget` | Simba | Medium |
-| Pumbaa Follow Timon | `LKEntityAIPumbaaFollowTimon` | Pumbaa | Medium |
-| Termite Queen Attack | `LKEntityAITermiteQueenAttack` | Termite Queen | High |
-| Bug Find Trap | `LKEntityAIBugFindTrap` | Bug | Medium |
-| Angerable Panic | `LKEntityAIAngerablePanic` | Various | Medium |
-| Angerable Mate | `LKEntityAIAngerableMate` | Various | Low |
-| Angerable Attackable Target | `LKEntityAIAngerableAttackableTarget` | Various | Low |
-| Zazu Mate | `LKEntityAIZazuMate` | Zazu | Low |
-| Ambient Panic | `LKEntityAIAmbientPanic` | Ambient mobs | Low |
-| Ambient Wander | `LKEntityAIAmbientWander` | Ambient mobs | Low |
-| Ambient Avoid | `LKEntityAIAmbientAvoid` | Ambient mobs | Low |
+| Entity | Old Class | Solution | Status |
+|--------|-----------|----------|--------|
+| Lightning | `LKEntityLightning` | `LKLightningBoltEntity` extends vanilla `LightningBolt` — free rendering, custom power/fire/damage | Done |
+| Outsand | `LKEntityOutsand` | Obsolete — `OutsandBlock` extends `FallingBlock` for vanilla falling physics | Done (no entity needed) |
+| Scar Rug | `LKEntityScarRug` | `ScarRugEntity` — interactive corpse entity | Done |
+| Skeletal Hyena Head | `LKEntitySkeletalHyenaHead` | `SkeletalHyenaHeadEntity` — hopping undead mob | Done |
 
 ---
 
-## 4. Missing Blocks
+## 3. AI Goals
 
-| Block | Old Class | Description | Priority |
-|-------|-----------|-------------|----------|
-| Banana Cake | `LKBlockBananaCake` | Placeable cake, eaten in slices | Medium |
-| Mounted Shooter | `LKBlockMountedShooter` | Turret that shoots darts | Medium |
-| Outlands Altar | `LKBlockOutlandsAltar` | Quest altar block | Medium |
-| Star Altar | `LKBlockStarAltar` | Quest altar block | Medium |
-| Tilled Sand | `LKBlockTilledSand` | Farmland for Pride Lands crops | Medium |
-| Vase | `LKBlockVase` | Decorative block | Low |
-| Custom Bed | `LKBlockBed` | Pride Lands themed bed | Low |
-| Custom Lever | `LKBlockLever` | Pride Lands themed lever | Low |
+**Status: 19 custom AI goals implemented** (Phase 11) — exceeds the original 16.
+
+| AI Goal | Class | Used By | Status |
+|---------|-------|---------|--------|
+| Lion Attack | `LionAttackGoal` | Lions | Done |
+| Simba Attack | `SimbaAttackGoal` | Simba | Done |
+| Simba Follow | `SimbaFollowOwnerGoal` | Simba | Done |
+| Simba Wander | `SimbaWanderGoal` | Simba | Done |
+| Simba Attack Player Attacker | `SimbaAttackPlayerAttackerGoal` | Simba | Done |
+| Simba Attack Player Target | `SimbaAttackPlayerTargetGoal` | Simba | Done |
+| Pumbaa Follow Timon | `PumbaaFollowTimonGoal` | Pumbaa | Done |
+| Pumbaa Swell | `SwellGoal` | Pumbaa | Done |
+| Termite Queen Attack | `TermiteQueenAttackGoal` | Termite Queen | Done |
+| Bug Find Trap | `BugFindTrapGoal` | Bug | Done |
+| Angerable Panic | `AngerablePanicGoal` | Various | Done |
+| Angerable Mate | `AngerableMateGoal` | Various | Done |
+| Angerable Attack | `AngerableAttackGoal` | Various | Done |
+| Zazu Mate | `ZazuMateGoal` | Zazu | Done |
+| Ambient Panic | `AmbientPanicGoal` | Ambient mobs | Done |
+| Ambient Wander | `AmbientWanderGoal` | Ambient mobs | Done |
+| Ambient Avoid | `AmbientAvoidGoal` | Ambient mobs | Done |
+| Head Hop | `HeadHopGoal` | Skeletal Hyena Head | Done |
 
 ---
 
-## 5. Missing Items
+## 4. Blocks
 
-### Tools & Weapons (~10 items)
+**Status: 106 blocks registered** — all planned blocks implemented.
 
-| Item | Old Class | Description | Priority |
-|------|-----------|-------------|----------|
-| Fire Sword | `LKItemSwordFire` | Sword with fire aspect | Medium |
-| Fire Pickaxe | `LKItemPickaxeFire` | Pickaxe with fire ability | Medium |
-| Fire Axe | `LKItemAxeFire` | Axe with fire ability | Medium |
-| Fire Shovel | `LKItemShovelFire` | Shovel with fire ability | Medium |
-| Kivulite Sword | — | Kivulite tier sword | Medium |
-| Kivulite Pickaxe | — | Kivulite tier pickaxe | Medium |
-| Kivulite Axe | — | Kivulite tier axe | Medium |
-| Kivulite Shovel | — | Kivulite tier shovel | Medium |
-| Kivulite Hoe | — | Kivulite tier hoe | Medium |
-| Corrupt Hoe | — | Corrupt pridestone hoe | Low |
-| Tunnah Diggah | `LKItemTunnahDiggah` | Special enchanted shovel | Low |
+### Previously Missing Blocks — Now Done
 
-### Quest & Special Items (~8 items)
+| Block | Status |
+|-------|--------|
+| Banana Cake | Done (Phase 12) |
+| Mounted Shooter | Done (Phase 12) |
+| Outlands Altar | Done (Phase 12) |
+| Star Altar | Done (Phase 12) |
+| Tilled Sand | Done (Phase 12) |
+| Vase | Done (Phase 12) |
 
-| Item | Old Class | Description | Priority |
-|------|-----------|-------------|----------|
-| Amulet | `LKItemAmulet` | Animalspeak amulet | Medium |
-| Simba Charm | — | Quest item, active/inactive states | Medium |
-| Zazu Egg | — | Used in banana cake recipe, breeding | Medium |
-| Giraffe Saddle | — | Mount saddle for giraffes | Medium |
-| Giraffe Tie | — | Giraffe control item | Low |
-| Dart Quiver | `LKItemDartQuiver` | Stores darts (6-slot container) | Medium |
-| Rug Dye | `LKItemRugDye` | Colors fur rugs | Low |
-| Passion Fruit | — | Drops from passion leaves | Medium |
+| Pride Bed | Done |
+| Pride Lever | Done |
 
-### Jar Items (5 items)
+---
+
+## 5. Items
+
+**Status: 147 items registered** — all major items implemented.
+
+### Previously Missing — Now Done
+
+| Category | Items | Status |
+|----------|-------|--------|
+| Kivulite Tools (5) | Sword, Pickaxe, Axe, Shovel, Hoe | Done (Phase 10) |
+| Corrupt Tools | Hoe | Done (Phase 10) |
+| Jar Items (3) | Empty Jar, Jar of Water, Jar of Milk | Done (Phase 10) |
+| Quest Items | Amulet, Simba Charm (functional class), Zazu Egg | Done (Phase 10) |
+| Rafiki Stick | Quest weapon — grow crops, spread vegetation, thunder enchantment | Done |
+| Rafiki Dust | Star Altar item — summons baby Simba with lightning | Done |
+| Rhythm Staff (renamed) | Was "Staff" — bongo drum activation, quest item | Done (renamed from `staff` → `rhythm_staff`) |
+| Giraffe Saddle | Mount saddle | Done (Phase 10) |
+| Dart Quiver | 6-slot dart storage | Done (Phase 10) |
+| Passion Fruit | Drops from passion leaves | Done (Phase 10) |
+
+### Not Ported
 
 | Item | Description | Priority |
 |------|-------------|----------|
-| Empty Jar | Base jar item | Medium |
-| Jar of Milk | Used in bug stew recipe (currently uses milk_bucket) | Medium |
-| Jar of Water | Crafting ingredient | Medium |
+| Fire Sword | Sword with fire aspect | Medium |
+| Fire Pickaxe | Pickaxe with fire ability | Medium |
+| Fire Axe | Axe with fire ability | Medium |
+| Fire Shovel | Shovel with fire ability | Medium |
 | Jar of Lava | Crafting ingredient | Low |
 | Jar of Mango Juice | Food/drink item | Low |
-
-### Other Missing Items
-
-| Item | Description | Priority |
-|------|-------------|----------|
+| Giraffe Tie | Giraffe control item | Low |
+| Rug Dye | Colors fur rugs | Low |
 | Hyena Meal | Food item | Low |
-| Scar Rug / Zira Rug | Quest reward items | Low |
-| Mounted Shooter (item) | Places mounted shooter block | Medium |
-| Block Placer | `LKItemBlockPlacer` | Utility item | Low |
-| Info Item | `LKItemInfo` | Documentation/info item | Low |
+| Scar Rug / Zira Rug | Quest reward items | Done |
+| Block Placer | Utility item | Low |
+| Info Item | Documentation/info item | Low |
+| Tunnah Diggah | Special enchanted shovel | Low |
 
 ---
 
-## 6. Missing GUIs
+## 6. GUIs & Menus
 
-| GUI | Old Container | Old Screen | Description | Priority |
-|-----|---------------|------------|-------------|----------|
-| Quiver | `LKContainerQuiver` | — | 6-slot dart storage | Medium |
-| Timon Merchant | `LKContainerTimon` | — | NPC trading (5 merchant slots) | Medium |
-| Simba Inventory | `LKContainerSimba` | — | 9-slot companion inventory | Medium |
-| Item Info | `LKContainerItemInfo` | — | Item documentation display | Low |
+**Status: 7 screens, 6 menus** — all major GUIs implemented.
+
+| GUI | Menu | Screen | Status |
+|-----|------|--------|--------|
+| Grinding Bowl | `GrindingBowlMenu` | `GrindingBowlScreen` | Done |
+| Bongo Drum | `BongoDrumMenu` | `BongoDrumScreen` | Done |
+| Bug Trap | `BugTrapMenu` | `BugTrapScreen` | Done |
+| Quest Book | — | `QuestBookScreen` | Done |
+| Quiver | `QuiverMenu` | `QuiverScreen` | Done (Phase 12) |
+| Timon Merchant | `TimonMerchantMenu` | `TimonMerchantScreen` | Done (Phase 12) |
+| Simba Inventory | `SimbaInventoryMenu` | `SimbaInventoryScreen` | Done (Phase 12) |
+
+### Not Ported
+
+| GUI | Description | Priority |
+|-----|-------------|----------|
+| Item Info | Item documentation display | Low |
 
 ---
 
 ## 7. Networking
 
-**Status: NOT IMPLEMENTED**
+**Status: 3 packets implemented** (Phase 9)
 
-### Required Packets
+| Packet | Direction | Status |
+|--------|-----------|--------|
+| Quest Sync | S→C | Done (`QuestSyncPacket`) |
+| Quest Check | C→S | Done (`QuestCheckPacket`) |
+| Simba Sit | C→S | Done (`SimbaSitPacket`) |
+
+### Not Implemented
 
 | Packet | Direction | Description | Priority |
 |--------|-----------|-------------|----------|
-| Quest Stage Sync | S→C | Sync current quest stage to all clients | High |
-| Quest Delay | S→C | Set quest delay flag | High |
-| Quest Check | C→S / S→C | Mark quest as checked | High |
-| Login Sync | S→C | Full world state on player join | High |
-| Simba Sit | C→S | Toggle Simba sit/stand | Medium |
-| Damage Item | C→S | Armor damage from abilities | Medium |
-| World State | S→C | Mound location, Scar defeated, etc. | Medium |
-| Simba Ownership | S→C | Who owns Simba | Medium |
+| Login Sync | S→C | Full world state on player join | Medium |
+| Damage Item | C→S | Armor damage from abilities | Low |
+| World State | S→C | Mound location, Scar defeated, etc. | Low |
+| Simba Ownership | S→C | Who owns Simba | Low |
 
 ---
 
 ## 8. Event Handlers
 
-**Status: Only mod bus events implemented (attribute registration, client setup)**
+**Status: Fully implemented** (Phase 9)
 
-### Missing FORGE Bus Events
+`LKForgeEvents.java` handles:
+- [x] `LivingHurtEvent` — Peacock boots fall damage negation, Scourge of Hyenas enchantment
+- [x] `LivingDeathEvent` — Hyena special drops (hyena head with looting)
+- [x] `PlayerInteractEvent.EntityInteract` — NPC dialogue (Rafiki, Timon, Ticket Lion)
+- [x] `PlayerEvent.PlayerLoggedInEvent` / tick events — Quest updates, data saving
+- [x] `RegisterCommandsEvent` — `/lk` commands (10 subcommands)
+- [x] Zira spawn event — when quest stage 22, spawns Zira with visual lightning on Outlands surface
 
-| Event | Old Handler | Purpose | Priority |
-|-------|-------------|---------|----------|
-| `LivingHurtEvent` | `onEntityLivingHurt` | Fire damage immunity with boots | High |
-| `LivingDeathEvent` | `onEntityLivingDeath` | Special death drops | High |
-| `AttackEntityEvent` | `onEntityAttack` | Scar rug drop logic | Medium |
-| `PlayerInteractEvent` | `onEntityInteract` | NPC dialogue triggers | High |
-| `BlockEvent.BreakEvent` | — | Special block drops (leaves → fruit) | Medium |
-| `UseHoeEvent` | `onUseHoe` | Tilled Sand creation | Low |
-| `BonemealEvent` | `onUseBonemeal` | Prevent bonemeal in Pride Lands | Low |
-| Server Tick | `LKTickHandlerServer` | Quest timers, periodic spawning | High |
-| Client Tick | `LKTickHandlerClient` | UI updates, animations | Low |
+### Not Implemented
+
+| Event | Purpose | Priority |
+|-------|---------|----------|
+| `AttackEntityEvent` | Scar rug drop logic | Done |
+| `UseHoeEvent` | Tilled Sand creation | Low |
+| `BonemealEvent` | Prevent bonemeal in Pride Lands | Low |
 
 ---
 
@@ -249,41 +258,43 @@ These are systems that exist but are broken or non-functional:
 
 ### Tree Features
 
-| Tree | Old Generator | Java Feature | JSON Config | Status |
-|------|--------------|--------------|-------------|--------|
-| Pride Acacia | `LKWorldGenTrees` | No | Yes | JSON only, may not generate |
-| Rainforest | `LKWorldGenRainforestTrees` | No | Yes | JSON only, may not generate |
-| Huge Rainforest | `LKWorldGenHugeRainforestTrees` | No | No | Not ported |
-| Mango | `LKWorldGenMangoTrees` | No | Yes | JSON only, may not generate |
-| Passion | `LKWorldGenPassionTrees` | No | Yes | JSON only, may not generate |
-| Banana | `LKWorldGenBananaTrees` | Yes | Yes | Fully ported |
-| Dead | `LKWorldGenDeadTrees` | Yes | Yes | Fully ported |
+| Tree | Java Feature | JSON Config | Status |
+|------|--------------|-------------|--------|
+| Banana | `BananaTreeFeature` | Yes | Done |
+| Dead | `DeadTreeFeature` | Yes | Done |
+| Mango | `MangoTreeFeature` | Yes | Done (Phase 10) |
+| Passion | `PassionTreeFeature` | Yes | Done (Phase 10) |
+| Rainforest | `RainforestTreeFeature` | Yes | Done (Phase 10) |
+| Pride Acacia | — | Yes | JSON only, may not generate |
+| Huge Rainforest | — | No | Not ported |
 
-### Landmark Structures (0/5 ported)
+### Landmark Structures (5/5 ported) — Phase 12
 
-| Structure | Old Generator | Description | Priority |
-|-----------|--------------|-------------|----------|
-| Rafiki's Tree | `LKWorldGenRafiki` | Spawns at 0,0 in Pride Lands | High |
-| Zira's Mound | `LKWorldGenZiraMound` | Lava crater dungeon in Outlands | High |
-| Timon & Pumbaa Lodge | `LKWorldGenTimonAndPumbaa` | Specific coordinates | Medium |
-| Ticket Booth | `LKWorldGenTicketBooth` | Specific coordinates | Medium |
-| Treasure Mound | `LKWorldGenTreasureMound` | Random Outlands locations | Low |
+| Structure | Feature Class | Status |
+|-----------|--------------|--------|
+| Rafiki's Tree | `RafikiTreeFeature` | Done |
+| Zira's Mound | `ZiraMoundFeature` | Done |
+| Timon & Pumbaa Lodge | `TimonPumbaaLodgeFeature` | Done |
+| Ticket Booth | `TicketBoothFeature` | Done |
+| Treasure Mound | `TreasureMoundFeature` | Done |
 
-### Crop/Plant Features (0/5 ported)
-
-| Feature | Old Generator | Biome | Priority |
-|---------|--------------|-------|----------|
-| Maize | `LKWorldGenMaize` | Savannah, Grassland | Medium |
-| Kiwano | `LKWorldGenKiwano` | Arid Savannah | Medium |
-| Yams | `LKWorldGenYams` | Rainforest | Medium |
-| Lily Pads | `LKWorldGenLily` | Rainforest (water) | Low |
-| Tall Flowers | `LKWorldGenTallFlowers` | Various | Low |
+Also: `TermiteMoundFeature`, `FeatureHelper` utility class.
 
 ### Ore Generation
 
-- [ ] Biome feature arrays (steps 2-7) are **completely empty**
-- [ ] No pride coal ore, silver ore, or peacock ore generation configured
-- [ ] Need placed features for each ore type per biome
+- [x] Configured & placed features for pride coal ore, silver ore, peacock ore (Phase 10)
+
+### Crop/Plant Features
+
+Still using JSON-only configs. No dedicated Java feature classes.
+
+| Feature | Old Generator | Status |
+|---------|--------------|--------|
+| Maize | `LKWorldGenMaize` | JSON config only |
+| Kiwano | `LKWorldGenKiwano` | JSON config only |
+| Yams | `LKWorldGenYams` | JSON config only |
+| Lily Pads | `LKWorldGenLily` | Not ported |
+| Tall Flowers | `LKWorldGenTallFlowers` | Not ported |
 
 ### Other Missing World Gen
 
@@ -300,7 +311,7 @@ These are systems that exist but are broken or non-functional:
 
 - **Old:** 156 textures in `old/assets/textures/blocks/`
 - **New:** 99 textures in `assets/thelionking/textures/block/`
-- **~151 old textures not migrated** (naming changed from camelCase to snake_case)
+- **~150 old textures not migrated** (naming changed from camelCase to snake_case)
 - Most new blocks use magenta placeholder textures
 - Key missing: wood variants, leaf variants, portal animations, rug colors, drum sides, crop stages
 
@@ -308,13 +319,13 @@ These are systems that exist but are broken or non-functional:
 
 - **Old:** 178 textures in `old/assets/textures/items/`
 - **New:** 105 textures in `assets/thelionking/textures/item/`
-- **~162 old textures not migrated**
+- **~160 old textures not migrated**
 - Key missing: all tool/armor textures, dart variants, food items, jar items, dyes
 
 ### Entity Textures
 
 - **Old:** 41 textures in `old/assets/mob/`
-- **New:** 46 textures in `assets/thelionking/textures/entity/`
+- **New:** 47 textures in `assets/thelionking/textures/entity/`
 - **Mostly complete** — new has additional projectile textures
 
 ### GUI Textures
@@ -327,24 +338,19 @@ These are systems that exist but are broken or non-functional:
 
 | Type | Count | Status |
 |------|-------|--------|
-| Blockstates | 98 | Complete for all registered blocks |
-| Block Models | 168 | 11 blocks missing models (crops, portals, walls) |
-| Item Models | 221 | Complete |
-| Loot Tables | 107 | 8 blocks missing (crops, portals) |
-| Lang Entries | 369 | Complete for implemented content |
-| Recipes | 33 | Smelting/cooking only, no crafting recipes for tools/armor |
+| Blockstates | 100 | Complete for all registered blocks |
+| Block Models | 172 | 11 blocks missing models (crops, portals, walls) |
+| Item Models | 223 | Complete |
+| Loot Tables | 109 | 8 blocks missing (crops, portals) |
+| Lang Entries | 371 | Complete for implemented content |
+| Recipes | 129 | Crafting, smelting, blasting, smoking, campfire |
 
-### Missing Crafting Recipes
+### Advancement Icons
 
-- [ ] All tool crafting recipes (pridestone, silver, peacock, corrupt)
-- [ ] All armor crafting recipes
-- [ ] Dart crafting recipes
-- [ ] Spear crafting recipes
-- [ ] Portal frame crafting recipes
-- [ ] Decorative block recipes (stairs, slabs, walls from stonecutter)
-- [ ] Grinding bowl recipe
-- [ ] Bongo drum recipe
-- [ ] Bug trap recipe
+4 advancement icons use placeholder substitutions for items not yet registered:
+- `outlandish_dart`, `tunnah_diggah`, `ticket_lion_helmet`, `peacock_wings`
+
+(Previously 5 — `lion_dust` resolved: now `rafiki_dust` with real texture)
 
 ---
 
@@ -355,55 +361,50 @@ These systems are fully ported and functional:
 - **Dimensions:** 3/3 (Pride Lands, Outlands, Upendi) with correct properties
 - **Biomes:** 14/14 created with correct temperatures, mob spawning
 - **Portals:** Full portal mechanics (frame validation, teleportation, activation items)
-- **Enchantments:** 6/6 fully registered with correct levels and effects
+- **Enchantments:** 6/6 fully registered with correct levels and effects; custom `RAFIKI_STICK_CATEGORY` ensures Rafiki enchantments appear on enchanting table for Rafiki Stick only
 - **Advancements:** 33 JSON advancements with dependency chains
+- **Advancement Triggers:** 11 custom triggers (shoot dart, quest complete, enter dimensions, etc.)
 - **Sound Events:** All organized in subdirectories, 24 events registered
 - **Music:** 5 Lion King songs with streaming playback
 - **Passive Entities:** 10 animals with models, renderers, spawn eggs
-- **Hostile Entities:** 7 mobs with AI, drops, models
-- **NPC Entities:** 7 NPCs with dialogue, quest integration
-- **Projectile Entities:** 3 (Dart, Spear, Pumbaa Bomb)
-- **Block Entities:** 7 types (Grinding Bowl, Bongo Drum, Bug Trap, Hyena Head, Outlands Pool, Spawner, Fur Rug)
-- **GUIs:** 4 screens (Grinding Bowl, Bongo Drum, Bug Trap, Quest Book)
-- **Quest System:** 2 quest lines with stage progression (single-player)
+- **Hostile Entities:** 9 mobs with AI, drops, models (including Termite Queen boss, Skeletal Hyena Head)
+- **NPC Entities:** 7 NPCs with dialogue, quest integration (Zira: boss fight lightning spawns, death explosion)
+- **Projectile Entities:** 6 (Dart, Spear, Pumbaa Bomb, Thrown Termite, Coin, Zazu Egg)
+- **Interactive Entities:** Scar Rug / Zira Rug (talk on interact, quest reward)
+- **AI Goals:** 19 custom goals wired into entities
+- **Block Entities:** 8 types (Grinding Bowl, Bongo Drum, Bug Trap, Hyena Head, Outlands Pool, Spawner, Fur Rug, Pride Bed)
+- **GUIs:** 7 screens (Grinding Bowl, Bongo Drum, Bug Trap, Quest Book, Quiver, Timon, Simba)
+- **Quest System:** 2 quest lines with stage progression, networking sync
+- **Networking:** 3 packets (quest sync, quest check, simba sit)
+- **Event Handlers:** Forge bus events for combat, drops, NPC interaction, ticks
 - **Creative Tabs:** 8 organized tabs
-- **Tool Tiers:** 5 tiers (Pridestone, Corrupt, Silver, Peacock, Kivulite defined but tools missing)
-- **Armor Materials:** 5 sets registered
-- **Smelting Recipes:** 33 recipes for cooking/smelting
+- **Tool Tiers:** 5 tiers with all tools registered
+- **Armor Materials:** 5 sets with all pieces registered
+- **Crafting Recipes:** 129 recipes (tools, armor, blocks, food, materials)
+- **Grinding Bowl:** 29 grinding recipes with full processing logic
+- **Landmark Structures:** 5 structures (Rafiki Tree, Zira Mound, Ticket Booth, Lodge, Treasure Mound)
+- **Commands:** 10 `/lk` subcommands for teleportation and debugging
 
 ---
 
-## Priority Roadmap
+## Remaining Work Summary
 
-### Phase 9: Critical Fixes
-1. Grinding Bowl recipe processing
-2. Server-side event handlers
-3. Outlands lava generation fix
-4. Missing crafting recipes (tools, armor, blocks)
+### Medium Priority
+- Fire tools (4 items — sword, pickaxe, axe, shovel)
+- Pride Acacia tree Java feature (currently JSON only)
+- Huge Rainforest tree feature (not ported)
+- Remaining networking packets (login sync, world state)
+- Crop/plant world gen Java features (maize, kiwano, yams)
 
-### Phase 10: Missing Content
-1. Fire tools (4 items)
-2. Kivulite tools (5 items)
-3. Jar items (5 items)
-4. Missing blocks (Banana Cake, Mounted Shooter, Altars, Tilled Sand)
-5. Missing quest items (Amulet, Simba Charm, Zazu Egg)
-6. Termite Queen boss entity
+### Low Priority
+- ~12 items not ported (giraffe tie, rug dye, jars of lava/mango, etc.)
+- 2 event handlers not ported (UseHoe, Bonemeal)
+- 1 GUI not ported (Item Info)
+- Missing world gen (dungeons, lava lakes, outsand, zazu spawners)
 
-### Phase 11: World Generation
-1. Tree feature Java implementations (Mango, Passion, Rainforest, Acacia)
-2. Ore generation in biome features
-3. Landmark structures (Rafiki's Tree, Zira's Mound)
-4. Crop/plant world gen features
-
-### Phase 12: Networking & Multiplayer
-1. NeoForge packet system implementation
-2. Quest state sync packets
-3. Login sync packet
-4. Simba/world state packets
-
-### Phase 13: Polish & Assets
-1. Migrate old textures (rename camelCase → snake_case)
-2. Missing GUI textures
-3. Missing container GUIs (Quiver, Timon, Simba)
-4. Custom AI goals for entities
-5. Remaining missing entities (Lightning, Outsand, ScarRug)
+### Assets (Ongoing)
+- ~150 block textures need migration from old camelCase to snake_case
+- ~160 item textures need migration
+- 5 GUI textures missing
+- 4 advancement icon placeholders
+- NPC placeholder models (Scar, Zira, Ticket Lion) need proper models

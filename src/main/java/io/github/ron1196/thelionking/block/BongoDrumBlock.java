@@ -55,7 +55,7 @@ public class BongoDrumBlock extends BaseEntityBlock {
                                  InteractionHand hand, BlockHitResult hit) {
         if (level.getBlockEntity(pos) instanceof BongoDrumBlockEntity drum) {
             // If holding a staff, open enchanting GUI
-            if (player.getItemInHand(hand).is(LKItems.STAFF.get())) {
+            if (player.getItemInHand(hand).is(LKItems.RHYTHM_STAFF.get())) {
                 if (!level.isClientSide()) {
                     NetworkHooks.openScreen((ServerPlayer) player, drum, pos);
                 }

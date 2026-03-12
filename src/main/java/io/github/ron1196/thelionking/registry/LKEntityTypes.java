@@ -1,6 +1,9 @@
 package io.github.ron1196.thelionking.registry;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
+import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
+import io.github.ron1196.thelionking.entity.ScarRugEntity;
+import net.minecraft.world.entity.LightningBolt;
 import io.github.ron1196.thelionking.entity.animal.*;
 import io.github.ron1196.thelionking.entity.hostile.*;
 import io.github.ron1196.thelionking.entity.npc.*;
@@ -149,4 +152,22 @@ public class LKEntityTypes {
     public static final RegistryObject<EntityType<ZiraEntity>> ZIRA = ENTITY_TYPES.register("zira",
             () -> EntityType.Builder.of(ZiraEntity::new, MobCategory.MONSTER)
                     .sized(1.2F, 1.3F).clientTrackingRange(10).build("zira"));
+
+    // ========== Interactive Entities ==========
+    public static final RegistryObject<EntityType<ScarRugEntity>> SCAR_RUG = ENTITY_TYPES.register("scar_rug",
+            () -> EntityType.Builder.<ScarRugEntity>of(ScarRugEntity::new, MobCategory.MISC)
+                    .sized(1.2F, 0.2F).clientTrackingRange(10).build("scar_rug"));
+
+    // ========== Weather Effects ==========
+    @SuppressWarnings("unchecked")
+    public static final RegistryObject<EntityType<LKLightningBoltEntity>> LK_LIGHTNING_BOLT = ENTITY_TYPES.register("lk_lightning_bolt",
+            () -> (EntityType<LKLightningBoltEntity>) (EntityType<?>) EntityType.Builder.<LightningBolt>of(
+                            (type, level) -> new LKLightningBoltEntity(type, level), MobCategory.MISC)
+                    .sized(0.0F, 0.0F).clientTrackingRange(16).updateInterval(Integer.MAX_VALUE)
+                    .noSave().noSummon().fireImmune().build("lk_lightning_bolt"));
+
+    // ========== Skeletal Hyena Head ==========
+    public static final RegistryObject<EntityType<SkeletalHyenaHeadEntity>> SKELETAL_HYENA_HEAD = ENTITY_TYPES.register("skeletal_hyena_head",
+            () -> EntityType.Builder.of(SkeletalHyenaHeadEntity::new, MobCategory.MONSTER)
+                    .sized(0.6F, 0.6F).clientTrackingRange(10).build("skeletal_hyena_head"));
 }

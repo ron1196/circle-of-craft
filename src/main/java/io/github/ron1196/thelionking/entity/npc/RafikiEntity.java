@@ -88,7 +88,7 @@ public class RafikiEntity extends PathfinderMob {
         if (questStage == 1) {
             if (held.is(LKItems.HYENA_BONE.get()) && held.getCount() >= 64) {
                 held.shrink(64);
-                player.addItem(new ItemStack(LKItems.STAFF.get()));
+                player.addItem(new ItemStack(LKItems.RHYTHM_STAFF.get()));
                 sendMessage(player, "Excellent! Here is my stick. Now go and defeat Scar!");
                 LKQuestBase.RAFIKI_QUEST.progress(2);
                 LKQuestBase.updateAllQuests();

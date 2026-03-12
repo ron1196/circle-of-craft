@@ -7,6 +7,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.NotNull;
 
+import net.minecraft.world.entity.player.Player;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +29,10 @@ public class LKLevelData extends SavedData {
     public Map<String, Integer> simbas = new HashMap<>();
 
     public LKLevelData() {
+    }
+
+    public boolean hasSimba(Player player) {
+        return simbas.containsKey(player.getStringUUID());
     }
 
     public static LKLevelData get(ServerLevel level) {

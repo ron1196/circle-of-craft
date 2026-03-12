@@ -40,7 +40,7 @@ public class LKQuestRafiki extends LKQuestBase {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(LKItems.STAFF.get());
+        return new ItemStack(LKItems.RHYTHM_STAFF.get());
     }
 
     @Override
@@ -152,7 +152,7 @@ public class LKQuestRafiki extends LKQuestBase {
         // Reward: Simba Charm, some gold, and a Staff
         player.getInventory().placeItemBackInInventory(new ItemStack(LKItems.SIMBA_CHARM.get(), 1));
         player.getInventory().placeItemBackInInventory(new ItemStack(Items.GOLD_INGOT, 16));
-        player.getInventory().placeItemBackInInventory(new ItemStack(LKItems.STAFF.get(), 1));
+        player.getInventory().placeItemBackInInventory(new ItemStack(LKItems.RHYTHM_STAFF.get(), 1));
     }
 
     /**

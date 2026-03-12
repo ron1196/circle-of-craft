@@ -42,6 +42,12 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 - [ ] **Zira Mound Gate block** — Old mod used `outlandsPortalFrame` metadata 2 with "ziraMoundGate" texture. In modern MC, needs a separate `ZIRA_MOUND_GATE` block that is breakable with the Staff item (`LKItems.STAFF`, old mod's `rafikiStick`). Currently 35 gate positions in `ZiraMoundFeature` use `GATE` constant which aliases `TERMITE_MOUND`. Needed for the Outlands quest progression.
 
+## Bed Texture
+
+- [ ] **Pride Bed 64x64 texture composed programmatically** — The old mod had 6 separate 16x16 face textures. These were stitched into a single 64x64 entity texture matching vanilla's UV layout. May need artist review for pixel-perfect accuracy, especially side/end face alignment.
+  - Source textures: `old/assets/textures/blocks/bed_*.png`
+  - Generated texture: `textures/entity/pride_bed.png`
+
 ## Placeholder Textures
 
 Items using generated placeholder textures (not from old mod):

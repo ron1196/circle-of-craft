@@ -42,7 +42,7 @@ public class PortalFrameBlock extends Block {
             false, PortalConfig.create(
                     LKBlocks.PRIDE_LANDS_PORTAL,
                     ActivationKey.consumed(LKItems.TICKET),
-                    ActivationKey.kept(LKItems.STAFF)
+                    ActivationKey.kept(LKItems.RHYTHM_STAFF)
             ),
             true, PortalConfig.create(
                     LKBlocks.OUTLANDS_PORTAL,

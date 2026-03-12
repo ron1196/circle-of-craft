@@ -1,16 +1,20 @@
 package io.github.ron1196.thelionking.entity.npc;
 
+import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
 import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
 import io.github.ron1196.thelionking.quest.LKQuestBase;
 import io.github.ron1196.thelionking.registry.LKItems;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -27,6 +31,7 @@ public class ZiraEntity extends Monster {
             SynchedEntityData.defineId(ZiraEntity.class, EntityDataSerializers.BOOLEAN);
 
     private int talkCooldown = 0;
+    private boolean spawnedBossFightOutlanders = false;
 
     public ZiraEntity(EntityType<? extends ZiraEntity> type, Level level) {
         super(type, level);
@@ -72,6 +77,25 @@ public class ZiraEntity extends Monster {
     public void tick() {
         super.tick();
         if (talkCooldown > 0) talkCooldown--;
+
+        // Boss fight: when health drops below 120, summon outlanders with lightning
+        if (!level().isClientSide && isHostile() && !spawnedBossFightOutlanders && getHealth() <= 120F) {
+            spawnedBossFightOutlanders = true;
+            broadcastMessage("\u00a7e<Zira> \u00a7fOutlanders! Finish this!");
+            spawnOutlandersWithLightning(4);
+        }
+    }
+
+    private void spawnOutlandersWithLightning(int count) {
+        for (int i = 0; i < count; i++) {
+            int x = Mth.floor(getX()) - 6 + random.nextInt(13);
+            int z = Mth.floor(getZ()) - 6 + random.nextInt(13);
+            int y = level().getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING,
+                    new BlockPos(x, 0, z)).getY();
+
+            // Visual lightning bolt (power 0 = no damage, just dramatic effect)
+            level().addFreshEntity(new LKLightningBoltEntity(level(), x, y, z, 0, null));
+        }
     }
 
     @Override
@@ -143,6 +167,21 @@ public class ZiraEntity extends Monster {
                 player.sendSystemMessage(Component.literal(
                         "\u00a7e<Zira> \u00a7fThis is not over... Scar's legacy will live on..."));
             }
+
+            // Dramatic death: explosion and vanilla lightning bolts
+            level().explode(this, getX(), getY(), getZ(), 0F, Level.ExplosionInteraction.NONE);
+            for (int i = 0; i < 5; i++) {
+                int x = Mth.floor(getX()) - 12 + random.nextInt(25);
+                int z = Mth.floor(getZ()) - 12 + random.nextInt(25);
+                int y = level().getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING,
+                        new BlockPos(x, 0, z)).getY();
+                LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(level());
+                if (bolt != null) {
+                    bolt.moveTo(x, y, z);
+                    bolt.setVisualOnly(true);
+                    level().addFreshEntity(bolt);
+                }
+            }
         }
     }
 
@@ -157,5 +196,11 @@ public class ZiraEntity extends Monster {
 
     private void sendSpeech(Player player, LKCharacterSpeech speech) {
         player.sendSystemMessage(Component.literal(LKCharacterSpeech.giveSpeech(speech)));
+    }
+
+    private void broadcastMessage(String message) {
+        for (Player p : level().players()) {
+            p.sendSystemMessage(Component.literal(message));
+        }
     }
 }

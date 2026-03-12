@@ -46,4 +46,9 @@ public class LKBlockEntityTypes {
             BLOCK_ENTITY_TYPES.register("lk_spawner",
                     () -> BlockEntityType.Builder.of(LKSpawnerBlockEntity::new,
                             LKBlocks.LK_SPAWNER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<PrideBedBlockEntity>> PRIDE_BED =
+            BLOCK_ENTITY_TYPES.register("pride_bed",
+                    () -> BlockEntityType.Builder.of(PrideBedBlockEntity::new,
+                            LKBlocks.PRIDE_BED.get()).build(null));
 }

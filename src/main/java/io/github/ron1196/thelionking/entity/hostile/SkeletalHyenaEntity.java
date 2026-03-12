@@ -22,7 +22,6 @@ public class SkeletalHyenaEntity extends Monster {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, false));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));

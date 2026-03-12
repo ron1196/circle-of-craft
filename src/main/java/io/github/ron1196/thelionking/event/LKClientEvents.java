@@ -60,6 +60,12 @@ public class LKClientEvents {
     // Ticket Lion (uses lion mesh)
     public static final ModelLayerLocation TICKET_LION_LAYER = layer("ticket_lion");
 
+    // Interactive entity layers
+    public static final ModelLayerLocation SCAR_RUG_LAYER = layer("scar_rug");
+
+    // Skeletal Hyena Head
+    public static final ModelLayerLocation SKELETAL_HYENA_HEAD_LAYER = layer("skeletal_hyena_head");
+
     // Block entity layers
     public static final ModelLayerLocation HYENA_HEAD_LAYER = layer("hyena_head");
 
@@ -101,6 +107,14 @@ public class LKClientEvents {
 
         // Ticket Lion (lion mesh)
         event.registerLayerDefinition(TICKET_LION_LAYER, LionModel::createBodyLayer);
+
+        // Interactive entity layers
+        event.registerLayerDefinition(SCAR_RUG_LAYER,
+                io.github.ron1196.thelionking.client.model.ScarRugModel::createBodyLayer);
+
+        // Skeletal Hyena Head
+        event.registerLayerDefinition(SKELETAL_HYENA_HEAD_LAYER,
+                io.github.ron1196.thelionking.client.model.SkeletalHyenaHeadModel::createBodyLayer);
 
         // Block entity layers
         event.registerLayerDefinition(HYENA_HEAD_LAYER,
@@ -167,6 +181,17 @@ public class LKClientEvents {
         event.registerEntityRenderer(LKEntityTypes.TICKET_LION.get(),
                 ctx -> new LKNpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(TICKET_LION_LAYER)), "ticket_lion", 0.7F));
 
+        // Scar Rug
+        event.registerEntityRenderer(LKEntityTypes.SCAR_RUG.get(),
+                ctx -> new io.github.ron1196.thelionking.client.renderer.ScarRugRenderer(ctx,
+                        new io.github.ron1196.thelionking.client.model.ScarRugModel(ctx.bakeLayer(SCAR_RUG_LAYER))));
+
+        // Skeletal Hyena Head
+        event.registerEntityRenderer(LKEntityTypes.SKELETAL_HYENA_HEAD.get(),
+                ctx -> new LKMobRenderer<>(ctx,
+                        new io.github.ron1196.thelionking.client.model.SkeletalHyenaHeadModel(ctx.bakeLayer(SKELETAL_HYENA_HEAD_LAYER)),
+                        "hyena_skeleton", 0.3F));
+
         // Projectiles
         event.registerEntityRenderer(LKEntityTypes.DART.get(),
                 ctx -> new net.minecraft.client.renderer.entity.ArrowRenderer<>(ctx) {
@@ -199,9 +224,15 @@ public class LKClientEvents {
         event.registerEntityRenderer(LKEntityTypes.COIN.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(LKEntityTypes.ZAZU_EGG.get(), ThrownItemRenderer::new);
 
+        // Weather effects — uses vanilla lightning renderer since LKLightningBoltEntity extends LightningBolt
+        event.registerEntityRenderer(LKEntityTypes.LK_LIGHTNING_BOLT.get(),
+                net.minecraft.client.renderer.entity.LightningBoltRenderer::new);
+
         // Block entity renderers
         event.registerBlockEntityRenderer(io.github.ron1196.thelionking.registry.LKBlockEntityTypes.HYENA_HEAD.get(),
                 io.github.ron1196.thelionking.client.renderer.HyenaHeadBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(io.github.ron1196.thelionking.registry.LKBlockEntityTypes.PRIDE_BED.get(),
+                io.github.ron1196.thelionking.client.renderer.PrideBedRenderer::new);
     }
 
     @SubscribeEvent

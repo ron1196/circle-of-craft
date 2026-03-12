@@ -35,6 +35,10 @@ public class LKCommonEvents {
         event.put(LKEntityTypes.TERMITE.get(), TermiteEntity.createAttributes().build());
         event.put(LKEntityTypes.TERMITE_QUEEN.get(), TermiteQueenEntity.createAttributes().build());
 
+        // Skeletal Hyena Head
+        event.put(LKEntityTypes.SKELETAL_HYENA_HEAD.get(),
+                io.github.ron1196.thelionking.entity.hostile.SkeletalHyenaHeadEntity.createAttributes().build());
+
         // Ticket Lion
         event.put(LKEntityTypes.TICKET_LION.get(), io.github.ron1196.thelionking.entity.npc.TicketLionEntity.createAttributes().build());
 

@@ -58,6 +58,8 @@
   "block.thelionking.corrupt_pridestone_wall": "Corrupt Pridestone Wall",
   "block.thelionking.pridestone_pressure_plate": "Pridestone Pressure Plate",
   "block.thelionking.pridestone_button": "Pridestone Button",
+  "block.thelionking.pride_bed": "Bed",
+  "block.thelionking.pride_lever": "Lever",
   "block.thelionking.dried_maize_block": "Dried Maize Block",
   "block.thelionking.dried_maize_stairs": "Dried Maize Stairs",
   "block.thelionking.dried_maize_slab": "Dried Maize Slab",
@@ -222,6 +224,7 @@
   "item.thelionking.vulture_spawn_egg": "Vulture Spawn Egg",
   "item.thelionking.crocodile_spawn_egg": "Crocodile Spawn Egg",
   "item.thelionking.termite_spawn_egg": "Termite Spawn Egg",
+  "item.thelionking.termite_queen_spawn_egg": "Termite Queen Spawn Egg",
 
   "item.thelionking.outlands_helmet": "Outlands Helmet",
   "item.thelionking.ticket_lion_head": "Ticket Lion Head",
@@ -267,7 +270,7 @@
   "block.thelionking.vase": "Vase",
   "container.thelionking.bug_trap": "Bug Trap",
   "container.thelionking.bongo_drum": "Bongo Drum",
-  "item.thelionking.staff": "Staff",
+  "item.thelionking.rhythm_staff": "Rhythm Staff",
   "item.thelionking.rafiki_coin": "Rafiki Coin",
   "item.thelionking.zira_coin": "Zira Coin",
   "item.thelionking.wayward_feather": "Wayward Feather",
@@ -295,6 +298,8 @@
   "item.thelionking.jar_milk": "Jar of Milk",
   "item.thelionking.amulet": "Animalspeak Amulet",
   "item.thelionking.simba_charm": "Simba Charm",
+  "item.thelionking.rafiki_stick": "Rafiki's Stick",
+  "item.thelionking.rafiki_dust": "Rafiki Dust",
   "item.thelionking.giraffe_saddle": "Giraffe Saddle",
   "item.thelionking.dart_quiver": "Dart Quiver",
   "item.thelionking.passion_fruit": "Passion Fruit",
@@ -392,5 +397,12 @@
   "advancement.thelionking.peacock_wings.title": "Limitless",
   "advancement.thelionking.peacock_wings.description": "Craft Peacock Wings and fly",
   "advancement.thelionking.root.title": "The Lion King",
-  "advancement.thelionking.root.description": "The circle of life awaits"
+  "advancement.thelionking.root.description": "The circle of life awaits",
+
+  "entity.thelionking.scar_rug": "Scar Rug",
+  "item.thelionking.scar_rug": "Scar Rug",
+  "item.thelionking.zira_rug": "Zira Rug",
+  "entity.thelionking.skeletal_hyena_head": "Skeletal Hyena Head",
+  "entity.thelionking.lk_lightning_bolt": "Lightning Bolt",
+  "item.thelionking.skeletal_hyena_head_spawn_egg": "Skeletal Hyena Head Spawn Egg"
 }

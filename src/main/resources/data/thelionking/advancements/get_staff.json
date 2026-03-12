@@ -1,7 +1,7 @@
 {
   "parent": "thelionking:kill_hyena",
   "display": {
-    "icon": { "item": "thelionking:staff" },
+    "icon": { "item": "thelionking:rhythm_staff" },
     "title": { "translate": "advancement.thelionking.get_staff.title" },
     "description": { "translate": "advancement.thelionking.get_staff.description" },
     "frame": "task",
@@ -12,7 +12,7 @@
     "get": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
-        "items": [{ "items": ["thelionking:staff"] }]
+        "items": [{ "items": ["thelionking:rhythm_staff"] }]
       }
     }
   }

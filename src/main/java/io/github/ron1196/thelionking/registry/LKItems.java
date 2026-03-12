@@ -549,7 +549,7 @@ public class LKItems {
     public static final RegistryObject<Item> AMULET = ITEMS.register("amulet",
             () -> new Item(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> SIMBA_CHARM = ITEMS.register("simba_charm",
-            () -> new Item(new Item.Properties().stacksTo(1)));
+            () -> new io.github.ron1196.thelionking.item.SimbaCharmItem(new Item.Properties()));
     public static final RegistryObject<Item> GIRAFFE_SADDLE = ITEMS.register("giraffe_saddle",
             () -> new Item(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> DART_QUIVER = ITEMS.register("dart_quiver",
@@ -574,7 +574,7 @@ public class LKItems {
     public static final RegistryObject<Item> TICKET = ITEMS.register("ticket",
             () -> new io.github.ron1196.thelionking.item.TicketItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> STAFF = ITEMS.register("staff",
+    public static final RegistryObject<Item> RHYTHM_STAFF = ITEMS.register("rhythm_staff",
             () -> new Item(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> RAFIKI_COIN = ITEMS.register("rafiki_coin",
@@ -586,6 +586,12 @@ public class LKItems {
     public static final RegistryObject<Item> WAYWARD_FEATHER = ITEMS.register("wayward_feather",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> RAFIKI_STICK = ITEMS.register("rafiki_stick",
+            () -> new io.github.ron1196.thelionking.item.RafikiStickItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> RAFIKI_DUST = ITEMS.register("rafiki_dust",
+            () -> new io.github.ron1196.thelionking.item.RafikiDustItem(new Item.Properties()));
+
     // ========== Phase 12: Missing Block Items ==========
     public static final RegistryObject<BlockItem> BANANA_CAKE_ITEM = registerBlockItem("banana_cake", LKBlocks.BANANA_CAKE);
     public static final RegistryObject<BlockItem> MOUNTED_SHOOTER_ITEM = registerBlockItem("mounted_shooter", LKBlocks.MOUNTED_SHOOTER);
@@ -594,9 +600,26 @@ public class LKItems {
     public static final RegistryObject<BlockItem> TILLED_SAND_ITEM = registerBlockItem("tilled_sand", LKBlocks.TILLED_SAND);
     public static final RegistryObject<BlockItem> VASE_ITEM = registerBlockItem("vase", LKBlocks.VASE);
 
+    // ========== Bed & Lever ==========
+    public static final RegistryObject<BlockItem> PRIDE_BED_ITEM = ITEMS.register("pride_bed",
+            () -> new BedItem(LKBlocks.PRIDE_BED.get(), new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<BlockItem> PRIDE_LEVER_ITEM = registerBlockItem("pride_lever", LKBlocks.PRIDE_LEVER);
+
     // ========== Portal Frame Items ==========
     public static final RegistryObject<BlockItem> PRIDE_PORTAL_FRAME_ITEM = registerBlockItem("pride_portal_frame", LKBlocks.PRIDE_PORTAL_FRAME);
     public static final RegistryObject<BlockItem> OUTLANDS_PORTAL_FRAME_ITEM = registerBlockItem("outlands_portal_frame", LKBlocks.OUTLANDS_PORTAL_FRAME);
+
+    // ========== Scar / Zira Rugs ==========
+    public static final RegistryObject<Item> SCAR_RUG = ITEMS.register("scar_rug",
+            () -> new io.github.ron1196.thelionking.item.ScarRugItem(
+                    io.github.ron1196.thelionking.entity.ScarRugEntity.TYPE_SCAR, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> ZIRA_RUG = ITEMS.register("zira_rug",
+            () -> new io.github.ron1196.thelionking.item.ScarRugItem(
+                    io.github.ron1196.thelionking.entity.ScarRugEntity.TYPE_ZIRA, new Item.Properties().stacksTo(1)));
+
+    // ========== Skeletal Hyena Head Spawn Egg ==========
+    public static final RegistryObject<Item> SKELETAL_HYENA_HEAD_SPAWN_EGG = ITEMS.register("skeletal_hyena_head_spawn_egg",
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.SKELETAL_HYENA_HEAD, 0xC8C8C8, 0x3A3A3A, new Item.Properties()));
 
     // ========== Notes (for Bongo Drum) ==========
     public static final RegistryObject<Item> NOTE_A = ITEMS.register("note_a",
