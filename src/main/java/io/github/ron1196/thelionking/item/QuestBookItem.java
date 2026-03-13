@@ -46,7 +46,7 @@ public class QuestBookItem extends Item {
             @NotNull TooltipFlag flag
     ) {
         if (LKQuestBase.anyUncheckedQuests()) {
-            tooltip.add(Component.literal("§New quests available"));
+            tooltip.add(Component.literal("§eNew quests available"));
         }
     }
 }
