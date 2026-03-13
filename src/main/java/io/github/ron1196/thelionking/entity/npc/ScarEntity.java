@@ -1,6 +1,7 @@
 package io.github.ron1196.thelionking.entity.npc;
 
 import io.github.ron1196.thelionking.quest.LKQuestBase;
+import io.github.ron1196.thelionking.quest.LKQuests;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -76,8 +77,8 @@ public class ScarEntity extends Monster {
         super.die(source);
         if (!level().isClientSide()) {
             // Progress Rafiki's quest
-            if (LKQuestBase.RAFIKI_QUEST.getQuestStage() == 2) {
-                LKQuestBase.RAFIKI_QUEST.progress(3);
+            if (LKQuests.RAFIKI_QUEST.getQuestStage() == 2) {
+                LKQuests.RAFIKI_QUEST.progress(3);
                 LKQuestBase.updateAllQuests();
             }
 

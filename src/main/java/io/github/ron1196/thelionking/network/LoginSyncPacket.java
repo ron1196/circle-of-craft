@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.network;
 
 import io.github.ron1196.thelionking.data.LKLevelData;
 import io.github.ron1196.thelionking.quest.LKQuestBase;
+import io.github.ron1196.thelionking.quest.LKQuests;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -43,7 +44,7 @@ public class LoginSyncPacket {
         this.questStagesCompleted = new int[16][];
 
         for (int i = 0; i < 16; i++) {
-            LKQuestBase quest = LKQuestBase.ALL_QUESTS[i];
+            LKQuestBase quest = LKQuests.ALL_QUESTS[i];
             if (quest != null) {
                 questStages[i] = quest.currentStage;
                 questDelayed[i] = quest.stagesDelayed;
@@ -106,7 +107,7 @@ public class LoginSyncPacket {
         context.enqueueWork(() -> {
             // Apply world state to client-side quest data
             for (int i = 0; i < 16; i++) {
-                LKQuestBase quest = LKQuestBase.ALL_QUESTS[i];
+                LKQuestBase quest = LKQuests.ALL_QUESTS[i];
                 if (quest == null) continue;
                 quest.currentStage = questStages[i];
                 quest.stagesDelayed = questDelayed[i];

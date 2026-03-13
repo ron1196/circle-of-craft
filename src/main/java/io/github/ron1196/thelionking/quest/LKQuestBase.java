@@ -1,24 +1,15 @@
 package io.github.ron1196.thelionking.quest;
 
+import io.github.ron1196.thelionking.network.LKNetworking;
+import io.github.ron1196.thelionking.network.QuestSyncPacket;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.network.PacketDistributor;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public abstract class LKQuestBase {
-
-    public static final LKQuestBase[] ALL_QUESTS = new LKQuestBase[16];
-    public static final List<LKQuestBase> ORDERED_QUESTS = new ArrayList<>();
-
-    public static final LKQuestBase RAFIKI_QUEST = new LKQuestRafiki(0).setName("Rafiki's Quest");
-    public static final LKQuestBase OUTLANDS_QUEST = new LKQuestOutlands(1).setName("An Outlandish Scheme");
-
-    static {
-        ORDERED_QUESTS.add(RAFIKI_QUEST);
-        ORDERED_QUESTS.add(OUTLANDS_QUEST);
-    }
 
     public int stagesDelayed;
     private String questName;
@@ -28,7 +19,7 @@ public abstract class LKQuestBase {
     public final int questIndex;
 
     public LKQuestBase(int index) {
-        ALL_QUESTS[index] = this;
+        LKQuests.ALL_QUESTS[index] = this;
         this.questIndex = index;
         this.stagesCompleted = new int[getNumStages() + 1];
     }
@@ -98,14 +89,14 @@ public abstract class LKQuestBase {
     }
 
     public static boolean anyUncheckedQuests() {
-        for (LKQuestBase quest : ALL_QUESTS) {
+        for (LKQuestBase quest : LKQuests.ALL_QUESTS) {
             if (quest != null && quest.canStart() && !quest.isChecked()) return true;
         }
         return false;
     }
 
     public static void updateAllQuests() {
-        for (LKQuestBase quest : ALL_QUESTS) {
+        for (LKQuestBase quest : LKQuests.ALL_QUESTS) {
             if (quest == null) continue;
             if (quest.stagesDelayed == 0 && quest.stagesCompleted[quest.currentStage] == 1
                     && quest.currentStage < quest.getNumStages()) {
@@ -114,9 +105,25 @@ public abstract class LKQuestBase {
         }
     }
 
+    public static void syncToPlayer(ServerPlayer player) {
+        for (LKQuestBase quest : LKQuests.ALL_QUESTS) {
+            if (quest == null) continue;
+            LKNetworking.CHANNEL.send(
+                    PacketDistributor.PLAYER.with(() -> player),
+                    new QuestSyncPacket(quest.questIndex, quest.currentStage, quest.checked)
+            );
+        }
+    }
+
+    public static void syncToAllPlayers(net.minecraft.server.MinecraftServer server) {
+        for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+            syncToPlayer(player);
+        }
+    }
+
     public static void writeAllQuestsToNBT(CompoundTag tag) {
-        for (int i = 0; i < ALL_QUESTS.length; i++) {
-            LKQuestBase quest = ALL_QUESTS[i];
+        for (int i = 0; i < LKQuests.ALL_QUESTS.length; i++) {
+            LKQuestBase quest = LKQuests.ALL_QUESTS[i];
             if (quest == null) continue;
             tag.putInt("Quest_" + i + "_Stage", quest.currentStage);
             tag.putInt("Quest_" + i + "_Delayed", quest.stagesDelayed);
@@ -128,8 +135,8 @@ public abstract class LKQuestBase {
     }
 
     public static void readAllQuestsFromNBT(CompoundTag tag) {
-        for (int i = 0; i < ALL_QUESTS.length; i++) {
-            LKQuestBase quest = ALL_QUESTS[i];
+        for (int i = 0; i < LKQuests.ALL_QUESTS.length; i++) {
+            LKQuestBase quest = LKQuests.ALL_QUESTS[i];
             if (quest == null) continue;
             quest.currentStage = tag.getInt("Quest_" + i + "_Stage");
             quest.stagesDelayed = tag.getInt("Quest_" + i + "_Delayed");

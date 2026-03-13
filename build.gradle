@@ -26,6 +26,13 @@ runs {
         systemProperty 'forge.enabledGameTestNamespaces', 'thelionking'
     }
 
+    client2 {
+        configure 'client'
+        workingDirectory file('runs/client2')
+        programArgument '--username'
+        programArgument 'Dev2'
+    }
+
     server {
         systemProperty 'forge.enabledGameTestNamespaces', 'thelionking'
         programArgument '--nogui'

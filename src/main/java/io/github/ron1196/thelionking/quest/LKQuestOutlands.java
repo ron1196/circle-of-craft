@@ -30,7 +30,7 @@ public class LKQuestOutlands extends LKQuestBase {
 
     @Override
     public boolean canStart() {
-        return LKQuestBase.RAFIKI_QUEST.isComplete();
+        return LKQuests.RAFIKI_QUEST.isComplete();
     }
 
     @Override

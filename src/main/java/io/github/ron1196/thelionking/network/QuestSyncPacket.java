@@ -1,6 +1,7 @@
 package io.github.ron1196.thelionking.network;
 
 import io.github.ron1196.thelionking.quest.LKQuestBase;
+import io.github.ron1196.thelionking.quest.LKQuests;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -36,9 +37,9 @@ public class QuestSyncPacket {
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         NetworkEvent.Context context = ctx.get();
         context.enqueueWork(() -> {
-            if (questIndex < 0 || questIndex >= LKQuestBase.ALL_QUESTS.length) return;
+            if (questIndex < 0 || questIndex >= LKQuests.ALL_QUESTS.length) return;
 
-            LKQuestBase quest = LKQuestBase.ALL_QUESTS[questIndex];
+            LKQuestBase quest = LKQuests.ALL_QUESTS[questIndex];
             if (quest == null) return;
 
             quest.currentStage = stage;

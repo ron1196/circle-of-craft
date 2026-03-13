@@ -3,6 +3,7 @@ package io.github.ron1196.thelionking.entity.npc;
 import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
 import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
 import io.github.ron1196.thelionking.quest.LKQuestBase;
+import io.github.ron1196.thelionking.quest.LKQuests;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -105,13 +106,13 @@ public class ZiraEntity extends Monster {
         if (talkCooldown > 0) return InteractionResult.SUCCESS;
         talkCooldown = 40;
 
-        int questStage = LKQuestBase.OUTLANDS_QUEST.getQuestStage();
+        int questStage = LKQuests.OUTLANDS_QUEST.getQuestStage();
         ItemStack held = player.getItemInHand(hand);
 
         // Stage 1: First meeting
         if (questStage == 1) {
             sendMessage(player, "So... a human dares to enter my domain. Perhaps you can be of use to me.");
-            LKQuestBase.OUTLANDS_QUEST.progress(2);
+            LKQuests.OUTLANDS_QUEST.progress(2);
             LKQuestBase.updateAllQuests();
             return InteractionResult.SUCCESS;
         }
@@ -125,7 +126,7 @@ public class ZiraEntity extends Monster {
                         held.shrink(5);
                         stack.shrink(2);
                         sendMessage(player, "Good. Now throw these ingots into the Outwater.");
-                        LKQuestBase.OUTLANDS_QUEST.progress(3);
+                        LKQuests.OUTLANDS_QUEST.progress(3);
                         LKQuestBase.updateAllQuests();
                         return InteractionResult.SUCCESS;
                     }
@@ -140,7 +141,7 @@ public class ZiraEntity extends Monster {
             if (held.is(LKItems.WAYWARD_FEATHER.get()) && held.getCount() >= 3) {
                 held.shrink(3);
                 sendMessage(player, "Excellent. You have served me well. Now... follow my Outlanders.");
-                LKQuestBase.OUTLANDS_QUEST.progress(5);
+                LKQuests.OUTLANDS_QUEST.progress(5);
                 LKQuestBase.updateAllQuests();
                 return InteractionResult.SUCCESS;
             }
@@ -159,8 +160,8 @@ public class ZiraEntity extends Monster {
     public void die(DamageSource source) {
         super.die(source);
         if (!level().isClientSide()) {
-            if (LKQuestBase.OUTLANDS_QUEST.getQuestStage() == 9) {
-                LKQuestBase.OUTLANDS_QUEST.progress(10);
+            if (LKQuests.OUTLANDS_QUEST.getQuestStage() == 9) {
+                LKQuests.OUTLANDS_QUEST.progress(10);
                 LKQuestBase.updateAllQuests();
             }
             if (source.getEntity() instanceof Player player) {

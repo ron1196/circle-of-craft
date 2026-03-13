@@ -4,6 +4,7 @@ import io.github.ron1196.thelionking.data.LKLevelData;
 import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
 import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
 import io.github.ron1196.thelionking.quest.LKQuestBase;
+import io.github.ron1196.thelionking.quest.LKQuests;
 import io.github.ron1196.thelionking.registry.LKBlocks;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import net.minecraft.network.chat.Component;
@@ -36,7 +37,7 @@ public class RafikiDustItem extends Item {
         }
 
         // Block if Rafiki quest stage 5 is delayed
-        if (LKQuestBase.RAFIKI_QUEST.getQuestStage() == 5 && LKQuestBase.RAFIKI_QUEST.isDelayed()) {
+        if (LKQuests.RAFIKI_QUEST.getQuestStage() == 5 && LKQuests.RAFIKI_QUEST.isDelayed()) {
             return InteractionResult.PASS;
         }
 
@@ -74,8 +75,8 @@ public class RafikiDustItem extends Item {
         }
 
         // Progress Rafiki quest if at stage 6
-        if (LKQuestBase.RAFIKI_QUEST.getQuestStage() == 6) {
-            LKQuestBase.RAFIKI_QUEST.progress(7);
+        if (LKQuests.RAFIKI_QUEST.getQuestStage() == 6) {
+            LKQuests.RAFIKI_QUEST.progress(7);
             broadcastMessage(level, "\u00a7e<Rafiki> \u00a7fYou see? He lives in you! Ohohoho!");
         }
 

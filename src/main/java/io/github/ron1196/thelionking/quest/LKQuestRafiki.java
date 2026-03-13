@@ -63,11 +63,14 @@ public class LKQuestRafiki extends LKQuestBase {
      */
     public String getQuestDescription(int stage) {
         return switch (stage) {
-            case NOT_STARTED -> "You have not yet begun Rafiki's Quest. Seek out Rafiki at his tree in the centre of the Pride Lands.";
+            case NOT_STARTED ->
+                    "You have not yet begun Rafiki's Quest. Seek out Rafiki at his tree in the centre of the Pride Lands.";
             case TALK_TO_RAFIKI -> "Rafiki has asked you to collect 5 hyena bones and bring them back to him.";
             case COLLECT_BONES -> "Rafiki senses a great warrior nearby. Find Simba somewhere in the Pride Lands.";
-            case FIND_SIMBA -> "Simba needs your help to reclaim the Pride Lands. Defeat 10 hyenas to weaken Scar's forces.";
-            case DEFEAT_HYENAS -> "The hyena forces are weakened. Now find and defeat Scar to restore peace to the Pride Lands.";
+            case FIND_SIMBA ->
+                    "Simba needs your help to reclaim the Pride Lands. Defeat 10 hyenas to weaken Scar's forces.";
+            case DEFEAT_HYENAS ->
+                    "The hyena forces are weakened. Now find and defeat Scar to restore peace to the Pride Lands.";
             case DEFEAT_SCAR -> "Scar has been defeated! Return to Rafiki at his tree to tell him the good news.";
             case RETURN_TO_RAFIKI -> "Speak with Rafiki to receive your well-earned reward.";
             case COMPLETE -> "You have completed Rafiki's Quest and restored peace to the Pride Lands!";

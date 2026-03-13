@@ -3,6 +3,7 @@ package io.github.ron1196.thelionking.entity.npc;
 import io.github.ron1196.thelionking.data.LKLevelData;
 import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
 import io.github.ron1196.thelionking.quest.LKQuestBase;
+import io.github.ron1196.thelionking.quest.LKQuests;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -63,7 +64,7 @@ public class RafikiEntity extends PathfinderMob {
 
         talkCooldown = 40;
 
-        int questStage = LKQuestBase.RAFIKI_QUEST.getQuestStage();
+        int questStage = LKQuests.RAFIKI_QUEST.getQuestStage();
         ItemStack held = player.getItemInHand(hand);
 
         // Give quest book on first meeting
@@ -79,7 +80,7 @@ public class RafikiEntity extends PathfinderMob {
         // Stage 0: First meeting
         if (questStage == 0) {
             sendMessage(player, "Welcome to the Pride Lands! I am Rafiki. Bring me sixty-four hyena bones and I will give you my stick.");
-            LKQuestBase.RAFIKI_QUEST.progress(1);
+            LKQuests.RAFIKI_QUEST.progress(1);
             LKQuestBase.updateAllQuests();
             return InteractionResult.SUCCESS;
         }
@@ -90,7 +91,7 @@ public class RafikiEntity extends PathfinderMob {
                 held.shrink(64);
                 player.addItem(new ItemStack(LKItems.RHYTHM_STAFF.get()));
                 sendMessage(player, "Excellent! Here is my stick. Now go and defeat Scar!");
-                LKQuestBase.RAFIKI_QUEST.progress(2);
+                LKQuests.RAFIKI_QUEST.progress(2);
                 LKQuestBase.updateAllQuests();
             } else {
                 sendSpeech(player, LKCharacterSpeech.HYENA_BONES);
@@ -107,7 +108,7 @@ public class RafikiEntity extends PathfinderMob {
         // Stage 3: Return after defeating Scar
         if (questStage == 3) {
             sendMessage(player, "Well done! Scar has been defeated. Now bring me four ground termites.");
-            LKQuestBase.RAFIKI_QUEST.progress(4);
+            LKQuests.RAFIKI_QUEST.progress(4);
             LKQuestBase.updateAllQuests();
             return InteractionResult.SUCCESS;
         }
@@ -117,7 +118,7 @@ public class RafikiEntity extends PathfinderMob {
             if (held.is(LKItems.TERMITE_DUST.get()) && held.getCount() >= 4) {
                 held.shrink(4);
                 sendMessage(player, "Good! Now bring me four ground mangoes.");
-                LKQuestBase.RAFIKI_QUEST.progress(5);
+                LKQuests.RAFIKI_QUEST.progress(5);
                 LKQuestBase.updateAllQuests();
             } else {
                 sendSpeech(player, LKCharacterSpeech.TERMITES);
@@ -130,7 +131,7 @@ public class RafikiEntity extends PathfinderMob {
             if (held.is(LKItems.MANGO_DUST.get()) && held.getCount() >= 4) {
                 held.shrink(4);
                 sendMessage(player, "Perfect! Now craft a Star Altar and use the Rafiki Dust on it.");
-                LKQuestBase.RAFIKI_QUEST.progress(6);
+                LKQuests.RAFIKI_QUEST.progress(6);
                 LKQuestBase.updateAllQuests();
             } else {
                 sendSpeech(player, LKCharacterSpeech.MANGOES);
@@ -145,7 +146,7 @@ public class RafikiEntity extends PathfinderMob {
         }
 
         // Quest complete — give hints
-        if (LKQuestBase.RAFIKI_QUEST.isComplete()) {
+        if (LKQuests.RAFIKI_QUEST.isComplete()) {
             sendSpeech(player, LKCharacterSpeech.HINT);
             return InteractionResult.SUCCESS;
         }

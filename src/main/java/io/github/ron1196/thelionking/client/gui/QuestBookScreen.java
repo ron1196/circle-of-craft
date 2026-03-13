@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.client.gui;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.quest.LKQuestBase;
+import io.github.ron1196.thelionking.quest.LKQuests;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -17,6 +18,7 @@ public class QuestBookScreen extends Screen {
 
     private static final int BOOK_WIDTH = 202;
     private static final int BOOK_HEIGHT = 256;
+    private static final int TEXTURE_SIZE = 256;
 
     private int selectedQuest = -1;
 
@@ -33,8 +35,8 @@ public class QuestBookScreen extends Screen {
 
         // Quest list buttons on left page
         int buttonY = topY + 30;
-        for (int i = 0; i < LKQuestBase.ORDERED_QUESTS.size(); i++) {
-            LKQuestBase quest = LKQuestBase.ORDERED_QUESTS.get(i);
+        for (int i = 0; i < LKQuests.ORDERED_QUESTS.size(); i++) {
+            LKQuestBase quest = LKQuests.ORDERED_QUESTS.get(i);
             final int questIdx = i;
             addRenderableWidget(Button.builder(
                     Component.literal(quest.getName()),
@@ -56,16 +58,16 @@ public class QuestBookScreen extends Screen {
         int topY = (this.height - BOOK_HEIGHT) / 2;
 
         // Draw book pages
-        graphics.blit(BOOK_LEFT, centerX, topY, 0, 0, BOOK_WIDTH, BOOK_HEIGHT, BOOK_WIDTH, BOOK_HEIGHT);
-        graphics.blit(BOOK_RIGHT, centerX + BOOK_WIDTH, topY, 0, 0, BOOK_WIDTH, BOOK_HEIGHT, BOOK_WIDTH, BOOK_HEIGHT);
+        graphics.blit(BOOK_LEFT, centerX, topY, 0, 0, BOOK_WIDTH, BOOK_HEIGHT, TEXTURE_SIZE, TEXTURE_SIZE);
+        graphics.blit(BOOK_RIGHT, centerX + BOOK_WIDTH, topY, 0, 0, BOOK_WIDTH, BOOK_HEIGHT, TEXTURE_SIZE, TEXTURE_SIZE);
 
         // Left page title
         graphics.drawCenteredString(font, "\u00a7lQuests", centerX + BOOK_WIDTH / 2, topY + 12, 0x140C02);
 
         // Draw quest status indicators
         int buttonY = topY + 30;
-        for (int i = 0; i < LKQuestBase.ORDERED_QUESTS.size(); i++) {
-            LKQuestBase quest = LKQuestBase.ORDERED_QUESTS.get(i);
+        for (int i = 0; i < LKQuests.ORDERED_QUESTS.size(); i++) {
+            LKQuestBase quest = LKQuests.ORDERED_QUESTS.get(i);
             String status;
             int color;
             if (quest.isComplete()) {
@@ -86,8 +88,8 @@ public class QuestBookScreen extends Screen {
         }
 
         // Right page: quest details
-        if (selectedQuest >= 0 && selectedQuest < LKQuestBase.ORDERED_QUESTS.size()) {
-            LKQuestBase quest = LKQuestBase.ORDERED_QUESTS.get(selectedQuest);
+        if (selectedQuest >= 0 && selectedQuest < LKQuests.ORDERED_QUESTS.size()) {
+            LKQuestBase quest = LKQuests.ORDERED_QUESTS.get(selectedQuest);
             int rightX = centerX + BOOK_WIDTH + 15;
             int textY = topY + 15;
 
