@@ -60,6 +60,26 @@ Items using generated placeholder textures (not from old mod):
 - [ ] **`star_altar` item texture** — Generated placeholder; block textures (side/top) from old mod are correct
 - [ ] **`outlands_altar` item texture** — Generated dark placeholder
 
+## Multiplayer Quest Data
+
+- [ ] **Quest state is global, not per-player** — `LKQuestBase.ALL_QUESTS` is a static array shared by all players. In multiplayer, all players share the same quest progress. To fix:
+  - Change `LKQuestBase.ALL_QUESTS` from static `LKQuestBase[]` to `Map<UUID, LKQuestBase[]>`
+  - Update `LKLevelData` to store/load quest data keyed by player UUID
+  - Update `LoginSyncPacket` to send only that player's quest data
+  - Update all quest logic (Rafiki, Outlands, NPC interactions) to take a `Player` parameter and look up the correct quest instance
+  - Update `QuestSyncPacket` and `QuestCheckPacket` to be per-player
+  - Update `ClientWorldState` to store only the local player's state
+
+## Crop Block Models
+
+- [ ] **Kiwano, Maize, and Yam 3D models need rework** — Current block models don't look right. Need proper crop stage models matching the old mod's appearance.
+
+## Crop Block Classes (Wrong Base Class)
+
+- [ ] **Maize is `CropBlock` but should be sugar cane-like** — Old mod: multi-block tall, grows near water, not on farmland. Needs custom block class extending `BushBlock` or similar, with water-adjacent check and multi-block stacking. Current worldgen only places single block.
+- [ ] **Yam is `CropBlock` but should grow on grass** — Old mod places yams on grass blocks, but `CropBlock.canSurvive()` requires farmland. Needs `mayPlaceOn` override to accept grass, or change to `BushBlock` subclass.
+- [ ] **Kiwano worldgen places `kiwano_block` (fruit) on sand** — Matches old mod. Stem (`kiwano_stem`) is the crop version for player farming. Worldgen config updated to check for sand below.
+
 ## Networking (Not Fully Wired)
 
 Packets are registered and defined, but client-side send triggers are missing:

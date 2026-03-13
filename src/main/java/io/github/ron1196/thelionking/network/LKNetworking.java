@@ -38,5 +38,11 @@ public class LKNetworking {
                 .decoder(QuestCheckPacket::new)
                 .consumerMainThread(QuestCheckPacket::handle)
                 .add();
+
+        CHANNEL.messageBuilder(LoginSyncPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(LoginSyncPacket::encode)
+                .decoder(LoginSyncPacket::new)
+                .consumerMainThread(LoginSyncPacket::handle)
+                .add();
     }
 }

@@ -1,7 +1,7 @@
 {
   "type": "minecraft:random_patch",
   "config": {
-    "tries": 32,
+    "tries": 64,
     "xz_spread": 7,
     "y_spread": 3,
     "feature": {
@@ -11,8 +11,7 @@
           "to_place": {
             "type": "minecraft:simple_state_provider",
             "state": {
-              "Name": "thelionking:kiwano_stem",
-              "Properties": {"age": "3"}
+              "Name": "thelionking:kiwano_block"
             }
           }
         }
@@ -21,9 +20,19 @@
         {
           "type": "minecraft:block_predicate_filter",
           "predicate": {
-            "type": "minecraft:matching_blocks",
-            "blocks": ["minecraft:air"],
-            "offset": [0, 0, 0]
+            "type": "minecraft:all_of",
+            "predicates": [
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": ["minecraft:air"],
+                "offset": [0, 0, 0]
+              },
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": ["minecraft:sand", "minecraft:red_sand"],
+                "offset": [0, -1, 0]
+              }
+            ]
           }
         }
       ]

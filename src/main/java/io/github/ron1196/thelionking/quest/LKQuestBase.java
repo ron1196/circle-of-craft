@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class LKQuestBase {
@@ -46,9 +47,13 @@ public abstract class LKQuestBase {
     }
 
     public abstract boolean canStart();
+
     public abstract String[] getRequirements();
+
     public abstract int getNumStages();
+
     public abstract ItemStack getIcon();
+
     public abstract String getObjectiveByStage(int stage);
 
     public void progress(int stage) {
@@ -88,9 +93,7 @@ public abstract class LKQuestBase {
     public void resetProgress() {
         currentStage = 0;
         stagesDelayed = 0;
-        for (int j = 0; j < stagesCompleted.length; j++) {
-            stagesCompleted[j] = 0;
-        }
+        Arrays.fill(stagesCompleted, 0);
         checked = 0;
     }
 

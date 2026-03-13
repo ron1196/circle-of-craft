@@ -1,9 +1,9 @@
 {
   "type": "minecraft:random_patch",
   "config": {
-    "tries": 32,
-    "xz_spread": 7,
-    "y_spread": 3,
+    "tries": 20,
+    "xz_spread": 3,
+    "y_spread": 0,
     "feature": {
       "feature": {
         "type": "minecraft:simple_block",
@@ -21,9 +21,19 @@
         {
           "type": "minecraft:block_predicate_filter",
           "predicate": {
-            "type": "minecraft:matching_blocks",
-            "blocks": ["minecraft:air"],
-            "offset": [0, 0, 0]
+            "type": "minecraft:all_of",
+            "predicates": [
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": ["minecraft:air"],
+                "offset": [0, 0, 0]
+              },
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": ["minecraft:grass_block", "minecraft:dirt"],
+                "offset": [0, -1, 0]
+              }
+            ]
           }
         }
       ]

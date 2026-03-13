@@ -33,6 +33,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -45,6 +46,20 @@ public class LKForgeEvents {
     @SubscribeEvent
     public static void onRegisterCommands(RegisterCommandsEvent event) {
         LKCommands.register(event.getDispatcher());
+    }
+
+    // ── Player Login — sync world state and quest data to client ───────────────
+
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+            ServerLevel overworld = serverPlayer.server.overworld();
+            LKLevelData data = LKLevelData.get(overworld);
+            io.github.ron1196.thelionking.network.LKNetworking.CHANNEL.send(
+                    net.minecraftforge.network.PacketDistributor.PLAYER.with(() -> serverPlayer),
+                    new io.github.ron1196.thelionking.network.LoginSyncPacket(data)
+            );
+        }
     }
 
     // ── AttackEntityEvent (punch Scar Rug to pick it up) ───────────────────────

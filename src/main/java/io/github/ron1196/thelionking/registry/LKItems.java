@@ -2,6 +2,10 @@ package io.github.ron1196.thelionking.registry;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.item.DartShooterItem;
+import io.github.ron1196.thelionking.item.KivuliteAxeItem;
+import io.github.ron1196.thelionking.item.KivulitePickaxeItem;
+import io.github.ron1196.thelionking.item.KivuliteShovelItem;
+import io.github.ron1196.thelionking.item.KivuliteSwordItem;
 import io.github.ron1196.thelionking.item.NoteItem;
 import io.github.ron1196.thelionking.item.PumbaaBombItem;
 import io.github.ron1196.thelionking.item.SpearItem;
@@ -233,13 +237,13 @@ public class LKItems {
 
     // ========== Kivulite Tools ==========
     public static final RegistryObject<SwordItem> KIVULITE_SWORD = ITEMS.register("kivulite_sword",
-            () -> new SwordItem(LKToolTiers.KIVULITE, 3, -2.4F, new Item.Properties()));
+            () -> new KivuliteSwordItem(LKToolTiers.KIVULITE, 3, -2.4F, new Item.Properties()));
     public static final RegistryObject<PickaxeItem> KIVULITE_PICKAXE = ITEMS.register("kivulite_pickaxe",
-            () -> new PickaxeItem(LKToolTiers.KIVULITE, 1, -2.8F, new Item.Properties()));
+            () -> new KivulitePickaxeItem(LKToolTiers.KIVULITE, 1, -2.8F, new Item.Properties()));
     public static final RegistryObject<AxeItem> KIVULITE_AXE = ITEMS.register("kivulite_axe",
-            () -> new AxeItem(LKToolTiers.KIVULITE, 6.0F, -3.1F, new Item.Properties()));
+            () -> new KivuliteAxeItem(LKToolTiers.KIVULITE, 6.0F, -3.1F, new Item.Properties()));
     public static final RegistryObject<ShovelItem> KIVULITE_SHOVEL = ITEMS.register("kivulite_shovel",
-            () -> new ShovelItem(LKToolTiers.KIVULITE, 1.5F, -3.0F, new Item.Properties()));
+            () -> new KivuliteShovelItem(LKToolTiers.KIVULITE, 1.5F, -3.0F, new Item.Properties()));
     public static final RegistryObject<HoeItem> KIVULITE_HOE = ITEMS.register("kivulite_hoe",
             () -> new HoeItem(LKToolTiers.KIVULITE, -2, -1.0F, new Item.Properties()));
 
