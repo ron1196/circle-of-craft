@@ -1,5 +1,7 @@
 package io.github.ron1196.thelionking.entity.animal;
 
+import io.github.ron1196.thelionking.entity.animal.favor.AnimalFavor;
+import io.github.ron1196.thelionking.entity.animal.favor.AnimalFavorEntry;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -13,7 +15,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -28,12 +29,12 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-public abstract class LKAnimal extends Animal {
+public abstract class Animal extends net.minecraft.world.entity.animal.Animal {
 
     protected static final Random QUEST_RANDOM = new Random();
     private final Map<UUID, AnimalFavorEntry> animalQuests = new HashMap<>();
 
-    protected LKAnimal(EntityType<? extends Animal> type, Level level) {
+    protected Animal(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
     }
 
@@ -46,7 +47,7 @@ public abstract class LKAnimal extends Animal {
     }
 
     public static AttributeSupplier.Builder createLKAnimalAttributes() {
-        return Animal.createMobAttributes()
+        return net.minecraft.world.entity.animal.Animal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 10.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.2);
     }

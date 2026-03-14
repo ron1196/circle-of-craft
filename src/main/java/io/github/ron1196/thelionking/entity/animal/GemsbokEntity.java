@@ -8,15 +8,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class GemsbokEntity extends LKAnimal {
+public class GemsbokEntity extends Animal {
 
-    public GemsbokEntity(EntityType<? extends Animal> type, Level level) {
+    public GemsbokEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
     }
 
@@ -29,7 +28,7 @@ public class GemsbokEntity extends LKAnimal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return LKAnimal.createLKAnimalAttributes()
+        return Animal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 14.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.23);
     }

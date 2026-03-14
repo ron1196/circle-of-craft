@@ -14,19 +14,18 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class DikDikEntity extends LKAnimal {
+public class DikDikEntity extends Animal {
 
     private static final EntityDataAccessor<Integer> DATA_VARIANT =
             SynchedEntityData.defineId(DikDikEntity.class, EntityDataSerializers.INT);
 
-    public DikDikEntity(EntityType<? extends Animal> type, Level level) {
+    public DikDikEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
     }
 
@@ -60,7 +59,7 @@ public class DikDikEntity extends LKAnimal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return LKAnimal.createLKAnimalAttributes()
+        return Animal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 8.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.28);
     }

@@ -8,15 +8,14 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class RhinoEntity extends LKAnimal {
+public class RhinoEntity extends Animal {
 
-    public RhinoEntity(EntityType<? extends Animal> type, Level level) {
+    public RhinoEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
     }
 
@@ -28,7 +27,7 @@ public class RhinoEntity extends LKAnimal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return LKAnimal.createLKAnimalAttributes()
+        return Animal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 30.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.ATTACK_DAMAGE, 5.0)

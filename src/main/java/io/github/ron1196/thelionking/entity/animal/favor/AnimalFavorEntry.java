@@ -1,4 +1,4 @@
-package io.github.ron1196.thelionking.entity.animal;
+package io.github.ron1196.thelionking.entity.animal.favor;
 
 import net.minecraft.world.item.Item;
 

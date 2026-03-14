@@ -1,10 +1,10 @@
-package io.github.ron1196.thelionking.entity.animal;
+package io.github.ron1196.thelionking.entity.animal.favor;
 
 import java.util.Random;
 
 /**
  * Static utility class for animal favor phrases and rewards.
- * Per-player favor state is stored in {@link LKAnimal}.
+ * Per-player favor state is stored in {@link Animal}.
  */
 public final class AnimalFavor {
 

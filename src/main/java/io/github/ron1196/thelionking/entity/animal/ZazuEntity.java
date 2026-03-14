@@ -9,15 +9,14 @@ import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class ZazuEntity extends LKAnimal {
+public class ZazuEntity extends Animal {
 
-    public ZazuEntity(EntityType<? extends Animal> type, Level level) {
+    public ZazuEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
     }
 
@@ -29,7 +28,7 @@ public class ZazuEntity extends LKAnimal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return LKAnimal.createLKAnimalAttributes()
+        return Animal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 8.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25);
     }
