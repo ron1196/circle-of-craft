@@ -1,5 +1,7 @@
 package io.github.ron1196.thelionking.item;
 
+import io.github.ron1196.thelionking.data.LKPlayerData;
+import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
 import io.github.ron1196.thelionking.data.LKWorldData;
 import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
 import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
@@ -32,8 +34,11 @@ public class RafikiDustItem extends Item {
             return InteractionResult.PASS;
         }
 
-        // TODO: use LKPlayerData.hasSimba() capability
-        // Block if player already has a Simba (stubbed — needs per-player data)
+        // Block if player already has a Simba
+        LKPlayerData playerData = LKPlayerDataProvider.get(player);
+        if (playerData.hasSimba()) {
+            return InteractionResult.PASS;
+        }
 
         // Must be used on a Star Altar
         if (!level.getBlockState(context.getClickedPos()).is(LKBlocks.STAR_ALTAR.get())) {
@@ -60,6 +65,7 @@ public class RafikiDustItem extends Item {
             simba.setBaby(true);
             simba.setHealth(15.0F);
             level.addFreshEntity(simba);
+            playerData.setHasSimba(true);
         }
 
         // Progress Rafiki quest via star altar usage
