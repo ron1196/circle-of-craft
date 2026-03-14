@@ -3,7 +3,7 @@ package io.github.ron1196.thelionking.item;
 import io.github.ron1196.thelionking.data.LKPlayerData;
 import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
 import io.github.ron1196.thelionking.data.LKWorldData;
-import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
+import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
 import io.github.ron1196.thelionking.quest.stage.StageTrigger;
 import io.github.ron1196.thelionking.registry.LKBlocks;
@@ -53,7 +53,7 @@ public class RafikiDustItem extends Item {
         context.getItemInHand().shrink(1);
 
         // Visual lightning bolt (power 0 = no damage)
-        level.addFreshEntity(new LKLightningBoltEntity(level, x, y, z, 0, player));
+        level.addFreshEntity(new LightningBoltEntity(level, x, y, z, 0, player));
 
         // Harmless explosion for particles/sound
         level.explode(player, x, y + 1, z, 0F, Level.ExplosionInteraction.NONE);

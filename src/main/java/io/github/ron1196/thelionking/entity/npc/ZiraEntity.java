@@ -3,7 +3,7 @@ package io.github.ron1196.thelionking.entity.npc;
 import io.github.ron1196.thelionking.data.LKPlayerData;
 import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
 import io.github.ron1196.thelionking.data.LKWorldData;
-import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
+import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
@@ -100,7 +100,7 @@ public class ZiraEntity extends Monster {
             int z = Mth.floor(getZ()) - 6 + random.nextInt(13);
             int y = level().getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING,
                     new BlockPos(x, 0, z)).getY();
-            level().addFreshEntity(new LKLightningBoltEntity(level(), x, y, z, 0, null));
+            level().addFreshEntity(new LightningBoltEntity(level(), x, y, z, 0, null));
         }
     }
 

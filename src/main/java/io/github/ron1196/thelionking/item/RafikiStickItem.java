@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
+import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.registry.LKEnchantments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -155,7 +155,7 @@ public class RafikiStickItem extends Item {
 
             if (level.getBlockState(target).canOcclude() && level.isEmptyBlock(target.above())) {
                 if (!level.isClientSide) {
-                    level.addFreshEntity(new LKLightningBoltEntity(level,
+                    level.addFreshEntity(new LightningBoltEntity(level,
                             target.getX(), target.getY(), target.getZ(), thunderLevel, player));
                 }
                 damageRafikiStick(stack, 10, player);

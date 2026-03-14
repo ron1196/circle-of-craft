@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class GemsbokEntity extends Animal {
+public class GemsbokEntity extends LKAnimal {
 
     public GemsbokEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
@@ -28,7 +28,7 @@ public class GemsbokEntity extends Animal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Animal.createLKAnimalAttributes()
+        return LKAnimal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 14.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.23);
     }

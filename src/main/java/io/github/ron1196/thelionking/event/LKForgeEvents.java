@@ -5,7 +5,7 @@ import io.github.ron1196.thelionking.command.LKCommands;
 import io.github.ron1196.thelionking.data.LKPlayerData;
 import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
 import io.github.ron1196.thelionking.data.LKWorldData;
-import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
+import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.entity.hostile.HyenaEntity;
 import io.github.ron1196.thelionking.entity.hostile.SkeletalHyenaEntity;
 import io.github.ron1196.thelionking.entity.npc.RafikiEntity;
@@ -219,7 +219,7 @@ public class LKForgeEvents {
             level.addFreshEntity(zira);
 
             // Visual lightning bolt at Zira's spawn position
-            level.addFreshEntity(new LKLightningBoltEntity(level, spawnX, spawnY, spawnZ, 0, player));
+            level.addFreshEntity(new LightningBoltEntity(level, spawnX, spawnY, spawnZ, 0, player));
 
             data.ziraStage = 23;
             data.setDirty();

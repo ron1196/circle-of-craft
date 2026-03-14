@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class FlamingoEntity extends Animal {
+public class FlamingoEntity extends LKAnimal {
 
     public FlamingoEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
@@ -29,7 +29,7 @@ public class FlamingoEntity extends Animal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Animal.createLKAnimalAttributes()
+        return LKAnimal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 10.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.2);
     }

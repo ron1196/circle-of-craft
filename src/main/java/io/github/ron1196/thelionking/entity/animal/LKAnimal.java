@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
@@ -29,12 +30,12 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-public abstract class Animal extends net.minecraft.world.entity.animal.Animal {
+public abstract class LKAnimal extends Animal {
 
     protected static final Random QUEST_RANDOM = new Random();
     private final Map<UUID, AnimalFavorEntry> animalQuests = new HashMap<>();
 
-    protected Animal(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
+    protected LKAnimal(EntityType<? extends Animal> type, Level level) {
         super(type, level);
     }
 
@@ -47,7 +48,7 @@ public abstract class Animal extends net.minecraft.world.entity.animal.Animal {
     }
 
     public static AttributeSupplier.Builder createLKAnimalAttributes() {
-        return net.minecraft.world.entity.animal.Animal.createMobAttributes()
+        return Animal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 10.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.2);
     }

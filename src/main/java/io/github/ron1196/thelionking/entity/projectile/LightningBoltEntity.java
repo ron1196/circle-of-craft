@@ -1,4 +1,4 @@
-package io.github.ron1196.thelionking.entity;
+package io.github.ron1196.thelionking.entity.projectile;
 
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import net.minecraft.core.BlockPos;
@@ -21,17 +21,17 @@ import java.util.List;
  * - power > 0: sets fire in a radius, damages and ignites nearby entities
  * Skips the casting player and friendly mod NPCs.
  */
-public class LKLightningBoltEntity extends LightningBolt {
+public class LightningBoltEntity extends LightningBolt {
 
     private int power;
     private Player castingPlayer;
     private boolean firedSpawned;
 
-    public LKLightningBoltEntity(EntityType<? extends LightningBolt> type, Level level) {
+    public LightningBoltEntity(EntityType<? extends LightningBolt> type, Level level) {
         super(type, level);
     }
 
-    public LKLightningBoltEntity(Level level, double x, double y, double z, int power, Player castingPlayer) {
+    public LightningBoltEntity(Level level, double x, double y, double z, int power, Player castingPlayer) {
         super(LKEntityTypes.LK_LIGHTNING_BOLT.get(), level);
         this.power = power;
         this.castingPlayer = castingPlayer;

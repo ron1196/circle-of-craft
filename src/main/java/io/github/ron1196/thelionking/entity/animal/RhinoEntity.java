@@ -13,7 +13,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class RhinoEntity extends Animal {
+public class RhinoEntity extends LKAnimal {
 
     public RhinoEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
@@ -27,7 +27,7 @@ public class RhinoEntity extends Animal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Animal.createLKAnimalAttributes()
+        return LKAnimal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 30.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.ATTACK_DAMAGE, 5.0)

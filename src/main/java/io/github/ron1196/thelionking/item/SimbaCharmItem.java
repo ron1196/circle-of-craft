@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.item;
 
-import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
+import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.registry.LKBlocks;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -76,7 +76,7 @@ public class SimbaCharmItem extends Item {
         level.addFreshEntity(item);
 
         // Visual lightning bolt (power 0 = no damage)
-        level.addFreshEntity(new LKLightningBoltEntity(level, x, y, z, 0, player));
+        level.addFreshEntity(new LightningBoltEntity(level, x, y, z, 0, player));
 
         // Spawn star particles
         if (level instanceof ServerLevel serverLevel) {

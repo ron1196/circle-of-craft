@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.registry;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
-import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
+import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.entity.ScarRugEntity;
 import net.minecraft.world.entity.LightningBolt;
 import io.github.ron1196.thelionking.entity.animal.*;
@@ -160,9 +160,9 @@ public class LKEntityTypes {
 
     // ========== Weather Effects ==========
     @SuppressWarnings("unchecked")
-    public static final RegistryObject<EntityType<LKLightningBoltEntity>> LK_LIGHTNING_BOLT = ENTITY_TYPES.register("lk_lightning_bolt",
-            () -> (EntityType<LKLightningBoltEntity>) (EntityType<?>) EntityType.Builder.<LightningBolt>of(
-                            (type, level) -> new LKLightningBoltEntity(type, level), MobCategory.MISC)
+    public static final RegistryObject<EntityType<LightningBoltEntity>> LK_LIGHTNING_BOLT = ENTITY_TYPES.register("lk_lightning_bolt",
+            () -> (EntityType<LightningBoltEntity>) (EntityType<?>) EntityType.Builder.<LightningBolt>of(
+                            (type, level) -> new LightningBoltEntity(type, level), MobCategory.MISC)
                     .sized(0.0F, 0.0F).clientTrackingRange(16).updateInterval(Integer.MAX_VALUE)
                     .noSave().noSummon().fireImmune().build("lk_lightning_bolt"));
 

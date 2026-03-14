@@ -35,18 +35,21 @@ public class ZazuMateGoal extends Goal {
 
     @Override
     public void tick() {
-        layTimer++;
-        if (layTimer >= LAY_INTERVAL) {
-            layTimer = 0;
-            if (!zazu.level().isClientSide()) {
-                ItemEntity egg = new ItemEntity(
-                        zazu.level(),
-                        zazu.getX(), zazu.getY(), zazu.getZ(),
-                        new ItemStack(LKItems.ZAZU_EGG.get()));
-                egg.setDefaultPickUpDelay();
-                zazu.level().addFreshEntity(egg);
-            }
+        if (zazu.level().isClientSide()) {
+            return;
         }
+        layTimer++;
+        if (layTimer < LAY_INTERVAL) {
+            return;
+        }
+        layTimer = 0;
+        ItemEntity egg = new ItemEntity(
+                zazu.level(),
+                zazu.getX(), zazu.getY(), zazu.getZ(),
+                new ItemStack(LKItems.ZAZU_EGG.get())
+        );
+        egg.setDefaultPickUpDelay();
+        zazu.level().addFreshEntity(egg);
     }
 
     @Override

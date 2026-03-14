@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class LionEntity extends Animal {
+public class LionEntity extends LKAnimal {
 
     public LionEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
@@ -34,7 +34,7 @@ public class LionEntity extends Animal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Animal.createLKAnimalAttributes()
+        return LKAnimal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 20.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.ATTACK_DAMAGE, 4.0);

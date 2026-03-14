@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class DikDikEntity extends Animal {
+public class DikDikEntity extends LKAnimal {
 
     private static final EntityDataAccessor<Integer> DATA_VARIANT =
             SynchedEntityData.defineId(DikDikEntity.class, EntityDataSerializers.INT);
@@ -59,7 +59,7 @@ public class DikDikEntity extends Animal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Animal.createLKAnimalAttributes()
+        return LKAnimal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 8.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.28);
     }
