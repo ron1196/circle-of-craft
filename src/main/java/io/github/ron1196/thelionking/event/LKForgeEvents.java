@@ -2,6 +2,8 @@ package io.github.ron1196.thelionking.event;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.command.LKCommands;
+import io.github.ron1196.thelionking.data.LKPlayerData;
+import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
 import io.github.ron1196.thelionking.data.LKWorldData;
 import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
 import io.github.ron1196.thelionking.entity.hostile.HyenaEntity;
@@ -10,6 +12,9 @@ import io.github.ron1196.thelionking.entity.npc.RafikiEntity;
 import io.github.ron1196.thelionking.entity.npc.TicketLionEntity;
 import io.github.ron1196.thelionking.entity.npc.TimonEntity;
 import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
+import io.github.ron1196.thelionking.entity.ScarRugEntity;
+import io.github.ron1196.thelionking.network.LKNetworking;
+import io.github.ron1196.thelionking.network.LoginSyncPacket;
 import io.github.ron1196.thelionking.registry.LKEnchantments;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
@@ -17,6 +22,7 @@ import io.github.ron1196.thelionking.world.dimension.LKDimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -35,6 +41,7 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = TheLionKingMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -51,12 +58,13 @@ public class LKForgeEvents {
 
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-        if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             ServerLevel overworld = serverPlayer.server.overworld();
-            LKWorldData data = LKWorldData.get(overworld);
-            io.github.ron1196.thelionking.network.LKNetworking.CHANNEL.send(
-                    net.minecraftforge.network.PacketDistributor.PLAYER.with(() -> serverPlayer),
-                    new io.github.ron1196.thelionking.network.LoginSyncPacket(data)
+            LKWorldData worldData = LKWorldData.get(overworld);
+            LKPlayerData playerData = LKPlayerDataProvider.get(serverPlayer);
+            LKNetworking.CHANNEL.send(
+                    PacketDistributor.PLAYER.with(() -> serverPlayer),
+                    new LoginSyncPacket(worldData, playerData)
             );
         }
     }
@@ -65,7 +73,7 @@ public class LKForgeEvents {
 
     @SubscribeEvent
     public static void onAttackEntity(AttackEntityEvent event) {
-        if (event.getTarget() instanceof io.github.ron1196.thelionking.entity.ScarRugEntity rug) {
+        if (event.getTarget() instanceof ScarRugEntity rug) {
             rug.dropAsItem();
         }
     }
@@ -128,18 +136,7 @@ public class LKForgeEvents {
         }
 
         if (target instanceof RafikiEntity) {
-            // Give quest book if the player doesn't already have one
-            boolean hasQuestBook = false;
-            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-                if (player.getInventory().getItem(i).is(LKItems.QUEST_BOOK.get())) {
-                    hasQuestBook = true;
-                    break;
-                }
-            }
-            if (!hasQuestBook) {
-                player.getInventory().add(new ItemStack(LKItems.QUEST_BOOK.get()));
-            }
-            player.sendSystemMessage(Component.literal("Rafiki greets you!"));
+            // Quest book giving and dialogue handled in RafikiEntity.mobInteract()
         } else if (target instanceof TimonEntity) {
             // TODO: Placeholder for Timon trading — tracked in docs/TODO_WORKAROUNDS.md
             player.sendSystemMessage(Component.literal("Timon is ready to trade with you!"));
