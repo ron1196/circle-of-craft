@@ -21,7 +21,7 @@ public class LKQuestManager {
 
     public LKQuestManager(SavedData owner) {
         this.owner = owner;
-        for (LKQuest quest : LKQuestRegistry.getOrdered()) {
+        for (LKQuestline quest : LKQuestRegistry.getOrdered()) {
             states.put(quest.getId(), new LKQuestState());
         }
     }
@@ -35,20 +35,22 @@ public class LKQuestManager {
     }
 
     public boolean isComplete(String questId) {
-        LKQuest quest = LKQuestRegistry.get(questId);
+        LKQuestline quest = LKQuestRegistry.get(questId);
         if (quest == null) return false;
         return getStage(questId) >= quest.getNumStages();
     }
 
     public boolean canStart(String questId) {
-        LKQuest quest = LKQuestRegistry.get(questId);
+        LKQuestline quest = LKQuestRegistry.get(questId);
         if (quest == null) return false;
         return quest.canStart(this);
     }
 
     public boolean tryAdvance(String questId, ServerPlayer player, LKQuestTrigger trigger) {
-        LKQuest quest = LKQuestRegistry.get(questId);
+        LKQuestline quest = LKQuestRegistry.get(questId);
         if (quest == null) return false;
+
+        if (!quest.canStart(this)) return false;
 
         LKQuestState state = getState(questId);
         int currentStage = state.getCurrentStage();
@@ -60,13 +62,9 @@ public class LKQuestManager {
 
         LKQuestStage stageDef = quest.getStage(currentStage);
 
-        // Check item requirements
         if (!checkRequirements(player, stageDef.requirements())) return false;
-
-        // Consume items
         consumeRequirements(player, stageDef.requirements());
 
-        // Run custom transition
         BiConsumer<ServerPlayer, LKQuestManager> custom = quest.getCustomTransition(currentStage);
         if (custom != null) {
             custom.accept(player, this);
@@ -133,7 +131,7 @@ public class LKQuestManager {
     }
 
     public boolean anyUnchecked() {
-        for (LKQuest quest : LKQuestRegistry.getOrdered()) {
+        for (LKQuestline quest : LKQuestRegistry.getOrdered()) {
             LKQuestState state = getState(quest.getId());
             if (quest.canStart(this) && !state.isChecked()) return true;
         }
@@ -143,7 +141,7 @@ public class LKQuestManager {
     // ── Sync ────────────────────────────────────────────────────────────────────
 
     public void syncToPlayer(ServerPlayer player) {
-        for (LKQuest quest : LKQuestRegistry.getOrdered()) {
+        for (LKQuestline quest : LKQuestRegistry.getOrdered()) {
             LKQuestState state = getState(quest.getId());
             LKNetworking.CHANNEL.send(
                     PacketDistributor.PLAYER.with(() -> player),

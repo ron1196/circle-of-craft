@@ -7,7 +7,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public class LKNetworking {
-    private static final String PROTOCOL_VERSION = "1";
+    private static final String PROTOCOL_VERSION = "3";
     public static SimpleChannel CHANNEL;
 
     private static int packetId = 0;
@@ -43,6 +43,12 @@ public class LKNetworking {
                 .encoder(LoginSyncPacket::encode)
                 .decoder(LoginSyncPacket::new)
                 .consumerMainThread(LoginSyncPacket::handle)
+                .add();
+
+        CHANNEL.messageBuilder(PlayerDataSyncPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(PlayerDataSyncPacket::encode)
+                .decoder(PlayerDataSyncPacket::new)
+                .consumerMainThread(PlayerDataSyncPacket::handle)
                 .add();
     }
 }

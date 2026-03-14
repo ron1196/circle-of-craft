@@ -27,9 +27,7 @@ public class SimbaAttackPlayerTargetGoal extends TargetGoal {
         ownerTarget = owner.getLastHurtMob();
         int time = owner.getLastHurtMobTimestamp();
         if (time == timestamp || ownerTarget == null) return false;
-        // Don't attack the owner themselves
-        if (ownerTarget == owner) return false;
-        return true;
+        return ownerTarget != owner;
     }
 
     @Override

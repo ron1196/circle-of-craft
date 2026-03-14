@@ -1,6 +1,8 @@
 package io.github.ron1196.thelionking.item;
 
-import io.github.ron1196.thelionking.quest.LKQuestBase;
+import io.github.ron1196.thelionking.network.ClientWorldState;
+import io.github.ron1196.thelionking.quest.LKQuestline;
+import io.github.ron1196.thelionking.quest.LKQuestRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -35,7 +37,7 @@ public class QuestBookItem extends Item {
 
     @Override
     public boolean isFoil(@NotNull ItemStack stack) {
-        return LKQuestBase.anyUncheckedQuests();
+        return hasUncheckedQuests();
     }
 
     @Override
@@ -45,8 +47,15 @@ public class QuestBookItem extends Item {
             @NotNull List<Component> tooltip,
             @NotNull TooltipFlag flag
     ) {
-        if (LKQuestBase.anyUncheckedQuests()) {
+        if (hasUncheckedQuests()) {
             tooltip.add(Component.literal("§eNew quests available"));
         }
+    }
+
+    private static boolean hasUncheckedQuests() {
+        for (LKQuestline quest : LKQuestRegistry.getOrdered()) {
+            if (!ClientWorldState.isQuestChecked(quest.getId())) return true;
+        }
+        return false;
     }
 }

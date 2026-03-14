@@ -5,10 +5,7 @@ import net.minecraft.world.item.Item;
 import java.util.List;
 import java.util.function.Supplier;
 
-public record LKQuestStage(
-        String objectiveText,
-        List<ItemRequirement> requirements
-) {
+public record LKQuestStage(String objectiveText, List<ItemRequirement> requirements) {
     public LKQuestStage(String objectiveText) {
         this(objectiveText, List.of());
     }

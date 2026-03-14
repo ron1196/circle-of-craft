@@ -12,7 +12,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class LKQuest {
+public class LKQuestline {
 
     private final String id;
     private final String displayName;
@@ -24,7 +24,7 @@ public class LKQuest {
     private final Map<Integer, BiConsumer<ServerPlayer, LKQuestManager>> customTransitions;
     private final Map<Integer, List<ClaimableReward>> claimableRewards;
 
-    private LKQuest(Builder builder) {
+    private LKQuestline(Builder builder) {
         this.id = builder.id;
         this.displayName = builder.displayName;
         this.icon = builder.icon;
@@ -33,7 +33,6 @@ public class LKQuest {
         this.prerequisites = builder.prerequisites;
         this.triggerByStage = Map.copyOf(builder.triggerByStage);
         this.customTransitions = Map.copyOf(builder.customTransitions);
-        // Deep-copy claimable rewards to unmodifiable lists
         Map<Integer, List<ClaimableReward>> rewardsCopy = new HashMap<>();
         for (Map.Entry<Integer, List<ClaimableReward>> entry : builder.claimableRewards.entrySet()) {
             rewardsCopy.put(entry.getKey(), List.copyOf(entry.getValue()));
@@ -145,8 +144,8 @@ public class LKQuest {
             return this;
         }
 
-        public LKQuest build() {
-            return new LKQuest(this);
+        public LKQuestline build() {
+            return new LKQuestline(this);
         }
     }
 }

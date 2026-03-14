@@ -7,7 +7,7 @@ import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.ClaimableReward;
 import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
-import io.github.ron1196.thelionking.quest.LKQuest;
+import io.github.ron1196.thelionking.quest.LKQuestline;
 import io.github.ron1196.thelionking.quest.LKQuestManager;
 import io.github.ron1196.thelionking.quest.LKQuestRegistry;
 import io.github.ron1196.thelionking.quest.LKQuestTrigger;
@@ -115,7 +115,7 @@ public class RafikiEntity extends PathfinderMob {
     }
 
     private int tryClaimNextReward(ServerPlayer player, LKPlayerData playerData, LKQuestManager quests) {
-        LKQuest quest = LKQuestRegistry.get("rafiki");
+        LKQuestline quest = LKQuestRegistry.get("rafiki");
         int currentStage = quests.getStage("rafiki");
         for (int stage = 0; stage < currentStage; stage++) {
             List<ClaimableReward> rewards = quest.getClaimableRewards(stage);

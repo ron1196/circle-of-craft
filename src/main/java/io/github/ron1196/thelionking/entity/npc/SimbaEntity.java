@@ -60,6 +60,7 @@ public class SimbaEntity extends PathfinderMob {
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(7, new SimbaWanderGoal(this));
+
         this.targetSelector.addGoal(1, new SimbaAttackPlayerAttackerGoal(this));
         this.targetSelector.addGoal(2, new SimbaAttackPlayerTargetGoal(this));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
