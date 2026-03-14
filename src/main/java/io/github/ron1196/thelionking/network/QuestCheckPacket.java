@@ -1,31 +1,27 @@
 package io.github.ron1196.thelionking.network;
 
-import io.github.ron1196.thelionking.data.LKLevelData;
-import io.github.ron1196.thelionking.quest.LKQuestBase;
-import io.github.ron1196.thelionking.quest.LKQuests;
+import io.github.ron1196.thelionking.data.LKWorldData;
+import io.github.ron1196.thelionking.quest.LKQuestState;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-/**
- * Sent from client to server when the client acknowledges a quest stage check.
- */
 public class QuestCheckPacket {
 
-    private final int questIndex;
+    private final String questId;
 
-    public QuestCheckPacket(int questIndex) {
-        this.questIndex = questIndex;
+    public QuestCheckPacket(String questId) {
+        this.questId = questId;
     }
 
     public QuestCheckPacket(FriendlyByteBuf buf) {
-        this.questIndex = buf.readVarInt();
+        this.questId = buf.readUtf();
     }
 
     public void encode(FriendlyByteBuf buf) {
-        buf.writeVarInt(questIndex);
+        buf.writeUtf(questId);
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
@@ -34,15 +30,9 @@ public class QuestCheckPacket {
             ServerPlayer sender = context.getSender();
             if (sender == null) return;
 
-            if (questIndex < 0 || questIndex >= LKQuests.ALL_QUESTS.length) return;
-
-            LKQuestBase quest = LKQuests.ALL_QUESTS[questIndex];
-            if (quest == null) return;
-
-            quest.setChecked(true);
-
-            // Persist the change
-            LKLevelData data = LKLevelData.get(sender.serverLevel());
+            LKWorldData data = LKWorldData.get(sender.serverLevel());
+            LKQuestState state = data.getQuestManager().getState(questId);
+            state.setChecked(true);
             data.setDirty();
         });
         context.setPacketHandled(true);

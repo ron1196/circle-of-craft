@@ -1,10 +1,11 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.data.LKLevelData;
+import io.github.ron1196.thelionking.data.LKWorldData;
 import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
 import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
-import io.github.ron1196.thelionking.quest.LKQuestOutlands;
-import io.github.ron1196.thelionking.quest.LKQuests;
+import io.github.ron1196.thelionking.quest.LKQuestManager;
+import io.github.ron1196.thelionking.quest.LKQuestRegistry;
+import io.github.ron1196.thelionking.quest.LKQuestTrigger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -106,22 +107,22 @@ public class ZiraEntity extends Monster {
         if (!(level() instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
 
         talkCooldown = 40;
-        LKLevelData data = LKLevelData.get(serverLevel);
-        LKQuestOutlands quest = (LKQuestOutlands) LKQuests.OUTLANDS_QUEST;
-        int stage = quest.getQuestStage();
+        LKWorldData data = LKWorldData.get(serverLevel);
+        LKQuestManager quests = data.getQuestManager();
+        int stage = quests.getStage("outlands");
 
         // Try to advance the quest
-        if (quest.tryAdvanceStage(serverPlayer, data, "zira_talk")) {
-            sendStageDialogue(player, quest.getQuestStage());
+        if (quests.tryAdvance("outlands", serverPlayer, LKQuestTrigger.ZIRA_TALK)) {
+            sendStageDialogue(player, quests.getStage("outlands"));
             return InteractionResult.SUCCESS;
         }
 
         // Quest didn't advance — give contextual speech
         switch (stage) {
-            case LKQuestOutlands.COLLECT_INGOTS -> sendSpeech(player, LKCharacterSpeech.ZIRA_INGOTS);
-            case LKQuestOutlands.COLLECT_FEATHERS -> sendSpeech(player, LKCharacterSpeech.ZIRA_FEATHERS);
+            case LKQuestRegistry.OUTLANDS_COLLECT_INGOTS -> sendSpeech(player, LKCharacterSpeech.ZIRA_INGOTS);
+            case LKQuestRegistry.OUTLANDS_COLLECT_FEATHERS -> sendSpeech(player, LKCharacterSpeech.ZIRA_FEATHERS);
             default -> {
-                if (stage >= LKQuestOutlands.FOLLOW_OUTLANDERS && !isHostile()) {
+                if (stage >= LKQuestRegistry.OUTLANDS_FOLLOW_OUTLANDERS && !isHostile()) {
                     sendSpeech(player, LKCharacterSpeech.ZIRA_CONQUEST);
                 }
             }
@@ -131,11 +132,11 @@ public class ZiraEntity extends Monster {
 
     private void sendStageDialogue(Player player, int newStage) {
         String message = switch (newStage) {
-            case LKQuestOutlands.COLLECT_INGOTS ->
+            case LKQuestRegistry.OUTLANDS_COLLECT_INGOTS ->
                     "So... a human dares to enter my domain. Perhaps you can be of use to me.";
-            case LKQuestOutlands.THROW_IN_OUTWATER ->
+            case LKQuestRegistry.OUTLANDS_THROW_IN_OUTWATER ->
                     "Good. Now throw these ingots into the Outwater.";
-            case LKQuestOutlands.FOLLOW_OUTLANDERS ->
+            case LKQuestRegistry.OUTLANDS_FOLLOW_OUTLANDERS ->
                     "Excellent. You have served me well. Now... follow my Outlanders.";
             default -> null;
         };
@@ -147,8 +148,8 @@ public class ZiraEntity extends Monster {
         super.die(source);
         if (!level().isClientSide() && level() instanceof ServerLevel serverLevel) {
             if (source.getEntity() instanceof ServerPlayer serverPlayer) {
-                LKLevelData data = LKLevelData.get(serverLevel);
-                ((LKQuestOutlands) LKQuests.OUTLANDS_QUEST).tryAdvanceStage(serverPlayer, data, "zira_killed");
+                LKWorldData data = LKWorldData.get(serverLevel);
+                data.getQuestManager().tryAdvance("outlands", serverPlayer, LKQuestTrigger.ZIRA_KILLED);
 
                 serverPlayer.sendSystemMessage(Component.literal(
                         "\u00a7e<Zira> \u00a7fThis is not over... Scar's legacy will live on..."));

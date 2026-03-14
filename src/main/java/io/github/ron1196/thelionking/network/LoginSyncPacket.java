@@ -1,17 +1,16 @@
 package io.github.ron1196.thelionking.network;
 
-import io.github.ron1196.thelionking.data.LKLevelData;
-import io.github.ron1196.thelionking.quest.LKQuestBase;
-import io.github.ron1196.thelionking.quest.LKQuests;
+import io.github.ron1196.thelionking.data.LKWorldData;
+import io.github.ron1196.thelionking.quest.LKQuest;
+import io.github.ron1196.thelionking.quest.LKQuestRegistry;
+import io.github.ron1196.thelionking.quest.LKQuestState;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
-/**
- * Sent from server to client on player login to sync all world/quest state.
- * Mirrors old mod's "lk.login" packet from LKLevelData.getLoginPacket().
- */
 public class LoginSyncPacket {
 
     // World state
@@ -23,36 +22,25 @@ public class LoginSyncPacket {
     private final int pumbaaStage;
     private final boolean outlandersHostile;
 
-    // Quest data for all 16 quest slots
-    private final int[] questStages;
-    private final int[] questDelayed;
-    private final int[] questChecked;
-    private final int[][] questStagesCompleted;
+    // Quest data as dynamic list
+    private final List<QuestEntry> questEntries;
 
-    public LoginSyncPacket(LKLevelData data) {
-        this.homePortalX = data.homePortalX;
-        this.homePortalY = data.homePortalY;
-        this.homePortalZ = data.homePortalZ;
+    private record QuestEntry(String questId, int stage, boolean checked) {}
+
+    public LoginSyncPacket(LKWorldData data) {
+        // TODO: use LKPlayerData capability for homePortal coordinates
+        this.homePortalX = 0;
+        this.homePortalY = 0;
+        this.homePortalZ = 0;
         this.defeatedScar = data.defeatedScar;
         this.ziraStage = data.ziraStage;
         this.pumbaaStage = data.pumbaaStage;
         this.outlandersHostile = data.outlandersHostile;
 
-        this.questStages = new int[16];
-        this.questDelayed = new int[16];
-        this.questChecked = new int[16];
-        this.questStagesCompleted = new int[16][];
-
-        for (int i = 0; i < 16; i++) {
-            LKQuestBase quest = LKQuests.ALL_QUESTS[i];
-            if (quest != null) {
-                questStages[i] = quest.currentStage;
-                questDelayed[i] = quest.stagesDelayed;
-                questChecked[i] = quest.checked;
-                questStagesCompleted[i] = quest.stagesCompleted.clone();
-            } else {
-                questStagesCompleted[i] = new int[0];
-            }
+        this.questEntries = new ArrayList<>();
+        for (LKQuest quest : LKQuestRegistry.getOrdered()) {
+            LKQuestState state = data.getQuestManager().getState(quest.getId());
+            questEntries.add(new QuestEntry(quest.getId(), state.getCurrentStage(), state.isChecked()));
         }
     }
 
@@ -65,20 +53,13 @@ public class LoginSyncPacket {
         this.pumbaaStage = buf.readVarInt();
         this.outlandersHostile = buf.readBoolean();
 
-        this.questStages = new int[16];
-        this.questDelayed = new int[16];
-        this.questChecked = new int[16];
-        this.questStagesCompleted = new int[16][];
-
-        for (int i = 0; i < 16; i++) {
-            questStages[i] = buf.readVarInt();
-            questDelayed[i] = buf.readVarInt();
-            questChecked[i] = buf.readVarInt();
-            int completedLen = buf.readVarInt();
-            questStagesCompleted[i] = new int[completedLen];
-            for (int j = 0; j < completedLen; j++) {
-                questStagesCompleted[i][j] = buf.readVarInt();
-            }
+        int count = buf.readVarInt();
+        this.questEntries = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            String questId = buf.readUtf();
+            int stage = buf.readVarInt();
+            boolean checked = buf.readBoolean();
+            questEntries.add(new QuestEntry(questId, stage, checked));
         }
     }
 
@@ -91,34 +72,24 @@ public class LoginSyncPacket {
         buf.writeVarInt(pumbaaStage);
         buf.writeBoolean(outlandersHostile);
 
-        for (int i = 0; i < 16; i++) {
-            buf.writeVarInt(questStages[i]);
-            buf.writeVarInt(questDelayed[i]);
-            buf.writeVarInt(questChecked[i]);
-            buf.writeVarInt(questStagesCompleted[i].length);
-            for (int val : questStagesCompleted[i]) {
-                buf.writeVarInt(val);
-            }
+        buf.writeVarInt(questEntries.size());
+        for (QuestEntry entry : questEntries) {
+            buf.writeUtf(entry.questId());
+            buf.writeVarInt(entry.stage());
+            buf.writeBoolean(entry.checked());
         }
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         NetworkEvent.Context context = ctx.get();
         context.enqueueWork(() -> {
-            // Apply world state to client-side quest data
-            for (int i = 0; i < 16; i++) {
-                LKQuestBase quest = LKQuests.ALL_QUESTS[i];
-                if (quest == null) continue;
-                quest.currentStage = questStages[i];
-                quest.stagesDelayed = questDelayed[i];
-                quest.checked = questChecked[i];
-                int len = Math.min(questStagesCompleted[i].length, quest.stagesCompleted.length);
-                for (int j = 0; j < len; j++) {
-                    quest.stagesCompleted[j] = questStagesCompleted[i][j];
-                }
+            // Apply quest state to client cache
+            ClientWorldState.questStates.clear();
+            for (QuestEntry entry : questEntries) {
+                ClientWorldState.questStates.put(entry.questId(), new LKQuestState(entry.stage(), entry.checked()));
             }
 
-            // Store world state on client via ClientWorldState
+            // Store world state on client
             ClientWorldState.homePortalX = homePortalX;
             ClientWorldState.homePortalY = homePortalY;
             ClientWorldState.homePortalZ = homePortalZ;

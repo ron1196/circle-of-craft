@@ -62,13 +62,11 @@ Items using generated placeholder textures (not from old mod):
 
 ## Multiplayer Quest Data
 
-- [ ] **Quest state is global, not per-player** — `LKQuestBase.ALL_QUESTS` is a static array shared by all players. In multiplayer, all players share the same quest progress. To fix:
-  - Change `LKQuestBase.ALL_QUESTS` from static `LKQuestBase[]` to `Map<UUID, LKQuestBase[]>`
-  - Update `LKLevelData` to store/load quest data keyed by player UUID
-  - Update `LoginSyncPacket` to send only that player's quest data
-  - Update all quest logic (Rafiki, Outlands, NPC interactions) to take a `Player` parameter and look up the correct quest instance
-  - Update `QuestSyncPacket` and `QuestCheckPacket` to be per-player
-  - Update `ClientWorldState` to store only the local player's state
+- [ ] **Quest state is global, not per-player** — Quest progress is world-level (`LKWorldData`), shared by all players. Per-player fields (`receivedQuestBook`, `homePortal`, `hasSimba`) have been moved to `LKPlayerData` capability. Remaining work:
+  - Update `LoginSyncPacket` to send per-player homePortal from `LKPlayerData` (currently sends zeros)
+  - Update `RafikiEntity` to use `LKPlayerData` for `receivedQuestBook` (currently commented out)
+  - Update `RafikiDustItem` to use `LKPlayerData.hasSimba()` (currently stubbed)
+  - Update all quest logic to be per-player if needed
 
 ## Crop Block Models
 

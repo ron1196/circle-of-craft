@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.event;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.command.LKCommands;
-import io.github.ron1196.thelionking.data.LKLevelData;
+import io.github.ron1196.thelionking.data.LKWorldData;
 import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
 import io.github.ron1196.thelionking.entity.hostile.HyenaEntity;
 import io.github.ron1196.thelionking.entity.hostile.SkeletalHyenaEntity;
@@ -10,7 +10,6 @@ import io.github.ron1196.thelionking.entity.npc.RafikiEntity;
 import io.github.ron1196.thelionking.entity.npc.TicketLionEntity;
 import io.github.ron1196.thelionking.entity.npc.TimonEntity;
 import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
-import io.github.ron1196.thelionking.quest.LKQuestBase;
 import io.github.ron1196.thelionking.registry.LKEnchantments;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
@@ -54,7 +53,7 @@ public class LKForgeEvents {
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
             ServerLevel overworld = serverPlayer.server.overworld();
-            LKLevelData data = LKLevelData.get(overworld);
+            LKWorldData data = LKWorldData.get(overworld);
             io.github.ron1196.thelionking.network.LKNetworking.CHANNEL.send(
                     net.minecraftforge.network.PacketDistributor.PLAYER.with(() -> serverPlayer),
                     new io.github.ron1196.thelionking.network.LoginSyncPacket(data)
@@ -162,12 +161,6 @@ public class LKForgeEvents {
 
         Player player = event.player;
 
-        // Sync quest state to clients every second (safety net for missed packets)
-        if (player.tickCount % 20 == 0 && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-            LKQuestBase.updateAllQuests();
-            LKQuestBase.syncToPlayer(serverPlayer);
-        }
-
         // Check if player is in the Pride Lands dimension
         if (player.level().dimension() == LKDimensions.PRIDE_LANDS_LEVEL) {
             // Dimension-entry logic can be added here
@@ -187,7 +180,7 @@ public class LKForgeEvents {
 
         // Save level data every 100 ticks if dirty
         if (serverLevel.getGameTime() % 100 == 0) {
-            LKLevelData data = LKLevelData.get(serverLevel);
+            LKWorldData data = LKWorldData.get(serverLevel);
             if (data.isDirty()) {
                 data.setDirty();
             }
@@ -204,7 +197,7 @@ public class LKForgeEvents {
      * spawn Zira nearby with a visual lightning bolt.
      */
     private static void handleZiraSpawnEvent(ServerLevel level) {
-        LKLevelData data = LKLevelData.get(level);
+        LKWorldData data = LKWorldData.get(level);
         if (data.ziraStage != 22) return;
         if (level.players().isEmpty()) return;
 

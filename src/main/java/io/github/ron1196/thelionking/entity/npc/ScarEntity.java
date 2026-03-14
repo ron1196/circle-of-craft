@@ -1,8 +1,7 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.data.LKLevelData;
-import io.github.ron1196.thelionking.quest.LKQuestRafiki;
-import io.github.ron1196.thelionking.quest.LKQuests;
+import io.github.ron1196.thelionking.data.LKWorldData;
+import io.github.ron1196.thelionking.quest.LKQuestTrigger;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -79,8 +78,8 @@ public class ScarEntity extends Monster {
         super.die(source);
         if (!level().isClientSide() && level() instanceof ServerLevel serverLevel) {
             if (source.getEntity() instanceof ServerPlayer serverPlayer) {
-                LKLevelData data = LKLevelData.get(serverLevel);
-                ((LKQuestRafiki) LKQuests.RAFIKI_QUEST).tryAdvanceStage(serverPlayer, data, "scar_killed");
+                LKWorldData data = LKWorldData.get(serverLevel);
+                data.getQuestManager().tryAdvance("rafiki", serverPlayer, LKQuestTrigger.SCAR_KILLED);
 
                 serverPlayer.sendSystemMessage(Component.literal(
                         "\u00a7e<Scar> \u00a7fThis... is not... the end..."));

@@ -1,9 +1,10 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.data.LKLevelData;
+import io.github.ron1196.thelionking.data.LKWorldData;
 import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
-import io.github.ron1196.thelionking.quest.LKQuestRafiki;
-import io.github.ron1196.thelionking.quest.LKQuests;
+import io.github.ron1196.thelionking.quest.LKQuestManager;
+import io.github.ron1196.thelionking.quest.LKQuestRegistry;
+import io.github.ron1196.thelionking.quest.LKQuestTrigger;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -64,33 +65,32 @@ public class RafikiEntity extends PathfinderMob {
         if (!(level() instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
 
         talkCooldown = 40;
-        LKLevelData data = LKLevelData.get(serverLevel);
-        LKQuestRafiki quest = (LKQuestRafiki) LKQuests.RAFIKI_QUEST;
-        int stage = quest.getQuestStage();
+        LKWorldData data = LKWorldData.get(serverLevel);
+        LKQuestManager quests = data.getQuestManager();
+        int stage = quests.getStage("rafiki");
 
-        // Give quest book on first meeting
-        if (!data.receivedQuestBook) {
-            data.receivedQuestBook = true;
-            data.setDirty();
-            player.addItem(new ItemStack(LKItems.QUEST_BOOK.get()));
-        }
+        // TODO: use LKPlayerData capability for receivedQuestBook
+        // Give quest book on first meeting (stubbed — needs per-player data)
+        // if (!playerData.hasReceivedQuestBook()) {
+        //     playerData.setReceivedQuestBook(true);
+        //     player.addItem(new ItemStack(LKItems.QUEST_BOOK.get()));
+        // }
 
         // Try to advance the quest
-        if (quest.tryAdvanceStage(serverPlayer, data, "rafiki_talk")) {
-            // Send stage-appropriate dialogue after advancing
-            sendStageDialogue(player, quest.getQuestStage());
+        if (quests.tryAdvance("rafiki", serverPlayer, LKQuestTrigger.RAFIKI_TALK)) {
+            sendStageDialogue(player, quests.getStage("rafiki"));
             return InteractionResult.SUCCESS;
         }
 
         // Quest didn't advance — give contextual speech
         switch (stage) {
-            case LKQuestRafiki.COLLECT_BONES -> sendSpeech(player, LKCharacterSpeech.HYENA_BONES);
-            case LKQuestRafiki.DEFEAT_SCAR -> sendSpeech(player, LKCharacterSpeech.MENTION_SCAR);
-            case LKQuestRafiki.COLLECT_TERMITES -> sendSpeech(player, LKCharacterSpeech.TERMITES);
-            case LKQuestRafiki.COLLECT_MANGOES -> sendSpeech(player, LKCharacterSpeech.MANGOES);
-            case LKQuestRafiki.USE_STAR_ALTAR -> sendSpeech(player, LKCharacterSpeech.STAR_ALTAR);
+            case LKQuestRegistry.RAFIKI_COLLECT_BONES -> sendSpeech(player, LKCharacterSpeech.HYENA_BONES);
+            case LKQuestRegistry.RAFIKI_DEFEAT_SCAR -> sendSpeech(player, LKCharacterSpeech.MENTION_SCAR);
+            case LKQuestRegistry.RAFIKI_COLLECT_TERMITES -> sendSpeech(player, LKCharacterSpeech.TERMITES);
+            case LKQuestRegistry.RAFIKI_COLLECT_MANGOES -> sendSpeech(player, LKCharacterSpeech.MANGOES);
+            case LKQuestRegistry.RAFIKI_USE_STAR_ALTAR -> sendSpeech(player, LKCharacterSpeech.STAR_ALTAR);
             default -> {
-                if (quest.isComplete()) sendSpeech(player, LKCharacterSpeech.HINT);
+                if (quests.isComplete("rafiki")) sendSpeech(player, LKCharacterSpeech.HINT);
             }
         }
         return InteractionResult.SUCCESS;
@@ -98,17 +98,17 @@ public class RafikiEntity extends PathfinderMob {
 
     private void sendStageDialogue(Player player, int newStage) {
         String message = switch (newStage) {
-            case LKQuestRafiki.COLLECT_BONES ->
+            case LKQuestRegistry.RAFIKI_COLLECT_BONES ->
                     "Welcome to the Pride Lands! I am Rafiki. Bring me sixty-four hyena bones and I will give you my stick.";
-            case LKQuestRafiki.DEFEAT_SCAR ->
+            case LKQuestRegistry.RAFIKI_DEFEAT_SCAR ->
                     "Excellent! Here is my stick. Now go and defeat Scar!";
-            case LKQuestRafiki.COLLECT_TERMITES ->
+            case LKQuestRegistry.RAFIKI_COLLECT_TERMITES ->
                     "Well done! Scar has been defeated. Now bring me four ground termites.";
-            case LKQuestRafiki.COLLECT_MANGOES ->
+            case LKQuestRegistry.RAFIKI_COLLECT_MANGOES ->
                     "Good! Now bring me four ground mangoes.";
-            case LKQuestRafiki.USE_STAR_ALTAR ->
+            case LKQuestRegistry.RAFIKI_USE_STAR_ALTAR ->
                     "Perfect! Now craft a Star Altar and use the Rafiki Dust on it.";
-            case LKQuestRafiki.COMPLETE ->
+            case LKQuestRegistry.RAFIKI_COMPLETE ->
                     "Wonderful! The spirits of the great kings smile upon you!";
             default -> null;
         };

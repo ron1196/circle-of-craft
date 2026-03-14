@@ -1,14 +1,14 @@
 package io.github.ron1196.thelionking.item;
 
-import io.github.ron1196.thelionking.data.LKLevelData;
+import io.github.ron1196.thelionking.data.LKWorldData;
 import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
 import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
-import io.github.ron1196.thelionking.quest.LKQuestRafiki;
-import io.github.ron1196.thelionking.quest.LKQuests;
+import io.github.ron1196.thelionking.quest.LKQuestTrigger;
 import io.github.ron1196.thelionking.registry.LKBlocks;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -17,10 +17,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Lion Dust — used on a Star Altar to summon Simba.
- * Spawns a visual lightning bolt, an explosion effect, and a baby Simba.
- */
 public class RafikiDustItem extends Item {
 
     public RafikiDustItem(Properties properties) {
@@ -36,16 +32,8 @@ public class RafikiDustItem extends Item {
             return InteractionResult.PASS;
         }
 
-        // Block if Rafiki quest mangoes stage is delayed
-        if (LKQuests.RAFIKI_QUEST.getQuestStage() == LKQuestRafiki.COLLECT_MANGOES && LKQuests.RAFIKI_QUEST.isDelayed()) {
-            return InteractionResult.PASS;
-        }
-
-        // Block if player already has a Simba
-        LKLevelData data = LKLevelData.get((ServerLevel) level);
-        if (data.hasSimba(player)) {
-            return InteractionResult.PASS;
-        }
+        // TODO: use LKPlayerData.hasSimba() capability
+        // Block if player already has a Simba (stubbed — needs per-player data)
 
         // Must be used on a Star Altar
         if (!level.getBlockState(context.getClickedPos()).is(LKBlocks.STAR_ALTAR.get())) {
@@ -75,9 +63,9 @@ public class RafikiDustItem extends Item {
         }
 
         // Progress Rafiki quest via star altar usage
-        if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-            LKQuestRafiki quest = (LKQuestRafiki) LKQuests.RAFIKI_QUEST;
-            if (quest.tryAdvanceStage(serverPlayer, data, "star_altar_used")) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            LKWorldData data = LKWorldData.get((ServerLevel) level);
+            if (data.getQuestManager().tryAdvance("rafiki", serverPlayer, LKQuestTrigger.STAR_ALTAR_USED)) {
                 broadcastMessage(level, "\u00a7e<Rafiki> \u00a7fYou see? He lives in you! Ohohoho!");
             }
         }
