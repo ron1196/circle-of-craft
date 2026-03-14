@@ -1,8 +1,14 @@
 package io.github.ron1196.thelionking.entity.npc;
 
+import io.github.ron1196.thelionking.data.LKPlayerData;
+import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
 import io.github.ron1196.thelionking.data.LKWorldData;
 import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
+import io.github.ron1196.thelionking.network.LKNetworking;
+import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
+import io.github.ron1196.thelionking.quest.ClaimableReward;
 import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
+import io.github.ron1196.thelionking.quest.LKQuest;
 import io.github.ron1196.thelionking.quest.LKQuestManager;
 import io.github.ron1196.thelionking.quest.LKQuestRegistry;
 import io.github.ron1196.thelionking.quest.LKQuestTrigger;
@@ -26,7 +32,11 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.network.PacketDistributor;
+
+import java.util.List;
 
 public class ZiraEntity extends Monster {
 
@@ -109,7 +119,16 @@ public class ZiraEntity extends Monster {
         talkCooldown = 40;
         LKWorldData data = LKWorldData.get(serverLevel);
         LKQuestManager quests = data.getQuestManager();
+        LKPlayerData playerData = LKPlayerDataProvider.get(serverPlayer);
         int stage = quests.getStage("outlands");
+
+        // Try to claim the next unclaimed reward (earliest stage first)
+        int claimedStage = tryClaimNextReward(serverPlayer, playerData, quests);
+        if (claimedStage >= 0) {
+            sendStageDialogue(player, claimedStage);
+            syncPlayerData(serverPlayer, playerData);
+            return InteractionResult.SUCCESS;
+        }
 
         // Try to advance the quest
         if (quests.tryAdvance("outlands", serverPlayer, LKQuestTrigger.ZIRA_TALK)) {
@@ -182,6 +201,29 @@ public class ZiraEntity extends Monster {
 
     private void sendSpeech(Player player, LKCharacterSpeech speech) {
         player.sendSystemMessage(Component.literal(LKCharacterSpeech.giveSpeech(speech)));
+    }
+
+    private int tryClaimNextReward(ServerPlayer player, LKPlayerData playerData, LKQuestManager quests) {
+        LKQuest quest = LKQuestRegistry.get("outlands");
+        int currentStage = quests.getStage("outlands");
+        for (int stage = 0; stage < currentStage; stage++) {
+            List<ClaimableReward> rewards = quest.getClaimableRewards(stage);
+            for (ClaimableReward reward : rewards) {
+                if (!playerData.hasClaimedReward(reward.rewardKey())) {
+                    player.addItem(new ItemStack(reward.item().get(), reward.count()));
+                    playerData.claimReward(reward.rewardKey());
+                    return stage;
+                }
+            }
+        }
+        return -1;
+    }
+
+    private void syncPlayerData(ServerPlayer player, LKPlayerData data) {
+        LKNetworking.CHANNEL.send(
+                PacketDistributor.PLAYER.with(() -> player),
+                new PlayerDataSyncPacket(data)
+        );
     }
 
     private void broadcastMessage(String message) {
