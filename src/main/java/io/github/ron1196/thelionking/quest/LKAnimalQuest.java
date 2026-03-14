@@ -1,21 +1,22 @@
 package io.github.ron1196.thelionking.quest;
 
 import io.github.ron1196.thelionking.registry.LKItems;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 import java.util.Random;
 
-public class LKAnimalQuest {
+/**
+ * Static utility class for animal mini-quest phrases and rewards.
+ * Per-player quest state is now stored in {@link io.github.ron1196.thelionking.entity.animal.LKAnimal}.
+ */
+public final class LKAnimalQuest {
 
     private static final Random RANDOM = new Random();
 
-    private static final String[] QUEST_START_PHRASES = {
+    static final String[] QUEST_START_PHRASES = {
             "I'm getting quite hungry. If you can bring me # %, there might be a reward for you!",
             "Bring me # % to eat and I'll give you something useful!",
             "I could really do with # %. Can you help me out?",
@@ -24,14 +25,14 @@ public class LKAnimalQuest {
             "I fancy # % right about now. Could you fetch some?"
     };
 
-    private static final String[] QUEST_END_PHRASES = {
+    static final String[] QUEST_END_PHRASES = {
             "Delicious! Here, take this as a reward.",
             "Thank you so much! Here's something for your trouble.",
             "That really hit the spot! Take this reward.",
             "Perfect! You've earned this."
     };
 
-    private static final String[] NUMBER_WORDS = {
+    static final String[] NUMBER_WORDS = {
             "zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
             "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen",
             "seventeen", "eighteen", "nineteen", "twenty", "twenty-one", "twenty-two",
@@ -45,52 +46,20 @@ public class LKAnimalQuest {
             "sixty", "sixty-one", "sixty-two", "sixty-three", "sixty-four"
     };
 
-    private Item requiredItem;
-    private int requiredAmount;
-    private boolean hasQuest;
-
-    public LKAnimalQuest() {
+    private LKAnimalQuest() {
     }
 
-    public void setQuest(Item item, int amount) {
-        this.requiredItem = item;
-        this.requiredAmount = amount;
-        this.hasQuest = true;
-    }
-
-    public boolean hasQuest() {
-        return hasQuest;
-    }
-
-    public boolean isRequiredItem(ItemStack stack) {
-        return hasQuest && stack.is(requiredItem) && stack.getCount() >= requiredAmount;
-    }
-
-    public Item getRequiredItem() {
-        return requiredItem;
-    }
-
-    public int getRequiredAmount() {
-        return requiredAmount;
-    }
-
-    public String getQuestStartMessage(String animalName, String itemName) {
+    public static String getQuestStartMessage(String animalName, String itemName, int amount) {
         String phrase = QUEST_START_PHRASES[RANDOM.nextInt(QUEST_START_PHRASES.length)];
-        String numberWord = requiredAmount >= 0 && requiredAmount < NUMBER_WORDS.length
-                ? NUMBER_WORDS[requiredAmount] : String.valueOf(requiredAmount);
+        String numberWord = amount >= 0 && amount < NUMBER_WORDS.length
+                ? NUMBER_WORDS[amount] : String.valueOf(amount);
         phrase = phrase.replace("#", numberWord).replace("%", itemName);
         return "\u00a7e<" + animalName + "> \u00a7f" + phrase;
     }
 
-    public String getQuestEndMessage(String animalName) {
+    public static String getQuestEndMessage(String animalName) {
         String phrase = QUEST_END_PHRASES[RANDOM.nextInt(QUEST_END_PHRASES.length)];
         return "\u00a7e<" + animalName + "> \u00a7f" + phrase;
-    }
-
-    public void completeQuest() {
-        this.hasQuest = false;
-        this.requiredItem = null;
-        this.requiredAmount = 0;
     }
 
     /**
@@ -125,25 +94,5 @@ public class LKAnimalQuest {
                 Component.literal("\u00a7aYou received " + reward.getCount() + "x " + reward.getHoverName().getString() + " as a reward!"),
                 false
         );
-    }
-
-    public void save(CompoundTag tag) {
-        tag.putBoolean("HasQuest", hasQuest);
-        if (hasQuest && requiredItem != null) {
-            tag.putString("QuestItem", net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(requiredItem).toString());
-            tag.putInt("QuestAmount", requiredAmount);
-        }
-    }
-
-    public void load(CompoundTag tag) {
-        hasQuest = tag.getBoolean("HasQuest");
-        if (hasQuest && tag.contains("QuestItem")) {
-            net.minecraft.resources.ResourceLocation itemId = new net.minecraft.resources.ResourceLocation(tag.getString("QuestItem"));
-            requiredItem = net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(itemId);
-            requiredAmount = tag.getInt("QuestAmount");
-            if (requiredItem == null) {
-                hasQuest = false;
-            }
-        }
     }
 }

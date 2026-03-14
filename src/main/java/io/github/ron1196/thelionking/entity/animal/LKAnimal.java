@@ -1,10 +1,13 @@
 package io.github.ron1196.thelionking.entity.animal;
 
+import io.github.ron1196.thelionking.quest.AnimalQuestEntry;
 import io.github.ron1196.thelionking.quest.LKAnimalQuest;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
@@ -16,18 +19,21 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 public abstract class LKAnimal extends Animal {
 
     private static final Random QUEST_RANDOM = new Random();
-    private final LKAnimalQuest animalQuest = new LKAnimalQuest();
-
-    // Possible quest reward items
-    private static final Item[] QUEST_FOOD_ITEMS = null; // Initialized lazily
+    private final Map<UUID, AnimalQuestEntry> animalQuests = new HashMap<>();
 
     protected LKAnimal(EntityType<? extends Animal> type, Level level) {
         super(type, level);
@@ -49,47 +55,47 @@ public abstract class LKAnimal extends Animal {
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mate) {
+    public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob mate) {
         return null;
     }
 
-    public LKAnimalQuest getAnimalQuest() {
-        return animalQuest;
-    }
-
     @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+    public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         if (level().isClientSide()) return InteractionResult.SUCCESS;
+        if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
 
+        UUID playerId = player.getUUID();
+        AnimalQuestEntry entry = animalQuests.get(playerId);
         ItemStack held = player.getItemInHand(hand);
 
-        if (animalQuest.hasQuest()) {
-            // Check if player has the required item
-            if (animalQuest.isRequiredItem(held)) {
-                held.shrink(animalQuest.getRequiredAmount());
-                // Give reward
-                ItemStack reward = getQuestReward();
-                player.addItem(reward);
+        if (entry != null) {
+            if (held.is(entry.requiredItem()) && held.getCount() >= entry.requiredAmount()) {
+                held.shrink(entry.requiredAmount());
+                LKAnimalQuest.giveReward(serverPlayer, getAnimalTypeKey());
                 player.sendSystemMessage(Component.literal(
-                        animalQuest.getQuestEndMessage(getAnimalDisplayName())));
-                animalQuest.completeQuest();
-                return InteractionResult.SUCCESS;
+                        LKAnimalQuest.getQuestEndMessage(getAnimalDisplayName())));
+                animalQuests.remove(playerId);
             } else {
-                // Remind player of the quest
                 player.sendSystemMessage(Component.literal(
-                        animalQuest.getQuestStartMessage(getAnimalDisplayName(),
-                                animalQuest.getRequiredItem().getDescription().getString())));
-                return InteractionResult.SUCCESS;
+                        LKAnimalQuest.getQuestStartMessage(
+                                getAnimalDisplayName(),
+                                entry.requiredItem().getDescription().getString(),
+                                entry.requiredAmount())));
             }
+            return InteractionResult.SUCCESS;
         }
 
-        // Assign a new quest with some probability
         if (QUEST_RANDOM.nextInt(3) == 0) {
-            assignRandomQuest();
-            if (animalQuest.hasQuest()) {
+            Item[] requestItems = getQuestRequestItems();
+            if (requestItems != null && requestItems.length > 0) {
+                Item item = requestItems[QUEST_RANDOM.nextInt(requestItems.length)];
+                int amount = 1 + QUEST_RANDOM.nextInt(5);
+                animalQuests.put(playerId, new AnimalQuestEntry(item, amount));
                 player.sendSystemMessage(Component.literal(
-                        animalQuest.getQuestStartMessage(getAnimalDisplayName(),
-                                animalQuest.getRequiredItem().getDescription().getString())));
+                        LKAnimalQuest.getQuestStartMessage(
+                                getAnimalDisplayName(),
+                                item.getDescription().getString(),
+                                amount)));
                 return InteractionResult.SUCCESS;
             }
         }
@@ -97,13 +103,9 @@ public abstract class LKAnimal extends Animal {
         return super.mobInteract(player, hand);
     }
 
-    private void assignRandomQuest() {
-        Item[] requestItems = getQuestRequestItems();
-        if (requestItems == null || requestItems.length == 0) return;
-
-        Item item = requestItems[QUEST_RANDOM.nextInt(requestItems.length)];
-        int amount = 1 + QUEST_RANDOM.nextInt(5);
-        animalQuest.setQuest(item, amount);
+    protected String getAnimalTypeKey() {
+        ResourceLocation key = ForgeRegistries.ENTITY_TYPES.getKey(getType());
+        return key != null ? key.getPath() : "unknown";
     }
 
     protected Item[] getQuestRequestItems() {
@@ -112,22 +114,10 @@ public abstract class LKAnimal extends Animal {
                 LKItems.BANANA.get(),
                 LKItems.CORN.get(),
                 LKItems.KIWANO.get(),
-                net.minecraft.world.item.Items.APPLE,
-                net.minecraft.world.item.Items.BREAD,
-                net.minecraft.world.item.Items.WHEAT
+                Items.APPLE,
+                Items.BREAD,
+                Items.WHEAT
         };
-    }
-
-    protected ItemStack getQuestReward() {
-        // Random reward from mod items
-        Item[] rewards = {
-                LKItems.SILVER_INGOT.get(),
-                LKItems.PEACOCK_GEM.get(),
-                LKItems.RAFIKI_COIN.get(),
-                LKItems.CRYSTAL.get(),
-                LKItems.LION_FUR.get()
-        };
-        return new ItemStack(rewards[QUEST_RANDOM.nextInt(rewards.length)], 1 + QUEST_RANDOM.nextInt(3));
     }
 
     protected String getAnimalDisplayName() {
@@ -135,18 +125,35 @@ public abstract class LKAnimal extends Animal {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        CompoundTag questTag = new CompoundTag();
-        animalQuest.save(questTag);
-        tag.put("AnimalQuest", questTag);
+        CompoundTag questsTag = new CompoundTag();
+        for (Map.Entry<UUID, AnimalQuestEntry> e : animalQuests.entrySet()) {
+            CompoundTag entryTag = new CompoundTag();
+            ResourceLocation itemKey = ForgeRegistries.ITEMS.getKey(e.getValue().requiredItem());
+            if (itemKey != null) {
+                entryTag.putString("Item", itemKey.toString());
+                entryTag.putInt("Amount", e.getValue().requiredAmount());
+                questsTag.put(e.getKey().toString(), entryTag);
+            }
+        }
+        tag.put("AnimalQuests", questsTag);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if (tag.contains("AnimalQuest")) {
-            animalQuest.load(tag.getCompound("AnimalQuest"));
+        animalQuests.clear();
+        if (tag.contains("AnimalQuests")) {
+            CompoundTag questsTag = tag.getCompound("AnimalQuests");
+            for (String key : questsTag.getAllKeys()) {
+                CompoundTag entryTag = questsTag.getCompound(key);
+                ResourceLocation itemId = new ResourceLocation(entryTag.getString("Item"));
+                Item item = ForgeRegistries.ITEMS.getValue(itemId);
+                if (item != null) {
+                    animalQuests.put(UUID.fromString(key), new AnimalQuestEntry(item, entryTag.getInt("Amount")));
+                }
+            }
         }
     }
 }
