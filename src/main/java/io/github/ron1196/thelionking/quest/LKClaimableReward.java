@@ -4,5 +4,5 @@ import net.minecraft.world.item.Item;
 
 import java.util.function.Supplier;
 
-public record LKClaimableReward(Supplier<Item> item, int count, String rewardKey) {
+public record LKClaimableReward(Supplier<Item> item, int count) {
 }

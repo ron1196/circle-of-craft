@@ -3,8 +3,8 @@ package io.github.ron1196.thelionking.network;
 import io.github.ron1196.thelionking.data.LKPlayerData;
 import io.github.ron1196.thelionking.data.LKWorldData;
 import io.github.ron1196.thelionking.quest.LKQuestline;
+import io.github.ron1196.thelionking.quest.LKQuestlineState;
 import io.github.ron1196.thelionking.quest.LKQuestRegistry;
-import io.github.ron1196.thelionking.quest.LKQuestState;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -33,7 +33,7 @@ public class LoginSyncPacket {
     private final boolean hasSimba;
     private final Set<String> claimedRewards;
 
-    private record QuestEntry(String questId, int stage, boolean checked) {}
+    private record QuestEntry(String questId, String stageId, boolean checked) {}
 
     public LoginSyncPacket(LKWorldData worldData, LKPlayerData playerData) {
         // World
@@ -45,8 +45,8 @@ public class LoginSyncPacket {
         // Quests
         this.questEntries = new ArrayList<>();
         for (LKQuestline quest : LKQuestRegistry.getOrdered()) {
-            LKQuestState state = worldData.getQuestManager().getState(quest.getId());
-            questEntries.add(new QuestEntry(quest.getId(), state.getCurrentStage(), state.isChecked()));
+            LKQuestlineState state = worldData.getQuestManager().getState(quest.getId());
+            questEntries.add(new QuestEntry(quest.getId(), state.getCurrentStageId(), state.isChecked()));
         }
 
         // Player
@@ -70,9 +70,9 @@ public class LoginSyncPacket {
         this.questEntries = new ArrayList<>(questCount);
         for (int i = 0; i < questCount; i++) {
             String questId = buf.readUtf();
-            int stage = buf.readVarInt();
+            String stageId = buf.readUtf();
             boolean checked = buf.readBoolean();
-            questEntries.add(new QuestEntry(questId, stage, checked));
+            questEntries.add(new QuestEntry(questId, stageId, checked));
         }
 
         // Player
@@ -100,7 +100,7 @@ public class LoginSyncPacket {
         buf.writeVarInt(questEntries.size());
         for (QuestEntry entry : questEntries) {
             buf.writeUtf(entry.questId());
-            buf.writeVarInt(entry.stage());
+            buf.writeUtf(entry.stageId());
             buf.writeBoolean(entry.checked());
         }
 
@@ -129,7 +129,7 @@ public class LoginSyncPacket {
             // Quest state
             ClientWorldState.questStates.clear();
             for (QuestEntry entry : questEntries) {
-                ClientWorldState.questStates.put(entry.questId(), new LKQuestState(entry.stage(), entry.checked()));
+                ClientWorldState.questStates.put(entry.questId(), new LKQuestlineState(entry.stageId(), entry.checked()));
             }
 
             // Player data

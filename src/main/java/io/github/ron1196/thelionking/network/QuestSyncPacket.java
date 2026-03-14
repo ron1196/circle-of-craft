@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.network;
 
-import io.github.ron1196.thelionking.quest.LKQuestState;
+import io.github.ron1196.thelionking.quest.LKQuestlineState;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -9,30 +9,30 @@ import java.util.function.Supplier;
 public class QuestSyncPacket {
 
     private final String questId;
-    private final int stage;
+    private final String stageId;
     private final boolean checked;
 
-    public QuestSyncPacket(String questId, int stage, boolean checked) {
+    public QuestSyncPacket(String questId, String stageId, boolean checked) {
         this.questId = questId;
-        this.stage = stage;
+        this.stageId = stageId;
         this.checked = checked;
     }
 
     public QuestSyncPacket(FriendlyByteBuf buf) {
         this.questId = buf.readUtf();
-        this.stage = buf.readVarInt();
+        this.stageId = buf.readUtf();
         this.checked = buf.readBoolean();
     }
 
     public void encode(FriendlyByteBuf buf) {
         buf.writeUtf(questId);
-        buf.writeVarInt(stage);
+        buf.writeUtf(stageId);
         buf.writeBoolean(checked);
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         NetworkEvent.Context context = ctx.get();
-        context.enqueueWork(() -> ClientWorldState.questStates.put(questId, new LKQuestState(stage, checked)));
+        context.enqueueWork(() -> ClientWorldState.questStates.put(questId, new LKQuestlineState(stageId, checked)));
         context.setPacketHandled(true);
     }
 }

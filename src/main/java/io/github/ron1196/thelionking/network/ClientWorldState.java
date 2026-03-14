@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.network;
 
-import io.github.ron1196.thelionking.quest.LKQuestState;
+import io.github.ron1196.thelionking.quest.LKQuestlineState;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,7 +16,7 @@ public class ClientWorldState {
     public static boolean outlandersHostile;
 
     // Quest state
-    public static final Map<String, LKQuestState> questStates = new HashMap<>();
+    public static final Map<String, LKQuestlineState> questStates = new HashMap<>();
 
     // Player data
     public static boolean receivedQuestBook;
@@ -26,13 +26,17 @@ public class ClientWorldState {
     public static boolean hasSimba;
     public static final Set<String> claimedRewards = new HashSet<>();
 
-    public static int getQuestStage(String questId) {
-        LKQuestState state = questStates.get(questId);
-        return state != null ? state.getCurrentStage() : 0;
+    /**
+     * Returns the stage ID string for the given quest.
+     * Empty string means the quest has not been initialized.
+     */
+    public static String getQuestStageId(String questId) {
+        LKQuestlineState state = questStates.get(questId);
+        return state != null ? state.getCurrentStageId() : "";
     }
 
     public static boolean isQuestChecked(String questId) {
-        LKQuestState state = questStates.get(questId);
+        LKQuestlineState state = questStates.get(questId);
         return state != null && state.isChecked();
     }
 
