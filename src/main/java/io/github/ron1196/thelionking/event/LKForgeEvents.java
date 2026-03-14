@@ -162,12 +162,10 @@ public class LKForgeEvents {
 
         Player player = event.player;
 
-        // Update quests every 20 ticks (1 second) and sync to clients
-        if (player.tickCount % 20 == 0) {
+        // Sync quest state to clients every second (safety net for missed packets)
+        if (player.tickCount % 20 == 0 && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
             LKQuestBase.updateAllQuests();
-            if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-                LKQuestBase.syncToPlayer(serverPlayer);
-            }
+            LKQuestBase.syncToPlayer(serverPlayer);
         }
 
         // Check if player is in the Pride Lands dimension

@@ -2,11 +2,12 @@ package io.github.ron1196.thelionking.entity.npc;
 
 import io.github.ron1196.thelionking.data.LKLevelData;
 import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
-import io.github.ron1196.thelionking.quest.LKQuestBase;
+import io.github.ron1196.thelionking.quest.LKQuestRafiki;
 import io.github.ron1196.thelionking.quest.LKQuests;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -43,7 +44,6 @@ public class RafikiEntity extends PathfinderMob {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        // Rafiki is invulnerable
         return false;
     }
 
@@ -51,7 +51,6 @@ public class RafikiEntity extends PathfinderMob {
     public void tick() {
         super.tick();
         if (talkCooldown > 0) talkCooldown--;
-        // Heal to full
         if (this.getHealth() < this.getMaxHealth()) {
             this.setHealth(this.getMaxHealth());
         }
@@ -61,97 +60,59 @@ public class RafikiEntity extends PathfinderMob {
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (level().isClientSide()) return InteractionResult.SUCCESS;
         if (talkCooldown > 0) return InteractionResult.SUCCESS;
+        if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
+        if (!(level() instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
 
         talkCooldown = 40;
-
-        int questStage = LKQuests.RAFIKI_QUEST.getQuestStage();
-        ItemStack held = player.getItemInHand(hand);
+        LKLevelData data = LKLevelData.get(serverLevel);
+        LKQuestRafiki quest = (LKQuestRafiki) LKQuests.RAFIKI_QUEST;
+        int stage = quest.getQuestStage();
 
         // Give quest book on first meeting
-        if (level() instanceof ServerLevel serverLevel) {
-            LKLevelData data = LKLevelData.get(serverLevel);
-            if (!data.receivedQuestBook) {
-                data.receivedQuestBook = true;
-                data.setDirty();
-                player.addItem(new ItemStack(LKItems.QUEST_BOOK.get()));
+        if (!data.receivedQuestBook) {
+            data.receivedQuestBook = true;
+            data.setDirty();
+            player.addItem(new ItemStack(LKItems.QUEST_BOOK.get()));
+        }
+
+        // Try to advance the quest
+        if (quest.tryAdvanceStage(serverPlayer, data, "rafiki_talk")) {
+            // Send stage-appropriate dialogue after advancing
+            sendStageDialogue(player, quest.getQuestStage());
+            return InteractionResult.SUCCESS;
+        }
+
+        // Quest didn't advance — give contextual speech
+        switch (stage) {
+            case LKQuestRafiki.COLLECT_BONES -> sendSpeech(player, LKCharacterSpeech.HYENA_BONES);
+            case LKQuestRafiki.DEFEAT_SCAR -> sendSpeech(player, LKCharacterSpeech.MENTION_SCAR);
+            case LKQuestRafiki.COLLECT_TERMITES -> sendSpeech(player, LKCharacterSpeech.TERMITES);
+            case LKQuestRafiki.COLLECT_MANGOES -> sendSpeech(player, LKCharacterSpeech.MANGOES);
+            case LKQuestRafiki.USE_STAR_ALTAR -> sendSpeech(player, LKCharacterSpeech.STAR_ALTAR);
+            default -> {
+                if (quest.isComplete()) sendSpeech(player, LKCharacterSpeech.HINT);
             }
         }
-
-        // Stage 0: First meeting
-        if (questStage == 0) {
-            sendMessage(player, "Welcome to the Pride Lands! I am Rafiki. Bring me sixty-four hyena bones and I will give you my stick.");
-            LKQuests.RAFIKI_QUEST.progress(1);
-            LKQuestBase.updateAllQuests();
-            return InteractionResult.SUCCESS;
-        }
-
-        // Stage 1: Waiting for hyena bones
-        if (questStage == 1) {
-            if (held.is(LKItems.HYENA_BONE.get()) && held.getCount() >= 64) {
-                held.shrink(64);
-                player.addItem(new ItemStack(LKItems.RHYTHM_STAFF.get()));
-                sendMessage(player, "Excellent! Here is my stick. Now go and defeat Scar!");
-                LKQuests.RAFIKI_QUEST.progress(2);
-                LKQuestBase.updateAllQuests();
-            } else {
-                sendSpeech(player, LKCharacterSpeech.HYENA_BONES);
-            }
-            return InteractionResult.SUCCESS;
-        }
-
-        // Stage 2: Waiting for Scar to be defeated
-        if (questStage == 2) {
-            sendSpeech(player, LKCharacterSpeech.MENTION_SCAR);
-            return InteractionResult.SUCCESS;
-        }
-
-        // Stage 3: Return after defeating Scar
-        if (questStage == 3) {
-            sendMessage(player, "Well done! Scar has been defeated. Now bring me four ground termites.");
-            LKQuests.RAFIKI_QUEST.progress(4);
-            LKQuestBase.updateAllQuests();
-            return InteractionResult.SUCCESS;
-        }
-
-        // Stage 4: Waiting for ground termites
-        if (questStage == 4) {
-            if (held.is(LKItems.TERMITE_DUST.get()) && held.getCount() >= 4) {
-                held.shrink(4);
-                sendMessage(player, "Good! Now bring me four ground mangoes.");
-                LKQuests.RAFIKI_QUEST.progress(5);
-                LKQuestBase.updateAllQuests();
-            } else {
-                sendSpeech(player, LKCharacterSpeech.TERMITES);
-            }
-            return InteractionResult.SUCCESS;
-        }
-
-        // Stage 5: Waiting for ground mangoes
-        if (questStage == 5) {
-            if (held.is(LKItems.MANGO_DUST.get()) && held.getCount() >= 4) {
-                held.shrink(4);
-                sendMessage(player, "Perfect! Now craft a Star Altar and use the Rafiki Dust on it.");
-                LKQuests.RAFIKI_QUEST.progress(6);
-                LKQuestBase.updateAllQuests();
-            } else {
-                sendSpeech(player, LKCharacterSpeech.MANGOES);
-            }
-            return InteractionResult.SUCCESS;
-        }
-
-        // Stage 6: Waiting for Star Altar usage
-        if (questStage == 6) {
-            sendSpeech(player, LKCharacterSpeech.STAR_ALTAR);
-            return InteractionResult.SUCCESS;
-        }
-
-        // Quest complete — give hints
-        if (LKQuests.RAFIKI_QUEST.isComplete()) {
-            sendSpeech(player, LKCharacterSpeech.HINT);
-            return InteractionResult.SUCCESS;
-        }
-
         return InteractionResult.SUCCESS;
+    }
+
+    private void sendStageDialogue(Player player, int newStage) {
+        String message = switch (newStage) {
+            case LKQuestRafiki.COLLECT_BONES ->
+                    "Welcome to the Pride Lands! I am Rafiki. Bring me sixty-four hyena bones and I will give you my stick.";
+            case LKQuestRafiki.DEFEAT_SCAR ->
+                    "Excellent! Here is my stick. Now go and defeat Scar!";
+            case LKQuestRafiki.COLLECT_TERMITES ->
+                    "Well done! Scar has been defeated. Now bring me four ground termites.";
+            case LKQuestRafiki.COLLECT_MANGOES ->
+                    "Good! Now bring me four ground mangoes.";
+            case LKQuestRafiki.USE_STAR_ALTAR ->
+                    "Perfect! Now craft a Star Altar and use the Rafiki Dust on it.";
+            case LKQuestRafiki.COMPLETE ->
+                    "Wonderful! The spirits of the great kings smile upon you!";
+            default -> null;
+        };
+        if (message != null) sendMessage(player, message);
     }
 
     private void sendMessage(Player player, String message) {

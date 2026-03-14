@@ -3,7 +3,7 @@ package io.github.ron1196.thelionking.item;
 import io.github.ron1196.thelionking.data.LKLevelData;
 import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
 import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
-import io.github.ron1196.thelionking.quest.LKQuestBase;
+import io.github.ron1196.thelionking.quest.LKQuestRafiki;
 import io.github.ron1196.thelionking.quest.LKQuests;
 import io.github.ron1196.thelionking.registry.LKBlocks;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
@@ -36,8 +36,8 @@ public class RafikiDustItem extends Item {
             return InteractionResult.PASS;
         }
 
-        // Block if Rafiki quest stage 5 is delayed
-        if (LKQuests.RAFIKI_QUEST.getQuestStage() == 5 && LKQuests.RAFIKI_QUEST.isDelayed()) {
+        // Block if Rafiki quest mangoes stage is delayed
+        if (LKQuests.RAFIKI_QUEST.getQuestStage() == LKQuestRafiki.COLLECT_MANGOES && LKQuests.RAFIKI_QUEST.isDelayed()) {
             return InteractionResult.PASS;
         }
 
@@ -74,10 +74,12 @@ public class RafikiDustItem extends Item {
             level.addFreshEntity(simba);
         }
 
-        // Progress Rafiki quest if at stage 6
-        if (LKQuests.RAFIKI_QUEST.getQuestStage() == 6) {
-            LKQuests.RAFIKI_QUEST.progress(7);
-            broadcastMessage(level, "\u00a7e<Rafiki> \u00a7fYou see? He lives in you! Ohohoho!");
+        // Progress Rafiki quest via star altar usage
+        if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+            LKQuestRafiki quest = (LKQuestRafiki) LKQuests.RAFIKI_QUEST;
+            if (quest.tryAdvanceStage(serverPlayer, data, "star_altar_used")) {
+                broadcastMessage(level, "\u00a7e<Rafiki> \u00a7fYou see? He lives in you! Ohohoho!");
+            }
         }
 
         return InteractionResult.SUCCESS;

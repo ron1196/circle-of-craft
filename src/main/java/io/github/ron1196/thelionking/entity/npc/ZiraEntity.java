@@ -1,15 +1,17 @@
 package io.github.ron1196.thelionking.entity.npc;
 
+import io.github.ron1196.thelionking.data.LKLevelData;
 import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
 import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
-import io.github.ron1196.thelionking.quest.LKQuestBase;
+import io.github.ron1196.thelionking.quest.LKQuestOutlands;
 import io.github.ron1196.thelionking.quest.LKQuests;
-import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -23,7 +25,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class ZiraEntity extends Monster {
@@ -79,7 +80,6 @@ public class ZiraEntity extends Monster {
         super.tick();
         if (talkCooldown > 0) talkCooldown--;
 
-        // Boss fight: when health drops below 120, summon outlanders with lightning
         if (!level().isClientSide && isHostile() && !spawnedBossFightOutlanders && getHealth() <= 120F) {
             spawnedBossFightOutlanders = true;
             broadcastMessage("\u00a7e<Zira> \u00a7fOutlanders! Finish this!");
@@ -93,8 +93,6 @@ public class ZiraEntity extends Monster {
             int z = Mth.floor(getZ()) - 6 + random.nextInt(13);
             int y = level().getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING,
                     new BlockPos(x, 0, z)).getY();
-
-            // Visual lightning bolt (power 0 = no damage, just dramatic effect)
             level().addFreshEntity(new LKLightningBoltEntity(level(), x, y, z, 0, null));
         }
     }
@@ -104,72 +102,58 @@ public class ZiraEntity extends Monster {
         if (level().isClientSide()) return InteractionResult.SUCCESS;
         if (isHostile()) return InteractionResult.PASS;
         if (talkCooldown > 0) return InteractionResult.SUCCESS;
+        if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
+        if (!(level() instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
+
         talkCooldown = 40;
+        LKLevelData data = LKLevelData.get(serverLevel);
+        LKQuestOutlands quest = (LKQuestOutlands) LKQuests.OUTLANDS_QUEST;
+        int stage = quest.getQuestStage();
 
-        int questStage = LKQuests.OUTLANDS_QUEST.getQuestStage();
-        ItemStack held = player.getItemInHand(hand);
-
-        // Stage 1: First meeting
-        if (questStage == 1) {
-            sendMessage(player, "So... a human dares to enter my domain. Perhaps you can be of use to me.");
-            LKQuests.OUTLANDS_QUEST.progress(2);
-            LKQuestBase.updateAllQuests();
+        // Try to advance the quest
+        if (quest.tryAdvanceStage(serverPlayer, data, "zira_talk")) {
+            sendStageDialogue(player, quest.getQuestStage());
             return InteractionResult.SUCCESS;
         }
 
-        // Stage 2: Waiting for ingots
-        if (questStage == 2) {
-            if (held.is(LKItems.KIVULITE.get()) && held.getCount() >= 5) {
-                // Check for silver too
-                for (ItemStack stack : player.getInventory().items) {
-                    if (stack.is(LKItems.SILVER_INGOT.get()) && stack.getCount() >= 2) {
-                        held.shrink(5);
-                        stack.shrink(2);
-                        sendMessage(player, "Good. Now throw these ingots into the Outwater.");
-                        LKQuests.OUTLANDS_QUEST.progress(3);
-                        LKQuestBase.updateAllQuests();
-                        return InteractionResult.SUCCESS;
-                    }
+        // Quest didn't advance — give contextual speech
+        switch (stage) {
+            case LKQuestOutlands.COLLECT_INGOTS -> sendSpeech(player, LKCharacterSpeech.ZIRA_INGOTS);
+            case LKQuestOutlands.COLLECT_FEATHERS -> sendSpeech(player, LKCharacterSpeech.ZIRA_FEATHERS);
+            default -> {
+                if (stage >= LKQuestOutlands.FOLLOW_OUTLANDERS && !isHostile()) {
+                    sendSpeech(player, LKCharacterSpeech.ZIRA_CONQUEST);
                 }
             }
-            sendSpeech(player, LKCharacterSpeech.ZIRA_INGOTS);
-            return InteractionResult.SUCCESS;
-        }
-
-        // Stage 4: Waiting for feathers
-        if (questStage == 4) {
-            if (held.is(LKItems.WAYWARD_FEATHER.get()) && held.getCount() >= 3) {
-                held.shrink(3);
-                sendMessage(player, "Excellent. You have served me well. Now... follow my Outlanders.");
-                LKQuests.OUTLANDS_QUEST.progress(5);
-                LKQuestBase.updateAllQuests();
-                return InteractionResult.SUCCESS;
-            }
-            sendSpeech(player, LKCharacterSpeech.ZIRA_FEATHERS);
-            return InteractionResult.SUCCESS;
-        }
-
-        // Default speech based on quest state
-        if (questStage >= 5 && !isHostile()) {
-            sendSpeech(player, LKCharacterSpeech.ZIRA_CONQUEST);
         }
         return InteractionResult.SUCCESS;
+    }
+
+    private void sendStageDialogue(Player player, int newStage) {
+        String message = switch (newStage) {
+            case LKQuestOutlands.COLLECT_INGOTS ->
+                    "So... a human dares to enter my domain. Perhaps you can be of use to me.";
+            case LKQuestOutlands.THROW_IN_OUTWATER ->
+                    "Good. Now throw these ingots into the Outwater.";
+            case LKQuestOutlands.FOLLOW_OUTLANDERS ->
+                    "Excellent. You have served me well. Now... follow my Outlanders.";
+            default -> null;
+        };
+        if (message != null) sendMessage(player, message);
     }
 
     @Override
     public void die(DamageSource source) {
         super.die(source);
-        if (!level().isClientSide()) {
-            if (LKQuests.OUTLANDS_QUEST.getQuestStage() == 9) {
-                LKQuests.OUTLANDS_QUEST.progress(10);
-                LKQuestBase.updateAllQuests();
-            }
-            if (source.getEntity() instanceof Player player) {
-                player.sendSystemMessage(Component.literal(
+        if (!level().isClientSide() && level() instanceof ServerLevel serverLevel) {
+            if (source.getEntity() instanceof ServerPlayer serverPlayer) {
+                LKLevelData data = LKLevelData.get(serverLevel);
+                ((LKQuestOutlands) LKQuests.OUTLANDS_QUEST).tryAdvanceStage(serverPlayer, data, "zira_killed");
+
+                serverPlayer.sendSystemMessage(Component.literal(
                         "\u00a7e<Zira> \u00a7fThis is not over... Scar's legacy will live on..."));
             }
 
-            // Dramatic death: explosion and vanilla lightning bolts
             level().explode(this, getX(), getY(), getZ(), 0F, Level.ExplosionInteraction.NONE);
             for (int i = 0; i < 5; i++) {
                 int x = Mth.floor(getX()) - 12 + random.nextInt(25);
