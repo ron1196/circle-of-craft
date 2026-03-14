@@ -16,12 +16,15 @@ World-level persistent data shared across all players.
 | `ziraStage` | `int` | Controls Zira dramatic spawn event |
 | `outlandersHostile` | `boolean` | Whether Outlander mobs are hostile |
 | `pumbaaStage` | `int` | Timon/Pumbaa dialogue sequence progress (0-13) |
-| `homePortalX/Y/Z` | `int` | Pride Lands portal location (shared structure) |
 | `questManager` | `LKQuestManager` | Owns all main quest state |
 
-NBT keys: same as current `LKLevelData` for backwards compatibility. Legacy migration reads old keys on first load.
+Portal coordinates are **not** stored here — they are per-player (see `LKPlayerData`).
 
-Rename `LKLevelData` → `LKWorldData` everywhere. Update `DATA_NAME` constant to `"thelionking_data"` (unchanged value, just the class name changes).
+The old `simbas` map (`Map<String, Integer>`) is removed. Simba ownership is now tracked per-player via `LKPlayerData.hasSimba`. The old map stored a boolean-as-int (1 = has simba, 0 = no simba), so a simple boolean is sufficient. On upgrade, the old map data is lost — all players can spawn a new Simba, which is acceptable.
+
+NBT keys: same as current `LKLevelData` for backwards compatibility (`DefeatedScar`, `ZiraStage`, etc.). Legacy migration reads old keys on first load.
+
+Rename `LKLevelData` → `LKWorldData` everywhere. The `DATA_NAME` constant stays `"thelionking_data"` (unchanged value).
 
 ### `LKPlayerData` (new Forge Capability on player)
 
@@ -31,7 +34,7 @@ Per-player persistent data attached via `AttachCapabilitiesEvent<Entity>`.
 |-------|------|---------|
 | `receivedQuestBook` | `boolean` | Whether this player got a Quest Book from Rafiki |
 | `homePortalX/Y/Z` | `int` | This player's Pride Lands portal location |
-| `hasSimba` | `boolean` | Whether this player has spawned a Simba |
+| `hasSimba` | `boolean` | Whether this player has spawned a Simba (prevents duplicates) |
 | `claimedRewards` | `Set<String>` | Reward keys already collected (e.g. `"rafiki:1"`) |
 
 **Capability registration:**
@@ -77,6 +80,8 @@ AnimalQuests {
 
 Old single-slot format (`AnimalQuest { HasQuest, QuestItem, QuestAmount }`) is not migrated — animal quests are transient enough that losing them on upgrade is acceptable.
 
+Note: wild animals can despawn naturally, which silently removes any active quests on that entity. This matches the old mod's behavior and is acceptable — animal quests are lightweight and easily re-assigned.
+
 ## Quest System
 
 ### `LKQuestManager` (world-level, owned by `LKWorldData`)
@@ -86,16 +91,19 @@ Holds `Map<String, LKQuestState>` — one state per registered quest.
 **Core method `tryAdvance(questId, player, trigger)`:**
 1. Look up quest definition and current state
 2. If complete, return false
-3. If trigger doesn't match expected trigger for current stage, return false
-4. Check item requirements against the advancing player
-5. Consume items from the advancing player
-6. Run custom transition (if defined for this stage)
-7. Increment stage, set checked = false
-8. Mark `LKWorldData` dirty
-9. Sync to all players
-10. Return true
+3. If no trigger is defined for the current stage, return false (stage cannot be advanced via `tryAdvance`)
+4. If trigger doesn't match expected trigger for current stage, return false
+5. Check item requirements against the advancing player
+6. Consume items from the advancing player
+7. Run custom transition (if defined for this stage)
+8. Increment stage, set checked = false
+9. Mark `LKWorldData` dirty
+10. Sync to all players
+11. Return true
 
 **No reward giving.** Rewards are claimed separately through NPC interaction.
+
+**Stages with no trigger:** Some Outlands quest stages (3, 5, 6, 7, 8) have no trigger defined. These are placeholder stages for future gameplay mechanics (Outwater throwing, Outlander following, exploration). They cannot be advanced via `tryAdvance` — the quest blocks at these stages until the mechanics are implemented. For testing, a `/lkquest advance <questId>` command can skip them.
 
 Other methods: `getStage(questId)`, `isComplete(questId)`, `canStart(questId)`, `anyUnchecked()`, `syncToPlayer(player)`, `syncToAllPlayers(server)`, `writeToNBT(tag)`, `readFromNBT(tag)`.
 
@@ -143,7 +151,7 @@ record LKQuestStage(
 
 `ItemReward` removed from the record. Rewards live in `LKQuest.claimableRewards`.
 
-`ItemRequirement` unchanged: `record ItemRequirement(Supplier<Item> item, int count, Source source)`.
+`ItemRequirement` unchanged: `record ItemRequirement(Supplier<Item> item, int count, Source source)`. Default source is `Source.MAIN_HAND` (used by Rafiki quest requirements). Outlands quest explicitly specifies `Source.INVENTORY` for silver ingots.
 
 ### `LKQuestRegistry`
 
@@ -157,7 +165,7 @@ LKQuest.builder("rafiki")
     .stage(new LKQuestStage("Bring Rafiki 64 hyena bones",
         List.of(new ItemRequirement(() -> LKItems.HYENA_BONE.get(), 64))))
     .stage(new LKQuestStage("Defeat Scar"))
-    // ... remaining stages without rewards in stage definition
+    // ... remaining stages
     .trigger(0, RAFIKI_TALK)
     .trigger(1, RAFIKI_TALK)
     .trigger(2, SCAR_KILLED)
@@ -167,6 +175,8 @@ LKQuest.builder("rafiki")
 ```
 
 Stage constants remain as `public static final int` fields for readability in entity code.
+
+Eligible items for animal mini-quests are configured in `LKAnimal.getQuestRequestItems()` (returns array of items: MANGO, BANANA, CORN, KIWANO, APPLE, BREAD, WHEAT). Random amount is 1-5. This is unchanged from the current implementation.
 
 ### `LKQuestTrigger` (enum, unchanged)
 
@@ -212,7 +222,7 @@ static boolean tryClaimNextReward(LKQuest quest, LKQuestManager manager,
 }
 ```
 
-NPCs determine which dialogue to send based on the stage of the reward that was just claimed.
+The method returns true when a reward is claimed. The NPC determines which dialogue to send based on which stage's reward was just claimed. The NPC can query the stage by checking which reward key was most recently added to `claimedRewards`, or the helper can return the stage index.
 
 ### RafikiEntity Interaction
 
@@ -277,13 +287,11 @@ mobInteract(Player player, InteractionHand hand):
     send quest start dialogue
 ```
 
+Item pool and amounts configured in `LKAnimal.getQuestRequestItems()` (unchanged). Random amount: `1 + random.nextInt(5)`.
+
 ### `LKAnimalQuest` Changes
 
-The class becomes a utility for dialogue generation (phrases, number-to-word conversion, `giveReward`). The per-entity state moves to the `Map<UUID, AnimalQuestEntry>` on `LKAnimal`.
-
-Alternatively, `LKAnimalQuest` can be deleted entirely and its logic inlined into `LKAnimal` + `AnimalQuestEntry`. The dialogue arrays and `giveReward` method move to `AnimalQuestEntry` or a companion utility.
-
-Decision: Keep `LKAnimalQuest` as a **static utility** for dialogue and rewards. Remove instance state.
+The class becomes a **static utility** for dialogue generation (phrases, number-to-word conversion) and `giveReward(player, animalType)`. All instance state is removed. The per-entity quest state lives in the `Map<UUID, AnimalQuestEntry>` on `LKAnimal`.
 
 ### NBT Serialization
 
@@ -312,24 +320,30 @@ addAdditionalSaveData(CompoundTag tag):
 
 ### `LoginSyncPacket` Changes
 
-Encodes:
-- World flags: `defeatedScar`, `ziraStage`, `outlandersHostile`, `pumbaaStage`, `homePortalX/Y/Z`
-- Quest states: dynamic list of `(questId, stage, checked)`
-- Player data: `receivedQuestBook`, `hasSimba`, player's `homePortalX/Y/Z`, `claimedRewards`
+Encoding order:
+1. World flags: `defeatedScar` (boolean), `ziraStage` (varint), `outlandersHostile` (boolean), `pumbaaStage` (varint)
+2. Quest states: count (varint), then for each: questId (utf), stage (varint), checked (boolean)
+3. Player data: `receivedQuestBook` (boolean), `homePortalX` (int), `homePortalY` (int), `homePortalZ` (int), `hasSimba` (boolean), claimedRewards count (varint), then each reward key (utf)
+
+Old world-level `homePortalX/Y/Z` fields are no longer sent in the world section.
 
 ### `PlayerDataSyncPacket` (new)
 
 Sent when player data changes (reward claimed, quest book received, simba spawned, portal set).
 
-Encodes all `LKPlayerData` fields. Client stores in `ClientPlayerState` (new) or extends `ClientWorldState`.
+Encodes all `LKPlayerData` fields in the same order as the player data section of `LoginSyncPacket`.
+
+Client stores the data in `ClientWorldState` (single class, with both world and player sections).
 
 ### `ClientWorldState` Changes
 
-Split into:
-- `ClientWorldState` — world flags + quest states (shared)
-- `ClientPlayerState` (new) — per-player fields for local client
+Add player-specific fields alongside existing world fields:
+- `receivedQuestBook` (boolean)
+- `homePortalX/Y/Z` (int)
+- `hasSimba` (boolean)
+- `claimedRewards` (Set<String>)
 
-Or keep one class with both sections. Simpler to keep one class.
+Keep it as one class for simplicity. Rename would be misleading — it's "client-side cached state" for both world and local player.
 
 ### Protocol Version
 
@@ -358,6 +372,7 @@ Bump from `"2"` to `"3"`.
 | File | Purpose |
 |------|---------|
 | `quest/ClaimableReward.java` | Record: item supplier, count, reward key |
+| `quest/AnimalQuestEntry.java` | Record: required item, required amount |
 | `data/LKPlayerData.java` | Per-player capability class |
 | `data/LKPlayerDataProvider.java` | Capability provider, serializer, attach event |
 | `network/PlayerDataSyncPacket.java` | Syncs player data to client |
@@ -375,7 +390,7 @@ Bump from `"2"` to `"3"`.
 | `quest/LKQuestStage.java` | Remove `ItemReward` from record, remove `rewards` field |
 | `quest/LKQuest.java` | Add `claimableRewards` map, add `claimableReward()` builder method |
 | `quest/LKQuestRegistry.java` | Move rewards to `claimableReward()` calls |
-| `quest/LKQuestManager.java` | Remove reward giving from `tryAdvance` |
+| `quest/LKQuestManager.java` | Remove reward giving from `tryAdvance`, handle null triggers |
 | `quest/LKAnimalQuest.java` | Convert to static utility (dialogue, rewards). Remove instance state |
 | `entity/animal/LKAnimal.java` | Replace single `LKAnimalQuest` with `Map<UUID, AnimalQuestEntry>` |
 | `entity/npc/RafikiEntity.java` | Add reward claiming before quest advancement, use capability for quest book |
@@ -385,10 +400,10 @@ Bump from `"2"` to `"3"`.
 | `item/QuestBookItem.java` | Unchanged logic, reads from client state |
 | `event/LKForgeEvents.java` | Register capability, handle clone event, use `LKWorldData` |
 | `network/LKNetworking.java` | Register `PlayerDataSyncPacket`, bump protocol to `"3"` |
-| `network/LoginSyncPacket.java` | Include player data fields |
+| `network/LoginSyncPacket.java` | Include player data fields, remove world portal coords |
 | `network/QuestSyncPacket.java` | Unchanged |
 | `network/QuestCheckPacket.java` | Use `LKWorldData` |
-| `network/ClientWorldState.java` | Add player data fields (`claimedRewards`, `hasSimba`, etc.) |
+| `network/ClientWorldState.java` | Add player data fields (`claimedRewards`, `hasSimba`, portal, etc.) |
 | `client/gui/QuestBookScreen.java` | Adapt to new data sources |
 
 ### Deleted Files
@@ -404,13 +419,13 @@ Bump from `"2"` to `"3"`.
 
 ### World Data
 
-`LKWorldData.load()`: Read current keys (`DefeatedScar`, `ZiraStage`, etc.) unchanged. Quest migration handled by `LKQuestManager.readFromNBT` (name-based → read directly, index-based `Quest_0_Stage` → migrate via legacy map).
+`LKWorldData.load()`: Read current keys (`DefeatedScar`, `ZiraStage`, etc.) unchanged. Quest migration handled by `LKQuestManager.readFromNBT` (name-based → read directly, index-based `Quest_0_Stage` → migrate via legacy map). The old `simbas` map and `homePortalX/Y/Z` keys in world data are ignored on load (no migration — see rationale in Data Storage section).
 
 ### Player Data
 
 No migration needed — `LKPlayerData` is new. Old `receivedQuestBook` was world-level; on first load it won't exist per-player, so all players will get a fresh quest book from Rafiki. This is acceptable.
 
-Old `homePortalX/Y/Z` from world data: could migrate the world-level portal to the first player who logs in. Or just let players re-enter the portal. Simpler to not migrate.
+Old `homePortalX/Y/Z` from world data is not migrated to per-player. Players re-enter the portal to set their location. Simpler than tracking which player the old coords belonged to.
 
 ## Verification
 
