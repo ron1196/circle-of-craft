@@ -45,7 +45,7 @@ public class LKQuestlineManager {
      * Returns the typed enum stage for the given quest.
      * If the quest has not been initialized (empty stageId), returns the first stage.
      */
-    public <T extends Enum<T> & LKStage> T getStage(String questId, Class<T> stageClass) {
+    public <T extends Enum<T> & LKStageId> T getStage(String questId, Class<T> stageClass) {
         String stageId = getStageId(questId);
         if (stageId.isEmpty()) {
             return stageClass.getEnumConstants()[0];
@@ -58,7 +58,7 @@ public class LKQuestlineManager {
      * in the questline's stage order.
      */
     @Nullable
-    private LKStage resolveCurrentStage(String questId) {
+    private LKStageId resolveCurrentStage(String questId) {
         LKQuestline quest = LKQuestRegistry.get(questId);
         if (quest == null) return null;
         String stageId = getStageId(questId);
@@ -79,7 +79,7 @@ public class LKQuestlineManager {
      * Returns true if the current stage for {@code questId} is at or past {@code target}
      * in the questline's stage order.
      */
-    public boolean isStageAtOrPast(String questId, LKStage target) {
+    public boolean isStageAtOrPast(String questId, LKStageId target) {
         LKQuestline quest = LKQuestRegistry.get(questId);
         if (quest == null) return false;
         String stageId = getStageId(questId);
@@ -103,7 +103,7 @@ public class LKQuestlineManager {
         if (!quest.canStart(this)) return false;
 
         LKQuestlineState state = getState(questId);
-        LKStage currentStage = resolveCurrentStage(questId);
+        LKStageId currentStage = resolveCurrentStage(questId);
         if (currentStage == null) return false;
 
         // Already at the last stage (complete) — can't advance further
@@ -112,7 +112,7 @@ public class LKQuestlineManager {
         LKQuestTrigger expected = quest.getTriggerForStage(currentStage);
         if (expected == null || expected != trigger) return false;
 
-        LKQuestStage stageDef = quest.getStageData(currentStage);
+        LKStage stageDef = quest.getStageData(currentStage);
         if (stageDef == null) return false;
 
         if (!checkRequirements(player, stageDef.requirements())) return false;
@@ -124,7 +124,7 @@ public class LKQuestlineManager {
         }
 
         // Advance to the next stage
-        LKStage nextStage = quest.getNextStage(currentStage);
+        LKStageId nextStage = quest.getNextStage(currentStage);
         if (nextStage != null) {
             state.setCurrentStageId(nextStage.name());
         }
@@ -144,12 +144,12 @@ public class LKQuestlineManager {
         if (quest == null) return -1;
         LKPlayerData playerData = LKPlayerDataProvider.get(player);
         String currentStageId = getStageId(questId);
-        List<LKStage> stages = quest.getStageOrder();
+        List<LKStageId> stages = quest.getStageOrder();
         int currentIndex = quest.getStageIndex(currentStageId);
 
         // Iterate through completed stages (before the current one)
         for (int i = 0; i < currentIndex; i++) {
-            LKStage stage = stages.get(i);
+            LKStageId stage = stages.get(i);
             String rewardKey = questId + ":" + stage.name();
             if (playerData.hasClaimedReward(rewardKey)) continue;
             List<LKClaimableReward> rewards = quest.getClaimableRewards(stage);
@@ -163,7 +163,7 @@ public class LKQuestlineManager {
         return -1;
     }
 
-    private void claimRewards(LKQuestline quest, LKStage completedStage, ServerPlayer player) {
+    private void claimRewards(LKQuestline quest, LKStageId completedStage, ServerPlayer player) {
         List<LKClaimableReward> rewards = quest.getClaimableRewards(completedStage);
         if (rewards.isEmpty()) return;
         String rewardKey = quest.getId() + ":" + completedStage.name();
@@ -175,14 +175,14 @@ public class LKQuestlineManager {
         playerData.claimReward(rewardKey);
     }
 
-    private boolean checkRequirements(ServerPlayer player, List<LKQuestStage.ItemRequirement> requirements) {
-        for (LKQuestStage.ItemRequirement req : requirements) {
+    private boolean checkRequirements(ServerPlayer player, List<LKStage.ItemRequirement> requirements) {
+        for (LKStage.ItemRequirement req : requirements) {
             if (!hasRequirement(player, req)) return false;
         }
         return true;
     }
 
-    private boolean hasRequirement(ServerPlayer player, LKQuestStage.ItemRequirement req) {
+    private boolean hasRequirement(ServerPlayer player, LKStage.ItemRequirement req) {
         return switch (req.source()) {
             case MAIN_HAND -> {
                 ItemStack held = player.getMainHandItem();
@@ -201,13 +201,13 @@ public class LKQuestlineManager {
         };
     }
 
-    private void consumeRequirements(ServerPlayer player, List<LKQuestStage.ItemRequirement> requirements) {
-        for (LKQuestStage.ItemRequirement req : requirements) {
+    private void consumeRequirements(ServerPlayer player, List<LKStage.ItemRequirement> requirements) {
+        for (LKStage.ItemRequirement req : requirements) {
             consumeRequirement(player, req);
         }
     }
 
-    private void consumeRequirement(ServerPlayer player, LKQuestStage.ItemRequirement req) {
+    private void consumeRequirement(ServerPlayer player, LKStage.ItemRequirement req) {
         switch (req.source()) {
             case MAIN_HAND -> player.getMainHandItem().shrink(req.count());
             case INVENTORY -> {

@@ -19,13 +19,13 @@ public class LKQuestline {
     private final String id;
     private final String displayName;
     private final Supplier<ItemStack> icon;
-    private final List<LKStage> stageOrder;
-    private final Map<LKStage, LKQuestStage> stageData;
+    private final List<LKStageId> stageOrder;
+    private final Map<LKStageId, LKStage> stageData;
     private final Predicate<LKQuestlineManager> canStart;
     private final String[] prerequisites;
-    private final Map<LKStage, LKQuestTrigger> triggerByStage;
-    private final Map<LKStage, BiConsumer<ServerPlayer, LKQuestlineManager>> customTransitions;
-    private final Map<LKStage, List<LKClaimableReward>> claimableRewards;
+    private final Map<LKStageId, LKQuestTrigger> triggerByStage;
+    private final Map<LKStageId, BiConsumer<ServerPlayer, LKQuestlineManager>> customTransitions;
+    private final Map<LKStageId, List<LKClaimableReward>> claimableRewards;
 
     private LKQuestline(Builder builder) {
         this.id = builder.id;
@@ -39,8 +39,8 @@ public class LKQuestline {
         this.triggerByStage = Map.copyOf(builder.triggerByStage);
         this.customTransitions = Map.copyOf(builder.customTransitions);
 
-        Map<LKStage, List<LKClaimableReward>> rewardsCopy = new HashMap<>();
-        for (Map.Entry<LKStage, List<LKClaimableReward>> entry : builder.claimableRewards.entrySet()) {
+        Map<LKStageId, List<LKClaimableReward>> rewardsCopy = new HashMap<>();
+        for (Map.Entry<LKStageId, List<LKClaimableReward>> entry : builder.claimableRewards.entrySet()) {
             rewardsCopy.put(entry.getKey(), List.copyOf(entry.getValue()));
         }
         this.claimableRewards = Collections.unmodifiableMap(rewardsCopy);
@@ -58,7 +58,7 @@ public class LKQuestline {
         return icon.get();
     }
 
-    public List<LKStage> getStageOrder() {
+    public List<LKStageId> getStageOrder() {
         return stageOrder;
     }
 
@@ -67,12 +67,12 @@ public class LKQuestline {
     }
 
     @Nullable
-    public LKQuestStage getStageData(LKStage stage) {
+    public LKStage getStageData(LKStageId stage) {
         return stageData.get(stage);
     }
 
-    public String getObjectiveByStage(LKStage stage) {
-        LKQuestStage data = stageData.get(stage);
+    public String getObjectiveByStage(LKStageId stage) {
+        LKStage data = stageData.get(stage);
         return data != null ? data.objectiveText() : "";
     }
 
@@ -80,7 +80,7 @@ public class LKQuestline {
      * Get the objective text for a stage identified by its string name.
      */
     public String getObjectiveByStageId(String stageId) {
-        LKStage stage = findStageByName(stageId);
+        LKStageId stage = findStageByName(stageId);
         return stage != null ? getObjectiveByStage(stage) : "";
     }
 
@@ -93,23 +93,23 @@ public class LKQuestline {
     }
 
     @Nullable
-    public LKQuestTrigger getTriggerForStage(LKStage stage) {
+    public LKQuestTrigger getTriggerForStage(LKStageId stage) {
         return triggerByStage.get(stage);
     }
 
     @Nullable
-    public BiConsumer<ServerPlayer, LKQuestlineManager> getCustomTransition(LKStage stage) {
+    public BiConsumer<ServerPlayer, LKQuestlineManager> getCustomTransition(LKStageId stage) {
         return customTransitions.get(stage);
     }
 
-    public List<LKClaimableReward> getClaimableRewards(LKStage stage) {
+    public List<LKClaimableReward> getClaimableRewards(LKStageId stage) {
         return claimableRewards.getOrDefault(stage, List.of());
     }
 
     /**
      * Returns the first stage in this questline's progression.
      */
-    public LKStage getFirstStage() {
+    public LKStageId getFirstStage() {
         return stageOrder.get(0);
     }
 
@@ -117,7 +117,7 @@ public class LKQuestline {
      * Returns the next stage after {@code current}, or null if current is the last stage.
      */
     @Nullable
-    public LKStage getNextStage(LKStage current) {
+    public LKStageId getNextStage(LKStageId current) {
         int idx = stageOrder.indexOf(current);
         if (idx < 0 || idx >= stageOrder.size() - 1) return null;
         return stageOrder.get(idx + 1);
@@ -126,7 +126,7 @@ public class LKQuestline {
     /**
      * Returns true if the given stage is the last stage in this questline.
      */
-    public boolean isLastStage(LKStage stage) {
+    public boolean isLastStage(LKStageId stage) {
         return !stageOrder.isEmpty() && stageOrder.get(stageOrder.size() - 1).equals(stage);
     }
 
@@ -159,14 +159,14 @@ public class LKQuestline {
     /**
      * Returns the index of a stage in the progression order, or -1 if not found.
      */
-    public int getStageIndex(LKStage stage) {
+    public int getStageIndex(LKStageId stage) {
         return stageOrder.indexOf(stage);
     }
 
     /**
      * Returns true if {@code current} is at or past {@code target} in the stage order.
      */
-    public boolean isAtOrPast(String currentStageId, LKStage target) {
+    public boolean isAtOrPast(String currentStageId, LKStageId target) {
         int currentIdx = getStageIndex(currentStageId);
         int targetIdx = getStageIndex(target);
         return currentIdx >= 0 && targetIdx >= 0 && currentIdx >= targetIdx;
@@ -176,9 +176,9 @@ public class LKQuestline {
      * Find a stage enum value by its string name.
      */
     @Nullable
-    public LKStage findStageByName(String stageId) {
+    public LKStageId findStageByName(String stageId) {
         if (stageId.isEmpty()) return null;
-        for (LKStage stage : stageOrder) {
+        for (LKStageId stage : stageOrder) {
             if (stage.name().equals(stageId)) return stage;
         }
         return null;
@@ -192,13 +192,13 @@ public class LKQuestline {
         private final String id;
         private String displayName = "";
         private Supplier<ItemStack> icon = () -> ItemStack.EMPTY;
-        private final List<LKStage> stageOrder = new ArrayList<>();
-        private final Map<LKStage, LKQuestStage> stageData = new LinkedHashMap<>();
+        private final List<LKStageId> stageOrder = new ArrayList<>();
+        private final Map<LKStageId, LKStage> stageData = new LinkedHashMap<>();
         private Predicate<LKQuestlineManager> canStart = m -> true;
         private String[] prerequisites = null;
-        private final Map<LKStage, LKQuestTrigger> triggerByStage = new HashMap<>();
-        private final Map<LKStage, BiConsumer<ServerPlayer, LKQuestlineManager>> customTransitions = new HashMap<>();
-        private final Map<LKStage, List<LKClaimableReward>> claimableRewards = new HashMap<>();
+        private final Map<LKStageId, LKQuestTrigger> triggerByStage = new HashMap<>();
+        private final Map<LKStageId, BiConsumer<ServerPlayer, LKQuestlineManager>> customTransitions = new HashMap<>();
+        private final Map<LKStageId, List<LKClaimableReward>> claimableRewards = new HashMap<>();
 
         private Builder(String id) {
             this.id = id;
@@ -214,7 +214,7 @@ public class LKQuestline {
             return this;
         }
 
-        public Builder stage(LKStage stageId, LKQuestStage data) {
+        public Builder stage(LKStageId stageId, LKStage data) {
             this.stageOrder.add(stageId);
             this.stageData.put(stageId, data);
             return this;
@@ -230,17 +230,17 @@ public class LKQuestline {
             return this;
         }
 
-        public Builder trigger(LKStage stage, LKQuestTrigger trigger) {
+        public Builder trigger(LKStageId stage, LKQuestTrigger trigger) {
             this.triggerByStage.put(stage, trigger);
             return this;
         }
 
-        public Builder customTransition(LKStage stage, BiConsumer<ServerPlayer, LKQuestlineManager> action) {
+        public Builder customTransition(LKStageId stage, BiConsumer<ServerPlayer, LKQuestlineManager> action) {
             this.customTransitions.put(stage, action);
             return this;
         }
 
-        public Builder claimableReward(LKStage stage, LKClaimableReward reward) {
+        public Builder claimableReward(LKStageId stage, LKClaimableReward reward) {
             this.claimableRewards.computeIfAbsent(stage, k -> new ArrayList<>()).add(reward);
             return this;
         }

@@ -6,8 +6,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import static io.github.ron1196.thelionking.quest.LKQuestStage.ItemRequirement;
-import static io.github.ron1196.thelionking.quest.LKQuestStage.Source;
+import static io.github.ron1196.thelionking.quest.LKStage.ItemRequirement;
+import static io.github.ron1196.thelionking.quest.LKStage.Source;
 import static io.github.ron1196.thelionking.quest.LKQuestTrigger.*;
 import static io.github.ron1196.thelionking.quest.RafikiStage.*;
 import static io.github.ron1196.thelionking.quest.OutlandsStage.*;
@@ -38,23 +38,23 @@ public class LKQuestRegistry {
         return LKQuestline.builder("rafiki")
                 .displayName("Rafiki's Quest")
                 .icon(() -> new ItemStack(LKItems.RAFIKI_STICK.get()))
-                .stage(FIND_RAFIKI, new LKQuestStage("Find Rafiki and speak to him"))
-                .stage(COLLECT_BONES, new LKQuestStage(
+                .stage(FIND_RAFIKI, new LKStage("Find Rafiki and speak to him"))
+                .stage(COLLECT_BONES, new LKStage(
                         "Bring Rafiki 64 hyena bones",
                         List.of(new ItemRequirement(LKItems.HYENA_BONE, 64)))
                 )
-                .stage(DEFEAT_SCAR, new LKQuestStage("Defeat Scar"))
-                .stage(RETURN_AFTER_SCAR, new LKQuestStage("Return to Rafiki"))
-                .stage(COLLECT_TERMITES, new LKQuestStage(
+                .stage(DEFEAT_SCAR, new LKStage("Defeat Scar"))
+                .stage(RETURN_AFTER_SCAR, new LKStage("Return to Rafiki"))
+                .stage(COLLECT_TERMITES, new LKStage(
                         "Bring Rafiki 4 ground termites",
                         List.of(new ItemRequirement(LKItems.TERMITE_DUST, 4)))
                 )
-                .stage(COLLECT_MANGOES, new LKQuestStage(
+                .stage(COLLECT_MANGOES, new LKStage(
                         "Bring Rafiki 4 ground mangoes",
                         List.of(new ItemRequirement(LKItems.MANGO_DUST, 4)))
                 )
-                .stage(USE_STAR_ALTAR, new LKQuestStage("Craft a Star Altar and use Rafiki Dust on it"))
-                .stage(RafikiStage.COMPLETE, new LKQuestStage("Quest complete"))
+                .stage(USE_STAR_ALTAR, new LKStage("Craft a Star Altar and use Rafiki Dust on it"))
+                .stage(RafikiStage.COMPLETE, new LKStage("Quest complete"))
                 .claimableReward(COLLECT_BONES, new LKClaimableReward(LKItems.RAFIKI_STICK, 1))
                 .trigger(FIND_RAFIKI, RAFIKI_TALK)
                 .trigger(COLLECT_BONES, RAFIKI_TALK)
@@ -72,25 +72,25 @@ public class LKQuestRegistry {
                 .icon(() -> new ItemStack(LKItems.WAYWARD_FEATHER.get()))
                 .canStart(manager -> manager.isComplete("rafiki"))
                 .prerequisites("Complete Rafiki's Quest")
-                .stage(OutlandsStage.ENTER_OUTLANDS, new LKQuestStage("Enter the Outlands"))
-                .stage(OutlandsStage.FIND_ZIRA, new LKQuestStage("Find Zira in the Outlands"))
-                .stage(OutlandsStage.COLLECT_INGOTS, new LKQuestStage(
+                .stage(OutlandsStage.ENTER_OUTLANDS, new LKStage("Enter the Outlands"))
+                .stage(OutlandsStage.FIND_ZIRA, new LKStage("Find Zira in the Outlands"))
+                .stage(OutlandsStage.COLLECT_INGOTS, new LKStage(
                         "Bring Zira 5 kivulite and 2 silver ingots",
                         List.of(
                                 new ItemRequirement(LKItems.KIVULITE, 5, Source.MAIN_HAND),
                                 new ItemRequirement(LKItems.SILVER_INGOT, 2, Source.INVENTORY)))
                 )
-                .stage(OutlandsStage.THROW_IN_OUTWATER, new LKQuestStage("Throw the ingots into the Outwater"))
-                .stage(OutlandsStage.COLLECT_FEATHERS, new LKQuestStage(
+                .stage(OutlandsStage.THROW_IN_OUTWATER, new LKStage("Throw the ingots into the Outwater"))
+                .stage(OutlandsStage.COLLECT_FEATHERS, new LKStage(
                         "Bring Zira 3 wayward feathers",
                         List.of(new ItemRequirement(LKItems.WAYWARD_FEATHER, 3)))
                 )
-                .stage(OutlandsStage.FOLLOW_OUTLANDERS, new LKQuestStage("Follow the Outlanders"))
-                .stage(OutlandsStage.STAGE_6, new LKQuestStage("Continue exploring the Outlands"))
-                .stage(OutlandsStage.STAGE_7, new LKQuestStage("Continue exploring the Outlands"))
-                .stage(OutlandsStage.STAGE_8, new LKQuestStage("Continue exploring the Outlands"))
-                .stage(OutlandsStage.DEFEAT_ZIRA, new LKQuestStage("Defeat Zira"))
-                .stage(OutlandsStage.COMPLETE, new LKQuestStage("Quest complete"))
+                .stage(OutlandsStage.FOLLOW_OUTLANDERS, new LKStage("Follow the Outlanders"))
+                .stage(OutlandsStage.STAGE_6, new LKStage("Continue exploring the Outlands"))
+                .stage(OutlandsStage.STAGE_7, new LKStage("Continue exploring the Outlands"))
+                .stage(OutlandsStage.STAGE_8, new LKStage("Continue exploring the Outlands"))
+                .stage(OutlandsStage.DEFEAT_ZIRA, new LKStage("Defeat Zira"))
+                .stage(OutlandsStage.COMPLETE, new LKStage("Quest complete"))
                 .trigger(OutlandsStage.ENTER_OUTLANDS, LKQuestTrigger.ENTER_OUTLANDS)
                 .trigger(OutlandsStage.FIND_ZIRA, ZIRA_TALK)
                 .trigger(OutlandsStage.COLLECT_INGOTS, ZIRA_TALK)

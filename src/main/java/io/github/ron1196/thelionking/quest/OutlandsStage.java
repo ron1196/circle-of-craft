@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.quest;
 
-public enum OutlandsStage implements LKStage {
+public enum OutlandsStage implements LKStageId {
     ENTER_OUTLANDS,
     FIND_ZIRA,
     COLLECT_INGOTS,

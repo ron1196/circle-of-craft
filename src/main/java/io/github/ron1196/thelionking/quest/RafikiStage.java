@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.quest;
 
-public enum RafikiStage implements LKStage {
+public enum RafikiStage implements LKStageId {
     FIND_RAFIKI,
     COLLECT_BONES,
     DEFEAT_SCAR,
