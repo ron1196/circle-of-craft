@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.entity.hostile;
 
-import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
@@ -111,7 +111,7 @@ public class TermiteQueenEntity extends Monster {
                 this.getBoundingBox().inflate(TERMITE_SEARCH_RADIUS)).size();
         if (nearbyCount >= MAX_NEARBY_TERMITES) return;
 
-        TermiteEntity termite = LKEntityTypes.TERMITE.get().create(this.level());
+        TermiteEntity termite = EntityTypes.TERMITE.get().create(this.level());
         if (termite == null) return;
         termite.setExploding(exploding);
         termite.moveTo(

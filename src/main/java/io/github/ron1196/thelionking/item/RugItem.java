@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.item;
 
-import io.github.ron1196.thelionking.entity.ScarRugEntity;
-import io.github.ron1196.thelionking.registry.LKSoundEvents;
+import io.github.ron1196.thelionking.entity.RugEntity;
+import io.github.ron1196.thelionking.registry.SoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -13,11 +13,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 
-public class ScarRugItem extends Item {
+public class RugItem extends Item {
 
     private final int rugType;
 
-    public ScarRugItem(int rugType, Properties properties) {
+    public RugItem(int rugType, Properties properties) {
         super(properties);
         this.rugType = rugType;
     }
@@ -42,15 +42,21 @@ public class ScarRugItem extends Item {
         }
 
         if (!level.isClientSide) {
-            ScarRugEntity rug = new ScarRugEntity(level, rugType);
+            RugEntity rug = new RugEntity(level, rugType);
             float yaw = (context.getPlayer().getYRot() % 360.0F) + 180.0F;
             rug.absMoveTo(abovePos.getX() + 0.5D, abovePos.getY(), abovePos.getZ() + 0.5D, yaw, 0.0F);
 
             AABB aabb = rug.getBoundingBox();
             if (level.noCollision(rug, aabb) && !level.containsAnyLiquid(aabb)) {
                 level.addFreshEntity(rug);
-                level.playSound(null, rug, LKSoundEvents.LION_AMBIENT.get(), SoundSource.NEUTRAL,
-                        1.0F, (level.random.nextFloat() - level.random.nextFloat()) * 0.2F + 1.0F);
+                level.playSound(
+                        null,
+                        rug,
+                        SoundEvents.LION_AMBIENT.get(),
+                        SoundSource.NEUTRAL,
+                        1.0F,
+                        (level.random.nextFloat() - level.random.nextFloat()) * 0.2F + 1.0F
+                );
                 context.getItemInHand().shrink(1);
                 return InteractionResult.CONSUME;
             } else {

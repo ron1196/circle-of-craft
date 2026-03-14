@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.entity.projectile;
 
 import io.github.ron1196.thelionking.entity.animal.ZazuEntity;
-import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,7 +17,7 @@ public class ZazuEggEntity extends ThrowableItemProjectile {
     }
 
     public ZazuEggEntity(Level level, LivingEntity shooter) {
-        super(LKEntityTypes.ZAZU_EGG.get(), shooter, level);
+        super(EntityTypes.ZAZU_EGG.get(), shooter, level);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class ZazuEggEntity extends ThrowableItemProjectile {
         if (!this.level().isClientSide) {
             // 1/8 chance to spawn a Zazu
             if (this.random.nextInt(8) == 0) {
-                ZazuEntity zazu = LKEntityTypes.ZAZU.get().create(this.level());
+                ZazuEntity zazu = EntityTypes.ZAZU.get().create(this.level());
                 if (zazu != null) {
                     zazu.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
                     this.level().addFreshEntity(zazu);

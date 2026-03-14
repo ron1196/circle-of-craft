@@ -9,7 +9,7 @@ import net.minecraft.world.entity.Mob;
 
 /**
  * Generic placeholder model for NPC entities that reuses existing animal model meshes.
- * Typed to Mob instead of LKAnimal to avoid ClassCastException.
+ * Typed to Mob instead of LionKingAnimal to avoid ClassCastException.
  */
 public class NpcPlaceholderModel extends EntityModel<Mob> {
 

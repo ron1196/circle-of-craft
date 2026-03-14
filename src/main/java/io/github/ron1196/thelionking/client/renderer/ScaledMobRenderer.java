@@ -7,33 +7,27 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
+import org.jetbrains.annotations.NotNull;
 
-public class LKNpcRenderer extends MobRenderer<Mob, EntityModel<Mob>> {
+public class ScaledMobRenderer<T extends Mob, M extends EntityModel<T>> extends MobRenderer<T, M> {
 
     private final ResourceLocation texture;
     private final float scale;
 
-    public LKNpcRenderer(EntityRendererProvider.Context context, EntityModel<Mob> model,
-                         String textureName, float shadowRadius, float scale) {
+    public ScaledMobRenderer(EntityRendererProvider.Context context, M model,
+                             String textureName, float shadowRadius, float scale) {
         super(context, model, shadowRadius);
         this.texture = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/" + textureName + ".png");
         this.scale = scale;
     }
 
-    public LKNpcRenderer(EntityRendererProvider.Context context, EntityModel<Mob> model,
-                         String textureName, float shadowRadius) {
-        this(context, model, textureName, shadowRadius, 1.0F);
+    @Override
+    protected void scale(@NotNull T entity, PoseStack poseStack, float partialTick) {
+        poseStack.scale(scale, scale, scale);
     }
 
     @Override
-    protected void scale(Mob entity, PoseStack poseStack, float partialTick) {
-        if (scale != 1.0F) {
-            poseStack.scale(scale, scale, scale);
-        }
-    }
-
-    @Override
-    public ResourceLocation getTextureLocation(Mob entity) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull T entity) {
         return texture;
     }
 }

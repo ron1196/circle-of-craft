@@ -1,8 +1,8 @@
 package io.github.ron1196.thelionking.entity.animal;
 
 import io.github.ron1196.thelionking.entity.ai.LionAttackGoal;
-import io.github.ron1196.thelionking.registry.LKEntityTypes;
-import io.github.ron1196.thelionking.registry.LKSoundEvents;
+import io.github.ron1196.thelionking.registry.EntityTypes;
+import io.github.ron1196.thelionking.registry.SoundEvents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class LionessEntity extends LKAnimal {
+public class LionessEntity extends LionKingAnimal {
 
     public LionessEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
@@ -34,7 +34,7 @@ public class LionessEntity extends LKAnimal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return LKAnimal.createLKAnimalAttributes()
+        return LionKingAnimal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 16.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.ATTACK_DAMAGE, 3.0);
@@ -42,17 +42,17 @@ public class LionessEntity extends LKAnimal {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return LKSoundEvents.LION_AMBIENT.get();
+        return SoundEvents.LION_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return LKSoundEvents.LION_ANGRY.get();
+        return SoundEvents.LION_ANGRY.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return LKSoundEvents.LION_DEATH.get();
+        return SoundEvents.LION_DEATH.get();
     }
 
     @Override
@@ -63,6 +63,6 @@ public class LionessEntity extends LKAnimal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob mate) {
-        return LKEntityTypes.LION.get().create(level);
+        return EntityTypes.LION.get().create(level);
     }
 }

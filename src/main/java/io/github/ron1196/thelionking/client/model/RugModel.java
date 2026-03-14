@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import io.github.ron1196.thelionking.entity.ScarRugEntity;
+import io.github.ron1196.thelionking.entity.RugEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -12,7 +12,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import org.jetbrains.annotations.NotNull;
 
-public class ScarRugModel extends EntityModel<ScarRugEntity> {
+public class RugModel extends EntityModel<RugEntity> {
 
     private static final float DEG_TO_RAD = (float) Math.PI / 180.0F;
 
@@ -25,7 +25,7 @@ public class ScarRugModel extends EntityModel<ScarRugEntity> {
     private final ModelPart leg4;
     private final ModelPart tail;
 
-    public ScarRugModel(ModelPart root) {
+    public RugModel(ModelPart root) {
         this.body = root.getChild("body");
         this.mane = root.getChild("mane");
         this.head = root.getChild("head");
@@ -78,7 +78,7 @@ public class ScarRugModel extends EntityModel<ScarRugEntity> {
     }
 
     @Override
-    public void setupAnim(@NotNull ScarRugEntity entity, float limbSwing, float limbSwingAmount,
+    public void setupAnim(@NotNull RugEntity entity, float limbSwing, float limbSwingAmount,
                           float ageInTicks, float netHeadYaw, float headPitch) {
         // Static rug - no animation needed
     }

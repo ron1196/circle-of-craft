@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.entity.projectile;
 
 import io.github.ron1196.thelionking.entity.hostile.TermiteEntity;
-import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,7 +17,7 @@ public class ThrownTermiteEntity extends ThrowableItemProjectile {
     }
 
     public ThrownTermiteEntity(Level level, LivingEntity shooter) {
-        super(LKEntityTypes.THROWN_TERMITE.get(), shooter, level);
+        super(EntityTypes.THROWN_TERMITE.get(), shooter, level);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class ThrownTermiteEntity extends ThrowableItemProjectile {
     protected void onHit(HitResult result) {
         super.onHit(result);
         if (!this.level().isClientSide) {
-            TermiteEntity termite = LKEntityTypes.TERMITE.get().create(this.level());
+            TermiteEntity termite = EntityTypes.TERMITE.get().create(this.level());
             if (termite != null) {
                 termite.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
                 this.level().addFreshEntity(termite);

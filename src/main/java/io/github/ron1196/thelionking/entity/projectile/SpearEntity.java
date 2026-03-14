@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.entity.projectile;
 
-import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -24,7 +24,7 @@ public class SpearEntity extends AbstractArrow implements net.minecraft.world.en
     }
 
     public SpearEntity(Level level, LivingEntity shooter, boolean isPoisoned) {
-        super(LKEntityTypes.SPEAR.get(), shooter, level);
+        super(EntityTypes.SPEAR.get(), shooter, level);
         setPoisoned(isPoisoned);
         this.pickup = Pickup.ALLOWED;
     }

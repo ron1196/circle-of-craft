@@ -7,7 +7,7 @@ import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
 import io.github.ron1196.thelionking.quest.stage.StageTrigger;
 import io.github.ron1196.thelionking.registry.LKBlocks;
-import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -59,7 +59,7 @@ public class RafikiDustItem extends Item {
         level.explode(player, x, y + 1, z, 0F, Level.ExplosionInteraction.NONE);
 
         // Spawn baby Simba
-        SimbaEntity simba = LKEntityTypes.SIMBA.get().create(level);
+        SimbaEntity simba = EntityTypes.SIMBA.get().create(level);
         if (simba != null) {
             simba.moveTo(x + 0.5, y + 1, z + 0.5, 0F, 0F);
             simba.setBaby(true);

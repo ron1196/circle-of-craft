@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
 import io.github.ron1196.thelionking.registry.LKBlocks;
-import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.LeavesBlock;
@@ -68,9 +68,9 @@ public class TimonPumbaaLodgeFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         // Spawn Timon and Pumbaa inside
-        FeatureHelper.spawnEntity(level, LKEntityTypes.TIMON.get(),
+        FeatureHelper.spawnEntity(level, EntityTypes.TIMON.get(),
                 pos.getX() + 2.5, pos.getY() + 1, pos.getZ() + 2.5);
-        FeatureHelper.spawnEntity(level, LKEntityTypes.PUMBAA.get(),
+        FeatureHelper.spawnEntity(level, EntityTypes.PUMBAA.get(),
                 pos.getX() + 1.5, pos.getY() + 1, pos.getZ() + 2.5);
 
         return true;

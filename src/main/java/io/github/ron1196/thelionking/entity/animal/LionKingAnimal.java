@@ -30,12 +30,12 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-public abstract class LKAnimal extends Animal {
+public abstract class LionKingAnimal extends Animal {
 
     protected static final Random QUEST_RANDOM = new Random();
     private final Map<UUID, AnimalFavorEntry> animalQuests = new HashMap<>();
 
-    protected LKAnimal(EntityType<? extends Animal> type, Level level) {
+    protected LionKingAnimal(EntityType<? extends Animal> type, Level level) {
         super(type, level);
     }
 

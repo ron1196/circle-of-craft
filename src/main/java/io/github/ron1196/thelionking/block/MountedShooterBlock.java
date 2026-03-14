@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.block;
 
 import io.github.ron1196.thelionking.entity.projectile.DartEntity;
-import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -50,7 +50,7 @@ public class MountedShooterBlock extends Block {
         double y = pos.getY() + 0.5 + facing.getStepY() * 0.7;
         double z = pos.getZ() + 0.5 + facing.getStepZ() * 0.7;
 
-        DartEntity dart = new DartEntity(LKEntityTypes.DART.get(), level);
+        DartEntity dart = new DartEntity(EntityTypes.DART.get(), level);
         dart.setPos(x, y, z);
         dart.shoot(facing.getStepX(), facing.getStepY(), facing.getStepZ(), 1.5F, 1.0F);
         level.addFreshEntity(dart);

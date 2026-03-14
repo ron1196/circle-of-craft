@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
 import io.github.ron1196.thelionking.registry.LKBlocks;
-import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -86,7 +86,7 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
         // Outlands Altar
         placeAt(level, i, j + 8, k, OUTLANDS_ALTAR);
 
-        FeatureHelper.spawnEntity(level, LKEntityTypes.ZIRA.get(), i + 0.5, j + ZIRA_Y_OFFSET, k + 0.5);
+        FeatureHelper.spawnEntity(level, EntityTypes.ZIRA.get(), i + 0.5, j + ZIRA_Y_OFFSET, k + 0.5);
 
         return true;
     }

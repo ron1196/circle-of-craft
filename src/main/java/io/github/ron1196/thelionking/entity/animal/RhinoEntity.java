@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.entity.animal;
 
-import io.github.ron1196.thelionking.registry.LKSoundEvents;
+import io.github.ron1196.thelionking.registry.SoundEvents;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -13,7 +13,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class RhinoEntity extends LKAnimal {
+public class RhinoEntity extends LionKingAnimal {
 
     public RhinoEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
@@ -27,7 +27,7 @@ public class RhinoEntity extends LKAnimal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return LKAnimal.createLKAnimalAttributes()
+        return LionKingAnimal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 30.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.ATTACK_DAMAGE, 5.0)
@@ -37,17 +37,17 @@ public class RhinoEntity extends LKAnimal {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return LKSoundEvents.RHINO_AMBIENT.get();
+        return SoundEvents.RHINO_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(@NotNull DamageSource source) {
-        return LKSoundEvents.RHINO_HURT.get();
+        return SoundEvents.RHINO_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return LKSoundEvents.RHINO_DEATH.get();
+        return SoundEvents.RHINO_DEATH.get();
     }
 
     @Override

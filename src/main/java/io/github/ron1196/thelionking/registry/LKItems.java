@@ -1,14 +1,8 @@
 package io.github.ron1196.thelionking.registry;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
-import io.github.ron1196.thelionking.item.DartShooterItem;
-import io.github.ron1196.thelionking.item.KivuliteAxeItem;
-import io.github.ron1196.thelionking.item.KivulitePickaxeItem;
-import io.github.ron1196.thelionking.item.KivuliteShovelItem;
-import io.github.ron1196.thelionking.item.KivuliteSwordItem;
-import io.github.ron1196.thelionking.item.NoteItem;
-import io.github.ron1196.thelionking.item.PumbaaBombItem;
-import io.github.ron1196.thelionking.item.SpearItem;
+import io.github.ron1196.thelionking.entity.RugEntity;
+import io.github.ron1196.thelionking.item.*;
 import io.github.ron1196.thelionking.item.tier.LKArmorMaterials;
 import io.github.ron1196.thelionking.item.tier.LKToolTiers;
 import net.minecraft.world.food.FoodProperties;
@@ -485,61 +479,61 @@ public class LKItems {
 
     // ========== Phase 3: Spawn Eggs ==========
     public static final RegistryObject<Item> LION_SPAWN_EGG = ITEMS.register("lion_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.LION, 0xD4A030, 0x8B6914, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.LION, 0xD4A030, 0x8B6914, new Item.Properties()));
     public static final RegistryObject<Item> LIONESS_SPAWN_EGG = ITEMS.register("lioness_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.LIONESS, 0xD4A030, 0xC8A848, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.LIONESS, 0xD4A030, 0xC8A848, new Item.Properties()));
     public static final RegistryObject<Item> ZEBRA_SPAWN_EGG = ITEMS.register("zebra_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.ZEBRA, 0xFFFFFF, 0x222222, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.ZEBRA, 0xFFFFFF, 0x222222, new Item.Properties()));
     public static final RegistryObject<Item> GIRAFFE_SPAWN_EGG = ITEMS.register("giraffe_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.GIRAFFE, 0xE8B84B, 0x8B5E3C, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.GIRAFFE, 0xE8B84B, 0x8B5E3C, new Item.Properties()));
     public static final RegistryObject<Item> RHINO_SPAWN_EGG = ITEMS.register("rhino_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.RHINO, 0x808080, 0x505050, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.RHINO, 0x808080, 0x505050, new Item.Properties()));
     public static final RegistryObject<Item> GEMSBOK_SPAWN_EGG = ITEMS.register("gemsbok_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.GEMSBOK, 0xC8A878, 0x4A3B2A, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.GEMSBOK, 0xC8A878, 0x4A3B2A, new Item.Properties()));
     public static final RegistryObject<Item> DIKDIK_SPAWN_EGG = ITEMS.register("dikdik_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.DIKDIK, 0xB8956A, 0x8B7355, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.DIKDIK, 0xB8956A, 0x8B7355, new Item.Properties()));
     public static final RegistryObject<Item> FLAMINGO_SPAWN_EGG = ITEMS.register("flamingo_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.FLAMINGO, 0xFF69B4, 0xFF1493, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.FLAMINGO, 0xFF69B4, 0xFF1493, new Item.Properties()));
     public static final RegistryObject<Item> ZAZU_SPAWN_EGG = ITEMS.register("zazu_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.ZAZU, 0x4169E1, 0xFFD700, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.ZAZU, 0x4169E1, 0xFFD700, new Item.Properties()));
     public static final RegistryObject<Item> BUG_SPAWN_EGG = ITEMS.register("bug_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.BUG, 0x4B3621, 0x2E1F0F, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.BUG, 0x4B3621, 0x2E1F0F, new Item.Properties()));
 
     // ========== Phase 4: Hostile Spawn Eggs ==========
     public static final RegistryObject<Item> HYENA_SPAWN_EGG = ITEMS.register("hyena_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.HYENA, 0x8B7355, 0x4A3B2A, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.HYENA, 0x8B7355, 0x4A3B2A, new Item.Properties()));
     public static final RegistryObject<Item> SKELETAL_HYENA_SPAWN_EGG = ITEMS.register("skeletal_hyena_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.SKELETAL_HYENA, 0xC8C8C8, 0x505050, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.SKELETAL_HYENA, 0xC8C8C8, 0x505050, new Item.Properties()));
     public static final RegistryObject<Item> OUTLANDER_SPAWN_EGG = ITEMS.register("outlander_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.OUTLANDER, 0x5C3A1E, 0x3A2510, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.OUTLANDER, 0x5C3A1E, 0x3A2510, new Item.Properties()));
     public static final RegistryObject<Item> OUTLANDESS_SPAWN_EGG = ITEMS.register("outlandess_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.OUTLANDESS, 0x7A5030, 0x4A3020, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.OUTLANDESS, 0x7A5030, 0x4A3020, new Item.Properties()));
     public static final RegistryObject<Item> VULTURE_SPAWN_EGG = ITEMS.register("vulture_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.VULTURE, 0x2A1F14, 0x8B0000, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.VULTURE, 0x2A1F14, 0x8B0000, new Item.Properties()));
     public static final RegistryObject<Item> CROCODILE_SPAWN_EGG = ITEMS.register("crocodile_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.CROCODILE, 0x3B5323, 0x1A2E0A, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.CROCODILE, 0x3B5323, 0x1A2E0A, new Item.Properties()));
     public static final RegistryObject<Item> TERMITE_SPAWN_EGG = ITEMS.register("termite_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.TERMITE, 0xD2B48C, 0x8B6914, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.TERMITE, 0xD2B48C, 0x8B6914, new Item.Properties()));
     public static final RegistryObject<Item> TERMITE_QUEEN_SPAWN_EGG = ITEMS.register("termite_queen_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.TERMITE_QUEEN, 0xD2B48C, 0xFF4500, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.TERMITE_QUEEN, 0xD2B48C, 0xFF4500, new Item.Properties()));
 
     // ========== Ticket Lion Spawn Egg ==========
     public static final RegistryObject<Item> TICKET_LION_SPAWN_EGG = ITEMS.register("ticket_lion_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.TICKET_LION, 0xD4A030, 0x4169E1, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.TICKET_LION, 0xD4A030, 0x4169E1, new Item.Properties()));
 
     // ========== NPC Spawn Eggs ==========
     public static final RegistryObject<Item> RAFIKI_SPAWN_EGG = ITEMS.register("rafiki_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.RAFIKI, 0x8B4513, 0xFFD700, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.RAFIKI, 0x8B4513, 0xFFD700, new Item.Properties()));
     public static final RegistryObject<Item> SIMBA_SPAWN_EGG = ITEMS.register("simba_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.SIMBA, 0xD4A030, 0xFFD700, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.SIMBA, 0xD4A030, 0xFFD700, new Item.Properties()));
     public static final RegistryObject<Item> TIMON_SPAWN_EGG = ITEMS.register("timon_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.TIMON, 0xB8860B, 0xFFE4B5, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.TIMON, 0xB8860B, 0xFFE4B5, new Item.Properties()));
     public static final RegistryObject<Item> PUMBAA_SPAWN_EGG = ITEMS.register("pumbaa_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.PUMBAA, 0x8B4513, 0x654321, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.PUMBAA, 0x8B4513, 0x654321, new Item.Properties()));
     public static final RegistryObject<Item> SCAR_SPAWN_EGG = ITEMS.register("scar_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.SCAR, 0x2F1A00, 0x000000, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.SCAR, 0x2F1A00, 0x000000, new Item.Properties()));
     public static final RegistryObject<Item> ZIRA_SPAWN_EGG = ITEMS.register("zira_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.ZIRA, 0x5C3A1E, 0x8B0000, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.ZIRA, 0x5C3A1E, 0x8B0000, new Item.Properties()));
 
     // ========== Jar Items ==========
     public static final RegistryObject<Item> JAR_EMPTY = ITEMS.register("jar_empty",
@@ -615,15 +609,13 @@ public class LKItems {
 
     // ========== Scar / Zira Rugs ==========
     public static final RegistryObject<Item> SCAR_RUG = ITEMS.register("scar_rug",
-            () -> new io.github.ron1196.thelionking.item.ScarRugItem(
-                    io.github.ron1196.thelionking.entity.ScarRugEntity.TYPE_SCAR, new Item.Properties().stacksTo(1)));
+            () -> new RugItem(RugEntity.TYPE_SCAR, new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> ZIRA_RUG = ITEMS.register("zira_rug",
-            () -> new io.github.ron1196.thelionking.item.ScarRugItem(
-                    io.github.ron1196.thelionking.entity.ScarRugEntity.TYPE_ZIRA, new Item.Properties().stacksTo(1)));
+            () -> new RugItem(RugEntity.TYPE_ZIRA, new Item.Properties().stacksTo(1)));
 
     // ========== Skeletal Hyena Head Spawn Egg ==========
     public static final RegistryObject<Item> SKELETAL_HYENA_HEAD_SPAWN_EGG = ITEMS.register("skeletal_hyena_head_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.SKELETAL_HYENA_HEAD, 0xC8C8C8, 0x3A3A3A, new Item.Properties()));
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(EntityTypes.SKELETAL_HYENA_HEAD, 0xC8C8C8, 0x3A3A3A, new Item.Properties()));
 
     // ========== Notes (for Bongo Drum) ==========
     public static final RegistryObject<Item> NOTE_A = ITEMS.register("note_a",

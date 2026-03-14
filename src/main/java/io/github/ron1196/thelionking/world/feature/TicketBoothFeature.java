@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
 import io.github.ron1196.thelionking.registry.LKBlocks;
-import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.Half;
-import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -327,7 +326,7 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         // ============================================================
         // TICKET LION NPC at origin
         // ============================================================
-        FeatureHelper.spawnEntity(level, LKEntityTypes.TICKET_LION.get(), i + 0.5, j + 1, k + 0.5);
+        FeatureHelper.spawnEntity(level, EntityTypes.TICKET_LION.get(), i + 0.5, j + 1, k + 0.5);
 
         // ============================================================
         // CHEST with TRAPDOOR above and loot + random ticket lion armor

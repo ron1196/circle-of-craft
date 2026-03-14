@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.block;
 
 import io.github.ron1196.thelionking.entity.hostile.TermiteEntity;
-import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
@@ -42,7 +42,7 @@ public class TermiteMoundBlock extends Block {
     }
 
     private void spawnTermite(ServerLevel level, BlockPos pos, Player target) {
-        TermiteEntity termite = LKEntityTypes.TERMITE.get().create(level);
+        TermiteEntity termite = EntityTypes.TERMITE.get().create(level);
         if (termite != null) {
             termite.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0.0F, 0.0F);
             termite.setTarget(target);

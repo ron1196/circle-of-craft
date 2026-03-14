@@ -32,7 +32,7 @@ public static final RegistryObject<Block> PRIDESTONE = BLOCKS.register("pridesto
 
 ### Naming
 - Registry names: `snake_case` (e.g., `corrupt_pridestone`, `mango_planks`)
-- Java classes: `PascalCase`, prefix `LK` for mod-specific base classes (e.g., `LKAnimal`, `LKPortalBlock`)
+- Java classes: `PascalCase`
 
 ### Data Files Per Block
 Each block needs: blockstate JSON, block model JSON, item model JSON, loot table JSON, lang entry. Recipes go in `data/thelionking/recipes/`.

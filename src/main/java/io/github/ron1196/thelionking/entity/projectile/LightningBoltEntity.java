@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.entity.projectile;
 
-import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -32,7 +32,7 @@ public class LightningBoltEntity extends LightningBolt {
     }
 
     public LightningBoltEntity(Level level, double x, double y, double z, int power, Player castingPlayer) {
-        super(LKEntityTypes.LK_LIGHTNING_BOLT.get(), level);
+        super(EntityTypes.LK_LIGHTNING_BOLT.get(), level);
         this.power = power;
         this.castingPlayer = castingPlayer;
         this.setPos(x, y, z);
@@ -112,11 +112,11 @@ public class LightningBoltEntity extends LightningBolt {
 
     private boolean isLKFriendlyNPC(Entity entity) {
         EntityType<?> type = entity.getType();
-        return type == LKEntityTypes.RAFIKI.get()
-                || type == LKEntityTypes.SIMBA.get()
-                || type == LKEntityTypes.TIMON.get()
-                || type == LKEntityTypes.PUMBAA.get()
-                || type == LKEntityTypes.TICKET_LION.get()
-                || type == LKEntityTypes.ZAZU.get();
+        return type == EntityTypes.RAFIKI.get()
+                || type == EntityTypes.SIMBA.get()
+                || type == EntityTypes.TIMON.get()
+                || type == EntityTypes.PUMBAA.get()
+                || type == EntityTypes.TICKET_LION.get()
+                || type == EntityTypes.ZAZU.get();
     }
 }

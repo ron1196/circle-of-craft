@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.registry;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
-import io.github.ron1196.thelionking.entity.ScarRugEntity;
+import io.github.ron1196.thelionking.entity.RugEntity;
 import net.minecraft.world.entity.LightningBolt;
 import io.github.ron1196.thelionking.entity.animal.*;
 import io.github.ron1196.thelionking.entity.hostile.*;
@@ -19,7 +19,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class LKEntityTypes {
+public class EntityTypes {
 
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
             DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, TheLionKingMod.MOD_ID);
@@ -154,15 +154,15 @@ public class LKEntityTypes {
                     .sized(1.2F, 1.3F).clientTrackingRange(10).build("zira"));
 
     // ========== Interactive Entities ==========
-    public static final RegistryObject<EntityType<ScarRugEntity>> SCAR_RUG = ENTITY_TYPES.register("scar_rug",
-            () -> EntityType.Builder.<ScarRugEntity>of(ScarRugEntity::new, MobCategory.MISC)
-                    .sized(1.2F, 0.2F).clientTrackingRange(10).build("scar_rug"));
+    public static final RegistryObject<EntityType<RugEntity>> RUG = ENTITY_TYPES.register("rug",
+            () -> EntityType.Builder.<RugEntity>of(RugEntity::new, MobCategory.MISC)
+                    .sized(1.2F, 0.2F).clientTrackingRange(10).build("rug"));
 
     // ========== Weather Effects ==========
     @SuppressWarnings("unchecked")
     public static final RegistryObject<EntityType<LightningBoltEntity>> LK_LIGHTNING_BOLT = ENTITY_TYPES.register("lk_lightning_bolt",
             () -> (EntityType<LightningBoltEntity>) (EntityType<?>) EntityType.Builder.<LightningBolt>of(
-                            (type, level) -> new LightningBoltEntity(type, level), MobCategory.MISC)
+                            LightningBoltEntity::new, MobCategory.MISC)
                     .sized(0.0F, 0.0F).clientTrackingRange(16).updateInterval(Integer.MAX_VALUE)
                     .noSave().noSummon().fireImmune().build("lk_lightning_bolt"));
 

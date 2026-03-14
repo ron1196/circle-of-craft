@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.entity.animal;
 
 import io.github.ron1196.thelionking.entity.ai.AmbientAvoidGoal;
 import io.github.ron1196.thelionking.entity.ai.AmbientPanicGoal;
-import io.github.ron1196.thelionking.registry.LKSoundEvents;
+import io.github.ron1196.thelionking.registry.SoundEvents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class ZebraEntity extends LKAnimal {
+public class ZebraEntity extends LionKingAnimal {
 
     public ZebraEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
@@ -31,24 +31,24 @@ public class ZebraEntity extends LKAnimal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return LKAnimal.createLKAnimalAttributes()
+        return LionKingAnimal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 12.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.22);
     }
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return LKSoundEvents.ZEBRA_AMBIENT.get();
+        return SoundEvents.ZEBRA_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return LKSoundEvents.ZEBRA_HURT.get();
+        return SoundEvents.ZEBRA_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return LKSoundEvents.ZEBRA_DEATH.get();
+        return SoundEvents.ZEBRA_DEATH.get();
     }
 
     @Override

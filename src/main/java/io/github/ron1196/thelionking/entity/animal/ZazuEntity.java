@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.entity.animal;
 
 import io.github.ron1196.thelionking.entity.ai.ZazuMateGoal;
-import io.github.ron1196.thelionking.registry.LKSoundEvents;
+import io.github.ron1196.thelionking.registry.SoundEvents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class ZazuEntity extends LKAnimal {
+public class ZazuEntity extends LionKingAnimal {
 
     public ZazuEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
@@ -28,24 +28,24 @@ public class ZazuEntity extends LKAnimal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return LKAnimal.createLKAnimalAttributes()
+        return LionKingAnimal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 8.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25);
     }
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return LKSoundEvents.ZAZU_AMBIENT.get();
+        return SoundEvents.ZAZU_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return LKSoundEvents.ZAZU_HURT.get();
+        return SoundEvents.ZAZU_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return LKSoundEvents.ZAZU_HURT.get();
+        return SoundEvents.ZAZU_HURT.get();
     }
 
     @Nullable

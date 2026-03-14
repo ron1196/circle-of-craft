@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.entity.projectile;
 
-import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -26,7 +26,7 @@ public class CoinEntity extends ThrowableItemProjectile {
     }
 
     public CoinEntity(Level level, LivingEntity shooter, int coinType) {
-        super(LKEntityTypes.COIN.get(), shooter, level);
+        super(EntityTypes.COIN.get(), shooter, level);
         this.entityData.set(DATA_COIN_TYPE, coinType);
     }
 

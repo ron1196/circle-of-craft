@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.entity.ai;
 
 import io.github.ron1196.thelionking.entity.hostile.TermiteEntity;
-import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -104,7 +104,7 @@ public class TermiteQueenAttackGoal extends Goal {
         // Spawn 1-3 termites near the queen
         int count = 1 + queen.getRandom().nextInt(3);
         for (int i = 0; i < count; i++) {
-            TermiteEntity termite = LKEntityTypes.TERMITE.get().create(serverLevel);
+            TermiteEntity termite = EntityTypes.TERMITE.get().create(serverLevel);
             if (termite != null) {
                 double offsetX = queen.getX() + (queen.getRandom().nextDouble() - 0.5) * 4.0;
                 double offsetZ = queen.getZ() + (queen.getRandom().nextDouble() - 0.5) * 4.0;

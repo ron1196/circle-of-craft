@@ -12,11 +12,11 @@ import io.github.ron1196.thelionking.entity.npc.RafikiEntity;
 import io.github.ron1196.thelionking.entity.npc.TicketLionEntity;
 import io.github.ron1196.thelionking.entity.npc.TimonEntity;
 import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
-import io.github.ron1196.thelionking.entity.ScarRugEntity;
+import io.github.ron1196.thelionking.entity.RugEntity;
 import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.LoginSyncPacket;
 import io.github.ron1196.thelionking.registry.LKEnchantments;
-import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
 import io.github.ron1196.thelionking.world.dimension.LKDimensions;
 import net.minecraft.core.BlockPos;
@@ -73,7 +73,7 @@ public class LKForgeEvents {
 
     @SubscribeEvent
     public static void onAttackEntity(AttackEntityEvent event) {
-        if (event.getTarget() instanceof ScarRugEntity rug) {
+        if (event.getTarget() instanceof RugEntity rug) {
             rug.dropAsItem();
         }
     }
@@ -212,7 +212,7 @@ public class LKForgeEvents {
         int spawnZ = pz - 8 + level.random.nextInt(17);
         int spawnY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, new BlockPos(spawnX, 0, spawnZ)).getY();
 
-        ZiraEntity zira = LKEntityTypes.ZIRA.get().create(level);
+        ZiraEntity zira = EntityTypes.ZIRA.get().create(level);
         if (zira != null) {
             zira.moveTo(spawnX, spawnY, spawnZ, 0.0F, 0.0F);
             zira.getLookControl().setLookAt(player.getX(), player.getEyeY(), player.getZ(), 10.0F, 40.0F);
