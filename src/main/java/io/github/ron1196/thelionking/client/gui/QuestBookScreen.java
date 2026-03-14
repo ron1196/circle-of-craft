@@ -4,9 +4,9 @@ import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.network.ClientWorldState;
 import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.QuestCheckPacket;
-import io.github.ron1196.thelionking.quest.LKQuestline;
-import io.github.ron1196.thelionking.quest.LKQuestRegistry;
-import io.github.ron1196.thelionking.quest.LKStageId;
+import io.github.ron1196.thelionking.quest.questline.LKQuestline;
+import io.github.ron1196.thelionking.quest.questline.LKQuestRegistry;
+import io.github.ron1196.thelionking.quest.stage.IStageId;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -129,7 +129,7 @@ public class QuestBookScreen extends Screen {
 
             // Current objective
             if (!complete && stageIndex >= 0) {
-                LKStageId currentStage = stageIndex >= 0 ? quest.getStageOrder().get(stageIndex) : null;
+                IStageId currentStage = stageIndex >= 0 ? quest.getStageOrder().get(stageIndex) : null;
                 if (currentStage != null) {
                     String objective = quest.getObjectiveByStage(currentStage);
                     if (!objective.isEmpty()) {
@@ -162,7 +162,7 @@ public class QuestBookScreen extends Screen {
                 textY += 8;
                 graphics.drawString(font, "\u00a7nCompleted:", rightX, textY, 0x140C02, false);
                 textY += 12;
-                List<LKStageId> stages = quest.getStageOrder();
+                List<IStageId> stages = quest.getStageOrder();
                 for (int s = 0; s < stageIndex; s++) {
                     String stageObj = quest.getObjectiveByStage(stages.get(s));
                     if (stageObj != null && !stageObj.isEmpty() && !stageObj.equals("Quest complete")) {

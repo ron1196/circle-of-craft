@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
+import io.github.ron1196.thelionking.quest.animal.CharacterSpeech;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -74,9 +74,9 @@ public class TimonEntity extends PathfinderMob {
 
         // Regular speech
         if (hasGivenFirstBugs) {
-            sendSpeech(player, LKCharacterSpeech.MORE_BUGS);
+            sendSpeech(player, CharacterSpeech.MORE_BUGS);
         } else {
-            sendSpeech(player, LKCharacterSpeech.BUGS);
+            sendSpeech(player, CharacterSpeech.BUGS);
         }
         return InteractionResult.SUCCESS;
     }
@@ -85,7 +85,7 @@ public class TimonEntity extends PathfinderMob {
         player.sendSystemMessage(Component.literal("\u00a7e<Timon> \u00a7f" + message));
     }
 
-    private void sendSpeech(Player player, LKCharacterSpeech speech) {
-        player.sendSystemMessage(Component.literal(LKCharacterSpeech.giveSpeech(speech)));
+    private void sendSpeech(Player player, CharacterSpeech speech) {
+        player.sendSystemMessage(Component.literal(CharacterSpeech.giveSpeech(speech)));
     }
 }

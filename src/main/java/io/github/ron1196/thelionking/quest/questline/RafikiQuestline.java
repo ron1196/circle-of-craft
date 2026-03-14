@@ -1,22 +1,20 @@
-package io.github.ron1196.thelionking.quest.questlines;
+package io.github.ron1196.thelionking.quest.questline;
 
-import io.github.ron1196.thelionking.quest.LKClaimableReward;
-import io.github.ron1196.thelionking.quest.LKQuestTrigger;
-import io.github.ron1196.thelionking.quest.LKQuestline;
-import io.github.ron1196.thelionking.quest.LKStage;
-import io.github.ron1196.thelionking.quest.LKStageId;
+import io.github.ron1196.thelionking.quest.stage.ClaimableReward;
+import io.github.ron1196.thelionking.quest.stage.IStageId;
+import io.github.ron1196.thelionking.quest.stage.LKStage;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-import static io.github.ron1196.thelionking.quest.LKQuestTrigger.*;
-import static io.github.ron1196.thelionking.quest.LKStage.ItemRequirement;
-import static io.github.ron1196.thelionking.quest.questlines.RafikiQuestline.Stage.*;
+import static io.github.ron1196.thelionking.quest.stage.LKQuestTrigger.*;
+import static io.github.ron1196.thelionking.quest.stage.LKStage.ItemRequirement;
+import static io.github.ron1196.thelionking.quest.questline.RafikiQuestline.Stage.*;
 
 public class RafikiQuestline {
 
-    public enum Stage implements LKStageId {
+    public enum Stage implements IStageId {
         FIND_RAFIKI,
         COLLECT_BONES,
         DEFEAT_SCAR,
@@ -48,7 +46,7 @@ public class RafikiQuestline {
                 )
                 .stage(USE_STAR_ALTAR, new LKStage("Craft a Star Altar and use Rafiki Dust on it"))
                 .stage(Stage.COMPLETE, new LKStage("Quest complete"))
-                .claimableReward(COLLECT_BONES, new LKClaimableReward(LKItems.RAFIKI_STICK, 1))
+                .claimableReward(COLLECT_BONES, new ClaimableReward(LKItems.RAFIKI_STICK, 1))
                 .trigger(FIND_RAFIKI, RAFIKI_TALK)
                 .trigger(COLLECT_BONES, RAFIKI_TALK)
                 .trigger(DEFEAT_SCAR, SCAR_KILLED)

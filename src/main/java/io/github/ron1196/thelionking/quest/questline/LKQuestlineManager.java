@@ -1,9 +1,13 @@
-package io.github.ron1196.thelionking.quest;
+package io.github.ron1196.thelionking.quest.questline;
 
 import io.github.ron1196.thelionking.data.LKPlayerData;
 import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
 import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.QuestSyncPacket;
+import io.github.ron1196.thelionking.quest.stage.ClaimableReward;
+import io.github.ron1196.thelionking.quest.stage.IStageId;
+import io.github.ron1196.thelionking.quest.stage.LKQuestTrigger;
+import io.github.ron1196.thelionking.quest.stage.LKStage;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -45,7 +49,7 @@ public class LKQuestlineManager {
      * Returns the typed enum stage for the given quest.
      * If the quest has not been initialized (empty stageId), returns the first stage.
      */
-    public <T extends Enum<T> & LKStageId> T getStage(String questId, Class<T> stageClass) {
+    public <T extends Enum<T> & IStageId> T getStage(String questId, Class<T> stageClass) {
         String stageId = getStageId(questId);
         if (stageId.isEmpty()) {
             return stageClass.getEnumConstants()[0];
@@ -58,7 +62,7 @@ public class LKQuestlineManager {
      * in the questline's stage order.
      */
     @Nullable
-    private LKStageId resolveCurrentStage(String questId) {
+    private IStageId resolveCurrentStage(String questId) {
         LKQuestline quest = LKQuestRegistry.get(questId);
         if (quest == null) return null;
         String stageId = getStageId(questId);
@@ -79,7 +83,7 @@ public class LKQuestlineManager {
      * Returns true if the current stage for {@code questId} is at or past {@code target}
      * in the questline's stage order.
      */
-    public boolean isStageAtOrPast(String questId, LKStageId target) {
+    public boolean isStageAtOrPast(String questId, IStageId target) {
         LKQuestline quest = LKQuestRegistry.get(questId);
         if (quest == null) return false;
         String stageId = getStageId(questId);
@@ -103,7 +107,7 @@ public class LKQuestlineManager {
         if (!quest.canStart(this)) return false;
 
         LKQuestlineState state = getState(questId);
-        LKStageId currentStage = resolveCurrentStage(questId);
+        IStageId currentStage = resolveCurrentStage(questId);
         if (currentStage == null) return false;
 
         // Already at the last stage (complete) — can't advance further
@@ -124,7 +128,7 @@ public class LKQuestlineManager {
         }
 
         // Advance to the next stage
-        LKStageId nextStage = quest.getNextStage(currentStage);
+        IStageId nextStage = quest.getNextStage(currentStage);
         if (nextStage != null) {
             state.setCurrentStageId(nextStage.name());
         }
@@ -144,17 +148,17 @@ public class LKQuestlineManager {
         if (quest == null) return -1;
         LKPlayerData playerData = LKPlayerDataProvider.get(player);
         String currentStageId = getStageId(questId);
-        List<LKStageId> stages = quest.getStageOrder();
+        List<IStageId> stages = quest.getStageOrder();
         int currentIndex = quest.getStageIndex(currentStageId);
 
         // Iterate through completed stages (before the current one)
         for (int i = 0; i < currentIndex; i++) {
-            LKStageId stage = stages.get(i);
+            IStageId stage = stages.get(i);
             String rewardKey = questId + ":" + stage.name();
             if (playerData.hasClaimedReward(rewardKey)) continue;
-            List<LKClaimableReward> rewards = quest.getClaimableRewards(stage);
+            List<ClaimableReward> rewards = quest.getClaimableRewards(stage);
             if (rewards.isEmpty()) continue;
-            for (LKClaimableReward reward : rewards) {
+            for (ClaimableReward reward : rewards) {
                 player.addItem(new ItemStack(reward.item().get(), reward.count()));
             }
             playerData.claimReward(rewardKey);
@@ -163,13 +167,13 @@ public class LKQuestlineManager {
         return -1;
     }
 
-    private void claimRewards(LKQuestline quest, LKStageId completedStage, ServerPlayer player) {
-        List<LKClaimableReward> rewards = quest.getClaimableRewards(completedStage);
+    private void claimRewards(LKQuestline quest, IStageId completedStage, ServerPlayer player) {
+        List<ClaimableReward> rewards = quest.getClaimableRewards(completedStage);
         if (rewards.isEmpty()) return;
         String rewardKey = quest.getId() + ":" + completedStage.name();
         LKPlayerData playerData = LKPlayerDataProvider.get(player);
         if (playerData.hasClaimedReward(rewardKey)) return;
-        for (LKClaimableReward reward : rewards) {
+        for (ClaimableReward reward : rewards) {
             player.addItem(new ItemStack(reward.item().get(), reward.count()));
         }
         playerData.claimReward(rewardKey);

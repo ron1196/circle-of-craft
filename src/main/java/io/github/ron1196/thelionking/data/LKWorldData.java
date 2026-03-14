@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.data;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
-import io.github.ron1196.thelionking.quest.LKQuestlineManager;
+import io.github.ron1196.thelionking.quest.questline.LKQuestlineManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;

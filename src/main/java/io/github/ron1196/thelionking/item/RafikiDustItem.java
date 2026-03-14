@@ -5,7 +5,7 @@ import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
 import io.github.ron1196.thelionking.data.LKWorldData;
 import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
 import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
-import io.github.ron1196.thelionking.quest.LKQuestTrigger;
+import io.github.ron1196.thelionking.quest.stage.LKQuestTrigger;
 import io.github.ron1196.thelionking.registry.LKBlocks;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import net.minecraft.network.chat.Component;

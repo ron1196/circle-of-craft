@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.network;
 
 import io.github.ron1196.thelionking.data.LKWorldData;
-import io.github.ron1196.thelionking.quest.LKQuestlineState;
+import io.github.ron1196.thelionking.quest.questline.LKQuestlineState;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;

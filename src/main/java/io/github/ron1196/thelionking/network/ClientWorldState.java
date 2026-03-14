@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.network;
 
-import io.github.ron1196.thelionking.quest.LKQuestlineState;
+import io.github.ron1196.thelionking.quest.questline.LKQuestlineState;
 
 import java.util.HashMap;
 import java.util.HashSet;

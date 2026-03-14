@@ -1,7 +1,4 @@
-package io.github.ron1196.thelionking.quest;
-
-import io.github.ron1196.thelionking.quest.questlines.OutlandsQuestline;
-import io.github.ron1196.thelionking.quest.questlines.RafikiQuestline;
+package io.github.ron1196.thelionking.quest.questline;
 
 import java.util.LinkedHashMap;
 import java.util.List;

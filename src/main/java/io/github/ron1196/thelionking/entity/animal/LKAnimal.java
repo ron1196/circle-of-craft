@@ -72,15 +72,17 @@ public abstract class LKAnimal extends Animal {
             if (held.is(entry.requiredItem()) && held.getCount() >= entry.requiredAmount()) {
                 held.shrink(entry.requiredAmount());
                 giveQuestReward(serverPlayer);
-                player.sendSystemMessage(Component.literal(
-                        LKAnimalQuest.getQuestEndMessage(getAnimalDisplayName())));
+                String questEndMessage = LKAnimalQuest.getQuestEndMessage(getAnimalDisplayName());
+                player.sendSystemMessage(Component.literal(questEndMessage));
                 animalQuests.remove(playerId);
             } else {
+                String questStartMessage = LKAnimalQuest.getQuestStartMessage(
+                        getAnimalDisplayName(),
+                        entry.requiredItem().getDescription().getString(),
+                        entry.requiredAmount()
+                );
                 player.sendSystemMessage(Component.literal(
-                        LKAnimalQuest.getQuestStartMessage(
-                                getAnimalDisplayName(),
-                                entry.requiredItem().getDescription().getString(),
-                                entry.requiredAmount())));
+                        questStartMessage));
             }
             return InteractionResult.SUCCESS;
         }

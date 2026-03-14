@@ -6,11 +6,10 @@ import io.github.ron1196.thelionking.data.LKWorldData;
 import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
 import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
-import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
-import io.github.ron1196.thelionking.quest.LKQuestlineManager;
-import io.github.ron1196.thelionking.quest.LKQuestTrigger;
-import io.github.ron1196.thelionking.quest.questlines.OutlandsQuestline;
-import io.github.ron1196.thelionking.quest.questlines.OutlandsQuestline.Stage;
+import io.github.ron1196.thelionking.quest.animal.CharacterSpeech;
+import io.github.ron1196.thelionking.quest.questline.LKQuestlineManager;
+import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline.Stage;
+import io.github.ron1196.thelionking.quest.stage.LKQuestTrigger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -31,12 +30,9 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class ZiraEntity extends Monster {
 
@@ -139,11 +135,11 @@ public class ZiraEntity extends Monster {
 
         // Quest didn't advance — give contextual speech
         switch (stage) {
-            case COLLECT_INGOTS -> sendSpeech(player, LKCharacterSpeech.ZIRA_INGOTS);
-            case COLLECT_FEATHERS -> sendSpeech(player, LKCharacterSpeech.ZIRA_FEATHERS);
+            case COLLECT_INGOTS -> sendSpeech(player, CharacterSpeech.ZIRA_INGOTS);
+            case COLLECT_FEATHERS -> sendSpeech(player, CharacterSpeech.ZIRA_FEATHERS);
             default -> {
                 if (quests.isStageAtOrPast("outlands", Stage.FOLLOW_OUTLANDERS) && !isHostile()) {
-                    sendSpeech(player, LKCharacterSpeech.ZIRA_CONQUEST);
+                    sendSpeech(player, CharacterSpeech.ZIRA_CONQUEST);
                 }
             }
         }
@@ -201,8 +197,8 @@ public class ZiraEntity extends Monster {
         player.sendSystemMessage(Component.literal("\u00a7e<Zira> \u00a7f" + message));
     }
 
-    private void sendSpeech(Player player, LKCharacterSpeech speech) {
-        player.sendSystemMessage(Component.literal(LKCharacterSpeech.giveSpeech(speech)));
+    private void sendSpeech(Player player, CharacterSpeech speech) {
+        player.sendSystemMessage(Component.literal(CharacterSpeech.giveSpeech(speech)));
     }
 
     private void syncPlayerData(ServerPlayer player, LKPlayerData data) {

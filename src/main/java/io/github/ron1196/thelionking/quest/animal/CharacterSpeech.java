@@ -1,8 +1,8 @@
-package io.github.ron1196.thelionking.quest;
+package io.github.ron1196.thelionking.quest.animal;
 
 import java.util.Random;
 
-public enum LKCharacterSpeech {
+public enum CharacterSpeech {
     MORNING_REPORT("Zazu", Speech.MORNING_REPORT),
     HYENA_BONES("Rafiki", Speech.HYENA_BONES),
     MENTION_SCAR("Rafiki", Speech.MENTION_SCAR),
@@ -33,12 +33,12 @@ public enum LKCharacterSpeech {
     private final String characterName;
     private final String[] speeches;
 
-    LKCharacterSpeech(String name, String[] speeches) {
+    CharacterSpeech(String name, String[] speeches) {
         this.characterName = name;
         this.speeches = speeches;
     }
 
-    public static String giveSpeech(LKCharacterSpeech speech) {
+    public static String giveSpeech(CharacterSpeech speech) {
         return "§e<" + speech.characterName + "> §f" + speech.speeches[random.nextInt(speech.speeches.length)];
     }
 

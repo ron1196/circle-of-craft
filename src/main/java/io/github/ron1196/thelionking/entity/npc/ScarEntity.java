@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.entity.npc;
 
 import io.github.ron1196.thelionking.data.LKWorldData;
-import io.github.ron1196.thelionking.quest.LKQuestTrigger;
+import io.github.ron1196.thelionking.quest.stage.LKQuestTrigger;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;

@@ -5,11 +5,10 @@ import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
 import io.github.ron1196.thelionking.data.LKWorldData;
 import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
-import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
-import io.github.ron1196.thelionking.quest.LKQuestlineManager;
-import io.github.ron1196.thelionking.quest.LKQuestTrigger;
-import io.github.ron1196.thelionking.quest.questlines.RafikiQuestline;
-import io.github.ron1196.thelionking.quest.questlines.RafikiQuestline.Stage;
+import io.github.ron1196.thelionking.quest.animal.CharacterSpeech;
+import io.github.ron1196.thelionking.quest.questline.LKQuestlineManager;
+import io.github.ron1196.thelionking.quest.questline.RafikiQuestline.Stage;
+import io.github.ron1196.thelionking.quest.stage.LKQuestTrigger;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -103,12 +102,12 @@ public class RafikiEntity extends PathfinderMob {
 
         // Quest didn't advance — give contextual speech
         switch (stage) {
-            case COLLECT_BONES -> sendSpeech(player, LKCharacterSpeech.HYENA_BONES);
-            case DEFEAT_SCAR -> sendSpeech(player, LKCharacterSpeech.MENTION_SCAR);
-            case COLLECT_TERMITES -> sendSpeech(player, LKCharacterSpeech.TERMITES);
-            case COLLECT_MANGOES -> sendSpeech(player, LKCharacterSpeech.MANGOES);
-            case USE_STAR_ALTAR -> sendSpeech(player, LKCharacterSpeech.STAR_ALTAR);
-            case COMPLETE -> sendSpeech(player, LKCharacterSpeech.HINT);
+            case COLLECT_BONES -> sendSpeech(player, CharacterSpeech.HYENA_BONES);
+            case DEFEAT_SCAR -> sendSpeech(player, CharacterSpeech.MENTION_SCAR);
+            case COLLECT_TERMITES -> sendSpeech(player, CharacterSpeech.TERMITES);
+            case COLLECT_MANGOES -> sendSpeech(player, CharacterSpeech.MANGOES);
+            case USE_STAR_ALTAR -> sendSpeech(player, CharacterSpeech.STAR_ALTAR);
+            case COMPLETE -> sendSpeech(player, CharacterSpeech.HINT);
             default -> {}
         }
 
@@ -147,7 +146,7 @@ public class RafikiEntity extends PathfinderMob {
         player.sendSystemMessage(Component.literal("\u00a7e<Rafiki> \u00a7f" + message));
     }
 
-    private void sendSpeech(Player player, LKCharacterSpeech speech) {
-        player.sendSystemMessage(Component.literal(LKCharacterSpeech.giveSpeech(speech)));
+    private void sendSpeech(Player player, CharacterSpeech speech) {
+        player.sendSystemMessage(Component.literal(CharacterSpeech.giveSpeech(speech)));
     }
 }

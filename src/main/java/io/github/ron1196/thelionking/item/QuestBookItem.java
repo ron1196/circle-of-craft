@@ -1,8 +1,8 @@
 package io.github.ron1196.thelionking.item;
 
 import io.github.ron1196.thelionking.network.ClientWorldState;
-import io.github.ron1196.thelionking.quest.LKQuestline;
-import io.github.ron1196.thelionking.quest.LKQuestRegistry;
+import io.github.ron1196.thelionking.quest.questline.LKQuestline;
+import io.github.ron1196.thelionking.quest.questline.LKQuestRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;

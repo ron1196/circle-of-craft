@@ -1,22 +1,21 @@
-package io.github.ron1196.thelionking.quest.questlines;
+package io.github.ron1196.thelionking.quest.questline;
 
-import io.github.ron1196.thelionking.quest.LKQuestTrigger;
-import io.github.ron1196.thelionking.quest.LKQuestline;
-import io.github.ron1196.thelionking.quest.LKStage;
-import io.github.ron1196.thelionking.quest.LKStageId;
+import io.github.ron1196.thelionking.quest.stage.IStageId;
+import io.github.ron1196.thelionking.quest.stage.LKQuestTrigger;
+import io.github.ron1196.thelionking.quest.stage.LKStage;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-import static io.github.ron1196.thelionking.quest.LKQuestTrigger.*;
-import static io.github.ron1196.thelionking.quest.LKStage.ItemRequirement;
-import static io.github.ron1196.thelionking.quest.LKStage.Source;
-import static io.github.ron1196.thelionking.quest.questlines.OutlandsQuestline.Stage.*;
+import static io.github.ron1196.thelionking.quest.stage.LKQuestTrigger.*;
+import static io.github.ron1196.thelionking.quest.stage.LKStage.ItemRequirement;
+import static io.github.ron1196.thelionking.quest.stage.LKStage.Source;
+import static io.github.ron1196.thelionking.quest.questline.OutlandsQuestline.Stage.*;
 
 public class OutlandsQuestline {
 
-    public enum Stage implements LKStageId {
+    public enum Stage implements IStageId {
         ENTER_OUTLANDS,
         FIND_ZIRA,
         COLLECT_INGOTS,

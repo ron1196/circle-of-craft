@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.entity;
 
-import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
+import io.github.ron1196.thelionking.quest.animal.CharacterSpeech;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
 import io.github.ron1196.thelionking.registry.LKSoundEvents;
@@ -19,7 +19,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 
 public class ScarRugEntity extends Entity {
@@ -107,10 +106,10 @@ public class ScarRugEntity extends Entity {
             level().playSound(null, this, LKSoundEvents.LION_ROAR.get(), SoundSource.NEUTRAL,
                     1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
             if (!level().isClientSide) {
-                LKCharacterSpeech speech = getRugType() == TYPE_SCAR
-                        ? LKCharacterSpeech.RUG_SCAR
-                        : LKCharacterSpeech.RUG_ZIRA;
-                player.sendSystemMessage(Component.literal(LKCharacterSpeech.giveSpeech(speech)));
+                CharacterSpeech speech = getRugType() == TYPE_SCAR
+                        ? CharacterSpeech.RUG_SCAR
+                        : CharacterSpeech.RUG_ZIRA;
+                player.sendSystemMessage(Component.literal(CharacterSpeech.giveSpeech(speech)));
             }
             talkCooldown = 0;
             return InteractionResult.sidedSuccess(level().isClientSide);

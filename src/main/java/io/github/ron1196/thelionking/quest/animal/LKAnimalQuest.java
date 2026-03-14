@@ -58,6 +58,6 @@ public final class LKAnimalQuest {
 
     public static String getQuestEndMessage(String animalName) {
         String phrase = QUEST_END_PHRASES[RANDOM.nextInt(QUEST_END_PHRASES.length)];
-        return "\u00a7e<" + animalName + "> \u00a7f" + phrase;
+        return "§e<" + animalName + "> §f" + phrase;
     }
 }
