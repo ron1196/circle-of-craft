@@ -45,6 +45,14 @@ public class LKPlayerData {
         return claimedRewards;
     }
 
+    public boolean hasClaimedReward(String rewardKey) {
+        return claimedRewards.contains(rewardKey);
+    }
+
+    public void claimReward(String rewardKey) {
+        claimedRewards.add(rewardKey);
+    }
+
     // ── Setters ─────────────────────────────────────────────────────────────────
 
     public void setReceivedQuestBook(boolean receivedQuestBook) {

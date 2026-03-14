@@ -1,7 +1,13 @@
 package io.github.ron1196.thelionking.entity.npc;
 
+import io.github.ron1196.thelionking.data.LKPlayerData;
+import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
 import io.github.ron1196.thelionking.data.LKWorldData;
+import io.github.ron1196.thelionking.network.LKNetworking;
+import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
+import io.github.ron1196.thelionking.quest.ClaimableReward;
 import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
+import io.github.ron1196.thelionking.quest.LKQuest;
 import io.github.ron1196.thelionking.quest.LKQuestManager;
 import io.github.ron1196.thelionking.quest.LKQuestRegistry;
 import io.github.ron1196.thelionking.quest.LKQuestTrigger;
@@ -20,6 +26,9 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.network.PacketDistributor;
+
+import java.util.List;
 
 public class RafikiEntity extends PathfinderMob {
 
@@ -67,14 +76,23 @@ public class RafikiEntity extends PathfinderMob {
         talkCooldown = 40;
         LKWorldData data = LKWorldData.get(serverLevel);
         LKQuestManager quests = data.getQuestManager();
+        LKPlayerData playerData = LKPlayerDataProvider.get(serverPlayer);
         int stage = quests.getStage("rafiki");
 
-        // TODO: use LKPlayerData capability for receivedQuestBook
-        // Give quest book on first meeting (stubbed — needs per-player data)
-        // if (!playerData.hasReceivedQuestBook()) {
-        //     playerData.setReceivedQuestBook(true);
-        //     player.addItem(new ItemStack(LKItems.QUEST_BOOK.get()));
-        // }
+        // Give quest book on first meeting
+        if (!playerData.hasReceivedQuestBook()) {
+            playerData.setReceivedQuestBook(true);
+            player.addItem(new ItemStack(LKItems.QUEST_BOOK.get()));
+            syncPlayerData(serverPlayer, playerData);
+        }
+
+        // Try to claim the next unclaimed reward (earliest stage first)
+        int claimedStage = tryClaimNextReward(serverPlayer, playerData, quests);
+        if (claimedStage >= 0) {
+            sendStageDialogue(player, claimedStage);
+            syncPlayerData(serverPlayer, playerData);
+            return InteractionResult.SUCCESS;
+        }
 
         // Try to advance the quest
         if (quests.tryAdvance("rafiki", serverPlayer, LKQuestTrigger.RAFIKI_TALK)) {
@@ -94,6 +112,29 @@ public class RafikiEntity extends PathfinderMob {
             }
         }
         return InteractionResult.SUCCESS;
+    }
+
+    private int tryClaimNextReward(ServerPlayer player, LKPlayerData playerData, LKQuestManager quests) {
+        LKQuest quest = LKQuestRegistry.get("rafiki");
+        int currentStage = quests.getStage("rafiki");
+        for (int stage = 0; stage < currentStage; stage++) {
+            List<ClaimableReward> rewards = quest.getClaimableRewards(stage);
+            for (ClaimableReward reward : rewards) {
+                if (!playerData.hasClaimedReward(reward.rewardKey())) {
+                    player.addItem(new ItemStack(reward.item().get(), reward.count()));
+                    playerData.claimReward(reward.rewardKey());
+                    return stage;
+                }
+            }
+        }
+        return -1;
+    }
+
+    private void syncPlayerData(ServerPlayer player, LKPlayerData data) {
+        LKNetworking.CHANNEL.send(
+                PacketDistributor.PLAYER.with(() -> player),
+                new PlayerDataSyncPacket(data)
+        );
     }
 
     private void sendStageDialogue(Player player, int newStage) {
