@@ -1,4 +1,4 @@
-package io.github.ron1196.thelionking.quest;
+package io.github.ron1196.thelionking.quest.animal;
 
 import net.minecraft.world.item.Item;
 

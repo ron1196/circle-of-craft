@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.entity.animal;
 
-import io.github.ron1196.thelionking.quest.LKAnimalQuestEntry;
-import io.github.ron1196.thelionking.quest.LKAnimalQuest;
+import io.github.ron1196.thelionking.quest.animal.LKAnimalQuestEntry;
+import io.github.ron1196.thelionking.quest.animal.LKAnimalQuest;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

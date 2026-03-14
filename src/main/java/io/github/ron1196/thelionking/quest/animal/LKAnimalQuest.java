@@ -1,4 +1,4 @@
-package io.github.ron1196.thelionking.quest;
+package io.github.ron1196.thelionking.quest.animal;
 
 import java.util.Random;
 
@@ -46,7 +46,7 @@ public final class LKAnimalQuest {
     public static String getQuestStartMessage(String animalName, String itemName, int amount) {
         String phrase = QUEST_START_PHRASES[RANDOM.nextInt(QUEST_START_PHRASES.length)];
         phrase = phrase.replace("#", numberToWord(amount)).replace("%", itemName);
-        return "§e<" + animalName + "> §f" + phrase;
+        return "\u00a7e<" + animalName + "> \u00a7f" + phrase;
     }
 
     private static String numberToWord(int number) {
@@ -58,6 +58,6 @@ public final class LKAnimalQuest {
 
     public static String getQuestEndMessage(String animalName) {
         String phrase = QUEST_END_PHRASES[RANDOM.nextInt(QUEST_END_PHRASES.length)];
-        return "§e<" + animalName + "> §f" + phrase;
+        return "\u00a7e<" + animalName + "> \u00a7f" + phrase;
     }
 }

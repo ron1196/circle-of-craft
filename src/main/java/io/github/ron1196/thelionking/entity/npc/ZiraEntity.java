@@ -9,7 +9,8 @@ import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
 import io.github.ron1196.thelionking.quest.LKQuestlineManager;
 import io.github.ron1196.thelionking.quest.LKQuestTrigger;
-import io.github.ron1196.thelionking.quest.OutlandsStage;
+import io.github.ron1196.thelionking.quest.questlines.OutlandsQuestline;
+import io.github.ron1196.thelionking.quest.questlines.OutlandsQuestline.Stage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -119,12 +120,12 @@ public class ZiraEntity extends Monster {
         LKWorldData data = LKWorldData.get(serverLevel);
         LKQuestlineManager quests = data.getQuestManager();
         LKPlayerData playerData = LKPlayerDataProvider.get(serverPlayer);
-        OutlandsStage stage = quests.getStage("outlands", OutlandsStage.class);
+        Stage stage = quests.getStage("outlands", Stage.class);
 
         // Try to claim the next unclaimed reward (earliest stage first)
         int claimedIndex = quests.tryClaimNextReward("outlands", serverPlayer);
         if (claimedIndex >= 0) {
-            sendStageDialogue(player, quests.getStage("outlands", OutlandsStage.class));
+            sendStageDialogue(player, quests.getStage("outlands", Stage.class));
             syncPlayerData(serverPlayer, playerData);
             return InteractionResult.SUCCESS;
         }
@@ -132,7 +133,7 @@ public class ZiraEntity extends Monster {
         // Try to advance the quest (rewards are given automatically in tryAdvance)
         if (quests.tryAdvance("outlands", serverPlayer, LKQuestTrigger.ZIRA_TALK)) {
             syncPlayerData(serverPlayer, playerData);
-            sendStageDialogue(player, quests.getStage("outlands", OutlandsStage.class));
+            sendStageDialogue(player, quests.getStage("outlands", Stage.class));
             return InteractionResult.SUCCESS;
         }
 
@@ -141,7 +142,7 @@ public class ZiraEntity extends Monster {
             case COLLECT_INGOTS -> sendSpeech(player, LKCharacterSpeech.ZIRA_INGOTS);
             case COLLECT_FEATHERS -> sendSpeech(player, LKCharacterSpeech.ZIRA_FEATHERS);
             default -> {
-                if (quests.isStageAtOrPast("outlands", OutlandsStage.FOLLOW_OUTLANDERS) && !isHostile()) {
+                if (quests.isStageAtOrPast("outlands", Stage.FOLLOW_OUTLANDERS) && !isHostile()) {
                     sendSpeech(player, LKCharacterSpeech.ZIRA_CONQUEST);
                 }
             }
@@ -150,7 +151,7 @@ public class ZiraEntity extends Monster {
         return InteractionResult.SUCCESS;
     }
 
-    private void sendStageDialogue(Player player, OutlandsStage newStage) {
+    private void sendStageDialogue(Player player, Stage newStage) {
         String message = switch (newStage) {
             case COLLECT_INGOTS ->
                     "So... a human dares to enter my domain. Perhaps you can be of use to me.";

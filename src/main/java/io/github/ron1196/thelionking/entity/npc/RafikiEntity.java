@@ -8,7 +8,8 @@ import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
 import io.github.ron1196.thelionking.quest.LKQuestlineManager;
 import io.github.ron1196.thelionking.quest.LKQuestTrigger;
-import io.github.ron1196.thelionking.quest.RafikiStage;
+import io.github.ron1196.thelionking.quest.questlines.RafikiQuestline;
+import io.github.ron1196.thelionking.quest.questlines.RafikiQuestline.Stage;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -74,7 +75,7 @@ public class RafikiEntity extends PathfinderMob {
         LKWorldData data = LKWorldData.get(serverLevel);
         LKQuestlineManager quests = data.getQuestManager();
         LKPlayerData playerData = LKPlayerDataProvider.get(serverPlayer);
-        RafikiStage stage = quests.getStage("rafiki", RafikiStage.class);
+        Stage stage = quests.getStage("rafiki", Stage.class);
 
         // Give quest book on first meeting
         if (!playerData.hasReceivedQuestBook()) {
@@ -87,14 +88,14 @@ public class RafikiEntity extends PathfinderMob {
         int claimedIndex = quests.tryClaimNextReward("rafiki", serverPlayer);
         if (claimedIndex >= 0) {
             // Re-fetch stage after claim
-            sendStageDialogue(player, quests.getStage("rafiki", RafikiStage.class));
+            sendStageDialogue(player, quests.getStage("rafiki", Stage.class));
             syncPlayerData(serverPlayer, playerData);
             return InteractionResult.SUCCESS;
         }
 
         // Try to advance the quest (rewards are given automatically in tryAdvance)
         if (quests.tryAdvance("rafiki", serverPlayer, LKQuestTrigger.RAFIKI_TALK)) {
-            RafikiStage newStage = quests.getStage("rafiki", RafikiStage.class);
+            Stage newStage = quests.getStage("rafiki", Stage.class);
             sendStageDialogue(player, newStage);
             syncPlayerData(serverPlayer, playerData);
             return InteractionResult.SUCCESS;
@@ -121,7 +122,7 @@ public class RafikiEntity extends PathfinderMob {
         );
     }
 
-    private void sendStageDialogue(Player player, RafikiStage newStage) {
+    private void sendStageDialogue(Player player, Stage newStage) {
         String message = switch (newStage) {
             case COLLECT_BONES ->
                     "Welcome to the Pride Lands! I am Rafiki. Bring me sixty-four hyena bones and I will give you my stick.";
