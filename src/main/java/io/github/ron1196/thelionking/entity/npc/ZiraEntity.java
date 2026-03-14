@@ -6,9 +6,7 @@ import io.github.ron1196.thelionking.data.LKWorldData;
 import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
 import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
-import io.github.ron1196.thelionking.quest.LKClaimableReward;
 import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
-import io.github.ron1196.thelionking.quest.LKQuestline;
 import io.github.ron1196.thelionking.quest.LKQuestManager;
 import io.github.ron1196.thelionking.quest.LKQuestRegistry;
 import io.github.ron1196.thelionking.quest.LKQuestTrigger;
@@ -35,6 +33,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -109,7 +108,7 @@ public class ZiraEntity extends Monster {
     }
 
     @Override
-    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+    protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         if (level().isClientSide()) return InteractionResult.SUCCESS;
         if (isHostile()) return InteractionResult.PASS;
         if (talkCooldown > 0) return InteractionResult.SUCCESS;
@@ -123,15 +122,16 @@ public class ZiraEntity extends Monster {
         int stage = quests.getStage("outlands");
 
         // Try to claim the next unclaimed reward (earliest stage first)
-        int claimedStage = tryClaimNextReward(serverPlayer, playerData, quests);
+        int claimedStage = quests.tryClaimNextReward("outlands", serverPlayer);
         if (claimedStage >= 0) {
             sendStageDialogue(player, claimedStage);
             syncPlayerData(serverPlayer, playerData);
             return InteractionResult.SUCCESS;
         }
 
-        // Try to advance the quest
+        // Try to advance the quest (rewards are given automatically in tryAdvance)
         if (quests.tryAdvance("outlands", serverPlayer, LKQuestTrigger.ZIRA_TALK)) {
+            syncPlayerData(serverPlayer, playerData);
             sendStageDialogue(player, quests.getStage("outlands"));
             return InteractionResult.SUCCESS;
         }
@@ -146,6 +146,7 @@ public class ZiraEntity extends Monster {
                 }
             }
         }
+
         return InteractionResult.SUCCESS;
     }
 
@@ -201,22 +202,6 @@ public class ZiraEntity extends Monster {
 
     private void sendSpeech(Player player, LKCharacterSpeech speech) {
         player.sendSystemMessage(Component.literal(LKCharacterSpeech.giveSpeech(speech)));
-    }
-
-    private int tryClaimNextReward(ServerPlayer player, LKPlayerData playerData, LKQuestManager quests) {
-        LKQuestline quest = LKQuestRegistry.get("outlands");
-        int currentStage = quests.getStage("outlands");
-        for (int stage = 0; stage < currentStage; stage++) {
-            List<LKClaimableReward> rewards = quest.getClaimableRewards(stage);
-            for (LKClaimableReward reward : rewards) {
-                if (!playerData.hasClaimedReward(reward.rewardKey())) {
-                    player.addItem(new ItemStack(reward.item().get(), reward.count()));
-                    playerData.claimReward(reward.rewardKey());
-                    return stage;
-                }
-            }
-        }
-        return -1;
     }
 
     private void syncPlayerData(ServerPlayer player, LKPlayerData data) {

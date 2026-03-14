@@ -5,9 +5,7 @@ import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
 import io.github.ron1196.thelionking.data.LKWorldData;
 import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
-import io.github.ron1196.thelionking.quest.LKClaimableReward;
 import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
-import io.github.ron1196.thelionking.quest.LKQuestline;
 import io.github.ron1196.thelionking.quest.LKQuestManager;
 import io.github.ron1196.thelionking.quest.LKQuestRegistry;
 import io.github.ron1196.thelionking.quest.LKQuestTrigger;
@@ -27,8 +25,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PacketDistributor;
-
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public class RafikiEntity extends PathfinderMob {
 
@@ -67,7 +64,7 @@ public class RafikiEntity extends PathfinderMob {
     }
 
     @Override
-    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+    protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         if (level().isClientSide()) return InteractionResult.SUCCESS;
         if (talkCooldown > 0) return InteractionResult.SUCCESS;
         if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
@@ -87,16 +84,17 @@ public class RafikiEntity extends PathfinderMob {
         }
 
         // Try to claim the next unclaimed reward (earliest stage first)
-        int claimedStage = tryClaimNextReward(serverPlayer, playerData, quests);
+        int claimedStage = quests.tryClaimNextReward("rafiki", serverPlayer);
         if (claimedStage >= 0) {
             sendStageDialogue(player, claimedStage);
             syncPlayerData(serverPlayer, playerData);
             return InteractionResult.SUCCESS;
         }
 
-        // Try to advance the quest
+        // Try to advance the quest (rewards are given automatically in tryAdvance)
         if (quests.tryAdvance("rafiki", serverPlayer, LKQuestTrigger.RAFIKI_TALK)) {
             sendStageDialogue(player, quests.getStage("rafiki"));
+            syncPlayerData(serverPlayer, playerData);
             return InteractionResult.SUCCESS;
         }
 
@@ -111,23 +109,8 @@ public class RafikiEntity extends PathfinderMob {
                 if (quests.isComplete("rafiki")) sendSpeech(player, LKCharacterSpeech.HINT);
             }
         }
-        return InteractionResult.SUCCESS;
-    }
 
-    private int tryClaimNextReward(ServerPlayer player, LKPlayerData playerData, LKQuestManager quests) {
-        LKQuestline quest = LKQuestRegistry.get("rafiki");
-        int currentStage = quests.getStage("rafiki");
-        for (int stage = 0; stage < currentStage; stage++) {
-            List<LKClaimableReward> rewards = quest.getClaimableRewards(stage);
-            for (LKClaimableReward reward : rewards) {
-                if (!playerData.hasClaimedReward(reward.rewardKey())) {
-                    player.addItem(new ItemStack(reward.item().get(), reward.count()));
-                    playerData.claimReward(reward.rewardKey());
-                    return stage;
-                }
-            }
-        }
-        return -1;
+        return InteractionResult.SUCCESS;
     }
 
     private void syncPlayerData(ServerPlayer player, LKPlayerData data) {

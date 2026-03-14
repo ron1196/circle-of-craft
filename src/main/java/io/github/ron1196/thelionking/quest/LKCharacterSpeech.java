@@ -301,6 +301,10 @@ public enum LKCharacterSpeech {
                 "Stay away from the crocodiles!"
         };
 
-        static final String[] GEMSBOK_CALF = {"Hmmph!", "Hssh!", "Hmm!"};
+        static final String[] GEMSBOK_CALF = {
+                "Hmmph!",
+                "Hssh!",
+                "Hmm!"
+        };
     }
 }
