@@ -5,7 +5,6 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import static io.github.ron1196.thelionking.quest.LKQuestStage.ItemRequirement;
 import static io.github.ron1196.thelionking.quest.LKQuestStage.Source;
@@ -54,10 +53,6 @@ public class LKQuestRegistry {
         return List.copyOf(QUESTS.values());
     }
 
-    public static Map<Integer, String> getLegacyIndexMap() {
-        return Map.of(0, "rafiki", 1, "outlands");
-    }
-
     // ── Quest definitions ───────────────────────────────────────────────────
 
     private static LKQuestline buildRafikiQuest() {
@@ -80,7 +75,7 @@ public class LKQuestRegistry {
                         List.of(new ItemRequirement(LKItems.MANGO_DUST, 4)))
                 )
                 .stage(new LKQuestStage("Craft a Star Altar and use Rafiki Dust on it"))
-                .claimableReward(1, new ClaimableReward(LKItems.RHYTHM_STAFF, 1, "rafiki:1"))
+                .claimableReward(1, new LKClaimableReward(LKItems.RHYTHM_STAFF, 1, "rafiki:1"))
                 .trigger(RAFIKI_NOT_STARTED, RAFIKI_TALK)
                 .trigger(RAFIKI_COLLECT_BONES, RAFIKI_TALK)
                 .trigger(RAFIKI_DEFEAT_SCAR, SCAR_KILLED)

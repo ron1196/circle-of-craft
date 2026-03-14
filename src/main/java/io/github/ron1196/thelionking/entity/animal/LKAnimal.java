@@ -87,17 +87,23 @@ public abstract class LKAnimal extends Animal {
 
         if (QUEST_RANDOM.nextInt(3) == 0) {
             Item[] requestItems = getQuestRequestItems();
-            if (requestItems != null && requestItems.length > 0) {
-                Item item = requestItems[QUEST_RANDOM.nextInt(requestItems.length)];
-                int amount = 1 + QUEST_RANDOM.nextInt(5);
-                animalQuests.put(playerId, new LKAnimalQuestEntry(item, amount));
-                player.sendSystemMessage(Component.literal(
-                        LKAnimalQuest.getQuestStartMessage(
-                                getAnimalDisplayName(),
-                                item.getDescription().getString(),
-                                amount)));
-                return InteractionResult.SUCCESS;
+            if (requestItems == null || requestItems.length <= 0) {
+                return super.mobInteract(player, hand);
             }
+
+            Item item = requestItems[QUEST_RANDOM.nextInt(requestItems.length)];
+            int amount = 1 + QUEST_RANDOM.nextInt(5);
+
+            String questStartMessage = LKAnimalQuest.getQuestStartMessage(
+                    getAnimalDisplayName(),
+                    item.getDescription().getString(),
+                    amount
+            );
+            player.sendSystemMessage(Component.literal(questStartMessage));
+
+            animalQuests.put(playerId, new LKAnimalQuestEntry(item, amount));
+
+            return InteractionResult.SUCCESS;
         }
 
         return super.mobInteract(player, hand);
@@ -110,10 +116,12 @@ public abstract class LKAnimal extends Animal {
     private void giveQuestReward(ServerPlayer player) {
         ItemStack reward = getQuestReward();
         player.getInventory().placeItemBackInInventory(reward);
-        player.displayClientMessage(
-                Component.literal("§aYou received " + reward.getCount() + "x "
-                        + reward.getHoverName().getString() + " as a reward!"),
-                false);
+        String rewardMsg = String.format(
+                "§aYou received %dx %s as a reward!",
+                reward.getCount(),
+                reward.getHoverName().getString()
+        );
+        player.displayClientMessage(Component.literal(rewardMsg), false);
     }
 
     protected Item[] getQuestRequestItems() {
@@ -158,9 +166,9 @@ public abstract class LKAnimal extends Animal {
                 CompoundTag entryTag = questsTag.getCompound(key);
                 ResourceLocation itemId = new ResourceLocation(entryTag.getString("Item"));
                 Item item = ForgeRegistries.ITEMS.getValue(itemId);
-                if (item != null) {
-                    animalQuests.put(UUID.fromString(key), new LKAnimalQuestEntry(item, entryTag.getInt("Amount")));
-                }
+                if (item == null) continue;
+                LKAnimalQuestEntry questEntry = new LKAnimalQuestEntry(item, entryTag.getInt("Amount"));
+                animalQuests.put(UUID.fromString(key), questEntry);
             }
         }
     }

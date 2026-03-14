@@ -72,13 +72,13 @@ public class DikDikEntity extends LKAnimal {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("Variant", getVariant());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         setVariant(tag.getInt("Variant"));
     }

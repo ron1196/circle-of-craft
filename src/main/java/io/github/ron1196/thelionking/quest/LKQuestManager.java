@@ -75,7 +75,6 @@ public class LKQuestManager {
         state.setChecked(false);
         owner.setDirty();
 
-        // Sync to all players
         syncToAllPlayers(player.server);
 
         return true;
@@ -169,23 +168,13 @@ public class LKQuestManager {
     }
 
     public void readFromNBT(CompoundTag tag) {
-        if (tag.contains("Quests")) {
-            // New name-based format
-            CompoundTag questsTag = tag.getCompound("Quests");
-            for (String key : questsTag.getAllKeys()) {
-                LKQuestState state = LKQuestState.readFromNBT(questsTag.getCompound(key));
-                states.put(key, state);
-            }
-        } else if (tag.contains("Quest_0_Stage")) {
-            // Legacy index-based format
-            Map<Integer, String> legacyMap = LKQuestRegistry.getLegacyIndexMap();
-            for (Map.Entry<Integer, String> entry : legacyMap.entrySet()) {
-                int idx = entry.getKey();
-                String questId = entry.getValue();
-                int stage = tag.getInt("Quest_" + idx + "_Stage");
-                int checked = tag.getInt("Quest_" + idx + "_Checked");
-                states.put(questId, new LKQuestState(stage, checked != 0));
-            }
+        if (!tag.contains("Quests")) {
+            return;
+        }
+        CompoundTag questsTag = tag.getCompound("Quests");
+        for (String key : questsTag.getAllKeys()) {
+            LKQuestState state = LKQuestState.readFromNBT(questsTag.getCompound(key));
+            states.put(key, state);
         }
     }
 }

@@ -22,7 +22,7 @@ public class LKQuestline {
     private final String[] prerequisites;
     private final Map<Integer, LKQuestTrigger> triggerByStage;
     private final Map<Integer, BiConsumer<ServerPlayer, LKQuestManager>> customTransitions;
-    private final Map<Integer, List<ClaimableReward>> claimableRewards;
+    private final Map<Integer, List<LKClaimableReward>> claimableRewards;
 
     private LKQuestline(Builder builder) {
         this.id = builder.id;
@@ -33,8 +33,8 @@ public class LKQuestline {
         this.prerequisites = builder.prerequisites;
         this.triggerByStage = Map.copyOf(builder.triggerByStage);
         this.customTransitions = Map.copyOf(builder.customTransitions);
-        Map<Integer, List<ClaimableReward>> rewardsCopy = new HashMap<>();
-        for (Map.Entry<Integer, List<ClaimableReward>> entry : builder.claimableRewards.entrySet()) {
+        Map<Integer, List<LKClaimableReward>> rewardsCopy = new HashMap<>();
+        for (Map.Entry<Integer, List<LKClaimableReward>> entry : builder.claimableRewards.entrySet()) {
             rewardsCopy.put(entry.getKey(), List.copyOf(entry.getValue()));
         }
         this.claimableRewards = Collections.unmodifiableMap(rewardsCopy);
@@ -81,7 +81,7 @@ public class LKQuestline {
         return customTransitions.get(stage);
     }
 
-    public List<ClaimableReward> getClaimableRewards(int stage) {
+    public List<LKClaimableReward> getClaimableRewards(int stage) {
         return claimableRewards.getOrDefault(stage, List.of());
     }
 
@@ -98,7 +98,7 @@ public class LKQuestline {
         private String[] prerequisites = null;
         private final Map<Integer, LKQuestTrigger> triggerByStage = new HashMap<>();
         private final Map<Integer, BiConsumer<ServerPlayer, LKQuestManager>> customTransitions = new HashMap<>();
-        private final Map<Integer, List<ClaimableReward>> claimableRewards = new HashMap<>();
+        private final Map<Integer, List<LKClaimableReward>> claimableRewards = new HashMap<>();
 
         private Builder(String id) {
             this.id = id;
@@ -139,7 +139,7 @@ public class LKQuestline {
             return this;
         }
 
-        public Builder claimableReward(int stageIndex, ClaimableReward reward) {
+        public Builder claimableReward(int stageIndex, LKClaimableReward reward) {
             this.claimableRewards.computeIfAbsent(stageIndex, k -> new ArrayList<>()).add(reward);
             return this;
         }

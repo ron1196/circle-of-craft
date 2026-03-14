@@ -6,7 +6,7 @@ import io.github.ron1196.thelionking.data.LKWorldData;
 import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
 import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
-import io.github.ron1196.thelionking.quest.ClaimableReward;
+import io.github.ron1196.thelionking.quest.LKClaimableReward;
 import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
 import io.github.ron1196.thelionking.quest.LKQuestline;
 import io.github.ron1196.thelionking.quest.LKQuestManager;
@@ -207,8 +207,8 @@ public class ZiraEntity extends Monster {
         LKQuestline quest = LKQuestRegistry.get("outlands");
         int currentStage = quests.getStage("outlands");
         for (int stage = 0; stage < currentStage; stage++) {
-            List<ClaimableReward> rewards = quest.getClaimableRewards(stage);
-            for (ClaimableReward reward : rewards) {
+            List<LKClaimableReward> rewards = quest.getClaimableRewards(stage);
+            for (LKClaimableReward reward : rewards) {
                 if (!playerData.hasClaimedReward(reward.rewardKey())) {
                     player.addItem(new ItemStack(reward.item().get(), reward.count()));
                     playerData.claimReward(reward.rewardKey());
