@@ -1,6 +1,7 @@
 package io.github.ron1196.thelionking.entity.animal;
 
 import io.github.ron1196.thelionking.entity.ai.AmbientPanicGoal;
+import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
@@ -9,6 +10,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,6 +34,11 @@ public class GiraffeEntity extends LKAnimal {
         return LKAnimal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 20.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.2);
+    }
+
+    @Override
+    protected ItemStack getQuestReward() {
+        return new ItemStack(LKItems.GIRAFFE_SADDLE.get(), 1);
     }
 
     @Nullable

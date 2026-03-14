@@ -11,6 +11,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -51,6 +53,11 @@ public class RhinoEntity extends LKAnimal {
     @Override
     protected SoundEvent getDeathSound() {
         return LKSoundEvents.RHINO_DEATH.get();
+    }
+
+    @Override
+    protected ItemStack getQuestReward() {
+        return new ItemStack(Items.IRON_INGOT, 3 + QUEST_RANDOM.nextInt(3));
     }
 
     @Nullable

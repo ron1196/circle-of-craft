@@ -8,7 +8,10 @@ import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,7 +26,7 @@ public class FlamingoEntity extends LKAnimal {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.PanicGoal(this, 1.5));
+        this.goalSelector.addGoal(1, new PanicGoal(this, 1.5));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -45,6 +48,11 @@ public class FlamingoEntity extends LKAnimal {
     @Override
     protected SoundEvent getDeathSound() {
         return LKSoundEvents.FLAMINGO_DEATH.get();
+    }
+
+    @Override
+    protected ItemStack getQuestReward() {
+        return new ItemStack(Items.PINK_DYE, 3 + QUEST_RANDOM.nextInt(4));
     }
 
     @Nullable

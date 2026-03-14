@@ -1,11 +1,5 @@
 package io.github.ron1196.thelionking.quest;
 
-import io.github.ron1196.thelionking.registry.LKItems;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-
 import java.util.Random;
 
 /**
@@ -51,48 +45,19 @@ public final class LKAnimalQuest {
 
     public static String getQuestStartMessage(String animalName, String itemName, int amount) {
         String phrase = QUEST_START_PHRASES[RANDOM.nextInt(QUEST_START_PHRASES.length)];
-        String numberWord = amount >= 0 && amount < NUMBER_WORDS.length
-                ? NUMBER_WORDS[amount] : String.valueOf(amount);
-        phrase = phrase.replace("#", numberWord).replace("%", itemName);
-        return "\u00a7e<" + animalName + "> \u00a7f" + phrase;
+        phrase = phrase.replace("#", numberToWord(amount)).replace("%", itemName);
+        return "§e<" + animalName + "> §f" + phrase;
+    }
+
+    private static String numberToWord(int number) {
+        if (number >= 0 && number < NUMBER_WORDS.length) {
+            return NUMBER_WORDS[number];
+        }
+        return String.valueOf(number);
     }
 
     public static String getQuestEndMessage(String animalName) {
         String phrase = QUEST_END_PHRASES[RANDOM.nextInt(QUEST_END_PHRASES.length)];
-        return "\u00a7e<" + animalName + "> \u00a7f" + phrase;
-    }
-
-    /**
-     * Gives a reward to the player based on the type of animal that gave the quest.
-     * Called when the player completes an animal's mini-quest by bringing the requested item.
-     *
-     * @param player    the player receiving the reward
-     * @param animalType the registry name of the animal (e.g., "lion", "zebra", "giraffe")
-     */
-    public static void giveReward(ServerPlayer player, String animalType) {
-        ItemStack reward = switch (animalType) {
-            case "lion" -> new ItemStack(Items.GOLD_INGOT, 2 + RANDOM.nextInt(3));
-            case "zebra" -> new ItemStack(Items.LEATHER, 3 + RANDOM.nextInt(3));
-            case "giraffe" -> new ItemStack(LKItems.GIRAFFE_SADDLE.get(), 1);
-            case "elephant" -> new ItemStack(Items.IRON_INGOT, 2 + RANDOM.nextInt(4));
-            case "rhino" -> new ItemStack(Items.IRON_INGOT, 3 + RANDOM.nextInt(3));
-            case "hippo" -> new ItemStack(Items.COD, 3 + RANDOM.nextInt(5));
-            case "crocodile" -> new ItemStack(Items.GOLD_NUGGET, 5 + RANDOM.nextInt(6));
-            case "warthog" -> new ItemStack(Items.CARROT, 4 + RANDOM.nextInt(5));
-            case "meerkat" -> new ItemStack(LKItems.RAFIKI_COIN.get(), 1 + RANDOM.nextInt(2));
-            case "ostrich" -> new ItemStack(Items.FEATHER, 4 + RANDOM.nextInt(5));
-            case "flamingo" -> new ItemStack(Items.PINK_DYE, 3 + RANDOM.nextInt(4));
-            case "gorilla" -> new ItemStack(Items.DIAMOND, 1);
-            case "leopard" -> new ItemStack(LKItems.AMULET.get(), 1);
-            case "peacock" -> new ItemStack(LKItems.PEACOCK_GEM.get(), 1 + RANDOM.nextInt(2));
-            case "buffalo" -> new ItemStack(Items.LEATHER, 4 + RANDOM.nextInt(4));
-            default -> new ItemStack(Items.GOLD_NUGGET, 3 + RANDOM.nextInt(4));
-        };
-
-        player.getInventory().placeItemBackInInventory(reward);
-        player.displayClientMessage(
-                Component.literal("\u00a7aYou received " + reward.getCount() + "x " + reward.getHoverName().getString() + " as a reward!"),
-                false
-        );
+        return "§e<" + animalName + "> §f" + phrase;
     }
 }

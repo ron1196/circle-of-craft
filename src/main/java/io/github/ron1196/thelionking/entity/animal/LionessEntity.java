@@ -11,6 +11,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.Level;
@@ -52,6 +54,11 @@ public class LionessEntity extends LKAnimal {
     @Override
     protected SoundEvent getDeathSound() {
         return LKSoundEvents.LION_DEATH.get();
+    }
+
+    @Override
+    protected ItemStack getQuestReward() {
+        return new ItemStack(Items.GOLD_INGOT, 2 + QUEST_RANDOM.nextInt(3));
     }
 
     @Nullable
