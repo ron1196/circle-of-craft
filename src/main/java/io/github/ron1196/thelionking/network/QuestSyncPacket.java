@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.network;
 
-import io.github.ron1196.thelionking.quest.questline.LKQuestlineState;
+import io.github.ron1196.thelionking.quest.questline.QuestlineState;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -32,7 +32,7 @@ public class QuestSyncPacket {
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         NetworkEvent.Context context = ctx.get();
-        context.enqueueWork(() -> ClientWorldState.questStates.put(questId, new LKQuestlineState(stageId, checked)));
+        context.enqueueWork(() -> ClientWorldState.questStates.put(questId, new QuestlineState(stageId, checked)));
         context.setPacketHandled(true);
     }
 }

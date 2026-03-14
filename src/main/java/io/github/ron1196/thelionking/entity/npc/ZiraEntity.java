@@ -6,10 +6,10 @@ import io.github.ron1196.thelionking.data.LKWorldData;
 import io.github.ron1196.thelionking.entity.LKLightningBoltEntity;
 import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
-import io.github.ron1196.thelionking.quest.animal.CharacterSpeech;
-import io.github.ron1196.thelionking.quest.questline.LKQuestlineManager;
+import io.github.ron1196.thelionking.quest.CharacterSpeech;
+import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline.Stage;
-import io.github.ron1196.thelionking.quest.stage.LKQuestTrigger;
+import io.github.ron1196.thelionking.quest.stage.StageTrigger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -114,7 +114,7 @@ public class ZiraEntity extends Monster {
 
         talkCooldown = 40;
         LKWorldData data = LKWorldData.get(serverLevel);
-        LKQuestlineManager quests = data.getQuestManager();
+        QuestlineManager quests = data.getQuestManager();
         LKPlayerData playerData = LKPlayerDataProvider.get(serverPlayer);
         Stage stage = quests.getStage("outlands", Stage.class);
 
@@ -127,7 +127,7 @@ public class ZiraEntity extends Monster {
         }
 
         // Try to advance the quest (rewards are given automatically in tryAdvance)
-        if (quests.tryAdvance("outlands", serverPlayer, LKQuestTrigger.ZIRA_TALK)) {
+        if (quests.tryAdvance("outlands", serverPlayer, StageTrigger.ZIRA_TALK)) {
             syncPlayerData(serverPlayer, playerData);
             sendStageDialogue(player, quests.getStage("outlands", Stage.class));
             return InteractionResult.SUCCESS;
@@ -166,7 +166,7 @@ public class ZiraEntity extends Monster {
         if (!level().isClientSide() && level() instanceof ServerLevel serverLevel) {
             if (source.getEntity() instanceof ServerPlayer serverPlayer) {
                 LKWorldData data = LKWorldData.get(serverLevel);
-                data.getQuestManager().tryAdvance("outlands", serverPlayer, LKQuestTrigger.ZIRA_KILLED);
+                data.getQuestManager().tryAdvance("outlands", serverPlayer, StageTrigger.ZIRA_KILLED);
 
                 serverPlayer.sendSystemMessage(Component.literal(
                         "\u00a7e<Zira> \u00a7fThis is not over... Scar's legacy will live on..."));

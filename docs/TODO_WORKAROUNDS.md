@@ -62,11 +62,17 @@ Items using generated placeholder textures (not from old mod):
 
 ## Multiplayer Quest Data
 
-- [ ] **Quest state is global, not per-player** — Quest progress is world-level (`LKWorldData`), shared by all players. Per-player fields (`receivedQuestBook`, `homePortal`, `hasSimba`) have been moved to `LKPlayerData` capability. Remaining work:
-  - Update `LoginSyncPacket` to send per-player homePortal from `LKPlayerData` (currently sends zeros)
-  - Update `RafikiEntity` to use `LKPlayerData` for `receivedQuestBook` (currently commented out)
-  - Update `RafikiDustItem` to use `LKPlayerData.hasSimba()` (currently stubbed)
-  - Update all quest logic to be per-player if needed
+- [x] ~~**Quest state is global, not per-player**~~ — DONE: World-level quest progress in `LKWorldData`/`LKQuestlineManager`. Per-player data (`receivedQuestBook`, `homePortal`, `hasSimba`, `claimedRewards`) in `LKPlayerData` capability. Enum-based stage IDs for save resilience. Per-player animal quests via UUID-keyed map.
+
+## CharacterSpeech Split
+
+- [ ] **`CharacterSpeech.java` is a monolithic dialogue class** — All NPC and animal dialogue lives in one big enum. Should be split:
+  - **Rafiki quest dialogue** (HYENA_BONES, MENTION_SCAR, TERMITES, MANGOES, STAR_ALTAR, HINT, FLOWERS) → move to `RafikiQuestline.java` or `RafikiEntity.java`
+  - **Outlands quest dialogue** (ZIRA_INGOTS, ZIRA_FEATHERS, ZIRA_CONQUEST) → move to `OutlandsQuestline.java` or `ZiraEntity.java`
+  - **Boss rug dialogue** (RUG_SCAR, RUG_ZIRA) → move to `ScarRugEntity.java` or a rug-specific class
+  - **NPC dialogue** (MORNING_REPORT, BUGS, MORE_BUGS) → move to respective NPC entity classes (ZazuEntity, TimonEntity)
+  - **Animal dialogue** (LION, ZEBRA, RHINO, GEMSBOK + cubs/foals) → move to `quest/animal/` or to each animal entity class
+  - Keep a shared `SpeechUtil.giveSpeech(name, lines)` helper for the formatting pattern
 
 ## Crop Block Models
 

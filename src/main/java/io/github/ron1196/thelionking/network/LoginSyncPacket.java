@@ -2,9 +2,9 @@ package io.github.ron1196.thelionking.network;
 
 import io.github.ron1196.thelionking.data.LKPlayerData;
 import io.github.ron1196.thelionking.data.LKWorldData;
-import io.github.ron1196.thelionking.quest.questline.LKQuestline;
-import io.github.ron1196.thelionking.quest.questline.LKQuestlineState;
-import io.github.ron1196.thelionking.quest.questline.LKQuestRegistry;
+import io.github.ron1196.thelionking.quest.questline.Questline;
+import io.github.ron1196.thelionking.quest.questline.QuestlineState;
+import io.github.ron1196.thelionking.quest.questline.QuestlineRegistry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -44,8 +44,8 @@ public class LoginSyncPacket {
 
         // Quests
         this.questEntries = new ArrayList<>();
-        for (LKQuestline quest : LKQuestRegistry.getOrdered()) {
-            LKQuestlineState state = worldData.getQuestManager().getState(quest.getId());
+        for (Questline quest : QuestlineRegistry.getOrdered()) {
+            QuestlineState state = worldData.getQuestManager().getState(quest.getId());
             questEntries.add(new QuestEntry(quest.getId(), state.getCurrentStageId(), state.isChecked()));
         }
 
@@ -129,7 +129,7 @@ public class LoginSyncPacket {
             // Quest state
             ClientWorldState.questStates.clear();
             for (QuestEntry entry : questEntries) {
-                ClientWorldState.questStates.put(entry.questId(), new LKQuestlineState(entry.stageId(), entry.checked()));
+                ClientWorldState.questStates.put(entry.questId(), new QuestlineState(entry.stageId(), entry.checked()));
             }
 
             // Player data

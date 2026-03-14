@@ -1,8 +1,8 @@
 package io.github.ron1196.thelionking.item;
 
 import io.github.ron1196.thelionking.network.ClientWorldState;
-import io.github.ron1196.thelionking.quest.questline.LKQuestline;
-import io.github.ron1196.thelionking.quest.questline.LKQuestRegistry;
+import io.github.ron1196.thelionking.quest.questline.Questline;
+import io.github.ron1196.thelionking.quest.questline.QuestlineRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -53,7 +53,7 @@ public class QuestBookItem extends Item {
     }
 
     private static boolean hasUncheckedQuests() {
-        for (LKQuestline quest : LKQuestRegistry.getOrdered()) {
+        for (Questline quest : QuestlineRegistry.getOrdered()) {
             if (!ClientWorldState.isQuestChecked(quest.getId())) return true;
         }
         return false;

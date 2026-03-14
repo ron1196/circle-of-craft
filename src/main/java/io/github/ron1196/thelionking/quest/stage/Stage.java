@@ -5,8 +5,8 @@ import net.minecraft.world.item.Item;
 import java.util.List;
 import java.util.function.Supplier;
 
-public record LKStage(String objectiveText, List<ItemRequirement> requirements) {
-    public LKStage(String objectiveText) {
+public record Stage(String objectiveText, List<ItemRequirement> requirements) {
+    public Stage(String objectiveText) {
         this(objectiveText, List.of());
     }
 

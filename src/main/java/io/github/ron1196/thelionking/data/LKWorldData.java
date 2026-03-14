@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.data;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
-import io.github.ron1196.thelionking.quest.questline.LKQuestlineManager;
+import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -18,12 +18,12 @@ public class LKWorldData extends SavedData {
     public boolean defeatedScar = false;
 
     // Quest manager
-    private final LKQuestlineManager questManager = new LKQuestlineManager(this);
+    private final QuestlineManager questManager = new QuestlineManager(this);
 
     public LKWorldData() {
     }
 
-    public LKQuestlineManager getQuestManager() {
+    public QuestlineManager getQuestManager() {
         return questManager;
     }
 

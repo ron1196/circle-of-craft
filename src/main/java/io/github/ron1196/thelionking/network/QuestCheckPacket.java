@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.network;
 
 import io.github.ron1196.thelionking.data.LKWorldData;
-import io.github.ron1196.thelionking.quest.questline.LKQuestlineState;
+import io.github.ron1196.thelionking.quest.questline.QuestlineState;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
@@ -31,7 +31,7 @@ public class QuestCheckPacket {
             if (sender == null) return;
 
             LKWorldData data = LKWorldData.get(sender.serverLevel());
-            LKQuestlineState state = data.getQuestManager().getState(questId);
+            QuestlineState state = data.getQuestManager().getState(questId);
             state.setChecked(true);
             data.setDirty();
         });

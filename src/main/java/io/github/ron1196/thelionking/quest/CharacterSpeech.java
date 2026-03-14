@@ -1,4 +1,4 @@
-package io.github.ron1196.thelionking.quest.animal;
+package io.github.ron1196.thelionking.quest;
 
 import java.util.Random;
 

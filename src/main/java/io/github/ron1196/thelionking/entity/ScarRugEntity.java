@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.entity;
 
-import io.github.ron1196.thelionking.quest.animal.CharacterSpeech;
+import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.registry.LKEntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
 import io.github.ron1196.thelionking.registry.LKSoundEvents;

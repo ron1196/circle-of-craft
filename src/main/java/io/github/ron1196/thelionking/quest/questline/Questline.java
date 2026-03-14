@@ -2,8 +2,8 @@ package io.github.ron1196.thelionking.quest.questline;
 
 import io.github.ron1196.thelionking.quest.stage.ClaimableReward;
 import io.github.ron1196.thelionking.quest.stage.IStageId;
-import io.github.ron1196.thelionking.quest.stage.LKQuestTrigger;
-import io.github.ron1196.thelionking.quest.stage.LKStage;
+import io.github.ron1196.thelionking.quest.stage.StageTrigger;
+import io.github.ron1196.thelionking.quest.stage.Stage;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -18,20 +18,20 @@ import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class LKQuestline {
+public class Questline {
 
     private final String id;
     private final String displayName;
     private final Supplier<ItemStack> icon;
     private final List<IStageId> stageOrder;
-    private final Map<IStageId, LKStage> stageData;
-    private final Predicate<LKQuestlineManager> canStart;
+    private final Map<IStageId, Stage> stageData;
+    private final Predicate<QuestlineManager> canStart;
     private final String[] prerequisites;
-    private final Map<IStageId, LKQuestTrigger> triggerByStage;
-    private final Map<IStageId, BiConsumer<ServerPlayer, LKQuestlineManager>> customTransitions;
+    private final Map<IStageId, StageTrigger> triggerByStage;
+    private final Map<IStageId, BiConsumer<ServerPlayer, QuestlineManager>> customTransitions;
     private final Map<IStageId, List<ClaimableReward>> claimableRewards;
 
-    private LKQuestline(Builder builder) {
+    private Questline(Builder builder) {
         this.id = builder.id;
         this.displayName = builder.displayName;
         this.icon = builder.icon;
@@ -71,12 +71,12 @@ public class LKQuestline {
     }
 
     @Nullable
-    public LKStage getStageData(IStageId stage) {
+    public Stage getStageData(IStageId stage) {
         return stageData.get(stage);
     }
 
     public String getObjectiveByStage(IStageId stage) {
-        LKStage data = stageData.get(stage);
+        Stage data = stageData.get(stage);
         return data != null ? data.objectiveText() : "";
     }
 
@@ -88,7 +88,7 @@ public class LKQuestline {
         return stage != null ? getObjectiveByStage(stage) : "";
     }
 
-    public boolean canStart(LKQuestlineManager manager) {
+    public boolean canStart(QuestlineManager manager) {
         return canStart.test(manager);
     }
 
@@ -97,12 +97,12 @@ public class LKQuestline {
     }
 
     @Nullable
-    public LKQuestTrigger getTriggerForStage(IStageId stage) {
+    public StageTrigger getTriggerForStage(IStageId stage) {
         return triggerByStage.get(stage);
     }
 
     @Nullable
-    public BiConsumer<ServerPlayer, LKQuestlineManager> getCustomTransition(IStageId stage) {
+    public BiConsumer<ServerPlayer, QuestlineManager> getCustomTransition(IStageId stage) {
         return customTransitions.get(stage);
     }
 
@@ -197,11 +197,11 @@ public class LKQuestline {
         private String displayName = "";
         private Supplier<ItemStack> icon = () -> ItemStack.EMPTY;
         private final List<IStageId> stageOrder = new ArrayList<>();
-        private final Map<IStageId, LKStage> stageData = new LinkedHashMap<>();
-        private Predicate<LKQuestlineManager> canStart = m -> true;
+        private final Map<IStageId, Stage> stageData = new LinkedHashMap<>();
+        private Predicate<QuestlineManager> canStart = m -> true;
         private String[] prerequisites = null;
-        private final Map<IStageId, LKQuestTrigger> triggerByStage = new HashMap<>();
-        private final Map<IStageId, BiConsumer<ServerPlayer, LKQuestlineManager>> customTransitions = new HashMap<>();
+        private final Map<IStageId, StageTrigger> triggerByStage = new HashMap<>();
+        private final Map<IStageId, BiConsumer<ServerPlayer, QuestlineManager>> customTransitions = new HashMap<>();
         private final Map<IStageId, List<ClaimableReward>> claimableRewards = new HashMap<>();
 
         private Builder(String id) {
@@ -218,13 +218,13 @@ public class LKQuestline {
             return this;
         }
 
-        public Builder stage(IStageId stageId, LKStage data) {
+        public Builder stage(IStageId stageId, Stage data) {
             this.stageOrder.add(stageId);
             this.stageData.put(stageId, data);
             return this;
         }
 
-        public Builder canStart(Predicate<LKQuestlineManager> predicate) {
+        public Builder canStart(Predicate<QuestlineManager> predicate) {
             this.canStart = predicate;
             return this;
         }
@@ -234,12 +234,12 @@ public class LKQuestline {
             return this;
         }
 
-        public Builder trigger(IStageId stage, LKQuestTrigger trigger) {
+        public Builder trigger(IStageId stage, StageTrigger trigger) {
             this.triggerByStage.put(stage, trigger);
             return this;
         }
 
-        public Builder customTransition(IStageId stage, BiConsumer<ServerPlayer, LKQuestlineManager> action) {
+        public Builder customTransition(IStageId stage, BiConsumer<ServerPlayer, QuestlineManager> action) {
             this.customTransitions.put(stage, action);
             return this;
         }
@@ -249,8 +249,8 @@ public class LKQuestline {
             return this;
         }
 
-        public LKQuestline build() {
-            return new LKQuestline(this);
+        public Questline build() {
+            return new Questline(this);
         }
     }
 }

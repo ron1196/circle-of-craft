@@ -1,12 +1,12 @@
-package io.github.ron1196.thelionking.quest.animal;
+package io.github.ron1196.thelionking.entity.animal;
 
 import java.util.Random;
 
 /**
- * Static utility class for animal mini-quest phrases and rewards.
- * Per-player quest state is now stored in {@link io.github.ron1196.thelionking.entity.animal.LKAnimal}.
+ * Static utility class for animal favor phrases and rewards.
+ * Per-player favor state is stored in {@link LKAnimal}.
  */
-public final class LKAnimalQuest {
+public final class AnimalFavor {
 
     private static final Random RANDOM = new Random();
 
@@ -40,7 +40,7 @@ public final class LKAnimalQuest {
             "sixty", "sixty-one", "sixty-two", "sixty-three", "sixty-four"
     };
 
-    private LKAnimalQuest() {
+    private AnimalFavor() {
     }
 
     public static String getQuestStartMessage(String animalName, String itemName, int amount) {
@@ -58,6 +58,6 @@ public final class LKAnimalQuest {
 
     public static String getQuestEndMessage(String animalName) {
         String phrase = QUEST_END_PHRASES[RANDOM.nextInt(QUEST_END_PHRASES.length)];
-        return "§e<" + animalName + "> §f" + phrase;
+        return "\u00a7e<" + animalName + "> \u00a7f" + phrase;
     }
 }

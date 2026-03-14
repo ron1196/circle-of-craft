@@ -5,10 +5,10 @@ import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
 import io.github.ron1196.thelionking.data.LKWorldData;
 import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
-import io.github.ron1196.thelionking.quest.animal.CharacterSpeech;
-import io.github.ron1196.thelionking.quest.questline.LKQuestlineManager;
+import io.github.ron1196.thelionking.quest.CharacterSpeech;
+import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.questline.RafikiQuestline.Stage;
-import io.github.ron1196.thelionking.quest.stage.LKQuestTrigger;
+import io.github.ron1196.thelionking.quest.stage.StageTrigger;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -72,7 +72,7 @@ public class RafikiEntity extends PathfinderMob {
 
         talkCooldown = 40;
         LKWorldData data = LKWorldData.get(serverLevel);
-        LKQuestlineManager quests = data.getQuestManager();
+        QuestlineManager quests = data.getQuestManager();
         LKPlayerData playerData = LKPlayerDataProvider.get(serverPlayer);
         Stage stage = quests.getStage("rafiki", Stage.class);
 
@@ -93,7 +93,7 @@ public class RafikiEntity extends PathfinderMob {
         }
 
         // Try to advance the quest (rewards are given automatically in tryAdvance)
-        if (quests.tryAdvance("rafiki", serverPlayer, LKQuestTrigger.RAFIKI_TALK)) {
+        if (quests.tryAdvance("rafiki", serverPlayer, StageTrigger.RAFIKI_TALK)) {
             Stage newStage = quests.getStage("rafiki", Stage.class);
             sendStageDialogue(player, newStage);
             syncPlayerData(serverPlayer, playerData);

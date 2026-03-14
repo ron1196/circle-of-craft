@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.quest.animal.CharacterSpeech;
+import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;

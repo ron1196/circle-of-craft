@@ -4,8 +4,8 @@ import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.network.ClientWorldState;
 import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.QuestCheckPacket;
-import io.github.ron1196.thelionking.quest.questline.LKQuestline;
-import io.github.ron1196.thelionking.quest.questline.LKQuestRegistry;
+import io.github.ron1196.thelionking.quest.questline.Questline;
+import io.github.ron1196.thelionking.quest.questline.QuestlineRegistry;
 import io.github.ron1196.thelionking.quest.stage.IStageId;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -39,10 +39,10 @@ public class QuestBookScreen extends Screen {
         int centerX = (this.width - BOOK_WIDTH * 2) / 2;
         int topY = (this.height - BOOK_HEIGHT) / 2;
 
-        List<LKQuestline> quests = LKQuestRegistry.getOrdered();
+        List<Questline> quests = QuestlineRegistry.getOrdered();
         int buttonY = topY + 30;
         for (int i = 0; i < quests.size(); i++) {
-            LKQuestline quest = quests.get(i);
+            Questline quest = quests.get(i);
             final int questIdx = i;
             addRenderableWidget(Button.builder(
                     Component.literal(quest.getDisplayName()),
@@ -71,11 +71,11 @@ public class QuestBookScreen extends Screen {
         // Left page title
         graphics.drawCenteredString(font, "\u00a7lQuests", centerX + BOOK_WIDTH / 2, topY + 12, 0x140C02);
 
-        List<LKQuestline> quests = LKQuestRegistry.getOrdered();
+        List<Questline> quests = QuestlineRegistry.getOrdered();
 
         // Draw quest status indicators
         int buttonY = topY + 30;
-        for (LKQuestline quest : quests) {
+        for (Questline quest : quests) {
             String stageId = ClientWorldState.getQuestStageId(quest.getId());
             boolean complete = quest.isComplete(stageId);
             boolean started = quest.isStarted(stageId) && !complete;
@@ -102,7 +102,7 @@ public class QuestBookScreen extends Screen {
 
         // Right page: quest details
         if (selectedQuest >= 0 && selectedQuest < quests.size()) {
-            LKQuestline quest = quests.get(selectedQuest);
+            Questline quest = quests.get(selectedQuest);
             String stageId = ClientWorldState.getQuestStageId(quest.getId());
             boolean complete = quest.isComplete(stageId);
             int stageIndex = quest.getStageIndex(stageId);
@@ -184,11 +184,11 @@ public class QuestBookScreen extends Screen {
         super.render(graphics, mouseX, mouseY, partialTick);
     }
 
-    private static boolean canStartOnClient(LKQuestline quest) {
+    private static boolean canStartOnClient(Questline quest) {
         String[] prereqs = quest.getPrerequisites();
         if (prereqs == null) return true;
         for (String prereqName : prereqs) {
-            for (LKQuestline other : LKQuestRegistry.getOrdered()) {
+            for (Questline other : QuestlineRegistry.getOrdered()) {
                 if (other.getDisplayName().equals(prereqName) || ("Complete " + other.getDisplayName()).equals(prereqName)) {
                     if (!other.isComplete(ClientWorldState.getQuestStageId(other.getId()))) {
                         return false;

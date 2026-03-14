@@ -6,8 +6,8 @@ import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.QuestSyncPacket;
 import io.github.ron1196.thelionking.quest.stage.ClaimableReward;
 import io.github.ron1196.thelionking.quest.stage.IStageId;
-import io.github.ron1196.thelionking.quest.stage.LKQuestTrigger;
-import io.github.ron1196.thelionking.quest.stage.LKStage;
+import io.github.ron1196.thelionking.quest.stage.StageTrigger;
+import io.github.ron1196.thelionking.quest.stage.Stage;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,20 +21,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public class LKQuestlineManager {
+public class QuestlineManager {
 
-    private final Map<String, LKQuestlineState> states = new HashMap<>();
+    private final Map<String, QuestlineState> states = new HashMap<>();
     private final SavedData owner;
 
-    public LKQuestlineManager(SavedData owner) {
+    public QuestlineManager(SavedData owner) {
         this.owner = owner;
-        for (LKQuestline quest : LKQuestRegistry.getOrdered()) {
-            states.put(quest.getId(), new LKQuestlineState());
+        for (Questline quest : QuestlineRegistry.getOrdered()) {
+            states.put(quest.getId(), new QuestlineState());
         }
     }
 
-    public LKQuestlineState getState(String questId) {
-        return states.computeIfAbsent(questId, k -> new LKQuestlineState());
+    public QuestlineState getState(String questId) {
+        return states.computeIfAbsent(questId, k -> new QuestlineState());
     }
 
     /**
@@ -63,7 +63,7 @@ public class LKQuestlineManager {
      */
     @Nullable
     private IStageId resolveCurrentStage(String questId) {
-        LKQuestline quest = LKQuestRegistry.get(questId);
+        Questline quest = QuestlineRegistry.get(questId);
         if (quest == null) return null;
         String stageId = getStageId(questId);
         if (stageId.isEmpty()) {
@@ -73,7 +73,7 @@ public class LKQuestlineManager {
     }
 
     public boolean isComplete(String questId) {
-        LKQuestline quest = LKQuestRegistry.get(questId);
+        Questline quest = QuestlineRegistry.get(questId);
         if (quest == null) return false;
         String stageId = getStageId(questId);
         return quest.isComplete(stageId);
@@ -84,7 +84,7 @@ public class LKQuestlineManager {
      * in the questline's stage order.
      */
     public boolean isStageAtOrPast(String questId, IStageId target) {
-        LKQuestline quest = LKQuestRegistry.get(questId);
+        Questline quest = QuestlineRegistry.get(questId);
         if (quest == null) return false;
         String stageId = getStageId(questId);
         if (stageId.isEmpty()) {
@@ -95,34 +95,34 @@ public class LKQuestlineManager {
     }
 
     public boolean canStart(String questId) {
-        LKQuestline quest = LKQuestRegistry.get(questId);
+        Questline quest = QuestlineRegistry.get(questId);
         if (quest == null) return false;
         return quest.canStart(this);
     }
 
-    public boolean tryAdvance(String questId, ServerPlayer player, LKQuestTrigger trigger) {
-        LKQuestline quest = LKQuestRegistry.get(questId);
+    public boolean tryAdvance(String questId, ServerPlayer player, StageTrigger trigger) {
+        Questline quest = QuestlineRegistry.get(questId);
         if (quest == null) return false;
 
         if (!quest.canStart(this)) return false;
 
-        LKQuestlineState state = getState(questId);
+        QuestlineState state = getState(questId);
         IStageId currentStage = resolveCurrentStage(questId);
         if (currentStage == null) return false;
 
         // Already at the last stage (complete) — can't advance further
         if (quest.isLastStage(currentStage)) return false;
 
-        LKQuestTrigger expected = quest.getTriggerForStage(currentStage);
+        StageTrigger expected = quest.getTriggerForStage(currentStage);
         if (expected == null || expected != trigger) return false;
 
-        LKStage stageDef = quest.getStageData(currentStage);
+        Stage stageDef = quest.getStageData(currentStage);
         if (stageDef == null) return false;
 
         if (!checkRequirements(player, stageDef.requirements())) return false;
         consumeRequirements(player, stageDef.requirements());
 
-        BiConsumer<ServerPlayer, LKQuestlineManager> custom = quest.getCustomTransition(currentStage);
+        BiConsumer<ServerPlayer, QuestlineManager> custom = quest.getCustomTransition(currentStage);
         if (custom != null) {
             custom.accept(player, this);
         }
@@ -144,7 +144,7 @@ public class LKQuestlineManager {
     }
 
     public int tryClaimNextReward(String questId, ServerPlayer player) {
-        LKQuestline quest = LKQuestRegistry.get(questId);
+        Questline quest = QuestlineRegistry.get(questId);
         if (quest == null) return -1;
         LKPlayerData playerData = LKPlayerDataProvider.get(player);
         String currentStageId = getStageId(questId);
@@ -167,7 +167,7 @@ public class LKQuestlineManager {
         return -1;
     }
 
-    private void claimRewards(LKQuestline quest, IStageId completedStage, ServerPlayer player) {
+    private void claimRewards(Questline quest, IStageId completedStage, ServerPlayer player) {
         List<ClaimableReward> rewards = quest.getClaimableRewards(completedStage);
         if (rewards.isEmpty()) return;
         String rewardKey = quest.getId() + ":" + completedStage.name();
@@ -179,14 +179,14 @@ public class LKQuestlineManager {
         playerData.claimReward(rewardKey);
     }
 
-    private boolean checkRequirements(ServerPlayer player, List<LKStage.ItemRequirement> requirements) {
-        for (LKStage.ItemRequirement req : requirements) {
+    private boolean checkRequirements(ServerPlayer player, List<Stage.ItemRequirement> requirements) {
+        for (Stage.ItemRequirement req : requirements) {
             if (!hasRequirement(player, req)) return false;
         }
         return true;
     }
 
-    private boolean hasRequirement(ServerPlayer player, LKStage.ItemRequirement req) {
+    private boolean hasRequirement(ServerPlayer player, Stage.ItemRequirement req) {
         return switch (req.source()) {
             case MAIN_HAND -> {
                 ItemStack held = player.getMainHandItem();
@@ -205,13 +205,13 @@ public class LKQuestlineManager {
         };
     }
 
-    private void consumeRequirements(ServerPlayer player, List<LKStage.ItemRequirement> requirements) {
-        for (LKStage.ItemRequirement req : requirements) {
+    private void consumeRequirements(ServerPlayer player, List<Stage.ItemRequirement> requirements) {
+        for (Stage.ItemRequirement req : requirements) {
             consumeRequirement(player, req);
         }
     }
 
-    private void consumeRequirement(ServerPlayer player, LKStage.ItemRequirement req) {
+    private void consumeRequirement(ServerPlayer player, Stage.ItemRequirement req) {
         switch (req.source()) {
             case MAIN_HAND -> player.getMainHandItem().shrink(req.count());
             case INVENTORY -> {
@@ -229,8 +229,8 @@ public class LKQuestlineManager {
     }
 
     public boolean anyUnchecked() {
-        for (LKQuestline quest : LKQuestRegistry.getOrdered()) {
-            LKQuestlineState state = getState(quest.getId());
+        for (Questline quest : QuestlineRegistry.getOrdered()) {
+            QuestlineState state = getState(quest.getId());
             if (quest.canStart(this) && !state.isChecked()) return true;
         }
         return false;
@@ -239,8 +239,8 @@ public class LKQuestlineManager {
     // -- Sync ---------------------------------------------------------------
 
     public void syncToPlayer(ServerPlayer player) {
-        for (LKQuestline quest : LKQuestRegistry.getOrdered()) {
-            LKQuestlineState state = getState(quest.getId());
+        for (Questline quest : QuestlineRegistry.getOrdered()) {
+            QuestlineState state = getState(quest.getId());
             LKNetworking.CHANNEL.send(
                     PacketDistributor.PLAYER.with(() -> player),
                     new QuestSyncPacket(quest.getId(), state.getCurrentStageId(), state.isChecked())
@@ -258,7 +258,7 @@ public class LKQuestlineManager {
 
     public void writeToNBT(CompoundTag tag) {
         CompoundTag questsTag = new CompoundTag();
-        for (Map.Entry<String, LKQuestlineState> entry : states.entrySet()) {
+        for (Map.Entry<String, QuestlineState> entry : states.entrySet()) {
             CompoundTag questTag = new CompoundTag();
             entry.getValue().writeToNBT(questTag);
             questsTag.put(entry.getKey(), questTag);
@@ -272,7 +272,7 @@ public class LKQuestlineManager {
         }
         CompoundTag questsTag = tag.getCompound("Quests");
         for (String key : questsTag.getAllKeys()) {
-            LKQuestlineState state = LKQuestlineState.readFromNBT(questsTag.getCompound(key));
+            QuestlineState state = QuestlineState.readFromNBT(questsTag.getCompound(key));
             states.put(key, state);
         }
     }

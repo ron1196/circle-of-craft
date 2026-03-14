@@ -2,16 +2,16 @@ package io.github.ron1196.thelionking.quest.questline;
 
 import net.minecraft.nbt.CompoundTag;
 
-public class LKQuestlineState {
+public class QuestlineState {
 
     private String currentStageId;
     private boolean checked;
 
-    public LKQuestlineState() {
+    public QuestlineState() {
         this("", false);
     }
 
-    public LKQuestlineState(String stageId, boolean checked) {
+    public QuestlineState(String stageId, boolean checked) {
         this.currentStageId = stageId;
         this.checked = checked;
     }
@@ -37,7 +37,7 @@ public class LKQuestlineState {
         tag.putBoolean("Checked", checked);
     }
 
-    public static LKQuestlineState readFromNBT(CompoundTag tag) {
+    public static QuestlineState readFromNBT(CompoundTag tag) {
         String stageId;
         if (tag.contains("Stage", 8)) {
             // New string-based format
@@ -49,6 +49,6 @@ public class LKQuestlineState {
             stageId = "";
         }
         boolean checked = tag.getBoolean("Checked");
-        return new LKQuestlineState(stageId, checked);
+        return new QuestlineState(stageId, checked);
     }
 }
