@@ -37,12 +37,13 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 - [ ] **Tall Flower Distribution** — Old: `LKWorldGenTallFlowers`, not ported at all
 - [ ] **Dungeons** — Old: `LKWorldGenDungeons` (10 per chunk in Outlands), not ported
 - [ ] **Outlands Lava Lakes** — Old: `LKWorldGenOutlandsLakes`, not ported
-- [ ] **Zazu Spawner Areas** — Old had spawner-specific generation logic, not ported
+- [x] ~~**Zazu Spawner Areas**~~ — SKIP: No dedicated spawner gen in old mod. Zazus spawn via biome config.
 
 ## Missing Event Handlers
 
 - [ ] **UseHoeEvent** — Tilled Sand creation when hoeing sand blocks
-- [ ] **BonemealEvent** — Prevent bonemeal usage in Pride Lands dimension
+- [x] ~~**BonemealEvent**~~ — SKIP: Both vanilla bonemeal and Hyena Meal work in all dimensions.
+- [ ] **Pride Lands Entry Song** — Play a song when the player enters the Pride Lands for the first time
 
 ## Missing Networking Packets
 
