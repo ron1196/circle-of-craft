@@ -26,9 +26,8 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 ## Advancements
 
 - [ ] **Remaining advancement icon substitutions** (items not yet registered):
-  - `lion_dust` → `termite_dust`, `outlandish_dart` → `dart_black`
-  - `tunnah_diggah` → `pridestone_shovel`, `ticket_lion_helmet` → `ticket_lion_head`
-  - `peacock_wings` → `peacock_gem`
+  - `outlandish_dart` → `dart_black`, `ticket_lion_helmet` → `ticket_lion_head`, `peacock_wings` → `peacock_gem`
+  - ~~`tunnah_diggah`~~ FIXED: now uses real item, ~~`lion_dust`~~ previously resolved
 
 ## Missing World Generation
 

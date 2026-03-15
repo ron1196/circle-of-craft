@@ -1,7 +1,7 @@
 {
   "parent": "thelionking:hakuna_matata",
   "display": {
-    "icon": { "item": "thelionking:pridestone_shovel" },
+    "icon": { "item": "thelionking:tunnah_diggah" },
     "title": { "translate": "advancement.thelionking.enchant_tunnah.title" },
     "description": { "translate": "advancement.thelionking.enchant_tunnah.description" },
     "frame": "challenge",
@@ -12,7 +12,7 @@
     "requirement": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
-        "items": [{"items": ["thelionking:pridestone_shovel"]}]
+        "items": [{"items": ["thelionking:tunnah_diggah"]}]
       }
     }
   }
