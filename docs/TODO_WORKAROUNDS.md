@@ -107,20 +107,14 @@ Packets are registered and defined, but client-side send triggers are missing:
 
 ## GUIs (Not Fully Wired)
 
-Menu + Screen classes exist but opening triggers are incomplete:
-
-- [ ] **Quiver GUI** — Needs right-click handler on `dart_quiver` item to call `player.openMenu()`
-- [ ] **Timon Merchant GUI** — Needs `player.openMenu()` call in Timon NPC interaction (currently shows chat message only)
-- [ ] **Simba Inventory GUI** — Needs right-click handler on Simba entity to open menu
+- [x] ~~**Quiver GUI**~~ — RESOLVED: `QuiverItem` with right-click `use()` opens `QuiverMenu`.
+- [x] ~~**Timon Merchant GUI**~~ — RESOLVED: Sneak+interact on Timon opens `TimonMerchantMenu`.
+- [x] ~~**Simba Inventory GUI**~~ — RESOLVED: Sneak+interact on owned Simba opens `SimbaInventoryMenu`.
 
 ## Advancement Triggers (Not Fully Wired)
 
-Custom `PlayerTrigger` instances are registered but some are never fired from game events:
-
-- [ ] **`SHOOT_DART`** — Needs `LKCriteriaTriggers.SHOOT_DART.trigger(player)` in dart shooter use code
-- [ ] **`USE_GRINDING_BOWL`** — Needs trigger in `GrindingBowlBlockEntity` when grinding completes
-- [ ] **`RIDE_GIRAFFE`** — Needs trigger when player mounts giraffe
-- [ ] **`PLAY_BONGO_DRUM`** — Needs trigger in bongo drum interaction
-- [ ] **`ENTER_PRIDE_LANDS` / `ENTER_OUTLANDS` / `ENTER_UPENDI`** — Need triggers in player tick when dimension changes
-- [ ] **`BEHEAD_HYENA`** — Needs trigger in `LKForgeEvents.onLivingDeath` when hyena head drops
-- [ ] **`KILL_SCAR` / `KILL_ZIRA`** — Need triggers in death event when Scar/Zira die
+- [x] ~~**All 9 triggers wired**~~ — RESOLVED:
+  - `SHOOT_DART` in DartShooterItem, `USE_GRINDING_BOWL` in GrindingBowlBlockEntity (nearest player)
+  - `RIDE_GIRAFFE` in GiraffeEntity (on saddle equip), `PLAY_BONGO_DRUM` in BongoDrumBlock
+  - `ENTER_PRIDE_LANDS/OUTLANDS/UPENDI` in LKForgeEvents.onPlayerTick (first-time via LKPlayerData flags)
+  - `BEHEAD_HYENA`, `KILL_SCAR`, `KILL_ZIRA` in LKForgeEvents.onLivingDeath

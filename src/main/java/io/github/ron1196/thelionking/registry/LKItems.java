@@ -585,7 +585,7 @@ public class LKItems {
     public static final RegistryObject<Item> GIRAFFE_SADDLE = ITEMS.register("giraffe_saddle",
             () -> new Item(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> DART_QUIVER = ITEMS.register("dart_quiver",
-            () -> new Item(new Item.Properties().stacksTo(1)));
+            () -> new QuiverItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> PASSION_FRUIT = ITEMS.register("passion_fruit",
             () -> new Item(new Item.Properties().food(
                     new FoodProperties.Builder().nutrition(3).saturationMod(0.3F).build())));

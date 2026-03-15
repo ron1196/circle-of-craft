@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.event;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.command.LKCommands;
+import io.github.ron1196.thelionking.data.LKCriteriaTriggers;
 import io.github.ron1196.thelionking.data.LKPlayerData;
 import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
 import io.github.ron1196.thelionking.data.LKWorldData;
@@ -9,6 +10,7 @@ import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.entity.hostile.HyenaEntity;
 import io.github.ron1196.thelionking.entity.hostile.SkeletalHyenaEntity;
 import io.github.ron1196.thelionking.entity.npc.RafikiEntity;
+import io.github.ron1196.thelionking.entity.npc.ScarEntity;
 import io.github.ron1196.thelionking.entity.npc.TicketLionEntity;
 import io.github.ron1196.thelionking.entity.npc.TimonEntity;
 import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
@@ -120,7 +122,16 @@ public class LKForgeEvents {
             float dropChance = 0.05F + 0.03F * lootingLevel;
             if (entity.level().random.nextFloat() < dropChance) {
                 entity.spawnAtLocation(new ItemStack(LKItems.HYENA_HEAD_ITEM.get()));
+                LKCriteriaTriggers.BEHEAD_HYENA.trigger((ServerPlayer) player);
             }
+        }
+
+        // Scar/Zira kill triggers
+        if (entity instanceof ScarEntity && killer instanceof ServerPlayer serverPlayer) {
+            LKCriteriaTriggers.KILL_SCAR.trigger(serverPlayer);
+        }
+        if (entity instanceof ZiraEntity && killer instanceof ServerPlayer serverPlayer) {
+            LKCriteriaTriggers.KILL_ZIRA.trigger(serverPlayer);
         }
     }
 
@@ -138,8 +149,7 @@ public class LKForgeEvents {
         if (target instanceof RafikiEntity) {
             // Quest book giving and dialogue handled in RafikiEntity.mobInteract()
         } else if (target instanceof TimonEntity) {
-            // TODO: Placeholder for Timon trading — tracked in docs/TODO_WORKAROUNDS.md
-            player.sendSystemMessage(Component.literal("Timon is ready to trade with you!"));
+            // Timon trading handled in TimonEntity.mobInteract()
         } else if (target instanceof TicketLionEntity) {
             player.sendSystemMessage(Component.literal("The Ticket Lion can sell you passage to the Pride Lands!"));
         }
@@ -156,11 +166,20 @@ public class LKForgeEvents {
             return;
         }
 
-        Player player = event.player;
+        if (!(event.player instanceof ServerPlayer serverPlayer)) return;
 
-        // Check if player is in the Pride Lands dimension
-        if (player.level().dimension() == Dimensions.PRIDE_LANDS_LEVEL) {
-            // Dimension-entry logic can be added here
+        LKPlayerData playerData = LKPlayerDataProvider.get(serverPlayer);
+
+        // Dimension entry triggers (fire once per player)
+        if (serverPlayer.level().dimension() == Dimensions.PRIDE_LANDS_LEVEL && !playerData.hasEnteredPrideLands()) {
+            playerData.setEnteredPrideLands(true);
+            LKCriteriaTriggers.ENTER_PRIDE_LANDS.trigger(serverPlayer);
+        } else if (serverPlayer.level().dimension() == Dimensions.OUTLANDS_LEVEL && !playerData.hasEnteredOutlands()) {
+            playerData.setEnteredOutlands(true);
+            LKCriteriaTriggers.ENTER_OUTLANDS.trigger(serverPlayer);
+        } else if (serverPlayer.level().dimension() == Dimensions.UPENDI_LEVEL && !playerData.hasEnteredUpendi()) {
+            playerData.setEnteredUpendi(true);
+            LKCriteriaTriggers.ENTER_UPENDI.trigger(serverPlayer);
         }
     }
 

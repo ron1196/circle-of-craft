@@ -17,6 +17,9 @@ public class LKPlayerData {
     private int homePortalY;
     private int homePortalZ;
     private boolean hasSimba;
+    private boolean enteredPrideLands;
+    private boolean enteredOutlands;
+    private boolean enteredUpendi;
     private final Set<String> claimedRewards = new HashSet<>();
 
     // ── Getters ─────────────────────────────────────────────────────────────────
@@ -39,6 +42,18 @@ public class LKPlayerData {
 
     public boolean hasSimba() {
         return hasSimba;
+    }
+
+    public boolean hasEnteredPrideLands() {
+        return enteredPrideLands;
+    }
+
+    public boolean hasEnteredOutlands() {
+        return enteredOutlands;
+    }
+
+    public boolean hasEnteredUpendi() {
+        return enteredUpendi;
     }
 
     public Set<String> getClaimedRewards() {
@@ -75,6 +90,18 @@ public class LKPlayerData {
         this.hasSimba = hasSimba;
     }
 
+    public void setEnteredPrideLands(boolean entered) {
+        this.enteredPrideLands = entered;
+    }
+
+    public void setEnteredOutlands(boolean entered) {
+        this.enteredOutlands = entered;
+    }
+
+    public void setEnteredUpendi(boolean entered) {
+        this.enteredUpendi = entered;
+    }
+
     // ── Copy ────────────────────────────────────────────────────────────────────
 
     public void copyFrom(LKPlayerData other) {
@@ -83,6 +110,9 @@ public class LKPlayerData {
         this.homePortalY = other.homePortalY;
         this.homePortalZ = other.homePortalZ;
         this.hasSimba = other.hasSimba;
+        this.enteredPrideLands = other.enteredPrideLands;
+        this.enteredOutlands = other.enteredOutlands;
+        this.enteredUpendi = other.enteredUpendi;
         this.claimedRewards.clear();
         this.claimedRewards.addAll(other.claimedRewards);
     }
@@ -96,14 +126,19 @@ public class LKPlayerData {
         tag.putInt("HomePortalY", homePortalY);
         tag.putInt("HomePortalZ", homePortalZ);
         tag.putBoolean("HasSimba", hasSimba);
+        tag.putBoolean("EnteredPrideLands", enteredPrideLands);
+        tag.putBoolean("EnteredOutlands", enteredOutlands);
+        tag.putBoolean("EnteredUpendi", enteredUpendi);
+        serializeClaimedRewards(tag);
+        return tag;
+    }
 
+    private void serializeClaimedRewards(CompoundTag tag) {
         ListTag rewardsList = new ListTag();
         for (String reward : claimedRewards) {
             rewardsList.add(StringTag.valueOf(reward));
         }
         tag.put("ClaimedRewards", rewardsList);
-
-        return tag;
     }
 
     public void deserializeNBT(CompoundTag tag) {
@@ -112,7 +147,13 @@ public class LKPlayerData {
         homePortalY = tag.getInt("HomePortalY");
         homePortalZ = tag.getInt("HomePortalZ");
         hasSimba = tag.getBoolean("HasSimba");
+        enteredPrideLands = tag.getBoolean("EnteredPrideLands");
+        enteredOutlands = tag.getBoolean("EnteredOutlands");
+        enteredUpendi = tag.getBoolean("EnteredUpendi");
+        deserializeClaimedRewards(tag);
+    }
 
+    private void deserializeClaimedRewards(CompoundTag tag) {
         claimedRewards.clear();
         ListTag rewardsList = tag.getList("ClaimedRewards", Tag.TAG_STRING);
         for (int i = 0; i < rewardsList.size(); i++) {

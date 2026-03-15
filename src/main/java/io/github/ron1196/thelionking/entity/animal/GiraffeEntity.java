@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.entity.animal;
 
+import io.github.ron1196.thelionking.data.LKCriteriaTriggers;
 import io.github.ron1196.thelionking.entity.ai.AmbientPanicGoal;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.nbt.CompoundTag;
@@ -141,6 +142,9 @@ public class GiraffeEntity extends LionKingAnimal {
                 stack.shrink(1);
             }
             playSound(SoundEvents.HORSE_SADDLE, 0.5F, 1.0F);
+            if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                LKCriteriaTriggers.RIDE_GIRAFFE.trigger(serverPlayer);
+            }
             return InteractionResult.sidedSuccess(level().isClientSide);
         }
 

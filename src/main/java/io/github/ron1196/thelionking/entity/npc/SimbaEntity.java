@@ -107,6 +107,26 @@ public class SimbaEntity extends PathfinderMob {
         }
 
         if (player.getUUID().equals(getOwnerUUID().orElse(null))) {
+            // Sneak+interact opens Simba's inventory
+            if (player.isShiftKeyDown() && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                net.minecraftforge.network.NetworkHooks.openScreen(serverPlayer, new net.minecraft.world.MenuProvider() {
+                    @Override
+                    public @org.jetbrains.annotations.NotNull Component getDisplayName() {
+                        return Component.translatable("container.thelionking.simba_inventory");
+                    }
+
+                    @Override
+                    public @org.jetbrains.annotations.NotNull net.minecraft.world.inventory.AbstractContainerMenu createMenu(
+                            int containerId,
+                            @org.jetbrains.annotations.NotNull net.minecraft.world.entity.player.Inventory inv,
+                            @org.jetbrains.annotations.NotNull Player p
+                    ) {
+                        return new io.github.ron1196.thelionking.menu.SimbaInventoryMenu(containerId, inv);
+                    }
+                });
+                return InteractionResult.SUCCESS;
+            }
+
             // Toggle sitting
             setSitting(!isSitting());
             this.navigation.stop();
