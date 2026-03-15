@@ -571,6 +571,11 @@ public class LKItems {
     public static final RegistryObject<Item> GIRAFFE_TIE_BLACK = ITEMS.register("giraffe_tie_black",
             () -> new Item(new Item.Properties()));
 
+    // ========== Tunnah Diggah ==========
+    public static final RegistryObject<Item> TUNNAH_DIGGAH = ITEMS.register("tunnah_diggah",
+            () -> new TunnahDiggahItem(Tiers.IRON, 1, -2.8F,
+                    new Item.Properties().durability(690)));
+
     // ========== Quest & Special Items ==========
     public static final RegistryObject<Item> AMULET = ITEMS.register("amulet",
             () -> new Item(new Item.Properties().stacksTo(1)));
@@ -646,14 +651,18 @@ public class LKItems {
             () -> new ForgeSpawnEggItem(EntityTypes.SKELETAL_HYENA_HEAD, 0xC8C8C8, 0x3A3A3A, new Item.Properties()));
 
     // ========== Notes (for Bongo Drum) ==========
-    public static final RegistryObject<Item> NOTE_A = ITEMS.register("note_a",
-            () -> new NoteItem(1, new Item.Properties()));
-    public static final RegistryObject<Item> NOTE_B = ITEMS.register("note_b",
-            () -> new NoteItem(2, new Item.Properties()));
     public static final RegistryObject<Item> NOTE_C = ITEMS.register("note_c",
-            () -> new NoteItem(3, new Item.Properties()));
+            () -> new NoteItem(1, new Item.Properties()));
     public static final RegistryObject<Item> NOTE_D = ITEMS.register("note_d",
-            () -> new NoteItem(4, new Item.Properties()));
+            () -> new NoteItem(1, new Item.Properties()));
     public static final RegistryObject<Item> NOTE_E = ITEMS.register("note_e",
+            () -> new NoteItem(2, new Item.Properties()));
+    public static final RegistryObject<Item> NOTE_F = ITEMS.register("note_f",
             () -> new NoteItem(5, new Item.Properties()));
+    public static final RegistryObject<Item> NOTE_G = ITEMS.register("note_g",
+            () -> new NoteItem(5, new Item.Properties()));
+    public static final RegistryObject<Item> NOTE_A = ITEMS.register("note_a",
+            () -> new NoteItem(10, new Item.Properties()));
+    public static final RegistryObject<Item> NOTE_B = ITEMS.register("note_b",
+            () -> new NoteItem(20, new Item.Properties()));
 }

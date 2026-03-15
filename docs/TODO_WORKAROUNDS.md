@@ -13,9 +13,9 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 - [x] ~~**Jar of Mango Juice**~~ — RESOLVED: Registered `mango_juice` as food item (6 nutrition, 0.5 sat) with container return.
 - [x] ~~**Hyena Meal**~~ — RESOLVED: `HyenaMealItem` — bonemeal for LK dimensions, grows saplings/crops, spreads vegetation on grass.
 - [x] ~~**Giraffe Tie**~~ — RESOLVED: 8 tie items registered, GiraffeEntity has saddled/tie synched data with interaction logic.
-- [ ] **Rug Dye** — 11 variants (whitener + 10 dyes), colors fur rugs
-- [ ] **Musical Notes** — 7 variants (C, D, E, F, G, A, B) for bongo drum
-- [ ] **Tunnah Diggah** — Special enchanted shovel
+- [ ] **Fur Rug Coloring** — Add rug coloring using vanilla dyes (replaces old mod's custom rug dye items)
+- [x] ~~**Musical Notes**~~ — RESOLVED: 7 `MusicalNoteItem` variants with pitch values and enchantment glint.
+- [x] ~~**Tunnah Diggah**~~ — RESOLVED: `TunnahDiggahItem` AoE pickaxe, works with existing BIGGAH_DIGGAH and PRECISION enchantments.
 - [ ] **Block Placer** — Utility item
 - [ ] **Info Item** — Documentation/info display item
 

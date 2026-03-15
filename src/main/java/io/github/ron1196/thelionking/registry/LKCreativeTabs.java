@@ -229,6 +229,14 @@ public class LKCreativeTabs {
                         output.accept(LKItems.GIRAFFE_TIE_PURPLE.get());
                         output.accept(LKItems.GIRAFFE_TIE_GREEN.get());
                         output.accept(LKItems.GIRAFFE_TIE_BLACK.get());
+                        // Musical Notes
+                        output.accept(LKItems.NOTE_C.get());
+                        output.accept(LKItems.NOTE_D.get());
+                        output.accept(LKItems.NOTE_E.get());
+                        output.accept(LKItems.NOTE_F.get());
+                        output.accept(LKItems.NOTE_G.get());
+                        output.accept(LKItems.NOTE_A.get());
+                        output.accept(LKItems.NOTE_B.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> TOOLS_TAB = TABS.register("tools",
@@ -266,6 +274,8 @@ public class LKCreativeTabs {
                         output.accept(LKItems.CORRUPT_AXE.get());
                         output.accept(LKItems.CORRUPT_SHOVEL.get());
                         output.accept(LKItems.CORRUPT_HOE.get());
+                        // Special
+                        output.accept(LKItems.TUNNAH_DIGGAH.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> COMBAT_TAB = TABS.register("combat",

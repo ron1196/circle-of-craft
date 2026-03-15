@@ -1,1 +1,6 @@
-{"parent":"minecraft:item/generated","textures":{"layer0":"thelionking:item/note_d"}}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "thelionking:item/note_d"
+  }
+}
