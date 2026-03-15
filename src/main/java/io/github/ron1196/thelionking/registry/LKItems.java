@@ -477,7 +477,7 @@ public class LKItems {
 
     // ========== Bombs ==========
     public static final RegistryObject<Item> PUMBAA_BOMB = ITEMS.register("pumbaa_bomb",
-            () -> new PumbaaBombItem());
+            PumbaaBombItem::new);
 
     // ========== Phase 3: Spawn Eggs ==========
     public static final RegistryObject<Item> LION_SPAWN_EGG = ITEMS.register("lion_spawn_egg",
@@ -508,8 +508,6 @@ public class LKItems {
             () -> new ForgeSpawnEggItem(EntityTypes.SKELETAL_HYENA, 0xC8C8C8, 0x505050, new Item.Properties()));
     public static final RegistryObject<Item> OUTLANDER_SPAWN_EGG = ITEMS.register("outlander_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityTypes.OUTLANDER, 0x5C3A1E, 0x3A2510, new Item.Properties()));
-    public static final RegistryObject<Item> OUTLANDESS_SPAWN_EGG = ITEMS.register("outlandess_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.OUTLANDESS, 0x7A5030, 0x4A3020, new Item.Properties()));
     public static final RegistryObject<Item> VULTURE_SPAWN_EGG = ITEMS.register("vulture_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityTypes.VULTURE, 0x2A1F14, 0x8B0000, new Item.Properties()));
     public static final RegistryObject<Item> CROCODILE_SPAWN_EGG = ITEMS.register("crocodile_spawn_egg",

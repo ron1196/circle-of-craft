@@ -52,7 +52,6 @@ public class LKClientEvents {
     public static final ModelLayerLocation HYENA_LAYER = layer("hyena");
     public static final ModelLayerLocation SKELETAL_HYENA_LAYER = layer("skeletal_hyena");
     public static final ModelLayerLocation OUTLANDER_LAYER = layer("outlander");
-    public static final ModelLayerLocation OUTLANDESS_LAYER = layer("outlandess");
     public static final ModelLayerLocation VULTURE_LAYER = layer("vulture");
     public static final ModelLayerLocation CROCODILE_LAYER = layer("crocodile");
     public static final ModelLayerLocation TERMITE_LAYER = layer("termite");
@@ -109,7 +108,6 @@ public class LKClientEvents {
         event.registerLayerDefinition(HYENA_LAYER, HyenaModel::createBodyLayer);
         event.registerLayerDefinition(SKELETAL_HYENA_LAYER, HyenaModel::createBodyLayer);
         event.registerLayerDefinition(OUTLANDER_LAYER, OutlanderModel::createBodyLayer);
-        event.registerLayerDefinition(OUTLANDESS_LAYER, OutlanderModel::createBodyLayer);
         event.registerLayerDefinition(VULTURE_LAYER, VultureModel::createBodyLayer);
         event.registerLayerDefinition(CROCODILE_LAYER, CrocodileModel::createBodyLayer);
         event.registerLayerDefinition(TERMITE_LAYER, TermiteModel::createBodyLayer);
@@ -168,9 +166,7 @@ public class LKClientEvents {
         event.registerEntityRenderer(EntityTypes.SKELETAL_HYENA.get(),
                 ctx -> new MobRenderer<>(ctx, new HyenaModel<>(ctx.bakeLayer(SKELETAL_HYENA_LAYER)), "skeletal_hyena", 0.5F));
         event.registerEntityRenderer(EntityTypes.OUTLANDER.get(),
-                ctx -> new MobRenderer<>(ctx, new OutlanderModel<>(ctx.bakeLayer(OUTLANDER_LAYER)), "outlander", 0.7F));
-        event.registerEntityRenderer(EntityTypes.OUTLANDESS.get(),
-                ctx -> new MobRenderer<>(ctx, new OutlanderModel<>(ctx.bakeLayer(OUTLANDESS_LAYER)), "outlandess", 0.6F));
+                ctx -> new OutlanderRenderer(ctx, new OutlanderModel<>(ctx.bakeLayer(OUTLANDER_LAYER))));
         event.registerEntityRenderer(EntityTypes.VULTURE.get(),
                 ctx -> new MobRenderer<>(ctx, new VultureModel<>(ctx.bakeLayer(VULTURE_LAYER)), "vulture", 0.5F));
         event.registerEntityRenderer(EntityTypes.CROCODILE.get(),

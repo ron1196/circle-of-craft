@@ -63,6 +63,7 @@ public class LKCreativeTabs {
                         output.accept(LKItems.MOUNTED_SHOOTER_ITEM.get());
                         output.accept(LKItems.STAR_ALTAR_ITEM.get());
                         output.accept(LKItems.OUTLANDS_ALTAR_ITEM.get());
+                        output.accept(LKItems.ZIRA_MOUND_GATE_ITEM.get());
                         output.accept(LKItems.TILLED_SAND_ITEM.get());
                         output.accept(LKItems.VASE_ITEM.get());
                     }).build());
@@ -338,7 +339,6 @@ public class LKCreativeTabs {
                         output.accept(LKItems.HYENA_SPAWN_EGG.get());
                         output.accept(LKItems.SKELETAL_HYENA_SPAWN_EGG.get());
                         output.accept(LKItems.OUTLANDER_SPAWN_EGG.get());
-                        output.accept(LKItems.OUTLANDESS_SPAWN_EGG.get());
                         output.accept(LKItems.VULTURE_SPAWN_EGG.get());
                         output.accept(LKItems.CROCODILE_SPAWN_EGG.get());
                         output.accept(LKItems.TERMITE_SPAWN_EGG.get());

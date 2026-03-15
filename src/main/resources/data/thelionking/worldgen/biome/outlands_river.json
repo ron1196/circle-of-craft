@@ -12,8 +12,7 @@
   },
   "spawners": {
     "monster": [
-      { "type": "thelionking:outlander", "weight": 20, "minCount": 2, "maxCount": 4 },
-      { "type": "thelionking:outlandess", "weight": 20, "minCount": 2, "maxCount": 4 },
+      { "type": "thelionking:outlander", "weight": 40, "minCount": 4, "maxCount": 8 },
       { "type": "thelionking:vulture", "weight": 15, "minCount": 1, "maxCount": 3 },
       { "type": "thelionking:skeletal_hyena", "weight": 10, "minCount": 2, "maxCount": 4 }
     ],

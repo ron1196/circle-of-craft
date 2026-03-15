@@ -103,10 +103,6 @@ public class EntityTypes {
             () -> EntityType.Builder.of(OutlanderEntity::new, MobCategory.MONSTER)
                     .sized(1.3F, 1.6F).clientTrackingRange(10).build("outlander"));
 
-    public static final RegistryObject<EntityType<OutlandessEntity>> OUTLANDESS = ENTITY_TYPES.register("outlandess",
-            () -> EntityType.Builder.of(OutlandessEntity::new, MobCategory.MONSTER)
-                    .sized(1.2F, 1.3F).clientTrackingRange(10).build("outlandess"));
-
     public static final RegistryObject<EntityType<VultureEntity>> VULTURE = ENTITY_TYPES.register("vulture",
             () -> EntityType.Builder.of(VultureEntity::new, MobCategory.MONSTER)
                     .sized(0.8F, 1.5F).clientTrackingRange(10).build("vulture"));

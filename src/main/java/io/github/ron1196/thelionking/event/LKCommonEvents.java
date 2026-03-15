@@ -29,7 +29,6 @@ public class LKCommonEvents {
         event.put(EntityTypes.HYENA.get(), HyenaEntity.createAttributes().build());
         event.put(EntityTypes.SKELETAL_HYENA.get(), SkeletalHyenaEntity.createAttributes().build());
         event.put(EntityTypes.OUTLANDER.get(), OutlanderEntity.createAttributes().build());
-        event.put(EntityTypes.OUTLANDESS.get(), OutlanderEntity.createAttributes().build());
         event.put(EntityTypes.VULTURE.get(), VultureEntity.createAttributes().build());
         event.put(EntityTypes.CROCODILE.get(), CrocodileEntity.createAttributes().build());
         event.put(EntityTypes.TERMITE.get(), TermiteEntity.createAttributes().build());
