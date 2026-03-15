@@ -379,6 +379,7 @@ public class LKItems {
     public static final RegistryObject<BlockItem> OUTGLASS_ITEM = registerBlockItem("outglass", LKBlocks.OUTGLASS);
     public static final RegistryObject<BlockItem> OUTGLASS_PANE_ITEM = registerBlockItem("outglass_pane", LKBlocks.OUTGLASS_PANE);
     public static final RegistryObject<BlockItem> TERMITE_MOUND_ITEM = registerBlockItem("termite_mound", LKBlocks.TERMITE_MOUND);
+    public static final RegistryObject<BlockItem> ZIRA_MOUND_GATE_ITEM = registerBlockItem("zira_mound_gate", LKBlocks.ZIRA_MOUND_GATE);
     public static final RegistryObject<BlockItem> PUMBAA_BOX_ITEM = registerBlockItem("pumbaa_box", LKBlocks.PUMBAA_BOX);
 
     // ========== Phase 2: Nature Block Items ==========

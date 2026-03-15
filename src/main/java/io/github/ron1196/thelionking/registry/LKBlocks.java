@@ -248,6 +248,10 @@ public class LKBlocks {
             () -> new io.github.ron1196.thelionking.block.TermiteMoundBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.DIRT).strength(0.5F, 3.0F)));
 
+    public static final RegistryObject<Block> ZIRA_MOUND_GATE = BLOCKS.register("zira_mound_gate",
+            () -> new io.github.ron1196.thelionking.block.ZiraMoundGateBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.DIRT).strength(-1.0F, 3600000.0F).noLootTable()));
+
     public static final RegistryObject<Block> PUMBAA_BOX = BLOCKS.register("pumbaa_box",
             () -> new Block(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.WOOD).strength(1.0F).sound(SoundType.WOOD)));

@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
 
     private static final BlockState TERMITE = LKBlocks.TERMITE_MOUND.get().defaultBlockState();
-    private static final BlockState GATE = TERMITE; // TODO: old mod used portalFrame metadata 2 (breakable during quest)
+    private static final BlockState GATE = LKBlocks.ZIRA_MOUND_GATE.get().defaultBlockState();
     private static final BlockState PORTAL_FRAME = LKBlocks.OUTLANDS_PORTAL_FRAME.get().defaultBlockState();
     private static final BlockState OUTLANDS_POOL = LKBlocks.OUTLANDS_POOL.get().defaultBlockState();
     private static final BlockState OUTSHROOM_GLOWING = LKBlocks.OUTSHROOM_GLOWING.get().defaultBlockState();

@@ -16,12 +16,12 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 - [ ] **Fur Rug Coloring** — Add rug coloring using vanilla dyes (replaces old mod's custom rug dye items)
 - [x] ~~**Musical Notes**~~ — RESOLVED: 7 `MusicalNoteItem` variants with pitch values and enchantment glint.
 - [x] ~~**Tunnah Diggah**~~ — RESOLVED: `TunnahDiggahItem` AoE pickaxe, works with existing BIGGAH_DIGGAH and PRECISION enchantments.
-- [ ] **Block Placer** — Utility item
-- [ ] **Info Item** — Documentation/info display item
+- [x] ~~**Block Placer**~~ — RESOLVED: Obsolete in modern MC — `BlockItem` handles this natively.
+- [x] ~~**Info Item**~~ — SKIP: Replaced by modern item tooltips. Not needed as separate item/GUI.
 
 ## Missing Blocks
 
-- [ ] **Zira Mound Gate block** — Old mod used `outlandsPortalFrame` metadata 2 with "ziraMoundGate" texture. Needs a separate `ZIRA_MOUND_GATE` block that is breakable with the Rhythm Staff item. Currently 35 gate positions in `ZiraMoundFeature` use `GATE` constant which aliases `TERMITE_MOUND`. Needed for Outlands quest progression.
+- [x] ~~**Zira Mound Gate block**~~ — RESOLVED: `ZiraMoundGateBlock` — indestructible, breakable with Rafiki Stick (chain break). ZiraMoundFeature updated to use it.
 
 ## Advancements
 
@@ -54,7 +54,7 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 ## Missing GUI
 
-- [ ] **Item Info GUI** — Item documentation/info display screen
+- [x] ~~**Item Info GUI**~~ — SKIP: Replaced by modern item tooltips.
 
 ## Bed Texture
 
