@@ -1,6 +1,5 @@
 package io.github.ron1196.thelionking.world.feature;
 
-import io.github.ron1196.thelionking.block.ZiraMoundGateBlock;
 import io.github.ron1196.thelionking.world.structure.LKStructurePiece;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
@@ -22,10 +21,7 @@ public final class FeatureHelper {
      */
     public static void placeBlock(WorldGenLevel level, int x, int y, int z, BlockState state) {
         if (!LKStructurePiece.isInCurrentChunk(x, y, z)) return;
-        BlockPos pos = new BlockPos(x, y, z);
-        // Never overwrite gate blocks — they must survive cross-chunk generation
-        if (level.getBlockState(pos).getBlock() instanceof ZiraMoundGateBlock) return;
-        level.setBlock(pos, state, 2);
+        level.setBlock(new BlockPos(x, y, z), state, 2);
     }
 
     /**

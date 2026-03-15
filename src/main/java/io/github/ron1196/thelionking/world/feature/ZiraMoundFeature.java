@@ -1152,10 +1152,8 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
         setBlock(level, i, j, k, 1, 6, -13, AIR);
         setBlock(level, i, j, k, 0, 4, -12, AIR);
         setBlock(level, i, j, k, 1, 4, -12, AIR);
-        setBlock(level, i, j, k, 1, 9, -13, GATE);
-        setBlock(level, i, j, k, 0, 9, -13, GATE);
-        setBlock(level, i, j, k, 0, 9, -13, AIR);
         setBlock(level, i, j, k, 1, 9, -13, AIR);
+        setBlock(level, i, j, k, 0, 9, -13, AIR);
         setBlock(level, i, j, k, 1, 9, -13, TERMITE);
         setBlock(level, i, j, k, 0, 9, -13, TERMITE);
         setBlock(level, i, j, k, 1, 9, -14, TERMITE);
@@ -1224,7 +1222,6 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
         setBlock(level, i, j, k, -13, 9, 0, TERMITE);
         setBlock(level, i, j, k, -13, 9, -1, TERMITE);
         setBlock(level, i, j, k, -13, 9, -2, TERMITE);
-        setBlock(level, i, j, k, -14, 10, 0, GATE);
         setBlock(level, i, j, k, -14, 10, 0, AIR);
         setBlock(level, i, j, k, -14, 9, 0, TERMITE);
         setBlock(level, i, j, k, -14, 10, 0, TERMITE);
@@ -7694,7 +7691,6 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
         setBlock(level, i, j, k, -6, 53, -2, GATE);
         setBlock(level, i, j, k, -6, 53, -1, GATE);
         setBlock(level, i, j, k, -6, 53, 0, GATE);
-        setBlock(level, i, j, k, -5, 52, 2, GATE);
         setBlock(level, i, j, k, -5, 52, 2, AIR);
         setBlock(level, i, j, k, -6, 53, 2, GATE);
         setBlock(level, i, j, k, -6, 54, -3, GATE);
@@ -10872,8 +10868,6 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
         setBlock(level, i, j, k, -7, 50, 4, TERMITE);
         setBlock(level, i, j, k, -8, 50, 3, TERMITE);
         setBlock(level, i, j, k, -9, 50, 2, TERMITE);
-        setBlock(level, i, j, k, 3, 50, -1, GATE);
-        setBlock(level, i, j, k, 3, 50, -1, AIR);
         setBlock(level, i, j, k, 3, 50, -1, TERMITE);
         setBlock(level, i, j, k, 2, 50, -2, TERMITE);
         setBlock(level, i, j, k, 1, 49, -2, TERMITE);
