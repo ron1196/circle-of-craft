@@ -9,10 +9,16 @@ import io.github.ron1196.thelionking.client.gui.SimbaInventoryScreen;
 import io.github.ron1196.thelionking.client.gui.TimonMerchantScreen;
 import io.github.ron1196.thelionking.client.model.*;
 import io.github.ron1196.thelionking.client.renderer.*;
+import io.github.ron1196.thelionking.entity.projectile.DartEntity;
+import io.github.ron1196.thelionking.entity.projectile.SpearEntity;
 import io.github.ron1196.thelionking.registry.EntityTypes;
+import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import io.github.ron1196.thelionking.registry.LKItems;
 import io.github.ron1196.thelionking.registry.LKMenuTypes;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -24,6 +30,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraft.client.KeyMapping;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 @Mod.EventBusSubscriber(modid = TheLionKingMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -128,7 +135,7 @@ public class LKClientEvents {
 
         // Block entity layers
         event.registerLayerDefinition(HYENA_HEAD_LAYER,
-                io.github.ron1196.thelionking.client.renderer.HyenaHeadBlockEntityRenderer::createHeadLayer);
+                HyenaHeadBlockEntityRenderer::createHeadLayer);
     }
 
     @SubscribeEvent
@@ -147,7 +154,7 @@ public class LKClientEvents {
         event.registerEntityRenderer(EntityTypes.GEMSBOK.get(),
                 ctx -> new AnimalRenderer<>(ctx, new GemsbokModel<>(ctx.bakeLayer(GEMSBOK_LAYER)), "gemsbok", 0.6F));
         event.registerEntityRenderer(EntityTypes.DIKDIK.get(),
-                ctx -> new io.github.ron1196.thelionking.client.renderer.DikDikRenderer(ctx, new DikDikModel<>(ctx.bakeLayer(DIKDIK_LAYER)), 0.3F));
+                ctx -> new DikDikRenderer(ctx, new DikDikModel<>(ctx.bakeLayer(DIKDIK_LAYER)), 0.3F));
         event.registerEntityRenderer(EntityTypes.FLAMINGO.get(),
                 ctx -> new AnimalRenderer<>(ctx, new FlamingoModel<>(ctx.bakeLayer(FLAMINGO_LAYER)), "flamingo", 0.3F));
         event.registerEntityRenderer(EntityTypes.ZAZU.get(),
@@ -191,7 +198,7 @@ public class LKClientEvents {
         event.registerEntityRenderer(EntityTypes.TICKET_LION.get(),
                 ctx -> new NpcRenderer(ctx, new NpcLionModel(ctx.bakeLayer(TICKET_LION_LAYER)), "ticket_lion", 0.7F));
 
-        // Scar Rug
+        // Rug
         event.registerEntityRenderer(EntityTypes.RUG.get(),
                 ctx -> new RugRenderer(ctx, new RugModel(ctx.bakeLayer(RUG_LAYER))));
 
@@ -211,7 +218,7 @@ public class LKClientEvents {
                     private final ResourceLocation BLACK = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_black.png");
 
                     @Override
-                    public ResourceLocation getTextureLocation(io.github.ron1196.thelionking.entity.projectile.DartEntity entity) {
+                    public @NotNull ResourceLocation getTextureLocation(@NotNull DartEntity entity) {
                         return switch (entity.getDartType()) {
                             case RED -> RED;
                             case YELLOW -> YELLOW;
@@ -226,7 +233,7 @@ public class LKClientEvents {
                     private final ResourceLocation SPEAR = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/spear.png");
 
                     @Override
-                    public ResourceLocation getTextureLocation(io.github.ron1196.thelionking.entity.projectile.SpearEntity entity) {
+                    public @NotNull ResourceLocation getTextureLocation(@NotNull SpearEntity entity) {
                         return SPEAR;
                     }
                 });
@@ -235,15 +242,15 @@ public class LKClientEvents {
         event.registerEntityRenderer(EntityTypes.COIN.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(EntityTypes.ZAZU_EGG.get(), ThrownItemRenderer::new);
 
-        // Weather effects — uses vanilla lightning renderer since LKLightningBoltEntity extends LightningBolt
+        // Weather effects — uses vanilla lightning renderer since LightningBoltEntity extends LightningBolt
         event.registerEntityRenderer(EntityTypes.LK_LIGHTNING_BOLT.get(),
                 net.minecraft.client.renderer.entity.LightningBoltRenderer::new);
 
         // Block entity renderers
-        event.registerBlockEntityRenderer(io.github.ron1196.thelionking.registry.LKBlockEntityTypes.HYENA_HEAD.get(),
-                io.github.ron1196.thelionking.client.renderer.HyenaHeadBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(io.github.ron1196.thelionking.registry.LKBlockEntityTypes.PRIDE_BED.get(),
-                io.github.ron1196.thelionking.client.renderer.PrideBedRenderer::new);
+        event.registerBlockEntityRenderer(LKBlockEntityTypes.HYENA_HEAD.get(),
+                HyenaHeadBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(LKBlockEntityTypes.PRIDE_BED.get(),
+                PrideBedRenderer::new);
     }
 
     @SubscribeEvent
@@ -262,16 +269,17 @@ public class LKClientEvents {
             MenuScreens.register(LKMenuTypes.SIMBA_INVENTORY_MENU.get(), SimbaInventoryScreen::new);
 
             // Hyena head item variant property
-            net.minecraft.client.renderer.item.ItemProperties.register(
-                    io.github.ron1196.thelionking.registry.LKItems.HYENA_HEAD_ITEM.get(),
+            ItemProperties.register(
+                    LKItems.HYENA_HEAD_ITEM.get(),
                     new ResourceLocation(TheLionKingMod.MOD_ID, "hyena_type"),
                     (stack, level, entity, seed) -> {
-                        net.minecraft.nbt.CompoundTag tag = stack.getTag();
+                        CompoundTag tag = stack.getTag();
                         if (tag != null && tag.contains("BlockEntityTag")) {
                             return tag.getCompound("BlockEntityTag").getInt("HyenaType");
                         }
                         return 0.0F;
-                    });
+                    }
+            );
         });
     }
 }
