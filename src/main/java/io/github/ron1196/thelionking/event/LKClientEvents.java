@@ -127,7 +127,7 @@ public class LKClientEvents {
         event.registerEntityRenderer(EntityTypes.ZEBRA.get(),
                 ctx -> new AnimalRenderer<>(ctx, new ZebraModel<>(ctx.bakeLayer(ZEBRA_LAYER)), "zebra", 0.7F));
         event.registerEntityRenderer(EntityTypes.GIRAFFE.get(),
-                ctx -> new AnimalRenderer<>(ctx, new GiraffeModel<>(ctx.bakeLayer(GIRAFFE_LAYER)), "giraffe", 0.8F));
+                ctx -> new GiraffeRenderer(ctx, new GiraffeModel<>(ctx.bakeLayer(GIRAFFE_LAYER))));
         event.registerEntityRenderer(EntityTypes.RHINO.get(),
                 ctx -> new AnimalRenderer<>(ctx, new RhinoModel<>(ctx.bakeLayer(RHINO_LAYER)), "rhino", 0.9F));
         event.registerEntityRenderer(EntityTypes.GEMSBOK.get(),
