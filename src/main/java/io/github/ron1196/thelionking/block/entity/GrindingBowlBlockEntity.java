@@ -1,6 +1,5 @@
 package io.github.ron1196.thelionking.block.entity;
 
-import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
 import io.github.ron1196.thelionking.menu.GrindingBowlMenu;
 import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
 import io.github.ron1196.thelionking.registry.LKBlocks;
@@ -9,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -37,10 +37,6 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
     public static final int MAX_GRIND_TIME = 200;
 
     private static final Map<Item, Item> RECIPES = new HashMap<>();
-
-    static {
-        // Recipes are populated lazily to avoid RegistryObject resolution at class load time
-    }
 
     private static Map<Item, Item> getRecipes() {
         if (RECIPES.isEmpty()) {
@@ -133,7 +129,7 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int containerId, Inventory playerInv, Player player) {
+    public AbstractContainerMenu createMenu(int containerId, @NotNull Inventory playerInv, @NotNull Player player) {
         return new GrindingBowlMenu(containerId, playerInv, inventory, data);
     }
 
@@ -152,20 +148,25 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
+    protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
         tag.put("Inventory", inventory.serializeNBT());
         tag.putInt("GrindTime", grindTime);
     }
 
     @Override
-    public void load(CompoundTag tag) {
+    public void load(@NotNull CompoundTag tag) {
         super.load(tag);
         inventory.deserializeNBT(tag.getCompound("Inventory"));
         grindTime = tag.getInt("GrindTime");
     }
 
-    public static void serverTick(Level level, BlockPos pos, BlockState state, GrindingBowlBlockEntity entity) {
+    public static void serverTick(
+            Level ignoredLevel,
+            BlockPos ignoredPos,
+            BlockState ignoredState,
+            GrindingBowlBlockEntity entity
+    ) {
         ItemStack input = entity.inventory.getStackInSlot(SLOT_INPUT);
         if (input.isEmpty()) {
             entity.resetGrindTime();
@@ -188,30 +189,27 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
 
         entity.grindTime++;
         entity.setChanged();
-
-        if (entity.grindTime >= MAX_GRIND_TIME) {
-            entity.inventory.extractItem(SLOT_INPUT, 1, false);
-            if (outputSlot.isEmpty()) {
-                entity.inventory.setStackInSlot(SLOT_OUTPUT, new ItemStack(result, 1));
-            } else {
-                outputSlot.grow(1);
-            }
-            entity.grindTime = 0;
-
-            // Trigger advancement for nearest player
-            net.minecraft.server.level.ServerPlayer nearest = (net.minecraft.server.level.ServerPlayer)
-                    level.getNearestPlayer(pos.getX(), pos.getY(), pos.getZ(), 8.0, false);
-            if (nearest != null) {
-                LionKingCriteriaTriggers.USE_GRINDING_BOWL.trigger(nearest);
-            }
+        if (entity.grindTime < MAX_GRIND_TIME) {
+            return;
         }
+
+        entity.inventory.extractItem(SLOT_INPUT, 1, false);
+        if (outputSlot.isEmpty()) {
+            entity.inventory.setStackInSlot(SLOT_OUTPUT, new ItemStack(result, 1));
+        } else {
+            outputSlot.grow(1);
+        }
+
+        entity.grindTime = 0;
+        entity.setChanged();
     }
 
     private void resetGrindTime() {
-        if (grindTime != 0) {
-            grindTime = 0;
-            setChanged();
+        if (grindTime == 0) {
+            return;
         }
+        grindTime = 0;
+        setChanged();
     }
 
     public ItemStackHandler getInventory() {
@@ -219,12 +217,19 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
     }
 
     public void drops() {
+        if (level == null) return;
         for (int i = 0; i < inventory.getSlots(); i++) {
             ItemStack stack = inventory.getStackInSlot(i);
-            if (!stack.isEmpty()) {
-                net.minecraft.world.Containers.dropItemStack(level, worldPosition.getX(),
-                        worldPosition.getY(), worldPosition.getZ(), stack);
+            if (stack.isEmpty()) {
+                continue;
             }
+            Containers.dropItemStack(
+                    level,
+                    worldPosition.getX(),
+                    worldPosition.getY(),
+                    worldPosition.getZ(),
+                    stack
+            );
         }
     }
 }

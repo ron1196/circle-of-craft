@@ -1,7 +1,8 @@
 package io.github.ron1196.thelionking.menu;
 
-import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
 import io.github.ron1196.thelionking.registry.LKMenuTypes;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -11,6 +12,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class GrindingBowlMenu extends AbstractContainerMenu {
 
@@ -31,11 +33,19 @@ public class GrindingBowlMenu extends AbstractContainerMenu {
         // Input slot
         addSlot(new SlotItemHandler(handler, 0, 40, 35));
 
-        // Output slot - no manual insertion
+        // Output slot - no manual insertion, triggers advancement on extract
         addSlot(new SlotItemHandler(handler, 1, 116, 35) {
             @Override
-            public boolean mayPlace(ItemStack stack) {
+            public boolean mayPlace(@NotNull ItemStack stack) {
                 return false;
+            }
+
+            @Override
+            public void onTake(@NotNull Player player, @NotNull ItemStack stack) {
+                super.onTake(player, stack);
+                if (player instanceof ServerPlayer serverPlayer) {
+                    LionKingCriteriaTriggers.USE_GRINDING_BOWL.trigger(serverPlayer);
+                }
             }
         });
 
@@ -63,7 +73,7 @@ public class GrindingBowlMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
         ItemStack result = ItemStack.EMPTY;
         Slot slot = slots.get(index);
 
@@ -109,7 +119,7 @@ public class GrindingBowlMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player player) {
+    public boolean stillValid(@NotNull Player player) {
         return true;
     }
 }

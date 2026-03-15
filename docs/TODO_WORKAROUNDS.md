@@ -25,6 +25,7 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 ## Advancements
 
+- [ ] **"Horn of Plenty" (`rhino_horn`) advancement uses wrong trigger** — Currently triggers on `use_grinding_bowl`, which fires on *any* output extraction from the grinding bowl. In the old mod this was specifically about grinding a rhino horn. Should either add item conditions to the `use_grinding_bowl` trigger so the advancement JSON can filter on `ground_rhino_horn`, or switch to vanilla's `inventory_changed` trigger checking for `ground_rhino_horn` in the player's inventory (simpler, matches how vanilla handles "obtain item X" advancements).
 - [ ] **Remaining advancement icon substitutions** (items not yet registered):
   - `outlandish_dart` → `dart_black`, `ticket_lion_helmet` → `ticket_lion_head`, `peacock_wings` → `peacock_gem`
   - ~~`tunnah_diggah`~~ FIXED: now uses real item, ~~`lion_dust`~~ previously resolved
@@ -96,6 +97,10 @@ Items using generated placeholder textures (not from old mod):
 - [ ] **Maize is `CropBlock` but should be sugar cane-like** — Old mod: multi-block tall, grows near water, not on farmland. Needs custom block class extending `BushBlock` or similar, with water-adjacent check and multi-block stacking.
 - [ ] **Yam is `CropBlock` but should grow on grass** — Old mod places yams on grass blocks, but `CropBlock.canSurvive()` requires farmland. Needs `mayPlaceOn` override to accept grass.
 - [ ] **Kiwano worldgen places `kiwano_block` (fruit) on sand** — Matches old mod. Stem (`kiwano_stem`) is the crop version for player farming.
+
+## Grinding Bowl Recipes (Hardcoded)
+
+- [ ] **Grinding bowl recipes are hardcoded in `GrindingBowlBlockEntity.getRecipes()`** — 29 recipes live in a static `Map<Item, Item>` inside the block entity. Should be refactored to a custom `RecipeType<GrindingBowlRecipe>` + `RecipeSerializer` with JSON recipes under `data/thelionking/recipes/grinding/`. This would decouple game content from machine logic and enable datapack compatibility.
 
 ## Networking (Not Fully Wired)
 
