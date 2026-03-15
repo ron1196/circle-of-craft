@@ -158,6 +158,11 @@ public class GiraffeEntity extends LionKingAnimal {
             return InteractionResult.sidedSuccess(level().isClientSide);
         }
 
+        // Saddled giraffes skip quest interactions (they're a mount now)
+        if (isSaddled()) {
+            return InteractionResult.sidedSuccess(level().isClientSide);
+        }
+
         return super.mobInteract(player, hand);
     }
 
