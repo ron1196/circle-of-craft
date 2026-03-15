@@ -135,26 +135,6 @@ public class LKForgeEvents {
         }
     }
 
-    // ── PlayerInteractEvent.EntityInteract ──────────────────────────────────────
-
-    @SubscribeEvent
-    public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
-        Player player = event.getEntity();
-        Entity target = event.getTarget();
-
-        if (player.level().isClientSide()) {
-            return;
-        }
-
-        if (target instanceof RafikiEntity) {
-            // Quest book giving and dialogue handled in RafikiEntity.mobInteract()
-        } else if (target instanceof TimonEntity) {
-            // Timon trading handled in TimonEntity.mobInteract()
-        } else if (target instanceof TicketLionEntity) {
-            player.sendSystemMessage(Component.literal("The Ticket Lion can sell you passage to the Pride Lands!"));
-        }
-    }
-
     // ── TickEvent.PlayerTickEvent ────────────────────────────────────────────────
 
     @SubscribeEvent
