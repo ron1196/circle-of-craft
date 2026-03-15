@@ -1,8 +1,8 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.data.LKPlayerData;
-import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
-import io.github.ron1196.thelionking.data.LKWorldData;
+import io.github.ron1196.thelionking.data.PlayerData;
+import io.github.ron1196.thelionking.data.PlayerDataProvider;
+import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
@@ -42,6 +42,11 @@ public class RafikiEntity extends PathfinderMob {
     }
 
     @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return false;
+    }
+
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -71,9 +76,9 @@ public class RafikiEntity extends PathfinderMob {
         if (!(level() instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
 
         talkCooldown = 40;
-        LKWorldData data = LKWorldData.get(serverLevel);
+        WorldData data = WorldData.get(serverLevel);
         QuestlineManager quests = data.getQuestManager();
-        LKPlayerData playerData = LKPlayerDataProvider.get(serverPlayer);
+        PlayerData playerData = PlayerDataProvider.get(serverPlayer);
         Stage stage = quests.getStage("rafiki", Stage.class);
 
         // Give quest book on first meeting
@@ -114,7 +119,7 @@ public class RafikiEntity extends PathfinderMob {
         return InteractionResult.SUCCESS;
     }
 
-    private void syncPlayerData(ServerPlayer player, LKPlayerData data) {
+    private void syncPlayerData(ServerPlayer player, PlayerData data) {
         LKNetworking.CHANNEL.send(
                 PacketDistributor.PLAYER.with(() -> player),
                 new PlayerDataSyncPacket(data)

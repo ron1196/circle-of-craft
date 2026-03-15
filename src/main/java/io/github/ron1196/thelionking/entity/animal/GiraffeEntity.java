@@ -1,17 +1,15 @@
 package io.github.ron1196.thelionking.entity.animal;
 
-import io.github.ron1196.thelionking.data.LKCriteriaTriggers;
+import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
 import io.github.ron1196.thelionking.entity.ai.AmbientPanicGoal;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -143,7 +141,7 @@ public class GiraffeEntity extends LionKingAnimal {
             }
             playSound(SoundEvents.HORSE_SADDLE, 0.5F, 1.0F);
             if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-                LKCriteriaTriggers.RIDE_GIRAFFE.trigger(serverPlayer);
+                LionKingCriteriaTriggers.RIDE_GIRAFFE.trigger(serverPlayer);
             }
             return InteractionResult.sidedSuccess(level().isClientSide);
         }

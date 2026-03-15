@@ -29,6 +29,11 @@ public class PumbaaEntity extends PathfinderMob {
     }
 
     @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return false;
+    }
+
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new PumbaaFollowTimonGoal(this));

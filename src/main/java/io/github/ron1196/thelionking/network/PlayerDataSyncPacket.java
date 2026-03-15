@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.network;
 
-import io.github.ron1196.thelionking.data.LKPlayerData;
+import io.github.ron1196.thelionking.data.PlayerData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -21,7 +21,7 @@ public class PlayerDataSyncPacket {
     private final boolean hasSimba;
     private final Set<String> claimedRewards;
 
-    public PlayerDataSyncPacket(LKPlayerData playerData) {
+    public PlayerDataSyncPacket(PlayerData playerData) {
         this.receivedQuestBook = playerData.hasReceivedQuestBook();
         this.homePortalX = playerData.getHomePortalX();
         this.homePortalY = playerData.getHomePortalY();

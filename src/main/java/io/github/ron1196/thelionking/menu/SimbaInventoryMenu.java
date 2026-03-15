@@ -8,6 +8,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class SimbaInventoryMenu extends AbstractContainerMenu {
 
@@ -21,11 +22,9 @@ public class SimbaInventoryMenu extends AbstractContainerMenu {
         super(LKMenuTypes.SIMBA_INVENTORY_MENU.get(), containerId);
         this.simbaInventory = simbaInventory;
 
-        // Simba inventory slots (9 slots in a 3x3 grid)
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                this.addSlot(new SlotItemHandler(simbaInventory, col + row * 3, 62 + col * 18, 17 + row * 18));
-            }
+        // Simba inventory slots (9 slots in a single row)
+        for (int col = 0; col < 9; col++) {
+            this.addSlot(new SlotItemHandler(simbaInventory, col, 8 + col * 18, 31));
         }
 
         // Player inventory
@@ -42,7 +41,7 @@ public class SimbaInventoryMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
         ItemStack result = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot.hasItem()) {
@@ -65,7 +64,7 @@ public class SimbaInventoryMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player player) {
+    public boolean stillValid(@NotNull Player player) {
         return true;
     }
 }

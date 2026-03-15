@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.network;
 
-import io.github.ron1196.thelionking.data.LKPlayerData;
-import io.github.ron1196.thelionking.data.LKWorldData;
+import io.github.ron1196.thelionking.data.PlayerData;
+import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.quest.questline.Questline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineState;
 import io.github.ron1196.thelionking.quest.questline.QuestlineRegistry;
@@ -35,7 +35,7 @@ public class LoginSyncPacket {
 
     private record QuestEntry(String questId, String stageId, boolean checked) {}
 
-    public LoginSyncPacket(LKWorldData worldData, LKPlayerData playerData) {
+    public LoginSyncPacket(WorldData worldData, PlayerData playerData) {
         // World
         this.defeatedScar = worldData.defeatedScar;
         this.ziraStage = worldData.ziraStage;

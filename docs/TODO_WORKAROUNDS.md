@@ -99,11 +99,9 @@ Items using generated placeholder textures (not from old mod):
 
 ## Networking (Not Fully Wired)
 
-Packets are registered and defined, but client-side send triggers are missing:
-
-- [ ] **`SimbaSitPacket`** — Needs client-side right-click handler or keybind to call `LKNetworking.CHANNEL.sendToServer()`
-- [ ] **`QuestSyncPacket`** — Needs server code to send on quest state change via `PacketDistributor.PLAYER`
-- [ ] **`QuestCheckPacket`** — Needs client GUI button to send
+- [x] ~~**`QuestSyncPacket`**~~ — RESOLVED: Already sent from `QuestlineManager.syncToAllPlayers()` on quest advance.
+- [x] ~~**`QuestCheckPacket`**~~ — RESOLVED: Already sent from `QuestBookScreen` on click.
+- [ ] **`SimbaSitPacket`** — Sit toggle works via `mobInteract()`. Packet exists for future keybind (toggle sit from distance).
 
 ## GUIs (Not Fully Wired)
 

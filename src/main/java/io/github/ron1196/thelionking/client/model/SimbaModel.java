@@ -9,6 +9,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
+import org.jetbrains.annotations.NotNull;
 
 public class SimbaModel extends EntityModel<Mob> {
 
@@ -71,7 +72,7 @@ public class SimbaModel extends EntityModel<Mob> {
         this.mane.xRot = this.head.xRot;
         this.mane.yRot = this.head.yRot;
 
-        boolean sitting = entity instanceof SimbaEntity simba && simba.isSitting();
+        boolean sitting = entity instanceof SimbaEntity simba && simba.isInSittingPose();
 
         if (sitting) {
             // Sitting pose from old mod
@@ -115,7 +116,16 @@ public class SimbaModel extends EntityModel<Mob> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(
+            @NotNull PoseStack poseStack,
+            @NotNull VertexConsumer buffer,
+            int packedLight,
+            int packedOverlay,
+            float red,
+            float green,
+            float blue,
+            float alpha
+    ) {
         head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         mane.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

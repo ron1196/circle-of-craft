@@ -15,11 +15,16 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraft.client.KeyMapping;
+import org.lwjgl.glfw.GLFW;
 
 @Mod.EventBusSubscriber(modid = TheLionKingMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class LKClientEvents {
@@ -65,6 +70,15 @@ public class LKClientEvents {
 
     // Block entity layers
     public static final ModelLayerLocation HYENA_HEAD_LAYER = layer("hyena_head");
+
+    // Keybinds
+    public static final KeyMapping SIMBA_SIT_KEY = new KeyMapping(
+            "key.thelionking.simba_sit",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_X,
+            "key.categories.thelionking"
+    );
 
     private static ModelLayerLocation layer(String name) {
         return new ModelLayerLocation(new ResourceLocation(TheLionKingMod.MOD_ID, name), "main");
@@ -230,6 +244,11 @@ public class LKClientEvents {
                 io.github.ron1196.thelionking.client.renderer.HyenaHeadBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(io.github.ron1196.thelionking.registry.LKBlockEntityTypes.PRIDE_BED.get(),
                 io.github.ron1196.thelionking.client.renderer.PrideBedRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
+        event.register(SIMBA_SIT_KEY);
     }
 
     @SubscribeEvent

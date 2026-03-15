@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.block.entity;
 
-import io.github.ron1196.thelionking.data.LKCriteriaTriggers;
+import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
 import io.github.ron1196.thelionking.menu.GrindingBowlMenu;
 import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
 import io.github.ron1196.thelionking.registry.LKBlocks;
@@ -202,7 +202,7 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
             net.minecraft.server.level.ServerPlayer nearest = (net.minecraft.server.level.ServerPlayer)
                     level.getNearestPlayer(pos.getX(), pos.getY(), pos.getZ(), 8.0, false);
             if (nearest != null) {
-                LKCriteriaTriggers.USE_GRINDING_BOWL.trigger(nearest);
+                LionKingCriteriaTriggers.USE_GRINDING_BOWL.trigger(nearest);
             }
         }
     }

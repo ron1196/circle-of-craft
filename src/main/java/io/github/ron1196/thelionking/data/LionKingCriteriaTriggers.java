@@ -5,9 +5,8 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.critereon.PlayerTrigger;
 import net.minecraft.resources.ResourceLocation;
 
-public class LKCriteriaTriggers {
+public class LionKingCriteriaTriggers {
 
-    // Custom triggers for events that can't use vanilla criteria
     public static final PlayerTrigger SHOOT_DART = new PlayerTrigger(
             new ResourceLocation(TheLionKingMod.MOD_ID, "shoot_dart"));
     public static final PlayerTrigger QUEST_COMPLETE = new PlayerTrigger(

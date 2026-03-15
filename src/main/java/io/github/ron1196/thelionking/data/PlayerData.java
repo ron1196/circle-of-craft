@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @AutoRegisterCapability
-public class LKPlayerData {
+public class PlayerData {
 
     private boolean receivedQuestBook;
     private int homePortalX;
@@ -64,10 +64,6 @@ public class LKPlayerData {
         return claimedRewards.contains(rewardKey);
     }
 
-    public void claimReward(String rewardKey) {
-        claimedRewards.add(rewardKey);
-    }
-
     // ── Setters ─────────────────────────────────────────────────────────────────
 
     public void setReceivedQuestBook(boolean receivedQuestBook) {
@@ -102,9 +98,13 @@ public class LKPlayerData {
         this.enteredUpendi = entered;
     }
 
+    public void claimReward(String rewardKey) {
+        claimedRewards.add(rewardKey);
+    }
+
     // ── Copy ────────────────────────────────────────────────────────────────────
 
-    public void copyFrom(LKPlayerData other) {
+    public void copyFrom(PlayerData other) {
         this.receivedQuestBook = other.receivedQuestBook;
         this.homePortalX = other.homePortalX;
         this.homePortalY = other.homePortalY;

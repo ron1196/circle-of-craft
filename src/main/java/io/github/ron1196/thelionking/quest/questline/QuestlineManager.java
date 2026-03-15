@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.quest.questline;
 
-import io.github.ron1196.thelionking.data.LKPlayerData;
-import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
+import io.github.ron1196.thelionking.data.PlayerData;
+import io.github.ron1196.thelionking.data.PlayerDataProvider;
 import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.QuestSyncPacket;
 import io.github.ron1196.thelionking.quest.stage.ClaimableReward;
@@ -146,7 +146,7 @@ public class QuestlineManager {
     public int tryClaimNextReward(String questId, ServerPlayer player) {
         Questline quest = QuestlineRegistry.get(questId);
         if (quest == null) return -1;
-        LKPlayerData playerData = LKPlayerDataProvider.get(player);
+        PlayerData playerData = PlayerDataProvider.get(player);
         String currentStageId = getStageId(questId);
         List<IStageId> stages = quest.getStageOrder();
         int currentIndex = quest.getStageIndex(currentStageId);
@@ -171,7 +171,7 @@ public class QuestlineManager {
         List<ClaimableReward> rewards = quest.getClaimableRewards(completedStage);
         if (rewards.isEmpty()) return;
         String rewardKey = quest.getId() + ":" + completedStage.name();
-        LKPlayerData playerData = LKPlayerDataProvider.get(player);
+        PlayerData playerData = PlayerDataProvider.get(player);
         if (playerData.hasClaimedReward(rewardKey)) return;
         for (ClaimableReward reward : rewards) {
             player.addItem(new ItemStack(reward.item().get(), reward.count()));

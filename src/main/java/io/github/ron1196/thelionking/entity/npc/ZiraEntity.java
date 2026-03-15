@@ -1,8 +1,8 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.data.LKPlayerData;
-import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
-import io.github.ron1196.thelionking.data.LKWorldData;
+import io.github.ron1196.thelionking.data.PlayerData;
+import io.github.ron1196.thelionking.data.PlayerDataProvider;
+import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
@@ -61,6 +61,11 @@ public class ZiraEntity extends Monster {
     }
 
     @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return false;
+    }
+
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2D, false));
@@ -113,9 +118,9 @@ public class ZiraEntity extends Monster {
         if (!(level() instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
 
         talkCooldown = 40;
-        LKWorldData data = LKWorldData.get(serverLevel);
+        WorldData data = WorldData.get(serverLevel);
         QuestlineManager quests = data.getQuestManager();
-        LKPlayerData playerData = LKPlayerDataProvider.get(serverPlayer);
+        PlayerData playerData = PlayerDataProvider.get(serverPlayer);
         Stage stage = quests.getStage("outlands", Stage.class);
 
         // Try to claim the next unclaimed reward (earliest stage first)
@@ -165,7 +170,7 @@ public class ZiraEntity extends Monster {
         super.die(source);
         if (!level().isClientSide() && level() instanceof ServerLevel serverLevel) {
             if (source.getEntity() instanceof ServerPlayer serverPlayer) {
-                LKWorldData data = LKWorldData.get(serverLevel);
+                WorldData data = WorldData.get(serverLevel);
                 data.getQuestManager().tryAdvance("outlands", serverPlayer, StageTrigger.ZIRA_KILLED);
 
                 serverPlayer.sendSystemMessage(Component.literal(
@@ -201,7 +206,7 @@ public class ZiraEntity extends Monster {
         player.sendSystemMessage(Component.literal(CharacterSpeech.giveSpeech(speech)));
     }
 
-    private void syncPlayerData(ServerPlayer player, LKPlayerData data) {
+    private void syncPlayerData(ServerPlayer player, PlayerData data) {
         LKNetworking.CHANNEL.send(
                 PacketDistributor.PLAYER.with(() -> player),
                 new PlayerDataSyncPacket(data)

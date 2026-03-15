@@ -2,17 +2,14 @@ package io.github.ron1196.thelionking.event;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.command.LKCommands;
-import io.github.ron1196.thelionking.data.LKCriteriaTriggers;
-import io.github.ron1196.thelionking.data.LKPlayerData;
-import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
-import io.github.ron1196.thelionking.data.LKWorldData;
+import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
+import io.github.ron1196.thelionking.data.PlayerData;
+import io.github.ron1196.thelionking.data.PlayerDataProvider;
+import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.entity.hostile.HyenaEntity;
 import io.github.ron1196.thelionking.entity.hostile.SkeletalHyenaEntity;
-import io.github.ron1196.thelionking.entity.npc.RafikiEntity;
 import io.github.ron1196.thelionking.entity.npc.ScarEntity;
-import io.github.ron1196.thelionking.entity.npc.TicketLionEntity;
-import io.github.ron1196.thelionking.entity.npc.TimonEntity;
 import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
 import io.github.ron1196.thelionking.entity.RugEntity;
 import io.github.ron1196.thelionking.network.LKNetworking;
@@ -22,7 +19,6 @@ import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -41,7 +37,6 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.fml.common.Mod;
@@ -62,8 +57,8 @@ public class LKForgeEvents {
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             ServerLevel overworld = serverPlayer.server.overworld();
-            LKWorldData worldData = LKWorldData.get(overworld);
-            LKPlayerData playerData = LKPlayerDataProvider.get(serverPlayer);
+            WorldData worldData = WorldData.get(overworld);
+            PlayerData playerData = PlayerDataProvider.get(serverPlayer);
             LKNetworking.CHANNEL.send(
                     PacketDistributor.PLAYER.with(() -> serverPlayer),
                     new LoginSyncPacket(worldData, playerData)
@@ -122,16 +117,16 @@ public class LKForgeEvents {
             float dropChance = 0.05F + 0.03F * lootingLevel;
             if (entity.level().random.nextFloat() < dropChance) {
                 entity.spawnAtLocation(new ItemStack(LKItems.HYENA_HEAD_ITEM.get()));
-                LKCriteriaTriggers.BEHEAD_HYENA.trigger((ServerPlayer) player);
+                LionKingCriteriaTriggers.BEHEAD_HYENA.trigger((ServerPlayer) player);
             }
         }
 
         // Scar/Zira kill triggers
         if (entity instanceof ScarEntity && killer instanceof ServerPlayer serverPlayer) {
-            LKCriteriaTriggers.KILL_SCAR.trigger(serverPlayer);
+            LionKingCriteriaTriggers.KILL_SCAR.trigger(serverPlayer);
         }
         if (entity instanceof ZiraEntity && killer instanceof ServerPlayer serverPlayer) {
-            LKCriteriaTriggers.KILL_ZIRA.trigger(serverPlayer);
+            LionKingCriteriaTriggers.KILL_ZIRA.trigger(serverPlayer);
         }
     }
 
@@ -147,19 +142,20 @@ public class LKForgeEvents {
         }
 
         if (!(event.player instanceof ServerPlayer serverPlayer)) return;
+        if (!serverPlayer.isAlive()) return;
 
-        LKPlayerData playerData = LKPlayerDataProvider.get(serverPlayer);
+        PlayerData playerData = PlayerDataProvider.get(serverPlayer);
 
         // Dimension entry triggers (fire once per player)
         if (serverPlayer.level().dimension() == Dimensions.PRIDE_LANDS_LEVEL && !playerData.hasEnteredPrideLands()) {
             playerData.setEnteredPrideLands(true);
-            LKCriteriaTriggers.ENTER_PRIDE_LANDS.trigger(serverPlayer);
+            LionKingCriteriaTriggers.ENTER_PRIDE_LANDS.trigger(serverPlayer);
         } else if (serverPlayer.level().dimension() == Dimensions.OUTLANDS_LEVEL && !playerData.hasEnteredOutlands()) {
             playerData.setEnteredOutlands(true);
-            LKCriteriaTriggers.ENTER_OUTLANDS.trigger(serverPlayer);
+            LionKingCriteriaTriggers.ENTER_OUTLANDS.trigger(serverPlayer);
         } else if (serverPlayer.level().dimension() == Dimensions.UPENDI_LEVEL && !playerData.hasEnteredUpendi()) {
             playerData.setEnteredUpendi(true);
-            LKCriteriaTriggers.ENTER_UPENDI.trigger(serverPlayer);
+            LionKingCriteriaTriggers.ENTER_UPENDI.trigger(serverPlayer);
         }
     }
 
@@ -176,7 +172,7 @@ public class LKForgeEvents {
 
         // Save level data every 100 ticks if dirty
         if (serverLevel.getGameTime() % 100 == 0) {
-            LKWorldData data = LKWorldData.get(serverLevel);
+            WorldData data = WorldData.get(serverLevel);
             if (data.isDirty()) {
                 data.setDirty();
             }
@@ -193,7 +189,7 @@ public class LKForgeEvents {
      * spawn Zira nearby with a visual lightning bolt.
      */
     private static void handleZiraSpawnEvent(ServerLevel level) {
-        LKWorldData data = LKWorldData.get(level);
+        WorldData data = WorldData.get(level);
         if (data.ziraStage != 22) return;
         if (level.players().isEmpty()) return;
 

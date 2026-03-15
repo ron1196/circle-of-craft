@@ -647,7 +647,7 @@ git commit -m "refactor(data): rename LKLevelData to LKWorldData, remove per-pla
 ```java
 package io.github.ron1196.thelionking.network;
 
-import io.github.ron1196.thelionking.data.LKPlayerData;
+import io.github.ron1196.thelionking.data.PlayerData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -814,8 +814,8 @@ Replace entire file. The packet now takes `LKWorldData` and `LKPlayerData` as co
 ```java
 package io.github.ron1196.thelionking.network;
 
-import io.github.ron1196.thelionking.data.LKPlayerData;
-import io.github.ron1196.thelionking.data.LKWorldData;
+import io.github.ron1196.thelionking.data.PlayerData;
+import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.quest.LKQuest;
 import io.github.ron1196.thelionking.quest.LKQuestRegistry;
 import io.github.ron1196.thelionking.quest.LKQuestState;
@@ -1003,7 +1003,7 @@ git commit -m "feat(network): register PlayerDataSyncPacket, bump protocol to v3
 Update the import and the `handle()` method:
 
 ```java
-import io.github.ron1196.thelionking.data.LKWorldData;
+import io.github.ron1196.thelionking.data.WorldData;
 ```
 
 In `handle()`, change:

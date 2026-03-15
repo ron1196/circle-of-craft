@@ -1,8 +1,8 @@
 package io.github.ron1196.thelionking.item;
 
-import io.github.ron1196.thelionking.data.LKPlayerData;
-import io.github.ron1196.thelionking.data.LKPlayerDataProvider;
-import io.github.ron1196.thelionking.data.LKWorldData;
+import io.github.ron1196.thelionking.data.PlayerData;
+import io.github.ron1196.thelionking.data.PlayerDataProvider;
+import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
 import io.github.ron1196.thelionking.quest.stage.StageTrigger;
@@ -35,7 +35,7 @@ public class RafikiDustItem extends Item {
         }
 
         // Block if player already has a Simba
-        LKPlayerData playerData = LKPlayerDataProvider.get(player);
+        PlayerData playerData = PlayerDataProvider.get(player);
         if (playerData.hasSimba()) {
             return InteractionResult.PASS;
         }
@@ -70,7 +70,7 @@ public class RafikiDustItem extends Item {
 
         // Progress Rafiki quest via star altar usage
         if (player instanceof ServerPlayer serverPlayer) {
-            LKWorldData data = LKWorldData.get((ServerLevel) level);
+            WorldData data = WorldData.get((ServerLevel) level);
             if (data.getQuestManager().tryAdvance("rafiki", serverPlayer, StageTrigger.STAR_ALTAR_USED)) {
                 broadcastMessage(level, "\u00a7e<Rafiki> \u00a7fYou see? He lives in you! Ohohoho!");
             }

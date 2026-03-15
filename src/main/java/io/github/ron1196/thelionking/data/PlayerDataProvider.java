@@ -19,16 +19,18 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Mod.EventBusSubscriber(modid = TheLionKingMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class LKPlayerDataProvider implements ICapabilitySerializable<CompoundTag> {
+public class PlayerDataProvider implements ICapabilitySerializable<CompoundTag> {
 
-    public static final Capability<LKPlayerData> CAPABILITY =
-            CapabilityManager.get(new CapabilityToken<>() {});
+    public static final Capability<PlayerData> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+    });
 
-    public static final ResourceLocation IDENTIFIER =
-            new ResourceLocation(TheLionKingMod.MOD_ID, "player_data");
+    public static final ResourceLocation IDENTIFIER = new ResourceLocation(
+            TheLionKingMod.MOD_ID,
+            "player_data"
+    );
 
-    private final LKPlayerData data = new LKPlayerData();
-    private final LazyOptional<LKPlayerData> optional = LazyOptional.of(() -> data);
+    private final PlayerData data = new PlayerData();
+    private final LazyOptional<PlayerData> optional = LazyOptional.of(() -> data);
 
     // ── Capability methods ──────────────────────────────────────────────────────
 
@@ -49,9 +51,9 @@ public class LKPlayerDataProvider implements ICapabilitySerializable<CompoundTag
 
     // ── Helper ──────────────────────────────────────────────────────────────────
 
-    public static LKPlayerData get(Player player) {
+    public static PlayerData get(Player player) {
         return player.getCapability(CAPABILITY)
-                .orElseThrow(() -> new IllegalStateException("LKPlayerData capability missing on player"));
+                .orElseThrow(() -> new IllegalStateException("PlayerData capability missing on player"));
     }
 
     // ── Events ──────────────────────────────────────────────────────────────────
@@ -59,7 +61,7 @@ public class LKPlayerDataProvider implements ICapabilitySerializable<CompoundTag
     @SubscribeEvent
     public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
-            event.addCapability(IDENTIFIER, new LKPlayerDataProvider());
+            event.addCapability(IDENTIFIER, new PlayerDataProvider());
         }
     }
 
@@ -67,8 +69,8 @@ public class LKPlayerDataProvider implements ICapabilitySerializable<CompoundTag
     public static void onPlayerClone(PlayerEvent.Clone event) {
         event.getOriginal().reviveCaps();
         try {
-            LKPlayerData original = get(event.getOriginal());
-            LKPlayerData clone = get(event.getEntity());
+            PlayerData original = get(event.getOriginal());
+            PlayerData clone = get(event.getEntity());
             clone.copyFrom(original);
         } finally {
             event.getOriginal().invalidateCaps();

@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.data.LKWorldData;
+import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.quest.stage.StageTrigger;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -46,6 +46,11 @@ public class ScarEntity extends Monster {
     }
 
     @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return false;
+    }
+
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2D, false));
@@ -84,7 +89,7 @@ public class ScarEntity extends Monster {
         if (!(source.getEntity() instanceof ServerPlayer serverPlayer)) {
             return;
         }
-        LKWorldData data = LKWorldData.get(serverLevel);
+        WorldData data = WorldData.get(serverLevel);
         data.getQuestManager().tryAdvance("rafiki", serverPlayer, StageTrigger.SCAR_KILLED);
         serverPlayer.sendSystemMessage(Component.literal("§e<Scar> §fThis... is not... the end..."));
     }

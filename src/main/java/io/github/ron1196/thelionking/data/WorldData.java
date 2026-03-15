@@ -7,7 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.NotNull;
 
-public class LKWorldData extends SavedData {
+public class WorldData extends SavedData {
 
     private static final String DATA_NAME = TheLionKingMod.MOD_ID + "_data";
 
@@ -20,27 +20,24 @@ public class LKWorldData extends SavedData {
     // Quest manager
     private final QuestlineManager questManager = new QuestlineManager(this);
 
-    public LKWorldData() {
+    public WorldData() {
     }
 
     public QuestlineManager getQuestManager() {
         return questManager;
     }
 
-    public static LKWorldData get(ServerLevel level) {
-        return level.getDataStorage().computeIfAbsent(LKWorldData::load, LKWorldData::new, DATA_NAME);
+    public static WorldData get(ServerLevel level) {
+        return level.getDataStorage().computeIfAbsent(WorldData::load, WorldData::new, DATA_NAME);
     }
 
-    public static LKWorldData load(CompoundTag tag) {
-        LKWorldData data = new LKWorldData();
+    public static WorldData load(CompoundTag tag) {
+        WorldData data = new WorldData();
         data.ziraStage = tag.getInt("ZiraStage");
         data.pumbaaStage = tag.getInt("PumbaaStage");
         data.outlandersHostile = tag.getBoolean("OutlandersHostile");
         data.defeatedScar = tag.getBoolean("DefeatedScar");
-
-        // Load quests
         data.questManager.readFromNBT(tag);
-
         return data;
     }
 
@@ -50,10 +47,7 @@ public class LKWorldData extends SavedData {
         tag.putInt("PumbaaStage", pumbaaStage);
         tag.putBoolean("OutlandersHostile", outlandersHostile);
         tag.putBoolean("DefeatedScar", defeatedScar);
-
-        // Save quests
         questManager.writeToNBT(tag);
-
         return tag;
     }
 }

@@ -37,10 +37,8 @@ public class SimbaSitPacket {
             if (!(entity instanceof SimbaEntity simba)) return;
 
             // Only the owner can toggle sitting
-            if (simba.getOwnerUUID().isPresent()
-                    && simba.getOwnerUUID().get().equals(sender.getUUID())) {
-                simba.setSitting(!simba.isSitting());
-                simba.getNavigation().stop();
+            if (simba.isOwnedBy(sender)) {
+                simba.toggleSitting(sender);
             }
         });
         context.setPacketHandled(true);
