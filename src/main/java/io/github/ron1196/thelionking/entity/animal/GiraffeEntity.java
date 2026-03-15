@@ -14,8 +14,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -36,6 +38,7 @@ public class GiraffeEntity extends LionKingAnimal {
     );
 
     private static final int NO_TIE = -1;
+    private static final float RIDDEN_SPEED_MULTIPLIER = 1.0F;
 
     public enum TieColor {
         BASE(0, LKItems.GIRAFFE_TIE),
@@ -61,13 +64,6 @@ public class GiraffeEntity extends LionKingAnimal {
 
         public Item getItem() {
             return item.get();
-        }
-
-        public static @Nullable TieColor fromId(int id) {
-            for (TieColor color : values()) {
-                if (color.id == id) return color;
-            }
-            return null;
         }
 
         public static @Nullable TieColor fromItem(Item item) {
@@ -125,10 +121,6 @@ public class GiraffeEntity extends LionKingAnimal {
         this.entityData.set(DATA_TIE, tie);
     }
 
-    public @Nullable TieColor getTieColor() {
-        return TieColor.fromId(getTie());
-    }
-
     @Override
     public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
@@ -146,26 +138,72 @@ public class GiraffeEntity extends LionKingAnimal {
             return InteractionResult.sidedSuccess(level().isClientSide);
         }
 
-        // Apply tie (must be saddled, adult, no existing tie)
+        // Apply tie (must be saddled, adult, no existing tie, holding a tie item)
         if (!isBaby() && isSaddled() && getTie() == NO_TIE) {
             TieColor tieColor = TieColor.fromItem(stack.getItem());
-            if (tieColor == null) {
-                return super.mobInteract(player, hand);
+            if (tieColor != null) {
+                setTie(tieColor.getId());
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
+                playSound(SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F, 1.0F);
+                return InteractionResult.sidedSuccess(level().isClientSide);
             }
-            setTie(tieColor.getId());
-            if (!player.getAbilities().instabuild) {
-                stack.shrink(1);
-            }
-            playSound(SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F, 1.0F);
-            return InteractionResult.sidedSuccess(level().isClientSide);
         }
 
-        // Saddled giraffes skip quest interactions (they're a mount now)
-        if (isSaddled()) {
+        // Mount the saddled giraffe
+        if (!level().isClientSide && isSaddled() && (getFirstPassenger() == null || getFirstPassenger() == player)) {
+            player.startRiding(this);
             return InteractionResult.sidedSuccess(level().isClientSide);
         }
 
         return super.mobInteract(player, hand);
+    }
+
+    // ── Riding ──
+
+    @Override
+    public double getPassengersRidingOffset() {
+        return getBbHeight() * 0.93;
+    }
+
+    @Override
+    public boolean hurt(@NotNull DamageSource source, float amount) {
+        if (source.getEntity() == getFirstPassenger()) {
+            return false;
+        }
+        return super.hurt(source, amount);
+    }
+
+    @Nullable
+    @Override
+    public LivingEntity getControllingPassenger() {
+        if (isSaddled() && getFirstPassenger() instanceof LivingEntity living) {
+            return living;
+        }
+        return null;
+    }
+
+    @Override
+    protected void tickRidden(@NotNull Player player, @NotNull Vec3 travelVec) {
+        super.tickRidden(player, travelVec);
+        this.setRot(player.getYRot(), player.getXRot() * 0.5F);
+        this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
+    }
+
+    @Override
+    protected @NotNull Vec3 getRiddenInput(@NotNull Player player, @NotNull Vec3 travelVec) {
+        float forward = player.zza;
+        float strafe = player.xxa * 0.5F;
+        if (forward <= 0.0F) {
+            forward *= 0.25F;
+        }
+        return new Vec3(strafe, 0.0, forward);
+    }
+
+    @Override
+    protected float getRiddenSpeed(@NotNull Player player) {
+        return (float) getAttributeValue(Attributes.MOVEMENT_SPEED) * RIDDEN_SPEED_MULTIPLIER;
     }
 
     // ── Save/Load ──
