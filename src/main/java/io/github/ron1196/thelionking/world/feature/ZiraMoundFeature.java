@@ -30,6 +30,9 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
     private static final BlockState AIR = Blocks.AIR.defaultBlockState();
 
     private static final int CLEAR_RADIUS = 28;
+
+    /** Gate positions are deferred so they're placed last and never overwritten. */
+    private static final ThreadLocal<java.util.List<BlockPos>> DEFERRED_GATES = ThreadLocal.withInitial(java.util.ArrayList::new);
     private static final int ZIRA_Y_OFFSET = 17;
 
     public ZiraMoundFeature(Codec<NoneFeatureConfiguration> codec) {
@@ -88,11 +91,25 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
 
         FeatureHelper.spawnEntity(level, EntityTypes.ZIRA.get(), i + 0.5, j + ZIRA_Y_OFFSET, k + 0.5);
 
+        // Place all gate blocks last so they can't be overwritten by other structure passes
+        java.util.List<BlockPos> gates = DEFERRED_GATES.get();
+        for (BlockPos gatePos : gates) {
+            placeAt(level, gatePos.getX(), gatePos.getY(), gatePos.getZ(), GATE);
+        }
+        gates.clear();
+
         return true;
     }
 
     private static void setBlock(WorldGenLevel level, int i, int j, int k, int dx, int dy, int dz, BlockState state) {
-        placeAt(level, i + dx, j + dy, k + dz, state);
+        int x = i + dx;
+        int y = j + dy;
+        int z = k + dz;
+        if (state == GATE) {
+            DEFERRED_GATES.get().add(new BlockPos(x, y, z));
+        } else {
+            placeAt(level, x, y, z, state);
+        }
     }
 
     private static void placeAt(WorldGenLevel level, int x, int y, int z, BlockState state) {
