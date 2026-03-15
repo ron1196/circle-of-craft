@@ -18,7 +18,7 @@ import io.github.ron1196.thelionking.network.LoginSyncPacket;
 import io.github.ron1196.thelionking.registry.LKEnchantments;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
-import io.github.ron1196.thelionking.world.dimension.LKDimensions;
+import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -159,7 +159,7 @@ public class LKForgeEvents {
         Player player = event.player;
 
         // Check if player is in the Pride Lands dimension
-        if (player.level().dimension() == LKDimensions.PRIDE_LANDS_LEVEL) {
+        if (player.level().dimension() == Dimensions.PRIDE_LANDS_LEVEL) {
             // Dimension-entry logic can be added here
         }
     }
@@ -184,7 +184,7 @@ public class LKForgeEvents {
         }
 
         // Outlands: Zira stage 22 — spawn Zira with dramatic lightning when player is on surface
-        if (serverLevel.dimension() == LKDimensions.OUTLANDS_LEVEL) {
+        if (serverLevel.dimension() == Dimensions.OUTLANDS_LEVEL) {
             handleZiraSpawnEvent(serverLevel);
         }
     }

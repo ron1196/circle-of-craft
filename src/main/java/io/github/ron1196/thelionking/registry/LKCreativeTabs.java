@@ -217,6 +217,18 @@ public class LKCreativeTabs {
                         output.accept(LKItems.JAR_EMPTY.get());
                         output.accept(LKItems.JAR_WATER.get());
                         output.accept(LKItems.JAR_MILK.get());
+                        output.accept(LKItems.JAR_LAVA.get());
+                        output.accept(LKItems.MANGO_JUICE.get());
+                        output.accept(LKItems.HYENA_MEAL.get());
+                        // Giraffe Ties
+                        output.accept(LKItems.GIRAFFE_TIE.get());
+                        output.accept(LKItems.GIRAFFE_TIE_WHITE.get());
+                        output.accept(LKItems.GIRAFFE_TIE_BLUE.get());
+                        output.accept(LKItems.GIRAFFE_TIE_YELLOW.get());
+                        output.accept(LKItems.GIRAFFE_TIE_RED.get());
+                        output.accept(LKItems.GIRAFFE_TIE_PURPLE.get());
+                        output.accept(LKItems.GIRAFFE_TIE_GREEN.get());
+                        output.accept(LKItems.GIRAFFE_TIE_BLACK.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> TOOLS_TAB = TABS.register("tools",

@@ -3,7 +3,7 @@ package io.github.ron1196.thelionking.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.datafixers.util.Pair;
 import io.github.ron1196.thelionking.TheLionKingMod;
-import io.github.ron1196.thelionking.world.dimension.LKDimensions;
+import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
@@ -29,15 +29,15 @@ public class LKCommands {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("lk")
                 .requires(source -> source.hasPermission(2))
-                .then(Commands.literal("pridelands").executes(ctx -> teleportToDimension(ctx.getSource(), LKDimensions.PRIDE_LANDS_LEVEL, "Pride Lands")))
-                .then(Commands.literal("outlands").executes(ctx -> teleportToDimension(ctx.getSource(), LKDimensions.OUTLANDS_LEVEL, "Outlands")))
-                .then(Commands.literal("upendi").executes(ctx -> teleportToDimension(ctx.getSource(), LKDimensions.UPENDI_LEVEL, "Upendi")))
+                .then(Commands.literal("pridelands").executes(ctx -> teleportToDimension(ctx.getSource(), Dimensions.PRIDE_LANDS_LEVEL, "Pride Lands")))
+                .then(Commands.literal("outlands").executes(ctx -> teleportToDimension(ctx.getSource(), Dimensions.OUTLANDS_LEVEL, "Outlands")))
+                .then(Commands.literal("upendi").executes(ctx -> teleportToDimension(ctx.getSource(), Dimensions.UPENDI_LEVEL, "Upendi")))
                 .then(Commands.literal("overworld").executes(ctx -> teleportToDimension(ctx.getSource(), Level.OVERWORLD, "Overworld")))
-                .then(Commands.literal("tpmound").executes(ctx -> teleportToStructure(ctx.getSource(), LKDimensions.OUTLANDS_LEVEL, "zira_mound", "Zira's Mound")))
-                .then(Commands.literal("tptree").executes(ctx -> teleportToStructure(ctx.getSource(), LKDimensions.PRIDE_LANDS_LEVEL, "rafiki_tree", "Rafiki Tree")))
+                .then(Commands.literal("tpmound").executes(ctx -> teleportToStructure(ctx.getSource(), Dimensions.OUTLANDS_LEVEL, "zira_mound", "Zira's Mound")))
+                .then(Commands.literal("tptree").executes(ctx -> teleportToStructure(ctx.getSource(), Dimensions.PRIDE_LANDS_LEVEL, "rafiki_tree", "Rafiki Tree")))
                 .then(Commands.literal("tpbooth").executes(ctx -> teleportToStructure(ctx.getSource(), Level.OVERWORLD, "ticket_booth", "Ticket Booth")))
-                .then(Commands.literal("tplodge").executes(ctx -> teleportToStructure(ctx.getSource(), LKDimensions.PRIDE_LANDS_LEVEL, "timon_pumbaa_lodge", "Timon & Pumbaa Lodge")))
-                .then(Commands.literal("tptreasure").executes(ctx -> teleportToStructure(ctx.getSource(), LKDimensions.OUTLANDS_LEVEL, "treasure_mound", "Treasure Mound")))
+                .then(Commands.literal("tplodge").executes(ctx -> teleportToStructure(ctx.getSource(), Dimensions.PRIDE_LANDS_LEVEL, "timon_pumbaa_lodge", "Timon & Pumbaa Lodge")))
+                .then(Commands.literal("tptreasure").executes(ctx -> teleportToStructure(ctx.getSource(), Dimensions.OUTLANDS_LEVEL, "treasure_mound", "Treasure Mound")))
                 .then(Commands.literal("openmound").executes(ctx -> openMound(ctx.getSource())))
         );
     }
@@ -119,14 +119,14 @@ public class LKCommands {
             return 0;
         }
 
-        ServerLevel outlands = source.getServer().getLevel(LKDimensions.OUTLANDS_LEVEL);
+        ServerLevel outlands = source.getServer().getLevel(Dimensions.OUTLANDS_LEVEL);
         if (outlands == null) {
             source.sendFailure(Component.literal("Outlands dimension not found."));
             return 0;
         }
 
         // Locate nearest mound
-        BlockPos searchFrom = player.level().dimension() == LKDimensions.OUTLANDS_LEVEL
+        BlockPos searchFrom = player.level().dimension() == Dimensions.OUTLANDS_LEVEL
                 ? player.blockPosition()
                 : outlands.getSharedSpawnPos();
         BlockPos moundPos = findNearestStructure(outlands, "zira_mound", searchFrom);

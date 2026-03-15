@@ -6,24 +6,32 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * Generic placeholder model for NPC entities that reuses existing animal model meshes.
- * Typed to Mob instead of LionKingAnimal to avoid ClassCastException.
+ * Lion model for NPC entities (Scar, Zira, Ticket Lion).
+ * Typed to Mob instead of LionKingAnimal because NPCs extend PathfinderMob, not LionKingAnimal.
  */
-public class NpcPlaceholderModel extends EntityModel<Mob> {
+public class NpcLionModel extends EntityModel<Mob> {
 
     private final ModelPart root;
     private final ModelPart head;
 
-    public NpcPlaceholderModel(ModelPart root) {
+    public NpcLionModel(ModelPart root) {
         this.root = root;
         // Try to find common parts for animation
         this.head = root.hasChild("head") ? root.getChild("head") : null;
     }
 
     @Override
-    public void setupAnim(Mob entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(
+            @NotNull Mob entity,
+            float limbSwing,
+            float limbSwingAmount,
+            float ageInTicks,
+            float netHeadYaw,
+            float headPitch
+    ) {
         // Animate head if present
         if (head != null) {
             head.xRot = headPitch * ((float) Math.PI / 180F);
@@ -64,7 +72,16 @@ public class NpcPlaceholderModel extends EntityModel<Mob> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(
+            @NotNull PoseStack poseStack,
+            @NotNull VertexConsumer buffer,
+            int packedLight,
+            int packedOverlay,
+            float red,
+            float green,
+            float blue,
+            float alpha
+    ) {
         root.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

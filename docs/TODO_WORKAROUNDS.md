@@ -2,45 +2,59 @@
 
 This file tracks all "for now" substitutions and temporary workarounds that need to be revisited.
 
-## Recipes
-
-- [x] ~~**Bug Stew recipe uses `minecraft:milk_bucket` instead of `thelionking:jar_milk`**~~ — RESOLVED: updated to `thelionking:jar_milk`
-  - File: `src/main/resources/data/thelionking/recipes/bug_stew.json`
-
-## Items
-
-- [x] ~~**Banana Cake item/block not yet implemented**~~ — RESOLVED (Phase 12): `BananaCakeBlock`, block item, textures from old mod, blockstate with 7 bite variants
-
 ## Models / Rendering
 
-- [ ] **NPC entities use placeholder models**
-  - Scar, Zira, Ticket Lion use `NpcPlaceholderModel` instead of proper unique models
-  - Files: `src/main/java/.../client/model/NpcPlaceholderModel.java`
-  - Need custom models ported from old mod or newly designed
+- [x] ~~**NPC entities use placeholder models**~~ — RESOLVED: Old mod also used lion model for Scar/Zira/Ticket Lion. Renamed `NpcPlaceholderModel` → `NpcLionModel` to reflect this is intentional.
 
-## Missing Items (from old mod, not yet ported)
+## Missing Items (not yet ported from old mod)
 
-- [x] ~~**Jar items** — `jar_empty`, `jar_milk`, `jar_water`~~ — RESOLVED: all three items now registered in LKItems
-- [x] ~~**Zazu Egg**~~ — RESOLVED: now registered in LKItems
-- [x] ~~**Nuka Shard**~~ — RESOLVED: now registered in LKItems
-- [x] ~~**Kivulite**~~ — RESOLVED: now registered in LKItems
+- [x] ~~**Fire Sword / Pickaxe / Axe / Shovel**~~ — RESOLVED: These are the Kivulite tools (`KivuliteSwordItem`, etc.) with `FireToolHelper` auto-smelt logic.
+- [x] ~~**Jar of Lava**~~ — RESOLVED: Registered `jar_lava` item with container return, lang entry, item model.
+- [x] ~~**Jar of Mango Juice**~~ — RESOLVED: Registered `mango_juice` as food item (6 nutrition, 0.5 sat) with container return.
+- [x] ~~**Hyena Meal**~~ — RESOLVED: `HyenaMealItem` — bonemeal for LK dimensions, grows saplings/crops, spreads vegetation on grass.
+- [x] ~~**Giraffe Tie**~~ — RESOLVED: 8 tie items registered, GiraffeEntity has saddled/tie synched data with interaction logic.
+- [ ] **Rug Dye** — 11 variants (whitener + 10 dyes), colors fur rugs
+- [ ] **Musical Notes** — 7 variants (C, D, E, F, G, A, B) for bongo drum
+- [ ] **Tunnah Diggah** — Special enchanted shovel
+- [ ] **Block Placer** — Utility item
+- [ ] **Info Item** — Documentation/info display item
+
+## Missing Blocks
+
+- [ ] **Zira Mound Gate block** — Old mod used `outlandsPortalFrame` metadata 2 with "ziraMoundGate" texture. Needs a separate `ZIRA_MOUND_GATE` block that is breakable with the Rhythm Staff item. Currently 35 gate positions in `ZiraMoundFeature` use `GATE` constant which aliases `TERMITE_MOUND`. Needed for Outlands quest progression.
 
 ## Advancements
 
-- [x] ~~**21 advancements use `minecraft:impossible` trigger**~~ — DONE (Phase 13): replaced with custom criteria triggers and vanilla triggers
 - [ ] **Remaining advancement icon substitutions** (items not yet registered):
   - `lion_dust` → `termite_dust`, `outlandish_dart` → `dart_black`
   - `tunnah_diggah` → `pridestone_shovel`, `ticket_lion_helmet` → `ticket_lion_head`
   - `peacock_wings` → `peacock_gem`
-- [x] ~~`kivulite_pickaxe` → `kivulite`~~ — DONE: updated to `thelionking:kivulite_pickaxe`
-- [x] ~~`simba_charm` → `rafiki_coin`~~ — DONE: updated to `thelionking:simba_charm`
-- [x] ~~`passion_fruit` → `kiwano`~~ — DONE: updated to `thelionking:passion_fruit`
-- [x] ~~`animalspeak_amulet` → `crystal`~~ — DONE: updated to `thelionking:amulet`
-- [x] ~~`giraffe_saddle` → `minecraft:saddle`~~ — DONE: updated to `thelionking:giraffe_saddle`
 
-## Blocks
+## Missing World Generation
 
-- [ ] **Zira Mound Gate block** — Old mod used `outlandsPortalFrame` metadata 2 with "ziraMoundGate" texture. In modern MC, needs a separate `ZIRA_MOUND_GATE` block that is breakable with the Staff item (`LKItems.STAFF`, old mod's `rafikiStick`). Currently 35 gate positions in `ZiraMoundFeature` use `GATE` constant which aliases `TERMITE_MOUND`. Needed for the Outlands quest progression.
+- [ ] **Huge Rainforest Tree** — Old: `LKWorldGenHugeRainforest`, not ported (no Java feature or JSON config)
+- [ ] **Pride Acacia Tree** — JSON config only, no Java feature class, may not generate
+- [ ] **Lily Pad Distribution** — Old: `LKWorldGenLily`, not ported at all
+- [ ] **Tall Flower Distribution** — Old: `LKWorldGenTallFlowers`, not ported at all
+- [ ] **Dungeons** — Old: `LKWorldGenDungeons` (10 per chunk in Outlands), not ported
+- [ ] **Outlands Lava Lakes** — Old: `LKWorldGenOutlandsLakes`, not ported
+- [ ] **Zazu Spawner Areas** — Old had spawner-specific generation logic, not ported
+
+## Missing Event Handlers
+
+- [ ] **UseHoeEvent** — Tilled Sand creation when hoeing sand blocks
+- [ ] **BonemealEvent** — Prevent bonemeal usage in Pride Lands dimension
+
+## Missing Networking Packets
+
+- [ ] **Login Sync Packet** (S→C) — Full world state sync on player join
+- [ ] **World State Packet** (S→C) — Mound location, Scar defeated flag, etc.
+- [ ] **Damage Item Packet** (C→S) — Armor damage from abilities
+- [ ] **Simba Ownership Packet** (S→C) — Who owns Simba
+
+## Missing GUI
+
+- [ ] **Item Info GUI** — Item documentation/info display screen
 
 ## Bed Texture
 
@@ -54,24 +68,23 @@ Items using generated placeholder textures (not from old mod):
 
 - [ ] **`kivulite_hoe`** — Old mod had no kivulite hoe; using generated teal placeholder
 - [ ] **`corrupt_hoe`** — Old mod had no corrupt hoe; using generated purple placeholder
-- [ ] **`mounted_shooter` block textures** — Old mod only had item textures (`mountedShooter_wood.png`, `mountedShooter_silver.png`); block front/side/top are solid-color placeholders
+- [ ] **`mounted_shooter` block textures** — Old mod only had item textures; block front/side/top are solid-color placeholders
 - [ ] **`outlands_altar` block texture** — No old texture exists; reusing `corrupt_pridestone.png`
 - [ ] **`tilled_sand` item texture** — Generated sandy placeholder; block textures from old mod are correct
 - [ ] **`star_altar` item texture** — Generated placeholder; block textures (side/top) from old mod are correct
 - [ ] **`outlands_altar` item texture** — Generated dark placeholder
-
-## Multiplayer Quest Data
-
-- [x] ~~**Quest state is global, not per-player**~~ — DONE: World-level quest progress in `LKWorldData`/`LKQuestlineManager`. Per-player data (`receivedQuestBook`, `homePortal`, `hasSimba`, `claimedRewards`) in `LKPlayerData` capability. Enum-based stage IDs for save resilience. Per-player animal quests via UUID-keyed map.
+- [ ] **~150 block textures** need migration from old camelCase to snake_case
+- [ ] **~160 item textures** need migration
+- [ ] **5 GUI textures** missing: `quiver.png`, `simba.png`, `timon.png`, `flatulence.png`, `icons.png`
 
 ## CharacterSpeech Split
 
 - [ ] **`CharacterSpeech.java` is a monolithic dialogue class** — All NPC and animal dialogue lives in one big enum. Should be split:
-  - **Rafiki quest dialogue** (HYENA_BONES, MENTION_SCAR, TERMITES, MANGOES, STAR_ALTAR, HINT, FLOWERS) → move to `RafikiQuestline.java` or `RafikiEntity.java`
-  - **Outlands quest dialogue** (ZIRA_INGOTS, ZIRA_FEATHERS, ZIRA_CONQUEST) → move to `OutlandsQuestline.java` or `ZiraEntity.java`
-  - **Boss rug dialogue** (RUG_SCAR, RUG_ZIRA) → move to `ScarRugEntity.java` or a rug-specific class
-  - **NPC dialogue** (MORNING_REPORT, BUGS, MORE_BUGS) → move to respective NPC entity classes (ZazuEntity, TimonEntity)
-  - **Animal dialogue** (LION, ZEBRA, RHINO, GEMSBOK + cubs/foals) → move to `quest/animal/` or to each animal entity class
+  - **Rafiki quest dialogue** → move to `RafikiQuestline.java` or `RafikiEntity.java`
+  - **Outlands quest dialogue** → move to `OutlandsQuestline.java` or `ZiraEntity.java`
+  - **Boss rug dialogue** → move to `RugEntity.java` or a rug-specific class
+  - **NPC dialogue** → move to respective NPC entity classes
+  - **Animal dialogue** → move to `quest/animal/` or to each animal entity class
   - Keep a shared `SpeechUtil.giveSpeech(name, lines)` helper for the formatting pattern
 
 ## Crop Block Models
@@ -80,9 +93,9 @@ Items using generated placeholder textures (not from old mod):
 
 ## Crop Block Classes (Wrong Base Class)
 
-- [ ] **Maize is `CropBlock` but should be sugar cane-like** — Old mod: multi-block tall, grows near water, not on farmland. Needs custom block class extending `BushBlock` or similar, with water-adjacent check and multi-block stacking. Current worldgen only places single block.
-- [ ] **Yam is `CropBlock` but should grow on grass** — Old mod places yams on grass blocks, but `CropBlock.canSurvive()` requires farmland. Needs `mayPlaceOn` override to accept grass, or change to `BushBlock` subclass.
-- [ ] **Kiwano worldgen places `kiwano_block` (fruit) on sand** — Matches old mod. Stem (`kiwano_stem`) is the crop version for player farming. Worldgen config updated to check for sand below.
+- [ ] **Maize is `CropBlock` but should be sugar cane-like** — Old mod: multi-block tall, grows near water, not on farmland. Needs custom block class extending `BushBlock` or similar, with water-adjacent check and multi-block stacking.
+- [ ] **Yam is `CropBlock` but should grow on grass** — Old mod places yams on grass blocks, but `CropBlock.canSurvive()` requires farmland. Needs `mayPlaceOn` override to accept grass.
+- [ ] **Kiwano worldgen places `kiwano_block` (fruit) on sand** — Matches old mod. Stem (`kiwano_stem`) is the crop version for player farming.
 
 ## Networking (Not Fully Wired)
 

@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
 
-public class LKDimensions {
+public class Dimensions {
 
     public static final ResourceKey<Level> PRIDE_LANDS_LEVEL =
             ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TheLionKingMod.MOD_ID, "pride_lands"));

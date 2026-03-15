@@ -117,12 +117,10 @@ public abstract class LionKingAnimal extends Animal {
 
     private void giveQuestReward(ServerPlayer player) {
         ItemStack reward = getQuestReward();
+        int count = reward.getCount();
+        String name = reward.getHoverName().getString();
         player.getInventory().placeItemBackInInventory(reward);
-        String rewardMsg = String.format(
-                "§aYou received %dx %s as a reward!",
-                reward.getCount(),
-                reward.getHoverName().getString()
-        );
+        String rewardMsg = String.format("§aYou received %dx %s as a reward!", count, name);
         player.displayClientMessage(Component.literal(rewardMsg), false);
     }
 

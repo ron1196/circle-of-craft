@@ -1,15 +1,13 @@
 package io.github.ron1196.thelionking.block;
 
 import io.github.ron1196.thelionking.registry.LKBlocks;
-import io.github.ron1196.thelionking.world.dimension.LKDimensions;
+import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import io.github.ron1196.thelionking.world.dimension.LKTeleporter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -105,11 +103,11 @@ public class LKPortalBlock extends Block {
 
             ResourceKey<Level> destination;
             if (isOutlands) {
-                destination = level.dimension() == LKDimensions.OUTLANDS_LEVEL
-                        ? Level.OVERWORLD : LKDimensions.OUTLANDS_LEVEL;
+                destination = level.dimension() == Dimensions.OUTLANDS_LEVEL
+                        ? Level.OVERWORLD : Dimensions.OUTLANDS_LEVEL;
             } else {
-                destination = level.dimension() == LKDimensions.PRIDE_LANDS_LEVEL
-                        ? Level.OVERWORLD : LKDimensions.PRIDE_LANDS_LEVEL;
+                destination = level.dimension() == Dimensions.PRIDE_LANDS_LEVEL
+                        ? Level.OVERWORLD : Dimensions.PRIDE_LANDS_LEVEL;
             }
 
             MinecraftServer server = level.getServer();

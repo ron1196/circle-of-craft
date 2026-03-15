@@ -143,7 +143,7 @@ public class LKClientEvents {
 
         // Hostile
         event.registerEntityRenderer(EntityTypes.HYENA.get(),
-                ctx -> new io.github.ron1196.thelionking.client.renderer.HyenaRenderer(ctx, new HyenaModel<>(ctx.bakeLayer(HYENA_LAYER)), 0.5F));
+                ctx -> new HyenaRenderer(ctx, new HyenaModel<>(ctx.bakeLayer(HYENA_LAYER)), 0.5F));
         event.registerEntityRenderer(EntityTypes.SKELETAL_HYENA.get(),
                 ctx -> new MobRenderer<>(ctx, new HyenaModel<>(ctx.bakeLayer(SKELETAL_HYENA_LAYER)), "skeletal_hyena", 0.5F));
         event.registerEntityRenderer(EntityTypes.OUTLANDER.get(),
@@ -169,13 +169,13 @@ public class LKClientEvents {
         event.registerEntityRenderer(EntityTypes.PUMBAA.get(),
                 ctx -> new NpcRenderer(ctx, new PumbaaModel(ctx.bakeLayer(PUMBAA_LAYER)), "pumbaa", 0.6F));
         event.registerEntityRenderer(EntityTypes.SCAR.get(),
-                ctx -> new NpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(SCAR_LAYER)), "scar", 0.7F));
+                ctx -> new NpcRenderer(ctx, new NpcLionModel(ctx.bakeLayer(SCAR_LAYER)), "scar", 0.7F));
         event.registerEntityRenderer(EntityTypes.ZIRA.get(),
-                ctx -> new NpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(ZIRA_LAYER)), "zira", 0.5F, 0.5F));
+                ctx -> new NpcRenderer(ctx, new NpcLionModel(ctx.bakeLayer(ZIRA_LAYER)), "zira", 0.5F, 0.5F));
 
         // Ticket Lion
         event.registerEntityRenderer(EntityTypes.TICKET_LION.get(),
-                ctx -> new NpcRenderer(ctx, new NpcPlaceholderModel(ctx.bakeLayer(TICKET_LION_LAYER)), "ticket_lion", 0.7F));
+                ctx -> new NpcRenderer(ctx, new NpcLionModel(ctx.bakeLayer(TICKET_LION_LAYER)), "ticket_lion", 0.7F));
 
         // Scar Rug
         event.registerEntityRenderer(EntityTypes.RUG.get(),
@@ -195,6 +195,7 @@ public class LKClientEvents {
                     private final ResourceLocation YELLOW = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_yellow.png");
                     private final ResourceLocation PINK = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_pink.png");
                     private final ResourceLocation BLACK = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_black.png");
+
                     @Override
                     public ResourceLocation getTextureLocation(io.github.ron1196.thelionking.entity.projectile.DartEntity entity) {
                         return switch (entity.getDartType()) {
@@ -209,6 +210,7 @@ public class LKClientEvents {
         event.registerEntityRenderer(EntityTypes.SPEAR.get(),
                 ctx -> new net.minecraft.client.renderer.entity.ArrowRenderer<>(ctx) {
                     private final ResourceLocation SPEAR = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/spear.png");
+
                     @Override
                     public ResourceLocation getTextureLocation(io.github.ron1196.thelionking.entity.projectile.SpearEntity entity) {
                         return SPEAR;
