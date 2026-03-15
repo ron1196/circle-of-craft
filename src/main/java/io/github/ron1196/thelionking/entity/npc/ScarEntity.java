@@ -1,10 +1,13 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.quest.LKQuestBase;
+import io.github.ron1196.thelionking.data.WorldData;
+import io.github.ron1196.thelionking.quest.stage.StageTrigger;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -15,6 +18,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class ScarEntity extends Monster {
 
@@ -42,12 +46,18 @@ public class ScarEntity extends Monster {
     }
 
     @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return false;
+    }
+
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2D, false));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
@@ -59,34 +69,29 @@ public class ScarEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-
-        // Speak to nearest player on first encounter
-        if (!level().isClientSide() && !hasSpoken) {
-            Player nearest = level().getNearestPlayer(this, 16.0);
-            if (nearest != null) {
-                nearest.sendSystemMessage(Component.literal(
-                        "\u00a7e<Scar> \u00a7fSo, you've come to challenge me? How delightfully brave... and foolish."));
-                hasSpoken = true;
-            }
+        if (level().isClientSide() || hasSpoken) {
+            return;
         }
+        Player nearest = level().getNearestPlayer(this, 16.0);
+        if (nearest == null) {
+            return;
+        }
+        nearest.sendSystemMessage(Component.literal("§e<Scar> §fSo, you've come to challenge me? How delightfully brave... and foolish."));
+        hasSpoken = true;
     }
 
     @Override
-    public void die(DamageSource source) {
+    public void die(@NotNull DamageSource source) {
         super.die(source);
-        if (!level().isClientSide()) {
-            // Progress Rafiki's quest
-            if (LKQuestBase.RAFIKI_QUEST.getQuestStage() == 2) {
-                LKQuestBase.RAFIKI_QUEST.progress(3);
-                LKQuestBase.updateAllQuests();
-            }
-
-            // Announce death
-            if (source.getEntity() instanceof Player player) {
-                player.sendSystemMessage(Component.literal(
-                        "\u00a7e<Scar> \u00a7fThis... is not... the end..."));
-            }
+        if (level().isClientSide() || !(level() instanceof ServerLevel serverLevel)) {
+            return;
         }
+        if (!(source.getEntity() instanceof ServerPlayer serverPlayer)) {
+            return;
+        }
+        WorldData data = WorldData.get(serverLevel);
+        data.getQuestManager().tryAdvance("rafiki", serverPlayer, StageTrigger.SCAR_KILLED);
+        serverPlayer.sendSystemMessage(Component.literal("§e<Scar> §fThis... is not... the end..."));
     }
 
     @Override

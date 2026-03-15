@@ -9,8 +9,9 @@
     "announce_to_chat": true
   },
   "criteria": {
-    "custom": {
-      "trigger": "minecraft:impossible"
+    "requirement": {
+      "trigger": "thelionking:enter_pride_lands",
+      "conditions": {}
     }
   }
 }

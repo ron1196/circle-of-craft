@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "GPG",
+    " G "
+  ],
+  "key": {
+    "G": { "item": "minecraft:gunpowder" },
+    "P": { "item": "thelionking:pumbaa_box" }
+  },
+  "result": {
+    "item": "thelionking:pumbaa_bomb",
+    "count": 4
+  }
+}

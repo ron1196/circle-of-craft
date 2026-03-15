@@ -2,14 +2,15 @@ package io.github.ron1196.thelionking.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import io.github.ron1196.thelionking.entity.animal.LKAnimal;
+import io.github.ron1196.thelionking.entity.animal.LionKingAnimal;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
 
-public class GemsbokModel<T extends LKAnimal> extends EntityModel<T> {
+public class GemsbokModel<T extends LionKingAnimal> extends EntityModel<T> {
 
     private final ModelPart head;
     private final ModelPart tail;
@@ -133,7 +134,16 @@ public class GemsbokModel<T extends LKAnimal> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(
+            @NotNull PoseStack poseStack,
+            @NotNull VertexConsumer buffer,
+            int packedLight,
+            int packedOverlay,
+            float red,
+            float green,
+            float blue,
+            float alpha
+    ) {
         head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         tail.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         earLeft.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

@@ -39,6 +39,7 @@ public class LKCreativeTabs {
                         output.accept(LKItems.CORRUPT_PRIDESTONE_WALL_ITEM.get());
                         output.accept(LKItems.PRIDESTONE_PRESSURE_PLATE_ITEM.get());
                         output.accept(LKItems.PRIDESTONE_BUTTON_ITEM.get());
+                        output.accept(LKItems.PRIDE_LEVER_ITEM.get());
                         output.accept(LKItems.PRIDE_COAL_ORE_ITEM.get());
                         output.accept(LKItems.SILVER_ORE_ITEM.get());
                         output.accept(LKItems.PEACOCK_ORE_ITEM.get());
@@ -57,6 +58,14 @@ public class LKCreativeTabs {
                         // Portal frames
                         output.accept(LKItems.PRIDE_PORTAL_FRAME_ITEM.get());
                         output.accept(LKItems.OUTLANDS_PORTAL_FRAME_ITEM.get());
+                        // Phase 12 blocks
+                        output.accept(LKItems.BANANA_CAKE_ITEM.get());
+                        output.accept(LKItems.MOUNTED_SHOOTER_ITEM.get());
+                        output.accept(LKItems.STAR_ALTAR_ITEM.get());
+                        output.accept(LKItems.OUTLANDS_ALTAR_ITEM.get());
+                        output.accept(LKItems.ZIRA_MOUND_GATE_ITEM.get());
+                        output.accept(LKItems.TILLED_SAND_ITEM.get());
+                        output.accept(LKItems.VASE_ITEM.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> DECO_TAB = TABS.register("decorations",
@@ -134,6 +143,8 @@ public class LKCreativeTabs {
                         // Decorative block entities
                         output.accept(LKItems.HYENA_HEAD_ITEM.get());
                         output.accept(LKItems.FUR_RUG_ITEM.get());
+                        // Bed
+                        output.accept(LKItems.PRIDE_BED_ITEM.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> FOOD_TAB = TABS.register("food",
@@ -203,6 +214,30 @@ public class LKCreativeTabs {
                         output.accept(LKItems.RAFIKI_COIN.get());
                         output.accept(LKItems.ZIRA_COIN.get());
                         output.accept(LKItems.WAYWARD_FEATHER.get());
+                        // Jar items
+                        output.accept(LKItems.JAR_EMPTY.get());
+                        output.accept(LKItems.JAR_WATER.get());
+                        output.accept(LKItems.JAR_MILK.get());
+                        output.accept(LKItems.JAR_LAVA.get());
+                        output.accept(LKItems.MANGO_JUICE.get());
+                        output.accept(LKItems.HYENA_MEAL.get());
+                        // Giraffe Ties
+                        output.accept(LKItems.GIRAFFE_TIE.get());
+                        output.accept(LKItems.GIRAFFE_TIE_WHITE.get());
+                        output.accept(LKItems.GIRAFFE_TIE_BLUE.get());
+                        output.accept(LKItems.GIRAFFE_TIE_YELLOW.get());
+                        output.accept(LKItems.GIRAFFE_TIE_RED.get());
+                        output.accept(LKItems.GIRAFFE_TIE_PURPLE.get());
+                        output.accept(LKItems.GIRAFFE_TIE_GREEN.get());
+                        output.accept(LKItems.GIRAFFE_TIE_BLACK.get());
+                        // Musical Notes
+                        output.accept(LKItems.NOTE_C.get());
+                        output.accept(LKItems.NOTE_D.get());
+                        output.accept(LKItems.NOTE_E.get());
+                        output.accept(LKItems.NOTE_F.get());
+                        output.accept(LKItems.NOTE_G.get());
+                        output.accept(LKItems.NOTE_A.get());
+                        output.accept(LKItems.NOTE_B.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> TOOLS_TAB = TABS.register("tools",
@@ -228,6 +263,20 @@ public class LKCreativeTabs {
                         output.accept(LKItems.PEACOCK_AXE.get());
                         output.accept(LKItems.PEACOCK_SHOVEL.get());
                         output.accept(LKItems.PEACOCK_HOE.get());
+                        // Kivulite
+                        output.accept(LKItems.KIVULITE_SWORD.get());
+                        output.accept(LKItems.KIVULITE_PICKAXE.get());
+                        output.accept(LKItems.KIVULITE_AXE.get());
+                        output.accept(LKItems.KIVULITE_SHOVEL.get());
+                        output.accept(LKItems.KIVULITE_HOE.get());
+                        // Corrupt
+                        output.accept(LKItems.CORRUPT_SWORD.get());
+                        output.accept(LKItems.CORRUPT_PICKAXE.get());
+                        output.accept(LKItems.CORRUPT_AXE.get());
+                        output.accept(LKItems.CORRUPT_SHOVEL.get());
+                        output.accept(LKItems.CORRUPT_HOE.get());
+                        // Special
+                        output.accept(LKItems.TUNNAH_DIGGAH.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> COMBAT_TAB = TABS.register("combat",
@@ -290,7 +339,6 @@ public class LKCreativeTabs {
                         output.accept(LKItems.HYENA_SPAWN_EGG.get());
                         output.accept(LKItems.SKELETAL_HYENA_SPAWN_EGG.get());
                         output.accept(LKItems.OUTLANDER_SPAWN_EGG.get());
-                        output.accept(LKItems.OUTLANDESS_SPAWN_EGG.get());
                         output.accept(LKItems.VULTURE_SPAWN_EGG.get());
                         output.accept(LKItems.CROCODILE_SPAWN_EGG.get());
                         output.accept(LKItems.TERMITE_SPAWN_EGG.get());
@@ -302,6 +350,8 @@ public class LKCreativeTabs {
                         output.accept(LKItems.SCAR_SPAWN_EGG.get());
                         output.accept(LKItems.ZIRA_SPAWN_EGG.get());
                         output.accept(LKItems.TICKET_LION_SPAWN_EGG.get());
+                        output.accept(LKItems.TERMITE_QUEEN_SPAWN_EGG.get());
+                        output.accept(LKItems.SKELETAL_HYENA_HEAD_SPAWN_EGG.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> QUEST_TAB = TABS.register("quest",
@@ -311,10 +361,22 @@ public class LKCreativeTabs {
                     .displayItems((params, output) -> {
                         output.accept(LKItems.QUEST_BOOK.get());
                         output.accept(LKItems.TICKET.get());
-                        output.accept(LKItems.STAFF.get());
+                        output.accept(LKItems.RHYTHM_STAFF.get());
                         output.accept(LKItems.RAFIKI_COIN.get());
                         output.accept(LKItems.ZIRA_COIN.get());
                         output.accept(LKItems.WAYWARD_FEATHER.get());
                         output.accept(LKItems.CRYSTAL.get());
+                        // Quest items (Phase 10)
+                        output.accept(LKItems.AMULET.get());
+                        output.accept(LKItems.SIMBA_CHARM.get());
+                        output.accept(LKItems.GIRAFFE_SADDLE.get());
+                        output.accept(LKItems.DART_QUIVER.get());
+                        output.accept(LKItems.PASSION_FRUIT.get());
+                        output.accept(LKItems.ZAZU_EGG.get());
+                        output.accept(LKItems.SCAR_RUG.get());
+                        output.accept(LKItems.ZIRA_RUG.get());
+                        output.accept(LKItems.RAFIKI_STICK.get());
+                        output.accept(LKItems.RAFIKI_DUST.get());
                     }).build());
+
 }

@@ -1,16 +1,15 @@
 package io.github.ron1196.thelionking.registry;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
-import io.github.ron1196.thelionking.item.DartShooterItem;
-import io.github.ron1196.thelionking.item.NoteItem;
-import io.github.ron1196.thelionking.item.PumbaaBombItem;
-import io.github.ron1196.thelionking.item.SpearItem;
+import io.github.ron1196.thelionking.entity.RugEntity;
+import io.github.ron1196.thelionking.item.*;
 import io.github.ron1196.thelionking.item.tier.LKArmorMaterials;
 import io.github.ron1196.thelionking.item.tier.LKToolTiers;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -231,6 +230,30 @@ public class LKItems {
     public static final RegistryObject<HoeItem> PEACOCK_HOE = ITEMS.register("peacock_hoe",
             () -> new HoeItem(LKToolTiers.PEACOCK, -3, 0.0F, new Item.Properties()));
 
+    // ========== Kivulite Tools ==========
+    public static final RegistryObject<SwordItem> KIVULITE_SWORD = ITEMS.register("kivulite_sword",
+            () -> new KivuliteSwordItem(LKToolTiers.KIVULITE, 3, -2.4F, new Item.Properties()));
+    public static final RegistryObject<PickaxeItem> KIVULITE_PICKAXE = ITEMS.register("kivulite_pickaxe",
+            () -> new KivulitePickaxeItem(LKToolTiers.KIVULITE, 1, -2.8F, new Item.Properties()));
+    public static final RegistryObject<AxeItem> KIVULITE_AXE = ITEMS.register("kivulite_axe",
+            () -> new KivuliteAxeItem(LKToolTiers.KIVULITE, 6.0F, -3.1F, new Item.Properties()));
+    public static final RegistryObject<ShovelItem> KIVULITE_SHOVEL = ITEMS.register("kivulite_shovel",
+            () -> new KivuliteShovelItem(LKToolTiers.KIVULITE, 1.5F, -3.0F, new Item.Properties()));
+    public static final RegistryObject<HoeItem> KIVULITE_HOE = ITEMS.register("kivulite_hoe",
+            () -> new HoeItem(LKToolTiers.KIVULITE, -2, -1.0F, new Item.Properties()));
+
+    // ========== Corrupt Pridestone Tools ==========
+    public static final RegistryObject<SwordItem> CORRUPT_SWORD = ITEMS.register("corrupt_sword",
+            () -> new SwordItem(LKToolTiers.CORRUPT_PRIDESTONE, 3, -2.4F, new Item.Properties()));
+    public static final RegistryObject<PickaxeItem> CORRUPT_PICKAXE = ITEMS.register("corrupt_pickaxe",
+            () -> new PickaxeItem(LKToolTiers.CORRUPT_PRIDESTONE, 1, -2.8F, new Item.Properties()));
+    public static final RegistryObject<AxeItem> CORRUPT_AXE = ITEMS.register("corrupt_axe",
+            () -> new AxeItem(LKToolTiers.CORRUPT_PRIDESTONE, 6.0F, -3.1F, new Item.Properties()));
+    public static final RegistryObject<ShovelItem> CORRUPT_SHOVEL = ITEMS.register("corrupt_shovel",
+            () -> new ShovelItem(LKToolTiers.CORRUPT_PRIDESTONE, 1.5F, -3.0F, new Item.Properties()));
+    public static final RegistryObject<HoeItem> CORRUPT_HOE = ITEMS.register("corrupt_hoe",
+            () -> new HoeItem(LKToolTiers.CORRUPT_PRIDESTONE, -1, -2.0F, new Item.Properties()));
+
     // ========== Silver Armor ==========
     public static final RegistryObject<ArmorItem> SILVER_HELMET = ITEMS.register("silver_helmet",
             () -> new ArmorItem(LKArmorMaterials.SILVER, ArmorItem.Type.HELMET, new Item.Properties()));
@@ -356,6 +379,7 @@ public class LKItems {
     public static final RegistryObject<BlockItem> OUTGLASS_ITEM = registerBlockItem("outglass", LKBlocks.OUTGLASS);
     public static final RegistryObject<BlockItem> OUTGLASS_PANE_ITEM = registerBlockItem("outglass_pane", LKBlocks.OUTGLASS_PANE);
     public static final RegistryObject<BlockItem> TERMITE_MOUND_ITEM = registerBlockItem("termite_mound", LKBlocks.TERMITE_MOUND);
+    public static final RegistryObject<BlockItem> ZIRA_MOUND_GATE_ITEM = registerBlockItem("zira_mound_gate", LKBlocks.ZIRA_MOUND_GATE);
     public static final RegistryObject<BlockItem> PUMBAA_BOX_ITEM = registerBlockItem("pumbaa_box", LKBlocks.PUMBAA_BOX);
 
     // ========== Phase 2: Nature Block Items ==========
@@ -453,63 +477,118 @@ public class LKItems {
 
     // ========== Bombs ==========
     public static final RegistryObject<Item> PUMBAA_BOMB = ITEMS.register("pumbaa_bomb",
-            () -> new PumbaaBombItem());
+            PumbaaBombItem::new);
 
     // ========== Phase 3: Spawn Eggs ==========
     public static final RegistryObject<Item> LION_SPAWN_EGG = ITEMS.register("lion_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.LION, 0xD4A030, 0x8B6914, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.LION, 0xD4A030, 0x8B6914, new Item.Properties()));
     public static final RegistryObject<Item> LIONESS_SPAWN_EGG = ITEMS.register("lioness_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.LIONESS, 0xD4A030, 0xC8A848, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.LIONESS, 0xD4A030, 0xC8A848, new Item.Properties()));
     public static final RegistryObject<Item> ZEBRA_SPAWN_EGG = ITEMS.register("zebra_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.ZEBRA, 0xFFFFFF, 0x222222, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.ZEBRA, 0xFFFFFF, 0x222222, new Item.Properties()));
     public static final RegistryObject<Item> GIRAFFE_SPAWN_EGG = ITEMS.register("giraffe_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.GIRAFFE, 0xE8B84B, 0x8B5E3C, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.GIRAFFE, 0xE8B84B, 0x8B5E3C, new Item.Properties()));
     public static final RegistryObject<Item> RHINO_SPAWN_EGG = ITEMS.register("rhino_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.RHINO, 0x808080, 0x505050, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.RHINO, 0x808080, 0x505050, new Item.Properties()));
     public static final RegistryObject<Item> GEMSBOK_SPAWN_EGG = ITEMS.register("gemsbok_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.GEMSBOK, 0xC8A878, 0x4A3B2A, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.GEMSBOK, 0xC8A878, 0x4A3B2A, new Item.Properties()));
     public static final RegistryObject<Item> DIKDIK_SPAWN_EGG = ITEMS.register("dikdik_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.DIKDIK, 0xB8956A, 0x8B7355, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.DIKDIK, 0xB8956A, 0x8B7355, new Item.Properties()));
     public static final RegistryObject<Item> FLAMINGO_SPAWN_EGG = ITEMS.register("flamingo_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.FLAMINGO, 0xFF69B4, 0xFF1493, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.FLAMINGO, 0xFF69B4, 0xFF1493, new Item.Properties()));
     public static final RegistryObject<Item> ZAZU_SPAWN_EGG = ITEMS.register("zazu_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.ZAZU, 0x4169E1, 0xFFD700, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.ZAZU, 0x4169E1, 0xFFD700, new Item.Properties()));
     public static final RegistryObject<Item> BUG_SPAWN_EGG = ITEMS.register("bug_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.BUG, 0x4B3621, 0x2E1F0F, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.BUG, 0x4B3621, 0x2E1F0F, new Item.Properties()));
 
     // ========== Phase 4: Hostile Spawn Eggs ==========
     public static final RegistryObject<Item> HYENA_SPAWN_EGG = ITEMS.register("hyena_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.HYENA, 0x8B7355, 0x4A3B2A, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.HYENA, 0x8B7355, 0x4A3B2A, new Item.Properties()));
     public static final RegistryObject<Item> SKELETAL_HYENA_SPAWN_EGG = ITEMS.register("skeletal_hyena_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.SKELETAL_HYENA, 0xC8C8C8, 0x505050, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.SKELETAL_HYENA, 0xC8C8C8, 0x505050, new Item.Properties()));
     public static final RegistryObject<Item> OUTLANDER_SPAWN_EGG = ITEMS.register("outlander_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.OUTLANDER, 0x5C3A1E, 0x3A2510, new Item.Properties()));
-    public static final RegistryObject<Item> OUTLANDESS_SPAWN_EGG = ITEMS.register("outlandess_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.OUTLANDESS, 0x7A5030, 0x4A3020, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.OUTLANDER, 0x5C3A1E, 0x3A2510, new Item.Properties()));
     public static final RegistryObject<Item> VULTURE_SPAWN_EGG = ITEMS.register("vulture_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.VULTURE, 0x2A1F14, 0x8B0000, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.VULTURE, 0x2A1F14, 0x8B0000, new Item.Properties()));
     public static final RegistryObject<Item> CROCODILE_SPAWN_EGG = ITEMS.register("crocodile_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.CROCODILE, 0x3B5323, 0x1A2E0A, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.CROCODILE, 0x3B5323, 0x1A2E0A, new Item.Properties()));
     public static final RegistryObject<Item> TERMITE_SPAWN_EGG = ITEMS.register("termite_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.TERMITE, 0xD2B48C, 0x8B6914, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.TERMITE, 0xD2B48C, 0x8B6914, new Item.Properties()));
+    public static final RegistryObject<Item> TERMITE_QUEEN_SPAWN_EGG = ITEMS.register("termite_queen_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityTypes.TERMITE_QUEEN, 0xD2B48C, 0xFF4500, new Item.Properties()));
 
     // ========== Ticket Lion Spawn Egg ==========
     public static final RegistryObject<Item> TICKET_LION_SPAWN_EGG = ITEMS.register("ticket_lion_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.TICKET_LION, 0xD4A030, 0x4169E1, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.TICKET_LION, 0xD4A030, 0x4169E1, new Item.Properties()));
 
     // ========== NPC Spawn Eggs ==========
     public static final RegistryObject<Item> RAFIKI_SPAWN_EGG = ITEMS.register("rafiki_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.RAFIKI, 0x8B4513, 0xFFD700, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.RAFIKI, 0x8B4513, 0xFFD700, new Item.Properties()));
     public static final RegistryObject<Item> SIMBA_SPAWN_EGG = ITEMS.register("simba_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.SIMBA, 0xD4A030, 0xFFD700, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.SIMBA, 0xD4A030, 0xFFD700, new Item.Properties()));
     public static final RegistryObject<Item> TIMON_SPAWN_EGG = ITEMS.register("timon_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.TIMON, 0xB8860B, 0xFFE4B5, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.TIMON, 0xB8860B, 0xFFE4B5, new Item.Properties()));
     public static final RegistryObject<Item> PUMBAA_SPAWN_EGG = ITEMS.register("pumbaa_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.PUMBAA, 0x8B4513, 0x654321, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.PUMBAA, 0x8B4513, 0x654321, new Item.Properties()));
     public static final RegistryObject<Item> SCAR_SPAWN_EGG = ITEMS.register("scar_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.SCAR, 0x2F1A00, 0x000000, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.SCAR, 0x2F1A00, 0x000000, new Item.Properties()));
     public static final RegistryObject<Item> ZIRA_SPAWN_EGG = ITEMS.register("zira_spawn_egg",
-            () -> new net.minecraftforge.common.ForgeSpawnEggItem(LKEntityTypes.ZIRA, 0x5C3A1E, 0x8B0000, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityTypes.ZIRA, 0x5C3A1E, 0x8B0000, new Item.Properties()));
+
+    // ========== Jar Items ==========
+    public static final RegistryObject<Item> JAR_EMPTY = ITEMS.register("jar_empty",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> JAR_WATER = ITEMS.register("jar_water",
+            () -> new Item(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> JAR_MILK = ITEMS.register("jar_milk",
+            () -> new Item(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> JAR_LAVA = ITEMS.register("jar_lava",
+            () -> new Item(new Item.Properties().stacksTo(16).craftRemainder(JAR_EMPTY.get())));
+    public static final RegistryObject<Item> MANGO_JUICE = ITEMS.register("mango_juice",
+            () -> new Item(new Item.Properties().stacksTo(16)
+                    .food(new FoodProperties.Builder().nutrition(6).saturationMod(0.5F).build())
+                    .craftRemainder(JAR_EMPTY.get())));
+
+    public static final RegistryObject<Item> HYENA_MEAL = ITEMS.register("hyena_meal",
+            () -> new HyenaMealItem(new Item.Properties()));
+
+    // ========== Giraffe Ties ==========
+    public static final RegistryObject<Item> GIRAFFE_TIE = ITEMS.register("giraffe_tie",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> GIRAFFE_TIE_WHITE = ITEMS.register("giraffe_tie_white",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> GIRAFFE_TIE_BLUE = ITEMS.register("giraffe_tie_blue",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> GIRAFFE_TIE_YELLOW = ITEMS.register("giraffe_tie_yellow",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> GIRAFFE_TIE_RED = ITEMS.register("giraffe_tie_red",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> GIRAFFE_TIE_PURPLE = ITEMS.register("giraffe_tie_purple",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> GIRAFFE_TIE_GREEN = ITEMS.register("giraffe_tie_green",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> GIRAFFE_TIE_BLACK = ITEMS.register("giraffe_tie_black",
+            () -> new Item(new Item.Properties()));
+
+    // ========== Tunnah Diggah ==========
+    public static final RegistryObject<Item> TUNNAH_DIGGAH = ITEMS.register("tunnah_diggah",
+            () -> new TunnahDiggahItem(Tiers.IRON, 1, -2.8F,
+                    new Item.Properties().durability(690)));
+
+    // ========== Quest & Special Items ==========
+    public static final RegistryObject<Item> AMULET = ITEMS.register("amulet",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> SIMBA_CHARM = ITEMS.register("simba_charm",
+            () -> new io.github.ron1196.thelionking.item.SimbaCharmItem(new Item.Properties()));
+    public static final RegistryObject<Item> GIRAFFE_SADDLE = ITEMS.register("giraffe_saddle",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> DART_QUIVER = ITEMS.register("dart_quiver",
+            () -> new QuiverItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> PASSION_FRUIT = ITEMS.register("passion_fruit",
+            () -> new Item(new Item.Properties().food(
+                    new FoodProperties.Builder().nutrition(3).saturationMod(0.3F).build())));
+    public static final RegistryObject<Item> ZAZU_EGG = ITEMS.register("zazu_egg",
+            () -> new Item(new Item.Properties()));
 
     // ========== Block Entity Items ==========
     public static final RegistryObject<BlockItem> GRINDING_BOWL_ITEM = registerBlockItem("grinding_bowl", LKBlocks.GRINDING_BOWL);
@@ -525,7 +604,7 @@ public class LKItems {
     public static final RegistryObject<Item> TICKET = ITEMS.register("ticket",
             () -> new io.github.ron1196.thelionking.item.TicketItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> STAFF = ITEMS.register("staff",
+    public static final RegistryObject<Item> RHYTHM_STAFF = ITEMS.register("rhythm_staff",
             () -> new Item(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> RAFIKI_COIN = ITEMS.register("rafiki_coin",
@@ -537,19 +616,52 @@ public class LKItems {
     public static final RegistryObject<Item> WAYWARD_FEATHER = ITEMS.register("wayward_feather",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> RAFIKI_STICK = ITEMS.register("rafiki_stick",
+            () -> new io.github.ron1196.thelionking.item.RafikiStickItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> RAFIKI_DUST = ITEMS.register("rafiki_dust",
+            () -> new io.github.ron1196.thelionking.item.RafikiDustItem(new Item.Properties()));
+
+    // ========== Phase 12: Missing Block Items ==========
+    public static final RegistryObject<BlockItem> BANANA_CAKE_ITEM = registerBlockItem("banana_cake", LKBlocks.BANANA_CAKE);
+    public static final RegistryObject<BlockItem> MOUNTED_SHOOTER_ITEM = registerBlockItem("mounted_shooter", LKBlocks.MOUNTED_SHOOTER);
+    public static final RegistryObject<BlockItem> STAR_ALTAR_ITEM = registerBlockItem("star_altar", LKBlocks.STAR_ALTAR);
+    public static final RegistryObject<BlockItem> OUTLANDS_ALTAR_ITEM = registerBlockItem("outlands_altar", LKBlocks.OUTLANDS_ALTAR);
+    public static final RegistryObject<BlockItem> TILLED_SAND_ITEM = registerBlockItem("tilled_sand", LKBlocks.TILLED_SAND);
+    public static final RegistryObject<BlockItem> VASE_ITEM = registerBlockItem("vase", LKBlocks.VASE);
+
+    // ========== Bed & Lever ==========
+    public static final RegistryObject<BlockItem> PRIDE_BED_ITEM = ITEMS.register("pride_bed",
+            () -> new BedItem(LKBlocks.PRIDE_BED.get(), new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<BlockItem> PRIDE_LEVER_ITEM = registerBlockItem("pride_lever", LKBlocks.PRIDE_LEVER);
+
     // ========== Portal Frame Items ==========
     public static final RegistryObject<BlockItem> PRIDE_PORTAL_FRAME_ITEM = registerBlockItem("pride_portal_frame", LKBlocks.PRIDE_PORTAL_FRAME);
     public static final RegistryObject<BlockItem> OUTLANDS_PORTAL_FRAME_ITEM = registerBlockItem("outlands_portal_frame", LKBlocks.OUTLANDS_PORTAL_FRAME);
 
+    // ========== Scar / Zira Rugs ==========
+    public static final RegistryObject<Item> SCAR_RUG = ITEMS.register("scar_rug",
+            () -> new RugItem(RugEntity.TYPE_SCAR, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> ZIRA_RUG = ITEMS.register("zira_rug",
+            () -> new RugItem(RugEntity.TYPE_ZIRA, new Item.Properties().stacksTo(1)));
+
+    // ========== Skeletal Hyena Head Spawn Egg ==========
+    public static final RegistryObject<Item> SKELETAL_HYENA_HEAD_SPAWN_EGG = ITEMS.register("skeletal_hyena_head_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityTypes.SKELETAL_HYENA_HEAD, 0xC8C8C8, 0x3A3A3A, new Item.Properties()));
+
     // ========== Notes (for Bongo Drum) ==========
-    public static final RegistryObject<Item> NOTE_A = ITEMS.register("note_a",
-            () -> new NoteItem(1, new Item.Properties()));
-    public static final RegistryObject<Item> NOTE_B = ITEMS.register("note_b",
-            () -> new NoteItem(2, new Item.Properties()));
     public static final RegistryObject<Item> NOTE_C = ITEMS.register("note_c",
-            () -> new NoteItem(3, new Item.Properties()));
+            () -> new NoteItem(1, new Item.Properties()));
     public static final RegistryObject<Item> NOTE_D = ITEMS.register("note_d",
-            () -> new NoteItem(4, new Item.Properties()));
+            () -> new NoteItem(1, new Item.Properties()));
     public static final RegistryObject<Item> NOTE_E = ITEMS.register("note_e",
+            () -> new NoteItem(2, new Item.Properties()));
+    public static final RegistryObject<Item> NOTE_F = ITEMS.register("note_f",
             () -> new NoteItem(5, new Item.Properties()));
+    public static final RegistryObject<Item> NOTE_G = ITEMS.register("note_g",
+            () -> new NoteItem(5, new Item.Properties()));
+    public static final RegistryObject<Item> NOTE_A = ITEMS.register("note_a",
+            () -> new NoteItem(10, new Item.Properties()));
+    public static final RegistryObject<Item> NOTE_B = ITEMS.register("note_b",
+            () -> new NoteItem(20, new Item.Properties()));
 }

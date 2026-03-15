@@ -2,14 +2,14 @@ package io.github.ron1196.thelionking.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import io.github.ron1196.thelionking.entity.animal.LKAnimal;
+import io.github.ron1196.thelionking.entity.animal.LionKingAnimal;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
-public class GiraffeModel<T extends LKAnimal> extends EntityModel<T> {
+public class GiraffeModel<T extends LionKingAnimal> extends EntityModel<T> {
 
     private final ModelPart body;
     private final ModelPart neck;

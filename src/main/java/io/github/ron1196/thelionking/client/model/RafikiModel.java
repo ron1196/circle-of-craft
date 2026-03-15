@@ -8,14 +8,15 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
+import org.jetbrains.annotations.NotNull;
 
 public class RafikiModel extends EntityModel<Mob> {
 
     private final ModelPart body;
-    private final ModelPart rightarm;
-    private final ModelPart leftarm;
-    private final ModelPart rightleg;
-    private final ModelPart leftleg;
+    private final ModelPart rightArm;
+    private final ModelPart leftArm;
+    private final ModelPart rightLeg;
+    private final ModelPart leftLeg;
     private final ModelPart tail1;
     private final ModelPart tail2;
     private final ModelPart tail3;
@@ -25,10 +26,10 @@ public class RafikiModel extends EntityModel<Mob> {
 
     public RafikiModel(ModelPart root) {
         this.body = root.getChild("body");
-        this.rightarm = root.getChild("rightarm");
-        this.leftarm = root.getChild("leftarm");
-        this.rightleg = root.getChild("rightleg");
-        this.leftleg = root.getChild("leftleg");
+        this.rightArm = root.getChild("rightarm");
+        this.leftArm = root.getChild("leftarm");
+        this.rightLeg = root.getChild("rightleg");
+        this.leftLeg = root.getChild("leftleg");
         this.tail1 = root.getChild("tail1");
         this.tail2 = root.getChild("tail2");
         this.tail3 = root.getChild("tail3");
@@ -89,35 +90,51 @@ public class RafikiModel extends EntityModel<Mob> {
     }
 
     @Override
-    public void setupAnim(Mob entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(
+            @NotNull Mob entity,
+            float limbSwing,
+            float limbSwingAmount,
+            float ageInTicks,
+            float netHeadYaw,
+            float headPitch
+    ) {
         this.head.yRot = netHeadYaw * ((float) Math.PI / 180F);
         this.head.xRot = headPitch * ((float) Math.PI / 180F);
         this.hair.yRot = this.head.yRot;
         this.hair.xRot = this.head.xRot + (-11.0F / 180.0F * (float) Math.PI);
 
-        this.rightarm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
-        this.leftarm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
-        this.rightarm.zRot = 0.0F;
-        this.leftarm.zRot = 0.0F;
-        this.rightleg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-        this.leftleg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+        this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
+        this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
+        this.rightArm.zRot = 0.0F;
+        this.leftArm.zRot = 0.0F;
+        this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+        this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
 
-        this.rightarm.yRot = 0.0F;
-        this.leftarm.yRot = 0.0F;
+        this.rightArm.yRot = 0.0F;
+        this.leftArm.yRot = 0.0F;
 
-        this.rightarm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-        this.leftarm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-        this.rightarm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
-        this.leftarm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
+        this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+        this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+        this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
+        this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(
+            @NotNull PoseStack poseStack,
+            @NotNull VertexConsumer buffer,
+            int packedLight,
+            int packedOverlay,
+            float red,
+            float green,
+            float blue,
+            float alpha
+    ) {
         body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        rightarm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leftarm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        rightleg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leftleg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        rightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        leftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        rightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        leftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         tail1.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         tail2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         tail3.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    "X X"
+  ],
+  "key": {
+    "X": { "item": "thelionking:silver_ingot" }
+  },
+  "result": {
+    "item": "thelionking:silver_boots",
+    "count": 1
+  }
+}

@@ -2,12 +2,14 @@ package io.github.ron1196.thelionking.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
+import org.jetbrains.annotations.NotNull;
 
 public class SimbaModel extends EntityModel<Mob> {
 
@@ -69,15 +71,61 @@ public class SimbaModel extends EntityModel<Mob> {
         this.head.yRot = netHeadYaw * ((float) Math.PI / 180F);
         this.mane.xRot = this.head.xRot;
         this.mane.yRot = this.head.yRot;
-        this.body.xRot = ((float) Math.PI / 2F);
-        this.leg1.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-        this.leg2.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-        this.leg3.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-        this.leg4.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+
+        boolean sitting = entity instanceof SimbaEntity simba && simba.isInSittingPose();
+
+        if (sitting) {
+            // Sitting pose from old mod
+            this.body.xRot = 0.8F;
+            this.body.y = 12.0F;
+            this.head.y = 3.0F;
+            this.mane.y = 3.0F;
+            // Back legs tucked under
+            this.leg1.xRot = -((float) Math.PI) / 2.0F + 0.3F;
+            this.leg1.y = 19.0F;
+            this.leg1.z = 9.0F;
+            this.leg2.xRot = -((float) Math.PI) / 2.0F + 0.3F;
+            this.leg2.y = 19.0F;
+            this.leg2.z = 9.0F;
+            // Front legs slightly angled
+            this.leg3.xRot = -0.15F;
+            this.leg3.y = 12.0F;
+            this.leg3.z = -5.0F;
+            this.leg4.xRot = -0.15F;
+            this.leg4.y = 12.0F;
+            this.leg4.z = -5.0F;
+        } else {
+            // Standing pose
+            this.body.xRot = ((float) Math.PI / 2F);
+            this.body.y = 5.0F;
+            this.head.y = 4.0F;
+            this.mane.y = 4.0F;
+            this.leg1.y = 12.0F;
+            this.leg1.z = 7.0F;
+            this.leg2.y = 12.0F;
+            this.leg2.z = 7.0F;
+            this.leg3.y = 12.0F;
+            this.leg3.z = -5.0F;
+            this.leg4.y = 12.0F;
+            this.leg4.z = -5.0F;
+            this.leg1.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+            this.leg2.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+            this.leg3.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+            this.leg4.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+        }
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(
+            @NotNull PoseStack poseStack,
+            @NotNull VertexConsumer buffer,
+            int packedLight,
+            int packedOverlay,
+            float red,
+            float green,
+            float blue,
+            float alpha
+    ) {
         head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         mane.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

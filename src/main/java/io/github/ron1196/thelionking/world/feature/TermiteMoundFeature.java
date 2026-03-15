@@ -36,7 +36,7 @@ public class TermiteMoundFeature extends Feature<NoneFeatureConfiguration> {
                         if (x * x + z * z <= radius * radius) {
                             BlockPos p = pos.offset(x, y, z);
                             if (level.getBlockState(p).isAir() || y == 0) {
-                                level.setBlock(p, mound, 3);
+                                level.setBlock(p, mound, 2);
                             }
                         }
                     }
@@ -51,7 +51,7 @@ public class TermiteMoundFeature extends Feature<NoneFeatureConfiguration> {
                         if (Math.abs(x) + Math.abs(z) <= radius) {
                             BlockPos p = pos.offset(x, y, z);
                             if (level.getBlockState(p).isAir() || y == 0) {
-                                level.setBlock(p, mound, 3);
+                                level.setBlock(p, mound, 2);
                             }
                         }
                     }

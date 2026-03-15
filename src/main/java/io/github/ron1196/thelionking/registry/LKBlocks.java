@@ -233,7 +233,7 @@ public class LKBlocks {
             () -> new SlabBlock(BlockBehaviour.Properties.copy(DRIED_MAIZE_BLOCK.get())));
 
     public static final RegistryObject<Block> OUTSAND = BLOCKS.register("outsand",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new OutsandBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.SAND).strength(0.7F).sound(SoundType.SAND)));
 
     public static final RegistryObject<Block> OUTGLASS = BLOCKS.register("outglass",
@@ -245,8 +245,12 @@ public class LKBlocks {
                     .mapColor(MapColor.NONE).strength(0.4F).sound(SoundType.GLASS).noOcclusion()));
 
     public static final RegistryObject<Block> TERMITE_MOUND = BLOCKS.register("termite_mound",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new io.github.ron1196.thelionking.block.TermiteMoundBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.DIRT).strength(0.5F, 3.0F)));
+
+    public static final RegistryObject<Block> ZIRA_MOUND_GATE = BLOCKS.register("zira_mound_gate",
+            () -> new io.github.ron1196.thelionking.block.ZiraMoundGateBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.DIRT).strength(-1.0F, 3600000.0F).noLootTable()));
 
     public static final RegistryObject<Block> PUMBAA_BOX = BLOCKS.register("pumbaa_box",
             () -> new Block(BlockBehaviour.Properties.of()
@@ -421,6 +425,45 @@ public class LKBlocks {
     public static final RegistryObject<Block> LK_SPAWNER = BLOCKS.register("lk_spawner",
             () -> new LKSpawnerBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.STONE).strength(5.0F).requiresCorrectToolForDrops().noOcclusion()));
+
+    // ========== Phase 12: Missing Blocks ==========
+    public static final RegistryObject<Block> BANANA_CAKE = BLOCKS.register("banana_cake",
+            () -> new BananaCakeBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_YELLOW).strength(0.5F).sound(SoundType.WOOL)));
+
+    public static final RegistryObject<Block> MOUNTED_SHOOTER = BLOCKS.register("mounted_shooter",
+            () -> new MountedShooterBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.WOOD).strength(2.0F).sound(SoundType.WOOD)));
+
+    public static final RegistryObject<Block> STAR_ALTAR = BLOCKS.register("star_altar",
+            () -> new StarAltarBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.GOLD).strength(5.0F, 1200.0F).requiresCorrectToolForDrops()
+                    .lightLevel(s -> 7)));
+
+    public static final RegistryObject<Block> OUTLANDS_ALTAR = BLOCKS.register("outlands_altar",
+            () -> new OutlandsAltarBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE).strength(5.0F, 1200.0F).requiresCorrectToolForDrops()
+                    .lightLevel(s -> 7)));
+
+    public static final RegistryObject<Block> TILLED_SAND = BLOCKS.register("tilled_sand",
+            () -> new TilledSandBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.SAND).strength(0.6F).sound(SoundType.GRAVEL)));
+
+    public static final RegistryObject<Block> VASE = BLOCKS.register("vase",
+            () -> new VaseBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.TERRACOTTA_WHITE).strength(0.5F).sound(SoundType.STONE)));
+
+    // ========== Bed & Lever ==========
+    public static final RegistryObject<BedBlock> PRIDE_BED = BLOCKS.register("pride_bed",
+            () -> new io.github.ron1196.thelionking.block.PrideBedBlock(
+                    BlockBehaviour.Properties.of().mapColor(MapColor.WOOD)
+                            .strength(0.2F).sound(SoundType.WOOD).noOcclusion()
+                            .pushReaction(PushReaction.DESTROY)));
+
+    public static final RegistryObject<LeverBlock> PRIDE_LEVER = BLOCKS.register("pride_lever",
+            () -> new LeverBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5F).sound(SoundType.WOOD).noCollission()
+                    .pushReaction(PushReaction.DESTROY)));
 
     // ========== Portal Blocks ==========
     public static final RegistryObject<Block> PRIDE_PORTAL_FRAME = BLOCKS.register("pride_portal_frame",

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X"
+  ],
+  "key": {
+    "X": { "item": "thelionking:pridestone" }
+  },
+  "result": {
+    "item": "thelionking:pridestone_button",
+    "count": 1
+  }
+}

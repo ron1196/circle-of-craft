@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": { "item": "thelionking:pride_brick" }
+  },
+  "result": {
+    "item": "thelionking:pride_brick_stairs",
+    "count": 4
+  }
+}

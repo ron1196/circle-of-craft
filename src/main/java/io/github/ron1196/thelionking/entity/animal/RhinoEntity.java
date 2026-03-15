@@ -1,23 +1,21 @@
 package io.github.ron1196.thelionking.entity.animal;
 
-import io.github.ron1196.thelionking.registry.LKSoundEvents;
-import net.minecraft.server.level.ServerLevel;
+import io.github.ron1196.thelionking.registry.SoundEvents;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
+public class RhinoEntity extends LionKingAnimal {
 
-public class RhinoEntity extends LKAnimal {
-
-    public RhinoEntity(EntityType<? extends Animal> type, Level level) {
+    public RhinoEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
     }
 
@@ -29,7 +27,7 @@ public class RhinoEntity extends LKAnimal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return LKAnimal.createLKAnimalAttributes()
+        return LionKingAnimal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 30.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.ATTACK_DAMAGE, 5.0)
@@ -39,22 +37,21 @@ public class RhinoEntity extends LKAnimal {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return LKSoundEvents.RHINO_AMBIENT.get();
+        return SoundEvents.RHINO_AMBIENT.get();
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return LKSoundEvents.RHINO_HURT.get();
+    protected SoundEvent getHurtSound(@NotNull DamageSource source) {
+        return SoundEvents.RHINO_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return LKSoundEvents.RHINO_DEATH.get();
+        return SoundEvents.RHINO_DEATH.get();
     }
 
-    @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mate) {
-        return null;
+    protected ItemStack getQuestReward() {
+        return new ItemStack(Items.IRON_INGOT, 3 + QUEST_RANDOM.nextInt(3));
     }
 }

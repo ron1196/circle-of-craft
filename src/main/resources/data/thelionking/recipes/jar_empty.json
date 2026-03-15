@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "G G",
+    " G "
+  ],
+  "key": {
+    "G": { "item": "minecraft:glass" }
+  },
+  "result": {
+    "item": "thelionking:jar_empty",
+    "count": 3
+  }
+}

@@ -1,7 +1,7 @@
 {
   "parent": "thelionking:drum_enchant",
   "display": {
-    "icon": { "item": "thelionking:staff" },
+    "icon": { "item": "thelionking:rhythm_staff" },
     "title": { "translate": "advancement.thelionking.master_drummer.title" },
     "description": { "translate": "advancement.thelionking.master_drummer.description" },
     "frame": "challenge",
@@ -9,8 +9,9 @@
     "announce_to_chat": true
   },
   "criteria": {
-    "custom": {
-      "trigger": "minecraft:impossible"
+    "requirement": {
+      "trigger": "thelionking:play_bongo_drum",
+      "conditions": {}
     }
   }
 }

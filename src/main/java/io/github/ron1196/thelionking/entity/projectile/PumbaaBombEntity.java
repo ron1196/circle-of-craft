@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.entity.projectile;
 
-import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,7 +16,7 @@ public class PumbaaBombEntity extends ThrowableItemProjectile {
     }
 
     public PumbaaBombEntity(Level level, LivingEntity shooter) {
-        super(LKEntityTypes.PUMBAA_BOMB.get(), shooter, level);
+        super(EntityTypes.PUMBAA_BOMB.get(), shooter, level);
     }
 
     @Override

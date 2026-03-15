@@ -1,8 +1,10 @@
 package io.github.ron1196.thelionking.item;
 
+import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
 import io.github.ron1196.thelionking.entity.projectile.DartEntity;
 import io.github.ron1196.thelionking.entity.projectile.DartEntity.DartType;
 import io.github.ron1196.thelionking.registry.LKItems;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -60,6 +62,7 @@ public class DartShooterItem extends Item {
             dart.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, velocity, 1.0F);
 
             level.addFreshEntity(dart);
+            LionKingCriteriaTriggers.SHOOT_DART.trigger((ServerPlayer) player);
 
             // Damage the shooter item
             shooterStack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(hand));

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": { "item": "thelionking:corrupt_pride_brick" }
+  },
+  "result": {
+    "item": "thelionking:corrupt_pride_brick_slab",
+    "count": 6
+  }
+}

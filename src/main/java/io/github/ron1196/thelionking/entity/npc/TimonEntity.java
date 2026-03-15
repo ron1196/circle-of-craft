@@ -1,8 +1,10 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
+import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.NetworkHooks;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -28,6 +30,11 @@ public class TimonEntity extends PathfinderMob {
         return PathfinderMob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 100.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.2D);
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return false;
     }
 
     @Override
@@ -72,11 +79,33 @@ public class TimonEntity extends PathfinderMob {
             return InteractionResult.SUCCESS;
         }
 
+        // Sneak+interact opens merchant GUI
+        if (player.isShiftKeyDown() && hasGivenFirstBugs) {
+            if (player instanceof ServerPlayer serverPlayer) {
+                NetworkHooks.openScreen(serverPlayer, new net.minecraft.world.MenuProvider() {
+                    @Override
+                    public @org.jetbrains.annotations.NotNull net.minecraft.network.chat.Component getDisplayName() {
+                        return net.minecraft.network.chat.Component.translatable("container.thelionking.timon_merchant");
+                    }
+
+                    @Override
+                    public @org.jetbrains.annotations.NotNull net.minecraft.world.inventory.AbstractContainerMenu createMenu(
+                            int containerId,
+                            @org.jetbrains.annotations.NotNull net.minecraft.world.entity.player.Inventory inv,
+                            @org.jetbrains.annotations.NotNull Player p
+                    ) {
+                        return new io.github.ron1196.thelionking.menu.TimonMerchantMenu(containerId, inv);
+                    }
+                });
+            }
+            return InteractionResult.SUCCESS;
+        }
+
         // Regular speech
         if (hasGivenFirstBugs) {
-            sendSpeech(player, LKCharacterSpeech.MORE_BUGS);
+            sendSpeech(player, CharacterSpeech.MORE_BUGS);
         } else {
-            sendSpeech(player, LKCharacterSpeech.BUGS);
+            sendSpeech(player, CharacterSpeech.BUGS);
         }
         return InteractionResult.SUCCESS;
     }
@@ -85,7 +114,7 @@ public class TimonEntity extends PathfinderMob {
         player.sendSystemMessage(Component.literal("\u00a7e<Timon> \u00a7f" + message));
     }
 
-    private void sendSpeech(Player player, LKCharacterSpeech speech) {
-        player.sendSystemMessage(Component.literal(LKCharacterSpeech.giveSpeech(speech)));
+    private void sendSpeech(Player player, CharacterSpeech speech) {
+        player.sendSystemMessage(Component.literal(CharacterSpeech.giveSpeech(speech)));
     }
 }

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "Y"
+  ],
+  "key": {
+    "X": { "item": "minecraft:stick" },
+    "Y": { "item": "thelionking:pridestone" }
+  },
+  "result": {
+    "item": "thelionking:pride_lever",
+    "count": 1
+  }
+}

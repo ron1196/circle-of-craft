@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.entity.projectile;
 
-import io.github.ron1196.thelionking.registry.LKEntityTypes;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -9,7 +9,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -60,7 +59,7 @@ public class DartEntity extends AbstractArrow implements net.minecraft.world.ent
 
     // Convenience constructor for spawning with shooter and type
     public DartEntity(Level level, LivingEntity shooter, DartType dartType) {
-        super(LKEntityTypes.DART.get(), shooter, level);
+        super(EntityTypes.DART.get(), shooter, level);
         setDartType(dartType);
         setBaseDamage(dartType.getDamage());
     }

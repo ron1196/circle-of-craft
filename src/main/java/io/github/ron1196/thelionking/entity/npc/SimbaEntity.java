@@ -1,41 +1,53 @@
 package io.github.ron1196.thelionking.entity.npc;
 
+import io.github.ron1196.thelionking.entity.ai.SimbaAttackGoal;
+import io.github.ron1196.thelionking.entity.ai.SimbaWanderGoal;
+import io.github.ron1196.thelionking.menu.SimbaInventoryMenu;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-import java.util.UUID;
+public class SimbaEntity extends TamableAnimal {
 
-public class SimbaEntity extends PathfinderMob {
+    private static final EntityDataAccessor<Boolean> DATA_BABY = SynchedEntityData.defineId(
+            SimbaEntity.class,
+            EntityDataSerializers.BOOLEAN
+    );
 
-    private static final EntityDataAccessor<Optional<UUID>> DATA_OWNER_UUID =
-            SynchedEntityData.defineId(SimbaEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor<Boolean> DATA_SITTING =
-            SynchedEntityData.defineId(SimbaEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> DATA_BABY =
-            SynchedEntityData.defineId(SimbaEntity.class, EntityDataSerializers.BOOLEAN);
+    public final ItemStackHandler inventory = new ItemStackHandler(9);
 
     public SimbaEntity(EntityType<? extends SimbaEntity> type, Level level) {
         super(type, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return PathfinderMob.createMobAttributes()
+        return TamableAnimal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 30.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.ATTACK_DAMAGE, 6.0D);
@@ -44,41 +56,22 @@ public class SimbaEntity extends PathfinderMob {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(DATA_OWNER_UUID, Optional.empty());
-        this.entityData.define(DATA_SITTING, false);
         this.entityData.define(DATA_BABY, false);
     }
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.3D, true));
-        this.goalSelector.addGoal(2, new FollowOwnerGoal());
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-    }
+        this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
+        this.goalSelector.addGoal(2, new SimbaAttackGoal(this));
+        this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.3D, 4.0F, 2.0F, false));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(7, new SimbaWanderGoal(this));
 
-    // Owner management
-    public Optional<UUID> getOwnerUUID() {
-        return this.entityData.get(DATA_OWNER_UUID);
-    }
-
-    public void setOwnerUUID(UUID uuid) {
-        this.entityData.set(DATA_OWNER_UUID, Optional.ofNullable(uuid));
-    }
-
-    public Player getOwner() {
-        return getOwnerUUID().map(uuid -> level().getPlayerByUUID(uuid)).orElse(null);
-    }
-
-    public boolean isSitting() {
-        return this.entityData.get(DATA_SITTING);
-    }
-
-    public void setSitting(boolean sitting) {
-        this.entityData.set(DATA_SITTING, sitting);
+        this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
     }
 
     @Override
@@ -91,18 +84,50 @@ public class SimbaEntity extends PathfinderMob {
     }
 
     @Override
-    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+    public @Nullable AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob otherParent) {
+        return null;
+    }
+
+    /**
+     * Toggles sitting state and notifies the player. Used by both mob interaction and keybind.
+     */
+    public void toggleSitting(Player player) {
+        setOrderedToSit(!isOrderedToSit());
+        this.navigation.stop();
+        String msg = isOrderedToSit() ? "Simba sits down." : "Simba stands up and follows you.";
+        player.sendSystemMessage(Component.literal(msg));
+    }
+
+    @Override
+    public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         if (level().isClientSide()) return InteractionResult.SUCCESS;
 
-        if (getOwnerUUID().isEmpty()) {
-            setOwnerUUID(player.getUUID());
+        if (!isTame()) {
+            tame(player);
+            player.sendSystemMessage(Component.literal("Simba is now following you!"));
             return InteractionResult.SUCCESS;
         }
 
-        if (player.getUUID().equals(getOwnerUUID().orElse(null))) {
+        if (isOwnedBy(player)) {
+            // Sneak+interact opens Simba's inventory
+            if (player.isShiftKeyDown() && player instanceof ServerPlayer serverPlayer) {
+                NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
+                    @Override
+                    public @NotNull Component getDisplayName() {
+                        return Component.translatable("container.thelionking.simba_inventory");
+                    }
+
+                    @Override
+                    public @NotNull AbstractContainerMenu createMenu(
+                            int containerId, @NotNull Inventory inv, @NotNull Player p) {
+                        return new SimbaInventoryMenu(containerId, inv, inventory);
+                    }
+                });
+                return InteractionResult.SUCCESS;
+            }
+
             // Toggle sitting
-            setSitting(!isSitting());
-            this.navigation.stop();
+            toggleSitting(player);
             return InteractionResult.SUCCESS;
         }
 
@@ -110,53 +135,28 @@ public class SimbaEntity extends PathfinderMob {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (isSitting()) {
-            this.navigation.stop();
+    public void die(@NotNull DamageSource source) {
+        super.die(source);
+        if (level().isClientSide()) return;
+        for (int i = 0; i < inventory.getSlots(); i++) {
+            ItemStack stack = inventory.getStackInSlot(i);
+            if (stack.isEmpty()) continue;
+            spawnAtLocation(stack);
+            inventory.setStackInSlot(i, ItemStack.EMPTY);
         }
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        getOwnerUUID().ifPresent(uuid -> tag.putUUID("Owner", uuid));
-        tag.putBoolean("Sitting", isSitting());
         tag.putBoolean("Baby", isBaby());
+        tag.put("Inventory", inventory.serializeNBT());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if (tag.hasUUID("Owner")) setOwnerUUID(tag.getUUID("Owner"));
-        setSitting(tag.getBoolean("Sitting"));
         setBaby(tag.getBoolean("Baby"));
-    }
-
-    // Follow owner goal - follows the owner player
-    private class FollowOwnerGoal extends Goal {
-        @Override
-        public boolean canUse() {
-            if (SimbaEntity.this.isSitting()) return false;
-            Player owner = SimbaEntity.this.getOwner();
-            if (owner == null) return false;
-            return SimbaEntity.this.distanceToSqr(owner) > 100.0; // 10 blocks
-        }
-
-        @Override
-        public void tick() {
-            Player owner = SimbaEntity.this.getOwner();
-            if (owner != null) {
-                SimbaEntity.this.getNavigation().moveTo(owner, 1.3D);
-            }
-        }
-
-        @Override
-        public boolean canContinueToUse() {
-            if (SimbaEntity.this.isSitting()) return false;
-            Player owner = SimbaEntity.this.getOwner();
-            if (owner == null) return false;
-            return SimbaEntity.this.distanceToSqr(owner) > 9.0; // 3 blocks
-        }
+        if (tag.contains("Inventory")) inventory.deserializeNBT(tag.getCompound("Inventory"));
     }
 }

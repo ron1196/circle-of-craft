@@ -1,7 +1,7 @@
 {
   "parent": "thelionking:enter_outlands",
   "display": {
-    "icon": { "item": "thelionking:kivulite" },
+    "icon": { "item": "thelionking:kivulite_pickaxe" },
     "title": { "translate": "advancement.thelionking.fire_tool.title" },
     "description": { "translate": "advancement.thelionking.fire_tool.description" },
     "frame": "task",
@@ -9,8 +9,11 @@
     "announce_to_chat": true
   },
   "criteria": {
-    "custom": {
-      "trigger": "minecraft:impossible"
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["thelionking:kivulite_sword"]}]
+      }
     }
   }
 }

@@ -1,11 +1,18 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.data.LKLevelData;
-import io.github.ron1196.thelionking.quest.LKCharacterSpeech;
-import io.github.ron1196.thelionking.quest.LKQuestBase;
+import io.github.ron1196.thelionking.data.PlayerData;
+import io.github.ron1196.thelionking.data.PlayerDataProvider;
+import io.github.ron1196.thelionking.data.WorldData;
+import io.github.ron1196.thelionking.network.LKNetworking;
+import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
+import io.github.ron1196.thelionking.quest.CharacterSpeech;
+import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
+import io.github.ron1196.thelionking.quest.questline.RafikiQuestline.Stage;
+import io.github.ron1196.thelionking.quest.stage.StageTrigger;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -17,6 +24,8 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
 
 public class RafikiEntity extends PathfinderMob {
 
@@ -33,6 +42,11 @@ public class RafikiEntity extends PathfinderMob {
     }
 
     @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return false;
+    }
+
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -42,7 +56,6 @@ public class RafikiEntity extends PathfinderMob {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        // Rafiki is invulnerable
         return false;
     }
 
@@ -50,114 +63,95 @@ public class RafikiEntity extends PathfinderMob {
     public void tick() {
         super.tick();
         if (talkCooldown > 0) talkCooldown--;
-        // Heal to full
         if (this.getHealth() < this.getMaxHealth()) {
             this.setHealth(this.getMaxHealth());
         }
     }
 
     @Override
-    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+    protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         if (level().isClientSide()) return InteractionResult.SUCCESS;
         if (talkCooldown > 0) return InteractionResult.SUCCESS;
+        if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
+        if (!(level() instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
 
         talkCooldown = 40;
-
-        int questStage = LKQuestBase.RAFIKI_QUEST.getQuestStage();
-        ItemStack held = player.getItemInHand(hand);
+        WorldData data = WorldData.get(serverLevel);
+        QuestlineManager quests = data.getQuestManager();
+        PlayerData playerData = PlayerDataProvider.get(serverPlayer);
+        Stage stage = quests.getStage("rafiki", Stage.class);
 
         // Give quest book on first meeting
-        if (level() instanceof ServerLevel serverLevel) {
-            LKLevelData data = LKLevelData.get(serverLevel);
-            if (!data.receivedQuestBook) {
-                data.receivedQuestBook = true;
-                data.setDirty();
-                player.addItem(new ItemStack(LKItems.QUEST_BOOK.get()));
-            }
+        if (!playerData.hasReceivedQuestBook()) {
+            playerData.setReceivedQuestBook(true);
+            player.addItem(new ItemStack(LKItems.QUEST_BOOK.get()));
+            syncPlayerData(serverPlayer, playerData);
         }
 
-        // Stage 0: First meeting
-        if (questStage == 0) {
-            sendMessage(player, "Welcome to the Pride Lands! I am Rafiki. Bring me sixty-four hyena bones and I will give you my stick.");
-            LKQuestBase.RAFIKI_QUEST.progress(1);
-            LKQuestBase.updateAllQuests();
+        // Try to claim the next unclaimed reward (earliest stage first)
+        int claimedIndex = quests.tryClaimNextReward("rafiki", serverPlayer);
+        if (claimedIndex >= 0) {
+            // Re-fetch stage after claim
+            sendStageDialogue(player, quests.getStage("rafiki", Stage.class));
+            syncPlayerData(serverPlayer, playerData);
             return InteractionResult.SUCCESS;
         }
 
-        // Stage 1: Waiting for hyena bones
-        if (questStage == 1) {
-            if (held.is(LKItems.HYENA_BONE.get()) && held.getCount() >= 64) {
-                held.shrink(64);
-                player.addItem(new ItemStack(LKItems.STAFF.get()));
-                sendMessage(player, "Excellent! Here is my stick. Now go and defeat Scar!");
-                LKQuestBase.RAFIKI_QUEST.progress(2);
-                LKQuestBase.updateAllQuests();
-            } else {
-                sendSpeech(player, LKCharacterSpeech.HYENA_BONES);
-            }
+        // Try to advance the quest (rewards are given automatically in tryAdvance)
+        if (quests.tryAdvance("rafiki", serverPlayer, StageTrigger.RAFIKI_TALK)) {
+            Stage newStage = quests.getStage("rafiki", Stage.class);
+            sendStageDialogue(player, newStage);
+            syncPlayerData(serverPlayer, playerData);
             return InteractionResult.SUCCESS;
         }
 
-        // Stage 2: Waiting for Scar to be defeated
-        if (questStage == 2) {
-            sendSpeech(player, LKCharacterSpeech.MENTION_SCAR);
-            return InteractionResult.SUCCESS;
-        }
-
-        // Stage 3: Return after defeating Scar
-        if (questStage == 3) {
-            sendMessage(player, "Well done! Scar has been defeated. Now bring me four ground termites.");
-            LKQuestBase.RAFIKI_QUEST.progress(4);
-            LKQuestBase.updateAllQuests();
-            return InteractionResult.SUCCESS;
-        }
-
-        // Stage 4: Waiting for ground termites
-        if (questStage == 4) {
-            if (held.is(LKItems.TERMITE_DUST.get()) && held.getCount() >= 4) {
-                held.shrink(4);
-                sendMessage(player, "Good! Now bring me four ground mangoes.");
-                LKQuestBase.RAFIKI_QUEST.progress(5);
-                LKQuestBase.updateAllQuests();
-            } else {
-                sendSpeech(player, LKCharacterSpeech.TERMITES);
-            }
-            return InteractionResult.SUCCESS;
-        }
-
-        // Stage 5: Waiting for ground mangoes
-        if (questStage == 5) {
-            if (held.is(LKItems.MANGO_DUST.get()) && held.getCount() >= 4) {
-                held.shrink(4);
-                sendMessage(player, "Perfect! Now craft a Star Altar and use the Rafiki Dust on it.");
-                LKQuestBase.RAFIKI_QUEST.progress(6);
-                LKQuestBase.updateAllQuests();
-            } else {
-                sendSpeech(player, LKCharacterSpeech.MANGOES);
-            }
-            return InteractionResult.SUCCESS;
-        }
-
-        // Stage 6: Waiting for Star Altar usage
-        if (questStage == 6) {
-            sendSpeech(player, LKCharacterSpeech.STAR_ALTAR);
-            return InteractionResult.SUCCESS;
-        }
-
-        // Quest complete — give hints
-        if (LKQuestBase.RAFIKI_QUEST.isComplete()) {
-            sendSpeech(player, LKCharacterSpeech.HINT);
-            return InteractionResult.SUCCESS;
+        // Quest didn't advance — give contextual speech
+        switch (stage) {
+            case COLLECT_BONES -> sendSpeech(player, CharacterSpeech.HYENA_BONES);
+            case DEFEAT_SCAR -> sendSpeech(player, CharacterSpeech.MENTION_SCAR);
+            case COLLECT_TERMITES -> sendSpeech(player, CharacterSpeech.TERMITES);
+            case COLLECT_MANGOES -> sendSpeech(player, CharacterSpeech.MANGOES);
+            case USE_STAR_ALTAR -> sendSpeech(player, CharacterSpeech.STAR_ALTAR);
+            case COMPLETE -> sendSpeech(player, CharacterSpeech.HINT);
+            default -> {}
         }
 
         return InteractionResult.SUCCESS;
+    }
+
+    private void syncPlayerData(ServerPlayer player, PlayerData data) {
+        LKNetworking.CHANNEL.send(
+                PacketDistributor.PLAYER.with(() -> player),
+                new PlayerDataSyncPacket(data)
+        );
+    }
+
+    private void sendStageDialogue(Player player, Stage newStage) {
+        String message = switch (newStage) {
+            case COLLECT_BONES ->
+                    "Welcome to the Pride Lands! I am Rafiki. Bring me sixty-four hyena bones and I will give you my stick.";
+            case DEFEAT_SCAR ->
+                    "Excellent! Here is my stick. Now go and defeat Scar!";
+            case RETURN_AFTER_SCAR ->
+                    "Well done! Scar has been defeated. Now come back and see me.";
+            case COLLECT_TERMITES ->
+                    "Well done! Scar has been defeated. Now bring me four ground termites.";
+            case COLLECT_MANGOES ->
+                    "Good! Now bring me four ground mangoes.";
+            case USE_STAR_ALTAR ->
+                    "Perfect! Now craft a Star Altar and use the Rafiki Dust on it.";
+            case COMPLETE ->
+                    "Wonderful! The spirits of the great kings smile upon you!";
+            default -> null;
+        };
+        if (message != null) sendMessage(player, message);
     }
 
     private void sendMessage(Player player, String message) {
         player.sendSystemMessage(Component.literal("\u00a7e<Rafiki> \u00a7f" + message));
     }
 
-    private void sendSpeech(Player player, LKCharacterSpeech speech) {
-        player.sendSystemMessage(Component.literal(LKCharacterSpeech.giveSpeech(speech)));
+    private void sendSpeech(Player player, CharacterSpeech speech) {
+        player.sendSystemMessage(Component.literal(CharacterSpeech.giveSpeech(speech)));
     }
 }

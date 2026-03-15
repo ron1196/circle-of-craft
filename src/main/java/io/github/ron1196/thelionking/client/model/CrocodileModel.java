@@ -8,6 +8,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
+import org.jetbrains.annotations.NotNull;
 
 public class CrocodileModel<T extends Mob> extends EntityModel<T> {
 
@@ -128,7 +129,16 @@ public class CrocodileModel<T extends Mob> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(
+            @NotNull PoseStack poseStack,
+            @NotNull VertexConsumer buffer,
+            int packedLight,
+            int packedOverlay,
+            float red,
+            float green,
+            float blue,
+            float alpha
+    ) {
         body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         tail1.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         tail2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
