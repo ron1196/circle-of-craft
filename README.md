@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ron1196/TheLionKing/main/src/main/resources/icon.png" alt="The Lion King Mod" width="128" />
+  <img src="banner.jpg" alt="The Lion King Mod" />
 </p>
 
 <h1 align="center">The Lion King Mod</h1>
