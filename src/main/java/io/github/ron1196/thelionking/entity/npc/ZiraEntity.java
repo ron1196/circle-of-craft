@@ -15,8 +15,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.BossEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -31,13 +33,24 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 public class ZiraEntity extends Monster {
 
-    private static final EntityDataAccessor<Boolean> DATA_HOSTILE =
-            SynchedEntityData.defineId(ZiraEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_HOSTILE = SynchedEntityData.defineId(
+            ZiraEntity.class,
+            EntityDataSerializers.BOOLEAN
+    );
+
+    private final ServerBossEvent bossEvent = new ServerBossEvent(
+            Component.literal("Zira"),
+            BossEvent.BossBarColor.PURPLE,
+            BossEvent.BossBarOverlay.PROGRESS
+    );
+
+    private static final int OUTLANDER_SPAWN_COUNT = 4;
 
     private int talkCooldown = 0;
     private boolean spawnedBossFightOutlanders = false;
@@ -72,6 +85,7 @@ public class ZiraEntity extends Monster {
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 
@@ -88,23 +102,42 @@ public class ZiraEntity extends Monster {
     }
 
     @Override
+    public void startSeenByPlayer(@NotNull ServerPlayer player) {
+        super.startSeenByPlayer(player);
+        bossEvent.addPlayer(player);
+    }
+
+    @Override
+    public void stopSeenByPlayer(@NotNull ServerPlayer player) {
+        super.stopSeenByPlayer(player);
+        bossEvent.removePlayer(player);
+    }
+
+    @Override
     public void tick() {
         super.tick();
+
+        if (!level().isClientSide()) {
+            bossEvent.setProgress(getHealth() / getMaxHealth());
+        }
+
         if (talkCooldown > 0) talkCooldown--;
 
         if (!level().isClientSide && isHostile() && !spawnedBossFightOutlanders && getHealth() <= 120F) {
             spawnedBossFightOutlanders = true;
-            broadcastMessage("\u00a7e<Zira> \u00a7fOutlanders! Finish this!");
-            spawnOutlandersWithLightning(4);
+            broadcastMessage();
+            spawnOutlandersWithLightning();
         }
     }
 
-    private void spawnOutlandersWithLightning(int count) {
-        for (int i = 0; i < count; i++) {
+    private void spawnOutlandersWithLightning() {
+        for (int i = 0; i < OUTLANDER_SPAWN_COUNT; i++) {
             int x = Mth.floor(getX()) - 6 + random.nextInt(13);
             int z = Mth.floor(getZ()) - 6 + random.nextInt(13);
-            int y = level().getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING,
-                    new BlockPos(x, 0, z)).getY();
+            int y = level().getHeightmapPos(
+                    Heightmap.Types.MOTION_BLOCKING,
+                    new BlockPos(x, 0, z)
+            ).getY();
             level().addFreshEntity(new LightningBoltEntity(level(), x, y, z, 0, null));
         }
     }
@@ -154,19 +187,16 @@ public class ZiraEntity extends Monster {
 
     private void sendStageDialogue(Player player, Stage newStage) {
         String message = switch (newStage) {
-            case COLLECT_INGOTS ->
-                    "So... a human dares to enter my domain. Perhaps you can be of use to me.";
-            case THROW_IN_OUTWATER ->
-                    "Good. Now throw these ingots into the Outwater.";
-            case FOLLOW_OUTLANDERS ->
-                    "Excellent. You have served me well. Now... follow my Outlanders.";
+            case COLLECT_INGOTS -> "So... a human dares to enter my domain. Perhaps you can be of use to me.";
+            case THROW_IN_OUTWATER -> "Good. Now throw these ingots into the Outwater.";
+            case FOLLOW_OUTLANDERS -> "Excellent. You have served me well. Now... follow my Outlanders.";
             default -> null;
         };
         if (message != null) sendMessage(player, message);
     }
 
     @Override
-    public void die(DamageSource source) {
+    public void die(@NotNull DamageSource source) {
         super.die(source);
         if (!level().isClientSide() && level() instanceof ServerLevel serverLevel) {
             if (source.getEntity() instanceof ServerPlayer serverPlayer) {
@@ -174,7 +204,7 @@ public class ZiraEntity extends Monster {
                 data.getQuestManager().tryAdvance("outlands", serverPlayer, StageTrigger.ZIRA_KILLED);
 
                 serverPlayer.sendSystemMessage(Component.literal(
-                        "\u00a7e<Zira> \u00a7fThis is not over... Scar's legacy will live on..."));
+                        "§e<Zira> §fThis is not over... Scar's legacy will live on..."));
             }
 
             level().explode(this, getX(), getY(), getZ(), 0F, Level.ExplosionInteraction.NONE);
@@ -199,7 +229,7 @@ public class ZiraEntity extends Monster {
     }
 
     private void sendMessage(Player player, String message) {
-        player.sendSystemMessage(Component.literal("\u00a7e<Zira> \u00a7f" + message));
+        player.sendSystemMessage(Component.literal("§e<Zira> §f" + message));
     }
 
     private void sendSpeech(Player player, CharacterSpeech speech) {
@@ -213,9 +243,9 @@ public class ZiraEntity extends Monster {
         );
     }
 
-    private void broadcastMessage(String message) {
+    private void broadcastMessage() {
         for (Player p : level().players()) {
-            p.sendSystemMessage(Component.literal(message));
+            p.sendSystemMessage(Component.literal("§e<Zira> §fOutlanders! Finish this!"));
         }
     }
 }

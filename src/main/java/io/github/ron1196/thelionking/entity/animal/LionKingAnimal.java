@@ -89,7 +89,7 @@ public abstract class LionKingAnimal extends Animal {
 
         if (QUEST_RANDOM.nextInt(3) == 0) {
             Item[] requestItems = getQuestRequestItems();
-            if (requestItems == null || requestItems.length <= 0) {
+            if (requestItems == null || requestItems.length == 0) {
                 return super.mobInteract(player, hand);
             }
 

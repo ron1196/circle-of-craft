@@ -6,8 +6,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -22,8 +24,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class ScarEntity extends Monster {
 
-    private static final EntityDataAccessor<Boolean> DATA_HOSTILE =
-            SynchedEntityData.defineId(ScarEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_HOSTILE = SynchedEntityData.defineId(
+            ScarEntity.class,
+            EntityDataSerializers.BOOLEAN
+    );
+
+    private final ServerBossEvent bossEvent = new ServerBossEvent(
+            Component.literal("Scar"),
+            BossEvent.BossBarColor.RED,
+            BossEvent.BossBarOverlay.PROGRESS
+    );
 
     private boolean hasSpoken = false;
 
@@ -67,11 +77,29 @@ public class ScarEntity extends Monster {
     }
 
     @Override
+    public void startSeenByPlayer(@NotNull ServerPlayer player) {
+        super.startSeenByPlayer(player);
+        bossEvent.addPlayer(player);
+    }
+
+    @Override
+    public void stopSeenByPlayer(@NotNull ServerPlayer player) {
+        super.stopSeenByPlayer(player);
+        bossEvent.removePlayer(player);
+    }
+
+    @Override
     public void tick() {
         super.tick();
+
+        if (!level().isClientSide()) {
+            bossEvent.setProgress(getHealth() / getMaxHealth());
+        }
+
         if (level().isClientSide() || hasSpoken) {
             return;
         }
+
         Player nearest = level().getNearestPlayer(this, 16.0);
         if (nearest == null) {
             return;

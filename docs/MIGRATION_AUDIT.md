@@ -1,6 +1,6 @@
 # Migration Audit: Old 1.6.4 Mod → New 1.20.1 NeoForge Port
 
-Last updated: 2026-03-12
+Last updated: 2026-03-18
 
 This document tracks everything that has been migrated from the original Lion King mod
 and everything that still needs work.
@@ -158,7 +158,8 @@ All previously critical gaps have been addressed:
 
 | Category | Items | Status |
 |----------|-------|--------|
-| Kivulite Tools (5) | Sword, Pickaxe, Axe, Shovel, Hoe | Done (Phase 10) |
+| Fire Tools / Kivulite Tools (4) | Sword, Pickaxe, Axe, Shovel (auto-smelt via `FireToolHelper`) | Done (Phase 10) |
+| Kivulite Hoe | Standard hoe | Done (Phase 10) |
 | Corrupt Tools | Hoe | Done (Phase 10) |
 | Jar Items (3) | Empty Jar, Jar of Water, Jar of Milk | Done (Phase 10) |
 | Quest Items | Amulet, Simba Charm (functional class), Zazu Egg | Done (Phase 10) |
@@ -168,24 +169,20 @@ All previously critical gaps have been addressed:
 | Giraffe Saddle | Mount saddle | Done (Phase 10) |
 | Dart Quiver | 6-slot dart storage | Done (Phase 10) |
 | Passion Fruit | Drops from passion leaves | Done (Phase 10) |
+| Jar of Lava | Crafting ingredient with container return | Done |
+| Mango Juice | Food item (6 nutrition, 0.5 sat) with container return | Done |
+| Giraffe Tie (8 variants) | Mount control — base + 7 color variants | Done |
+| Hyena Meal | `HyenaMealItem` — bonemeal for LK dimensions, grows saplings/crops | Done |
+| Tunnah Diggah | `TunnahDiggahItem` — AoE pickaxe, BIGGAH_DIGGAH + PRECISION enchantments | Done |
+| Scar Rug / Zira Rug | Quest reward interactive entities | Done |
+| Block Placer | SKIP — `BlockItem` handles this natively in modern MC | Done |
+| Info Item | SKIP — replaced by modern item tooltips | Done |
 
 ### Not Ported
 
 | Item | Description | Priority |
 |------|-------------|----------|
-| Fire Sword | Sword with fire aspect | Medium |
-| Fire Pickaxe | Pickaxe with fire ability | Medium |
-| Fire Axe | Axe with fire ability | Medium |
-| Fire Shovel | Shovel with fire ability | Medium |
-| Jar of Lava | Crafting ingredient | Low |
-| Jar of Mango Juice | Food/drink item | Low |
-| Giraffe Tie | Giraffe control item | Low |
-| Rug Dye | Colors fur rugs | Low |
-| Hyena Meal | Food item | Low |
-| Scar Rug / Zira Rug | Quest reward items | Done |
-| Block Placer | Utility item | Low |
-| Info Item | Documentation/info item | Low |
-| Tunnah Diggah | Special enchanted shovel | Low |
+| Rug Dye | SKIP — vanilla dye system handles coloring natively | — |
 
 ---
 
@@ -207,28 +204,38 @@ All previously critical gaps have been addressed:
 
 | GUI | Description | Priority |
 |-----|-------------|----------|
-| Item Info | Item documentation display | Low |
+| Item Info | SKIP — replaced by modern item tooltips | — |
+
+### HUD Overlays (Not Ported)
+
+Old `LKGuiIngame.java` had three overlays — none are ported to 1.20.1. Use `RenderGuiOverlayEvent` (NeoForge).
+
+| Overlay | Description | Priority |
+|---------|-------------|----------|
+| Boss HP Bar | Done — vanilla `ServerBossEvent`: Scar (RED), Zira (PURPLE) | Done |
+| Portal Overlay | Screen tint when standing inside a Pride Lands or Outlands portal block | Low |
+| Flatulence Overlay | Full-screen effect using `flatulence.png`, triggered by Pumbaa's bomb explosion | Low |
 
 ---
 
 ## 7. Networking
 
-**Status: 3 packets implemented** (Phase 9)
+**Status: 5 packets implemented**
 
 | Packet | Direction | Status |
 |--------|-----------|--------|
 | Quest Sync | S→C | Done (`QuestSyncPacket`) |
 | Quest Check | C→S | Done (`QuestCheckPacket`) |
 | Simba Sit | C→S | Done (`SimbaSitPacket`) |
+| Login Sync | S→C | Done (`LoginSyncPacket` — syncs defeatedScar, ziraStage, pumbaaStage, outlandersHostile) |
+| Player Data Sync | S→C | Done (`PlayerDataSyncPacket` — player-specific state) |
 
 ### Not Implemented
 
 | Packet | Direction | Description | Priority |
 |--------|-----------|-------------|----------|
-| Login Sync | S→C | Full world state on player join | Medium |
-| Damage Item | C→S | Armor damage from abilities | Low |
-| World State | S→C | Mound location, Scar defeated, etc. | Low |
-| Simba Ownership | S→C | Who owns Simba | Low |
+| Damage Item | C→S | SKIP — `ItemStack.hurtAndBreak()` is server-authoritative; no packet needed | — |
+| Simba Ownership | S→C | SKIP — `TamableAnimal` + `SynchedEntityData` handles sync natively | — |
 
 ---
 
@@ -375,7 +382,7 @@ These systems are fully ported and functional:
 - **Block Entities:** 8 types (Grinding Bowl, Bongo Drum, Bug Trap, Hyena Head, Outlands Pool, Spawner, Fur Rug, Pride Bed)
 - **GUIs:** 7 screens (Grinding Bowl, Bongo Drum, Bug Trap, Quest Book, Quiver, Timon, Simba)
 - **Quest System:** 2 quest lines with stage progression, networking sync
-- **Networking:** 3 packets (quest sync, quest check, simba sit)
+- **Networking:** 5 packets (quest sync, quest check, simba sit, login sync, player data sync)
 - **Event Handlers:** Forge bus events for combat, drops, NPC interaction, ticks
 - **Creative Tabs:** 8 organized tabs
 - **Tool Tiers:** 5 tiers with all tools registered
@@ -390,21 +397,22 @@ These systems are fully ported and functional:
 ## Remaining Work Summary
 
 ### Medium Priority
-- Fire tools (4 items — sword, pickaxe, axe, shovel)
-- Pride Acacia tree Java feature (currently JSON only)
+- Pride Acacia tree Java feature (currently JSON only, may not generate)
 - Huge Rainforest tree feature (not ported)
-- Remaining networking packets (login sync, world state)
 - Crop/plant world gen Java features (maize, kiwano, yams)
+- Crop block classes — Maize should be sugar-cane-like (not `CropBlock`), Yam should grow on grass
 
 ### Low Priority
-- ~12 items not ported (giraffe tie, rug dye, jars of lava/mango, etc.)
-- 2 event handlers not ported (UseHoe, Bonemeal)
-- 1 GUI not ported (Item Info)
-- Missing world gen (dungeons, lava lakes, outsand, zazu spawners)
+- 1 item not ported: Rug Dye (replace with vanilla dyes)
+- 3 advancement icon placeholders: `outlandish_dart`, `ticket_lion_helmet`, `peacock_wings` (items not registered)
+- 1 event handler not ported: UseHoeEvent (Tilled Sand creation)
+- Missing world gen: dungeons, lava lakes, lily pads, tall flowers
+- Outlands Lava Lakes — needs re-port as `PlacedFeature` (old `WorldGenLakes` API removed in 1.18)
+- Code debt: `CharacterSpeech.java` monolithic enum, grinding bowl recipes hardcoded
+- HUD overlays: Boss HP bar (medium), portal overlay, flatulence overlay (use `RenderGuiOverlayEvent`)
 
 ### Assets (Ongoing)
 - ~150 block textures need migration from old camelCase to snake_case
 - ~160 item textures need migration
-- 5 GUI textures missing
-- 4 advancement icon placeholders
-- NPC placeholder models (Scar, Zira, Ticket Lion) need proper models
+- 5 GUI textures missing: `quiver.png`, `simba.png`, `timon.png`, `flatulence.png`, `icons.png`
+- NPC placeholder models (Scar, Zira, Ticket Lion) use lion model (matches old mod behavior)

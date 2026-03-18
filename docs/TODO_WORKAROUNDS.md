@@ -13,7 +13,7 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 - [x] ~~**Jar of Mango Juice**~~ — RESOLVED: Registered `mango_juice` as food item (6 nutrition, 0.5 sat) with container return.
 - [x] ~~**Hyena Meal**~~ — RESOLVED: `HyenaMealItem` — bonemeal for LK dimensions, grows saplings/crops, spreads vegetation on grass.
 - [x] ~~**Giraffe Tie**~~ — RESOLVED: 8 tie items registered, GiraffeEntity has saddled/tie synched data with interaction logic.
-- [ ] **Fur Rug Coloring** — Add rug coloring using vanilla dyes (replaces old mod's custom rug dye items)
+- [x] ~~**Fur Rug Coloring / Rug Dye**~~ — SKIP: Vanilla dye system handles coloring natively; no custom rug dye item needed.
 - [x] ~~**Musical Notes**~~ — RESOLVED: 7 `MusicalNoteItem` variants with pitch values and enchantment glint.
 - [x] ~~**Tunnah Diggah**~~ — RESOLVED: `TunnahDiggahItem` AoE pickaxe, works with existing BIGGAH_DIGGAH and PRECISION enchantments.
 - [x] ~~**Block Placer**~~ — RESOLVED: Obsolete in modern MC — `BlockItem` handles this natively.
@@ -37,8 +37,16 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 - [ ] **Lily Pad Distribution** — Old: `LKWorldGenLily`, not ported at all
 - [ ] **Tall Flower Distribution** — Old: `LKWorldGenTallFlowers`, not ported at all
 - [ ] **Dungeons** — Old: `LKWorldGenDungeons` (10 per chunk in Outlands), not ported
-- [ ] **Outlands Lava Lakes** — Old: `LKWorldGenOutlandsLakes`, not ported
+- [ ] **Outlands Lava Lakes** — Old: `LKWorldGenOutlandsLakes` used removed API. Must be ported as a `PlacedFeature` using `LakeFeature` (1.18+ approach)
 - [x] ~~**Zazu Spawner Areas**~~ — SKIP: No dedicated spawner gen in old mod. Zazus spawn via biome config.
+
+## Missing HUD Overlays
+
+Old `LKGuiIngame.java` — none ported. Implement via `RenderGuiOverlayEvent` in `LKClientEvents`.
+
+- [x] ~~**Boss HP Bar**~~ — RESOLVED: Vanilla `ServerBossEvent` in `ScarEntity` (RED) and `ZiraEntity` (PURPLE). Bar appears when player tracks the boss's chunk. No custom rendering needed.
+- [ ] **Portal Overlay** — Screen tint when player is inside a Pride Lands or Outlands portal block. Old: `renderPortalOverlay(float f, Minecraft mc, boolean isPrideLands)`
+- [ ] **Flatulence Overlay** — Full-screen effect using `flatulence.png`, triggered during Pumbaa's bomb explosion sequence. Old: `renderFlatulenceOverlay(float f, Minecraft mc)`
 
 ## Missing Event Handlers
 
@@ -48,10 +56,10 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 ## Missing Networking Packets
 
-- [ ] **Login Sync Packet** (S→C) — Full world state sync on player join
-- [ ] **World State Packet** (S→C) — Mound location, Scar defeated flag, etc.
-- [ ] **Damage Item Packet** (C→S) — Armor damage from abilities
-- [ ] **Simba Ownership Packet** (S→C) — Who owns Simba
+- [x] ~~**Login Sync Packet**~~ — RESOLVED: `LoginSyncPacket` syncs defeatedScar, ziraStage, pumbaaStage, outlandersHostile on player join.
+- [x] ~~**World State Packet**~~ — RESOLVED: Covered by `LoginSyncPacket` + `PlayerDataSyncPacket`.
+- [x] ~~**Damage Item Packet**~~ — SKIP: `ItemStack.hurtAndBreak()` is server-authoritative in 1.20.1; no C→S packet needed.
+- [x] ~~**Simba Ownership Packet**~~ — SKIP: `TamableAnimal` base class + `SynchedEntityData` syncs ownership automatically; no custom packet needed.
 
 ## Missing GUI
 

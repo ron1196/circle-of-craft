@@ -9,7 +9,6 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 import java.util.List;
@@ -72,12 +71,10 @@ public class LightningBoltEntity extends LightningBolt {
 
     private void tryPlaceFire(BlockPos pos) {
         Level level = level();
-        if (level.isEmptyBlock(pos)) {
-            BlockState fire = BaseFireBlock.getState(level, pos);
-            if (fire.canSurvive(level, pos)) {
-                level.setBlockAndUpdate(pos, fire);
-            }
+        if (!level.isEmptyBlock(pos)) {
+            return;
         }
+        level.setBlockAndUpdate(pos, BaseFireBlock.getState(level, pos));
     }
 
     private void damageNearbyEntities() {
