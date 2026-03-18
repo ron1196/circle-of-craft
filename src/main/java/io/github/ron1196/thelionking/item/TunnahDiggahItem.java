@@ -1,10 +1,9 @@
 package io.github.ron1196.thelionking.item;
 
-import io.github.ron1196.thelionking.registry.LKBlocks;
+import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.LKEnchantments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
@@ -13,7 +12,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
@@ -77,19 +75,19 @@ public class TunnahDiggahItem extends PickaxeItem {
     }
 
     private static boolean isAoETarget(BlockState state) {
-        return state.is(Blocks.DIRT)
-                || state.is(Blocks.GRASS_BLOCK)
-                || state.is(Blocks.STONE)
-                || state.is(Blocks.NETHERRACK)
-                || state.is(Blocks.END_STONE)
-                || state.is(LKBlocks.PRIDESTONE.get())
-                || state.is(LKBlocks.CORRUPT_PRIDESTONE.get());
+        return state.is(net.minecraft.world.level.block.Blocks.DIRT)
+                || state.is(net.minecraft.world.level.block.Blocks.GRASS_BLOCK)
+                || state.is(net.minecraft.world.level.block.Blocks.STONE)
+                || state.is(net.minecraft.world.level.block.Blocks.NETHERRACK)
+                || state.is(net.minecraft.world.level.block.Blocks.END_STONE)
+                || state.is(Blocks.PRIDESTONE.get())
+                || state.is(Blocks.CORRUPT_PRIDESTONE.get());
     }
 
     private static BlockState getDropState(BlockState state, boolean silkTouch) {
         if (silkTouch) return state;
-        if (state.is(Blocks.GRASS_BLOCK)) return Blocks.DIRT.defaultBlockState();
-        if (state.is(Blocks.STONE)) return Blocks.COBBLESTONE.defaultBlockState();
+        if (state.is(net.minecraft.world.level.block.Blocks.GRASS_BLOCK)) return net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState();
+        if (state.is(net.minecraft.world.level.block.Blocks.STONE)) return net.minecraft.world.level.block.Blocks.COBBLESTONE.defaultBlockState();
         return state;
     }
 }

@@ -14,10 +14,12 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class LKItems {
+public class Items {
 
-    public static final DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(ForgeRegistries.ITEMS, TheLionKingMod.MOD_ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(
+            ForgeRegistries.ITEMS,
+            TheLionKingMod.MOD_ID
+    );
 
     // ========== Block Items ==========
     // These are registered automatically with blocks via registerBlockItem helper
@@ -300,142 +302,142 @@ public class LKItems {
     }
 
     // Pridestone & Variants
-    public static final RegistryObject<BlockItem> PRIDESTONE_BLOCK_ITEM = registerBlockItem("pridestone", LKBlocks.PRIDESTONE);
-    public static final RegistryObject<BlockItem> CORRUPT_PRIDESTONE_BLOCK_ITEM = registerBlockItem("corrupt_pridestone", LKBlocks.CORRUPT_PRIDESTONE);
-    public static final RegistryObject<BlockItem> PRIDE_BRICK_ITEM = registerBlockItem("pride_brick", LKBlocks.PRIDE_BRICK);
-    public static final RegistryObject<BlockItem> CORRUPT_PRIDE_BRICK_ITEM = registerBlockItem("corrupt_pride_brick", LKBlocks.CORRUPT_PRIDE_BRICK);
-    public static final RegistryObject<BlockItem> MOSSY_PRIDE_BRICK_ITEM = registerBlockItem("mossy_pride_brick", LKBlocks.MOSSY_PRIDE_BRICK);
-    public static final RegistryObject<BlockItem> MOSSY_CORRUPT_PRIDE_BRICK_ITEM = registerBlockItem("mossy_corrupt_pride_brick", LKBlocks.MOSSY_CORRUPT_PRIDE_BRICK);
-    public static final RegistryObject<BlockItem> PRIDE_PILLAR_ITEM = registerBlockItem("pride_pillar", LKBlocks.PRIDE_PILLAR);
-    public static final RegistryObject<BlockItem> CORRUPT_PRIDE_PILLAR_ITEM = registerBlockItem("corrupt_pride_pillar", LKBlocks.CORRUPT_PRIDE_PILLAR);
+    public static final RegistryObject<BlockItem> PRIDESTONE_BLOCK_ITEM = registerBlockItem("pridestone", Blocks.PRIDESTONE);
+    public static final RegistryObject<BlockItem> CORRUPT_PRIDESTONE_BLOCK_ITEM = registerBlockItem("corrupt_pridestone", Blocks.CORRUPT_PRIDESTONE);
+    public static final RegistryObject<BlockItem> PRIDE_BRICK_ITEM = registerBlockItem("pride_brick", Blocks.PRIDE_BRICK);
+    public static final RegistryObject<BlockItem> CORRUPT_PRIDE_BRICK_ITEM = registerBlockItem("corrupt_pride_brick", Blocks.CORRUPT_PRIDE_BRICK);
+    public static final RegistryObject<BlockItem> MOSSY_PRIDE_BRICK_ITEM = registerBlockItem("mossy_pride_brick", Blocks.MOSSY_PRIDE_BRICK);
+    public static final RegistryObject<BlockItem> MOSSY_CORRUPT_PRIDE_BRICK_ITEM = registerBlockItem("mossy_corrupt_pride_brick", Blocks.MOSSY_CORRUPT_PRIDE_BRICK);
+    public static final RegistryObject<BlockItem> PRIDE_PILLAR_ITEM = registerBlockItem("pride_pillar", Blocks.PRIDE_PILLAR);
+    public static final RegistryObject<BlockItem> CORRUPT_PRIDE_PILLAR_ITEM = registerBlockItem("corrupt_pride_pillar", Blocks.CORRUPT_PRIDE_PILLAR);
 
     // Ores & Storage
-    public static final RegistryObject<BlockItem> PRIDE_COAL_ORE_ITEM = registerBlockItem("pride_coal_ore", LKBlocks.PRIDE_COAL_ORE);
-    public static final RegistryObject<BlockItem> SILVER_ORE_ITEM = registerBlockItem("silver_ore", LKBlocks.SILVER_ORE);
-    public static final RegistryObject<BlockItem> PEACOCK_ORE_ITEM = registerBlockItem("peacock_ore", LKBlocks.PEACOCK_ORE);
-    public static final RegistryObject<BlockItem> SILVER_BLOCK_ITEM = registerBlockItem("silver_block", LKBlocks.SILVER_BLOCK);
-    public static final RegistryObject<BlockItem> PEACOCK_BLOCK_ITEM = registerBlockItem("peacock_block", LKBlocks.PEACOCK_BLOCK);
+    public static final RegistryObject<BlockItem> PRIDE_COAL_ORE_ITEM = registerBlockItem("pride_coal_ore", Blocks.PRIDE_COAL_ORE);
+    public static final RegistryObject<BlockItem> SILVER_ORE_ITEM = registerBlockItem("silver_ore", Blocks.SILVER_ORE);
+    public static final RegistryObject<BlockItem> PEACOCK_ORE_ITEM = registerBlockItem("peacock_ore", Blocks.PEACOCK_ORE);
+    public static final RegistryObject<BlockItem> SILVER_BLOCK_ITEM = registerBlockItem("silver_block", Blocks.SILVER_BLOCK);
+    public static final RegistryObject<BlockItem> PEACOCK_BLOCK_ITEM = registerBlockItem("peacock_block", Blocks.PEACOCK_BLOCK);
 
     // Wood - Acacia
-    public static final RegistryObject<BlockItem> ACACIA_LOG_ITEM = registerBlockItem("pride_acacia_log", LKBlocks.ACACIA_LOG);
-    public static final RegistryObject<BlockItem> ACACIA_PLANKS_ITEM = registerBlockItem("pride_acacia_planks", LKBlocks.ACACIA_PLANKS);
-    public static final RegistryObject<BlockItem> ACACIA_STAIRS_ITEM = registerBlockItem("pride_acacia_stairs", LKBlocks.ACACIA_STAIRS);
-    public static final RegistryObject<BlockItem> ACACIA_SLAB_ITEM = registerBlockItem("pride_acacia_slab", LKBlocks.ACACIA_SLAB);
+    public static final RegistryObject<BlockItem> ACACIA_LOG_ITEM = registerBlockItem("pride_acacia_log", Blocks.ACACIA_LOG);
+    public static final RegistryObject<BlockItem> ACACIA_PLANKS_ITEM = registerBlockItem("pride_acacia_planks", Blocks.ACACIA_PLANKS);
+    public static final RegistryObject<BlockItem> ACACIA_STAIRS_ITEM = registerBlockItem("pride_acacia_stairs", Blocks.ACACIA_STAIRS);
+    public static final RegistryObject<BlockItem> ACACIA_SLAB_ITEM = registerBlockItem("pride_acacia_slab", Blocks.ACACIA_SLAB);
 
     // Wood - Rainforest
-    public static final RegistryObject<BlockItem> RAINFOREST_LOG_ITEM = registerBlockItem("rainforest_log", LKBlocks.RAINFOREST_LOG);
-    public static final RegistryObject<BlockItem> RAINFOREST_PLANKS_ITEM = registerBlockItem("rainforest_planks", LKBlocks.RAINFOREST_PLANKS);
-    public static final RegistryObject<BlockItem> RAINFOREST_STAIRS_ITEM = registerBlockItem("rainforest_stairs", LKBlocks.RAINFOREST_STAIRS);
-    public static final RegistryObject<BlockItem> RAINFOREST_SLAB_ITEM = registerBlockItem("rainforest_slab", LKBlocks.RAINFOREST_SLAB);
+    public static final RegistryObject<BlockItem> RAINFOREST_LOG_ITEM = registerBlockItem("rainforest_log", Blocks.RAINFOREST_LOG);
+    public static final RegistryObject<BlockItem> RAINFOREST_PLANKS_ITEM = registerBlockItem("rainforest_planks", Blocks.RAINFOREST_PLANKS);
+    public static final RegistryObject<BlockItem> RAINFOREST_STAIRS_ITEM = registerBlockItem("rainforest_stairs", Blocks.RAINFOREST_STAIRS);
+    public static final RegistryObject<BlockItem> RAINFOREST_SLAB_ITEM = registerBlockItem("rainforest_slab", Blocks.RAINFOREST_SLAB);
 
     // Wood - Mango
-    public static final RegistryObject<BlockItem> MANGO_LOG_ITEM = registerBlockItem("mango_log", LKBlocks.MANGO_LOG);
-    public static final RegistryObject<BlockItem> MANGO_PLANKS_ITEM = registerBlockItem("mango_planks", LKBlocks.MANGO_PLANKS);
-    public static final RegistryObject<BlockItem> MANGO_STAIRS_ITEM = registerBlockItem("mango_stairs", LKBlocks.MANGO_STAIRS);
-    public static final RegistryObject<BlockItem> MANGO_SLAB_ITEM = registerBlockItem("mango_slab", LKBlocks.MANGO_SLAB);
+    public static final RegistryObject<BlockItem> MANGO_LOG_ITEM = registerBlockItem("mango_log", Blocks.MANGO_LOG);
+    public static final RegistryObject<BlockItem> MANGO_PLANKS_ITEM = registerBlockItem("mango_planks", Blocks.MANGO_PLANKS);
+    public static final RegistryObject<BlockItem> MANGO_STAIRS_ITEM = registerBlockItem("mango_stairs", Blocks.MANGO_STAIRS);
+    public static final RegistryObject<BlockItem> MANGO_SLAB_ITEM = registerBlockItem("mango_slab", Blocks.MANGO_SLAB);
 
     // Wood - Passion
-    public static final RegistryObject<BlockItem> PASSION_LOG_ITEM = registerBlockItem("passion_log", LKBlocks.PASSION_LOG);
-    public static final RegistryObject<BlockItem> PASSION_PLANKS_ITEM = registerBlockItem("passion_planks", LKBlocks.PASSION_PLANKS);
-    public static final RegistryObject<BlockItem> PASSION_STAIRS_ITEM = registerBlockItem("passion_stairs", LKBlocks.PASSION_STAIRS);
-    public static final RegistryObject<BlockItem> PASSION_SLAB_ITEM = registerBlockItem("passion_slab", LKBlocks.PASSION_SLAB);
+    public static final RegistryObject<BlockItem> PASSION_LOG_ITEM = registerBlockItem("passion_log", Blocks.PASSION_LOG);
+    public static final RegistryObject<BlockItem> PASSION_PLANKS_ITEM = registerBlockItem("passion_planks", Blocks.PASSION_PLANKS);
+    public static final RegistryObject<BlockItem> PASSION_STAIRS_ITEM = registerBlockItem("passion_stairs", Blocks.PASSION_STAIRS);
+    public static final RegistryObject<BlockItem> PASSION_SLAB_ITEM = registerBlockItem("passion_slab", Blocks.PASSION_SLAB);
 
     // Wood - Banana
-    public static final RegistryObject<BlockItem> BANANA_LOG_ITEM = registerBlockItem("banana_log", LKBlocks.BANANA_LOG);
-    public static final RegistryObject<BlockItem> BANANA_PLANKS_ITEM = registerBlockItem("banana_planks", LKBlocks.BANANA_PLANKS);
-    public static final RegistryObject<BlockItem> BANANA_STAIRS_ITEM = registerBlockItem("banana_stairs", LKBlocks.BANANA_STAIRS);
-    public static final RegistryObject<BlockItem> BANANA_SLAB_ITEM = registerBlockItem("banana_slab", LKBlocks.BANANA_SLAB);
+    public static final RegistryObject<BlockItem> BANANA_LOG_ITEM = registerBlockItem("banana_log", Blocks.BANANA_LOG);
+    public static final RegistryObject<BlockItem> BANANA_PLANKS_ITEM = registerBlockItem("banana_planks", Blocks.BANANA_PLANKS);
+    public static final RegistryObject<BlockItem> BANANA_STAIRS_ITEM = registerBlockItem("banana_stairs", Blocks.BANANA_STAIRS);
+    public static final RegistryObject<BlockItem> BANANA_SLAB_ITEM = registerBlockItem("banana_slab", Blocks.BANANA_SLAB);
 
     // Wood - Deadwood
-    public static final RegistryObject<BlockItem> DEADWOOD_LOG_ITEM = registerBlockItem("deadwood_log", LKBlocks.DEADWOOD_LOG);
-    public static final RegistryObject<BlockItem> DEADWOOD_PLANKS_ITEM = registerBlockItem("deadwood_planks", LKBlocks.DEADWOOD_PLANKS);
-    public static final RegistryObject<BlockItem> DEADWOOD_STAIRS_ITEM = registerBlockItem("deadwood_stairs", LKBlocks.DEADWOOD_STAIRS);
-    public static final RegistryObject<BlockItem> DEADWOOD_SLAB_ITEM = registerBlockItem("deadwood_slab", LKBlocks.DEADWOOD_SLAB);
+    public static final RegistryObject<BlockItem> DEADWOOD_LOG_ITEM = registerBlockItem("deadwood_log", Blocks.DEADWOOD_LOG);
+    public static final RegistryObject<BlockItem> DEADWOOD_PLANKS_ITEM = registerBlockItem("deadwood_planks", Blocks.DEADWOOD_PLANKS);
+    public static final RegistryObject<BlockItem> DEADWOOD_STAIRS_ITEM = registerBlockItem("deadwood_stairs", Blocks.DEADWOOD_STAIRS);
+    public static final RegistryObject<BlockItem> DEADWOOD_SLAB_ITEM = registerBlockItem("deadwood_slab", Blocks.DEADWOOD_SLAB);
 
     // Stone stairs/slabs
-    public static final RegistryObject<BlockItem> PRIDESTONE_STAIRS_ITEM = registerBlockItem("pridestone_stairs", LKBlocks.PRIDESTONE_STAIRS);
-    public static final RegistryObject<BlockItem> PRIDESTONE_SLAB_ITEM = registerBlockItem("pridestone_slab", LKBlocks.PRIDESTONE_SLAB);
-    public static final RegistryObject<BlockItem> PRIDE_BRICK_STAIRS_ITEM = registerBlockItem("pride_brick_stairs", LKBlocks.PRIDE_BRICK_STAIRS);
-    public static final RegistryObject<BlockItem> PRIDE_BRICK_SLAB_ITEM = registerBlockItem("pride_brick_slab", LKBlocks.PRIDE_BRICK_SLAB);
-    public static final RegistryObject<BlockItem> CORRUPT_PRIDESTONE_STAIRS_ITEM = registerBlockItem("corrupt_pridestone_stairs", LKBlocks.CORRUPT_PRIDESTONE_STAIRS);
-    public static final RegistryObject<BlockItem> CORRUPT_PRIDESTONE_SLAB_ITEM = registerBlockItem("corrupt_pridestone_slab", LKBlocks.CORRUPT_PRIDESTONE_SLAB);
-    public static final RegistryObject<BlockItem> CORRUPT_PRIDE_BRICK_STAIRS_ITEM = registerBlockItem("corrupt_pride_brick_stairs", LKBlocks.CORRUPT_PRIDE_BRICK_STAIRS);
-    public static final RegistryObject<BlockItem> CORRUPT_PRIDE_BRICK_SLAB_ITEM = registerBlockItem("corrupt_pride_brick_slab", LKBlocks.CORRUPT_PRIDE_BRICK_SLAB);
+    public static final RegistryObject<BlockItem> PRIDESTONE_STAIRS_ITEM = registerBlockItem("pridestone_stairs", Blocks.PRIDESTONE_STAIRS);
+    public static final RegistryObject<BlockItem> PRIDESTONE_SLAB_ITEM = registerBlockItem("pridestone_slab", Blocks.PRIDESTONE_SLAB);
+    public static final RegistryObject<BlockItem> PRIDE_BRICK_STAIRS_ITEM = registerBlockItem("pride_brick_stairs", Blocks.PRIDE_BRICK_STAIRS);
+    public static final RegistryObject<BlockItem> PRIDE_BRICK_SLAB_ITEM = registerBlockItem("pride_brick_slab", Blocks.PRIDE_BRICK_SLAB);
+    public static final RegistryObject<BlockItem> CORRUPT_PRIDESTONE_STAIRS_ITEM = registerBlockItem("corrupt_pridestone_stairs", Blocks.CORRUPT_PRIDESTONE_STAIRS);
+    public static final RegistryObject<BlockItem> CORRUPT_PRIDESTONE_SLAB_ITEM = registerBlockItem("corrupt_pridestone_slab", Blocks.CORRUPT_PRIDESTONE_SLAB);
+    public static final RegistryObject<BlockItem> CORRUPT_PRIDE_BRICK_STAIRS_ITEM = registerBlockItem("corrupt_pride_brick_stairs", Blocks.CORRUPT_PRIDE_BRICK_STAIRS);
+    public static final RegistryObject<BlockItem> CORRUPT_PRIDE_BRICK_SLAB_ITEM = registerBlockItem("corrupt_pride_brick_slab", Blocks.CORRUPT_PRIDE_BRICK_SLAB);
 
     // Walls
-    public static final RegistryObject<BlockItem> PRIDESTONE_WALL_ITEM = registerBlockItem("pridestone_wall", LKBlocks.PRIDESTONE_WALL);
-    public static final RegistryObject<BlockItem> PRIDE_BRICK_WALL_ITEM = registerBlockItem("pride_brick_wall", LKBlocks.PRIDE_BRICK_WALL);
-    public static final RegistryObject<BlockItem> CORRUPT_PRIDESTONE_WALL_ITEM = registerBlockItem("corrupt_pridestone_wall", LKBlocks.CORRUPT_PRIDESTONE_WALL);
+    public static final RegistryObject<BlockItem> PRIDESTONE_WALL_ITEM = registerBlockItem("pridestone_wall", Blocks.PRIDESTONE_WALL);
+    public static final RegistryObject<BlockItem> PRIDE_BRICK_WALL_ITEM = registerBlockItem("pride_brick_wall", Blocks.PRIDE_BRICK_WALL);
+    public static final RegistryObject<BlockItem> CORRUPT_PRIDESTONE_WALL_ITEM = registerBlockItem("corrupt_pridestone_wall", Blocks.CORRUPT_PRIDESTONE_WALL);
 
     // Redstone
-    public static final RegistryObject<BlockItem> PRIDESTONE_PRESSURE_PLATE_ITEM = registerBlockItem("pridestone_pressure_plate", LKBlocks.PRIDESTONE_PRESSURE_PLATE);
-    public static final RegistryObject<BlockItem> PRIDESTONE_BUTTON_ITEM = registerBlockItem("pridestone_button", LKBlocks.PRIDESTONE_BUTTON);
+    public static final RegistryObject<BlockItem> PRIDESTONE_PRESSURE_PLATE_ITEM = registerBlockItem("pridestone_pressure_plate", Blocks.PRIDESTONE_PRESSURE_PLATE);
+    public static final RegistryObject<BlockItem> PRIDESTONE_BUTTON_ITEM = registerBlockItem("pridestone_button", Blocks.PRIDESTONE_BUTTON);
 
     // Misc blocks
-    public static final RegistryObject<BlockItem> DRIED_MAIZE_BLOCK_ITEM = registerBlockItem("dried_maize_block", LKBlocks.DRIED_MAIZE_BLOCK);
-    public static final RegistryObject<BlockItem> DRIED_MAIZE_STAIRS_ITEM = registerBlockItem("dried_maize_stairs", LKBlocks.DRIED_MAIZE_STAIRS);
-    public static final RegistryObject<BlockItem> DRIED_MAIZE_SLAB_ITEM = registerBlockItem("dried_maize_slab", LKBlocks.DRIED_MAIZE_SLAB);
-    public static final RegistryObject<BlockItem> OUTSAND_ITEM = registerBlockItem("outsand", LKBlocks.OUTSAND);
-    public static final RegistryObject<BlockItem> OUTGLASS_ITEM = registerBlockItem("outglass", LKBlocks.OUTGLASS);
-    public static final RegistryObject<BlockItem> OUTGLASS_PANE_ITEM = registerBlockItem("outglass_pane", LKBlocks.OUTGLASS_PANE);
-    public static final RegistryObject<BlockItem> TERMITE_MOUND_ITEM = registerBlockItem("termite_mound", LKBlocks.TERMITE_MOUND);
-    public static final RegistryObject<BlockItem> ZIRA_MOUND_GATE_ITEM = registerBlockItem("zira_mound_gate", LKBlocks.ZIRA_MOUND_GATE);
-    public static final RegistryObject<BlockItem> PUMBAA_BOX_ITEM = registerBlockItem("pumbaa_box", LKBlocks.PUMBAA_BOX);
+    public static final RegistryObject<BlockItem> DRIED_MAIZE_BLOCK_ITEM = registerBlockItem("dried_maize_block", Blocks.DRIED_MAIZE_BLOCK);
+    public static final RegistryObject<BlockItem> DRIED_MAIZE_STAIRS_ITEM = registerBlockItem("dried_maize_stairs", Blocks.DRIED_MAIZE_STAIRS);
+    public static final RegistryObject<BlockItem> DRIED_MAIZE_SLAB_ITEM = registerBlockItem("dried_maize_slab", Blocks.DRIED_MAIZE_SLAB);
+    public static final RegistryObject<BlockItem> OUTSAND_ITEM = registerBlockItem("outsand", Blocks.OUTSAND);
+    public static final RegistryObject<BlockItem> OUTGLASS_ITEM = registerBlockItem("outglass", Blocks.OUTGLASS);
+    public static final RegistryObject<BlockItem> OUTGLASS_PANE_ITEM = registerBlockItem("outglass_pane", Blocks.OUTGLASS_PANE);
+    public static final RegistryObject<BlockItem> TERMITE_MOUND_ITEM = registerBlockItem("termite_mound", Blocks.TERMITE_MOUND);
+    public static final RegistryObject<BlockItem> ZIRA_MOUND_GATE_ITEM = registerBlockItem("zira_mound_gate", Blocks.ZIRA_MOUND_GATE);
+    public static final RegistryObject<BlockItem> PUMBAA_BOX_ITEM = registerBlockItem("pumbaa_box", Blocks.PUMBAA_BOX);
 
     // ========== Phase 2: Nature Block Items ==========
     // Leaves
-    public static final RegistryObject<BlockItem> ACACIA_LEAVES_ITEM = registerBlockItem("pride_acacia_leaves", LKBlocks.ACACIA_LEAVES);
-    public static final RegistryObject<BlockItem> RAINFOREST_LEAVES_ITEM = registerBlockItem("rainforest_leaves", LKBlocks.RAINFOREST_LEAVES);
-    public static final RegistryObject<BlockItem> MANGO_LEAVES_ITEM = registerBlockItem("mango_leaves", LKBlocks.MANGO_LEAVES);
-    public static final RegistryObject<BlockItem> PASSION_LEAVES_ITEM = registerBlockItem("passion_leaves", LKBlocks.PASSION_LEAVES);
-    public static final RegistryObject<BlockItem> BANANA_LEAVES_ITEM = registerBlockItem("banana_leaves", LKBlocks.BANANA_LEAVES);
-    public static final RegistryObject<BlockItem> RAFIKI_LEAVES_ITEM = registerBlockItem("rafiki_leaves", LKBlocks.RAFIKI_LEAVES);
+    public static final RegistryObject<BlockItem> ACACIA_LEAVES_ITEM = registerBlockItem("pride_acacia_leaves", Blocks.ACACIA_LEAVES);
+    public static final RegistryObject<BlockItem> RAINFOREST_LEAVES_ITEM = registerBlockItem("rainforest_leaves", Blocks.RAINFOREST_LEAVES);
+    public static final RegistryObject<BlockItem> MANGO_LEAVES_ITEM = registerBlockItem("mango_leaves", Blocks.MANGO_LEAVES);
+    public static final RegistryObject<BlockItem> PASSION_LEAVES_ITEM = registerBlockItem("passion_leaves", Blocks.PASSION_LEAVES);
+    public static final RegistryObject<BlockItem> BANANA_LEAVES_ITEM = registerBlockItem("banana_leaves", Blocks.BANANA_LEAVES);
+    public static final RegistryObject<BlockItem> RAFIKI_LEAVES_ITEM = registerBlockItem("rafiki_leaves", Blocks.RAFIKI_LEAVES);
 
     // Saplings
-    public static final RegistryObject<BlockItem> ACACIA_SAPLING_ITEM = registerBlockItem("pride_acacia_sapling", LKBlocks.ACACIA_SAPLING);
-    public static final RegistryObject<BlockItem> RAINFOREST_SAPLING_ITEM = registerBlockItem("rainforest_sapling", LKBlocks.RAINFOREST_SAPLING);
-    public static final RegistryObject<BlockItem> MANGO_SAPLING_ITEM = registerBlockItem("mango_sapling", LKBlocks.MANGO_SAPLING);
-    public static final RegistryObject<BlockItem> PASSION_SAPLING_ITEM = registerBlockItem("passion_sapling", LKBlocks.PASSION_SAPLING);
-    public static final RegistryObject<BlockItem> BANANA_SAPLING_ITEM = registerBlockItem("banana_sapling", LKBlocks.BANANA_SAPLING);
+    public static final RegistryObject<BlockItem> ACACIA_SAPLING_ITEM = registerBlockItem("pride_acacia_sapling", Blocks.ACACIA_SAPLING);
+    public static final RegistryObject<BlockItem> RAINFOREST_SAPLING_ITEM = registerBlockItem("rainforest_sapling", Blocks.RAINFOREST_SAPLING);
+    public static final RegistryObject<BlockItem> MANGO_SAPLING_ITEM = registerBlockItem("mango_sapling", Blocks.MANGO_SAPLING);
+    public static final RegistryObject<BlockItem> PASSION_SAPLING_ITEM = registerBlockItem("passion_sapling", Blocks.PASSION_SAPLING);
+    public static final RegistryObject<BlockItem> BANANA_SAPLING_ITEM = registerBlockItem("banana_sapling", Blocks.BANANA_SAPLING);
 
     // Rafiki Wood
-    public static final RegistryObject<BlockItem> RAFIKI_WOOD_ITEM = registerBlockItem("rafiki_wood", LKBlocks.RAFIKI_WOOD);
+    public static final RegistryObject<BlockItem> RAFIKI_WOOD_ITEM = registerBlockItem("rafiki_wood", Blocks.RAFIKI_WOOD);
 
     // Flowers
-    public static final RegistryObject<BlockItem> WHITE_FLOWER_ITEM = registerBlockItem("white_flower", LKBlocks.WHITE_FLOWER);
-    public static final RegistryObject<BlockItem> BLUE_FLOWER_ITEM = registerBlockItem("blue_flower", LKBlocks.BLUE_FLOWER);
-    public static final RegistryObject<BlockItem> PURPLE_FLOWER_ITEM = registerBlockItem("purple_flower", LKBlocks.PURPLE_FLOWER);
-    public static final RegistryObject<BlockItem> RED_FLOWER_ITEM = registerBlockItem("red_flower", LKBlocks.RED_FLOWER);
+    public static final RegistryObject<BlockItem> WHITE_FLOWER_ITEM = registerBlockItem("white_flower", Blocks.WHITE_FLOWER);
+    public static final RegistryObject<BlockItem> BLUE_FLOWER_ITEM = registerBlockItem("blue_flower", Blocks.BLUE_FLOWER);
+    public static final RegistryObject<BlockItem> PURPLE_FLOWER_ITEM = registerBlockItem("purple_flower", Blocks.PURPLE_FLOWER);
+    public static final RegistryObject<BlockItem> RED_FLOWER_ITEM = registerBlockItem("red_flower", Blocks.RED_FLOWER);
 
     // Waterlilies
-    public static final RegistryObject<BlockItem> RED_LILY_ITEM = registerBlockItem("red_lily", LKBlocks.RED_LILY);
-    public static final RegistryObject<BlockItem> VIOLET_LILY_ITEM = registerBlockItem("violet_lily", LKBlocks.VIOLET_LILY);
-    public static final RegistryObject<BlockItem> WHITE_LILY_ITEM = registerBlockItem("white_lily", LKBlocks.WHITE_LILY);
+    public static final RegistryObject<BlockItem> RED_LILY_ITEM = registerBlockItem("red_lily", Blocks.RED_LILY);
+    public static final RegistryObject<BlockItem> VIOLET_LILY_ITEM = registerBlockItem("violet_lily", Blocks.VIOLET_LILY);
+    public static final RegistryObject<BlockItem> WHITE_LILY_ITEM = registerBlockItem("white_lily", Blocks.WHITE_LILY);
 
     // Mushrooms
-    public static final RegistryObject<BlockItem> OUTSHROOM_ITEM = registerBlockItem("outshroom", LKBlocks.OUTSHROOM);
-    public static final RegistryObject<BlockItem> OUTSHROOM_GLOWING_ITEM = registerBlockItem("outshroom_glowing", LKBlocks.OUTSHROOM_GLOWING);
+    public static final RegistryObject<BlockItem> OUTSHROOM_ITEM = registerBlockItem("outshroom", Blocks.OUTSHROOM);
+    public static final RegistryObject<BlockItem> OUTSHROOM_GLOWING_ITEM = registerBlockItem("outshroom_glowing", Blocks.OUTSHROOM_GLOWING);
 
     // Misc nature
-    public static final RegistryObject<BlockItem> ARID_GRASS_ITEM = registerBlockItem("arid_grass", LKBlocks.ARID_GRASS);
-    public static final RegistryObject<BlockItem> HYENA_TORCH_ITEM = registerBlockItem("hyena_torch", LKBlocks.HYENA_TORCH);
-    public static final RegistryObject<BlockItem> HANGING_BANANA_ITEM = registerBlockItem("hanging_banana", LKBlocks.HANGING_BANANA);
-    public static final RegistryObject<BlockItem> KIWANO_BLOCK_ITEM = registerBlockItem("kiwano_block", LKBlocks.KIWANO_BLOCK);
+    public static final RegistryObject<BlockItem> ARID_GRASS_ITEM = registerBlockItem("arid_grass", Blocks.ARID_GRASS);
+    public static final RegistryObject<BlockItem> HYENA_TORCH_ITEM = registerBlockItem("hyena_torch", Blocks.HYENA_TORCH);
+    public static final RegistryObject<BlockItem> HANGING_BANANA_ITEM = registerBlockItem("hanging_banana", Blocks.HANGING_BANANA);
+    public static final RegistryObject<BlockItem> KIWANO_BLOCK_ITEM = registerBlockItem("kiwano_block", Blocks.KIWANO_BLOCK);
 
     // Crop seeds
     public static final RegistryObject<Item> KIWANO_SEEDS = ITEMS.register("kiwano_seeds",
-            () -> new net.minecraft.world.item.ItemNameBlockItem(LKBlocks.KIWANO_STEM.get(), new Item.Properties()));
+            () -> new net.minecraft.world.item.ItemNameBlockItem(Blocks.KIWANO_STEM.get(), new Item.Properties()));
 
     public static final RegistryObject<Item> YAM = ITEMS.register("yam",
-            () -> new net.minecraft.world.item.ItemNameBlockItem(LKBlocks.YAM_CROP.get(), new Item.Properties()));
+            () -> new net.minecraft.world.item.ItemNameBlockItem(Blocks.YAM_CROP.get(), new Item.Properties()));
 
     public static final RegistryObject<Item> MAIZE_STALKS = ITEMS.register("maize_stalks",
-            () -> new net.minecraft.world.item.ItemNameBlockItem(LKBlocks.MAIZE_CROP.get(), new Item.Properties()));
+            () -> new net.minecraft.world.item.ItemNameBlockItem(Blocks.MAIZE_CROP.get(), new Item.Properties()));
 
     // Decorative block entities
     public static final RegistryObject<BlockItem> HYENA_HEAD_ITEM = ITEMS.register("hyena_head",
-            () -> new io.github.ron1196.thelionking.item.HyenaHeadBlockItem(LKBlocks.HYENA_HEAD.get(), new Item.Properties()));
-    public static final RegistryObject<BlockItem> FUR_RUG_ITEM = registerBlockItem("fur_rug", LKBlocks.FUR_RUG);
+            () -> new io.github.ron1196.thelionking.item.HyenaHeadBlockItem(Blocks.HYENA_HEAD.get(), new Item.Properties()));
+    public static final RegistryObject<BlockItem> FUR_RUG_ITEM = registerBlockItem("fur_rug", Blocks.FUR_RUG);
 
     // ========== Outlands Armor ==========
     public static final RegistryObject<ArmorItem> OUTLANDS_HELMET = ITEMS.register("outlands_helmet",
@@ -591,11 +593,11 @@ public class LKItems {
             () -> new Item(new Item.Properties()));
 
     // ========== Block Entity Items ==========
-    public static final RegistryObject<BlockItem> GRINDING_BOWL_ITEM = registerBlockItem("grinding_bowl", LKBlocks.GRINDING_BOWL);
-    public static final RegistryObject<BlockItem> BUG_TRAP_ITEM = registerBlockItem("bug_trap", LKBlocks.BUG_TRAP);
-    public static final RegistryObject<BlockItem> BONGO_DRUM_ITEM = registerBlockItem("bongo_drum", LKBlocks.BONGO_DRUM);
-    public static final RegistryObject<BlockItem> OUTLANDS_POOL_ITEM = registerBlockItem("outlands_pool", LKBlocks.OUTLANDS_POOL);
-    public static final RegistryObject<BlockItem> LK_SPAWNER_ITEM = registerBlockItem("lk_spawner", LKBlocks.LK_SPAWNER);
+    public static final RegistryObject<BlockItem> GRINDING_BOWL_ITEM = registerBlockItem("grinding_bowl", Blocks.GRINDING_BOWL);
+    public static final RegistryObject<BlockItem> BUG_TRAP_ITEM = registerBlockItem("bug_trap", Blocks.BUG_TRAP);
+    public static final RegistryObject<BlockItem> BONGO_DRUM_ITEM = registerBlockItem("bongo_drum", Blocks.BONGO_DRUM);
+    public static final RegistryObject<BlockItem> OUTLANDS_POOL_ITEM = registerBlockItem("outlands_pool", Blocks.OUTLANDS_POOL);
+    public static final RegistryObject<BlockItem> LK_SPAWNER_ITEM = registerBlockItem("lk_spawner", Blocks.LK_SPAWNER);
 
     // ========== Quest / NPC Items ==========
     public static final RegistryObject<Item> QUEST_BOOK = ITEMS.register("quest_book",
@@ -623,21 +625,21 @@ public class LKItems {
             () -> new io.github.ron1196.thelionking.item.RafikiDustItem(new Item.Properties()));
 
     // ========== Phase 12: Missing Block Items ==========
-    public static final RegistryObject<BlockItem> BANANA_CAKE_ITEM = registerBlockItem("banana_cake", LKBlocks.BANANA_CAKE);
-    public static final RegistryObject<BlockItem> MOUNTED_SHOOTER_ITEM = registerBlockItem("mounted_shooter", LKBlocks.MOUNTED_SHOOTER);
-    public static final RegistryObject<BlockItem> STAR_ALTAR_ITEM = registerBlockItem("star_altar", LKBlocks.STAR_ALTAR);
-    public static final RegistryObject<BlockItem> OUTLANDS_ALTAR_ITEM = registerBlockItem("outlands_altar", LKBlocks.OUTLANDS_ALTAR);
-    public static final RegistryObject<BlockItem> TILLED_SAND_ITEM = registerBlockItem("tilled_sand", LKBlocks.TILLED_SAND);
-    public static final RegistryObject<BlockItem> VASE_ITEM = registerBlockItem("vase", LKBlocks.VASE);
+    public static final RegistryObject<BlockItem> BANANA_CAKE_ITEM = registerBlockItem("banana_cake", Blocks.BANANA_CAKE);
+    public static final RegistryObject<BlockItem> MOUNTED_SHOOTER_ITEM = registerBlockItem("mounted_shooter", Blocks.MOUNTED_SHOOTER);
+    public static final RegistryObject<BlockItem> STAR_ALTAR_ITEM = registerBlockItem("star_altar", Blocks.STAR_ALTAR);
+    public static final RegistryObject<BlockItem> OUTLANDS_ALTAR_ITEM = registerBlockItem("outlands_altar", Blocks.OUTLANDS_ALTAR);
+    public static final RegistryObject<BlockItem> TILLED_SAND_ITEM = registerBlockItem("tilled_sand", Blocks.TILLED_SAND);
+    public static final RegistryObject<BlockItem> VASE_ITEM = registerBlockItem("vase", Blocks.VASE);
 
     // ========== Bed & Lever ==========
     public static final RegistryObject<BlockItem> PRIDE_BED_ITEM = ITEMS.register("pride_bed",
-            () -> new BedItem(LKBlocks.PRIDE_BED.get(), new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<BlockItem> PRIDE_LEVER_ITEM = registerBlockItem("pride_lever", LKBlocks.PRIDE_LEVER);
+            () -> new BedItem(Blocks.PRIDE_BED.get(), new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<BlockItem> PRIDE_LEVER_ITEM = registerBlockItem("pride_lever", Blocks.PRIDE_LEVER);
 
     // ========== Portal Frame Items ==========
-    public static final RegistryObject<BlockItem> PRIDE_PORTAL_FRAME_ITEM = registerBlockItem("pride_portal_frame", LKBlocks.PRIDE_PORTAL_FRAME);
-    public static final RegistryObject<BlockItem> OUTLANDS_PORTAL_FRAME_ITEM = registerBlockItem("outlands_portal_frame", LKBlocks.OUTLANDS_PORTAL_FRAME);
+    public static final RegistryObject<BlockItem> PRIDE_PORTAL_FRAME_ITEM = registerBlockItem("pride_portal_frame", Blocks.PRIDE_PORTAL_FRAME);
+    public static final RegistryObject<BlockItem> OUTLANDS_PORTAL_FRAME_ITEM = registerBlockItem("outlands_portal_frame", Blocks.OUTLANDS_PORTAL_FRAME);
 
     // ========== Scar / Zira Rugs ==========
     public static final RegistryObject<Item> SCAR_RUG = ITEMS.register("scar_rug",

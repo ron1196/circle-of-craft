@@ -16,7 +16,7 @@ import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.network.LoginSyncPacket;
 import io.github.ron1196.thelionking.registry.LKEnchantments;
 import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -96,7 +96,7 @@ public class LKForgeEvents {
         // Peacock boots negate fall damage
         if (event.getSource().is(DamageTypes.FALL)) {
             ItemStack boots = target.getItemBySlot(EquipmentSlot.FEET);
-            if (boots.is(LKItems.PEACOCK_BOOTS.get())) {
+            if (boots.is(Items.PEACOCK_BOOTS.get())) {
                 event.setCanceled(true);
             }
         }
@@ -116,7 +116,7 @@ public class LKForgeEvents {
 
             float dropChance = 0.05F + 0.03F * lootingLevel;
             if (entity.level().random.nextFloat() < dropChance) {
-                entity.spawnAtLocation(new ItemStack(LKItems.HYENA_HEAD_ITEM.get()));
+                entity.spawnAtLocation(new ItemStack(Items.HYENA_HEAD_ITEM.get()));
                 LionKingCriteriaTriggers.BEHEAD_HYENA.trigger((ServerPlayer) player);
             }
         }

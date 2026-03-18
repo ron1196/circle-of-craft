@@ -4,15 +4,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
-public class LKMushroomBlock extends BushBlock {
+public class MushroomBlock extends BushBlock {
 
-    public LKMushroomBlock(Properties properties) {
+    public MushroomBlock(Properties properties) {
         super(properties);
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
+    protected boolean mayPlaceOn(BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
         return state.isSolidRender(level, pos);
     }
 }

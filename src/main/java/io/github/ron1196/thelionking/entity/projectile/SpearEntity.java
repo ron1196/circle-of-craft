@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.entity.projectile;
 
 import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -69,7 +69,7 @@ public class SpearEntity extends AbstractArrow implements net.minecraft.world.en
     @Override
     protected ItemStack getPickupItem() {
         return isPoisoned()
-                ? new ItemStack(LKItems.POISONED_SPEAR.get())
-                : new ItemStack(LKItems.GEMSBOK_SPEAR.get());
+                ? new ItemStack(Items.POISONED_SPEAR.get())
+                : new ItemStack(Items.GEMSBOK_SPEAR.get());
     }
 }

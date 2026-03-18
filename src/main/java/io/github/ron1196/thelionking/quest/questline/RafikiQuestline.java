@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.quest.questline;
 
 import io.github.ron1196.thelionking.quest.stage.ClaimableReward;
 import io.github.ron1196.thelionking.quest.stage.IStageId;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -27,25 +27,25 @@ public class RafikiQuestline {
     public static Questline build() {
         return Questline.builder("rafiki")
                 .displayName("Rafiki's Quest")
-                .icon(() -> new ItemStack(LKItems.RAFIKI_STICK.get()))
+                .icon(() -> new ItemStack(Items.RAFIKI_STICK.get()))
                 .stage(FIND_RAFIKI, new io.github.ron1196.thelionking.quest.stage.Stage("Find Rafiki and speak to him"))
                 .stage(COLLECT_BONES, new io.github.ron1196.thelionking.quest.stage.Stage(
                         "Bring Rafiki 64 hyena bones",
-                        List.of(new ItemRequirement(LKItems.HYENA_BONE, 64)))
+                        List.of(new ItemRequirement(Items.HYENA_BONE, 64)))
                 )
                 .stage(DEFEAT_SCAR, new io.github.ron1196.thelionking.quest.stage.Stage("Defeat Scar"))
                 .stage(RETURN_AFTER_SCAR, new io.github.ron1196.thelionking.quest.stage.Stage("Return to Rafiki"))
                 .stage(COLLECT_TERMITES, new io.github.ron1196.thelionking.quest.stage.Stage(
                         "Bring Rafiki 4 ground termites",
-                        List.of(new ItemRequirement(LKItems.TERMITE_DUST, 4)))
+                        List.of(new ItemRequirement(Items.TERMITE_DUST, 4)))
                 )
                 .stage(COLLECT_MANGOES, new io.github.ron1196.thelionking.quest.stage.Stage(
                         "Bring Rafiki 4 ground mangoes",
-                        List.of(new ItemRequirement(LKItems.MANGO_DUST, 4)))
+                        List.of(new ItemRequirement(Items.MANGO_DUST, 4)))
                 )
                 .stage(USE_STAR_ALTAR, new io.github.ron1196.thelionking.quest.stage.Stage("Craft a Star Altar and use Rafiki Dust on it"))
                 .stage(RafikiQuestline.Stage.COMPLETE, new io.github.ron1196.thelionking.quest.stage.Stage("Quest complete"))
-                .claimableReward(COLLECT_BONES, new ClaimableReward(LKItems.RAFIKI_STICK, 1))
+                .claimableReward(COLLECT_BONES, new ClaimableReward(Items.RAFIKI_STICK, 1))
                 .trigger(FIND_RAFIKI, RAFIKI_TALK)
                 .trigger(COLLECT_BONES, RAFIKI_TALK)
                 .trigger(DEFEAT_SCAR, SCAR_KILLED)

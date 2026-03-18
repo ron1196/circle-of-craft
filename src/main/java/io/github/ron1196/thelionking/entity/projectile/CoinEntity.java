@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.entity.projectile;
 
 import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -42,7 +42,7 @@ public class CoinEntity extends ThrowableItemProjectile {
 
     @Override
     protected Item getDefaultItem() {
-        return LKItems.RAFIKI_COIN.get();
+        return Items.RAFIKI_COIN.get();
     }
 
     @Override

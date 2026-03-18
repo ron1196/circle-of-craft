@@ -1,8 +1,8 @@
 package io.github.ron1196.thelionking.block;
 
-import io.github.ron1196.thelionking.registry.LKBlocks;
+import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
-import io.github.ron1196.thelionking.world.dimension.LKTeleporter;
+import io.github.ron1196.thelionking.world.dimension.Teleporter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
@@ -13,15 +13,15 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
-public class LKPortalBlock extends Block {
+public class PortalBlock extends Block {
 
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
 
@@ -30,14 +30,19 @@ public class LKPortalBlock extends Block {
 
     private final boolean isOutlands;
 
-    public LKPortalBlock(Properties properties, boolean isOutlands) {
+    public PortalBlock(Properties properties, boolean isOutlands) {
         super(properties);
         this.isOutlands = isOutlands;
         this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.X));
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public @NotNull VoxelShape getShape(
+            BlockState state,
+            @NotNull BlockGetter level,
+            @NotNull BlockPos pos,
+            @NotNull CollisionContext context
+    ) {
         return state.getValue(AXIS) == Direction.Axis.Z ? Z_AABB : X_AABB;
     }
 
@@ -47,15 +52,21 @@ public class LKPortalBlock extends Block {
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
-                                   LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    public @NotNull BlockState updateShape(
+            BlockState state,
+            Direction direction,
+            @NotNull BlockState neighborState,
+            @NotNull LevelAccessor level,
+            @NotNull BlockPos pos,
+            @NotNull BlockPos neighborPos
+    ) {
         Direction.Axis portalAxis = state.getValue(AXIS);
         if (direction.getAxis() == portalAxis) {
             // Check vertical neighbors
             return state;
         }
         if (!isValidPortalFrame(level, pos)) {
-            return Blocks.AIR.defaultBlockState();
+            return net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
         }
         return state;
     }
@@ -75,7 +86,7 @@ public class LKPortalBlock extends Block {
     }
 
     private Block getFrameBlock() {
-        return isOutlands ? LKBlocks.OUTLANDS_PORTAL_FRAME.get() : LKBlocks.PRIDE_PORTAL_FRAME.get();
+        return isOutlands ? Blocks.OUTLANDS_PORTAL_FRAME.get() : Blocks.PRIDE_PORTAL_FRAME.get();
     }
 
     public boolean trySpawnPortal(LevelAccessor level, BlockPos pos) {
@@ -93,7 +104,12 @@ public class LKPortalBlock extends Block {
     }
 
     @Override
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    public void entityInside(
+            @NotNull BlockState state,
+            Level level,
+            @NotNull BlockPos pos,
+            @NotNull Entity entity
+    ) {
         if (!level.isClientSide && !entity.isPassenger() && !entity.isVehicle()
                 && entity.canChangeDimensions()) {
             if (entity.isOnPortalCooldown()) {
@@ -115,7 +131,7 @@ public class LKPortalBlock extends Block {
                 ServerLevel destLevel = server.getLevel(destination);
                 if (destLevel != null) {
                     entity.setPortalCooldown();
-                    entity.changeDimension(destLevel, new LKTeleporter(isOutlands));
+                    entity.changeDimension(destLevel, new Teleporter(isOutlands));
                 }
             }
         }
@@ -145,13 +161,13 @@ public class LKPortalBlock extends Block {
             // Go left until we hit a frame block
             BlockPos cursor = pos;
             while (level.getBlockState(cursor.relative(leftDir)).isAir() ||
-                   level.getBlockState(cursor.relative(leftDir)).is(portalBlock)) {
+                    level.getBlockState(cursor.relative(leftDir)).is(portalBlock)) {
                 cursor = cursor.relative(leftDir);
             }
 
             // Go down until we hit a frame block
             while (level.getBlockState(cursor.below()).isAir() ||
-                   level.getBlockState(cursor.below()).is(portalBlock)) {
+                    level.getBlockState(cursor.below()).is(portalBlock)) {
                 cursor = cursor.below();
             }
 
@@ -222,8 +238,8 @@ public class LKPortalBlock extends Block {
         public void createPortalBlocks() {
             Direction rightDir = axis == Direction.Axis.X ? Direction.EAST : Direction.SOUTH;
             BlockState portalState = portalBlock.defaultBlockState();
-            if (portalState.hasProperty(LKPortalBlock.AXIS)) {
-                portalState = portalState.setValue(LKPortalBlock.AXIS, axis);
+            if (portalState.hasProperty(PortalBlock.AXIS)) {
+                portalState = portalState.setValue(PortalBlock.AXIS, axis);
             }
 
             for (int x = 0; x < width; x++) {

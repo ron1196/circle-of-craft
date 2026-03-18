@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
-import io.github.ron1196.thelionking.registry.LKBlocks;
+import io.github.ron1196.thelionking.registry.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
@@ -22,7 +22,7 @@ public class TermiteMoundFeature extends Feature<NoneFeatureConfiguration> {
         BlockPos pos = context.origin();
         RandomSource random = context.random();
 
-        BlockState mound = LKBlocks.TERMITE_MOUND.get().defaultBlockState();
+        BlockState mound = Blocks.TERMITE_MOUND.get().defaultBlockState();
 
         boolean large = random.nextInt(5) == 0;
 

@@ -1,7 +1,8 @@
 package io.github.ron1196.thelionking.item;
 
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
-import io.github.ron1196.thelionking.registry.LKBlocks;
+import io.github.ron1196.thelionking.registry.Items;
+import io.github.ron1196.thelionking.registry.Blocks;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
@@ -32,11 +33,11 @@ public class SimbaCharmItem extends Item {
     }
 
     public static ItemStack createActive() {
-        return new ItemStack(io.github.ron1196.thelionking.registry.LKItems.SIMBA_CHARM.get());
+        return new ItemStack(Items.SIMBA_CHARM.get());
     }
 
     public static ItemStack createInactive() {
-        ItemStack stack = new ItemStack(io.github.ron1196.thelionking.registry.LKItems.SIMBA_CHARM.get());
+        ItemStack stack = new ItemStack(Items.SIMBA_CHARM.get());
         stack.getOrCreateTag().putBoolean("Inactive", true);
         return stack;
     }
@@ -55,7 +56,7 @@ public class SimbaCharmItem extends Item {
         if (isActive(stack)) {
             return InteractionResult.PASS;
         }
-        if (!level.getBlockState(context.getClickedPos()).is(LKBlocks.STAR_ALTAR.get())) {
+        if (!level.getBlockState(context.getClickedPos()).is(Blocks.STAR_ALTAR.get())) {
             return InteractionResult.PASS;
         }
 

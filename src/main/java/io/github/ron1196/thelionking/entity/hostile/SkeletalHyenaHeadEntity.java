@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.entity.hostile;
 
 import io.github.ron1196.thelionking.entity.ai.HeadHopGoal;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Difficulty;
@@ -61,7 +61,7 @@ public class SkeletalHyenaHeadEntity extends Monster {
     protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
         super.dropCustomDeathLoot(source, looting, recentlyHit);
         if (recentlyHit && source.getEntity() instanceof Player && random.nextInt(40) == 0) {
-            ItemStack headStack = new ItemStack(LKItems.HYENA_HEAD_ITEM.get());
+            ItemStack headStack = new ItemStack(Items.HYENA_HEAD_ITEM.get());
             headStack.getOrCreateTagElement("BlockEntityTag").putInt("HyenaType", 3);
             spawnAtLocation(headStack, 0.0F);
         }

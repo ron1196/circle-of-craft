@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import io.github.ron1196.thelionking.TheLionKingMod;
+import io.github.ron1196.thelionking.event.ClientEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -33,7 +34,7 @@ public class HyenaHeadItemRenderer extends BlockEntityWithoutLevelRenderer {
     private ModelPart getHead() {
         if (head == null) {
             head = Minecraft.getInstance().getEntityModels()
-                    .bakeLayer(io.github.ron1196.thelionking.event.LKClientEvents.HYENA_HEAD_LAYER)
+                    .bakeLayer(ClientEvents.HYENA_HEAD_LAYER)
                     .getChild("head");
         }
         return head;

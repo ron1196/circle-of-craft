@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.entity.hostile;
 
 import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
@@ -130,11 +130,11 @@ public class TermiteQueenEntity extends Monster {
         super.dropCustomDeathLoot(source, lootingLevel, recentlyHit);
         int nukShardCount = MIN_NUKA_SHARDS + this.getRandom().nextInt(EXTRA_NUKA_SHARDS);
         for (int i = 0; i < nukShardCount; i++) {
-            this.spawnAtLocation(new ItemStack(LKItems.NUKA_SHARD.get()));
+            this.spawnAtLocation(new ItemStack(Items.NUKA_SHARD.get()));
         }
         int crystalCount = MIN_CRYSTALS + this.getRandom().nextInt(EXTRA_CRYSTALS);
         for (int i = 0; i < crystalCount; i++) {
-            this.spawnAtLocation(new ItemStack(LKItems.CRYSTAL.get()));
+            this.spawnAtLocation(new ItemStack(Items.CRYSTAL.get()));
         }
     }
 

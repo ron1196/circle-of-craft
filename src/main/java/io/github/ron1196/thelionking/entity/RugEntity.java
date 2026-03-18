@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.entity;
 
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import io.github.ron1196.thelionking.registry.SoundEvents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -157,7 +157,7 @@ public class RugEntity extends Entity {
 
     private ItemStack getRugItemStack() {
         int rugType = getRugType();
-        Item rugItem = rugType == TYPE_SCAR ? LKItems.SCAR_RUG.get() : LKItems.ZIRA_RUG.get();
+        Item rugItem = rugType == TYPE_SCAR ? Items.SCAR_RUG.get() : Items.ZIRA_RUG.get();
         return new ItemStack(rugItem);
     }
 

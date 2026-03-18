@@ -6,7 +6,7 @@ import com.mojang.math.Axis;
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.block.HyenaHeadBlock;
 import io.github.ron1196.thelionking.block.entity.HyenaHeadBlockEntity;
-import io.github.ron1196.thelionking.event.LKClientEvents;
+import io.github.ron1196.thelionking.event.ClientEvents;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 public class HyenaHeadBlockEntityRenderer implements BlockEntityRenderer<HyenaHeadBlockEntity> {
 
@@ -29,7 +30,7 @@ public class HyenaHeadBlockEntityRenderer implements BlockEntityRenderer<HyenaHe
     private final ModelPart head;
 
     public HyenaHeadBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
-        ModelPart root = context.bakeLayer(LKClientEvents.HYENA_HEAD_LAYER);
+        ModelPart root = context.bakeLayer(ClientEvents.HYENA_HEAD_LAYER);
         this.head = root.getChild("head");
     }
 
@@ -49,8 +50,14 @@ public class HyenaHeadBlockEntityRenderer implements BlockEntityRenderer<HyenaHe
     }
 
     @Override
-    public void render(HyenaHeadBlockEntity blockEntity, float partialTick, PoseStack poseStack,
-                       MultiBufferSource buffer, int packedLight, int packedOverlay) {
+    public void render(
+            HyenaHeadBlockEntity blockEntity,
+            float partialTick,
+            PoseStack poseStack,
+            @NotNull MultiBufferSource buffer,
+            int packedLight,
+            int packedOverlay
+    ) {
         poseStack.pushPose();
 
         // Center on block

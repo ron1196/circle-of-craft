@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.entity.projectile;
 
 import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import org.jetbrains.annotations.NotNull;
 
 public class DartEntity extends AbstractArrow implements net.minecraft.world.entity.projectile.ItemSupplier {
 
@@ -87,7 +88,7 @@ public class DartEntity extends AbstractArrow implements net.minecraft.world.ent
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult result) {
+    protected void onHitEntity(@NotNull EntityHitResult result) {
         DartType type = getDartType();
         setBaseDamage(type.getDamage());
 
@@ -132,7 +133,7 @@ public class DartEntity extends AbstractArrow implements net.minecraft.world.ent
     }
 
     @Override
-    protected void onHitBlock(BlockHitResult result) {
+    protected void onHitBlock(@NotNull BlockHitResult result) {
         super.onHitBlock(result);
         stuckTicks = 0;
     }
@@ -149,18 +150,18 @@ public class DartEntity extends AbstractArrow implements net.minecraft.world.ent
     }
 
     @Override
-    public ItemStack getItem() {
+    public @NotNull ItemStack getItem() {
         return getPickupItem();
     }
 
     @Override
-    protected ItemStack getPickupItem() {
+    protected @NotNull ItemStack getPickupItem() {
         return switch (getDartType()) {
-            case BLUE -> new ItemStack(LKItems.DART_BLUE.get());
-            case RED -> new ItemStack(LKItems.DART_RED.get());
-            case YELLOW -> new ItemStack(LKItems.DART_YELLOW.get());
-            case PINK -> new ItemStack(LKItems.DART_PINK.get());
-            case BLACK -> new ItemStack(LKItems.DART_BLACK.get());
+            case BLUE -> new ItemStack(Items.DART_BLUE.get());
+            case RED -> new ItemStack(Items.DART_RED.get());
+            case YELLOW -> new ItemStack(Items.DART_YELLOW.get());
+            case PINK -> new ItemStack(Items.DART_PINK.get());
+            case BLACK -> new ItemStack(Items.DART_BLACK.get());
         };
     }
 }

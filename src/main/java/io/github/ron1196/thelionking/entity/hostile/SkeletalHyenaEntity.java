@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.entity.hostile;
 
-import io.github.ron1196.thelionking.registry.LKBlocks;
+import io.github.ron1196.thelionking.registry.Blocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -46,7 +46,7 @@ public class SkeletalHyenaEntity extends Monster {
     protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHit) {
         super.dropCustomDeathLoot(source, looting, recentlyHit);
         if (this.random.nextInt(4) == 0) {
-            ItemStack head = new ItemStack(LKBlocks.HYENA_HEAD.get());
+            ItemStack head = new ItemStack(Blocks.HYENA_HEAD.get());
             CompoundTag blockEntityTag = new CompoundTag();
             blockEntityTag.putInt("HyenaType", 3); // skeletal variant
             head.getOrCreateTag().put("BlockEntityTag", blockEntityTag);

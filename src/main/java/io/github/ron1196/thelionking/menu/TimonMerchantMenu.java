@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.menu;
 
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import io.github.ron1196.thelionking.registry.LKMenuTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
@@ -36,11 +36,11 @@ public class TimonMerchantMenu extends AbstractContainerMenu {
 
     // Each entry is one trade slot: the item sold and its bug cost, matching old mod
     private static final List<TradeEntry> TRADES = List.of(
-            new TradeEntry(LKItems.TUNNAH_DIGGAH,   5),
-            new TradeEntry(LKItems.PUMBAA_BOMB,     6),
-            new TradeEntry(LKItems.CRYSTAL,         7),
-            new TradeEntry(LKItems.EXPERIENCE_GRUB, 4),
-            new TradeEntry(LKItems.AMULET,          10)
+            new TradeEntry(Items.TUNNAH_DIGGAH,   5),
+            new TradeEntry(Items.PUMBAA_BOMB,     6),
+            new TradeEntry(Items.CRYSTAL,         7),
+            new TradeEntry(Items.EXPERIENCE_GRUB, 4),
+            new TradeEntry(Items.AMULET,          10)
     );
 
     private static final int TRADE_SLOT_X_START = 15;

@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
-import io.github.ron1196.thelionking.registry.LKBlocks;
+import io.github.ron1196.thelionking.registry.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
@@ -35,8 +35,8 @@ public class PassionTreeFeature extends Feature<NoneFeatureConfiguration> {
             }
         }
 
-        BlockState log = LKBlocks.PASSION_LOG.get().defaultBlockState();
-        BlockState leaves = LKBlocks.PASSION_LEAVES.get().defaultBlockState()
+        BlockState log = Blocks.PASSION_LOG.get().defaultBlockState();
+        BlockState leaves = Blocks.PASSION_LEAVES.get().defaultBlockState()
                 .setValue(net.minecraft.world.level.block.LeavesBlock.PERSISTENT, true);
 
         // Trunk

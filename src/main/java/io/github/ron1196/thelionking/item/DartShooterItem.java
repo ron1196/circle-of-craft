@@ -3,7 +3,7 @@ package io.github.ron1196.thelionking.item;
 import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
 import io.github.ron1196.thelionking.entity.projectile.DartEntity;
 import io.github.ron1196.thelionking.entity.projectile.DartEntity.DartType;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -81,11 +81,11 @@ public class DartShooterItem extends Item {
     }
 
     private static DartType getDartTypeFromItem(ItemStack stack) {
-        if (stack.is(LKItems.DART_BLUE.get())) return DartType.BLUE;
-        if (stack.is(LKItems.DART_RED.get())) return DartType.RED;
-        if (stack.is(LKItems.DART_YELLOW.get())) return DartType.YELLOW;
-        if (stack.is(LKItems.DART_PINK.get())) return DartType.PINK;
-        if (stack.is(LKItems.DART_BLACK.get())) return DartType.BLACK;
+        if (stack.is(Items.DART_BLUE.get())) return DartType.BLUE;
+        if (stack.is(Items.DART_RED.get())) return DartType.RED;
+        if (stack.is(Items.DART_YELLOW.get())) return DartType.YELLOW;
+        if (stack.is(Items.DART_PINK.get())) return DartType.PINK;
+        if (stack.is(Items.DART_BLACK.get())) return DartType.BLACK;
         return null;
     }
 }

@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.entity.animal;
 
 import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
 import io.github.ron1196.thelionking.entity.ai.AmbientPanicGoal;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -41,14 +41,14 @@ public class GiraffeEntity extends LionKingAnimal {
     private static final float RIDDEN_SPEED_MULTIPLIER = 1.0F;
 
     public enum TieColor {
-        BASE(0, LKItems.GIRAFFE_TIE),
-        WHITE(1, LKItems.GIRAFFE_TIE_WHITE),
-        BLUE(2, LKItems.GIRAFFE_TIE_BLUE),
-        YELLOW(3, LKItems.GIRAFFE_TIE_YELLOW),
-        RED(4, LKItems.GIRAFFE_TIE_RED),
-        PURPLE(5, LKItems.GIRAFFE_TIE_PURPLE),
-        GREEN(6, LKItems.GIRAFFE_TIE_GREEN),
-        BLACK(7, LKItems.GIRAFFE_TIE_BLACK);
+        BASE(0, Items.GIRAFFE_TIE),
+        WHITE(1, Items.GIRAFFE_TIE_WHITE),
+        BLUE(2, Items.GIRAFFE_TIE_BLUE),
+        YELLOW(3, Items.GIRAFFE_TIE_YELLOW),
+        RED(4, Items.GIRAFFE_TIE_RED),
+        PURPLE(5, Items.GIRAFFE_TIE_PURPLE),
+        GREEN(6, Items.GIRAFFE_TIE_GREEN),
+        BLACK(7, Items.GIRAFFE_TIE_BLACK);
 
         private final int id;
         private final Supplier<Item> item;
@@ -126,7 +126,7 @@ public class GiraffeEntity extends LionKingAnimal {
         ItemStack stack = player.getItemInHand(hand);
 
         // Apply giraffe saddle
-        if (stack.is(LKItems.GIRAFFE_SADDLE.get()) && !isSaddled() && !isBaby()) {
+        if (stack.is(Items.GIRAFFE_SADDLE.get()) && !isSaddled() && !isBaby()) {
             setSaddled(true);
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
@@ -224,6 +224,6 @@ public class GiraffeEntity extends LionKingAnimal {
 
     @Override
     protected ItemStack getQuestReward() {
-        return new ItemStack(LKItems.GIRAFFE_SADDLE.get(), 1);
+        return new ItemStack(Items.GIRAFFE_SADDLE.get(), 1);
     }
 }

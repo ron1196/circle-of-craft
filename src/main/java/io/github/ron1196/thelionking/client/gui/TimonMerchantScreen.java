@@ -3,7 +3,7 @@ package io.github.ron1196.thelionking.client.gui;
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.menu.TimonMerchantMenu;
 import io.github.ron1196.thelionking.menu.TimonTradeSlot;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -48,7 +48,7 @@ public class TimonMerchantScreen extends AbstractContainerScreen<TimonMerchantMe
         graphics.drawString(font, playerInventoryTitle, 8, INVENTORY_LABEL_Y, TEXT_COLOR, false);
 
         // Draw bug icon and cost number below each trade slot
-        ItemStack bugStack = new ItemStack(LKItems.BUG.get());
+        ItemStack bugStack = new ItemStack(Items.BUG.get());
         for (int i = 0; i < 5; i++) {
             if (!(this.menu.slots.get(i) instanceof TimonTradeSlot tradeSlot)) continue;
             String cost = String.valueOf(tradeSlot.getBugCost());

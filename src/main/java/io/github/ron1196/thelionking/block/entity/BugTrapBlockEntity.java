@@ -2,12 +2,11 @@ package io.github.ron1196.thelionking.block.entity;
 
 import io.github.ron1196.thelionking.menu.BugTrapMenu;
 import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +15,6 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fml.Logging;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
@@ -75,7 +73,7 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
             trapTimer = 0;
 
             ItemStack output = items.getStackInSlot(4);
-            if (output.isEmpty() || (output.is(LKItems.BUG.get()) && output.getCount() < output.getMaxStackSize())) {
+            if (output.isEmpty() || (output.is(Items.BUG.get()) && output.getCount() < output.getMaxStackSize())) {
                 float chance = 0.0F;
                 int baitCount = 0;
                 for (int i = 0; i < 4; i++) {
@@ -98,7 +96,7 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
 
                         // Add bug to output
                         if (output.isEmpty()) {
-                            items.setStackInSlot(4, new ItemStack(LKItems.BUG.get()));
+                            items.setStackInSlot(4, new ItemStack(Items.BUG.get()));
                         } else {
                             output.grow(1);
                         }

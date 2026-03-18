@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.entity.ai;
 
 import io.github.ron1196.thelionking.block.entity.BugTrapBlockEntity;
-import io.github.ron1196.thelionking.registry.LKBlocks;
+import io.github.ron1196.thelionking.registry.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -38,7 +38,7 @@ public class BugFindTrapGoal extends Goal {
         // Stop if we've reached the trap (within 2 blocks)
         if (bug.blockPosition().closerThan(trapPos, 2.0)) return false;
         // Verify trap still exists and has bait
-        if (!bug.level().getBlockState(trapPos).is(LKBlocks.BUG_TRAP.get())) return false;
+        if (!bug.level().getBlockState(trapPos).is(Blocks.BUG_TRAP.get())) return false;
         return true;
     }
 
@@ -71,7 +71,7 @@ public class BugFindTrapGoal extends Goal {
         for (BlockPos pos : BlockPos.betweenClosed(
                 bugPos.offset(-SEARCH_RANGE, -4, -SEARCH_RANGE),
                 bugPos.offset(SEARCH_RANGE, 4, SEARCH_RANGE))) {
-            if (!bug.level().getBlockState(pos).is(LKBlocks.BUG_TRAP.get())) continue;
+            if (!bug.level().getBlockState(pos).is(Blocks.BUG_TRAP.get())) continue;
 
             // Check if trap has bait
             BlockEntity be = bug.level().getBlockEntity(pos);

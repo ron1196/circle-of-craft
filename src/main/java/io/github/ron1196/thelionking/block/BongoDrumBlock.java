@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.block;
 
 import io.github.ron1196.thelionking.block.entity.BongoDrumBlockEntity;
 import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
@@ -56,7 +56,7 @@ public class BongoDrumBlock extends BaseEntityBlock {
                                  InteractionHand hand, BlockHitResult hit) {
         if (level.getBlockEntity(pos) instanceof BongoDrumBlockEntity drum) {
             // If holding a staff, open enchanting GUI
-            if (player.getItemInHand(hand).is(LKItems.RHYTHM_STAFF.get())) {
+            if (player.getItemInHand(hand).is(Items.RHYTHM_STAFF.get())) {
                 if (!level.isClientSide()) {
                     NetworkHooks.openScreen((ServerPlayer) player, drum, pos);
                 }

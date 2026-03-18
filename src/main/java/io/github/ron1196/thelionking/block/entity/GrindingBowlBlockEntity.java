@@ -2,8 +2,8 @@ package io.github.ron1196.thelionking.block.entity;
 
 import io.github.ron1196.thelionking.menu.GrindingBowlMenu;
 import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
-import io.github.ron1196.thelionking.registry.LKBlocks;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Blocks;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -16,7 +16,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,45 +40,45 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
     private static Map<Item, Item> getRecipes() {
         if (RECIPES.isEmpty()) {
             // Bone grinding
-            RECIPES.put(LKItems.HYENA_BONE.get(), LKItems.HYENA_BONE_SHARD.get());
-            RECIPES.put(Items.BONE, Items.BONE_MEAL);
+            RECIPES.put(Items.HYENA_BONE.get(), Items.HYENA_BONE_SHARD.get());
+            RECIPES.put(net.minecraft.world.item.Items.BONE, net.minecraft.world.item.Items.BONE_MEAL);
 
             // Fruit/plant grinding
-            RECIPES.put(LKItems.MANGO.get(), LKItems.MANGO_DUST.get());
-            RECIPES.put(LKItems.RHINO_HORN.get(), LKItems.GROUND_RHINO_HORN.get());
-            RECIPES.put(LKItems.NUKA_SHARD.get(), LKItems.POISON.get());
-            RECIPES.put(LKItems.CORN.get(), LKItems.CORN_KERNELS.get());
-            RECIPES.put(LKItems.DRIED_MAIZE.get(), LKItems.CORN_KERNELS.get());
+            RECIPES.put(Items.MANGO.get(), Items.MANGO_DUST.get());
+            RECIPES.put(Items.RHINO_HORN.get(), Items.GROUND_RHINO_HORN.get());
+            RECIPES.put(Items.NUKA_SHARD.get(), Items.POISON.get());
+            RECIPES.put(Items.CORN.get(), Items.CORN_KERNELS.get());
+            RECIPES.put(Items.DRIED_MAIZE.get(), Items.CORN_KERNELS.get());
 
             // Stone grinding
-            RECIPES.put(LKItems.PRIDESTONE_ITEM.get(), Items.SAND);
-            RECIPES.put(LKItems.CORRUPT_PRIDESTONE_ITEM.get(), Items.SAND);
-            RECIPES.put(Items.COBBLESTONE, Items.GRAVEL);
-            RECIPES.put(Items.GRAVEL, Items.SAND);
+            RECIPES.put(Items.PRIDESTONE_ITEM.get(), net.minecraft.world.item.Items.SAND);
+            RECIPES.put(Items.CORRUPT_PRIDESTONE_ITEM.get(), net.minecraft.world.item.Items.SAND);
+            RECIPES.put(net.minecraft.world.item.Items.COBBLESTONE, net.minecraft.world.item.Items.GRAVEL);
+            RECIPES.put(net.minecraft.world.item.Items.GRAVEL, net.minecraft.world.item.Items.SAND);
 
             // Feather → dye recipes
-            RECIPES.put(LKItems.FEATHER_BLUE.get(), Items.BLUE_DYE);
-            RECIPES.put(LKItems.FEATHER_YELLOW.get(), Items.YELLOW_DYE);
-            RECIPES.put(LKItems.FEATHER_RED.get(), Items.RED_DYE);
-            RECIPES.put(LKItems.FEATHER_BLACK.get(), Items.BLACK_DYE);
-            RECIPES.put(LKItems.FEATHER_PINK.get(), Items.PINK_DYE);
+            RECIPES.put(Items.FEATHER_BLUE.get(), net.minecraft.world.item.Items.BLUE_DYE);
+            RECIPES.put(Items.FEATHER_YELLOW.get(), net.minecraft.world.item.Items.YELLOW_DYE);
+            RECIPES.put(Items.FEATHER_RED.get(), net.minecraft.world.item.Items.RED_DYE);
+            RECIPES.put(Items.FEATHER_BLACK.get(), net.minecraft.world.item.Items.BLACK_DYE);
+            RECIPES.put(Items.FEATHER_PINK.get(), net.minecraft.world.item.Items.PINK_DYE);
 
             // Flower → dye recipes
-            RECIPES.put(LKBlocks.WHITE_FLOWER.get().asItem(), Items.WHITE_DYE);
-            RECIPES.put(LKBlocks.BLUE_FLOWER.get().asItem(), Items.BLUE_DYE);
-            RECIPES.put(LKBlocks.PURPLE_FLOWER.get().asItem(), Items.PURPLE_DYE);
-            RECIPES.put(LKBlocks.RED_FLOWER.get().asItem(), Items.RED_DYE);
+            RECIPES.put(Blocks.WHITE_FLOWER.get().asItem(), net.minecraft.world.item.Items.WHITE_DYE);
+            RECIPES.put(Blocks.BLUE_FLOWER.get().asItem(), net.minecraft.world.item.Items.BLUE_DYE);
+            RECIPES.put(Blocks.PURPLE_FLOWER.get().asItem(), net.minecraft.world.item.Items.PURPLE_DYE);
+            RECIPES.put(Blocks.RED_FLOWER.get().asItem(), net.minecraft.world.item.Items.RED_DYE);
 
             // Leaf → dye recipes
-            RECIPES.put(LKBlocks.ACACIA_LEAVES.get().asItem(), Items.GREEN_DYE);
-            RECIPES.put(LKBlocks.RAINFOREST_LEAVES.get().asItem(), Items.GREEN_DYE);
-            RECIPES.put(LKBlocks.MANGO_LEAVES.get().asItem(), Items.GREEN_DYE);
+            RECIPES.put(Blocks.ACACIA_LEAVES.get().asItem(), net.minecraft.world.item.Items.GREEN_DYE);
+            RECIPES.put(Blocks.RAINFOREST_LEAVES.get().asItem(), net.minecraft.world.item.Items.GREEN_DYE);
+            RECIPES.put(Blocks.MANGO_LEAVES.get().asItem(), net.minecraft.world.item.Items.GREEN_DYE);
 
             // Termite grinding
-            RECIPES.put(LKItems.BUG.get(), LKItems.TERMITE_DUST.get());
+            RECIPES.put(Items.BUG.get(), Items.TERMITE_DUST.get());
 
             // Wheat → flour (vanilla compatibility)
-            RECIPES.put(Items.WHEAT, Items.BREAD);
+            RECIPES.put(net.minecraft.world.item.Items.WHEAT, net.minecraft.world.item.Items.BREAD);
         }
         return RECIPES;
     }

@@ -1,11 +1,10 @@
 package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
-import io.github.ron1196.thelionking.registry.LKBlocks;
+import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -24,12 +23,12 @@ public class RafikiTreeFeature extends Feature<NoneFeatureConfiguration> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RafikiTreeFeature.class);
 
-    private static final BlockState WOOD = LKBlocks.RAFIKI_WOOD.get().defaultBlockState();
-    private static final BlockState LEAVES = LKBlocks.RAFIKI_LEAVES.get().defaultBlockState()
+    private static final BlockState WOOD = Blocks.RAFIKI_WOOD.get().defaultBlockState();
+    private static final BlockState LEAVES = Blocks.RAFIKI_LEAVES.get().defaultBlockState()
             .setValue(LeavesBlock.PERSISTENT, true);
-    private static final BlockState TORCH = Blocks.TORCH.defaultBlockState();
-    private static final BlockState PORTAL_FRAME = LKBlocks.OUTLANDS_PORTAL_FRAME.get().defaultBlockState();
-    private static final BlockState AIR = Blocks.AIR.defaultBlockState();
+    private static final BlockState TORCH = net.minecraft.world.level.block.Blocks.TORCH.defaultBlockState();
+    private static final BlockState PORTAL_FRAME = Blocks.OUTLANDS_PORTAL_FRAME.get().defaultBlockState();
+    private static final BlockState AIR = net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
 
 
     public RafikiTreeFeature(Codec<NoneFeatureConfiguration> codec) {

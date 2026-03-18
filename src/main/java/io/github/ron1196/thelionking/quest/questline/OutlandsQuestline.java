@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.quest.questline;
 
 import io.github.ron1196.thelionking.quest.stage.IStageId;
 import io.github.ron1196.thelionking.quest.stage.StageTrigger;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class OutlandsQuestline {
     public static Questline build() {
         return Questline.builder("outlands")
                 .displayName("An Outlandish Scheme")
-                .icon(() -> new ItemStack(LKItems.WAYWARD_FEATHER.get()))
+                .icon(() -> new ItemStack(Items.WAYWARD_FEATHER.get()))
                 .canStart(manager -> manager.isComplete("rafiki"))
                 .prerequisites("Complete Rafiki's Quest")
                 .stage(OutlandsQuestline.Stage.ENTER_OUTLANDS, new io.github.ron1196.thelionking.quest.stage.Stage("Enter the Outlands"))
@@ -39,13 +39,13 @@ public class OutlandsQuestline {
                 .stage(COLLECT_INGOTS, new io.github.ron1196.thelionking.quest.stage.Stage(
                         "Bring Zira 5 kivulite and 2 silver ingots",
                         List.of(
-                                new ItemRequirement(LKItems.KIVULITE, 5, Source.MAIN_HAND),
-                                new ItemRequirement(LKItems.SILVER_INGOT, 2, Source.INVENTORY)))
+                                new ItemRequirement(Items.KIVULITE, 5, Source.MAIN_HAND),
+                                new ItemRequirement(Items.SILVER_INGOT, 2, Source.INVENTORY)))
                 )
                 .stage(THROW_IN_OUTWATER, new io.github.ron1196.thelionking.quest.stage.Stage("Throw the ingots into the Outwater"))
                 .stage(COLLECT_FEATHERS, new io.github.ron1196.thelionking.quest.stage.Stage(
                         "Bring Zira 3 wayward feathers",
-                        List.of(new ItemRequirement(LKItems.WAYWARD_FEATHER, 3)))
+                        List.of(new ItemRequirement(Items.WAYWARD_FEATHER, 3)))
                 )
                 .stage(FOLLOW_OUTLANDERS, new io.github.ron1196.thelionking.quest.stage.Stage("Follow the Outlanders"))
                 .stage(STAGE_6, new io.github.ron1196.thelionking.quest.stage.Stage("Continue exploring the Outlands"))

@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.entity.projectile;
 
 import io.github.ron1196.thelionking.entity.hostile.TermiteEntity;
 import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
@@ -22,7 +22,7 @@ public class ThrownTermiteEntity extends ThrowableItemProjectile {
 
     @Override
     protected Item getDefaultItem() {
-        return LKItems.BUG.get();
+        return Items.BUG.get();
     }
 
     @Override

@@ -86,6 +86,18 @@ Items using generated placeholder textures (not from old mod):
 - [ ] **~160 item textures** need migration
 - [x] ~~**5 GUI textures**~~ — RESOLVED: `quiver.png`, `simba.png`, `timon.png`, `flatulence.png` all migrated from old assets. `icons.png` not needed — vanilla handles HUD icons.
 
+## Deprecated BlockBehaviour.use() Override
+
+- [ ] **8 blocks override the deprecated `BlockBehaviour.use()` method** — Mojang deprecated this in 1.20.1 in preparation for a refactor that landed in 1.21, where it was split into `useWithoutItem()` (empty-hand interaction) and `useItemOn()` (item-in-hand interaction). No non-deprecated replacement exists in 1.20.1, so each block currently suppresses the warning with `@SuppressWarnings("deprecation")`. When upgrading to 1.21+, migrate all 8 blocks:
+  - `PortalFrameBlock` — item-triggered portal creation
+  - `ZiraMoundGateBlock` — Rafiki Stick chain-break
+  - `StarAltarBlock` — star altar activation
+  - `OutlandsAltarBlock` — outlands altar activation
+  - `BongoDrumBlock` — drum playing
+  - `BananaCakeBlock` — eating
+  - `BugTrapBlock` — bug collection
+  - `GrindingBowlBlock` — ingredient insertion / output extraction
+
 ## CharacterSpeech Split
 
 - [ ] **`CharacterSpeech.java` is a monolithic dialogue class** — All NPC and animal dialogue lives in one big enum. Should be split:

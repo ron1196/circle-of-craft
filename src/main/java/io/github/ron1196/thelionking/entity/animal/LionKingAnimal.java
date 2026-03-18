@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.entity.animal;
 
 import io.github.ron1196.thelionking.entity.animal.favor.AnimalFavor;
 import io.github.ron1196.thelionking.entity.animal.favor.AnimalFavorEntry;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -18,7 +18,6 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -112,7 +111,7 @@ public abstract class LionKingAnimal extends Animal {
     }
 
     protected ItemStack getQuestReward() {
-        return new ItemStack(Items.GOLD_NUGGET, 3 + QUEST_RANDOM.nextInt(4));
+        return new ItemStack(net.minecraft.world.item.Items.GOLD_NUGGET, 3 + QUEST_RANDOM.nextInt(4));
     }
 
     private void giveQuestReward(ServerPlayer player) {
@@ -126,13 +125,13 @@ public abstract class LionKingAnimal extends Animal {
 
     protected Item[] getQuestRequestItems() {
         return new Item[]{
-                LKItems.MANGO.get(),
-                LKItems.BANANA.get(),
-                LKItems.CORN.get(),
-                LKItems.KIWANO.get(),
-                Items.APPLE,
-                Items.BREAD,
-                Items.WHEAT
+                Items.MANGO.get(),
+                Items.BANANA.get(),
+                Items.CORN.get(),
+                Items.KIWANO.get(),
+                net.minecraft.world.item.Items.APPLE,
+                net.minecraft.world.item.Items.BREAD,
+                net.minecraft.world.item.Items.WHEAT
         };
     }
 

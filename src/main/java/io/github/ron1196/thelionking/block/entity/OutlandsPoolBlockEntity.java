@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.block.entity;
 
 import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -53,20 +53,20 @@ public class OutlandsPoolBlockEntity extends BlockEntity {
         List<ItemStack> remaining = new ArrayList<>();
 
         for (ItemStack stack : collectedItems) {
-            if (stack.is(LKItems.SILVER_INGOT.get())) silver += stack.getCount();
-            else if (stack.is(LKItems.KIVULITE.get())) kivulite += stack.getCount();
-            else if (stack.is(LKItems.FEATHER_BLUE.get())) featherBlue += stack.getCount();
-            else if (stack.is(LKItems.FEATHER_YELLOW.get())) featherYellow += stack.getCount();
-            else if (stack.is(LKItems.FEATHER_RED.get())) featherRed += stack.getCount();
-            else if (stack.is(LKItems.FEATHER_BLACK.get())) featherBlack += stack.getCount();
-            else if (stack.is(LKItems.RAFIKI_COIN.get())) rafikiCoins += stack.getCount();
+            if (stack.is(Items.SILVER_INGOT.get())) silver += stack.getCount();
+            else if (stack.is(Items.KIVULITE.get())) kivulite += stack.getCount();
+            else if (stack.is(Items.FEATHER_BLUE.get())) featherBlue += stack.getCount();
+            else if (stack.is(Items.FEATHER_YELLOW.get())) featherYellow += stack.getCount();
+            else if (stack.is(Items.FEATHER_RED.get())) featherRed += stack.getCount();
+            else if (stack.is(Items.FEATHER_BLACK.get())) featherBlack += stack.getCount();
+            else if (stack.is(Items.RAFIKI_COIN.get())) rafikiCoins += stack.getCount();
             else remaining.add(stack);
         }
 
         // Recipe: 2 Silver + 5 Kivulite → Outlands Helmet
         int helmCount = Math.min(silver / 2, kivulite / 5);
         if (helmCount > 0) {
-            spawnItem(above, new ItemStack(LKItems.OUTLANDS_HELMET.get(), helmCount));
+            spawnItem(above, new ItemStack(Items.OUTLANDS_HELMET.get(), helmCount));
             silver -= helmCount * 2;
             kivulite -= helmCount * 5;
         }
@@ -74,7 +74,7 @@ public class OutlandsPoolBlockEntity extends BlockEntity {
         // Recipe: 1 each of 4 feathers → Outlands Feather
         int featherCount = Math.min(Math.min(featherBlue, featherYellow), Math.min(featherRed, featherBlack));
         if (featherCount > 0) {
-            spawnItem(above, new ItemStack(LKItems.WAYWARD_FEATHER.get(), featherCount));
+            spawnItem(above, new ItemStack(Items.WAYWARD_FEATHER.get(), featherCount));
             featherBlue -= featherCount;
             featherYellow -= featherCount;
             featherRed -= featherCount;
@@ -83,16 +83,16 @@ public class OutlandsPoolBlockEntity extends BlockEntity {
 
         // Recipe: Rafiki Coin → Zira Coin (1:1)
         if (rafikiCoins > 0) {
-            spawnItem(above, new ItemStack(LKItems.ZIRA_COIN.get(), rafikiCoins));
+            spawnItem(above, new ItemStack(Items.ZIRA_COIN.get(), rafikiCoins));
         }
 
         // Drop leftover ingredients
-        if (silver > 0) spawnItem(above, new ItemStack(LKItems.SILVER_INGOT.get(), silver));
-        if (kivulite > 0) spawnItem(above, new ItemStack(LKItems.KIVULITE.get(), kivulite));
-        if (featherBlue > 0) spawnItem(above, new ItemStack(LKItems.FEATHER_BLUE.get(), featherBlue));
-        if (featherYellow > 0) spawnItem(above, new ItemStack(LKItems.FEATHER_YELLOW.get(), featherYellow));
-        if (featherRed > 0) spawnItem(above, new ItemStack(LKItems.FEATHER_RED.get(), featherRed));
-        if (featherBlack > 0) spawnItem(above, new ItemStack(LKItems.FEATHER_BLACK.get(), featherBlack));
+        if (silver > 0) spawnItem(above, new ItemStack(Items.SILVER_INGOT.get(), silver));
+        if (kivulite > 0) spawnItem(above, new ItemStack(Items.KIVULITE.get(), kivulite));
+        if (featherBlue > 0) spawnItem(above, new ItemStack(Items.FEATHER_BLUE.get(), featherBlue));
+        if (featherYellow > 0) spawnItem(above, new ItemStack(Items.FEATHER_YELLOW.get(), featherYellow));
+        if (featherRed > 0) spawnItem(above, new ItemStack(Items.FEATHER_RED.get(), featherRed));
+        if (featherBlack > 0) spawnItem(above, new ItemStack(Items.FEATHER_BLACK.get(), featherBlack));
         for (ItemStack stack : remaining) {
             spawnItem(above, stack);
         }

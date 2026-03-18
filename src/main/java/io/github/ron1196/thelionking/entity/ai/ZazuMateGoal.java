@@ -1,12 +1,10 @@
 package io.github.ron1196.thelionking.entity.ai;
 
 import io.github.ron1196.thelionking.entity.animal.ZazuEntity;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.EnumSet;
 
 /**
  * Zazu periodically lays an egg (drops a zazu_egg item).
@@ -46,7 +44,7 @@ public class ZazuMateGoal extends Goal {
         ItemEntity egg = new ItemEntity(
                 zazu.level(),
                 zazu.getX(), zazu.getY(), zazu.getZ(),
-                new ItemStack(LKItems.ZAZU_EGG.get())
+                new ItemStack(Items.ZAZU_EGG.get())
         );
         egg.setDefaultPickUpDelay();
         zazu.level().addFreshEntity(egg);

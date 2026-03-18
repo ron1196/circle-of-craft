@@ -1,12 +1,11 @@
 package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
-import io.github.ron1196.thelionking.registry.LKBlocks;
+import io.github.ron1196.thelionking.registry.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -26,7 +25,7 @@ public class DeadTreeFeature extends Feature<NoneFeatureConfiguration> {
 
         // Only grow on sand or outsand
         BlockState below = level.getBlockState(pos.below());
-        if (!below.is(Blocks.SAND) && !below.is(LKBlocks.OUTSAND.get())) {
+        if (!below.is(net.minecraft.world.level.block.Blocks.SAND) && !below.is(Blocks.OUTSAND.get())) {
             return false;
         }
 
@@ -39,7 +38,7 @@ public class DeadTreeFeature extends Feature<NoneFeatureConfiguration> {
             }
         }
 
-        BlockState log = LKBlocks.DEADWOOD_LOG.get().defaultBlockState();
+        BlockState log = Blocks.DEADWOOD_LOG.get().defaultBlockState();
 
         // Trunk
         for (int y = 0; y < height; y++) {

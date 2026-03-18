@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
-import io.github.ron1196.thelionking.registry.LKBlocks;
+import io.github.ron1196.thelionking.registry.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
@@ -35,8 +35,8 @@ public class MangoTreeFeature extends Feature<NoneFeatureConfiguration> {
             }
         }
 
-        BlockState log = LKBlocks.MANGO_LOG.get().defaultBlockState();
-        BlockState leaves = LKBlocks.MANGO_LEAVES.get().defaultBlockState()
+        BlockState log = Blocks.MANGO_LOG.get().defaultBlockState();
+        BlockState leaves = Blocks.MANGO_LEAVES.get().defaultBlockState()
                 .setValue(net.minecraft.world.level.block.LeavesBlock.PERSISTENT, true);
 
         // Trunk

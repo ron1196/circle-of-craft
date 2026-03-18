@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.block;
 
-import io.github.ron1196.thelionking.registry.LKBlocks;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Blocks;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -23,6 +23,7 @@ import java.util.function.Supplier;
 public class PortalFrameBlock extends Block {
 
     private record ActivationKey(Supplier<Item> item, boolean consumed) {
+        @SuppressWarnings("SameParameterValue")
         static ActivationKey consumed(Supplier<Item> item) {
             return new ActivationKey(item, true);
         }
@@ -40,14 +41,14 @@ public class PortalFrameBlock extends Block {
 
     private static final Map<Boolean, PortalConfig> ACTIVATION_KEYS = Map.of(
             false, PortalConfig.create(
-                    LKBlocks.PRIDE_LANDS_PORTAL,
-                    ActivationKey.consumed(LKItems.TICKET),
-                    ActivationKey.kept(LKItems.RHYTHM_STAFF)
+                    Blocks.PRIDE_LANDS_PORTAL,
+                    ActivationKey.consumed(Items.TICKET),
+                    ActivationKey.kept(Items.RHYTHM_STAFF)
             ),
             true, PortalConfig.create(
-                    LKBlocks.OUTLANDS_PORTAL,
-                    ActivationKey.consumed(LKItems.TICKET),
-                    ActivationKey.kept(LKItems.ZIRA_COIN)
+                    Blocks.OUTLANDS_PORTAL,
+                    ActivationKey.consumed(Items.TICKET),
+                    ActivationKey.kept(Items.ZIRA_COIN)
             )
     );
 
@@ -59,13 +60,15 @@ public class PortalFrameBlock extends Block {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public @NotNull InteractionResult use(
             @NotNull BlockState state,
             @NotNull Level level,
             @NotNull BlockPos pos,
             Player player,
             @NotNull InteractionHand hand,
-            @NotNull BlockHitResult hit) {
+            @NotNull BlockHitResult hit
+    ) {
         ItemStack stack = player.getItemInHand(hand);
         PortalConfig config = ACTIVATION_KEYS.get(isOutlands);
         for (ActivationKey key : config.keys()) {
@@ -79,7 +82,7 @@ public class PortalFrameBlock extends Block {
     private InteractionResult tryCreatePortal(Level level, BlockPos pos, Player player, ItemStack stack, ActivationKey key, PortalConfig config) {
         if (level.isClientSide) return InteractionResult.SUCCESS;
 
-        LKPortalBlock portalBlock = (LKPortalBlock) config.portal().get();
+        PortalBlock portalBlock = (PortalBlock) config.portal().get();
 
         for (BlockPos testPos : new BlockPos[]{
                 pos.above(), pos.below(),

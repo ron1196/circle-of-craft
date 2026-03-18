@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.menu;
 
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
@@ -51,7 +51,7 @@ public class TimonTradeSlot extends SlotItemHandler {
         int count = 0;
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack stack = player.getInventory().getItem(i);
-            if (stack.is(LKItems.BUG.get())) count += stack.getCount();
+            if (stack.is(Items.BUG.get())) count += stack.getCount();
         }
         return count;
     }
@@ -60,7 +60,7 @@ public class TimonTradeSlot extends SlotItemHandler {
         int remaining = amount;
         for (int i = 0; i < player.getInventory().getContainerSize() && remaining > 0; i++) {
             ItemStack stack = player.getInventory().getItem(i);
-            if (stack.is(LKItems.BUG.get())) {
+            if (stack.is(Items.BUG.get())) {
                 int deduct = Math.min(stack.getCount(), remaining);
                 stack.shrink(deduct);
                 remaining -= deduct;

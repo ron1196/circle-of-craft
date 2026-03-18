@@ -6,7 +6,7 @@ import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
 import io.github.ron1196.thelionking.quest.stage.StageTrigger;
-import io.github.ron1196.thelionking.registry.LKBlocks;
+import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -41,7 +41,7 @@ public class RafikiDustItem extends Item {
         }
 
         // Must be used on a Star Altar
-        if (!level.getBlockState(context.getClickedPos()).is(LKBlocks.STAR_ALTAR.get())) {
+        if (!level.getBlockState(context.getClickedPos()).is(Blocks.STAR_ALTAR.get())) {
             return InteractionResult.PASS;
         }
 

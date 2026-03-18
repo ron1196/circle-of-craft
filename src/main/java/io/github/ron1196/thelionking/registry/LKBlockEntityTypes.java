@@ -15,40 +15,40 @@ public class LKBlockEntityTypes {
     public static final RegistryObject<BlockEntityType<GrindingBowlBlockEntity>> GRINDING_BOWL =
             BLOCK_ENTITY_TYPES.register("grinding_bowl",
                     () -> BlockEntityType.Builder.of(GrindingBowlBlockEntity::new,
-                            LKBlocks.GRINDING_BOWL.get()).build(null));
+                            Blocks.GRINDING_BOWL.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<HyenaHeadBlockEntity>> HYENA_HEAD =
             BLOCK_ENTITY_TYPES.register("hyena_head",
                     () -> BlockEntityType.Builder.of(HyenaHeadBlockEntity::new,
-                            LKBlocks.HYENA_HEAD.get()).build(null));
+                            Blocks.HYENA_HEAD.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<FurRugBlockEntity>> FUR_RUG =
             BLOCK_ENTITY_TYPES.register("fur_rug",
                     () -> BlockEntityType.Builder.of(FurRugBlockEntity::new,
-                            LKBlocks.FUR_RUG.get()).build(null));
+                            Blocks.FUR_RUG.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<BugTrapBlockEntity>> BUG_TRAP =
             BLOCK_ENTITY_TYPES.register("bug_trap",
                     () -> BlockEntityType.Builder.of(BugTrapBlockEntity::new,
-                            LKBlocks.BUG_TRAP.get()).build(null));
+                            Blocks.BUG_TRAP.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<BongoDrumBlockEntity>> BONGO_DRUM =
             BLOCK_ENTITY_TYPES.register("bongo_drum",
                     () -> BlockEntityType.Builder.of(BongoDrumBlockEntity::new,
-                            LKBlocks.BONGO_DRUM.get()).build(null));
+                            Blocks.BONGO_DRUM.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<OutlandsPoolBlockEntity>> OUTLANDS_POOL =
             BLOCK_ENTITY_TYPES.register("outlands_pool",
                     () -> BlockEntityType.Builder.of(OutlandsPoolBlockEntity::new,
-                            LKBlocks.OUTLANDS_POOL.get()).build(null));
+                            Blocks.OUTLANDS_POOL.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<LKSpawnerBlockEntity>> LK_SPAWNER =
             BLOCK_ENTITY_TYPES.register("lk_spawner",
                     () -> BlockEntityType.Builder.of(LKSpawnerBlockEntity::new,
-                            LKBlocks.LK_SPAWNER.get()).build(null));
+                            Blocks.LK_SPAWNER.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<PrideBedBlockEntity>> PRIDE_BED =
             BLOCK_ENTITY_TYPES.register("pride_bed",
                     () -> BlockEntityType.Builder.of(PrideBedBlockEntity::new,
-                            LKBlocks.PRIDE_BED.get()).build(null));
+                            Blocks.PRIDE_BED.get()).build(null));
 }

@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.entity.npc;
 
 import io.github.ron1196.thelionking.menu.TimonMerchantMenu;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkHooks;
@@ -75,12 +75,12 @@ public class TimonEntity extends PathfinderMob {
 
         // Accept bugs for a quick trade
         ItemStack held = player.getItemInHand(hand);
-        if (held.is(LKItems.BUG.get()) && held.getCount() >= 5) {
+        if (held.is(Items.BUG.get()) && held.getCount() >= 5) {
             held.shrink(5);
             int reward = random.nextInt(3);
             switch (reward) {
-                case 0 -> player.addItem(new ItemStack(LKItems.PUMBAA_BOMB.get(), 3));
-                case 1 -> player.addItem(new ItemStack(LKItems.CRYSTAL.get(), 1));
+                case 0 -> player.addItem(new ItemStack(Items.PUMBAA_BOMB.get(), 3));
+                case 1 -> player.addItem(new ItemStack(Items.CRYSTAL.get(), 1));
                 case 2 -> player.giveExperiencePoints(50);
             }
             hasGivenFirstBugs = true;

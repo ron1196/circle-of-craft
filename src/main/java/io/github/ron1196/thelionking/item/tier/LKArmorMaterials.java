@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.item.tier;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
@@ -13,16 +13,16 @@ import java.util.function.Supplier;
 public enum LKArmorMaterials implements ArmorMaterial {
     SILVER("silver", 19, new int[]{2, 5, 7, 2}, 16,
             SoundEvents.ARMOR_EQUIP_IRON, 0.0F, 0.0F,
-            () -> Ingredient.of(LKItems.SILVER_INGOT.get())),
+            () -> Ingredient.of(Items.SILVER_INGOT.get())),
     GEMSBOK("gemsbok", 8, new int[]{1, 4, 5, 2}, 8,
             SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F,
-            () -> Ingredient.of(LKItems.GEMSBOK_HIDE.get())),
+            () -> Ingredient.of(Items.GEMSBOK_HIDE.get())),
     PEACOCK("peacock", 31, new int[]{3, 6, 8, 3}, 9,
             SoundEvents.ARMOR_EQUIP_DIAMOND, 1.0F, 0.0F,
-            () -> Ingredient.of(LKItems.PEACOCK_GEM.get())),
+            () -> Ingredient.of(Items.PEACOCK_GEM.get())),
     OUTLANDS("outlands", 12, new int[]{2, 5, 6, 2}, 0,
             SoundEvents.ARMOR_EQUIP_IRON, 0.0F, 0.0F,
-            () -> Ingredient.of(LKItems.OUTLANDER_FUR.get())),
+            () -> Ingredient.of(Items.OUTLANDER_FUR.get())),
     TICKET_LION("ticket_lion", 0, new int[]{0, 0, 0, 0}, 0,
             SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F,
             () -> Ingredient.EMPTY);

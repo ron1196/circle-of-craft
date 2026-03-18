@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.registry;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.block.*;
+import io.github.ron1196.thelionking.block.MushroomBlock;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -11,10 +12,12 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class LKBlocks {
+public class Blocks {
 
-    public static final DeferredRegister<Block> BLOCKS =
-            DeferredRegister.create(ForgeRegistries.BLOCKS, TheLionKingMod.MOD_ID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(
+            ForgeRegistries.BLOCKS,
+            TheLionKingMod.MOD_ID
+    );
 
     // ========== Pridestone & Variants ==========
     public static final RegistryObject<Block> PRIDESTONE = BLOCKS.register("pridestone",
@@ -341,11 +344,11 @@ public class LKBlocks {
 
     // ========== Mushrooms ==========
     public static final RegistryObject<Block> OUTSHROOM = BLOCKS.register("outshroom",
-            () -> new LKMushroomBlock(BlockBehaviour.Properties.of()
+            () -> new MushroomBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
 
     public static final RegistryObject<Block> OUTSHROOM_GLOWING = BLOCKS.register("outshroom_glowing",
-            () -> new LKMushroomBlock(BlockBehaviour.Properties.of()
+            () -> new MushroomBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)
                     .lightLevel(s -> 12)));
 
@@ -477,13 +480,13 @@ public class LKBlocks {
                     .noLootTable(), true));
 
     public static final RegistryObject<Block> PRIDE_LANDS_PORTAL = BLOCKS.register("pride_lands_portal",
-            () -> new LKPortalBlock(BlockBehaviour.Properties.of()
+            () -> new PortalBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_LIGHT_GREEN).noCollission().strength(-1.0F)
                     .lightLevel(s -> 11).noLootTable().noOcclusion()
                     .pushReaction(PushReaction.BLOCK), false));
 
     public static final RegistryObject<Block> OUTLANDS_PORTAL = BLOCKS.register("outlands_portal",
-            () -> new LKPortalBlock(BlockBehaviour.Properties.of()
+            () -> new PortalBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_PURPLE).noCollission().strength(-1.0F)
                     .lightLevel(s -> 11).noLootTable().noOcclusion()
                     .pushReaction(PushReaction.BLOCK), true));

@@ -1,15 +1,13 @@
 package io.github.ron1196.thelionking.block;
 
-import io.github.ron1196.thelionking.registry.LKBlocks;
+import io.github.ron1196.thelionking.registry.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -49,14 +47,14 @@ public class HangingBananaBlock extends HorizontalDirectionalBlock {
         Direction facing = state.getValue(FACING);
         BlockPos attachedTo = pos.relative(facing.getOpposite());
         BlockState attachedState = level.getBlockState(attachedTo);
-        return attachedState.is(LKBlocks.BANANA_LOG.get());
+        return attachedState.is(Blocks.BANANA_LOG.get());
     }
 
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
                                    LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         if (direction == state.getValue(FACING).getOpposite() && !state.canSurvive(level, pos)) {
-            return Blocks.AIR.defaultBlockState();
+            return net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
         }
         return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }

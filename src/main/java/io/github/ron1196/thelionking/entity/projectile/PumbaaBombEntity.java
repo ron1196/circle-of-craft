@@ -3,7 +3,7 @@ package io.github.ron1196.thelionking.entity.projectile;
 import io.github.ron1196.thelionking.network.FlatulencePacket;
 import io.github.ron1196.thelionking.network.LKNetworking;
 import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,7 +31,7 @@ public class PumbaaBombEntity extends ThrowableItemProjectile {
 
     @Override
     protected Item getDefaultItem() {
-        return LKItems.PUMBAA_BOMB.get();
+        return Items.PUMBAA_BOMB.get();
     }
 
     @Override

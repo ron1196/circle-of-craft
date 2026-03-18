@@ -1,9 +1,9 @@
 package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
-import io.github.ron1196.thelionking.registry.LKBlocks;
+import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -13,7 +13,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
@@ -47,19 +46,19 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         int k = origin.getZ();
 
         // Old mod used default oak + red wool; randomBooths not implemented yet
-        BlockState stairBlock = Blocks.OAK_STAIRS.defaultBlockState();
-        BlockState seatBlock = Blocks.OAK_STAIRS.defaultBlockState();
-        BlockState planks = Blocks.OAK_PLANKS.defaultBlockState();
-        BlockState wool = Blocks.RED_WOOL.defaultBlockState();
-        BlockState cobble = Blocks.COBBLESTONE.defaultBlockState();
-        BlockState stoneBrick = Blocks.STONE_BRICKS.defaultBlockState();
-        BlockState glowstone = Blocks.GLOWSTONE.defaultBlockState();
-        BlockState fence = Blocks.OAK_FENCE.defaultBlockState();
-        BlockState glassPane = Blocks.GLASS_PANE.defaultBlockState();
-        BlockState portalFrame = LKBlocks.PRIDE_PORTAL_FRAME.get().defaultBlockState();
-        BlockState torch = Blocks.TORCH.defaultBlockState();
-        BlockState air = Blocks.AIR.defaultBlockState();
-        BlockState dirt = Blocks.DIRT.defaultBlockState();
+        BlockState stairBlock = net.minecraft.world.level.block.Blocks.OAK_STAIRS.defaultBlockState();
+        BlockState seatBlock = net.minecraft.world.level.block.Blocks.OAK_STAIRS.defaultBlockState();
+        BlockState planks = net.minecraft.world.level.block.Blocks.OAK_PLANKS.defaultBlockState();
+        BlockState wool = net.minecraft.world.level.block.Blocks.RED_WOOL.defaultBlockState();
+        BlockState cobble = net.minecraft.world.level.block.Blocks.COBBLESTONE.defaultBlockState();
+        BlockState stoneBrick = net.minecraft.world.level.block.Blocks.STONE_BRICKS.defaultBlockState();
+        BlockState glowstone = net.minecraft.world.level.block.Blocks.GLOWSTONE.defaultBlockState();
+        BlockState fence = net.minecraft.world.level.block.Blocks.OAK_FENCE.defaultBlockState();
+        BlockState glassPane = net.minecraft.world.level.block.Blocks.GLASS_PANE.defaultBlockState();
+        BlockState portalFrame = Blocks.PRIDE_PORTAL_FRAME.get().defaultBlockState();
+        BlockState torch = net.minecraft.world.level.block.Blocks.TORCH.defaultBlockState();
+        BlockState air = net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
+        BlockState dirt = net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState();
 
         // ============================================================
         // FLOOR + WALLS: cobblestone floor, fill support below, plank walls
@@ -264,13 +263,13 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         // ============================================================
         FeatureHelper.placeBlock(
                 level, i - 2, j + 1, k + 3,
-                Blocks.OAK_DOOR.defaultBlockState()
+                net.minecraft.world.level.block.Blocks.OAK_DOOR.defaultBlockState()
                         .setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER)
                         .setValue(DoorBlock.FACING, Direction.WEST)
         );
         FeatureHelper.placeBlock(
                 level, i - 2, j + 2, k + 3,
-                Blocks.OAK_DOOR.defaultBlockState()
+                net.minecraft.world.level.block.Blocks.OAK_DOOR.defaultBlockState()
                         .setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER)
                         .setValue(DoorBlock.FACING, Direction.WEST)
         );
@@ -305,7 +304,7 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         BlockPos signPos = new BlockPos(i - 4, j + 3, k + 3);
         FeatureHelper.placeBlock(
                 level, signPos.getX(), signPos.getY(), signPos.getZ(),
-                Blocks.OAK_WALL_SIGN.defaultBlockState().setValue(WallSignBlock.FACING, Direction.WEST)
+                net.minecraft.world.level.block.Blocks.OAK_WALL_SIGN.defaultBlockState().setValue(WallSignBlock.FACING, Direction.WEST)
         );
 
         if (level.getBlockEntity(signPos) instanceof SignBlockEntity sign) {
@@ -334,11 +333,11 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         BlockPos chestPos = new BlockPos(i + 2, j + 1, k);
         FeatureHelper.placeBlock(
                 level, chestPos.getX(), chestPos.getY(), chestPos.getZ(),
-                Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.WEST)
+                net.minecraft.world.level.block.Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.WEST)
         );
         FeatureHelper.placeBlock(
                 level, i + 2, j + 2, k,
-                Blocks.OAK_TRAPDOOR.defaultBlockState().setValue(TrapDoorBlock.FACING, Direction.NORTH)
+                net.minecraft.world.level.block.Blocks.OAK_TRAPDOOR.defaultBlockState().setValue(TrapDoorBlock.FACING, Direction.NORTH)
         );
 
         if (LKStructurePiece.isInCurrentChunk(chestPos) && level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
@@ -347,10 +346,10 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
                 chest.setItem(random.nextInt(chest.getContainerSize()), getBasicLoot(random));
             }
             Item ticketLionArmor = switch (random.nextInt(4)) {
-                case 0 -> LKItems.TICKET_LION_HEAD.get();
-                case 1 -> LKItems.TICKET_LION_SUIT.get();
-                case 2 -> LKItems.TICKET_LION_LEGS.get();
-                default -> LKItems.TICKET_LION_FEET.get();
+                case 0 -> Items.TICKET_LION_HEAD.get();
+                case 1 -> Items.TICKET_LION_SUIT.get();
+                case 2 -> Items.TICKET_LION_LEGS.get();
+                default -> Items.TICKET_LION_FEET.get();
             };
             chest.setItem(random.nextInt(chest.getContainerSize()), new ItemStack(ticketLionArmor));
         }
@@ -361,17 +360,17 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
 
     private ItemStack getBasicLoot(RandomSource random) {
         return switch (random.nextInt(11)) {
-            case 1 -> new ItemStack(Items.PAPER, 1 + random.nextInt(3));
-            case 2 -> new ItemStack(Items.BOOK, 1 + random.nextInt(2));
-            case 3 -> new ItemStack(Items.BREAD, 3 + random.nextInt(2));
-            case 4 -> new ItemStack(Items.COMPASS);
-            case 5 -> new ItemStack(Items.GOLD_NUGGET, 2 + random.nextInt(6));
-            case 6 -> new ItemStack(Items.APPLE, 1 + random.nextInt(3));
-            case 7 -> new ItemStack(Items.STRING, 2 + random.nextInt(2));
-            case 8 -> new ItemStack(Items.BOWL, 1 + random.nextInt(4));
-            case 9 -> new ItemStack(Items.COOKIE, 1 + random.nextInt(3));
-            case 10 -> new ItemStack(Items.COAL, 1 + random.nextInt(2));
-            default -> new ItemStack(Items.STICK, 2 + random.nextInt(4));
+            case 1 -> new ItemStack(net.minecraft.world.item.Items.PAPER, 1 + random.nextInt(3));
+            case 2 -> new ItemStack(net.minecraft.world.item.Items.BOOK, 1 + random.nextInt(2));
+            case 3 -> new ItemStack(net.minecraft.world.item.Items.BREAD, 3 + random.nextInt(2));
+            case 4 -> new ItemStack(net.minecraft.world.item.Items.COMPASS);
+            case 5 -> new ItemStack(net.minecraft.world.item.Items.GOLD_NUGGET, 2 + random.nextInt(6));
+            case 6 -> new ItemStack(net.minecraft.world.item.Items.APPLE, 1 + random.nextInt(3));
+            case 7 -> new ItemStack(net.minecraft.world.item.Items.STRING, 2 + random.nextInt(2));
+            case 8 -> new ItemStack(net.minecraft.world.item.Items.BOWL, 1 + random.nextInt(4));
+            case 9 -> new ItemStack(net.minecraft.world.item.Items.COOKIE, 1 + random.nextInt(3));
+            case 10 -> new ItemStack(net.minecraft.world.item.Items.COAL, 1 + random.nextInt(2));
+            default -> new ItemStack(net.minecraft.world.item.Items.STICK, 2 + random.nextInt(4));
         };
     }
 
@@ -388,9 +387,9 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
             if (existing.isSolidRender(level, below)) break;
             // Use planks for water/lava, fence for air
             if (!existing.getFluidState().is(Fluids.EMPTY)) {
-                FeatureHelper.placeBlock(level, x, y - j1, z, Blocks.OAK_PLANKS.defaultBlockState());
+                FeatureHelper.placeBlock(level, x, y - j1, z, net.minecraft.world.level.block.Blocks.OAK_PLANKS.defaultBlockState());
             } else {
-                FeatureHelper.placeBlock(level, x, y - j1, z, Blocks.OAK_FENCE.defaultBlockState());
+                FeatureHelper.placeBlock(level, x, y - j1, z, net.minecraft.world.level.block.Blocks.OAK_FENCE.defaultBlockState());
             }
         }
     }

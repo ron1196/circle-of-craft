@@ -20,13 +20,13 @@ import java.util.List;
  * Handles the Simba sit toggle keybind.
  */
 @Mod.EventBusSubscriber(modid = TheLionKingMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
-public class LKClientKeyHandler {
+public class ClientKeyHandler {
 
     private static final double SEARCH_RANGE = 64.0;
 
     @SubscribeEvent
     public static void onKeyInput(InputEvent.Key event) {
-        if (!LKClientEvents.SIMBA_SIT_KEY.consumeClick()) return;
+        if (!ClientEvents.SIMBA_SIT_KEY.consumeClick()) return;
 
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
@@ -34,8 +34,11 @@ public class LKClientKeyHandler {
         if (player == null || level == null) return;
 
         AABB searchBox = player.getBoundingBox().inflate(SEARCH_RANGE);
-        List<SimbaEntity> simbas = level.getEntitiesOfClass(SimbaEntity.class, searchBox,
-                simba -> simba.isOwnedBy(player));
+        List<SimbaEntity> simbas = level.getEntitiesOfClass(
+                SimbaEntity.class,
+                searchBox,
+                simba -> simba.isOwnedBy(player)
+        );
 
         for (SimbaEntity simba : simbas) {
             LKNetworking.CHANNEL.sendToServer(new SimbaSitPacket(simba.getId()));

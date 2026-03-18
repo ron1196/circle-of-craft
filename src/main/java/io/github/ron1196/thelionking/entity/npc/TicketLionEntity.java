@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -12,7 +12,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
 public class TicketLionEntity extends PathfinderMob {
@@ -63,9 +62,9 @@ public class TicketLionEntity extends PathfinderMob {
         ItemStack held = player.getItemInHand(hand);
 
         // Gold ingot exchange for ticket
-        if (held.is(Items.GOLD_INGOT)) {
+        if (held.is(net.minecraft.world.item.Items.GOLD_INGOT)) {
             held.shrink(1);
-            player.addItem(new ItemStack(LKItems.TICKET.get()));
+            player.addItem(new ItemStack(Items.TICKET.get()));
             sendMessage(player, "Thank you. Use the ticket to open the portal in the room behind me.");
             return InteractionResult.SUCCESS;
         }

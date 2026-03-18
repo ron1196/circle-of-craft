@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.block;
 
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -33,7 +33,7 @@ public class ZiraMoundGateBlock extends Block {
             @NotNull BlockHitResult hit
     ) {
         ItemStack held = player.getItemInHand(hand);
-        if (!held.is(LKItems.RAFIKI_STICK.get())) {
+        if (!held.is(Items.RAFIKI_STICK.get())) {
             return InteractionResult.PASS;
         }
 

@@ -9,7 +9,7 @@ import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.questline.RafikiQuestline.Stage;
 import io.github.ron1196.thelionking.quest.stage.StageTrigger;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -84,7 +84,7 @@ public class RafikiEntity extends PathfinderMob {
         // Give quest book on first meeting
         if (!playerData.hasReceivedQuestBook()) {
             playerData.setReceivedQuestBook(true);
-            player.addItem(new ItemStack(LKItems.QUEST_BOOK.get()));
+            player.addItem(new ItemStack(Items.QUEST_BOOK.get()));
             syncPlayerData(serverPlayer, playerData);
         }
 

@@ -13,7 +13,7 @@ import io.github.ron1196.thelionking.entity.projectile.DartEntity;
 import io.github.ron1196.thelionking.entity.projectile.SpearEntity;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import io.github.ron1196.thelionking.registry.LKMenuTypes;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 @Mod.EventBusSubscriber(modid = TheLionKingMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public class LKClientEvents {
+public class ClientEvents {
 
     // Passive animal layers
     public static final ModelLayerLocation LION_LAYER = layer("lion");
@@ -266,7 +266,7 @@ public class LKClientEvents {
 
             // Hyena head item variant property
             ItemProperties.register(
-                    LKItems.HYENA_HEAD_ITEM.get(),
+                    Items.HYENA_HEAD_ITEM.get(),
                     new ResourceLocation(TheLionKingMod.MOD_ID, "hyena_type"),
                     (stack, level, entity, seed) -> {
                         CompoundTag tag = stack.getTag();

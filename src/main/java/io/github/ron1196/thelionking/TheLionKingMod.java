@@ -3,12 +3,12 @@ package io.github.ron1196.thelionking;
 import com.mojang.logging.LogUtils;
 import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
 import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
-import io.github.ron1196.thelionking.registry.LKBlocks;
-import io.github.ron1196.thelionking.registry.LKCreativeTabs;
+import io.github.ron1196.thelionking.registry.Blocks;
+import io.github.ron1196.thelionking.registry.CreativeTabs;
 import io.github.ron1196.thelionking.registry.LKEnchantments;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LKFeatures;
-import io.github.ron1196.thelionking.registry.LKItems;
+import io.github.ron1196.thelionking.registry.Items;
 import io.github.ron1196.thelionking.registry.LKMenuTypes;
 import io.github.ron1196.thelionking.registry.SoundEvents;
 import io.github.ron1196.thelionking.world.structure.LKStructureTypes;
@@ -29,8 +29,8 @@ public class TheLionKingMod {
     public TheLionKingMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        LKBlocks.BLOCKS.register(modEventBus);
-        LKItems.ITEMS.register(modEventBus);
+        Blocks.BLOCKS.register(modEventBus);
+        Items.ITEMS.register(modEventBus);
         LKBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
         EntityTypes.ENTITY_TYPES.register(modEventBus);
         LKMenuTypes.MENU_TYPES.register(modEventBus);
@@ -39,7 +39,7 @@ public class TheLionKingMod {
         LKStructureTypes.STRUCTURE_TYPES.register(modEventBus);
         LKStructureTypes.STRUCTURE_PIECE_TYPES.register(modEventBus);
         SoundEvents.SOUND_EVENTS.register(modEventBus);
-        LKCreativeTabs.TABS.register(modEventBus);
+        CreativeTabs.TABS.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
