@@ -1,6 +1,6 @@
 # Migration Audit: Old 1.6.4 Mod → New 1.20.1 NeoForge Port
 
-Last updated: 2026-03-18
+Last updated: 2026-03-19
 
 This document tracks everything that has been migrated from the original Lion King mod
 and everything that still needs work.
@@ -206,15 +206,13 @@ All previously critical gaps have been addressed:
 |-----|-------------|----------|
 | Item Info | SKIP — replaced by modern item tooltips | — |
 
-### HUD Overlays (Not Ported)
+### HUD Overlays
 
-Old `LKGuiIngame.java` had three overlays — none are ported to 1.20.1. Use `RenderGuiOverlayEvent` (NeoForge).
-
-| Overlay | Description | Priority |
-|---------|-------------|----------|
-| Boss HP Bar | Done — vanilla `ServerBossEvent`: Scar (RED), Zira (PURPLE) | Done |
-| Portal Overlay | Screen tint when standing inside a Pride Lands or Outlands portal block | Low |
-| Flatulence Overlay | Full-screen effect using `flatulence.png`, triggered by Pumbaa's bomb explosion | Low |
+| Overlay | Description | Status |
+|---------|-------------|--------|
+| Boss HP Bar | Vanilla `ServerBossEvent`: Scar (RED), Zira (PURPLE) | Done |
+| Flatulence Overlay | Full-screen `flatulence.png` fade triggered by Pumbaa bomb via `FlatulencePacket` — rendered in `HudOverlays` via `RenderGuiEvent.Post` | Done |
+| Portal Overlay | Screen tint when standing inside a Pride Lands or Outlands portal block | Low priority |
 
 ---
 
@@ -339,7 +337,7 @@ Still using JSON-only configs. No dedicated Java feature classes.
 
 - **Old:** 12 textures in `old/assets/gui/`
 - **New:** 5 textures in `assets/thelionking/textures/gui/`
-- **Missing:** `quiver.png`, `simba.png`, `timon.png`, `flatulence.png`, `icons.png`
+- All GUI textures migrated. `icons.png` not needed — vanilla handles HUD icons.
 
 ### Data Files
 
@@ -409,10 +407,10 @@ These systems are fully ported and functional:
 - Missing world gen: dungeons, lava lakes, lily pads, tall flowers
 - Outlands Lava Lakes — needs re-port as `PlacedFeature` (old `WorldGenLakes` API removed in 1.18)
 - Code debt: `CharacterSpeech.java` monolithic enum, grinding bowl recipes hardcoded
-- HUD overlays: Boss HP bar (medium), portal overlay, flatulence overlay (use `RenderGuiOverlayEvent`)
+- Portal overlay (screen tint inside Pride Lands / Outlands portal blocks)
 
 ### Assets (Ongoing)
 - ~150 block textures need migration from old camelCase to snake_case
 - ~160 item textures need migration
-- 5 GUI textures missing: `quiver.png`, `simba.png`, `timon.png`, `flatulence.png`, `icons.png`
+- Placeholder textures for new items without old-mod equivalents (kivulite/corrupt hoe, mounted shooter, altars)
 - NPC placeholder models (Scar, Zira, Ticket Lion) use lion model (matches old mod behavior)

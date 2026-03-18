@@ -1,69 +1,128 @@
 package io.github.ron1196.thelionking.menu;
 
+import io.github.ron1196.thelionking.registry.LKItems;
 import io.github.ron1196.thelionking.registry.LKMenuTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.SlotItemHandler;
+import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class TimonMerchantMenu extends AbstractContainerMenu {
 
-    private final ItemStackHandler merchantInventory;
+    public static final String TITLE_KEY = "container.thelionking.timon_merchant";
+
+    public static final MenuProvider PROVIDER = new MenuProvider() {
+        @Override
+        public @NotNull Component getDisplayName() {
+            return Component.translatable(TITLE_KEY);
+        }
+
+        @Override
+        public @NotNull AbstractContainerMenu createMenu(int containerId, @NotNull Inventory inv, @NotNull Player player) {
+            return new TimonMerchantMenu(containerId, inv);
+        }
+    };
+
+    private record TradeEntry(RegistryObject<Item> item, int bugCost) {}
+
+    // Each entry is one trade slot: the item sold and its bug cost, matching old mod
+    private static final List<TradeEntry> TRADES = List.of(
+            new TradeEntry(LKItems.TUNNAH_DIGGAH,   5),
+            new TradeEntry(LKItems.PUMBAA_BOMB,     6),
+            new TradeEntry(LKItems.CRYSTAL,         7),
+            new TradeEntry(LKItems.EXPERIENCE_GRUB, 4),
+            new TradeEntry(LKItems.AMULET,          10)
+    );
+
+    private static final int TRADE_SLOT_X_START = 15;
+    private static final int TRADE_SLOT_X_STEP = 33;
+    private static final int TRADE_SLOT_Y = 32;
+    private static final int PLAYER_INV_X = 8;
+    private static final int PLAYER_INV_Y = 84;
+    private static final int HOTBAR_Y = 142;
 
     public TimonMerchantMenu(int containerId, Inventory playerInv) {
-        this(containerId, playerInv, new ItemStackHandler(5));
+        this(containerId, playerInv, buildTradeInventory());
     }
 
-    public TimonMerchantMenu(int containerId, Inventory playerInv, ItemStackHandler merchantInventory) {
+    public TimonMerchantMenu(int containerId, Inventory playerInv, ItemStackHandler tradeInventory) {
         super(LKMenuTypes.TIMON_MERCHANT_MENU.get(), containerId);
-        this.merchantInventory = merchantInventory;
 
-        // Merchant trade slots (5 slots)
-        for (int i = 0; i < 5; i++) {
-            this.addSlot(new SlotItemHandler(merchantInventory, i, 44 + i * 18, 20));
+        // Trade slots — read-only, deduct bugs on pickup, restock automatically
+        for (int i = 0; i < TRADES.size(); i++) {
+            this.addSlot(new TimonTradeSlot(
+                    tradeInventory, i,
+                    TRADE_SLOT_X_START + i * TRADE_SLOT_X_STEP,
+                    TRADE_SLOT_Y,
+                    TRADES.get(i).bugCost()
+            ));
         }
 
         // Player inventory
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                this.addSlot(new Slot(playerInv, col + row * 9 + 9, 8 + col * 18, 51 + row * 18));
+                this.addSlot(new Slot(
+                        playerInv,
+                        col + row * 9 + 9,
+                        PLAYER_INV_X + col * 18,
+                        PLAYER_INV_Y + row * 18
+                ));
             }
         }
 
-        // Player hotbar
+        // Hotbar
         for (int col = 0; col < 9; col++) {
-            this.addSlot(new Slot(playerInv, col, 8 + col * 18, 109));
+            this.addSlot(new Slot(
+                    playerInv,
+                    col,
+                    PLAYER_INV_X + col * 18,
+                    HOTBAR_Y
+            ));
         }
     }
 
-    @Override
-    public ItemStack quickMoveStack(Player player, int index) {
-        ItemStack result = ItemStack.EMPTY;
-        Slot slot = this.slots.get(index);
-        if (slot.hasItem()) {
-            ItemStack stack = slot.getItem();
-            result = stack.copy();
-            if (index < 5) {
-                if (!this.moveItemStackTo(stack, 5, this.slots.size(), true)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (!this.moveItemStackTo(stack, 0, 5, false)) {
-                return ItemStack.EMPTY;
-            }
-            if (stack.isEmpty()) {
-                slot.setByPlayer(ItemStack.EMPTY);
-            } else {
-                slot.setChanged();
-            }
+    private static ItemStackHandler buildTradeInventory() {
+        ItemStackHandler handler = new ItemStackHandler(TRADES.size());
+        for (int i = 0; i < TRADES.size(); i++) {
+            handler.setStackInSlot(i, new ItemStack(TRADES.get(i).item().get()));
         }
+        return handler;
+    }
+
+    @Override
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
+        // Trade slots are read-only — shift-click into player inventory only
+        Slot slot = this.slots.get(index);
+        if (!slot.hasItem()) return ItemStack.EMPTY;
+
+        ItemStack stack = slot.getItem();
+        ItemStack result = stack.copy();
+
+        if (index < 5) {
+            return ItemStack.EMPTY; // Trade slot — can't shift-click out
+        } else if (index < 32) {
+            if (!this.moveItemStackTo(stack, 32, this.slots.size(), false)) return ItemStack.EMPTY;
+        } else {
+            if (!this.moveItemStackTo(stack, 5, 32, false)) return ItemStack.EMPTY;
+        }
+
+        if (stack.isEmpty()) slot.setByPlayer(ItemStack.EMPTY);
+        else slot.setChanged();
+
         return result;
     }
 
     @Override
-    public boolean stillValid(Player player) {
+    public boolean stillValid(@NotNull Player player) {
         return true;
     }
 }

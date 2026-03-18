@@ -26,6 +26,9 @@ public class ClientWorldState {
     public static boolean hasSimba;
     public static final Set<String> claimedRewards = new HashSet<>();
 
+    // HUD overlay timers (in ticks, count down to 0)
+    public static int flatulenceTimer = 0;
+
     /**
      * Returns the stage ID string for the given quest.
      * Empty string means the quest has not been initialized.
@@ -53,5 +56,6 @@ public class ClientWorldState {
         playerHomePortalZ = 0;
         hasSimba = false;
         claimedRewards.clear();
+        flatulenceTimer = 0;
     }
 }

@@ -135,7 +135,7 @@ public class EntityTypes {
 
     public static final RegistryObject<EntityType<TimonEntity>> TIMON = ENTITY_TYPES.register("timon",
             () -> EntityType.Builder.of(TimonEntity::new, MobCategory.CREATURE)
-                    .sized(0.4F, 0.9F).clientTrackingRange(10).build("timon"));
+                    .sized(0.6F, 1.2F).clientTrackingRange(10).build("timon"));
 
     public static final RegistryObject<EntityType<PumbaaEntity>> PUMBAA = ENTITY_TYPES.register("pumbaa",
             () -> EntityType.Builder.of(PumbaaEntity::new, MobCategory.CREATURE)

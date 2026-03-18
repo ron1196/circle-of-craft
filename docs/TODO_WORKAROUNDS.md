@@ -46,7 +46,7 @@ Old `LKGuiIngame.java` — none ported. Implement via `RenderGuiOverlayEvent` in
 
 - [x] ~~**Boss HP Bar**~~ — RESOLVED: Vanilla `ServerBossEvent` in `ScarEntity` (RED) and `ZiraEntity` (PURPLE). Bar appears when player tracks the boss's chunk. No custom rendering needed.
 - [ ] **Portal Overlay** — Screen tint when player is inside a Pride Lands or Outlands portal block. Old: `renderPortalOverlay(float f, Minecraft mc, boolean isPrideLands)`
-- [ ] **Flatulence Overlay** — Full-screen effect using `flatulence.png`, triggered during Pumbaa's bomb explosion sequence. Old: `renderFlatulenceOverlay(float f, Minecraft mc)`
+- [x] ~~**Flatulence Overlay**~~ — RESOLVED: `FlatulencePacket` (S→C) sent to all players within 15 blocks of a Pumbaa bomb explosion. `LKHudOverlays` renders `flatulence.png` full-screen with 60-tick fade via `RenderGuiEvent.Post`.
 
 ## Missing Event Handlers
 
@@ -84,7 +84,7 @@ Items using generated placeholder textures (not from old mod):
 - [ ] **`outlands_altar` item texture** — Generated dark placeholder
 - [ ] **~150 block textures** need migration from old camelCase to snake_case
 - [ ] **~160 item textures** need migration
-- [ ] **5 GUI textures** missing: `quiver.png`, `simba.png`, `timon.png`, `flatulence.png`, `icons.png`
+- [x] ~~**5 GUI textures**~~ — RESOLVED: `quiver.png`, `simba.png`, `timon.png`, `flatulence.png` all migrated from old assets. `icons.png` not needed — vanilla handles HUD icons.
 
 ## CharacterSpeech Split
 

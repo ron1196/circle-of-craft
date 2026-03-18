@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.entity.npc;
 
+import io.github.ron1196.thelionking.menu.TimonMerchantMenu;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.registry.LKItems;
 import net.minecraft.network.chat.Component;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class TimonEntity extends PathfinderMob {
 
@@ -46,7 +48,7 @@ public class TimonEntity extends PathfinderMob {
     }
 
     @Override
-    public boolean hurt(DamageSource source, float amount) {
+    public boolean hurt(@NotNull DamageSource source, float amount) {
         return false; // Invulnerable NPC
     }
 
@@ -57,17 +59,24 @@ public class TimonEntity extends PathfinderMob {
     }
 
     @Override
-    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+    protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         if (level().isClientSide()) return InteractionResult.SUCCESS;
+
+        // Sneak+interact always opens the shop — no cooldown, no prerequisite
+        if (player.isShiftKeyDown()) {
+            if (player instanceof ServerPlayer serverPlayer) {
+                NetworkHooks.openScreen(serverPlayer, TimonMerchantMenu.PROVIDER);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
         if (talkCooldown > 0) return InteractionResult.SUCCESS;
         talkCooldown = 120;
 
+        // Accept bugs for a quick trade
         ItemStack held = player.getItemInHand(hand);
-
-        // Accept bugs for trade
         if (held.is(LKItems.BUG.get()) && held.getCount() >= 5) {
             held.shrink(5);
-            // Give random reward
             int reward = random.nextInt(3);
             switch (reward) {
                 case 0 -> player.addItem(new ItemStack(LKItems.PUMBAA_BOMB.get(), 3));
@@ -75,43 +84,16 @@ public class TimonEntity extends PathfinderMob {
                 case 2 -> player.giveExperiencePoints(50);
             }
             hasGivenFirstBugs = true;
-            sendMessage(player, "Slimy, yet satisfying! Here's a little something for you.");
+            sendMessage(player);
             return InteractionResult.SUCCESS;
         }
 
-        // Sneak+interact opens merchant GUI
-        if (player.isShiftKeyDown() && hasGivenFirstBugs) {
-            if (player instanceof ServerPlayer serverPlayer) {
-                NetworkHooks.openScreen(serverPlayer, new net.minecraft.world.MenuProvider() {
-                    @Override
-                    public @org.jetbrains.annotations.NotNull net.minecraft.network.chat.Component getDisplayName() {
-                        return net.minecraft.network.chat.Component.translatable("container.thelionking.timon_merchant");
-                    }
-
-                    @Override
-                    public @org.jetbrains.annotations.NotNull net.minecraft.world.inventory.AbstractContainerMenu createMenu(
-                            int containerId,
-                            @org.jetbrains.annotations.NotNull net.minecraft.world.entity.player.Inventory inv,
-                            @org.jetbrains.annotations.NotNull Player p
-                    ) {
-                        return new io.github.ron1196.thelionking.menu.TimonMerchantMenu(containerId, inv);
-                    }
-                });
-            }
-            return InteractionResult.SUCCESS;
-        }
-
-        // Regular speech
-        if (hasGivenFirstBugs) {
-            sendSpeech(player, CharacterSpeech.MORE_BUGS);
-        } else {
-            sendSpeech(player, CharacterSpeech.BUGS);
-        }
+        sendSpeech(player, hasGivenFirstBugs ? CharacterSpeech.MORE_BUGS : CharacterSpeech.BUGS);
         return InteractionResult.SUCCESS;
     }
 
-    private void sendMessage(Player player, String message) {
-        player.sendSystemMessage(Component.literal("\u00a7e<Timon> \u00a7f" + message));
+    private void sendMessage(Player player) {
+        player.sendSystemMessage(Component.literal("§e<Timon> §fSlimy, yet satisfying! Here's a little something for you."));
     }
 
     private void sendSpeech(Player player, CharacterSpeech speech) {

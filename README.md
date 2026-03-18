@@ -43,8 +43,8 @@ This is a **ground-up port** of the classic Lion King Mod (originally for Minecr
 - **Book of Quests** — Tracks your progress, describes items, and shows crafting recipes.
 
 ### Blocks, Items & Crafting
-- **98 new blocks** — Pridestone, kingswood, mango wood, rainforest wood, passion fruit, and more.
-- **221+ new items** — Tools, armor, food, quest items, and decorative items across 5 tool tiers and 5 armor materials.
+- **106 new blocks** — Pridestone, kingswood, mango wood, rainforest wood, passion fruit, and more.
+- **147+ new items** — Tools, armor, food, quest items, and decorative items across 5 tool tiers and 5 armor materials.
 - **Grinding Bowl** — A custom crafting station for grinding items into powders.
 - **8 creative tabs** to browse everything.
 
