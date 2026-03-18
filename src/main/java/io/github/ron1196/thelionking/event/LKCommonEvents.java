@@ -27,19 +27,30 @@ public class LKCommonEvents {
 
         // Hostile entities
         event.put(EntityTypes.HYENA.get(), HyenaEntity.createAttributes().build());
-        event.put(EntityTypes.SKELETAL_HYENA.get(), SkeletalHyenaEntity.createAttributes().build());
-        event.put(EntityTypes.OUTLANDER.get(), OutlanderEntity.createAttributes().build());
+        event.put(
+                EntityTypes.SKELETAL_HYENA.get(),
+                SkeletalHyenaEntity.createAttributes().build());
+        event.put(
+                EntityTypes.OUTLANDER.get(), OutlanderEntity.createAttributes().build());
         event.put(EntityTypes.VULTURE.get(), VultureEntity.createAttributes().build());
-        event.put(EntityTypes.CROCODILE.get(), CrocodileEntity.createAttributes().build());
+        event.put(
+                EntityTypes.CROCODILE.get(), CrocodileEntity.createAttributes().build());
         event.put(EntityTypes.TERMITE.get(), TermiteEntity.createAttributes().build());
-        event.put(EntityTypes.TERMITE_QUEEN.get(), TermiteQueenEntity.createAttributes().build());
+        event.put(
+                EntityTypes.TERMITE_QUEEN.get(),
+                TermiteQueenEntity.createAttributes().build());
 
         // Skeletal Hyena Head
-        event.put(EntityTypes.SKELETAL_HYENA_HEAD.get(),
-                io.github.ron1196.thelionking.entity.hostile.SkeletalHyenaHeadEntity.createAttributes().build());
+        event.put(
+                EntityTypes.SKELETAL_HYENA_HEAD.get(),
+                io.github.ron1196.thelionking.entity.hostile.SkeletalHyenaHeadEntity.createAttributes()
+                        .build());
 
         // Ticket Lion
-        event.put(EntityTypes.TICKET_LION.get(), io.github.ron1196.thelionking.entity.npc.TicketLionEntity.createAttributes().build());
+        event.put(
+                EntityTypes.TICKET_LION.get(),
+                io.github.ron1196.thelionking.entity.npc.TicketLionEntity.createAttributes()
+                        .build());
 
         // NPC entities
         event.put(EntityTypes.RAFIKI.get(), RafikiEntity.createAttributes().build());

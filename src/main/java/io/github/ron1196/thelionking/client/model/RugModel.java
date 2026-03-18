@@ -40,37 +40,47 @@ public class RugModel extends EntityModel<RugEntity> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        root.addOrReplaceChild("body",
+        root.addOrReplaceChild(
+                "body",
                 CubeListBuilder.create().texOffs(20, 0).addBox(0.0F, 0.0F, 0.0F, 20, 25, 2),
                 PartPose.offsetAndRotation(-10.0F, 24.0F, -10.0F, DEG_TO_RAD * 90.0F, 0.0F, 0.0F));
 
-        root.addOrReplaceChild("mane",
+        root.addOrReplaceChild(
+                "mane",
                 CubeListBuilder.create().texOffs(0, 43).addBox(0.0F, 0.0F, 0.0F, 14, 12, 9),
                 PartPose.offset(-7.0F, 12.0F, -18.0F));
 
-        root.addOrReplaceChild("head",
+        root.addOrReplaceChild(
+                "head",
                 CubeListBuilder.create()
-                        .texOffs(32, 27).addBox(0.0F, 0.0F, 0.0F, 8, 8, 8)
-                        .texOffs(52, 45).addBox(2.0F, 4.0F, -2.0F, 4, 4, 2),
+                        .texOffs(32, 27)
+                        .addBox(0.0F, 0.0F, 0.0F, 8, 8, 8)
+                        .texOffs(52, 45)
+                        .addBox(2.0F, 4.0F, -2.0F, 4, 4, 2),
                 PartPose.offset(-4.0F, 15.0F, -20.0F));
 
-        root.addOrReplaceChild("leg1",
+        root.addOrReplaceChild(
+                "leg1",
                 CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, 0.0F, -4.0F, 2, 12, 4),
                 PartPose.offsetAndRotation(-8.0F, 22.1F, 14.0F, DEG_TO_RAD * 22.0F, 0.0F, DEG_TO_RAD * 90.0F));
 
-        root.addOrReplaceChild("leg2",
+        root.addOrReplaceChild(
+                "leg2",
                 CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, 0.0F, -4.0F, 2, 12, 4),
                 PartPose.offsetAndRotation(8.0F, 22.1F, 14.0F, DEG_TO_RAD * 22.0F, 0.0F, DEG_TO_RAD * -90.0F));
 
-        root.addOrReplaceChild("leg3",
+        root.addOrReplaceChild(
+                "leg3",
                 CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, 0.0F, 0.0F, 2, 12, 4),
                 PartPose.offsetAndRotation(-8.0F, 22.1F, -10.0F, DEG_TO_RAD * -22.0F, 0.0F, DEG_TO_RAD * 90.0F));
 
-        root.addOrReplaceChild("leg4",
+        root.addOrReplaceChild(
+                "leg4",
                 CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, 0.0F, 0.0F, 2, 12, 4),
                 PartPose.offsetAndRotation(8.0F, 22.1F, -10.0F, DEG_TO_RAD * -22.0F, 0.0F, DEG_TO_RAD * -90.0F));
 
-        root.addOrReplaceChild("tail",
+        root.addOrReplaceChild(
+                "tail",
                 CubeListBuilder.create().texOffs(0, 24).addBox(-1.5F, 0.0F, 0.0F, 3, 1, 12),
                 PartPose.offsetAndRotation(0.0F, 22.05F, 14.0F, DEG_TO_RAD * -4.0F, 0.0F, 0.0F));
 
@@ -78,15 +88,26 @@ public class RugModel extends EntityModel<RugEntity> {
     }
 
     @Override
-    public void setupAnim(@NotNull RugEntity entity, float limbSwing, float limbSwingAmount,
-                          float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(
+            @NotNull RugEntity entity,
+            float limbSwing,
+            float limbSwingAmount,
+            float ageInTicks,
+            float netHeadYaw,
+            float headPitch) {
         // Static rug - no animation needed
     }
 
     @Override
-    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer,
-                               int packedLight, int packedOverlay,
-                               float red, float green, float blue, float alpha) {
+    public void renderToBuffer(
+            @NotNull PoseStack poseStack,
+            @NotNull VertexConsumer buffer,
+            int packedLight,
+            int packedOverlay,
+            float red,
+            float green,
+            float blue,
+            float alpha) {
         body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         mane.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

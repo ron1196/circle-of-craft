@@ -36,63 +36,74 @@ public class GiraffeModel<T extends LionKingAnimal> extends EntityModel<T> {
         PartDefinition root = mesh.getRoot();
 
         // Body
-        root.addOrReplaceChild("body",
-                CubeListBuilder.create()
-                        .texOffs(0, 0).addBox(-6.0F, -8.0F, -13.0F, 12.0F, 16.0F, 26.0F),
+        root.addOrReplaceChild(
+                "body",
+                CubeListBuilder.create().texOffs(0, 0).addBox(-6.0F, -8.0F, -13.0F, 12.0F, 16.0F, 26.0F),
                 PartPose.offset(0.0F, -11.0F, 0.0F));
 
         // Neck (includes long neck column)
-        root.addOrReplaceChild("neck",
+        root.addOrReplaceChild(
+                "neck",
                 CubeListBuilder.create()
-                        .texOffs(0, 44).addBox(-4.5F, -13.0F, -4.5F, 9.0F, 11.0F, 9.0F)
-                        .texOffs(78, 0).addBox(-3.0F, -37.0F, -3.0F, 6.0F, 40.0F, 6.0F),
+                        .texOffs(0, 44)
+                        .addBox(-4.5F, -13.0F, -4.5F, 9.0F, 11.0F, 9.0F)
+                        .texOffs(78, 0)
+                        .addBox(-3.0F, -37.0F, -3.0F, 6.0F, 40.0F, 6.0F),
                 PartPose.offset(0.0F, -14.0F, -7.0F));
 
         // Head (includes ears, ossicones, snout)
-        root.addOrReplaceChild("head",
+        root.addOrReplaceChild(
+                "head",
                 CubeListBuilder.create()
-                        .texOffs(96, 48).addBox(-3.0F, -43.0F, -6.0F, 6.0F, 6.0F, 10.0F)
+                        .texOffs(96, 48)
+                        .addBox(-3.0F, -43.0F, -6.0F, 6.0F, 6.0F, 10.0F)
                         // Left ear
-                        .texOffs(10, 0).addBox(-4.0F, -45.0F, 1.5F, 1.0F, 3.0F, 2.0F)
+                        .texOffs(10, 0)
+                        .addBox(-4.0F, -45.0F, 1.5F, 1.0F, 3.0F, 2.0F)
                         // Right ear
-                        .texOffs(17, 0).addBox(3.0F, -45.0F, 1.5F, 1.0F, 3.0F, 2.0F)
+                        .texOffs(17, 0)
+                        .addBox(3.0F, -45.0F, 1.5F, 1.0F, 3.0F, 2.0F)
                         // Left ossicone
-                        .texOffs(0, 0).addBox(-2.5F, -47.0F, 0.0F, 1.0F, 4.0F, 1.0F)
+                        .texOffs(0, 0)
+                        .addBox(-2.5F, -47.0F, 0.0F, 1.0F, 4.0F, 1.0F)
                         // Right ossicone
-                        .texOffs(5, 0).addBox(1.5F, -47.0F, 0.0F, 1.0F, 4.0F, 1.0F)
+                        .texOffs(5, 0)
+                        .addBox(1.5F, -47.0F, 0.0F, 1.0F, 4.0F, 1.0F)
                         // Snout
-                        .texOffs(76, 56).addBox(-2.0F, -41.0F, -11.0F, 4.0F, 3.0F, 5.0F),
+                        .texOffs(76, 56)
+                        .addBox(-2.0F, -41.0F, -11.0F, 4.0F, 3.0F, 5.0F),
                 PartPose.offset(0.0F, -14.0F, -7.0F));
 
         // Tail
-        root.addOrReplaceChild("tail",
-                CubeListBuilder.create()
-                        .texOffs(104, 0).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 24.0F, 1.0F),
+        root.addOrReplaceChild(
+                "tail",
+                CubeListBuilder.create().texOffs(104, 0).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 24.0F, 1.0F),
                 PartPose.offset(0.0F, -12.0F, 13.0F));
 
         // Legs
-        root.addOrReplaceChild("leg1",
-                CubeListBuilder.create()
-                        .texOffs(112, 0).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 27.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg1",
+                CubeListBuilder.create().texOffs(112, 0).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 27.0F, 4.0F),
                 PartPose.offset(-3.9F, -3.0F, 8.0F));
-        root.addOrReplaceChild("leg2",
-                CubeListBuilder.create()
-                        .texOffs(112, 0).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 27.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg2",
+                CubeListBuilder.create().texOffs(112, 0).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 27.0F, 4.0F),
                 PartPose.offset(3.9F, -3.0F, 8.0F));
-        root.addOrReplaceChild("leg3",
-                CubeListBuilder.create()
-                        .texOffs(112, 0).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 27.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg3",
+                CubeListBuilder.create().texOffs(112, 0).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 27.0F, 4.0F),
                 PartPose.offset(-3.9F, -3.0F, -7.0F));
-        root.addOrReplaceChild("leg4",
-                CubeListBuilder.create()
-                        .texOffs(112, 0).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 27.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg4",
+                CubeListBuilder.create().texOffs(112, 0).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 27.0F, 4.0F),
                 PartPose.offset(3.9F, -3.0F, -7.0F));
 
         return LayerDefinition.create(mesh, 128, 64);
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(
+            T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         // Legs — 0.5x multiplier for slower gait
         this.leg1.xRot = 0.5F * Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         this.leg2.xRot = 0.5F * Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
@@ -111,7 +122,15 @@ public class GiraffeModel<T extends LionKingAnimal> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(
+            PoseStack poseStack,
+            VertexConsumer buffer,
+            int packedLight,
+            int packedOverlay,
+            float red,
+            float green,
+            float blue,
+            float alpha) {
         body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         neck.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

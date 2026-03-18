@@ -1,10 +1,9 @@
 package io.github.ron1196.thelionking.entity.ai;
 
 import io.github.ron1196.thelionking.entity.hostile.SkeletalHyenaHeadEntity;
+import java.util.EnumSet;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-
-import java.util.EnumSet;
 
 /**
  * Custom hop goal that makes the skeletal hyena head jump toward its target,
@@ -49,19 +48,11 @@ public class HeadHopGoal extends Goal {
 
             if (dist > 0.01D) {
                 double speed = 0.6D;
-                head.setDeltaMovement(
-                        (dx / dist) * speed,
-                        0.42D,
-                        (dz / dist) * speed
-                );
+                head.setDeltaMovement((dx / dist) * speed, 0.42D, (dz / dist) * speed);
             }
         } else {
             double angle = head.getRandom().nextDouble() * Math.PI * 2.0D;
-            head.setDeltaMovement(
-                    Math.cos(angle) * 0.3D,
-                    0.42D,
-                    Math.sin(angle) * 0.3D
-            );
+            head.setDeltaMovement(Math.cos(angle) * 0.3D, 0.42D, Math.sin(angle) * 0.3D);
         }
 
         head.hasImpulse = true;
@@ -71,7 +62,9 @@ public class HeadHopGoal extends Goal {
     private static class SoundEventHelper {
         static void playHurtSound(SkeletalHyenaHeadEntity head) {
             net.minecraft.sounds.SoundEvent sound = net.minecraft.sounds.SoundEvents.SKELETON_HURT;
-            head.playSound(sound, 0.4F,
+            head.playSound(
+                    sound,
+                    0.4F,
                     ((head.getRandom().nextFloat() - head.getRandom().nextFloat()) * 0.2F + 1.0F) * 0.8F);
         }
     }

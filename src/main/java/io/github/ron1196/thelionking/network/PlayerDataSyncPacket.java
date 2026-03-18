@@ -1,12 +1,11 @@
 package io.github.ron1196.thelionking.network;
 
 import io.github.ron1196.thelionking.data.PlayerData;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 /**
  * Sent server to client when player data changes (reward claimed, quest book received,

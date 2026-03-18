@@ -36,7 +36,9 @@ public class MangoTreeFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         BlockState log = Blocks.MANGO_LOG.get().defaultBlockState();
-        BlockState leaves = Blocks.MANGO_LEAVES.get().defaultBlockState()
+        BlockState leaves = Blocks.MANGO_LEAVES
+                .get()
+                .defaultBlockState()
                 .setValue(net.minecraft.world.level.block.LeavesBlock.PERSISTENT, true);
 
         // Trunk

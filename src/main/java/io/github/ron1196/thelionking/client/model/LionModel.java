@@ -35,49 +35,55 @@ public class LionModel<T extends LionKingAnimal> extends EntityModel<T> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        root.addOrReplaceChild("head",
+        root.addOrReplaceChild(
+                "head",
                 CubeListBuilder.create()
-                        .texOffs(0, 0).addBox(-4.0F, -4.0F, -7.0F, 8.0F, 8.0F, 8.0F)
-                        .texOffs(52, 34).addBox(-2.0F, 0.0F, -9.0F, 4.0F, 4.0F, 2.0F),
+                        .texOffs(0, 0)
+                        .addBox(-4.0F, -4.0F, -7.0F, 8.0F, 8.0F, 8.0F)
+                        .texOffs(52, 34)
+                        .addBox(-2.0F, 0.0F, -9.0F, 4.0F, 4.0F, 2.0F),
                 PartPose.offset(0.0F, 4.0F, -9.0F));
 
-        root.addOrReplaceChild("headwear",
-                CubeListBuilder.create().texOffs(32, 0)
+        root.addOrReplaceChild(
+                "headwear",
+                CubeListBuilder.create()
+                        .texOffs(32, 0)
                         .addBox(-4.0F, -4.0F, -7.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F)),
                 PartPose.offset(0.0F, 4.0F, -9.0F));
 
-        root.addOrReplaceChild("mane",
-                CubeListBuilder.create().texOffs(0, 36)
-                        .addBox(-7.0F, -7.0F, -5.0F, 14.0F, 14.0F, 9.0F),
+        root.addOrReplaceChild(
+                "mane",
+                CubeListBuilder.create().texOffs(0, 36).addBox(-7.0F, -7.0F, -5.0F, 14.0F, 14.0F, 9.0F),
                 PartPose.offset(0.0F, 4.0F, -9.0F));
 
-        root.addOrReplaceChild("body",
-                CubeListBuilder.create().texOffs(0, 68)
-                        .addBox(-6.0F, -10.0F, -7.0F, 12.0F, 18.0F, 10.0F),
+        root.addOrReplaceChild(
+                "body",
+                CubeListBuilder.create().texOffs(0, 68).addBox(-6.0F, -10.0F, -7.0F, 12.0F, 18.0F, 10.0F),
                 PartPose.offset(0.0F, 5.0F, 2.0F));
 
-        root.addOrReplaceChild("leg1",
-                CubeListBuilder.create().texOffs(0, 19)
-                        .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg1",
+                CubeListBuilder.create().texOffs(0, 19).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(-4.0F, 12.0F, 7.0F));
-        root.addOrReplaceChild("leg2",
-                CubeListBuilder.create().texOffs(0, 19)
-                        .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg2",
+                CubeListBuilder.create().texOffs(0, 19).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(4.0F, 12.0F, 7.0F));
-        root.addOrReplaceChild("leg3",
-                CubeListBuilder.create().texOffs(0, 19)
-                        .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg3",
+                CubeListBuilder.create().texOffs(0, 19).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(-4.0F, 12.0F, -5.0F));
-        root.addOrReplaceChild("leg4",
-                CubeListBuilder.create().texOffs(0, 19)
-                        .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg4",
+                CubeListBuilder.create().texOffs(0, 19).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(4.0F, 12.0F, -5.0F));
 
         return LayerDefinition.create(mesh, 64, 96);
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(
+            T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.xRot = headPitch * ((float) Math.PI / 180F);
         this.head.yRot = netHeadYaw * ((float) Math.PI / 180F);
         this.headwear.xRot = this.head.xRot;
@@ -92,7 +98,15 @@ public class LionModel<T extends LionKingAnimal> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(
+            PoseStack poseStack,
+            VertexConsumer buffer,
+            int packedLight,
+            int packedOverlay,
+            float red,
+            float green,
+            float blue,
+            float alpha) {
         head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         headwear.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         mane.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

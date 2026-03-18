@@ -9,7 +9,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class SoundEvents {
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
-        DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, TheLionKingMod.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, TheLionKingMod.MOD_ID);
 
     // Lion sounds
     public static final RegistryObject<SoundEvent> LION_AMBIENT = register("entity.lion.ambient");
@@ -60,9 +60,11 @@ public class SoundEvents {
     public static final RegistryObject<SoundEvent> MUSIC_CANT_WAIT_TO_BE_KING = register("music.cant_wait_to_be_king");
     public static final RegistryObject<SoundEvent> MUSIC_BE_PREPARED = register("music.be_prepared");
     public static final RegistryObject<SoundEvent> MUSIC_HAKUNA_MATATA = register("music.hakuna_matata");
-    public static final RegistryObject<SoundEvent> MUSIC_CAN_YOU_FEEL_THE_LOVE = register("music.can_you_feel_the_love");
+    public static final RegistryObject<SoundEvent> MUSIC_CAN_YOU_FEEL_THE_LOVE =
+            register("music.can_you_feel_the_love");
 
     private static RegistryObject<SoundEvent> register(String name) {
-        return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(TheLionKingMod.MOD_ID, name)));
+        return SOUND_EVENTS.register(
+                name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(TheLionKingMod.MOD_ID, name)));
     }
 }

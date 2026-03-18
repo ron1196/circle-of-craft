@@ -48,59 +48,73 @@ public class PumbaaModel extends EntityModel<Mob> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        root.addOrReplaceChild("snout",
+        root.addOrReplaceChild(
+                "snout",
                 CubeListBuilder.create().texOffs(0, 0).addBox(-3.0F, -2.6F, -11.0F, 6, 4, 3),
                 PartPose.offset(0.0F, 9.0F, -5.0F));
 
-        root.addOrReplaceChild("leftear",
+        root.addOrReplaceChild(
+                "leftear",
                 CubeListBuilder.create().texOffs(0, 31).addBox(-4.5F, -9.0F, -3.0F, 1, 4, 2),
                 PartPose.offset(0.0F, 9.0F, -5.0F));
 
-        root.addOrReplaceChild("rightear",
+        root.addOrReplaceChild(
+                "rightear",
                 CubeListBuilder.create().texOffs(6, 31).addBox(3.5F, -9.0F, -3.0F, 1, 4, 2),
                 PartPose.offset(0.0F, 9.0F, -5.0F));
 
-        root.addOrReplaceChild("tail",
+        root.addOrReplaceChild(
+                "tail",
                 CubeListBuilder.create().texOffs(60, 55).addBox(-0.5F, -1.5F, 1.0F, 1, 8, 1),
                 PartPose.offset(0.0F, 11.0F, 8.0F));
 
-        root.addOrReplaceChild("mane",
+        root.addOrReplaceChild(
+                "mane",
                 CubeListBuilder.create().texOffs(36, 18).addBox(-3.5F, -4.0F, -2.0F, 5, 4, 9),
                 PartPose.offset(1.0F, 9.0F, -7.0F));
 
-        root.addOrReplaceChild("hair",
+        root.addOrReplaceChild(
+                "hair",
                 CubeListBuilder.create().texOffs(0, 10).addBox(-2.0F, -7.3F, -4.7F, 4, 5, 5),
                 PartPose.offset(0.0F, 9.0F, -5.0F));
 
-        root.addOrReplaceChild("lefthorn",
+        root.addOrReplaceChild(
+                "lefthorn",
                 CubeListBuilder.create().texOffs(54, 31).addBox(-9.0F, -2.0F, -7.0F, 4, 1, 1),
                 PartPose.offset(0.0F, 9.0F, -5.0F));
 
-        root.addOrReplaceChild("righthorn",
+        root.addOrReplaceChild(
+                "righthorn",
                 CubeListBuilder.create().texOffs(54, 31).addBox(5.0F, -2.0F, -7.0F, 4, 1, 1),
                 PartPose.offset(0.0F, 9.0F, -5.0F));
 
-        root.addOrReplaceChild("head",
+        root.addOrReplaceChild(
+                "head",
                 CubeListBuilder.create().texOffs(28, 0).addBox(-5.0F, -6.0F, -8.0F, 10, 10, 8),
                 PartPose.offset(0.0F, 9.0F, -5.0F));
 
-        root.addOrReplaceChild("body",
+        root.addOrReplaceChild(
+                "body",
                 CubeListBuilder.create().texOffs(0, 37).addBox(-5.0F, -10.0F, -7.0F, 12, 17, 10),
                 PartPose.offset(-1.0F, 11.0F, 2.0F));
 
-        root.addOrReplaceChild("leg1",
+        root.addOrReplaceChild(
+                "leg1",
                 CubeListBuilder.create().texOffs(0, 20).addBox(-2.0F, 0.0F, -2.0F, 3, 8, 3),
                 PartPose.offset(-3.0F, 16.0F, 6.0F));
 
-        root.addOrReplaceChild("leg2",
+        root.addOrReplaceChild(
+                "leg2",
                 CubeListBuilder.create().texOffs(0, 20).addBox(-1.5F, 0.0F, -2.0F, 3, 8, 3),
                 PartPose.offset(3.0F, 16.0F, 6.0F));
 
-        root.addOrReplaceChild("leg3",
+        root.addOrReplaceChild(
+                "leg3",
                 CubeListBuilder.create().texOffs(0, 20).addBox(-2.0F, 0.0F, -2.0F, 3, 8, 3),
                 PartPose.offset(-3.0F, 16.0F, -4.0F));
 
-        root.addOrReplaceChild("leg4",
+        root.addOrReplaceChild(
+                "leg4",
                 CubeListBuilder.create().texOffs(0, 20).addBox(-1.0F, 0.0F, -2.0F, 3, 8, 3),
                 PartPose.offset(3.0F, 16.0F, -4.0F));
 
@@ -108,7 +122,8 @@ public class PumbaaModel extends EntityModel<Mob> {
     }
 
     @Override
-    public void setupAnim(Mob entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(
+            Mob entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         float headXRot = headPitch * ((float) Math.PI / 180F);
         float headYRot = netHeadYaw * ((float) Math.PI / 180F);
 
@@ -147,8 +162,7 @@ public class PumbaaModel extends EntityModel<Mob> {
             float red,
             float green,
             float blue,
-            float alpha
-    ) {
+            float alpha) {
         snout.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         leftear.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         rightear.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

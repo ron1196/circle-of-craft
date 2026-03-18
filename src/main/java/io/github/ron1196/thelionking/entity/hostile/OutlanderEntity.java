@@ -21,10 +21,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class OutlanderEntity extends Monster {
 
-    private static final EntityDataAccessor<Boolean> DATA_FEMALE = SynchedEntityData.defineId(
-            OutlanderEntity.class,
-            EntityDataSerializers.BOOLEAN
-    );
+    private static final EntityDataAccessor<Boolean> DATA_FEMALE =
+            SynchedEntityData.defineId(OutlanderEntity.class, EntityDataSerializers.BOOLEAN);
 
     public OutlanderEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -72,8 +70,7 @@ public class OutlanderEntity extends Monster {
             @NotNull DifficultyInstance difficulty,
             @NotNull MobSpawnType spawnType,
             @Nullable SpawnGroupData spawnData,
-            @Nullable CompoundTag compoundTag
-    ) {
+            @Nullable CompoundTag compoundTag) {
         spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
         setFemale(this.random.nextBoolean());
         return spawnData;

@@ -13,10 +13,8 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = TheLionKingMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class HudOverlays {
 
-    private static final ResourceLocation FLATULENCE_TEXTURE = new ResourceLocation(
-            TheLionKingMod.MOD_ID,
-            "textures/gui/flatulence.png"
-    );
+    private static final ResourceLocation FLATULENCE_TEXTURE =
+            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/gui/flatulence.png");
     private static final int FLATULENCE_DURATION = 60;
 
     @SubscribeEvent

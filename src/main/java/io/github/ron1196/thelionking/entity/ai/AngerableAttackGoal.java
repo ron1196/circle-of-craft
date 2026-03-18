@@ -1,12 +1,11 @@
 package io.github.ron1196.thelionking.entity.ai;
 
+import java.util.function.Predicate;
+import javax.annotation.Nullable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-
-import javax.annotation.Nullable;
-import java.util.function.Predicate;
 
 /**
  * Target goal that only activates when the mob is angry (has a persistent anger target).
@@ -18,9 +17,13 @@ public class AngerableAttackGoal<T extends LivingEntity> extends NearestAttackab
         super(mob, targetType, mustSee);
     }
 
-    public AngerableAttackGoal(PathfinderMob mob, Class<T> targetType, int randomInterval,
-                                boolean mustSee, boolean mustReach,
-                                @Nullable Predicate<LivingEntity> targetCondition) {
+    public AngerableAttackGoal(
+            PathfinderMob mob,
+            Class<T> targetType,
+            int randomInterval,
+            boolean mustSee,
+            boolean mustReach,
+            @Nullable Predicate<LivingEntity> targetCondition) {
         super(mob, targetType, randomInterval, mustSee, mustReach, targetCondition);
     }
 

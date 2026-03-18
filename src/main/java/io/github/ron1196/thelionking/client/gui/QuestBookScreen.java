@@ -2,18 +2,17 @@ package io.github.ron1196.thelionking.client.gui;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.network.ClientWorldState;
-import io.github.ron1196.thelionking.network.LKNetworking;
+import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.network.QuestCheckPacket;
 import io.github.ron1196.thelionking.quest.questline.Questline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineRegistry;
 import io.github.ron1196.thelionking.quest.stage.IStageId;
+import java.util.List;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.List;
 
 public class QuestBookScreen extends Screen {
 
@@ -44,12 +43,10 @@ public class QuestBookScreen extends Screen {
         for (int i = 0; i < quests.size(); i++) {
             Questline quest = quests.get(i);
             final int questIdx = i;
-            addRenderableWidget(Button.builder(
-                    Component.literal(quest.getDisplayName()),
-                    btn -> {
+            addRenderableWidget(Button.builder(Component.literal(quest.getDisplayName()), btn -> {
                         selectedQuest = questIdx;
                         // Mark as checked on server
-                        LKNetworking.CHANNEL.sendToServer(new QuestCheckPacket(quest.getId()));
+                        Networking.CHANNEL.sendToServer(new QuestCheckPacket(quest.getId()));
                     })
                     .bounds(centerX + 15, buttonY, 170, 20)
                     .build());
@@ -66,7 +63,8 @@ public class QuestBookScreen extends Screen {
 
         // Draw book pages
         graphics.blit(BOOK_LEFT, centerX, topY, 0, 0, BOOK_WIDTH, BOOK_HEIGHT, TEXTURE_SIZE, TEXTURE_SIZE);
-        graphics.blit(BOOK_RIGHT, centerX + BOOK_WIDTH, topY, 0, 0, BOOK_WIDTH, BOOK_HEIGHT, TEXTURE_SIZE, TEXTURE_SIZE);
+        graphics.blit(
+                BOOK_RIGHT, centerX + BOOK_WIDTH, topY, 0, 0, BOOK_WIDTH, BOOK_HEIGHT, TEXTURE_SIZE, TEXTURE_SIZE);
 
         // Left page title
         graphics.drawCenteredString(font, "\u00a7lQuests", centerX + BOOK_WIDTH / 2, topY + 12, 0x140C02);
@@ -135,7 +133,8 @@ public class QuestBookScreen extends Screen {
                     if (!objective.isEmpty()) {
                         graphics.drawString(font, "\u00a7nObjective:", rightX, textY, 0x140C02, false);
                         textY += 12;
-                        for (var line : font.getSplitter().splitLines(objective, 170, net.minecraft.network.chat.Style.EMPTY)) {
+                        for (var line :
+                                font.getSplitter().splitLines(objective, 170, net.minecraft.network.chat.Style.EMPTY)) {
                             graphics.drawString(font, line.getString(), rightX, textY, 0x404040, false);
                             textY += 10;
                         }
@@ -167,7 +166,8 @@ public class QuestBookScreen extends Screen {
                     String stageObj = quest.getObjectiveByStage(stages.get(s));
                     if (stageObj != null && !stageObj.isEmpty() && !stageObj.equals("Quest complete")) {
                         String line = "\u00a72\u2714 " + stageObj;
-                        for (var wrappedLine : font.getSplitter().splitLines(line, 170, net.minecraft.network.chat.Style.EMPTY)) {
+                        for (var wrappedLine :
+                                font.getSplitter().splitLines(line, 170, net.minecraft.network.chat.Style.EMPTY)) {
                             graphics.drawString(font, wrappedLine.getString(), rightX, textY, 0x404040, false);
                             textY += 10;
                         }
@@ -189,7 +189,8 @@ public class QuestBookScreen extends Screen {
         if (prereqs == null) return true;
         for (String prereqName : prereqs) {
             for (Questline other : QuestlineRegistry.getOrdered()) {
-                if (other.getDisplayName().equals(prereqName) || ("Complete " + other.getDisplayName()).equals(prereqName)) {
+                if (other.getDisplayName().equals(prereqName)
+                        || ("Complete " + other.getDisplayName()).equals(prereqName)) {
                     if (!other.isComplete(ClientWorldState.getQuestStageId(other.getId()))) {
                         return false;
                     }

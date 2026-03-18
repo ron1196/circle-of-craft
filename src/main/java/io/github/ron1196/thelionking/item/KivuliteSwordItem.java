@@ -7,9 +7,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
@@ -37,11 +37,16 @@ public class KivuliteSwordItem extends SwordItem {
                 double dx = level.random.nextGaussian() * 0.02D;
                 double dy = level.random.nextGaussian() * 0.02D;
                 double dz = level.random.nextGaussian() * 0.02D;
-                level.addParticle(ParticleTypes.FLAME,
-                        target.getX() + (level.random.nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth()) * 0.75F,
+                level.addParticle(
+                        ParticleTypes.FLAME,
+                        target.getX()
+                                + (level.random.nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth()) * 0.75F,
                         target.getY() + 0.25F + level.random.nextFloat() * target.getBbHeight(),
-                        target.getZ() + (level.random.nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth()) * 0.75F,
-                        dx, dy, dz);
+                        target.getZ()
+                                + (level.random.nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth()) * 0.75F,
+                        dx,
+                        dy,
+                        dz);
             }
         }
         return super.hurtEnemy(stack, target, attacker);
@@ -60,11 +65,16 @@ public class KivuliteSwordItem extends SwordItem {
 
         BlockState stateAt = level.getBlockState(firePos);
         if (stateAt.isAir()) {
-            level.playSound(context.getPlayer(), firePos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS,
-                    1.0F, level.random.nextFloat() * 0.4F + 0.8F);
+            level.playSound(
+                    context.getPlayer(),
+                    firePos,
+                    SoundEvents.FLINTANDSTEEL_USE,
+                    SoundSource.BLOCKS,
+                    1.0F,
+                    level.random.nextFloat() * 0.4F + 0.8F);
             level.setBlock(firePos, BaseFireBlock.getState(level, firePos), 11);
-            context.getItemInHand().hurtAndBreak(1, context.getPlayer(), (p) ->
-                    p.broadcastBreakEvent(context.getHand()));
+            context.getItemInHand()
+                    .hurtAndBreak(1, context.getPlayer(), (p) -> p.broadcastBreakEvent(context.getHand()));
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 

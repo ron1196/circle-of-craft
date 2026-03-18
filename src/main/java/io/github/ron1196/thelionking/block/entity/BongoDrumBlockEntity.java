@@ -3,6 +3,7 @@ package io.github.ron1196.thelionking.block.entity;
 import io.github.ron1196.thelionking.item.NoteItem;
 import io.github.ron1196.thelionking.menu.BongoDrumMenu;
 import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -15,8 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
-
-import javax.annotation.Nullable;
 
 public class BongoDrumBlockEntity extends BlockEntity implements MenuProvider {
 

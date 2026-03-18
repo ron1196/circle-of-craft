@@ -6,12 +6,12 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 
-public class MobRenderer<T extends Mob, M extends EntityModel<T>> extends net.minecraft.client.renderer.entity.MobRenderer<T, M> {
+public class MobRenderer<T extends Mob, M extends EntityModel<T>>
+        extends net.minecraft.client.renderer.entity.MobRenderer<T, M> {
 
     private final ResourceLocation texture;
 
-    public MobRenderer(EntityRendererProvider.Context context, M model,
-                       String textureName, float shadowRadius) {
+    public MobRenderer(EntityRendererProvider.Context context, M model, String textureName, float shadowRadius) {
         super(context, model, shadowRadius);
         this.texture = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/" + textureName + ".png");
     }

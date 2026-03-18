@@ -3,6 +3,7 @@ package io.github.ron1196.thelionking.block;
 import io.github.ron1196.thelionking.block.entity.BongoDrumBlockEntity;
 import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
 import io.github.ron1196.thelionking.registry.Items;
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,8 +27,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
-
 public class BongoDrumBlock extends BaseEntityBlock {
 
     private static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 12.0D, 15.0D);
@@ -37,7 +36,11 @@ public class BongoDrumBlock extends BaseEntityBlock {
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext ctx) {
+    public @NotNull VoxelShape getShape(
+            @NotNull BlockState state,
+            @NotNull BlockGetter level,
+            @NotNull BlockPos pos,
+            @NotNull CollisionContext ctx) {
         return SHAPE;
     }
 
@@ -54,8 +57,13 @@ public class BongoDrumBlock extends BaseEntityBlock {
 
     @Override
     @SuppressWarnings("deprecation")
-    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                 @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
+    public @NotNull InteractionResult use(
+            @NotNull BlockState state,
+            @NotNull Level level,
+            @NotNull BlockPos pos,
+            @NotNull Player player,
+            @NotNull InteractionHand hand,
+            @NotNull BlockHitResult hit) {
         if (level.getBlockEntity(pos) instanceof BongoDrumBlockEntity drum) {
             // If holding a staff, open enchanting GUI
             if (player.getItemInHand(hand).is(Items.RHYTHM_STAFF.get())) {
@@ -74,8 +82,14 @@ public class BongoDrumBlock extends BaseEntityBlock {
             }
             if (level.isClientSide()) {
                 double noteColor = (double) drum.getNote() / 24.0D;
-                level.addParticle(ParticleTypes.NOTE, pos.getX() + 0.5D, pos.getY() + 1.2D, pos.getZ() + 0.5D,
-                        noteColor, 0.0D, 0.0D);
+                level.addParticle(
+                        ParticleTypes.NOTE,
+                        pos.getX() + 0.5D,
+                        pos.getY() + 1.2D,
+                        pos.getZ() + 0.5D,
+                        noteColor,
+                        0.0D,
+                        0.0D);
             }
             return InteractionResult.sidedSuccess(level.isClientSide());
         }
@@ -84,7 +98,12 @@ public class BongoDrumBlock extends BaseEntityBlock {
 
     @Override
     @SuppressWarnings("deprecation")
-    public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) {
+    public void onRemove(
+            @NotNull BlockState state,
+            @NotNull Level level,
+            @NotNull BlockPos pos,
+            @NotNull BlockState newState,
+            boolean isMoving) {
         if (!state.is(newState.getBlock())) {
             if (level.getBlockEntity(pos) instanceof BongoDrumBlockEntity drum) {
                 Containers.dropContents(level, pos, drum.getDrops());

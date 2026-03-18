@@ -42,47 +42,58 @@ public class RafikiModel extends EntityModel<Mob> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        root.addOrReplaceChild("body",
+        root.addOrReplaceChild(
+                "body",
                 CubeListBuilder.create().texOffs(16, 16).addBox(0.0F, 0.0F, 0.0F, 8, 12, 4),
                 PartPose.offsetAndRotation(-4.0F, 1.0F, -2.825F, 0.3F, 0.0F, 0.0F));
 
-        root.addOrReplaceChild("rightarm",
+        root.addOrReplaceChild(
+                "rightarm",
                 CubeListBuilder.create().texOffs(40, 17).addBox(0.0F, 0.0F, 0.0F, 3, 11, 3),
                 PartPose.offset(-7.0F, 2.0F, -1.5F));
 
-        root.addOrReplaceChild("leftarm",
+        root.addOrReplaceChild(
+                "leftarm",
                 CubeListBuilder.create().texOffs(40, 17).addBox(0.0F, 0.0F, 0.0F, 3, 11, 3),
                 PartPose.offset(4.0F, 2.0F, -1.5F));
 
-        root.addOrReplaceChild("rightleg",
+        root.addOrReplaceChild(
+                "rightleg",
                 CubeListBuilder.create().texOffs(0, 16).addBox(0.0F, 0.0F, 0.0F, 4, 13, 4),
                 PartPose.offset(-4.1F, 11.0F, 0.0F));
 
-        root.addOrReplaceChild("leftleg",
+        root.addOrReplaceChild(
+                "leftleg",
                 CubeListBuilder.create().texOffs(0, 16).addBox(0.0F, 0.0F, 0.0F, 4, 13, 4),
                 PartPose.offset(0.1F, 11.0F, 0.0F));
 
-        root.addOrReplaceChild("tail1",
+        root.addOrReplaceChild(
+                "tail1",
                 CubeListBuilder.create().texOffs(0, 58).addBox(0.0F, 0.0F, 0.0F, 1, 1, 5),
                 PartPose.offsetAndRotation(-0.5F, 11.0F, 3.0F, 1.0F, 0.0F, 0.0F));
 
-        root.addOrReplaceChild("tail2",
+        root.addOrReplaceChild(
+                "tail2",
                 CubeListBuilder.create().texOffs(12, 59).addBox(0.0F, 0.0F, 0.0F, 1, 1, 4),
                 PartPose.offset(-0.5F, 7.0F, 6.0F));
 
-        root.addOrReplaceChild("tail3",
+        root.addOrReplaceChild(
+                "tail3",
                 CubeListBuilder.create().texOffs(22, 60).addBox(0.0F, 0.0F, 0.0F, 1, 1, 3),
                 PartPose.offsetAndRotation(-0.5F, 7.0F, 10.2F, -1.0F, 0.0F, 0.0F));
 
-        root.addOrReplaceChild("tail4",
+        root.addOrReplaceChild(
+                "tail4",
                 CubeListBuilder.create().texOffs(30, 56).addBox(0.0F, 0.0F, 0.0F, 1, 1, 7),
                 PartPose.offsetAndRotation(-0.5F, 9.5F, 11.7F, -2.0F, 0.0F, 0.0F));
 
-        root.addOrReplaceChild("head",
+        root.addOrReplaceChild(
+                "head",
                 CubeListBuilder.create().texOffs(0, 0).addBox(-3.5F, -1.0F, -5.0F, 7, 7, 6),
                 PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        root.addOrReplaceChild("hair",
+        root.addOrReplaceChild(
+                "hair",
                 CubeListBuilder.create().texOffs(28, 0).addBox(-5.0F, -2.0F, -3.0F, 10, 10, 5),
                 PartPose.offset(0.0F, 0.0F, 0.0F));
 
@@ -96,8 +107,7 @@ public class RafikiModel extends EntityModel<Mob> {
             float limbSwingAmount,
             float ageInTicks,
             float netHeadYaw,
-            float headPitch
-    ) {
+            float headPitch) {
         this.head.yRot = netHeadYaw * ((float) Math.PI / 180F);
         this.head.xRot = headPitch * ((float) Math.PI / 180F);
         this.hair.yRot = this.head.yRot;
@@ -128,8 +138,7 @@ public class RafikiModel extends EntityModel<Mob> {
             float red,
             float green,
             float blue,
-            float alpha
-    ) {
+            float alpha) {
         body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         rightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         leftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

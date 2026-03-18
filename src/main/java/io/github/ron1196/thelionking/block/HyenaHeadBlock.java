@@ -1,6 +1,7 @@
 package io.github.ron1196.thelionking.block;
 
 import io.github.ron1196.thelionking.block.entity.HyenaHeadBlockEntity;
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -15,8 +16,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nullable;
 
 public class HyenaHeadBlock extends BaseEntityBlock {
 
@@ -41,8 +40,8 @@ public class HyenaHeadBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(ROTATION,
-                Mth.floor((double) (context.getRotation() * 16.0F / 360.0F) + 0.5D) & 15);
+        return this.defaultBlockState()
+                .setValue(ROTATION, Mth.floor((double) (context.getRotation() * 16.0F / 360.0F) + 0.5D) & 15);
     }
 
     @Override

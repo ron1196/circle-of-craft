@@ -30,8 +30,7 @@ public class NpcLionModel extends EntityModel<Mob> {
             float limbSwingAmount,
             float ageInTicks,
             float netHeadYaw,
-            float headPitch
-    ) {
+            float headPitch) {
         // Animate head if present
         if (head != null) {
             head.xRot = headPitch * ((float) Math.PI / 180F);
@@ -80,8 +79,7 @@ public class NpcLionModel extends EntityModel<Mob> {
             float red,
             float green,
             float blue,
-            float alpha
-    ) {
+            float alpha) {
         root.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

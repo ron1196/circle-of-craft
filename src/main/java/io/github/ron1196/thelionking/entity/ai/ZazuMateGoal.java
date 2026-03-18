@@ -42,10 +42,7 @@ public class ZazuMateGoal extends Goal {
         }
         layTimer = 0;
         ItemEntity egg = new ItemEntity(
-                zazu.level(),
-                zazu.getX(), zazu.getY(), zazu.getZ(),
-                new ItemStack(Items.ZAZU_EGG.get())
-        );
+                zazu.level(), zazu.getX(), zazu.getY(), zazu.getZ(), new ItemStack(Items.ZAZU_EGG.get()));
         egg.setDefaultPickUpDelay();
         zazu.level().addFreshEntity(egg);
     }

@@ -44,71 +44,72 @@ public class GemsbokModel<T extends LionKingAnimal> extends EntityModel<T> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        root.addOrReplaceChild("head",
-                CubeListBuilder.create()
-                        .texOffs(28, 0).addBox(-3.0F, -10.0F, -6.0F, 6.0F, 7.0F, 12.0F),
+        root.addOrReplaceChild(
+                "head",
+                CubeListBuilder.create().texOffs(28, 0).addBox(-3.0F, -10.0F, -6.0F, 6.0F, 7.0F, 12.0F),
                 PartPose.offset(0.0F, 4.0F, -9.0F));
 
-        root.addOrReplaceChild("tail",
-                CubeListBuilder.create()
-                        .texOffs(0, 0).addBox(0.0F, 0.0F, 0.0F, 2.0F, 12.0F, 2.0F),
+        root.addOrReplaceChild(
+                "tail",
+                CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, 0.0F, 0.0F, 2.0F, 12.0F, 2.0F),
                 PartPose.offsetAndRotation(-1.0F, 3.0F, 11.0F, 0.2967059F, 0.0F, 0.0F));
 
-        root.addOrReplaceChild("ear_left",
-                CubeListBuilder.create()
-                        .texOffs(28, 19).addBox(-3.8F, -12.0F, 3.0F, 1.0F, 3.0F, 2.0F),
+        root.addOrReplaceChild(
+                "ear_left",
+                CubeListBuilder.create().texOffs(28, 19).addBox(-3.8F, -12.0F, 3.0F, 1.0F, 3.0F, 2.0F),
                 PartPose.offset(0.0F, 4.0F, -9.0F));
 
-        root.addOrReplaceChild("ear_right",
-                CubeListBuilder.create()
-                        .texOffs(34, 19).addBox(2.8F, -12.0F, 3.0F, 1.0F, 3.0F, 2.0F),
+        root.addOrReplaceChild(
+                "ear_right",
+                CubeListBuilder.create().texOffs(34, 19).addBox(2.8F, -12.0F, 3.0F, 1.0F, 3.0F, 2.0F),
                 PartPose.offset(0.0F, 4.0F, -9.0F));
 
-        root.addOrReplaceChild("neck",
-                CubeListBuilder.create()
-                        .texOffs(0, 14).addBox(-2.5F, -6.0F, -5.0F, 5.0F, 8.0F, 9.0F),
+        root.addOrReplaceChild(
+                "neck",
+                CubeListBuilder.create().texOffs(0, 14).addBox(-2.5F, -6.0F, -5.0F, 5.0F, 8.0F, 9.0F),
                 PartPose.offsetAndRotation(0.0F, 4.0F, -9.0F, -1.064650F, 0.0F, 0.0F));
 
-        root.addOrReplaceChild("body",
-                CubeListBuilder.create()
-                        .texOffs(0, 31).addBox(-7.0F, -10.0F, -7.0F, 13.0F, 10.0F, 23.0F),
+        root.addOrReplaceChild(
+                "body",
+                CubeListBuilder.create().texOffs(0, 31).addBox(-7.0F, -10.0F, -7.0F, 13.0F, 10.0F, 23.0F),
                 PartPose.offset(0.5F, 12.0F, -3.0F));
 
-        root.addOrReplaceChild("leg1",
-                CubeListBuilder.create()
-                        .texOffs(0, 38).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg1",
+                CubeListBuilder.create().texOffs(0, 38).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(-4.0F, 12.0F, 10.0F));
 
-        root.addOrReplaceChild("leg2",
-                CubeListBuilder.create()
-                        .texOffs(0, 38).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg2",
+                CubeListBuilder.create().texOffs(0, 38).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(4.0F, 12.0F, 10.0F));
 
-        root.addOrReplaceChild("leg3",
-                CubeListBuilder.create()
-                        .texOffs(0, 38).addBox(-2.0F, 0.0F, -3.0F, 4.0F, 12.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg3",
+                CubeListBuilder.create().texOffs(0, 38).addBox(-2.0F, 0.0F, -3.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(-4.0F, 12.0F, -7.0F));
 
-        root.addOrReplaceChild("leg4",
-                CubeListBuilder.create()
-                        .texOffs(0, 38).addBox(-2.0F, 0.0F, -3.0F, 4.0F, 12.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg4",
+                CubeListBuilder.create().texOffs(0, 38).addBox(-2.0F, 0.0F, -3.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(4.0F, 12.0F, -7.0F));
 
-        root.addOrReplaceChild("left_horn",
-                CubeListBuilder.create()
-                        .texOffs(0, 0).addBox(-2.8F, -9.5F, 5.8F, 1.0F, 1.0F, 13.0F),
+        root.addOrReplaceChild(
+                "left_horn",
+                CubeListBuilder.create().texOffs(0, 0).addBox(-2.8F, -9.5F, 5.8F, 1.0F, 1.0F, 13.0F),
                 PartPose.offset(0.0F, 4.0F, -9.0F));
 
-        root.addOrReplaceChild("right_horn",
-                CubeListBuilder.create()
-                        .texOffs(0, 0).addBox(1.8F, -9.5F, 5.8F, 1.0F, 1.0F, 13.0F),
+        root.addOrReplaceChild(
+                "right_horn",
+                CubeListBuilder.create().texOffs(0, 0).addBox(1.8F, -9.5F, 5.8F, 1.0F, 1.0F, 13.0F),
                 PartPose.offset(0.0F, 4.0F, -9.0F));
 
         return LayerDefinition.create(mesh, 128, 64);
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(
+            T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.xRot = headPitch / 57.29578F + 0.4014257F;
         this.head.yRot = netHeadYaw / 57.29578F;
 
@@ -142,8 +143,7 @@ public class GemsbokModel<T extends LionKingAnimal> extends EntityModel<T> {
             float red,
             float green,
             float blue,
-            float alpha
-    ) {
+            float alpha) {
         head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         tail.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         earLeft.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

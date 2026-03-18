@@ -37,58 +37,63 @@ public class ZebraModel<T extends LionKingAnimal> extends EntityModel<T> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        root.addOrReplaceChild("neck",
-                CubeListBuilder.create()
-                        .texOffs(98, 26).addBox(-5.0F, -4.0F, -6.0F, 6.0F, 8.0F, 9.0F),
+        root.addOrReplaceChild(
+                "neck",
+                CubeListBuilder.create().texOffs(98, 26).addBox(-5.0F, -4.0F, -6.0F, 6.0F, 8.0F, 9.0F),
                 PartPose.offsetAndRotation(2.0F, 3.0F, -6.0F, -1.064651F, 0.0F, 0.0F));
 
-        PartDefinition headPart = root.addOrReplaceChild("head",
+        PartDefinition headPart = root.addOrReplaceChild(
+                "head",
                 CubeListBuilder.create()
-                        .texOffs(84, 0).addBox(0.0F, 0.0F, 0.0F, 8.0F, 8.0F, 14.0F)
-                        .texOffs(72, 0).addBox(1.0F, -3.0F, 10.0F, 1.0F, 3.0F, 2.0F)
-                        .texOffs(78, 0).addBox(6.0F, -3.0F, 10.0F, 1.0F, 3.0F, 2.0F),
+                        .texOffs(84, 0)
+                        .addBox(0.0F, 0.0F, 0.0F, 8.0F, 8.0F, 14.0F)
+                        .texOffs(72, 0)
+                        .addBox(1.0F, -3.0F, 10.0F, 1.0F, 3.0F, 2.0F)
+                        .texOffs(78, 0)
+                        .addBox(6.0F, -3.0F, 10.0F, 1.0F, 3.0F, 2.0F),
                 PartPose.offsetAndRotation(-4.0F, -3.0F, -19.0F, 0.4014257F, 0.0F, 0.0F));
 
-        root.addOrReplaceChild("body",
-                CubeListBuilder.create()
-                        .texOffs(0, 33).addBox(-6.0F, -10.0F, -7.0F, 12.0F, 10.0F, 21.0F),
+        root.addOrReplaceChild(
+                "body",
+                CubeListBuilder.create().texOffs(0, 33).addBox(-6.0F, -10.0F, -7.0F, 12.0F, 10.0F, 21.0F),
                 PartPose.offset(0.0F, 12.0F, -1.0F));
 
-        root.addOrReplaceChild("mane",
-                CubeListBuilder.create()
-                        .texOffs(92, 47).addBox(0.0F, 0.0F, 0.0F, 4.0F, 3.0F, 14.0F),
+        root.addOrReplaceChild(
+                "mane",
+                CubeListBuilder.create().texOffs(92, 47).addBox(0.0F, 0.0F, 0.0F, 4.0F, 3.0F, 14.0F),
                 PartPose.offsetAndRotation(-2.0F, 5.0F, -1.0F, 2.111848F, 0.0F, 0.0F));
 
-        root.addOrReplaceChild("leg1",
-                CubeListBuilder.create()
-                        .texOffs(0, 16).addBox(-3.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg1",
+                CubeListBuilder.create().texOffs(0, 16).addBox(-3.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(-3.0F, 12.0F, 10.0F));
 
-        root.addOrReplaceChild("leg2",
-                CubeListBuilder.create()
-                        .texOffs(0, 16).addBox(-1.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg2",
+                CubeListBuilder.create().texOffs(0, 16).addBox(-1.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(3.0F, 12.0F, 10.0F));
 
-        root.addOrReplaceChild("leg3",
-                CubeListBuilder.create()
-                        .texOffs(0, 16).addBox(-3.0F, 0.0F, -3.0F, 4.0F, 12.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg3",
+                CubeListBuilder.create().texOffs(0, 16).addBox(-3.0F, 0.0F, -3.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(-3.0F, 12.0F, -5.0F));
 
-        root.addOrReplaceChild("leg4",
-                CubeListBuilder.create()
-                        .texOffs(0, 16).addBox(-1.0F, 0.0F, -3.0F, 4.0F, 12.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg4",
+                CubeListBuilder.create().texOffs(0, 16).addBox(-1.0F, 0.0F, -3.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(3.0F, 12.0F, -5.0F));
 
-        root.addOrReplaceChild("tail",
-                CubeListBuilder.create()
-                        .texOffs(0, 0).addBox(-1.0F, -4.0F, 13.5F, 2.0F, 12.0F, 2.0F),
+        root.addOrReplaceChild(
+                "tail",
+                CubeListBuilder.create().texOffs(0, 0).addBox(-1.0F, -4.0F, 13.5F, 2.0F, 12.0F, 2.0F),
                 PartPose.offsetAndRotation(0.0F, 12.0F, -1.0F, 0.296706F, 0.0F, 0.0F));
 
         return LayerDefinition.create(mesh, 128, 64);
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(
+            T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.neck.xRot = -1.064651F;
         this.head.xRot = 0.4014257F;
         this.mane.xRot = 2.111848F;
@@ -100,7 +105,15 @@ public class ZebraModel<T extends LionKingAnimal> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(
+            PoseStack poseStack,
+            VertexConsumer buffer,
+            int packedLight,
+            int packedOverlay,
+            float red,
+            float green,
+            float blue,
+            float alpha) {
         head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         mane.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

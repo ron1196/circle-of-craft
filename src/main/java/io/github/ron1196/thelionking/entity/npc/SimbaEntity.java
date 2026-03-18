@@ -35,10 +35,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class SimbaEntity extends TamableAnimal {
 
-    private static final EntityDataAccessor<Boolean> DATA_BABY = SynchedEntityData.defineId(
-            SimbaEntity.class,
-            EntityDataSerializers.BOOLEAN
-    );
+    private static final EntityDataAccessor<Boolean> DATA_BABY =
+            SynchedEntityData.defineId(SimbaEntity.class, EntityDataSerializers.BOOLEAN);
 
     public final ItemStackHandler inventory = new ItemStackHandler(9);
 

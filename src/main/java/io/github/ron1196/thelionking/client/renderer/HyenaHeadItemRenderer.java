@@ -19,21 +19,24 @@ import net.minecraft.world.item.ItemStack;
 public class HyenaHeadItemRenderer extends BlockEntityWithoutLevelRenderer {
 
     private static final ResourceLocation[] TEXTURES = {
-            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_0.png"),
-            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_1.png"),
-            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_2.png"),
-            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/skeletal_hyena.png")
+        new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_0.png"),
+        new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_1.png"),
+        new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_2.png"),
+        new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/skeletal_hyena.png")
     };
 
     private ModelPart head;
 
     public HyenaHeadItemRenderer() {
-        super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+        super(
+                Minecraft.getInstance().getBlockEntityRenderDispatcher(),
+                Minecraft.getInstance().getEntityModels());
     }
 
     private ModelPart getHead() {
         if (head == null) {
-            head = Minecraft.getInstance().getEntityModels()
+            head = Minecraft.getInstance()
+                    .getEntityModels()
                     .bakeLayer(ClientEvents.HYENA_HEAD_LAYER)
                     .getChild("head");
         }
@@ -41,8 +44,13 @@ public class HyenaHeadItemRenderer extends BlockEntityWithoutLevelRenderer {
     }
 
     @Override
-    public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack,
-                             MultiBufferSource buffer, int packedLight, int packedOverlay) {
+    public void renderByItem(
+            ItemStack stack,
+            ItemDisplayContext displayContext,
+            PoseStack poseStack,
+            MultiBufferSource buffer,
+            int packedLight,
+            int packedOverlay) {
         int hyenaType = 0;
         CompoundTag tag = stack.getTag();
         if (tag != null && tag.contains("BlockEntityTag")) {

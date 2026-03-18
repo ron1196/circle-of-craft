@@ -2,6 +2,9 @@ package io.github.ron1196.thelionking.block;
 
 import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.Items;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,10 +18,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
 
 public class PortalFrameBlock extends Block {
 
@@ -40,17 +39,16 @@ public class PortalFrameBlock extends Block {
     }
 
     private static final Map<Boolean, PortalConfig> ACTIVATION_KEYS = Map.of(
-            false, PortalConfig.create(
-                    Blocks.PRIDE_LANDS_PORTAL,
-                    ActivationKey.consumed(Items.TICKET),
-                    ActivationKey.kept(Items.RHYTHM_STAFF)
-            ),
-            true, PortalConfig.create(
-                    Blocks.OUTLANDS_PORTAL,
-                    ActivationKey.consumed(Items.TICKET),
-                    ActivationKey.kept(Items.ZIRA_COIN)
-            )
-    );
+            false,
+                    PortalConfig.create(
+                            Blocks.PRIDE_LANDS_PORTAL,
+                            ActivationKey.consumed(Items.TICKET),
+                            ActivationKey.kept(Items.RHYTHM_STAFF)),
+            true,
+                    PortalConfig.create(
+                            Blocks.OUTLANDS_PORTAL,
+                            ActivationKey.consumed(Items.TICKET),
+                            ActivationKey.kept(Items.ZIRA_COIN)));
 
     private final boolean isOutlands;
 
@@ -67,8 +65,7 @@ public class PortalFrameBlock extends Block {
             @NotNull BlockPos pos,
             Player player,
             @NotNull InteractionHand hand,
-            @NotNull BlockHitResult hit
-    ) {
+            @NotNull BlockHitResult hit) {
         ItemStack stack = player.getItemInHand(hand);
         PortalConfig config = ACTIVATION_KEYS.get(isOutlands);
         for (ActivationKey key : config.keys()) {
@@ -79,15 +76,14 @@ public class PortalFrameBlock extends Block {
         return InteractionResult.PASS;
     }
 
-    private InteractionResult tryCreatePortal(Level level, BlockPos pos, Player player, ItemStack stack, ActivationKey key, PortalConfig config) {
+    private InteractionResult tryCreatePortal(
+            Level level, BlockPos pos, Player player, ItemStack stack, ActivationKey key, PortalConfig config) {
         if (level.isClientSide) return InteractionResult.SUCCESS;
 
         PortalBlock portalBlock = (PortalBlock) config.portal().get();
 
-        for (BlockPos testPos : new BlockPos[]{
-                pos.above(), pos.below(),
-                pos.north(), pos.south(), pos.east(), pos.west()
-        }) {
+        for (BlockPos testPos :
+                new BlockPos[] {pos.above(), pos.below(), pos.north(), pos.south(), pos.east(), pos.west()}) {
             if (level.getBlockState(testPos).isAir()) {
                 if (portalBlock.trySpawnPortal(level, testPos)) {
                     level.playSound(null, pos, SoundEvents.PORTAL_TRIGGER, SoundSource.BLOCKS, 1.0F, 1.0F);

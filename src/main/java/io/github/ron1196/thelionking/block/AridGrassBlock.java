@@ -13,7 +13,6 @@ public class AridGrassBlock extends TallGrassBlock {
 
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
-        return super.mayPlaceOn(state, level, pos)
-                || state.is(net.minecraft.world.level.block.Blocks.SAND);
+        return super.mayPlaceOn(state, level, pos) || state.is(net.minecraft.world.level.block.Blocks.SAND);
     }
 }

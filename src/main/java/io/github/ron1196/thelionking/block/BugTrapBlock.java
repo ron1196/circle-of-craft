@@ -1,6 +1,7 @@
 package io.github.ron1196.thelionking.block;
 
 import io.github.ron1196.thelionking.block.entity.BugTrapBlockEntity;
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
@@ -23,8 +24,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
-
 public class BugTrapBlock extends BaseEntityBlock {
 
     private static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
@@ -34,7 +33,11 @@ public class BugTrapBlock extends BaseEntityBlock {
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext ctx) {
+    public @NotNull VoxelShape getShape(
+            @NotNull BlockState state,
+            @NotNull BlockGetter level,
+            @NotNull BlockPos pos,
+            @NotNull CollisionContext ctx) {
         return SHAPE;
     }
 
@@ -51,8 +54,13 @@ public class BugTrapBlock extends BaseEntityBlock {
 
     @Override
     @SuppressWarnings("deprecation")
-    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                 @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
+    public @NotNull InteractionResult use(
+            @NotNull BlockState state,
+            @NotNull Level level,
+            @NotNull BlockPos pos,
+            @NotNull Player player,
+            @NotNull InteractionHand hand,
+            @NotNull BlockHitResult hit) {
         if (!level.isClientSide() && level.getBlockEntity(pos) instanceof BugTrapBlockEntity be) {
             NetworkHooks.openScreen((ServerPlayer) player, be, pos);
         }
@@ -61,7 +69,12 @@ public class BugTrapBlock extends BaseEntityBlock {
 
     @Override
     @SuppressWarnings("deprecation")
-    public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) {
+    public void onRemove(
+            @NotNull BlockState state,
+            @NotNull Level level,
+            @NotNull BlockPos pos,
+            @NotNull BlockState newState,
+            boolean isMoving) {
         if (!state.is(newState.getBlock())) {
             if (level.getBlockEntity(pos) instanceof BugTrapBlockEntity be) {
                 Containers.dropContents(level, pos, be.getDrops());
@@ -72,7 +85,8 @@ public class BugTrapBlock extends BaseEntityBlock {
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(
+            @NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
         if (!level.isClientSide()) {
             return (lvl, pos, st, be) -> {
                 if (be instanceof BugTrapBlockEntity trap) trap.serverTick();

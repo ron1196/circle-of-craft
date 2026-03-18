@@ -1,6 +1,9 @@
 package io.github.ron1196.thelionking.world.structure;
 
 import io.github.ron1196.thelionking.registry.LKFeatures;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -15,14 +18,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 /**
  * A structure piece that delegates building to an existing Feature class.
@@ -40,10 +38,7 @@ public class LKStructurePiece extends StructurePiece {
      * @param feature supplier for the Feature instance
      */
     private record StructureConfig(
-            int halfXZ, int yOffset, int aboveY,
-            Supplier<Feature<NoneFeatureConfiguration>> feature
-    ) {
-    }
+            int halfXZ, int yOffset, int aboveY, Supplier<Feature<NoneFeatureConfiguration>> feature) {}
 
     private static final StructureConfig DEFAULT_CONFIG = new StructureConfig(16, 0, 32, () -> null);
 
@@ -52,8 +47,7 @@ public class LKStructurePiece extends StructurePiece {
             "zira_mound", new StructureConfig(40, -50, 55, LKFeatures.ZIRA_MOUND),
             "ticket_booth", new StructureConfig(16, 0, 32, LKFeatures.TICKET_BOOTH),
             "timon_pumbaa_lodge", new StructureConfig(16, 0, 32, LKFeatures.TIMON_PUMBAA_LODGE),
-            "treasure_mound", new StructureConfig(16, 0, 32, LKFeatures.TREASURE_MOUND)
-    );
+            "treasure_mound", new StructureConfig(16, 0, 32, LKFeatures.TREASURE_MOUND));
 
     private static StructureConfig configFor(String path) {
         return CONFIGS.getOrDefault(path, DEFAULT_CONFIG);
@@ -108,8 +102,7 @@ public class LKStructurePiece extends StructurePiece {
             @NotNull RandomSource random,
             @NotNull BoundingBox box,
             @NotNull ChunkPos chunkPos,
-            @NotNull BlockPos pos
-    ) {
+            @NotNull BlockPos pos) {
         StructureConfig config = configFor(featureId.getPath());
         Feature<NoneFeatureConfiguration> feature = config.feature().get();
         if (feature == null) return;
@@ -127,13 +120,7 @@ public class LKStructurePiece extends StructurePiece {
         CURRENT_BOX.set(box);
         try {
             FeaturePlaceContext<NoneFeatureConfiguration> context = new FeaturePlaceContext<>(
-                    Optional.empty(),
-                    level,
-                    generator,
-                    random,
-                    origin,
-                    NoneFeatureConfiguration.INSTANCE
-            );
+                    Optional.empty(), level, generator, random, origin, NoneFeatureConfiguration.INSTANCE);
             feature.place(context);
         } finally {
             CURRENT_BOX.remove();
@@ -144,8 +131,11 @@ public class LKStructurePiece extends StructurePiece {
         StructureConfig config = configFor(featureId.getPath());
         int originY = pos.getY() + config.yOffset();
         return new BoundingBox(
-                pos.getX() - config.halfXZ(), originY, pos.getZ() - config.halfXZ(),
-                pos.getX() + config.halfXZ(), originY + config.aboveY(), pos.getZ() + config.halfXZ()
-        );
+                pos.getX() - config.halfXZ(),
+                originY,
+                pos.getZ() - config.halfXZ(),
+                pos.getX() + config.halfXZ(),
+                originY + config.aboveY(),
+                pos.getZ() + config.halfXZ());
     }
 }

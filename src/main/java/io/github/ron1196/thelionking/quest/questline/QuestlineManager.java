@@ -2,12 +2,16 @@ package io.github.ron1196.thelionking.quest.questline;
 
 import io.github.ron1196.thelionking.data.PlayerData;
 import io.github.ron1196.thelionking.data.PlayerDataProvider;
-import io.github.ron1196.thelionking.network.LKNetworking;
+import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.network.QuestSyncPacket;
 import io.github.ron1196.thelionking.quest.stage.ClaimableReward;
 import io.github.ron1196.thelionking.quest.stage.IStageId;
-import io.github.ron1196.thelionking.quest.stage.StageTrigger;
 import io.github.ron1196.thelionking.quest.stage.Stage;
+import io.github.ron1196.thelionking.quest.stage.StageTrigger;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,11 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
 
 public class QuestlineManager {
 
@@ -241,10 +240,9 @@ public class QuestlineManager {
     public void syncToPlayer(ServerPlayer player) {
         for (Questline quest : QuestlineRegistry.getOrdered()) {
             QuestlineState state = getState(quest.getId());
-            LKNetworking.CHANNEL.send(
+            Networking.CHANNEL.send(
                     PacketDistributor.PLAYER.with(() -> player),
-                    new QuestSyncPacket(quest.getId(), state.getCurrentStageId(), state.isChecked())
-            );
+                    new QuestSyncPacket(quest.getId(), state.getCurrentStageId(), state.isChecked()));
         }
     }
 

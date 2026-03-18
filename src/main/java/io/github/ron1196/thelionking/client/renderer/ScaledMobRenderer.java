@@ -14,8 +14,8 @@ public class ScaledMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
     private final ResourceLocation texture;
     private final float scale;
 
-    public ScaledMobRenderer(EntityRendererProvider.Context context, M model,
-                             String textureName, float shadowRadius, float scale) {
+    public ScaledMobRenderer(
+            EntityRendererProvider.Context context, M model, String textureName, float shadowRadius, float scale) {
         super(context, model, shadowRadius);
         this.texture = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/" + textureName + ".png");
         this.scale = scale;

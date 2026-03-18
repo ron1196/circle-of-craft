@@ -51,8 +51,13 @@ public class HangingBananaBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
-                                   LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    public BlockState updateShape(
+            BlockState state,
+            Direction direction,
+            BlockState neighborState,
+            LevelAccessor level,
+            BlockPos pos,
+            BlockPos neighborPos) {
         if (direction == state.getValue(FACING).getOpposite() && !state.canSurvive(level, pos)) {
             return net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
         }

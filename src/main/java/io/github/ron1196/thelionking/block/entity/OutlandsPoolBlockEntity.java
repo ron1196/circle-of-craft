@@ -1,7 +1,9 @@
 package io.github.ron1196.thelionking.block.entity;
 
-import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
 import io.github.ron1196.thelionking.registry.Items;
+import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -10,9 +12,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class OutlandsPoolBlockEntity extends BlockEntity {
 

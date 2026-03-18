@@ -1,7 +1,6 @@
 package io.github.ron1196.thelionking.network;
 
 import io.github.ron1196.thelionking.quest.questline.QuestlineState;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

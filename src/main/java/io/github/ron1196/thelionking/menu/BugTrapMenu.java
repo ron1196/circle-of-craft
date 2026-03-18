@@ -73,9 +73,11 @@ public class BugTrapMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(@NotNull Player player) {
-        return blockEntity == null || player.distanceToSqr(
-                blockEntity.getBlockPos().getX() + 0.5,
-                blockEntity.getBlockPos().getY() + 0.5,
-                blockEntity.getBlockPos().getZ() + 0.5) <= 64.0;
+        return blockEntity == null
+                || player.distanceToSqr(
+                                blockEntity.getBlockPos().getX() + 0.5,
+                                blockEntity.getBlockPos().getY() + 0.5,
+                                blockEntity.getBlockPos().getZ() + 0.5)
+                        <= 64.0;
     }
 }

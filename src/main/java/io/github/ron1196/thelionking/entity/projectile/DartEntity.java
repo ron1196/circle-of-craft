@@ -106,8 +106,7 @@ public class DartEntity extends AbstractArrow implements net.minecraft.world.ent
                     target.push(
                             -Math.sin(Math.toRadians(this.getYRot())) * knockbackStrength,
                             0.1,
-                            Math.cos(Math.toRadians(this.getYRot())) * knockbackStrength
-                    );
+                            Math.cos(Math.toRadians(this.getYRot())) * knockbackStrength);
                 }
                 case PINK -> {
                     if (this.getOwner() instanceof LivingEntity shooter) {
@@ -121,8 +120,14 @@ public class DartEntity extends AbstractArrow implements net.minecraft.world.ent
                 case BLACK -> {
                     if (!this.level().isClientSide) {
                         float explosionRadius = silverShooter ? 4.0F : 3.0F;
-                        this.level().explode(this, this.getX(), this.getY(), this.getZ(),
-                                explosionRadius, Level.ExplosionInteraction.MOB);
+                        this.level()
+                                .explode(
+                                        this,
+                                        this.getX(),
+                                        this.getY(),
+                                        this.getZ(),
+                                        explosionRadius,
+                                        Level.ExplosionInteraction.MOB);
                     }
                 }
                 default -> {

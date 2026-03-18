@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.entity.animal;
 
 import io.github.ron1196.thelionking.entity.ai.AmbientAvoidGoal;
 import io.github.ron1196.thelionking.entity.ai.AmbientPanicGoal;
+import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -17,8 +18,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
 
 public class DikDikEntity extends LionKingAnimal {
 
@@ -45,8 +44,12 @@ public class DikDikEntity extends LionKingAnimal {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty,
-                                         @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable CompoundTag tag) {
+    public SpawnGroupData finalizeSpawn(
+            @NotNull ServerLevelAccessor level,
+            @NotNull DifficultyInstance difficulty,
+            @NotNull MobSpawnType spawnType,
+            @Nullable SpawnGroupData groupData,
+            @Nullable CompoundTag tag) {
         setVariant(this.random.nextInt(3));
         return super.finalizeSpawn(level, difficulty, spawnType, groupData, tag);
     }

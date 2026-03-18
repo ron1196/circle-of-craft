@@ -18,11 +18,14 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
 
     private static final BlockState TERMITE = Blocks.TERMITE_MOUND.get().defaultBlockState();
     private static final BlockState GATE = Blocks.ZIRA_MOUND_GATE.get().defaultBlockState();
-    private static final BlockState PORTAL_FRAME = Blocks.OUTLANDS_PORTAL_FRAME.get().defaultBlockState();
+    private static final BlockState PORTAL_FRAME =
+            Blocks.OUTLANDS_PORTAL_FRAME.get().defaultBlockState();
     private static final BlockState OUTLANDS_POOL = Blocks.OUTLANDS_POOL.get().defaultBlockState();
-    private static final BlockState OUTSHROOM_GLOWING = Blocks.OUTSHROOM_GLOWING.get().defaultBlockState();
+    private static final BlockState OUTSHROOM_GLOWING =
+            Blocks.OUTSHROOM_GLOWING.get().defaultBlockState();
     private static final BlockState OUTLANDS_ALTAR = Blocks.OUTLANDS_ALTAR.get().defaultBlockState();
-    private static final BlockState CORRUPT_PRIDESTONE = Blocks.CORRUPT_PRIDESTONE.get().defaultBlockState();
+    private static final BlockState CORRUPT_PRIDESTONE =
+            Blocks.CORRUPT_PRIDESTONE.get().defaultBlockState();
     private static final BlockState BEDROCK = net.minecraft.world.level.block.Blocks.BEDROCK.defaultBlockState();
     private static final BlockState SAND = net.minecraft.world.level.block.Blocks.SAND.defaultBlockState();
     private static final BlockState SANDSTONE = net.minecraft.world.level.block.Blocks.SANDSTONE.defaultBlockState();
@@ -31,7 +34,9 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
     private static final int CLEAR_RADIUS = 28;
 
     /** Gate positions are deferred so they're placed last and never overwritten. */
-    private static final ThreadLocal<java.util.List<BlockPos>> DEFERRED_GATES = ThreadLocal.withInitial(java.util.ArrayList::new);
+    private static final ThreadLocal<java.util.List<BlockPos>> DEFERRED_GATES =
+            ThreadLocal.withInitial(java.util.ArrayList::new);
+
     private static final int ZIRA_Y_OFFSET = 17;
 
     public ZiraMoundFeature(Codec<NoneFeatureConfiguration> codec) {
@@ -146,8 +151,7 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
                 if (i2 * i2 + k2 * k2 > radiusSq) continue;
                 placeAt(level, i1, j + 2, k1, PORTAL_FRAME);
                 for (int j1 = j + 3; j1 <= j + 51; j1++) {
-                    if (level.getBlockState(new BlockPos(i1, j1, k1)).isAir()
-                            && canBlockSeeTheSky(level, i1, j1, k1)) {
+                    if (level.getBlockState(new BlockPos(i1, j1, k1)).isAir() && canBlockSeeTheSky(level, i1, j1, k1)) {
                         BlockState fill;
                         if (j1 > j + 48) {
                             fill = SAND;

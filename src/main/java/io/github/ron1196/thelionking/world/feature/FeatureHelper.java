@@ -6,7 +6,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 /**
  * Shared helpers for structure feature generation.
@@ -29,8 +28,8 @@ public final class FeatureHelper {
      * falls within the current chunk's bounding box. This prevents duplicate spawns
      * when postProcess is called once per overlapping chunk.
      */
-    public static <T extends Mob> void spawnEntity(WorldGenLevel level, EntityType<T> type,
-                                                    double x, double y, double z) {
+    public static <T extends Mob> void spawnEntity(
+            WorldGenLevel level, EntityType<T> type, double x, double y, double z) {
         if (level.isClientSide()) return;
         if (!LKStructurePiece.isInCurrentChunk((int) x, (int) y, (int) z)) return;
 

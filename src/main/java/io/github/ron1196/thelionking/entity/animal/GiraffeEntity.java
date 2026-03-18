@@ -3,6 +3,8 @@ package io.github.ron1196.thelionking.entity.animal;
 import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
 import io.github.ron1196.thelionking.entity.ai.AmbientPanicGoal;
 import io.github.ron1196.thelionking.registry.Items;
+import java.util.function.Supplier;
+import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -10,32 +12,25 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
-import java.util.function.Supplier;
 
 public class GiraffeEntity extends LionKingAnimal {
 
-    private static final EntityDataAccessor<Boolean> DATA_SADDLED = SynchedEntityData.defineId(
-            GiraffeEntity.class,
-            EntityDataSerializers.BOOLEAN
-    );
-    private static final EntityDataAccessor<Integer> DATA_TIE = SynchedEntityData.defineId(
-            GiraffeEntity.class,
-            EntityDataSerializers.INT
-    );
+    private static final EntityDataAccessor<Boolean> DATA_SADDLED =
+            SynchedEntityData.defineId(GiraffeEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_TIE =
+            SynchedEntityData.defineId(GiraffeEntity.class, EntityDataSerializers.INT);
 
     private static final int NO_TIE = -1;
     private static final float RIDDEN_SPEED_MULTIPLIER = 1.0F;
@@ -89,12 +84,15 @@ public class GiraffeEntity extends LionKingAnimal {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new AmbientPanicGoal(this));
-        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(
-                this,
-                LivingEntity.class,
-                12.0F, 1.0D, 1.5D,
-                e -> e instanceof LionEntity || e instanceof LionessEntity)
-        );
+        this.goalSelector.addGoal(
+                2,
+                new AvoidEntityGoal<>(
+                        this,
+                        LivingEntity.class,
+                        12.0F,
+                        1.0D,
+                        1.5D,
+                        e -> e instanceof LionEntity || e instanceof LionessEntity));
     }
 
     public static AttributeSupplier.Builder createAttributes() {

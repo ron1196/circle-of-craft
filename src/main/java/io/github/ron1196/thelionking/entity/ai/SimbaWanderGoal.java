@@ -3,6 +3,7 @@ package io.github.ron1196.thelionking.entity.ai;
 import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+
 /**
  * Simba wanders only when he has no owner or the owner is far away.
  * Does not wander when sitting.

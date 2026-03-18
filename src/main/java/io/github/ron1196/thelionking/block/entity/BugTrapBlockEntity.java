@@ -1,8 +1,9 @@
 package io.github.ron1196.thelionking.block.entity;
 
 import io.github.ron1196.thelionking.menu.BugTrapMenu;
-import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
 import io.github.ron1196.thelionking.registry.Items;
+import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -17,8 +18,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
 
 public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
 

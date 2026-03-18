@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.entity.hostile;
 
 import io.github.ron1196.thelionking.entity.animal.*;
 import io.github.ron1196.thelionking.registry.Blocks;
+import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -23,8 +24,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
 
 public class HyenaEntity extends Monster {
 
@@ -56,8 +55,7 @@ public class HyenaEntity extends Monster {
             @NotNull DifficultyInstance difficulty,
             @NotNull MobSpawnType spawnType,
             @Nullable SpawnGroupData groupData,
-            @Nullable CompoundTag tag
-    ) {
+            @Nullable CompoundTag tag) {
         setVariant(this.random.nextInt(3));
         return super.finalizeSpawn(level, difficulty, spawnType, groupData, tag);
     }
@@ -79,14 +77,21 @@ public class HyenaEntity extends Monster {
         this.goalSelector.addGoal(0, new FloatGoal(this));
 
         // Flee from lions when alone (not in a pack of 3+)
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(
-                        this, LivingEntity.class,
-                        12.0F, 1.0D, 1.5D,
-                        e -> (
-                                e instanceof LionEntity || e instanceof LionessEntity)
-                                && this.level().getEntitiesOfClass(HyenaEntity.class, this.getBoundingBox().inflate(16.0)).size() < 3
-                )
-        );
+        this.goalSelector.addGoal(
+                1,
+                new AvoidEntityGoal<>(
+                        this,
+                        LivingEntity.class,
+                        12.0F,
+                        1.0D,
+                        1.5D,
+                        e -> (e instanceof LionEntity || e instanceof LionessEntity)
+                                && this.level()
+                                                .getEntitiesOfClass(
+                                                        HyenaEntity.class,
+                                                        this.getBoundingBox().inflate(16.0))
+                                                .size()
+                                        < 3));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2, false));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -96,24 +101,36 @@ public class HyenaEntity extends Monster {
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 
         // Hyenas only attack lions when in a pack (3+ nearby)
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(
-                        this, LivingEntity.class,
-                        2, true, false,
+        this.targetSelector.addGoal(
+                3,
+                new NearestAttackableTargetGoal<>(
+                        this,
+                        LivingEntity.class,
+                        2,
+                        true,
+                        false,
                         e -> (e instanceof LionEntity || e instanceof LionessEntity)
-                                && this.level().getEntitiesOfClass(HyenaEntity.class, this.getBoundingBox().inflate(16.0)).size() >= 3
-                )
-        );
+                                && this.level()
+                                                .getEntitiesOfClass(
+                                                        HyenaEntity.class,
+                                                        this.getBoundingBox().inflate(16.0))
+                                                .size()
+                                        >= 3));
 
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(
-                this, LivingEntity.class,
-                2, true, false,
-                e -> e instanceof ZebraEntity
-                        || e instanceof DikDikEntity
-                        || e instanceof GemsbokEntity
-                        || e instanceof FlamingoEntity
-                        || e instanceof ZazuEntity
-                        || e instanceof BugEntity)
-        );
+        this.targetSelector.addGoal(
+                4,
+                new NearestAttackableTargetGoal<>(
+                        this,
+                        LivingEntity.class,
+                        2,
+                        true,
+                        false,
+                        e -> e instanceof ZebraEntity
+                                || e instanceof DikDikEntity
+                                || e instanceof GemsbokEntity
+                                || e instanceof FlamingoEntity
+                                || e instanceof ZazuEntity
+                                || e instanceof BugEntity));
     }
 
     public static AttributeSupplier.Builder createAttributes() {

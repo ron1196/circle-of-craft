@@ -1,9 +1,8 @@
 package io.github.ron1196.thelionking.network;
 
+import java.util.function.Supplier;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 /** Sent server→client when a Pumbaa bomb explodes near the player. Triggers the flatulence overlay. */
 public class FlatulencePacket {

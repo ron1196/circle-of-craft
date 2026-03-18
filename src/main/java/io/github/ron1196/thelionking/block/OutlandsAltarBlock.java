@@ -26,7 +26,8 @@ public class OutlandsAltarBlock extends Block {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    public InteractionResult use(
+            BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         // Quest interaction handled by LKForgeEvents
         return InteractionResult.PASS;
     }

@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.event;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.client.gui.BongoDrumScreen;
 import io.github.ron1196.thelionking.client.gui.BugTrapScreen;
@@ -12,16 +13,16 @@ import io.github.ron1196.thelionking.client.renderer.*;
 import io.github.ron1196.thelionking.entity.projectile.DartEntity;
 import io.github.ron1196.thelionking.entity.projectile.SpearEntity;
 import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
 import io.github.ron1196.thelionking.registry.Items;
+import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
 import io.github.ron1196.thelionking.registry.LKMenuTypes;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -29,7 +30,6 @@ import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraft.client.KeyMapping;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
@@ -83,8 +83,7 @@ public class ClientEvents {
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_X,
-            "key.categories.thelionking"
-    );
+            "key.categories.thelionking");
 
     private static ModelLayerLocation layer(String name) {
         return new ModelLayerLocation(new ResourceLocation(TheLionKingMod.MOD_ID, name), "main");
@@ -128,90 +127,126 @@ public class ClientEvents {
         event.registerLayerDefinition(RUG_LAYER, RugModel::createBodyLayer);
 
         // Skeletal Hyena Head
-        event.registerLayerDefinition(SKELETAL_HYENA_HEAD_LAYER,
+        event.registerLayerDefinition(
+                SKELETAL_HYENA_HEAD_LAYER,
                 io.github.ron1196.thelionking.client.model.SkeletalHyenaHeadModel::createBodyLayer);
 
         // Block entity layers
-        event.registerLayerDefinition(HYENA_HEAD_LAYER,
-                HyenaHeadBlockEntityRenderer::createHeadLayer);
+        event.registerLayerDefinition(HYENA_HEAD_LAYER, HyenaHeadBlockEntityRenderer::createHeadLayer);
     }
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         // Passive
-        event.registerEntityRenderer(EntityTypes.LION.get(),
+        event.registerEntityRenderer(
+                EntityTypes.LION.get(),
                 ctx -> new AnimalRenderer<>(ctx, new LionModel<>(ctx.bakeLayer(LION_LAYER)), "lion", 0.7F));
-        event.registerEntityRenderer(EntityTypes.LIONESS.get(),
+        event.registerEntityRenderer(
+                EntityTypes.LIONESS.get(),
                 ctx -> new AnimalRenderer<>(ctx, new LionModel<>(ctx.bakeLayer(LIONESS_LAYER)), "lioness", 0.6F));
-        event.registerEntityRenderer(EntityTypes.ZEBRA.get(),
+        event.registerEntityRenderer(
+                EntityTypes.ZEBRA.get(),
                 ctx -> new AnimalRenderer<>(ctx, new ZebraModel<>(ctx.bakeLayer(ZEBRA_LAYER)), "zebra", 0.7F));
-        event.registerEntityRenderer(EntityTypes.GIRAFFE.get(),
+        event.registerEntityRenderer(
+                EntityTypes.GIRAFFE.get(),
                 ctx -> new GiraffeRenderer(ctx, new GiraffeModel<>(ctx.bakeLayer(GIRAFFE_LAYER))));
-        event.registerEntityRenderer(EntityTypes.RHINO.get(),
+        event.registerEntityRenderer(
+                EntityTypes.RHINO.get(),
                 ctx -> new AnimalRenderer<>(ctx, new RhinoModel<>(ctx.bakeLayer(RHINO_LAYER)), "rhino", 0.9F));
-        event.registerEntityRenderer(EntityTypes.GEMSBOK.get(),
+        event.registerEntityRenderer(
+                EntityTypes.GEMSBOK.get(),
                 ctx -> new AnimalRenderer<>(ctx, new GemsbokModel<>(ctx.bakeLayer(GEMSBOK_LAYER)), "gemsbok", 0.6F));
-        event.registerEntityRenderer(EntityTypes.DIKDIK.get(),
+        event.registerEntityRenderer(
+                EntityTypes.DIKDIK.get(),
                 ctx -> new DikDikRenderer(ctx, new DikDikModel<>(ctx.bakeLayer(DIKDIK_LAYER)), 0.3F));
-        event.registerEntityRenderer(EntityTypes.FLAMINGO.get(),
+        event.registerEntityRenderer(
+                EntityTypes.FLAMINGO.get(),
                 ctx -> new AnimalRenderer<>(ctx, new FlamingoModel<>(ctx.bakeLayer(FLAMINGO_LAYER)), "flamingo", 0.3F));
-        event.registerEntityRenderer(EntityTypes.ZAZU.get(),
+        event.registerEntityRenderer(
+                EntityTypes.ZAZU.get(),
                 ctx -> new AnimalRenderer<>(ctx, new ZazuModel<>(ctx.bakeLayer(ZAZU_LAYER)), "zazu", 0.25F));
-        event.registerEntityRenderer(EntityTypes.BUG.get(),
+        event.registerEntityRenderer(
+                EntityTypes.BUG.get(),
                 ctx -> new AnimalRenderer<>(ctx, new BugModel<>(ctx.bakeLayer(BUG_LAYER)), "bug", 0.15F));
 
         // Hostile
-        event.registerEntityRenderer(EntityTypes.HYENA.get(),
+        event.registerEntityRenderer(
+                EntityTypes.HYENA.get(),
                 ctx -> new HyenaRenderer(ctx, new HyenaModel<>(ctx.bakeLayer(HYENA_LAYER)), 0.5F));
-        event.registerEntityRenderer(EntityTypes.SKELETAL_HYENA.get(),
-                ctx -> new MobRenderer<>(ctx, new HyenaModel<>(ctx.bakeLayer(SKELETAL_HYENA_LAYER)), "skeletal_hyena", 0.5F));
-        event.registerEntityRenderer(EntityTypes.OUTLANDER.get(),
+        event.registerEntityRenderer(
+                EntityTypes.SKELETAL_HYENA.get(),
+                ctx -> new MobRenderer<>(
+                        ctx, new HyenaModel<>(ctx.bakeLayer(SKELETAL_HYENA_LAYER)), "skeletal_hyena", 0.5F));
+        event.registerEntityRenderer(
+                EntityTypes.OUTLANDER.get(),
                 ctx -> new OutlanderRenderer(ctx, new OutlanderModel<>(ctx.bakeLayer(OUTLANDER_LAYER))));
-        event.registerEntityRenderer(EntityTypes.VULTURE.get(),
+        event.registerEntityRenderer(
+                EntityTypes.VULTURE.get(),
                 ctx -> new MobRenderer<>(ctx, new VultureModel<>(ctx.bakeLayer(VULTURE_LAYER)), "vulture", 0.5F));
-        event.registerEntityRenderer(EntityTypes.CROCODILE.get(),
+        event.registerEntityRenderer(
+                EntityTypes.CROCODILE.get(),
                 ctx -> new MobRenderer<>(ctx, new CrocodileModel<>(ctx.bakeLayer(CROCODILE_LAYER)), "crocodile", 0.7F));
-        event.registerEntityRenderer(EntityTypes.TERMITE.get(),
-                ctx -> new ScaledMobRenderer<>(ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_LAYER)), "termite", 0.15F, 0.4F));
-        event.registerEntityRenderer(EntityTypes.TERMITE_QUEEN.get(),
-                ctx -> new ScaledMobRenderer<>(ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_QUEEN_LAYER)), "termite", 0.7F, 1.7F));
+        event.registerEntityRenderer(
+                EntityTypes.TERMITE.get(),
+                ctx -> new ScaledMobRenderer<>(
+                        ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_LAYER)), "termite", 0.15F, 0.4F));
+        event.registerEntityRenderer(
+                EntityTypes.TERMITE_QUEEN.get(),
+                ctx -> new ScaledMobRenderer<>(
+                        ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_QUEEN_LAYER)), "termite", 0.7F, 1.7F));
 
         // NPCs — proper models ported from original mod (shadow, scale from old code)
-        event.registerEntityRenderer(EntityTypes.RAFIKI.get(),
+        event.registerEntityRenderer(
+                EntityTypes.RAFIKI.get(),
                 ctx -> new NpcRenderer(ctx, new RafikiModel(ctx.bakeLayer(RAFIKI_LAYER)), "rafiki", 0.35F, 0.5F));
-        event.registerEntityRenderer(EntityTypes.SIMBA.get(),
+        event.registerEntityRenderer(
+                EntityTypes.SIMBA.get(),
                 ctx -> new NpcRenderer(ctx, new SimbaModel(ctx.bakeLayer(SIMBA_LAYER)), "simba", 0.5F, 0.5F));
-        event.registerEntityRenderer(EntityTypes.TIMON.get(),
+        event.registerEntityRenderer(
+                EntityTypes.TIMON.get(),
                 ctx -> new NpcRenderer(ctx, new TimonModel(ctx.bakeLayer(TIMON_LAYER)), "timon", 0.2F, 0.5F));
-        event.registerEntityRenderer(EntityTypes.PUMBAA.get(),
+        event.registerEntityRenderer(
+                EntityTypes.PUMBAA.get(),
                 ctx -> new NpcRenderer(ctx, new PumbaaModel(ctx.bakeLayer(PUMBAA_LAYER)), "pumbaa", 0.6F));
-        event.registerEntityRenderer(EntityTypes.SCAR.get(),
+        event.registerEntityRenderer(
+                EntityTypes.SCAR.get(),
                 ctx -> new NpcRenderer(ctx, new NpcLionModel(ctx.bakeLayer(SCAR_LAYER)), "scar", 0.7F));
-        event.registerEntityRenderer(EntityTypes.ZIRA.get(),
+        event.registerEntityRenderer(
+                EntityTypes.ZIRA.get(),
                 ctx -> new NpcRenderer(ctx, new NpcLionModel(ctx.bakeLayer(ZIRA_LAYER)), "zira", 0.5F, 0.5F));
 
         // Ticket Lion
-        event.registerEntityRenderer(EntityTypes.TICKET_LION.get(),
+        event.registerEntityRenderer(
+                EntityTypes.TICKET_LION.get(),
                 ctx -> new NpcRenderer(ctx, new NpcLionModel(ctx.bakeLayer(TICKET_LION_LAYER)), "ticket_lion", 0.7F));
 
         // Rug
-        event.registerEntityRenderer(EntityTypes.RUG.get(),
-                ctx -> new RugRenderer(ctx, new RugModel(ctx.bakeLayer(RUG_LAYER))));
+        event.registerEntityRenderer(
+                EntityTypes.RUG.get(), ctx -> new RugRenderer(ctx, new RugModel(ctx.bakeLayer(RUG_LAYER))));
 
         // Skeletal Hyena Head
-        event.registerEntityRenderer(EntityTypes.SKELETAL_HYENA_HEAD.get(),
-                ctx -> new MobRenderer<>(ctx,
-                        new io.github.ron1196.thelionking.client.model.SkeletalHyenaHeadModel(ctx.bakeLayer(SKELETAL_HYENA_HEAD_LAYER)),
-                        "hyena_skeleton", 0.3F));
+        event.registerEntityRenderer(
+                EntityTypes.SKELETAL_HYENA_HEAD.get(),
+                ctx -> new MobRenderer<>(
+                        ctx,
+                        new io.github.ron1196.thelionking.client.model.SkeletalHyenaHeadModel(
+                                ctx.bakeLayer(SKELETAL_HYENA_HEAD_LAYER)),
+                        "hyena_skeleton",
+                        0.3F));
 
         // Projectiles
-        event.registerEntityRenderer(EntityTypes.DART.get(),
-                ctx -> new net.minecraft.client.renderer.entity.ArrowRenderer<>(ctx) {
-                    private final ResourceLocation BLUE = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_blue.png");
-                    private final ResourceLocation RED = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_red.png");
-                    private final ResourceLocation YELLOW = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_yellow.png");
-                    private final ResourceLocation PINK = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_pink.png");
-                    private final ResourceLocation BLACK = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_black.png");
+        event.registerEntityRenderer(
+                EntityTypes.DART.get(), ctx -> new net.minecraft.client.renderer.entity.ArrowRenderer<>(ctx) {
+                    private final ResourceLocation BLUE =
+                            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_blue.png");
+                    private final ResourceLocation RED =
+                            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_red.png");
+                    private final ResourceLocation YELLOW =
+                            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_yellow.png");
+                    private final ResourceLocation PINK =
+                            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_pink.png");
+                    private final ResourceLocation BLACK =
+                            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_black.png");
 
                     @Override
                     public @NotNull ResourceLocation getTextureLocation(@NotNull DartEntity entity) {
@@ -224,9 +259,10 @@ public class ClientEvents {
                         };
                     }
                 });
-        event.registerEntityRenderer(EntityTypes.SPEAR.get(),
-                ctx -> new net.minecraft.client.renderer.entity.ArrowRenderer<>(ctx) {
-                    private final ResourceLocation SPEAR = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/spear.png");
+        event.registerEntityRenderer(
+                EntityTypes.SPEAR.get(), ctx -> new net.minecraft.client.renderer.entity.ArrowRenderer<>(ctx) {
+                    private final ResourceLocation SPEAR =
+                            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/spear.png");
 
                     @Override
                     public @NotNull ResourceLocation getTextureLocation(@NotNull SpearEntity entity) {
@@ -239,14 +275,12 @@ public class ClientEvents {
         event.registerEntityRenderer(EntityTypes.ZAZU_EGG.get(), ThrownItemRenderer::new);
 
         // Weather effects — uses vanilla lightning renderer since LightningBoltEntity extends LightningBolt
-        event.registerEntityRenderer(EntityTypes.LK_LIGHTNING_BOLT.get(),
-                net.minecraft.client.renderer.entity.LightningBoltRenderer::new);
+        event.registerEntityRenderer(
+                EntityTypes.LK_LIGHTNING_BOLT.get(), net.minecraft.client.renderer.entity.LightningBoltRenderer::new);
 
         // Block entity renderers
-        event.registerBlockEntityRenderer(LKBlockEntityTypes.HYENA_HEAD.get(),
-                HyenaHeadBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(LKBlockEntityTypes.PRIDE_BED.get(),
-                PrideBedRenderer::new);
+        event.registerBlockEntityRenderer(LKBlockEntityTypes.HYENA_HEAD.get(), HyenaHeadBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(LKBlockEntityTypes.PRIDE_BED.get(), PrideBedRenderer::new);
     }
 
     @SubscribeEvent
@@ -274,8 +308,7 @@ public class ClientEvents {
                             return tag.getCompound("BlockEntityTag").getInt("HyenaType");
                         }
                         return 0.0F;
-                    }
-            );
+                    });
         });
     }
 }

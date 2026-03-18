@@ -4,11 +4,11 @@ import io.github.ron1196.thelionking.data.PlayerData;
 import io.github.ron1196.thelionking.data.PlayerDataProvider;
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
-import io.github.ron1196.thelionking.network.LKNetworking;
+import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
-import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline.Stage;
+import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.stage.StageTrigger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -18,8 +18,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.BossEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -39,16 +39,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class ZiraEntity extends Monster {
 
-    private static final EntityDataAccessor<Boolean> DATA_HOSTILE = SynchedEntityData.defineId(
-            ZiraEntity.class,
-            EntityDataSerializers.BOOLEAN
-    );
+    private static final EntityDataAccessor<Boolean> DATA_HOSTILE =
+            SynchedEntityData.defineId(ZiraEntity.class, EntityDataSerializers.BOOLEAN);
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(
-            Component.literal("Zira"),
-            BossEvent.BossBarColor.PURPLE,
-            BossEvent.BossBarOverlay.PROGRESS
-    );
+            Component.literal("Zira"), BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.PROGRESS);
 
     private static final int OUTLANDER_SPAWN_COUNT = 4;
 
@@ -96,8 +91,7 @@ public class ZiraEntity extends Monster {
     public void setHostile(boolean hostile) {
         this.entityData.set(DATA_HOSTILE, hostile);
         if (hostile) {
-            this.targetSelector.addGoal(2,
-                    new NearestAttackableTargetGoal<>(this, Player.class, true));
+            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         }
     }
 
@@ -134,10 +128,8 @@ public class ZiraEntity extends Monster {
         for (int i = 0; i < OUTLANDER_SPAWN_COUNT; i++) {
             int x = Mth.floor(getX()) - 6 + random.nextInt(13);
             int z = Mth.floor(getZ()) - 6 + random.nextInt(13);
-            int y = level().getHeightmapPos(
-                    Heightmap.Types.MOTION_BLOCKING,
-                    new BlockPos(x, 0, z)
-            ).getY();
+            int y = level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, new BlockPos(x, 0, z))
+                    .getY();
             level().addFreshEntity(new LightningBoltEntity(level(), x, y, z, 0, null));
         }
     }
@@ -186,12 +178,13 @@ public class ZiraEntity extends Monster {
     }
 
     private void sendStageDialogue(Player player, Stage newStage) {
-        String message = switch (newStage) {
-            case COLLECT_INGOTS -> "So... a human dares to enter my domain. Perhaps you can be of use to me.";
-            case THROW_IN_OUTWATER -> "Good. Now throw these ingots into the Outwater.";
-            case FOLLOW_OUTLANDERS -> "Excellent. You have served me well. Now... follow my Outlanders.";
-            default -> null;
-        };
+        String message =
+                switch (newStage) {
+                    case COLLECT_INGOTS -> "So... a human dares to enter my domain. Perhaps you can be of use to me.";
+                    case THROW_IN_OUTWATER -> "Good. Now throw these ingots into the Outwater.";
+                    case FOLLOW_OUTLANDERS -> "Excellent. You have served me well. Now... follow my Outlanders.";
+                    default -> null;
+                };
         if (message != null) sendMessage(player, message);
     }
 
@@ -203,16 +196,18 @@ public class ZiraEntity extends Monster {
                 WorldData data = WorldData.get(serverLevel);
                 data.getQuestManager().tryAdvance("outlands", serverPlayer, StageTrigger.ZIRA_KILLED);
 
-                serverPlayer.sendSystemMessage(Component.literal(
-                        "§e<Zira> §fThis is not over... Scar's legacy will live on..."));
+                serverPlayer.sendSystemMessage(
+                        Component.literal("§e<Zira> §fThis is not over... Scar's legacy will live on..."));
             }
 
             level().explode(this, getX(), getY(), getZ(), 0F, Level.ExplosionInteraction.NONE);
             for (int i = 0; i < 5; i++) {
                 int x = Mth.floor(getX()) - 12 + random.nextInt(25);
                 int z = Mth.floor(getZ()) - 12 + random.nextInt(25);
-                int y = level().getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING,
-                        new BlockPos(x, 0, z)).getY();
+                int y = level().getHeightmapPos(
+                                net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING,
+                                new BlockPos(x, 0, z))
+                        .getY();
                 LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(level());
                 if (bolt != null) {
                     bolt.moveTo(x, y, z);
@@ -237,10 +232,7 @@ public class ZiraEntity extends Monster {
     }
 
     private void syncPlayerData(ServerPlayer player, PlayerData data) {
-        LKNetworking.CHANNEL.send(
-                PacketDistributor.PLAYER.with(() -> player),
-                new PlayerDataSyncPacket(data)
-        );
+        Networking.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new PlayerDataSyncPacket(data));
     }
 
     private void broadcastMessage() {

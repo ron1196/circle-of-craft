@@ -37,57 +37,59 @@ public class ZazuModel<T extends LionKingAnimal> extends EntityModel<T> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        root.addOrReplaceChild("head",
-                CubeListBuilder.create()
-                        .texOffs(0, 0).addBox(-2.0F, -6.0F, -2.0F, 4.0F, 5.0F, 3.0F),
+        root.addOrReplaceChild(
+                "head",
+                CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -6.0F, -2.0F, 4.0F, 5.0F, 3.0F),
                 PartPose.offset(0.0F, 16.0F, -4.0F));
 
-        root.addOrReplaceChild("headwear",
+        root.addOrReplaceChild(
+                "headwear",
                 CubeListBuilder.create()
-                        .texOffs(14, 0).addBox(-2.0F, -6.25F, -0.75F, 4.0F, 5.0F, 3.0F,
-                                new CubeDeformation(0.25F)),
+                        .texOffs(14, 0)
+                        .addBox(-2.0F, -6.25F, -0.75F, 4.0F, 5.0F, 3.0F, new CubeDeformation(0.25F)),
                 PartPose.offset(0.0F, 16.0F, -4.0F));
 
-        root.addOrReplaceChild("bill",
-                CubeListBuilder.create()
-                        .texOffs(46, 25).addBox(-2.0F, -4.0F, -7.0F, 4.0F, 2.0F, 5.0F),
+        root.addOrReplaceChild(
+                "bill",
+                CubeListBuilder.create().texOffs(46, 25).addBox(-2.0F, -4.0F, -7.0F, 4.0F, 2.0F, 5.0F),
                 PartPose.offset(0.0F, 15.0F, -4.0F));
 
-        root.addOrReplaceChild("body",
-                CubeListBuilder.create()
-                        .texOffs(0, 10).addBox(-3.0F, -4.0F, -3.0F, 5.0F, 7.0F, 5.0F),
+        root.addOrReplaceChild(
+                "body",
+                CubeListBuilder.create().texOffs(0, 10).addBox(-3.0F, -4.0F, -3.0F, 5.0F, 7.0F, 5.0F),
                 PartPose.offset(0.5F, 16.0F, 0.5F));
 
-        root.addOrReplaceChild("rightLeg",
-                CubeListBuilder.create()
-                        .texOffs(26, 0).addBox(-1.0F, 0.0F, -3.0F, 3.0F, 5.0F, 3.0F),
+        root.addOrReplaceChild(
+                "rightLeg",
+                CubeListBuilder.create().texOffs(26, 0).addBox(-1.0F, 0.0F, -3.0F, 3.0F, 5.0F, 3.0F),
                 PartPose.offset(-2.0F, 19.0F, 1.0F));
 
-        root.addOrReplaceChild("leftLeg",
-                CubeListBuilder.create()
-                        .texOffs(26, 0).addBox(-1.0F, 0.0F, -3.0F, 3.0F, 5.0F, 3.0F),
+        root.addOrReplaceChild(
+                "leftLeg",
+                CubeListBuilder.create().texOffs(26, 0).addBox(-1.0F, 0.0F, -3.0F, 3.0F, 5.0F, 3.0F),
                 PartPose.offset(1.0F, 19.0F, 1.0F));
 
-        root.addOrReplaceChild("rightWing",
-                CubeListBuilder.create()
-                        .texOffs(24, 13).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 4.0F, 6.0F),
+        root.addOrReplaceChild(
+                "rightWing",
+                CubeListBuilder.create().texOffs(24, 13).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 4.0F, 6.0F),
                 PartPose.offset(-3.0F, 15.0F, 0.0F));
 
-        root.addOrReplaceChild("leftWing",
-                CubeListBuilder.create()
-                        .texOffs(24, 13).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 4.0F, 6.0F),
+        root.addOrReplaceChild(
+                "leftWing",
+                CubeListBuilder.create().texOffs(24, 13).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 4.0F, 6.0F),
                 PartPose.offset(3.0F, 15.0F, 0.0F));
 
-        root.addOrReplaceChild("tail",
-                CubeListBuilder.create()
-                        .texOffs(44, 5).addBox(-2.0F, 3.0F, 0.0F, 4.0F, 9.0F, 1.0F),
+        root.addOrReplaceChild(
+                "tail",
+                CubeListBuilder.create().texOffs(44, 5).addBox(-2.0F, 3.0F, 0.0F, 4.0F, 9.0F, 1.0F),
                 PartPose.offsetAndRotation(0.0F, 16.0F, 0.0F, 2.0F, 0.0F, 0.0F));
 
         return LayerDefinition.create(mesh, 64, 32);
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(
+            T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.xRot = -(headPitch / 57.29578F);
         this.head.yRot = netHeadYaw / 57.29578F;
 
@@ -109,7 +111,15 @@ public class ZazuModel<T extends LionKingAnimal> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(
+            PoseStack poseStack,
+            VertexConsumer buffer,
+            int packedLight,
+            int packedOverlay,
+            float red,
+            float green,
+            float blue,
+            float alpha) {
         head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         headwear.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         bill.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

@@ -1,11 +1,10 @@
 package io.github.ron1196.thelionking.item;
 
+import java.util.function.Consumer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-
-import java.util.function.Consumer;
 
 public class HyenaHeadBlockItem extends BlockItem {
 

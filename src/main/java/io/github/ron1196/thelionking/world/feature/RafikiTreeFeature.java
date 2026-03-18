@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,12 +23,12 @@ public class RafikiTreeFeature extends Feature<NoneFeatureConfiguration> {
     private static final Logger LOGGER = LoggerFactory.getLogger(RafikiTreeFeature.class);
 
     private static final BlockState WOOD = Blocks.RAFIKI_WOOD.get().defaultBlockState();
-    private static final BlockState LEAVES = Blocks.RAFIKI_LEAVES.get().defaultBlockState()
-            .setValue(LeavesBlock.PERSISTENT, true);
+    private static final BlockState LEAVES =
+            Blocks.RAFIKI_LEAVES.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
     private static final BlockState TORCH = net.minecraft.world.level.block.Blocks.TORCH.defaultBlockState();
-    private static final BlockState PORTAL_FRAME = Blocks.OUTLANDS_PORTAL_FRAME.get().defaultBlockState();
+    private static final BlockState PORTAL_FRAME =
+            Blocks.OUTLANDS_PORTAL_FRAME.get().defaultBlockState();
     private static final BlockState AIR = net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
-
 
     public RafikiTreeFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
@@ -122,7 +121,8 @@ public class RafikiTreeFeature extends Feature<NoneFeatureConfiguration> {
     /**
      * Bresenham midpoint circle algorithm — exact port from the original mod.
      */
-    private void generateCircle(WorldGenLevel level, int x0, int j, int y0, int radius, BlockState block, boolean fill) {
+    private void generateCircle(
+            WorldGenLevel level, int x0, int j, int y0, int radius, BlockState block, boolean fill) {
         if (radius <= 0) {
             placeAt(level, x0, j, y0, block);
             return;

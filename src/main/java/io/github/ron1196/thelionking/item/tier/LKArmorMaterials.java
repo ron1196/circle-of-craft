@@ -2,32 +2,61 @@ package io.github.ron1196.thelionking.item.tier;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.registry.Items;
+import java.util.function.Supplier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 
-import java.util.function.Supplier;
-
 public enum LKArmorMaterials implements ArmorMaterial {
-    SILVER("silver", 19, new int[]{2, 5, 7, 2}, 16,
-            SoundEvents.ARMOR_EQUIP_IRON, 0.0F, 0.0F,
+    SILVER(
+            "silver",
+            19,
+            new int[] {2, 5, 7, 2},
+            16,
+            SoundEvents.ARMOR_EQUIP_IRON,
+            0.0F,
+            0.0F,
             () -> Ingredient.of(Items.SILVER_INGOT.get())),
-    GEMSBOK("gemsbok", 8, new int[]{1, 4, 5, 2}, 8,
-            SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F,
+    GEMSBOK(
+            "gemsbok",
+            8,
+            new int[] {1, 4, 5, 2},
+            8,
+            SoundEvents.ARMOR_EQUIP_LEATHER,
+            0.0F,
+            0.0F,
             () -> Ingredient.of(Items.GEMSBOK_HIDE.get())),
-    PEACOCK("peacock", 31, new int[]{3, 6, 8, 3}, 9,
-            SoundEvents.ARMOR_EQUIP_DIAMOND, 1.0F, 0.0F,
+    PEACOCK(
+            "peacock",
+            31,
+            new int[] {3, 6, 8, 3},
+            9,
+            SoundEvents.ARMOR_EQUIP_DIAMOND,
+            1.0F,
+            0.0F,
             () -> Ingredient.of(Items.PEACOCK_GEM.get())),
-    OUTLANDS("outlands", 12, new int[]{2, 5, 6, 2}, 0,
-            SoundEvents.ARMOR_EQUIP_IRON, 0.0F, 0.0F,
+    OUTLANDS(
+            "outlands",
+            12,
+            new int[] {2, 5, 6, 2},
+            0,
+            SoundEvents.ARMOR_EQUIP_IRON,
+            0.0F,
+            0.0F,
             () -> Ingredient.of(Items.OUTLANDER_FUR.get())),
-    TICKET_LION("ticket_lion", 0, new int[]{0, 0, 0, 0}, 0,
-            SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F,
+    TICKET_LION(
+            "ticket_lion",
+            0,
+            new int[] {0, 0, 0, 0},
+            0,
+            SoundEvents.ARMOR_EQUIP_LEATHER,
+            0.0F,
+            0.0F,
             () -> Ingredient.EMPTY);
 
-    private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
+    private static final int[] HEALTH_PER_SLOT = new int[] {13, 15, 16, 11};
     private final String name;
     private final int durabilityMultiplier;
     private final int[] slotProtections;
@@ -37,9 +66,15 @@ public enum LKArmorMaterials implements ArmorMaterial {
     private final float knockbackResistance;
     private final Supplier<Ingredient> repairIngredient;
 
-    LKArmorMaterials(String name, int durabilityMultiplier, int[] slotProtections,
-                     int enchantmentValue, SoundEvent sound, float toughness,
-                     float knockbackResistance, Supplier<Ingredient> repairIngredient) {
+    LKArmorMaterials(
+            String name,
+            int durabilityMultiplier,
+            int[] slotProtections,
+            int enchantmentValue,
+            SoundEvent sound,
+            float toughness,
+            float knockbackResistance,
+            Supplier<Ingredient> repairIngredient) {
         this.name = name;
         this.durabilityMultiplier = durabilityMultiplier;
         this.slotProtections = slotProtections;

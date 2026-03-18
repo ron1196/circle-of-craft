@@ -20,13 +20,13 @@ public class DartShooterItem extends Item {
     private final boolean isSilver;
 
     public DartShooterItem(boolean isSilver) {
-        super(new Item.Properties()
-                .durability(isSilver ? 286 : 214));
+        super(new Item.Properties().durability(isSilver ? 286 : 214));
         this.isSilver = isSilver;
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(
+            @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack shooterStack = player.getItemInHand(hand);
 
         // Find the first dart item in the player's inventory
@@ -70,9 +70,15 @@ public class DartShooterItem extends Item {
         }
 
         // Play shoot sound
-        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS,
-                1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F));
+        level.playSound(
+                null,
+                player.getX(),
+                player.getY(),
+                player.getZ(),
+                SoundEvents.ARROW_SHOOT,
+                SoundSource.PLAYERS,
+                1.0F,
+                1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F));
 
         // Apply cooldown
         int cooldownTicks = isSilver ? 12 : 20;

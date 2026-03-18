@@ -29,17 +29,34 @@ public class LKCommands {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("lk")
                 .requires(source -> source.hasPermission(2))
-                .then(Commands.literal("pridelands").executes(ctx -> teleportToDimension(ctx.getSource(), Dimensions.PRIDE_LANDS_LEVEL, "Pride Lands")))
-                .then(Commands.literal("outlands").executes(ctx -> teleportToDimension(ctx.getSource(), Dimensions.OUTLANDS_LEVEL, "Outlands")))
-                .then(Commands.literal("upendi").executes(ctx -> teleportToDimension(ctx.getSource(), Dimensions.UPENDI_LEVEL, "Upendi")))
-                .then(Commands.literal("overworld").executes(ctx -> teleportToDimension(ctx.getSource(), Level.OVERWORLD, "Overworld")))
-                .then(Commands.literal("tpmound").executes(ctx -> teleportToStructure(ctx.getSource(), Dimensions.OUTLANDS_LEVEL, "zira_mound", "Zira's Mound")))
-                .then(Commands.literal("tptree").executes(ctx -> teleportToStructure(ctx.getSource(), Dimensions.PRIDE_LANDS_LEVEL, "rafiki_tree", "Rafiki Tree")))
-                .then(Commands.literal("tpbooth").executes(ctx -> teleportToStructure(ctx.getSource(), Level.OVERWORLD, "ticket_booth", "Ticket Booth")))
-                .then(Commands.literal("tplodge").executes(ctx -> teleportToStructure(ctx.getSource(), Dimensions.PRIDE_LANDS_LEVEL, "timon_pumbaa_lodge", "Timon & Pumbaa Lodge")))
-                .then(Commands.literal("tptreasure").executes(ctx -> teleportToStructure(ctx.getSource(), Dimensions.OUTLANDS_LEVEL, "treasure_mound", "Treasure Mound")))
-                .then(Commands.literal("openmound").executes(ctx -> openMound(ctx.getSource())))
-        );
+                .then(Commands.literal("pridelands")
+                        .executes(ctx ->
+                                teleportToDimension(ctx.getSource(), Dimensions.PRIDE_LANDS_LEVEL, "Pride Lands")))
+                .then(Commands.literal("outlands")
+                        .executes(ctx -> teleportToDimension(ctx.getSource(), Dimensions.OUTLANDS_LEVEL, "Outlands")))
+                .then(Commands.literal("upendi")
+                        .executes(ctx -> teleportToDimension(ctx.getSource(), Dimensions.UPENDI_LEVEL, "Upendi")))
+                .then(Commands.literal("overworld")
+                        .executes(ctx -> teleportToDimension(ctx.getSource(), Level.OVERWORLD, "Overworld")))
+                .then(Commands.literal("tpmound")
+                        .executes(ctx -> teleportToStructure(
+                                ctx.getSource(), Dimensions.OUTLANDS_LEVEL, "zira_mound", "Zira's Mound")))
+                .then(Commands.literal("tptree")
+                        .executes(ctx -> teleportToStructure(
+                                ctx.getSource(), Dimensions.PRIDE_LANDS_LEVEL, "rafiki_tree", "Rafiki Tree")))
+                .then(Commands.literal("tpbooth")
+                        .executes(ctx ->
+                                teleportToStructure(ctx.getSource(), Level.OVERWORLD, "ticket_booth", "Ticket Booth")))
+                .then(Commands.literal("tplodge")
+                        .executes(ctx -> teleportToStructure(
+                                ctx.getSource(),
+                                Dimensions.PRIDE_LANDS_LEVEL,
+                                "timon_pumbaa_lodge",
+                                "Timon & Pumbaa Lodge")))
+                .then(Commands.literal("tptreasure")
+                        .executes(ctx -> teleportToStructure(
+                                ctx.getSource(), Dimensions.OUTLANDS_LEVEL, "treasure_mound", "Treasure Mound")))
+                .then(Commands.literal("openmound").executes(ctx -> openMound(ctx.getSource()))));
     }
 
     private static int teleportToDimension(CommandSourceStack source, ResourceKey<Level> dimensionKey, String name) {
@@ -66,21 +83,22 @@ public class LKCommands {
     }
 
     private static BlockPos findNearestStructure(ServerLevel level, String structureName, BlockPos searchFrom) {
-        ResourceKey<Structure> structureKey = ResourceKey.create(
-                Registries.STRUCTURE, new ResourceLocation(TheLionKingMod.MOD_ID, structureName));
+        ResourceKey<Structure> structureKey =
+                ResourceKey.create(Registries.STRUCTURE, new ResourceLocation(TheLionKingMod.MOD_ID, structureName));
         Holder.Reference<Structure> holder = level.registryAccess()
                 .registryOrThrow(Registries.STRUCTURE)
                 .getHolder(structureKey)
                 .orElse(null);
         if (holder == null) return null;
 
-        Pair<BlockPos, Holder<Structure>> result = level.getChunkSource().getGenerator()
+        Pair<BlockPos, Holder<Structure>> result = level.getChunkSource()
+                .getGenerator()
                 .findNearestMapStructure(level, HolderSet.direct(holder), searchFrom, 100, false);
         return result != null ? result.getFirst() : null;
     }
 
-    private static int teleportToStructure(CommandSourceStack source, ResourceKey<Level> dimensionKey,
-                                            String structureName, String displayName) {
+    private static int teleportToStructure(
+            CommandSourceStack source, ResourceKey<Level> dimensionKey, String structureName, String displayName) {
         if (!(source.getEntity() instanceof ServerPlayer player)) {
             source.sendFailure(Component.literal("Must be run by a player."));
             return 0;
@@ -96,7 +114,8 @@ public class LKCommands {
         if (player.level().dimension() != dimensionKey) {
             BlockPos spawnPos = targetLevel.getSharedSpawnPos();
             int sy = targetLevel.getHeight(Heightmap.Types.MOTION_BLOCKING, spawnPos.getX(), spawnPos.getZ()) + 1;
-            player.teleportTo(targetLevel, spawnPos.getX() + 0.5, sy, spawnPos.getZ() + 0.5, player.getYRot(), player.getXRot());
+            player.teleportTo(
+                    targetLevel, spawnPos.getX() + 0.5, sy, spawnPos.getZ() + 0.5, player.getYRot(), player.getXRot());
         }
 
         BlockPos structurePos = findNearestStructure(targetLevel, structureName, player.blockPosition());
@@ -109,7 +128,8 @@ public class LKCommands {
         int z = structurePos.getZ();
         int y = 200; // Aerial view
         player.teleportTo(targetLevel, x + 0.5, y, z + 0.5, 0, 90); // Look down
-        source.sendSuccess(() -> Component.literal("Teleported above " + displayName + " at " + x + ", " + y + ", " + z), true);
+        source.sendSuccess(
+                () -> Component.literal("Teleported above " + displayName + " at " + x + ", " + y + ", " + z), true);
         return 1;
     }
 
@@ -142,22 +162,22 @@ public class LKCommands {
 
         // Clear pool cover blocks (from old LKWorldGenZiraMound.clearPoolCover)
         int[][] poolCoverPositions = {
-                {-4, 17, 12}, {-4, 17, 11}, {-3, 17, 12}, {-2, 17, 12}, {-1, 17, 12},
-                {-3, 17, 11}, {-2, 17, 11}, {-1, 17, 11}, {-1, 17, 10}, {-1, 18, 10},
-                {-2, 17, 10}, {-3, 17, 10}, {-4, 17, 10}, {-2, 17, 9}, {-3, 17, 9},
-                {-4, 17, 9}, {-4, 17, 8}, {-5, 17, 8}, {-6, 17, 8}, {-5, 17, 9},
-                {-6, 17, 9}, {-5, 17, 10}, {-6, 17, 10}, {-5, 17, 11}, {-1, 18, 11},
-                {-1, 18, 12}, {-2, 18, 12}, {-2, 18, 11}, {-2, 18, 10}, {-3, 18, 10},
-                {-3, 18, 9}, {-4, 18, 9}, {-5, 18, 9}, {-6, 18, 10}, {-5, 18, 10},
-                {-4, 18, 10}, {-3, 18, 11}, {-4, 18, 11}, {-3, 18, 12}, {-5, 19, 10},
-                {-4, 19, 10}, {-3, 19, 10}, {-3, 19, 11}, {-2, 19, 11}, {-2, 19, 12},
-                {-1, 19, 11}, {-2, 19, 10}, {-2, 20, 11}, {-2, 21, 11}, {-3, 20, 10},
-                {-3, 21, 10}, {-2, 20, 10}, {-4, 20, 10}, {-4, 19, 9}, {-4, 21, 10},
-                {-3, 22, 10}, {-3, 23, 10}, {-4, 22, 10}, {-2, 22, 11}, {-3, 24, 10},
-                {-3, 25, 10}, {-2, 21, 10}, {-3, 20, 11}, {-3, 21, 11}, {-5, 20, 10},
-                {-4, 19, 11}, {-5, 18, 11}, {-4, 20, 11}, {-5, 21, 10}, {-4, 23, 10},
-                {-3, 22, 11}, {-3, 23, 11}, {-3, 24, 11}, {-3, 26, 10}, {-3, 27, 10},
-                {-3, 28, 10}, {-4, 20, 9}
+            {-4, 17, 12}, {-4, 17, 11}, {-3, 17, 12}, {-2, 17, 12}, {-1, 17, 12},
+            {-3, 17, 11}, {-2, 17, 11}, {-1, 17, 11}, {-1, 17, 10}, {-1, 18, 10},
+            {-2, 17, 10}, {-3, 17, 10}, {-4, 17, 10}, {-2, 17, 9}, {-3, 17, 9},
+            {-4, 17, 9}, {-4, 17, 8}, {-5, 17, 8}, {-6, 17, 8}, {-5, 17, 9},
+            {-6, 17, 9}, {-5, 17, 10}, {-6, 17, 10}, {-5, 17, 11}, {-1, 18, 11},
+            {-1, 18, 12}, {-2, 18, 12}, {-2, 18, 11}, {-2, 18, 10}, {-3, 18, 10},
+            {-3, 18, 9}, {-4, 18, 9}, {-5, 18, 9}, {-6, 18, 10}, {-5, 18, 10},
+            {-4, 18, 10}, {-3, 18, 11}, {-4, 18, 11}, {-3, 18, 12}, {-5, 19, 10},
+            {-4, 19, 10}, {-3, 19, 10}, {-3, 19, 11}, {-2, 19, 11}, {-2, 19, 12},
+            {-1, 19, 11}, {-2, 19, 10}, {-2, 20, 11}, {-2, 21, 11}, {-3, 20, 10},
+            {-3, 21, 10}, {-2, 20, 10}, {-4, 20, 10}, {-4, 19, 9}, {-4, 21, 10},
+            {-3, 22, 10}, {-3, 23, 10}, {-4, 22, 10}, {-2, 22, 11}, {-3, 24, 10},
+            {-3, 25, 10}, {-2, 21, 10}, {-3, 20, 11}, {-3, 21, 11}, {-5, 20, 10},
+            {-4, 19, 11}, {-5, 18, 11}, {-4, 20, 11}, {-5, 21, 10}, {-4, 23, 10},
+            {-3, 22, 11}, {-3, 23, 11}, {-3, 24, 11}, {-3, 26, 10}, {-3, 27, 10},
+            {-3, 28, 10}, {-4, 20, 9}
         };
 
         int count = 0;
@@ -170,9 +190,7 @@ public class LKCommands {
         }
 
         // Also clear the entrance door blocks (metadata 2 in old code)
-        int[][] doorPositions = {
-                {1, 9, -13}, {0, 9, -13}, {-14, 10, 0}
-        };
+        int[][] doorPositions = {{1, 9, -13}, {0, 9, -13}, {-14, 10, 0}};
         for (int[] offset : doorPositions) {
             BlockPos pos = new BlockPos(i + offset[0], j + offset[1], k + offset[2]);
             if (!outlands.getBlockState(pos).isAir()) {
@@ -184,8 +202,7 @@ public class LKCommands {
         int cleared = count;
         source.sendSuccess(
                 () -> Component.literal("Opened mound: cleared " + cleared + " blocks at " + i + ", " + j + ", " + k),
-                true
-        );
+                true);
         return 1;
     }
 }

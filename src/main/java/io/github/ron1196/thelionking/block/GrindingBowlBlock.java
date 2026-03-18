@@ -38,8 +38,13 @@ public class GrindingBowlBlock extends BaseEntityBlock {
 
     @Override
     @SuppressWarnings("deprecation")
-    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player,
-                                 @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
+    public @NotNull InteractionResult use(
+            @NotNull BlockState state,
+            @NotNull Level level,
+            @NotNull BlockPos pos,
+            @NotNull Player player,
+            @NotNull InteractionHand hand,
+            @NotNull BlockHitResult hit) {
         if (!level.isClientSide) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof GrindingBowlBlockEntity grindingBowl) {
@@ -56,8 +61,7 @@ public class GrindingBowlBlock extends BaseEntityBlock {
             @NotNull Level level,
             @NotNull BlockPos pos,
             @NotNull BlockState newState,
-            boolean isMoving
-    ) {
+            boolean isMoving) {
         if (!state.is(newState.getBlock())) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof GrindingBowlBlockEntity grindingBowl) {
@@ -69,12 +73,11 @@ public class GrindingBowlBlock extends BaseEntityBlock {
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state,
-                                                                   @NotNull BlockEntityType<T> type) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(
+            @NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
         if (level.isClientSide) {
             return null;
         }
-        return createTickerHelper(type, LKBlockEntityTypes.GRINDING_BOWL.get(),
-                GrindingBowlBlockEntity::serverTick);
+        return createTickerHelper(type, LKBlockEntityTypes.GRINDING_BOWL.get(), GrindingBowlBlockEntity::serverTick);
     }
 }

@@ -19,10 +19,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class TermiteEntity extends Monster implements SwellGoal.Swellable {
 
-    private static final EntityDataAccessor<Integer> DATA_SWELL_DIR = SynchedEntityData.defineId(
-            TermiteEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> DATA_EXPLODING = SynchedEntityData.defineId(
-            TermiteEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_SWELL_DIR =
+            SynchedEntityData.defineId(TermiteEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_EXPLODING =
+            SynchedEntityData.defineId(TermiteEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final int FUSE_TIME = 20;
     private static final float EXPLOSION_RADIUS = 1.7F;
@@ -102,11 +102,14 @@ public class TermiteEntity extends Monster implements SwellGoal.Swellable {
             if (this.timeSinceIgnited >= FUSE_TIME) {
                 this.timeSinceIgnited = FUSE_TIME;
                 if (!this.level().isClientSide) {
-                    this.level().explode(
-                            this,
-                            this.getX(), this.getY(), this.getZ(),
-                            EXPLOSION_RADIUS, Level.ExplosionInteraction.MOB
-                    );
+                    this.level()
+                            .explode(
+                                    this,
+                                    this.getX(),
+                                    this.getY(),
+                                    this.getZ(),
+                                    EXPLOSION_RADIUS,
+                                    Level.ExplosionInteraction.MOB);
                     this.discard();
                 }
             }

@@ -27,8 +27,7 @@ public class TimonPumbaaLodgeFeature extends Feature<NoneFeatureConfiguration> {
 
         BlockState log = Blocks.MANGO_LOG.get().defaultBlockState();
         BlockState planks = Blocks.MANGO_PLANKS.get().defaultBlockState();
-        BlockState leaves = Blocks.MANGO_LEAVES.get().defaultBlockState()
-                .setValue(LeavesBlock.PERSISTENT, true);
+        BlockState leaves = Blocks.MANGO_LEAVES.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
 
         // No strict ground check — structure system handles terrain placement
 
@@ -40,7 +39,7 @@ public class TimonPumbaaLodgeFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         // Log pillars at corners, 3 high
-        for (int[] corner : new int[][]{{0, 0}, {0, 4}, {4, 0}, {4, 4}}) {
+        for (int[] corner : new int[][] {{0, 0}, {0, 4}, {4, 0}, {4, 4}}) {
             for (int y = 1; y <= 3; y++) {
                 level.setBlock(pos.offset(corner[0], y, corner[1]), log, 2);
             }
@@ -68,10 +67,8 @@ public class TimonPumbaaLodgeFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         // Spawn Timon and Pumbaa inside
-        FeatureHelper.spawnEntity(level, EntityTypes.TIMON.get(),
-                pos.getX() + 2.5, pos.getY() + 1, pos.getZ() + 2.5);
-        FeatureHelper.spawnEntity(level, EntityTypes.PUMBAA.get(),
-                pos.getX() + 1.5, pos.getY() + 1, pos.getZ() + 2.5);
+        FeatureHelper.spawnEntity(level, EntityTypes.TIMON.get(), pos.getX() + 2.5, pos.getY() + 1, pos.getZ() + 2.5);
+        FeatureHelper.spawnEntity(level, EntityTypes.PUMBAA.get(), pos.getX() + 1.5, pos.getY() + 1, pos.getZ() + 2.5);
 
         return true;
     }

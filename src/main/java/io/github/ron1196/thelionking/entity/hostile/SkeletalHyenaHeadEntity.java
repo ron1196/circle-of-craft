@@ -52,8 +52,7 @@ public class SkeletalHyenaHeadEntity extends Monster {
     public void playerTouch(@NotNull Player player) {
         if (hasLineOfSight(player) && distanceToSqr(player) < 1.0D) {
             player.hurt(damageSources().mobAttack(this), 3.0F);
-            playSound(SoundEvents.PLAYER_ATTACK_STRONG, 1.0F,
-                    (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+            playSound(SoundEvents.PLAYER_ATTACK_STRONG, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         }
     }
 

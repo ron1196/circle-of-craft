@@ -22,7 +22,8 @@ public class QuiverItem extends Item {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(
+            @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
             NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
                 @Override
@@ -31,7 +32,8 @@ public class QuiverItem extends Item {
                 }
 
                 @Override
-                public @NotNull AbstractContainerMenu createMenu(int containerId, @NotNull Inventory inv, @NotNull Player p) {
+                public @NotNull AbstractContainerMenu createMenu(
+                        int containerId, @NotNull Inventory inv, @NotNull Player p) {
                     return new QuiverMenu(containerId, inv);
                 }
             });

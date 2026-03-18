@@ -1,13 +1,12 @@
 package io.github.ron1196.thelionking.data;
 
+import java.util.HashSet;
+import java.util.Set;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.capabilities.AutoRegisterCapability;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @AutoRegisterCapability
 public class PlayerData {

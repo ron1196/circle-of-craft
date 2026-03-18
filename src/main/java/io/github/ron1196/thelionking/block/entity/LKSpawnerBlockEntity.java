@@ -1,6 +1,7 @@
 package io.github.ron1196.thelionking.block.entity;
 
 import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -12,9 +13,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.Optional;
 
 public class LKSpawnerBlockEntity extends BlockEntity {
 
@@ -36,8 +34,11 @@ public class LKSpawnerBlockEntity extends BlockEntity {
         if (entityId == null) return;
 
         // Check for nearby players
-        if (!level.hasNearbyAlivePlayer(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5,
-                worldPosition.getZ() + 0.5, requiredPlayerRange)) {
+        if (!level.hasNearbyAlivePlayer(
+                worldPosition.getX() + 0.5,
+                worldPosition.getY() + 0.5,
+                worldPosition.getZ() + 0.5,
+                requiredPlayerRange)) {
             return;
         }
 
@@ -62,7 +63,8 @@ public class LKSpawnerBlockEntity extends BlockEntity {
 
             // Check nearby entity count
             AABB area = new AABB(worldPosition).inflate(spawnRange * 2, 4, spawnRange * 2);
-            long count = level.getEntitiesOfClass(Entity.class, area, e -> e.getType() == type).size();
+            long count = level.getEntitiesOfClass(Entity.class, area, e -> e.getType() == type)
+                    .size();
             if (count >= maxNearbyEntities) break;
 
             Entity entity = type.create(serverLevel);
@@ -74,8 +76,12 @@ public class LKSpawnerBlockEntity extends BlockEntity {
                     entity.discard();
                     continue;
                 }
-                mob.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(entity.blockPosition()),
-                        MobSpawnType.SPAWNER, null, null);
+                mob.finalizeSpawn(
+                        serverLevel,
+                        serverLevel.getCurrentDifficultyAt(entity.blockPosition()),
+                        MobSpawnType.SPAWNER,
+                        null,
+                        null);
             }
             serverLevel.addFreshEntityWithPassengers(entity);
             spawned = true;

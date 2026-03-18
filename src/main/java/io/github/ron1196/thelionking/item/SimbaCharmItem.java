@@ -1,8 +1,8 @@
 package io.github.ron1196.thelionking.item;
 
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
-import io.github.ron1196.thelionking.registry.Items;
 import io.github.ron1196.thelionking.registry.Blocks;
+import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
@@ -69,9 +69,12 @@ public class SimbaCharmItem extends Item {
 
         // Drop an active charm with upward motion
         ItemStack activeCharm = createActive();
-        ItemEntity item = new ItemEntity(level,
-                x + 0.25D + (level.random.nextFloat() / 2.0F), y,
-                z + 0.25D + (level.random.nextFloat() / 2.0F), activeCharm);
+        ItemEntity item = new ItemEntity(
+                level,
+                x + 0.25D + (level.random.nextFloat() / 2.0F),
+                y,
+                z + 0.25D + (level.random.nextFloat() / 2.0F),
+                activeCharm);
         item.setPickUpDelay(10);
         item.setDeltaMovement(0.0D, 0.4D + (level.random.nextFloat() / 10.0F), 0.0D);
         level.addFreshEntity(item);

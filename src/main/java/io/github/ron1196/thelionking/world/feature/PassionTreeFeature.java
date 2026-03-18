@@ -36,7 +36,9 @@ public class PassionTreeFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         BlockState log = Blocks.PASSION_LOG.get().defaultBlockState();
-        BlockState leaves = Blocks.PASSION_LEAVES.get().defaultBlockState()
+        BlockState leaves = Blocks.PASSION_LEAVES
+                .get()
+                .defaultBlockState()
                 .setValue(net.minecraft.world.level.block.LeavesBlock.PERSISTENT, true);
 
         // Trunk

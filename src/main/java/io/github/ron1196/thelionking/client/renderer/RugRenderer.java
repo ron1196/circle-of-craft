@@ -14,14 +14,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class RugRenderer extends EntityRenderer<RugEntity> {
 
-    private static final ResourceLocation TEXTURE_SCAR = new ResourceLocation(
-            TheLionKingMod.MOD_ID,
-            "textures/entity/rug_scar.png"
-    );
-    private static final ResourceLocation TEXTURE_ZIRA = new ResourceLocation(
-            TheLionKingMod.MOD_ID,
-            "textures/entity/rug_zira.png"
-    );
+    private static final ResourceLocation TEXTURE_SCAR =
+            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/rug_scar.png");
+    private static final ResourceLocation TEXTURE_ZIRA =
+            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/rug_zira.png");
 
     private final RugModel model;
 
@@ -37,8 +33,7 @@ public class RugRenderer extends EntityRenderer<RugEntity> {
             float partialTick,
             @NotNull PoseStack poseStack,
             @NotNull MultiBufferSource bufferSource,
-            int packedLight
-    ) {
+            int packedLight) {
         poseStack.pushPose();
 
         // Match old renderer: translate up 1.5, flip, rotate by yaw

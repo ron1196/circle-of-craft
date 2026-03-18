@@ -3,6 +3,11 @@ package io.github.ron1196.thelionking.entity.animal;
 import io.github.ron1196.thelionking.entity.animal.favor.AnimalFavor;
 import io.github.ron1196.thelionking.entity.animal.favor.AnimalFavorEntry;
 import io.github.ron1196.thelionking.registry.Items;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -15,19 +20,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
 
 public abstract class LionKingAnimal extends Animal {
 
@@ -47,9 +46,7 @@ public abstract class LionKingAnimal extends Animal {
     }
 
     public static AttributeSupplier.Builder createLKAnimalAttributes() {
-        return Animal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 10.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.2);
+        return Animal.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0).add(Attributes.MOVEMENT_SPEED, 0.2);
     }
 
     @Nullable
@@ -78,10 +75,8 @@ public abstract class LionKingAnimal extends Animal {
                 String questStartMessage = AnimalFavor.getQuestStartMessage(
                         getAnimalDisplayName(),
                         entry.requiredItem().getDescription().getString(),
-                        entry.requiredAmount()
-                );
-                player.sendSystemMessage(Component.literal(
-                        questStartMessage));
+                        entry.requiredAmount());
+                player.sendSystemMessage(Component.literal(questStartMessage));
             }
             return InteractionResult.SUCCESS;
         }
@@ -96,10 +91,7 @@ public abstract class LionKingAnimal extends Animal {
             int amount = 1 + QUEST_RANDOM.nextInt(5);
 
             String questStartMessage = AnimalFavor.getQuestStartMessage(
-                    getAnimalDisplayName(),
-                    item.getDescription().getString(),
-                    amount
-            );
+                    getAnimalDisplayName(), item.getDescription().getString(), amount);
             player.sendSystemMessage(Component.literal(questStartMessage));
 
             animalQuests.put(playerId, new AnimalFavorEntry(item, amount));
@@ -124,14 +116,14 @@ public abstract class LionKingAnimal extends Animal {
     }
 
     protected Item[] getQuestRequestItems() {
-        return new Item[]{
-                Items.MANGO.get(),
-                Items.BANANA.get(),
-                Items.CORN.get(),
-                Items.KIWANO.get(),
-                net.minecraft.world.item.Items.APPLE,
-                net.minecraft.world.item.Items.BREAD,
-                net.minecraft.world.item.Items.WHEAT
+        return new Item[] {
+            Items.MANGO.get(),
+            Items.BANANA.get(),
+            Items.CORN.get(),
+            Items.KIWANO.get(),
+            net.minecraft.world.item.Items.APPLE,
+            net.minecraft.world.item.Items.BREAD,
+            net.minecraft.world.item.Items.WHEAT
         };
     }
 

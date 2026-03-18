@@ -1,6 +1,7 @@
 package io.github.ron1196.thelionking.entity.projectile;
 
 import io.github.ron1196.thelionking.registry.EntityTypes;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -10,8 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.phys.AABB;
-
-import java.util.List;
 
 /**
  * Custom lightning bolt used by Rafiki's Stick, Lion Dust, Simba's Charm, and Zira events.
@@ -60,11 +59,7 @@ public class LightningBoltEntity extends LightningBolt {
         BlockPos center = blockPosition();
         tryPlaceFire(center);
         for (int i = 0; i < power * 3; i++) {
-            BlockPos firePos = center.offset(
-                    random.nextInt(3) - 1,
-                    random.nextInt(3) - 1,
-                    random.nextInt(3) - 1
-            );
+            BlockPos firePos = center.offset(random.nextInt(3) - 1, random.nextInt(3) - 1, random.nextInt(3) - 1);
             tryPlaceFire(firePos);
         }
     }
@@ -80,9 +75,7 @@ public class LightningBoltEntity extends LightningBolt {
     private void damageNearbyEntities() {
         double range = 3.0D;
         AABB area = new AABB(
-                getX() - range, getY() - range, getZ() - range,
-                getX() + range, getY() + 6.0D + range, getZ() + range
-        );
+                getX() - range, getY() - range, getZ() - range, getX() + range, getY() + 6.0D + range, getZ() + range);
         List<Entity> entities = level().getEntities(this, area);
 
         for (Entity entity : entities) {

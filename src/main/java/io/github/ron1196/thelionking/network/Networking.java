@@ -6,20 +6,23 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
-public class LKNetworking {
+public class Networking {
+
     private static final String PROTOCOL_VERSION = "4";
     public static SimpleChannel CHANNEL;
 
     private static int packetId = 0;
-    private static int id() { return packetId++; }
+
+    private static int id() {
+        return packetId++;
+    }
 
     public static void register() {
         CHANNEL = NetworkRegistry.newSimpleChannel(
                 new ResourceLocation(TheLionKingMod.MOD_ID, "main"),
                 () -> PROTOCOL_VERSION,
                 PROTOCOL_VERSION::equals,
-                PROTOCOL_VERSION::equals
-        );
+                PROTOCOL_VERSION::equals);
 
         CHANNEL.messageBuilder(SimbaSitPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .encoder(SimbaSitPacket::encode)

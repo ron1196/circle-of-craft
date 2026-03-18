@@ -1,12 +1,11 @@
 package io.github.ron1196.thelionking.network;
 
 import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
+import java.util.function.Supplier;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 /**
  * Sent from client to server when the player right-clicks their Simba to toggle sit.

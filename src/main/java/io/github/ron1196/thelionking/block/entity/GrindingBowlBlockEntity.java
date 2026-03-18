@@ -1,9 +1,11 @@
 package io.github.ron1196.thelionking.block.entity;
 
 import io.github.ron1196.thelionking.menu.GrindingBowlMenu;
-import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
 import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.Items;
+import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -25,9 +27,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider {
 
@@ -161,11 +160,7 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
     }
 
     public static void serverTick(
-            Level ignoredLevel,
-            BlockPos ignoredPos,
-            BlockState ignoredState,
-            GrindingBowlBlockEntity entity
-    ) {
+            Level ignoredLevel, BlockPos ignoredPos, BlockState ignoredState, GrindingBowlBlockEntity entity) {
         ItemStack input = entity.inventory.getStackInSlot(SLOT_INPUT);
         if (input.isEmpty()) {
             entity.resetGrindTime();
@@ -222,13 +217,7 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
             if (stack.isEmpty()) {
                 continue;
             }
-            Containers.dropItemStack(
-                    level,
-                    worldPosition.getX(),
-                    worldPosition.getY(),
-                    worldPosition.getZ(),
-                    stack
-            );
+            Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
         }
     }
 }

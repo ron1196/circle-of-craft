@@ -2,7 +2,6 @@ package io.github.ron1196.thelionking.entity.hostile;
 
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.Items;
-import org.jetbrains.annotations.NotNull;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,6 +19,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class TermiteQueenEntity extends Monster {
 
@@ -46,8 +46,7 @@ public class TermiteQueenEntity extends Monster {
     private final ServerBossEvent bossEvent = new ServerBossEvent(
             Component.translatable("entity.thelionking.termite_queen"),
             BossEvent.BossBarColor.PURPLE,
-            BossEvent.BossBarOverlay.PROGRESS
-    );
+            BossEvent.BossBarOverlay.PROGRESS);
 
     private int spawnCooldown;
 
@@ -108,8 +107,9 @@ public class TermiteQueenEntity extends Monster {
     }
 
     private void spawnTermite(boolean exploding) {
-        int nearbyCount = this.level().getEntitiesOfClass(TermiteEntity.class,
-                this.getBoundingBox().inflate(TERMITE_SEARCH_RADIUS)).size();
+        int nearbyCount = this.level()
+                .getEntitiesOfClass(TermiteEntity.class, this.getBoundingBox().inflate(TERMITE_SEARCH_RADIUS))
+                .size();
         if (nearbyCount >= MAX_NEARBY_TERMITES) return;
 
         TermiteEntity termite = EntityTypes.TERMITE.get().create(this.level());
@@ -119,7 +119,8 @@ public class TermiteQueenEntity extends Monster {
                 this.getX() + this.getRandom().nextGaussian() * SPAWN_OFFSET_SPREAD,
                 this.getY(),
                 this.getZ() + this.getRandom().nextGaussian() * SPAWN_OFFSET_SPREAD,
-                this.getRandom().nextFloat() * 360.0F, 0.0F);
+                this.getRandom().nextFloat() * 360.0F,
+                0.0F);
         if (this.getTarget() != null) {
             termite.setTarget(this.getTarget());
         }

@@ -2,6 +2,8 @@ package io.github.ron1196.thelionking.world.dimension;
 
 import io.github.ron1196.thelionking.block.PortalBlock;
 import io.github.ron1196.thelionking.registry.Blocks;
+import java.util.function.Function;
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -15,9 +17,6 @@ import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.ITeleporter;
 
-import javax.annotation.Nullable;
-import java.util.function.Function;
-
 public class Teleporter implements ITeleporter {
 
     private final boolean isOutlands;
@@ -28,14 +27,14 @@ public class Teleporter implements ITeleporter {
 
     @Nullable
     @Override
-    public PortalInfo getPortalInfo(Entity entity, ServerLevel destWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
+    public PortalInfo getPortalInfo(
+            Entity entity, ServerLevel destWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
         BlockPos destPos = findOrCreatePortal(entity, destWorld);
         return new PortalInfo(
                 new Vec3(destPos.getX() + 0.5, destPos.getY(), destPos.getZ() + 0.5),
                 Vec3.ZERO,
                 entity.getYRot(),
-                entity.getXRot()
-        );
+                entity.getXRot());
     }
 
     @Override
@@ -44,8 +43,7 @@ public class Teleporter implements ITeleporter {
             ServerLevel currentWorld,
             ServerLevel destWorld,
             float yaw,
-            Function<Boolean, Entity> repositionEntity
-    ) {
+            Function<Boolean, Entity> repositionEntity) {
         return repositionEntity.apply(false);
     }
 
@@ -142,7 +140,7 @@ public class Teleporter implements ITeleporter {
         // Clear space in front and behind the portal
         for (int dx = 0; dx < 4; dx++) {
             for (int dy = 0; dy < 5; dy++) {
-                for (int dz : new int[]{-1, 1}) {
+                for (int dz : new int[] {-1, 1}) {
                     BlockPos p = base.offset(dx, dy, dz);
                     if (!level.getBlockState(p).isAir()) {
                         level.removeBlock(p, false);

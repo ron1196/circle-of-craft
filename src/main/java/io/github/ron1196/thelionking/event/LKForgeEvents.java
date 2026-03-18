@@ -6,23 +6,22 @@ import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
 import io.github.ron1196.thelionking.data.PlayerData;
 import io.github.ron1196.thelionking.data.PlayerDataProvider;
 import io.github.ron1196.thelionking.data.WorldData;
-import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
+import io.github.ron1196.thelionking.entity.RugEntity;
 import io.github.ron1196.thelionking.entity.hostile.HyenaEntity;
 import io.github.ron1196.thelionking.entity.hostile.SkeletalHyenaEntity;
 import io.github.ron1196.thelionking.entity.npc.ScarEntity;
 import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
-import io.github.ron1196.thelionking.entity.RugEntity;
-import io.github.ron1196.thelionking.network.LKNetworking;
+import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.network.LoginSyncPacket;
-import io.github.ron1196.thelionking.registry.LKEnchantments;
+import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.Items;
+import io.github.ron1196.thelionking.registry.LKEnchantments;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -31,6 +30,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -38,8 +38,8 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
 
 @Mod.EventBusSubscriber(modid = TheLionKingMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class LKForgeEvents {
@@ -59,10 +59,8 @@ public class LKForgeEvents {
             ServerLevel overworld = serverPlayer.server.overworld();
             WorldData worldData = WorldData.get(overworld);
             PlayerData playerData = PlayerDataProvider.get(serverPlayer);
-            LKNetworking.CHANNEL.send(
-                    PacketDistributor.PLAYER.with(() -> serverPlayer),
-                    new LoginSyncPacket(worldData, playerData)
-            );
+            Networking.CHANNEL.send(
+                    PacketDistributor.PLAYER.with(() -> serverPlayer), new LoginSyncPacket(worldData, playerData));
         }
     }
 
@@ -85,8 +83,8 @@ public class LKForgeEvents {
         // Scourge of Hyenas enchantment bonus damage
         if (attacker instanceof Player player) {
             ItemStack weapon = player.getMainHandItem();
-            int scourgeLevel = EnchantmentHelper.getItemEnchantmentLevel(
-                    LKEnchantments.SCOURGE_OF_HYENAS.get(), weapon);
+            int scourgeLevel =
+                    EnchantmentHelper.getItemEnchantmentLevel(LKEnchantments.SCOURGE_OF_HYENAS.get(), weapon);
 
             if (scourgeLevel > 0 && (target instanceof HyenaEntity || target instanceof SkeletalHyenaEntity)) {
                 event.setAmount(event.getAmount() + 2.5F * scourgeLevel);
@@ -111,8 +109,8 @@ public class LKForgeEvents {
 
         // Hyena special drop: hyena head with looting
         if (entity instanceof HyenaEntity && killer instanceof Player player) {
-            int lootingLevel = EnchantmentHelper.getItemEnchantmentLevel(
-                    Enchantments.MOB_LOOTING, player.getMainHandItem());
+            int lootingLevel =
+                    EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MOB_LOOTING, player.getMainHandItem());
 
             float dropChance = 0.05F + 0.03F * lootingLevel;
             if (entity.level().random.nextFloat() < dropChance) {
@@ -199,13 +197,15 @@ public class LKForgeEvents {
         int pz = Mth.floor(player.getZ());
 
         // Player must be on the surface (can see sky and at heightmap level)
-        int surfaceY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, new BlockPos(px, 0, pz)).getY();
+        int surfaceY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, new BlockPos(px, 0, pz))
+                .getY();
         if (!level.canSeeSky(new BlockPos(px, py, pz)) || py != surfaceY) return;
 
         // Spawn Zira at a random nearby position
         int spawnX = px - 8 + level.random.nextInt(17);
         int spawnZ = pz - 8 + level.random.nextInt(17);
-        int spawnY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, new BlockPos(spawnX, 0, spawnZ)).getY();
+        int spawnY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, new BlockPos(spawnX, 0, spawnZ))
+                .getY();
 
         ZiraEntity zira = EntityTypes.ZIRA.get().create(level);
         if (zira != null) {

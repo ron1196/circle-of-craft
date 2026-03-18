@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.Items;
+import io.github.ron1196.thelionking.world.structure.LKStructurePiece;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -23,7 +24,6 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import io.github.ron1196.thelionking.world.structure.LKStructurePiece;
 import net.minecraft.world.level.material.Fluids;
 
 /**
@@ -109,8 +109,8 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
                 }
                 // Seats: odd x columns (3,5,7,9), not on center aisle (z=3,4)
                 if (i1 < 10 && i1 % 2 == 1 && k1 != 3 && k1 != 4) {
-                    FeatureHelper.placeBlock(level, i + i1, j + 1, k + k1,
-                            seatBlock.setValue(StairBlock.FACING, Direction.WEST));
+                    FeatureHelper.placeBlock(
+                            level, i + i1, j + 1, k + k1, seatBlock.setValue(StairBlock.FACING, Direction.WEST));
                 }
                 // Center aisle stays cobblestone
                 if (k1 == 3 || k1 == 4) {
@@ -172,23 +172,35 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         for (int i1 = 4; i1 < 15; i1++) {
             // Front (z-1): upside-down stairs facing south
             FeatureHelper.placeBlock(
-                    level, i + i1, j + 4, k - 1,
-                    stairBlock.setValue(StairBlock.FACING, Direction.SOUTH).setValue(StairBlock.HALF, Half.TOP)
-            );
+                    level,
+                    i + i1,
+                    j + 4,
+                    k - 1,
+                    stairBlock.setValue(StairBlock.FACING, Direction.SOUTH).setValue(StairBlock.HALF, Half.TOP));
             // Back (z+8): upside-down stairs facing north
             FeatureHelper.placeBlock(
-                    level, i + i1, j + 4, k + 8,
-                    stairBlock.setValue(StairBlock.FACING, Direction.NORTH).setValue(StairBlock.HALF, Half.TOP)
-            );
+                    level,
+                    i + i1,
+                    j + 4,
+                    k + 8,
+                    stairBlock.setValue(StairBlock.FACING, Direction.NORTH).setValue(StairBlock.HALF, Half.TOP));
         }
 
         // Left wall overhang (x+3)
         for (int k1 = 0; k1 < 8; k1++) {
-            FeatureHelper.placeBlock(level, i + 3, j + 4, k + k1,
+            FeatureHelper.placeBlock(
+                    level,
+                    i + 3,
+                    j + 4,
+                    k + k1,
                     stairBlock.setValue(StairBlock.FACING, Direction.EAST).setValue(StairBlock.HALF, Half.TOP));
             // Right wall overhang (x+14) only on sides, not screen area
             if (k1 < 2 || k1 > 5) {
-                FeatureHelper.placeBlock(level, i + 14, j + 4, k + k1,
+                FeatureHelper.placeBlock(
+                        level,
+                        i + 14,
+                        j + 4,
+                        k + k1,
                         stairBlock.setValue(StairBlock.FACING, Direction.WEST).setValue(StairBlock.HALF, Half.TOP));
             }
         }
@@ -212,34 +224,42 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
             if (k1 == 3) {
                 FeatureHelper.placeBlock(level, i - 3, j + 3, k + k1, planks); // solid above door
             } else {
-                FeatureHelper.placeBlock(level, i - 3, j + 3, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.WEST));
+                FeatureHelper.placeBlock(
+                        level, i - 3, j + 3, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.WEST));
             }
         }
         // Front
         for (int i1 = -2; i1 < 4; i1++) {
-            FeatureHelper.placeBlock(level, i + i1, j + 3, k - 3, stairBlock.setValue(StairBlock.FACING, Direction.SOUTH));
+            FeatureHelper.placeBlock(
+                    level, i + i1, j + 3, k - 3, stairBlock.setValue(StairBlock.FACING, Direction.SOUTH));
         }
         // Back
         for (int i1 = -2; i1 < 1; i1++) {
-            FeatureHelper.placeBlock(level, i + i1, j + 3, k + 5, stairBlock.setValue(StairBlock.FACING, Direction.NORTH));
+            FeatureHelper.placeBlock(
+                    level, i + i1, j + 3, k + 5, stairBlock.setValue(StairBlock.FACING, Direction.NORTH));
         }
         // Connection between counter and theater
         generateSupports(level, i + 1, j + 3, k + 5, stairBlock, Direction.WEST);
         FeatureHelper.placeBlock(level, i + 1, j + 3, k + 5, planks);
         for (int k1 = 6; k1 < 10; k1++) {
-            FeatureHelper.placeBlock(level, i + 1, j + 3, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.WEST));
+            FeatureHelper.placeBlock(
+                    level, i + 1, j + 3, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.WEST));
         }
 
         // ============================================================
         // OUTER ROOF OVERHANGS at y+5
         // ============================================================
         for (int k1 = -2; k1 < 10; k1++) {
-            FeatureHelper.placeBlock(level, i + 2, j + 5, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.WEST));
-            FeatureHelper.placeBlock(level, i + 16, j + 5, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.EAST));
+            FeatureHelper.placeBlock(
+                    level, i + 2, j + 5, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.WEST));
+            FeatureHelper.placeBlock(
+                    level, i + 16, j + 5, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.EAST));
         }
         for (int i1 = 3; i1 < 16; i1++) {
-            FeatureHelper.placeBlock(level, i + i1, j + 5, k - 3, stairBlock.setValue(StairBlock.FACING, Direction.SOUTH));
-            FeatureHelper.placeBlock(level, i + i1, j + 5, k + 10, stairBlock.setValue(StairBlock.FACING, Direction.NORTH));
+            FeatureHelper.placeBlock(
+                    level, i + i1, j + 5, k - 3, stairBlock.setValue(StairBlock.FACING, Direction.SOUTH));
+            FeatureHelper.placeBlock(
+                    level, i + i1, j + 5, k + 10, stairBlock.setValue(StairBlock.FACING, Direction.NORTH));
         }
         // Extra stair connections
         FeatureHelper.placeBlock(level, i + 2, j + 3, k + 10, stairBlock.setValue(StairBlock.FACING, Direction.NORTH));
@@ -262,17 +282,23 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         // DOOR at ticket counter entrance
         // ============================================================
         FeatureHelper.placeBlock(
-                level, i - 2, j + 1, k + 3,
-                net.minecraft.world.level.block.Blocks.OAK_DOOR.defaultBlockState()
+                level,
+                i - 2,
+                j + 1,
+                k + 3,
+                net.minecraft.world.level.block.Blocks.OAK_DOOR
+                        .defaultBlockState()
                         .setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER)
-                        .setValue(DoorBlock.FACING, Direction.WEST)
-        );
+                        .setValue(DoorBlock.FACING, Direction.WEST));
         FeatureHelper.placeBlock(
-                level, i - 2, j + 2, k + 3,
-                net.minecraft.world.level.block.Blocks.OAK_DOOR.defaultBlockState()
+                level,
+                i - 2,
+                j + 2,
+                k + 3,
+                net.minecraft.world.level.block.Blocks.OAK_DOOR
+                        .defaultBlockState()
                         .setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER)
-                        .setValue(DoorBlock.FACING, Direction.WEST)
-        );
+                        .setValue(DoorBlock.FACING, Direction.WEST));
 
         // ============================================================
         // TORCHES
@@ -303,9 +329,13 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         // ============================================================
         BlockPos signPos = new BlockPos(i - 4, j + 3, k + 3);
         FeatureHelper.placeBlock(
-                level, signPos.getX(), signPos.getY(), signPos.getZ(),
-                net.minecraft.world.level.block.Blocks.OAK_WALL_SIGN.defaultBlockState().setValue(WallSignBlock.FACING, Direction.WEST)
-        );
+                level,
+                signPos.getX(),
+                signPos.getY(),
+                signPos.getZ(),
+                net.minecraft.world.level.block.Blocks.OAK_WALL_SIGN
+                        .defaultBlockState()
+                        .setValue(WallSignBlock.FACING, Direction.WEST));
 
         if (level.getBlockEntity(signPos) instanceof SignBlockEntity sign) {
             ListTag messages = new ListTag();
@@ -332,31 +362,40 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         // ============================================================
         BlockPos chestPos = new BlockPos(i + 2, j + 1, k);
         FeatureHelper.placeBlock(
-                level, chestPos.getX(), chestPos.getY(), chestPos.getZ(),
-                net.minecraft.world.level.block.Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.WEST)
-        );
+                level,
+                chestPos.getX(),
+                chestPos.getY(),
+                chestPos.getZ(),
+                net.minecraft.world.level.block.Blocks.CHEST
+                        .defaultBlockState()
+                        .setValue(ChestBlock.FACING, Direction.WEST));
         FeatureHelper.placeBlock(
-                level, i + 2, j + 2, k,
-                net.minecraft.world.level.block.Blocks.OAK_TRAPDOOR.defaultBlockState().setValue(TrapDoorBlock.FACING, Direction.NORTH)
-        );
+                level,
+                i + 2,
+                j + 2,
+                k,
+                net.minecraft.world.level.block.Blocks.OAK_TRAPDOOR
+                        .defaultBlockState()
+                        .setValue(TrapDoorBlock.FACING, Direction.NORTH));
 
-        if (LKStructurePiece.isInCurrentChunk(chestPos) && level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
+        if (LKStructurePiece.isInCurrentChunk(chestPos)
+                && level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
             int lootCount = 2 + random.nextInt(4);
             for (int l = 0; l < lootCount; l++) {
                 chest.setItem(random.nextInt(chest.getContainerSize()), getBasicLoot(random));
             }
-            Item ticketLionArmor = switch (random.nextInt(4)) {
-                case 0 -> Items.TICKET_LION_HEAD.get();
-                case 1 -> Items.TICKET_LION_SUIT.get();
-                case 2 -> Items.TICKET_LION_LEGS.get();
-                default -> Items.TICKET_LION_FEET.get();
-            };
+            Item ticketLionArmor =
+                    switch (random.nextInt(4)) {
+                        case 0 -> Items.TICKET_LION_HEAD.get();
+                        case 1 -> Items.TICKET_LION_SUIT.get();
+                        case 2 -> Items.TICKET_LION_LEGS.get();
+                        default -> Items.TICKET_LION_FEET.get();
+                    };
             chest.setItem(random.nextInt(chest.getContainerSize()), new ItemStack(ticketLionArmor));
         }
 
         return true;
     }
-
 
     private ItemStack getBasicLoot(RandomSource random) {
         return switch (random.nextInt(11)) {
@@ -378,8 +417,7 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
      * Creates a stair block with fence post supports extending downward to solid ground.
      * Port of old mod's generateSupports method.
      */
-    private void generateSupports(WorldGenLevel level, int x, int y, int z,
-                                  BlockState stairBlock, Direction facing) {
+    private void generateSupports(WorldGenLevel level, int x, int y, int z, BlockState stairBlock, Direction facing) {
         FeatureHelper.placeBlock(level, x, y, z, stairBlock.setValue(StairBlock.FACING, facing));
         for (int j1 = 1; j1 < 20; j1++) {
             BlockPos below = new BlockPos(x, y - j1, z);
@@ -387,9 +425,11 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
             if (existing.isSolidRender(level, below)) break;
             // Use planks for water/lava, fence for air
             if (!existing.getFluidState().is(Fluids.EMPTY)) {
-                FeatureHelper.placeBlock(level, x, y - j1, z, net.minecraft.world.level.block.Blocks.OAK_PLANKS.defaultBlockState());
+                FeatureHelper.placeBlock(
+                        level, x, y - j1, z, net.minecraft.world.level.block.Blocks.OAK_PLANKS.defaultBlockState());
             } else {
-                FeatureHelper.placeBlock(level, x, y - j1, z, net.minecraft.world.level.block.Blocks.OAK_FENCE.defaultBlockState());
+                FeatureHelper.placeBlock(
+                        level, x, y - j1, z, net.minecraft.world.level.block.Blocks.OAK_FENCE.defaultBlockState());
             }
         }
     }

@@ -24,16 +24,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class ScarEntity extends Monster {
 
-    private static final EntityDataAccessor<Boolean> DATA_HOSTILE = SynchedEntityData.defineId(
-            ScarEntity.class,
-            EntityDataSerializers.BOOLEAN
-    );
+    private static final EntityDataAccessor<Boolean> DATA_HOSTILE =
+            SynchedEntityData.defineId(ScarEntity.class, EntityDataSerializers.BOOLEAN);
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(
-            Component.literal("Scar"),
-            BossEvent.BossBarColor.RED,
-            BossEvent.BossBarOverlay.PROGRESS
-    );
+            Component.literal("Scar"), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
+
+    private static final String SCAR_GREETING_SPEECH =
+            "§e<Scar> §fSo, you've come to challenge me? " + "How delightfully brave... and foolish.";
 
     private boolean hasSpoken = false;
 
@@ -104,7 +102,7 @@ public class ScarEntity extends Monster {
         if (nearest == null) {
             return;
         }
-        nearest.sendSystemMessage(Component.literal("§e<Scar> §fSo, you've come to challenge me? How delightfully brave... and foolish."));
+        nearest.sendSystemMessage(Component.literal(SCAR_GREETING_SPEECH));
         hasSpoken = true;
     }
 

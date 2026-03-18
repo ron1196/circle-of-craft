@@ -3,6 +3,7 @@ package io.github.ron1196.thelionking.entity.animal;
 import io.github.ron1196.thelionking.entity.ai.AmbientAvoidGoal;
 import io.github.ron1196.thelionking.entity.ai.AmbientPanicGoal;
 import io.github.ron1196.thelionking.registry.SoundEvents;
+import javax.annotation.Nullable;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -14,8 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
 
 public class ZebraEntity extends LionKingAnimal {
 

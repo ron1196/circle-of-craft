@@ -2,18 +2,16 @@ package io.github.ron1196.thelionking.world.structure;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
-
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Optional;
 
 /**
  * A structure type that places code-built landmarks (Rafiki Tree, Zira Mound, etc.)
@@ -23,12 +21,10 @@ public class LKCodeStructure extends Structure {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LKCodeStructure.class);
 
-    public static final Codec<LKCodeStructure> CODEC = RecordCodecBuilder.create(instance ->
-            instance.group(
+    public static final Codec<LKCodeStructure> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                     settingsCodec(instance),
-                    ResourceLocation.CODEC.fieldOf("feature_id").forGetter(s -> s.featureId)
-            ).apply(instance, LKCodeStructure::new)
-    );
+                    ResourceLocation.CODEC.fieldOf("feature_id").forGetter(s -> s.featureId))
+            .apply(instance, LKCodeStructure::new));
 
     private final ResourceLocation featureId;
 
@@ -46,9 +42,9 @@ public class LKCodeStructure extends Structure {
         ChunkPos chunkPos = context.chunkPos();
         int x = chunkPos.getMiddleBlockX();
         int z = chunkPos.getMiddleBlockZ();
-        int y = context.chunkGenerator().getFirstOccupiedHeight(
-                x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState()
-        );
+        int y = context.chunkGenerator()
+                .getFirstOccupiedHeight(
+                        x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
 
         String path = featureId.getPath();
 
@@ -59,14 +55,7 @@ public class LKCodeStructure extends Structure {
 
         BlockPos pos = new BlockPos(x, y, z);
 
-        return Optional.of(
-                new GenerationStub(
-                        pos,
-                        builder -> builder.addPiece(
-                                new LKStructurePiece(pos, featureId)
-                        )
-                )
-        );
+        return Optional.of(new GenerationStub(pos, builder -> builder.addPiece(new LKStructurePiece(pos, featureId))));
     }
 
     private boolean isValidPlacement(GenerationContext context, String path, int x, int y, int z) {

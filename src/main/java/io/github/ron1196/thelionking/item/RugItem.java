@@ -55,8 +55,7 @@ public class RugItem extends Item {
                         SoundEvents.LION_AMBIENT.get(),
                         SoundSource.NEUTRAL,
                         1.0F,
-                        (level.random.nextFloat() - level.random.nextFloat()) * 0.2F + 1.0F
-                );
+                        (level.random.nextFloat() - level.random.nextFloat()) * 0.2F + 1.0F);
                 context.getItemInHand().shrink(1);
                 return InteractionResult.CONSUME;
             } else {

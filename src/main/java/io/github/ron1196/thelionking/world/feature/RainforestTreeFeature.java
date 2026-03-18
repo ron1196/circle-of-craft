@@ -36,7 +36,9 @@ public class RainforestTreeFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         BlockState log = Blocks.RAINFOREST_LOG.get().defaultBlockState();
-        BlockState leaves = Blocks.RAINFOREST_LEAVES.get().defaultBlockState()
+        BlockState leaves = Blocks.RAINFOREST_LEAVES
+                .get()
+                .defaultBlockState()
                 .setValue(net.minecraft.world.level.block.LeavesBlock.PERSISTENT, true);
 
         // Trunk

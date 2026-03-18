@@ -3,6 +3,8 @@ package io.github.ron1196.thelionking.item;
 import io.github.ron1196.thelionking.network.ClientWorldState;
 import io.github.ron1196.thelionking.quest.questline.Questline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineRegistry;
+import java.util.List;
+import javax.annotation.Nullable;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -14,9 +16,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 public class QuestBookItem extends Item {
 
     public QuestBookItem(Properties properties) {
@@ -25,10 +24,7 @@ public class QuestBookItem extends Item {
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(
-            Level level,
-            @NotNull Player player,
-            @NotNull InteractionHand hand
-    ) {
+            Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         if (level.isClientSide()) {
             QuestBookClientHelper.openScreen();
         }
@@ -45,8 +41,7 @@ public class QuestBookItem extends Item {
             @NotNull ItemStack stack,
             @Nullable Level level,
             @NotNull List<Component> tooltip,
-            @NotNull TooltipFlag flag
-    ) {
+            @NotNull TooltipFlag flag) {
         if (hasUncheckedQuests()) {
             tooltip.add(Component.literal("§eNew quests available"));
         }

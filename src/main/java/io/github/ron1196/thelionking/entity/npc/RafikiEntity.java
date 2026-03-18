@@ -3,7 +3,7 @@ package io.github.ron1196.thelionking.entity.npc;
 import io.github.ron1196.thelionking.data.PlayerData;
 import io.github.ron1196.thelionking.data.PlayerDataProvider;
 import io.github.ron1196.thelionking.data.WorldData;
-import io.github.ron1196.thelionking.network.LKNetworking;
+import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
@@ -120,30 +120,21 @@ public class RafikiEntity extends PathfinderMob {
     }
 
     private void syncPlayerData(ServerPlayer player, PlayerData data) {
-        LKNetworking.CHANNEL.send(
-                PacketDistributor.PLAYER.with(() -> player),
-                new PlayerDataSyncPacket(data)
-        );
+        Networking.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new PlayerDataSyncPacket(data));
     }
 
     private void sendStageDialogue(Player player, Stage newStage) {
-        String message = switch (newStage) {
-            case COLLECT_BONES ->
-                    "Welcome to the Pride Lands! I am Rafiki. Bring me sixty-four hyena bones and I will give you my stick.";
-            case DEFEAT_SCAR ->
-                    "Excellent! Here is my stick. Now go and defeat Scar!";
-            case RETURN_AFTER_SCAR ->
-                    "Well done! Scar has been defeated. Now come back and see me.";
-            case COLLECT_TERMITES ->
-                    "Well done! Scar has been defeated. Now bring me four ground termites.";
-            case COLLECT_MANGOES ->
-                    "Good! Now bring me four ground mangoes.";
-            case USE_STAR_ALTAR ->
-                    "Perfect! Now craft a Star Altar and use the Rafiki Dust on it.";
-            case COMPLETE ->
-                    "Wonderful! The spirits of the great kings smile upon you!";
-            default -> null;
-        };
+        String message =
+                switch (newStage) {
+                    case COLLECT_BONES -> "Welcome to the Pride Lands! I am Rafiki. Bring me sixty-four hyena bones and I will give you my stick.";
+                    case DEFEAT_SCAR -> "Excellent! Here is my stick. Now go and defeat Scar!";
+                    case RETURN_AFTER_SCAR -> "Well done! Scar has been defeated. Now come back and see me.";
+                    case COLLECT_TERMITES -> "Well done! Scar has been defeated. Now bring me four ground termites.";
+                    case COLLECT_MANGOES -> "Good! Now bring me four ground mangoes.";
+                    case USE_STAR_ALTAR -> "Perfect! Now craft a Star Altar and use the Rafiki Dust on it.";
+                    case COMPLETE -> "Wonderful! The spirits of the great kings smile upon you!";
+                    default -> null;
+                };
         if (message != null) sendMessage(player, message);
     }
 

@@ -30,8 +30,7 @@ public class ZiraMoundGateBlock extends Block {
             @NotNull BlockPos pos,
             @NotNull Player player,
             @NotNull InteractionHand hand,
-            @NotNull BlockHitResult hit
-    ) {
+            @NotNull BlockHitResult hit) {
         ItemStack held = player.getItemInHand(hand);
         if (!held.is(Items.RAFIKI_STICK.get())) {
             return InteractionResult.PASS;

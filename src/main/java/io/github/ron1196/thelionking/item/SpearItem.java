@@ -16,13 +16,13 @@ public class SpearItem extends Item {
     private final boolean isPoisoned;
 
     public SpearItem(boolean isPoisoned) {
-        super(new Item.Properties()
-                .durability(160));
+        super(new Item.Properties().durability(160));
         this.isPoisoned = isPoisoned;
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(
+            @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
         if (!level.isClientSide) {
@@ -35,9 +35,15 @@ public class SpearItem extends Item {
             }
         }
 
-        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS,
-                1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+        level.playSound(
+                null,
+                player.getX(),
+                player.getY(),
+                player.getZ(),
+                SoundEvents.TRIDENT_THROW,
+                SoundSource.PLAYERS,
+                1.0F,
+                1.0F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
 
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }

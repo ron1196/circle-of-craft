@@ -1,9 +1,8 @@
 package io.github.ron1196.thelionking.entity.ai;
 
+import java.util.function.BooleanSupplier;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
-
-import java.util.function.BooleanSupplier;
 
 /**
  * AI goal: start swelling when close to target, stop when far.
@@ -13,6 +12,7 @@ public class SwellGoal extends Goal {
 
     public interface Swellable {
         int getSwellDir();
+
         void setSwellDir(int dir);
     }
 
@@ -27,7 +27,8 @@ public class SwellGoal extends Goal {
 
     public SwellGoal(Mob mob, double triggerDistance, BooleanSupplier enabled) {
         if (!(mob instanceof Swellable)) {
-            throw new IllegalArgumentException("Mob must implement Swellable: " + mob.getClass().getName());
+            throw new IllegalArgumentException(
+                    "Mob must implement Swellable: " + mob.getClass().getName());
         }
         this.mob = mob;
         this.swellable = (Swellable) mob;

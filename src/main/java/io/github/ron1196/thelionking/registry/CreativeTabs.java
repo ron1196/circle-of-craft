@@ -13,8 +13,8 @@ public class CreativeTabs {
     public static final DeferredRegister<CreativeModeTab> TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TheLionKingMod.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> BLOCKS_TAB = TABS.register("blocks",
-            () -> CreativeModeTab.builder()
+    public static final RegistryObject<CreativeModeTab> BLOCKS_TAB =
+            TABS.register("blocks", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.thelionking.blocks"))
                     .icon(() -> new ItemStack(Blocks.PRIDE_BRICK.get()))
                     .displayItems((params, output) -> {
@@ -66,10 +66,11 @@ public class CreativeTabs {
                         output.accept(Items.ZIRA_MOUND_GATE_ITEM.get());
                         output.accept(Items.TILLED_SAND_ITEM.get());
                         output.accept(Items.VASE_ITEM.get());
-                    }).build());
+                    })
+                    .build());
 
-    public static final RegistryObject<CreativeModeTab> DECO_TAB = TABS.register("decorations",
-            () -> CreativeModeTab.builder()
+    public static final RegistryObject<CreativeModeTab> DECO_TAB =
+            TABS.register("decorations", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.thelionking.decorations"))
                     .icon(() -> new ItemStack(Blocks.ACACIA_LOG.get()))
                     .displayItems((params, output) -> {
@@ -145,35 +146,36 @@ public class CreativeTabs {
                         output.accept(Items.FUR_RUG_ITEM.get());
                         // Bed
                         output.accept(Items.PRIDE_BED_ITEM.get());
-                    }).build());
+                    })
+                    .build());
 
-    public static final RegistryObject<CreativeModeTab> FOOD_TAB = TABS.register("food",
-            () -> CreativeModeTab.builder()
-                    .title(Component.translatable("itemGroup.thelionking.food"))
-                    .icon(() -> new ItemStack(Items.ZEBRA_RAW.get()))
-                    .displayItems((params, output) -> {
-                        output.accept(Items.LION_RAW.get());
-                        output.accept(Items.LION_COOKED.get());
-                        output.accept(Items.ZEBRA_RAW.get());
-                        output.accept(Items.ZEBRA_COOKED.get());
-                        output.accept(Items.RHINO_RAW.get());
-                        output.accept(Items.RHINO_COOKED.get());
-                        output.accept(Items.MANGO.get());
-                        output.accept(Items.BANANA.get());
-                        output.accept(Items.CORN.get());
-                        output.accept(Items.POPCORN.get());
-                        output.accept(Items.KIWANO.get());
-                        output.accept(Items.OUTLANDER_MEAT.get());
-                        output.accept(Items.CROCODILE_MEAT.get());
-                        output.accept(Items.ROAST_YAM.get());
-                        output.accept(Items.BANANA_BREAD.get());
-                        output.accept(Items.CHOCOLATE_MUFASA.get());
-                        output.accept(Items.BUG_STEW.get());
-                        output.accept(Items.EXPERIENCE_GRUB.get());
-                    }).build());
+    public static final RegistryObject<CreativeModeTab> FOOD_TAB = TABS.register("food", () -> CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup.thelionking.food"))
+            .icon(() -> new ItemStack(Items.ZEBRA_RAW.get()))
+            .displayItems((params, output) -> {
+                output.accept(Items.LION_RAW.get());
+                output.accept(Items.LION_COOKED.get());
+                output.accept(Items.ZEBRA_RAW.get());
+                output.accept(Items.ZEBRA_COOKED.get());
+                output.accept(Items.RHINO_RAW.get());
+                output.accept(Items.RHINO_COOKED.get());
+                output.accept(Items.MANGO.get());
+                output.accept(Items.BANANA.get());
+                output.accept(Items.CORN.get());
+                output.accept(Items.POPCORN.get());
+                output.accept(Items.KIWANO.get());
+                output.accept(Items.OUTLANDER_MEAT.get());
+                output.accept(Items.CROCODILE_MEAT.get());
+                output.accept(Items.ROAST_YAM.get());
+                output.accept(Items.BANANA_BREAD.get());
+                output.accept(Items.CHOCOLATE_MUFASA.get());
+                output.accept(Items.BUG_STEW.get());
+                output.accept(Items.EXPERIENCE_GRUB.get());
+            })
+            .build());
 
-    public static final RegistryObject<CreativeModeTab> MATERIALS_TAB = TABS.register("materials",
-            () -> CreativeModeTab.builder()
+    public static final RegistryObject<CreativeModeTab> MATERIALS_TAB =
+            TABS.register("materials", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.thelionking.materials"))
                     .icon(() -> new ItemStack(Items.HYENA_BONE.get()))
                     .displayItems((params, output) -> {
@@ -238,10 +240,11 @@ public class CreativeTabs {
                         output.accept(Items.NOTE_G.get());
                         output.accept(Items.NOTE_A.get());
                         output.accept(Items.NOTE_B.get());
-                    }).build());
+                    })
+                    .build());
 
-    public static final RegistryObject<CreativeModeTab> TOOLS_TAB = TABS.register("tools",
-            () -> CreativeModeTab.builder()
+    public static final RegistryObject<CreativeModeTab> TOOLS_TAB =
+            TABS.register("tools", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.thelionking.tools"))
                     .icon(() -> new ItemStack(Items.SILVER_PICKAXE.get()))
                     .displayItems((params, output) -> {
@@ -277,10 +280,11 @@ public class CreativeTabs {
                         output.accept(Items.CORRUPT_HOE.get());
                         // Special
                         output.accept(Items.TUNNAH_DIGGAH.get());
-                    }).build());
+                    })
+                    .build());
 
-    public static final RegistryObject<CreativeModeTab> COMBAT_TAB = TABS.register("combat",
-            () -> CreativeModeTab.builder()
+    public static final RegistryObject<CreativeModeTab> COMBAT_TAB =
+            TABS.register("combat", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.thelionking.combat"))
                     .icon(() -> new ItemStack(Items.SILVER_SWORD.get()))
                     .displayItems((params, output) -> {
@@ -318,44 +322,45 @@ public class CreativeTabs {
                         output.accept(Items.GEMSBOK_SPEAR.get());
                         output.accept(Items.POISONED_SPEAR.get());
                         output.accept(Items.PUMBAA_BOMB.get());
-                    }).build());
+                    })
+                    .build());
 
-    public static final RegistryObject<CreativeModeTab> MISC_TAB = TABS.register("misc",
-            () -> CreativeModeTab.builder()
-                    .title(Component.translatable("itemGroup.thelionking.misc"))
-                    .icon(() -> new ItemStack(Items.BUG.get()))
-                    .displayItems((params, output) -> {
-                        output.accept(Items.LION_SPAWN_EGG.get());
-                        output.accept(Items.LIONESS_SPAWN_EGG.get());
-                        output.accept(Items.ZEBRA_SPAWN_EGG.get());
-                        output.accept(Items.GIRAFFE_SPAWN_EGG.get());
-                        output.accept(Items.RHINO_SPAWN_EGG.get());
-                        output.accept(Items.GEMSBOK_SPAWN_EGG.get());
-                        output.accept(Items.DIKDIK_SPAWN_EGG.get());
-                        output.accept(Items.FLAMINGO_SPAWN_EGG.get());
-                        output.accept(Items.ZAZU_SPAWN_EGG.get());
-                        output.accept(Items.BUG_SPAWN_EGG.get());
-                        // Hostile
-                        output.accept(Items.HYENA_SPAWN_EGG.get());
-                        output.accept(Items.SKELETAL_HYENA_SPAWN_EGG.get());
-                        output.accept(Items.OUTLANDER_SPAWN_EGG.get());
-                        output.accept(Items.VULTURE_SPAWN_EGG.get());
-                        output.accept(Items.CROCODILE_SPAWN_EGG.get());
-                        output.accept(Items.TERMITE_SPAWN_EGG.get());
-                        // NPCs
-                        output.accept(Items.RAFIKI_SPAWN_EGG.get());
-                        output.accept(Items.SIMBA_SPAWN_EGG.get());
-                        output.accept(Items.TIMON_SPAWN_EGG.get());
-                        output.accept(Items.PUMBAA_SPAWN_EGG.get());
-                        output.accept(Items.SCAR_SPAWN_EGG.get());
-                        output.accept(Items.ZIRA_SPAWN_EGG.get());
-                        output.accept(Items.TICKET_LION_SPAWN_EGG.get());
-                        output.accept(Items.TERMITE_QUEEN_SPAWN_EGG.get());
-                        output.accept(Items.SKELETAL_HYENA_HEAD_SPAWN_EGG.get());
-                    }).build());
+    public static final RegistryObject<CreativeModeTab> MISC_TAB = TABS.register("misc", () -> CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup.thelionking.misc"))
+            .icon(() -> new ItemStack(Items.BUG.get()))
+            .displayItems((params, output) -> {
+                output.accept(Items.LION_SPAWN_EGG.get());
+                output.accept(Items.LIONESS_SPAWN_EGG.get());
+                output.accept(Items.ZEBRA_SPAWN_EGG.get());
+                output.accept(Items.GIRAFFE_SPAWN_EGG.get());
+                output.accept(Items.RHINO_SPAWN_EGG.get());
+                output.accept(Items.GEMSBOK_SPAWN_EGG.get());
+                output.accept(Items.DIKDIK_SPAWN_EGG.get());
+                output.accept(Items.FLAMINGO_SPAWN_EGG.get());
+                output.accept(Items.ZAZU_SPAWN_EGG.get());
+                output.accept(Items.BUG_SPAWN_EGG.get());
+                // Hostile
+                output.accept(Items.HYENA_SPAWN_EGG.get());
+                output.accept(Items.SKELETAL_HYENA_SPAWN_EGG.get());
+                output.accept(Items.OUTLANDER_SPAWN_EGG.get());
+                output.accept(Items.VULTURE_SPAWN_EGG.get());
+                output.accept(Items.CROCODILE_SPAWN_EGG.get());
+                output.accept(Items.TERMITE_SPAWN_EGG.get());
+                // NPCs
+                output.accept(Items.RAFIKI_SPAWN_EGG.get());
+                output.accept(Items.SIMBA_SPAWN_EGG.get());
+                output.accept(Items.TIMON_SPAWN_EGG.get());
+                output.accept(Items.PUMBAA_SPAWN_EGG.get());
+                output.accept(Items.SCAR_SPAWN_EGG.get());
+                output.accept(Items.ZIRA_SPAWN_EGG.get());
+                output.accept(Items.TICKET_LION_SPAWN_EGG.get());
+                output.accept(Items.TERMITE_QUEEN_SPAWN_EGG.get());
+                output.accept(Items.SKELETAL_HYENA_HEAD_SPAWN_EGG.get());
+            })
+            .build());
 
-    public static final RegistryObject<CreativeModeTab> QUEST_TAB = TABS.register("quest",
-            () -> CreativeModeTab.builder()
+    public static final RegistryObject<CreativeModeTab> QUEST_TAB =
+            TABS.register("quest", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.thelionking.quest"))
                     .icon(() -> new ItemStack(Items.QUEST_BOOK.get()))
                     .displayItems((params, output) -> {
@@ -377,6 +382,6 @@ public class CreativeTabs {
                         output.accept(Items.ZIRA_RUG.get());
                         output.accept(Items.RAFIKI_STICK.get());
                         output.accept(Items.RAFIKI_DUST.get());
-                    }).build());
-
+                    })
+                    .build());
 }

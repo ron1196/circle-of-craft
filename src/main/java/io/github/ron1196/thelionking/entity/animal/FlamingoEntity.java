@@ -49,5 +49,4 @@ public class FlamingoEntity extends LionKingAnimal {
     protected ItemStack getQuestReward() {
         return new ItemStack(Items.PINK_DYE, 3 + QUEST_RANDOM.nextInt(4));
     }
-
 }

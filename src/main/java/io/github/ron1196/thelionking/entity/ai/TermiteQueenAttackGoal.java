@@ -2,14 +2,13 @@ package io.github.ron1196.thelionking.entity.ai;
 
 import io.github.ron1196.thelionking.entity.hostile.TermiteEntity;
 import io.github.ron1196.thelionking.registry.EntityTypes;
+import java.util.EnumSet;
+import java.util.List;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
-
-import java.util.EnumSet;
-import java.util.List;
 
 /**
  * Boss AI goal for the Termite Queen.
@@ -23,8 +22,8 @@ public class TermiteQueenAttackGoal extends Goal {
     private LivingEntity target;
     private int attackCooldown;
     private int spawnCooldown;
-    private static final double MELEE_RANGE_SQ = 9.0;  // 3 blocks
-    private static final int SPAWN_INTERVAL = 100;       // 5 seconds
+    private static final double MELEE_RANGE_SQ = 9.0; // 3 blocks
+    private static final int SPAWN_INTERVAL = 100; // 5 seconds
     private static final int MAX_NEARBY_TERMITES = 8;
     private static final double SEARCH_RANGE = 32.0;
 
@@ -96,9 +95,8 @@ public class TermiteQueenAttackGoal extends Goal {
         if (!(queen.level() instanceof ServerLevel serverLevel)) return;
 
         // Count nearby termites
-        List<TermiteEntity> nearby = queen.level().getEntitiesOfClass(
-                TermiteEntity.class,
-                queen.getBoundingBox().inflate(16.0));
+        List<TermiteEntity> nearby = queen.level()
+                .getEntitiesOfClass(TermiteEntity.class, queen.getBoundingBox().inflate(16.0));
         if (nearby.size() >= MAX_NEARBY_TERMITES) return;
 
         // Spawn 1-3 termites near the queen

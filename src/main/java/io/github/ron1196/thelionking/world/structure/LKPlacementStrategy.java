@@ -1,10 +1,9 @@
 package io.github.ron1196.thelionking.world.structure;
 
+import java.util.Map;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure.GenerationContext;
-
-import java.util.Map;
 
 /**
  * Strategy pattern for validating structure placement terrain.
@@ -25,8 +24,7 @@ public abstract class LKPlacementStrategy {
                 "zira_mound", new AboveSeaLevelStrategy(),
                 "treasure_mound", new AboveSeaLevelStrategy(),
                 "ticket_booth", new FourCornersStrategy(7),
-                "timon_pumbaa_lodge", new AboveSeaLevelStrategy()
-        );
+                "timon_pumbaa_lodge", new AboveSeaLevelStrategy());
     }
 
     static LKPlacementStrategy forStructure(String path) {
@@ -34,11 +32,9 @@ public abstract class LKPlacementStrategy {
     }
 
     static int getHeight(GenerationContext context, int x, int z) {
-        return context.chunkGenerator().getFirstOccupiedHeight(
-                x, z, Heightmap.Types.WORLD_SURFACE_WG,
-                context.heightAccessor(),
-                context.randomState()
-        );
+        return context.chunkGenerator()
+                .getFirstOccupiedHeight(
+                        x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
     }
 
     /**
@@ -80,9 +76,8 @@ public abstract class LKPlacementStrategy {
         boolean isValid(GenerationContext context, int x, int y, int z) {
             // Reject at or below sea level (catches rivers/lakes in land biomes)
             if (y <= context.chunkGenerator().getSeaLevel()) return false;
-            NoiseColumn column = context.chunkGenerator().getBaseColumn(
-                    x, z, context.heightAccessor(), context.randomState()
-            );
+            NoiseColumn column =
+                    context.chunkGenerator().getBaseColumn(x, z, context.heightAccessor(), context.randomState());
             return column.getBlock(y - 1).getFluidState().isEmpty();
         }
     }

@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.entity.animal;
 
 import io.github.ron1196.thelionking.entity.ai.ZazuMateGoal;
 import io.github.ron1196.thelionking.registry.SoundEvents;
+import javax.annotation.Nullable;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -11,8 +12,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
 
 public class ZazuEntity extends LionKingAnimal {
 

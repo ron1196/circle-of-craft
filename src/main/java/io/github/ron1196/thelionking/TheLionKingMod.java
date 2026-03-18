@@ -2,17 +2,17 @@ package io.github.ron1196.thelionking;
 
 import com.mojang.logging.LogUtils;
 import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
-import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.CreativeTabs;
-import io.github.ron1196.thelionking.registry.LKEnchantments;
 import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.LKFeatures;
 import io.github.ron1196.thelionking.registry.Items;
+import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import io.github.ron1196.thelionking.registry.LKEnchantments;
+import io.github.ron1196.thelionking.registry.LKFeatures;
 import io.github.ron1196.thelionking.registry.LKMenuTypes;
 import io.github.ron1196.thelionking.registry.SoundEvents;
 import io.github.ron1196.thelionking.world.structure.LKStructureTypes;
-import io.github.ron1196.thelionking.network.LKNetworking;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -50,7 +50,7 @@ public class TheLionKingMod {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            LKNetworking.register();
+            Networking.register();
             LionKingCriteriaTriggers.register();
         });
     }

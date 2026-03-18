@@ -17,16 +17,16 @@ public class TimonMerchantScreen extends AbstractContainerScreen<TimonMerchantMe
             new ResourceLocation(TheLionKingMod.MOD_ID, "textures/gui/timon.png");
 
     // GUI is 176 wide, 190 tall (166 logical + 24px decorative strip, matching old mod)
-    private static final int GUI_WIDTH           = 176;
-    private static final int GUI_HEIGHT          = 190;
-    private static final int INVENTORY_LABEL_Y   = 72; // old mod: ySize(166) - 96 + 2
+    private static final int GUI_WIDTH = 176;
+    private static final int GUI_HEIGHT = 190;
+    private static final int INVENTORY_LABEL_Y = 72; // old mod: ySize(166) - 96 + 2
 
     // Text colour matching old mod: dark brown
     private static final int TEXT_COLOR = 0x7F472F;
 
     public TimonMerchantScreen(TimonMerchantMenu menu, Inventory playerInv, Component title) {
         super(menu, playerInv, title);
-        this.imageWidth  = GUI_WIDTH;
+        this.imageWidth = GUI_WIDTH;
         this.imageHeight = GUI_HEIGHT;
     }
 

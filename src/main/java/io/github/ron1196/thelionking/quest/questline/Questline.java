@@ -2,12 +2,8 @@ package io.github.ron1196.thelionking.quest.questline;
 
 import io.github.ron1196.thelionking.quest.stage.ClaimableReward;
 import io.github.ron1196.thelionking.quest.stage.IStageId;
-import io.github.ron1196.thelionking.quest.stage.StageTrigger;
 import io.github.ron1196.thelionking.quest.stage.Stage;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
-
+import io.github.ron1196.thelionking.quest.stage.StageTrigger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,6 +13,9 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 public class Questline {
 

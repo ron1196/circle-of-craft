@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +14,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -85,7 +85,10 @@ public class TreasureMoundFeature extends Feature<NoneFeatureConfiguration> {
         for (int dx = 1; dx <= 4; dx++) {
             for (int dz = 1; dz <= 4; dz++) {
                 for (int dy = 0; dy < hollowHeight; dy++) {
-                    level.setBlock(new BlockPos(i + dx, j + dy, k + dz), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 2);
+                    level.setBlock(
+                            new BlockPos(i + dx, j + dy, k + dz),
+                            net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),
+                            2);
                 }
             }
         }
@@ -105,8 +108,14 @@ public class TreasureMoundFeature extends Feature<NoneFeatureConfiguration> {
         switch (entranceDir) {
             case 0: // North (z = k, dx = 2,3)
                 for (int dy = 0; dy < hollowHeight; dy++) {
-                    level.setBlock(new BlockPos(i + 2, j + dy, k), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 2);
-                    level.setBlock(new BlockPos(i + 3, j + dy, k), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 2);
+                    level.setBlock(
+                            new BlockPos(i + 2, j + dy, k),
+                            net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),
+                            2);
+                    level.setBlock(
+                            new BlockPos(i + 3, j + dy, k),
+                            net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),
+                            2);
                 }
                 // Termite block lintel above entrance
                 level.setBlock(new BlockPos(i + 2, j + hollowHeight, k), termite, 2);
@@ -114,24 +123,42 @@ public class TreasureMoundFeature extends Feature<NoneFeatureConfiguration> {
                 break;
             case 1: // South (z = k+5, dx = 2,3)
                 for (int dy = 0; dy < hollowHeight; dy++) {
-                    level.setBlock(new BlockPos(i + 2, j + dy, k + 5), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 2);
-                    level.setBlock(new BlockPos(i + 3, j + dy, k + 5), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 2);
+                    level.setBlock(
+                            new BlockPos(i + 2, j + dy, k + 5),
+                            net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),
+                            2);
+                    level.setBlock(
+                            new BlockPos(i + 3, j + dy, k + 5),
+                            net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),
+                            2);
                 }
                 level.setBlock(new BlockPos(i + 2, j + hollowHeight, k + 5), termite, 2);
                 level.setBlock(new BlockPos(i + 3, j + hollowHeight, k + 5), termite, 2);
                 break;
             case 2: // East (x = i+5, dz = 2,3)
                 for (int dy = 0; dy < hollowHeight; dy++) {
-                    level.setBlock(new BlockPos(i + 5, j + dy, k + 2), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 2);
-                    level.setBlock(new BlockPos(i + 5, j + dy, k + 3), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 2);
+                    level.setBlock(
+                            new BlockPos(i + 5, j + dy, k + 2),
+                            net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),
+                            2);
+                    level.setBlock(
+                            new BlockPos(i + 5, j + dy, k + 3),
+                            net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),
+                            2);
                 }
                 level.setBlock(new BlockPos(i + 5, j + hollowHeight, k + 2), termite, 2);
                 level.setBlock(new BlockPos(i + 5, j + hollowHeight, k + 3), termite, 2);
                 break;
             case 3: // West (x = i, dz = 2,3)
                 for (int dy = 0; dy < hollowHeight; dy++) {
-                    level.setBlock(new BlockPos(i, j + dy, k + 2), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 2);
-                    level.setBlock(new BlockPos(i, j + dy, k + 3), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 2);
+                    level.setBlock(
+                            new BlockPos(i, j + dy, k + 2),
+                            net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),
+                            2);
+                    level.setBlock(
+                            new BlockPos(i, j + dy, k + 3),
+                            net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),
+                            2);
                 }
                 level.setBlock(new BlockPos(i, j + hollowHeight, k + 2), termite, 2);
                 level.setBlock(new BlockPos(i, j + hollowHeight, k + 3), termite, 2);
@@ -140,7 +167,9 @@ public class TreasureMoundFeature extends Feature<NoneFeatureConfiguration> {
 
         // Place two chests on the opposite side from entrance
         Direction chestFacing = getChestFacing(entranceDir);
-        BlockState chestState = net.minecraft.world.level.block.Blocks.CHEST.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, chestFacing);
+        BlockState chestState = net.minecraft.world.level.block.Blocks.CHEST
+                .defaultBlockState()
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, chestFacing);
         BlockPos chest1Pos;
         BlockPos chest2Pos;
 
@@ -189,11 +218,16 @@ public class TreasureMoundFeature extends Feature<NoneFeatureConfiguration> {
      */
     private Direction getChestFacing(int entranceDir) {
         switch (entranceDir) {
-            case 0: return Direction.NORTH;  // Entrance N, chests face N toward entrance
-            case 1: return Direction.SOUTH;  // Entrance S, chests face S
-            case 2: return Direction.EAST;   // Entrance E, chests face E
-            case 3: return Direction.WEST;   // Entrance W, chests face W
-            default: return Direction.NORTH;
+            case 0:
+                return Direction.NORTH; // Entrance N, chests face N toward entrance
+            case 1:
+                return Direction.SOUTH; // Entrance S, chests face S
+            case 2:
+                return Direction.EAST; // Entrance E, chests face E
+            case 3:
+                return Direction.WEST; // Entrance W, chests face W
+            default:
+                return Direction.NORTH;
         }
     }
 
@@ -269,24 +303,36 @@ public class TreasureMoundFeature extends Feature<NoneFeatureConfiguration> {
     private ItemStack getRandomCorruptTool(RandomSource random) {
         int pick = random.nextInt(5);
         switch (pick) {
-            case 0: return new ItemStack(Items.CORRUPT_SWORD.get());
-            case 1: return new ItemStack(Items.CORRUPT_PICKAXE.get());
-            case 2: return new ItemStack(Items.CORRUPT_AXE.get());
-            case 3: return new ItemStack(Items.CORRUPT_SHOVEL.get());
-            case 4: return new ItemStack(Items.CORRUPT_HOE.get());
-            default: return new ItemStack(Items.CORRUPT_SWORD.get());
+            case 0:
+                return new ItemStack(Items.CORRUPT_SWORD.get());
+            case 1:
+                return new ItemStack(Items.CORRUPT_PICKAXE.get());
+            case 2:
+                return new ItemStack(Items.CORRUPT_AXE.get());
+            case 3:
+                return new ItemStack(Items.CORRUPT_SHOVEL.get());
+            case 4:
+                return new ItemStack(Items.CORRUPT_HOE.get());
+            default:
+                return new ItemStack(Items.CORRUPT_SWORD.get());
         }
     }
 
     private ItemStack getRandomKivuliteTool(RandomSource random) {
         int pick = random.nextInt(5);
         switch (pick) {
-            case 0: return new ItemStack(Items.KIVULITE_SWORD.get());
-            case 1: return new ItemStack(Items.KIVULITE_PICKAXE.get());
-            case 2: return new ItemStack(Items.KIVULITE_AXE.get());
-            case 3: return new ItemStack(Items.KIVULITE_SHOVEL.get());
-            case 4: return new ItemStack(Items.KIVULITE_HOE.get());
-            default: return new ItemStack(Items.KIVULITE_SWORD.get());
+            case 0:
+                return new ItemStack(Items.KIVULITE_SWORD.get());
+            case 1:
+                return new ItemStack(Items.KIVULITE_PICKAXE.get());
+            case 2:
+                return new ItemStack(Items.KIVULITE_AXE.get());
+            case 3:
+                return new ItemStack(Items.KIVULITE_SHOVEL.get());
+            case 4:
+                return new ItemStack(Items.KIVULITE_HOE.get());
+            default:
+                return new ItemStack(Items.KIVULITE_SWORD.get());
         }
     }
 }

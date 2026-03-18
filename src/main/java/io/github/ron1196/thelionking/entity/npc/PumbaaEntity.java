@@ -2,7 +2,6 @@ package io.github.ron1196.thelionking.entity.npc;
 
 import io.github.ron1196.thelionking.entity.ai.PumbaaFollowTimonGoal;
 import net.minecraft.core.particles.ParticleTypes;
-import org.jetbrains.annotations.NotNull;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -14,6 +13,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class PumbaaEntity extends PathfinderMob {
 
@@ -56,11 +56,14 @@ public class PumbaaEntity extends PathfinderMob {
         // Random fart particles
         if (level().isClientSide() && random.nextInt(1200) == 0) {
             for (int i = 0; i < 5; i++) {
-                level().addParticle(ParticleTypes.SMOKE,
-                        getX() - 0.5 + random.nextFloat(),
-                        getY() + 0.5 + random.nextFloat(),
-                        getZ() - 0.5 + random.nextFloat(),
-                        0, 0.05, 0);
+                level().addParticle(
+                                ParticleTypes.SMOKE,
+                                getX() - 0.5 + random.nextFloat(),
+                                getY() + 0.5 + random.nextFloat(),
+                                getZ() - 0.5 + random.nextFloat(),
+                                0,
+                                0.05,
+                                0);
             }
         }
     }
@@ -80,8 +83,8 @@ public class PumbaaEntity extends PathfinderMob {
             "When I was a young warthog...",
             "It's our problem-free philosophy!"
         };
-        player.sendSystemMessage(Component.literal(
-                "\u00a7e<Pumbaa> \u00a7f" + speeches[random.nextInt(speeches.length)]));
+        player.sendSystemMessage(
+                Component.literal("\u00a7e<Pumbaa> \u00a7f" + speeches[random.nextInt(speeches.length)]));
         return InteractionResult.SUCCESS;
     }
 }

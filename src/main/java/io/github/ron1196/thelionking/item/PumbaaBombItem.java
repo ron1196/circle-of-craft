@@ -18,7 +18,8 @@ public class PumbaaBombItem extends Item {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(
+            @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
         if (!level.isClientSide) {
@@ -32,9 +33,15 @@ public class PumbaaBombItem extends Item {
             }
         }
 
-        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                SoundEvents.SNOWBALL_THROW, SoundSource.PLAYERS,
-                0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+        level.playSound(
+                null,
+                player.getX(),
+                player.getY(),
+                player.getZ(),
+                SoundEvents.SNOWBALL_THROW,
+                SoundSource.PLAYERS,
+                0.5F,
+                0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
 
         player.getCooldowns().addCooldown(this, 20);
 

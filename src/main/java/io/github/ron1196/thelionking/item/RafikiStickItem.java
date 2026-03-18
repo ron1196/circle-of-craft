@@ -52,20 +52,18 @@ public class RafikiStickItem extends Item {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(
                 Attributes.ATTACK_DAMAGE,
-                new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", 5.0D, AttributeModifier.Operation.ADDITION)
-        );
+                new AttributeModifier(
+                        BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", 5.0D, AttributeModifier.Operation.ADDITION));
         builder.put(
                 Attributes.ATTACK_SPEED,
-                new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", -2.4D, AttributeModifier.Operation.ADDITION)
-        );
+                new AttributeModifier(
+                        BASE_ATTACK_SPEED_UUID, "Weapon modifier", -2.4D, AttributeModifier.Operation.ADDITION));
         this.defaultModifiers = builder.build();
     }
 
     @Override
     public @NotNull Multimap<Attribute, AttributeModifier> getAttributeModifiers(
-            @NotNull EquipmentSlot slot,
-            @NotNull ItemStack stack
-    ) {
+            @NotNull EquipmentSlot slot, @NotNull ItemStack stack) {
         return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getAttributeModifiers(slot, stack);
     }
 
@@ -134,7 +132,8 @@ public class RafikiStickItem extends Item {
     // ── Right-click in air: start charging thunder ──
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(
+            @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
         int thunderLevel = EnchantmentHelper.getTagEnchantmentLevel(LKEnchantments.RAFIKI_THUNDER.get(), stack);
@@ -152,7 +151,8 @@ public class RafikiStickItem extends Item {
     }
 
     @Override
-    public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity, int timeLeft) {
+    public void releaseUsing(
+            @NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity, int timeLeft) {
         if (!(entity instanceof Player player)) return;
 
         int thunderLevel = EnchantmentHelper.getTagEnchantmentLevel(LKEnchantments.RAFIKI_THUNDER.get(), stack);
@@ -163,24 +163,22 @@ public class RafikiStickItem extends Item {
         // Check for entity hit first
         Vec3 eyePos = player.getEyePosition();
         Vec3 endPos = eyePos.add(player.getLookAngle().scale(range));
-        AABB searchBox = player.getBoundingBox().expandTowards(player.getLookAngle().scale(range)).inflate(1.0D);
+        AABB searchBox = player.getBoundingBox()
+                .expandTowards(player.getLookAngle().scale(range))
+                .inflate(1.0D);
         EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(
-                player, eyePos, endPos, searchBox,
+                player,
+                eyePos,
+                endPos,
+                searchBox,
                 e -> !e.isSpectator() && e.isPickable() && e != player,
-                range * range
-        );
+                range * range);
 
         if (entityHit != null) {
             Entity target = entityHit.getEntity();
             if (!level.isClientSide) {
                 level.addFreshEntity(new LightningBoltEntity(
-                        level,
-                        target.getX(),
-                        target.getY(),
-                        target.getZ(),
-                        thunderLevel,
-                        player
-                ));
+                        level, target.getX(), target.getY(), target.getZ(), thunderLevel, player));
             }
             damageRafikiStick(stack, 10, player);
             stack.getOrCreateTag().putInt(TAG_THUNDER_COOLDOWN, 12);
@@ -194,13 +192,7 @@ public class RafikiStickItem extends Item {
             BlockPos target = blockHit.getBlockPos();
             if (!level.isClientSide) {
                 level.addFreshEntity(new LightningBoltEntity(
-                        level,
-                        target.getX(),
-                        target.getY(),
-                        target.getZ(),
-                        thunderLevel,
-                        player
-                ));
+                        level, target.getX(), target.getY(), target.getZ(), thunderLevel, player));
             }
             damageRafikiStick(stack, 10, player);
             stack.getOrCreateTag().putInt(TAG_THUNDER_COOLDOWN, 12);
@@ -217,19 +209,15 @@ public class RafikiStickItem extends Item {
                     player.getX() + (level.random.nextFloat() * player.getBbWidth() * 2.0F) - player.getBbWidth(),
                     player.getY() - 0.5D + (level.random.nextFloat() * (player.getBbHeight() / 2)),
                     player.getZ() + (level.random.nextFloat() * player.getBbWidth() * 2.0F) - player.getBbWidth(),
-                    dx, dy, dz
-            );
+                    dx,
+                    dy,
+                    dz);
         }
     }
 
     @Override
     public void inventoryTick(
-            @NotNull ItemStack stack,
-            @NotNull Level level,
-            @NotNull Entity entity,
-            int slotId,
-            boolean isSelected
-    ) {
+            @NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
         if (level.isClientSide) {
             return;
         }
@@ -265,7 +253,9 @@ public class RafikiStickItem extends Item {
 
     @Override
     public float getDestroySpeed(@NotNull ItemStack stack, @NotNull BlockState state) {
-        if (state.is(BlockTags.LEAVES) || state.getBlock() == Blocks.TALL_GRASS || state.getBlock() == Blocks.DEAD_BUSH) {
+        if (state.is(BlockTags.LEAVES)
+                || state.getBlock() == Blocks.TALL_GRASS
+                || state.getBlock() == Blocks.DEAD_BUSH) {
             return 15.0F;
         }
         return super.getDestroySpeed(stack, state);
@@ -277,8 +267,7 @@ public class RafikiStickItem extends Item {
             @NotNull Level level,
             @NotNull BlockState state,
             @NotNull BlockPos pos,
-            @NotNull LivingEntity entity
-    ) {
+            @NotNull LivingEntity entity) {
         if (state.is(BlockTags.LEAVES)) {
             damageRafikiStick(stack, 1, entity);
             return true;
@@ -292,8 +281,8 @@ public class RafikiStickItem extends Item {
         if (!stack.isDamageableItem()) return;
 
         if (amount > 0 && entity instanceof Player) {
-            int durabilityLevel = EnchantmentHelper.getTagEnchantmentLevel(
-                    LKEnchantments.RAFIKI_DURABILITY.get(), stack);
+            int durabilityLevel =
+                    EnchantmentHelper.getTagEnchantmentLevel(LKEnchantments.RAFIKI_DURABILITY.get(), stack);
             if (durabilityLevel > 0 && entity.level().random.nextInt(durabilityLevel + 1) > 0) {
                 return; // Durability enchantment prevented damage
             }
@@ -301,5 +290,4 @@ public class RafikiStickItem extends Item {
 
         stack.hurtAndBreak(amount, entity, (e) -> e.broadcastBreakEvent(EquipmentSlot.MAINHAND));
     }
-
 }

@@ -14,7 +14,12 @@ import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 public class AmbientAvoidGoal extends AvoidEntityGoal<LivingEntity> {
 
     public AmbientAvoidGoal(PathfinderMob mob) {
-        super(mob, LivingEntity.class, 12.0F, 1.0D, 1.5D,
+        super(
+                mob,
+                LivingEntity.class,
+                12.0F,
+                1.0D,
+                1.5D,
                 e -> e instanceof LionEntity || e instanceof LionessEntity || e instanceof HyenaEntity);
     }
 }

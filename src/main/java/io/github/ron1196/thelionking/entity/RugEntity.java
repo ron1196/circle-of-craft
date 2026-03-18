@@ -25,10 +25,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class RugEntity extends Entity {
 
-    private static final EntityDataAccessor<Integer> DATA_TYPE = SynchedEntityData.defineId(
-            RugEntity.class,
-            EntityDataSerializers.INT
-    );
+    private static final EntityDataAccessor<Integer> DATA_TYPE =
+            SynchedEntityData.defineId(RugEntity.class, EntityDataSerializers.INT);
 
     public static final int TYPE_SCAR = 0;
     public static final int TYPE_ZIRA = 1;
@@ -90,17 +88,10 @@ public class RugEntity extends Entity {
         }
 
         setDeltaMovement(
-                getDeltaMovement().x * friction,
-                getDeltaMovement().y * 0.98D,
-                getDeltaMovement().z * friction
-        );
+                getDeltaMovement().x * friction, getDeltaMovement().y * 0.98D, getDeltaMovement().z * friction);
 
         if (onGround()) {
-            setDeltaMovement(
-                    getDeltaMovement().x,
-                    getDeltaMovement().y * -0.5D,
-                    getDeltaMovement().z
-            );
+            setDeltaMovement(getDeltaMovement().x, getDeltaMovement().y * -0.5D, getDeltaMovement().z);
         }
     }
 
@@ -108,13 +99,12 @@ public class RugEntity extends Entity {
     public @NotNull InteractionResult interact(@NotNull Player player, @NotNull InteractionHand hand) {
         if (talkCooldown >= 40) {
             level().playSound(
-                    null,
-                    this,
-                    SoundEvents.LION_ROAR.get(),
-                    SoundSource.NEUTRAL,
-                    1.0F,
-                    (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F
-            );
+                            null,
+                            this,
+                            SoundEvents.LION_ROAR.get(),
+                            SoundSource.NEUTRAL,
+                            1.0F,
+                            (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
             if (!level().isClientSide) {
                 CharacterSpeech speech = getSpeech();
                 player.sendSystemMessage(Component.literal(CharacterSpeech.giveSpeech(speech)));
@@ -137,13 +127,12 @@ public class RugEntity extends Entity {
 
     public void dropAsItem() {
         level().playSound(
-                null,
-                this,
-                SoundEvents.LION_ANGRY.get(),
-                SoundSource.NEUTRAL,
-                1.0F,
-                (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F
-        );
+                        null,
+                        this,
+                        SoundEvents.LION_ANGRY.get(),
+                        SoundSource.NEUTRAL,
+                        1.0F,
+                        (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         if (!level().isClientSide) {
             spawnAtLocation(getRugItemStack(), 0.0F);
         }

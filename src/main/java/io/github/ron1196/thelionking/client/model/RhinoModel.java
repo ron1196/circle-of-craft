@@ -39,62 +39,62 @@ public class RhinoModel<T extends LionKingAnimal> extends EntityModel<T> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        root.addOrReplaceChild("horn",
-                CubeListBuilder.create().texOffs(56, 0)
-                        .addBox(-1.0F, -9.0F, -4.5F, 2.0F, 6.0F, 2.0F),
+        root.addOrReplaceChild(
+                "horn",
+                CubeListBuilder.create().texOffs(56, 0).addBox(-1.0F, -9.0F, -4.5F, 2.0F, 6.0F, 2.0F),
                 PartPose.offset(0.0F, 9.0F, -11.0F));
 
-        root.addOrReplaceChild("backhorn",
-                CubeListBuilder.create().texOffs(60, 8)
-                        .addBox(-0.5F, -6.5F, 0.0F, 1.0F, 3.0F, 1.0F),
+        root.addOrReplaceChild(
+                "backhorn",
+                CubeListBuilder.create().texOffs(60, 8).addBox(-0.5F, -6.5F, 0.0F, 1.0F, 3.0F, 1.0F),
                 PartPose.offset(0.0F, 9.0F, -11.0F));
 
-        root.addOrReplaceChild("leftear",
-                CubeListBuilder.create().texOffs(44, 0)
-                        .addBox(-4.6F, -6.0F, 3.0F, 1.0F, 3.0F, 2.0F),
+        root.addOrReplaceChild(
+                "leftear",
+                CubeListBuilder.create().texOffs(44, 0).addBox(-4.6F, -6.0F, 3.0F, 1.0F, 3.0F, 2.0F),
                 PartPose.offset(0.0F, 9.0F, -11.0F));
 
-        root.addOrReplaceChild("rightear",
-                CubeListBuilder.create().texOffs(50, 0)
-                        .addBox(3.6F, -6.0F, 3.0F, 1.0F, 3.0F, 2.0F),
+        root.addOrReplaceChild(
+                "rightear",
+                CubeListBuilder.create().texOffs(50, 0).addBox(3.6F, -6.0F, 3.0F, 1.0F, 3.0F, 2.0F),
                 PartPose.offset(0.0F, 9.0F, -11.0F));
 
-        root.addOrReplaceChild("head",
-                CubeListBuilder.create().texOffs(0, 0)
-                        .addBox(-4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 12.0F),
+        root.addOrReplaceChild(
+                "head",
+                CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -4.0F, -6.0F, 8.0F, 8.0F, 12.0F),
                 PartPose.offset(0.0F, 9.0F, -11.0F));
 
-        root.addOrReplaceChild("body",
-                CubeListBuilder.create().texOffs(0, 32)
-                        .addBox(-5.466667F, -10.0F, -8.0F, 13.0F, 22.0F, 10.0F),
-                PartPose.offsetAndRotation(-1.0F, 9.0F, 1.0F,
-                        ((float) Math.PI / 2F), 0.0F, 0.0F));
+        root.addOrReplaceChild(
+                "body",
+                CubeListBuilder.create().texOffs(0, 32).addBox(-5.466667F, -10.0F, -8.0F, 13.0F, 22.0F, 10.0F),
+                PartPose.offsetAndRotation(-1.0F, 9.0F, 1.0F, ((float) Math.PI / 2F), 0.0F, 0.0F));
 
-        root.addOrReplaceChild("leg1",
-                CubeListBuilder.create().texOffs(0, 20)
-                        .addBox(-3.0F, 0.0F, -2.0F, 4.0F, 8.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg1",
+                CubeListBuilder.create().texOffs(0, 20).addBox(-3.0F, 0.0F, -2.0F, 4.0F, 8.0F, 4.0F),
                 PartPose.offset(-3.0F, 16.0F, 10.0F));
 
-        root.addOrReplaceChild("leg2",
-                CubeListBuilder.create().texOffs(0, 20)
-                        .addBox(-1.0F, 0.0F, -2.0F, 4.0F, 8.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg2",
+                CubeListBuilder.create().texOffs(0, 20).addBox(-1.0F, 0.0F, -2.0F, 4.0F, 8.0F, 4.0F),
                 PartPose.offset(3.0F, 16.0F, 10.0F));
 
-        root.addOrReplaceChild("leg3",
-                CubeListBuilder.create().texOffs(0, 20)
-                        .addBox(-3.0F, 0.0F, -3.0F, 4.0F, 8.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg3",
+                CubeListBuilder.create().texOffs(0, 20).addBox(-3.0F, 0.0F, -3.0F, 4.0F, 8.0F, 4.0F),
                 PartPose.offset(-3.0F, 16.0F, -5.0F));
 
-        root.addOrReplaceChild("leg4",
-                CubeListBuilder.create().texOffs(0, 20)
-                        .addBox(-1.0F, 0.0F, -3.0F, 4.0F, 8.0F, 4.0F),
+        root.addOrReplaceChild(
+                "leg4",
+                CubeListBuilder.create().texOffs(0, 20).addBox(-1.0F, 0.0F, -3.0F, 4.0F, 8.0F, 4.0F),
                 PartPose.offset(3.0F, 16.0F, -5.0F));
 
         return LayerDefinition.create(mesh, 64, 64);
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(
+            T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.xRot = headPitch / 57.29578F + 0.279256F;
         this.head.yRot = netHeadYaw / 57.29578F;
 
@@ -116,7 +116,15 @@ public class RhinoModel<T extends LionKingAnimal> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(
+            PoseStack poseStack,
+            VertexConsumer buffer,
+            int packedLight,
+            int packedOverlay,
+            float red,
+            float green,
+            float blue,
+            float alpha) {
         horn.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         backhorn.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         leftear.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

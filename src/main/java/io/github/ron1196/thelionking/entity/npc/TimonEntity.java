@@ -5,7 +5,6 @@ import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkHooks;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -17,6 +16,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
 public class TimonEntity extends PathfinderMob {
@@ -93,7 +93,8 @@ public class TimonEntity extends PathfinderMob {
     }
 
     private void sendMessage(Player player) {
-        player.sendSystemMessage(Component.literal("§e<Timon> §fSlimy, yet satisfying! Here's a little something for you."));
+        player.sendSystemMessage(
+                Component.literal("§e<Timon> §fSlimy, yet satisfying! Here's a little something for you."));
     }
 
     private void sendSpeech(Player player, CharacterSpeech speech) {

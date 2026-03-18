@@ -38,11 +38,7 @@ public class PortalBlock extends Block {
 
     @Override
     public @NotNull VoxelShape getShape(
-            BlockState state,
-            @NotNull BlockGetter level,
-            @NotNull BlockPos pos,
-            @NotNull CollisionContext context
-    ) {
+            BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
         return state.getValue(AXIS) == Direction.Axis.Z ? Z_AABB : X_AABB;
     }
 
@@ -58,8 +54,7 @@ public class PortalBlock extends Block {
             @NotNull BlockState neighborState,
             @NotNull LevelAccessor level,
             @NotNull BlockPos pos,
-            @NotNull BlockPos neighborPos
-    ) {
+            @NotNull BlockPos neighborPos) {
         Direction.Axis portalAxis = state.getValue(AXIS);
         if (direction.getAxis() == portalAxis) {
             // Check vertical neighbors
@@ -104,14 +99,8 @@ public class PortalBlock extends Block {
     }
 
     @Override
-    public void entityInside(
-            @NotNull BlockState state,
-            Level level,
-            @NotNull BlockPos pos,
-            @NotNull Entity entity
-    ) {
-        if (!level.isClientSide && !entity.isPassenger() && !entity.isVehicle()
-                && entity.canChangeDimensions()) {
+    public void entityInside(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
+        if (!level.isClientSide && !entity.isPassenger() && !entity.isVehicle() && entity.canChangeDimensions()) {
             if (entity.isOnPortalCooldown()) {
                 entity.setPortalCooldown();
                 return;
@@ -119,11 +108,12 @@ public class PortalBlock extends Block {
 
             ResourceKey<Level> destination;
             if (isOutlands) {
-                destination = level.dimension() == Dimensions.OUTLANDS_LEVEL
-                        ? Level.OVERWORLD : Dimensions.OUTLANDS_LEVEL;
+                destination =
+                        level.dimension() == Dimensions.OUTLANDS_LEVEL ? Level.OVERWORLD : Dimensions.OUTLANDS_LEVEL;
             } else {
                 destination = level.dimension() == Dimensions.PRIDE_LANDS_LEVEL
-                        ? Level.OVERWORLD : Dimensions.PRIDE_LANDS_LEVEL;
+                        ? Level.OVERWORLD
+                        : Dimensions.PRIDE_LANDS_LEVEL;
             }
 
             MinecraftServer server = level.getServer();
@@ -146,7 +136,8 @@ public class PortalBlock extends Block {
         private int width;
         private int height;
 
-        public PortalShape(LevelAccessor level, BlockPos pos, Direction.Axis axis, Block frameBlock, Block portalBlock) {
+        public PortalShape(
+                LevelAccessor level, BlockPos pos, Direction.Axis axis, Block frameBlock, Block portalBlock) {
             this.level = level;
             this.axis = axis;
             this.frameBlock = frameBlock;
@@ -160,14 +151,14 @@ public class PortalBlock extends Block {
 
             // Go left until we hit a frame block
             BlockPos cursor = pos;
-            while (level.getBlockState(cursor.relative(leftDir)).isAir() ||
-                    level.getBlockState(cursor.relative(leftDir)).is(portalBlock)) {
+            while (level.getBlockState(cursor.relative(leftDir)).isAir()
+                    || level.getBlockState(cursor.relative(leftDir)).is(portalBlock)) {
                 cursor = cursor.relative(leftDir);
             }
 
             // Go down until we hit a frame block
-            while (level.getBlockState(cursor.below()).isAir() ||
-                    level.getBlockState(cursor.below()).is(portalBlock)) {
+            while (level.getBlockState(cursor.below()).isAir()
+                    || level.getBlockState(cursor.below()).is(portalBlock)) {
                 cursor = cursor.below();
             }
 
@@ -206,7 +197,8 @@ public class PortalBlock extends Block {
                 // Left column
                 if (!level.getBlockState(bottomLeft.above(y).relative(leftDir)).is(frameBlock)) return false;
                 // Right column
-                if (!level.getBlockState(bottomLeft.above(y).relative(rightDir, width)).is(frameBlock)) return false;
+                if (!level.getBlockState(bottomLeft.above(y).relative(rightDir, width))
+                        .is(frameBlock)) return false;
             }
 
             for (int x = 0; x < width; x++) {
@@ -219,9 +211,11 @@ public class PortalBlock extends Block {
 
             // Check corners
             if (!level.getBlockState(bottomLeft.below().relative(leftDir)).is(frameBlock)) return false;
-            if (!level.getBlockState(bottomLeft.below().relative(rightDir, width)).is(frameBlock)) return false;
+            if (!level.getBlockState(bottomLeft.below().relative(rightDir, width))
+                    .is(frameBlock)) return false;
             if (!level.getBlockState(bottomLeft.above(height).relative(leftDir)).is(frameBlock)) return false;
-            if (!level.getBlockState(bottomLeft.above(height).relative(rightDir, width)).is(frameBlock)) return false;
+            if (!level.getBlockState(bottomLeft.above(height).relative(rightDir, width))
+                    .is(frameBlock)) return false;
 
             // Check interior is all air or portal
             for (int x = 0; x < width; x++) {

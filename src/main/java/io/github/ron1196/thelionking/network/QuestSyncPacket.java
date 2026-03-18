@@ -1,10 +1,9 @@
 package io.github.ron1196.thelionking.network;
 
 import io.github.ron1196.thelionking.quest.questline.QuestlineState;
+import java.util.function.Supplier;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 public class QuestSyncPacket {
 

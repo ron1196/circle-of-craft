@@ -52,6 +52,19 @@ public @NotNull InteractionResult use(
 ) { ... }
 ```
 
+### Method Signature Formatting
+When a method signature is too long to fit on one line, put each parameter on its own line with 8-space indent, and the closing `) {` on its own line:
+
+```java
+public void onRemove(
+        @NotNull BlockState state,
+        @NotNull Level level,
+        @NotNull BlockPos pos,
+        @NotNull BlockState newState,
+        boolean isMoving
+) {
+```
+
 ### Workaround Policy
 **Never use temporary workarounds without tracking them.** Every "for now" substitution must be recorded in `docs/TODO_WORKAROUNDS.md`.
 

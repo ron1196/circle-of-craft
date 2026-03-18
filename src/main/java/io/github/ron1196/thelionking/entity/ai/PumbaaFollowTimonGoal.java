@@ -2,11 +2,9 @@ package io.github.ron1196.thelionking.entity.ai;
 
 import io.github.ron1196.thelionking.entity.npc.PumbaaEntity;
 import io.github.ron1196.thelionking.entity.npc.TimonEntity;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.phys.AABB;
-
 import java.util.EnumSet;
 import java.util.List;
+import net.minecraft.world.entity.ai.goal.Goal;
 
 /**
  * Pumbaa follows the nearest Timon entity within 32 blocks.
@@ -17,8 +15,8 @@ public class PumbaaFollowTimonGoal extends Goal {
     private final PumbaaEntity pumbaa;
     private TimonEntity timon;
     private static final double SEARCH_RANGE = 32.0;
-    private static final double START_DISTANCE_SQ = 9.0;  // 3 blocks squared
-    private static final double STOP_DISTANCE_SQ = 4.0;   // 2 blocks squared
+    private static final double START_DISTANCE_SQ = 9.0; // 3 blocks squared
+    private static final double STOP_DISTANCE_SQ = 4.0; // 2 blocks squared
     private static final double SPEED = 1.2D;
     private int recheckTimer;
 
@@ -29,9 +27,8 @@ public class PumbaaFollowTimonGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        List<TimonEntity> timons = pumbaa.level().getEntitiesOfClass(
-                TimonEntity.class,
-                pumbaa.getBoundingBox().inflate(SEARCH_RANGE));
+        List<TimonEntity> timons = pumbaa.level()
+                .getEntitiesOfClass(TimonEntity.class, pumbaa.getBoundingBox().inflate(SEARCH_RANGE));
         if (timons.isEmpty()) return false;
 
         // Find the nearest Timon

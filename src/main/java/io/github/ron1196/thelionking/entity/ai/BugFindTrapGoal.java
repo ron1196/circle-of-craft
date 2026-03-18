@@ -2,12 +2,11 @@ package io.github.ron1196.thelionking.entity.ai;
 
 import io.github.ron1196.thelionking.block.entity.BugTrapBlockEntity;
 import io.github.ron1196.thelionking.registry.Blocks;
+import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.block.entity.BlockEntity;
-
-import java.util.EnumSet;
 
 /**
  * Bugs pathfind to nearby baited BugTrap blocks within 16 blocks.
@@ -52,8 +51,7 @@ public class BugFindTrapGoal extends Goal {
         if (trapPos == null) return;
         if (--recheckTimer <= 0) {
             recheckTimer = 20;
-            bug.getNavigation().moveTo(
-                    trapPos.getX() + 0.5, trapPos.getY(), trapPos.getZ() + 0.5, 1.0D);
+            bug.getNavigation().moveTo(trapPos.getX() + 0.5, trapPos.getY(), trapPos.getZ() + 0.5, 1.0D);
         }
     }
 
@@ -69,8 +67,7 @@ public class BugFindTrapGoal extends Goal {
         double nearestDist = Double.MAX_VALUE;
 
         for (BlockPos pos : BlockPos.betweenClosed(
-                bugPos.offset(-SEARCH_RANGE, -4, -SEARCH_RANGE),
-                bugPos.offset(SEARCH_RANGE, 4, SEARCH_RANGE))) {
+                bugPos.offset(-SEARCH_RANGE, -4, -SEARCH_RANGE), bugPos.offset(SEARCH_RANGE, 4, SEARCH_RANGE))) {
             if (!bug.level().getBlockState(pos).is(Blocks.BUG_TRAP.get())) continue;
 
             // Check if trap has bait

@@ -2,18 +2,15 @@ package io.github.ron1196.thelionking.menu;
 
 import io.github.ron1196.thelionking.block.entity.BongoDrumBlockEntity;
 import io.github.ron1196.thelionking.registry.LKMenuTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
-
-import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.NotNull;
 
 public class BongoDrumMenu extends AbstractContainerMenu {
@@ -22,7 +19,9 @@ public class BongoDrumMenu extends AbstractContainerMenu {
     // Enchant slot is a separate 1-slot handler (not stored in block entity)
     private final ItemStackHandler enchantSlot = new ItemStackHandler(1) {
         @Override
-        public int getSlotLimit(int slot) { return 1; }
+        public int getSlotLimit(int slot) {
+            return 1;
+        }
     };
     public final int[] enchantLevels = new int[3];
     private final RandomSource random = RandomSource.create();
@@ -46,7 +45,9 @@ public class BongoDrumMenu extends AbstractContainerMenu {
             }
 
             @Override
-            public int getMaxStackSize() { return 1; }
+            public int getMaxStackSize() {
+                return 1;
+            }
 
             @Override
             public void setChanged() {
@@ -177,7 +178,8 @@ public class BongoDrumMenu extends AbstractContainerMenu {
         // Drop enchant slot item back to player
         ItemStack enchantItem = enchantSlot.getStackInSlot(0);
         if (!enchantItem.isEmpty()) {
-            if (!player.isAlive() || (player instanceof net.minecraft.server.level.ServerPlayer sp && sp.hasDisconnected())) {
+            if (!player.isAlive()
+                    || (player instanceof net.minecraft.server.level.ServerPlayer sp && sp.hasDisconnected())) {
                 player.drop(enchantItem, false);
             } else {
                 player.getInventory().placeItemBackInInventory(enchantItem);
@@ -187,9 +189,11 @@ public class BongoDrumMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(@NotNull Player player) {
-        return blockEntity == null || player.distanceToSqr(
-                blockEntity.getBlockPos().getX() + 0.5,
-                blockEntity.getBlockPos().getY() + 0.5,
-                blockEntity.getBlockPos().getZ() + 0.5) <= 64.0;
+        return blockEntity == null
+                || player.distanceToSqr(
+                                blockEntity.getBlockPos().getX() + 0.5,
+                                blockEntity.getBlockPos().getY() + 0.5,
+                                blockEntity.getBlockPos().getZ() + 0.5)
+                        <= 64.0;
     }
 }

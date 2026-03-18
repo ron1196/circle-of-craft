@@ -1,8 +1,10 @@
 package io.github.ron1196.thelionking.item;
 
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -11,10 +13,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.SimpleContainer;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 /**
  * Shared auto-smelt logic for Kivulite fire tools (pickaxe, axe, shovel).
@@ -38,22 +36,25 @@ public final class FireToolHelper {
             return false;
         }
 
-        Optional<SmeltingRecipe> recipe = ((ServerLevel) level).getRecipeManager()
+        Optional<SmeltingRecipe> recipe = ((ServerLevel) level)
+                .getRecipeManager()
                 .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(blockDrop), level);
 
         if (recipe.isPresent()) {
-            ItemStack smeltResult = recipe.get().getResultItem(level.registryAccess()).copy();
+            ItemStack smeltResult =
+                    recipe.get().getResultItem(level.registryAccess()).copy();
             if (!smeltResult.isEmpty()) {
                 // Drop smelted items (respect quantity dropped)
-                int count = state.getBlock().getDrops(state, (ServerLevel) level, pos, null).size();
+                int count = state.getBlock()
+                        .getDrops(state, (ServerLevel) level, pos, null)
+                        .size();
                 for (int i = 0; i < Math.max(1, count); i++) {
                     Block.popResource(level, pos, smeltResult.copy());
                 }
 
                 // Break the block without normal drops
                 level.destroyBlock(pos, false);
-                tool.hurtAndBreak(1, player, (p) ->
-                        p.broadcastBreakEvent(player.getUsedItemHand()));
+                tool.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
 
                 // Flame particles
                 spawnFlameParticles(level, pos);
@@ -75,8 +76,7 @@ public final class FireToolHelper {
         if (state.is(Blocks.CLAY)) {
             Block.popResource(level, pos, new ItemStack(Blocks.BRICKS));
             level.destroyBlock(pos, false);
-            tool.hurtAndBreak(1, player, (p) ->
-                    p.broadcastBreakEvent(player.getUsedItemHand()));
+            tool.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
             spawnFlameParticles(level, pos);
             return true;
         }

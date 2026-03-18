@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.entity.projectile;
 
 import io.github.ron1196.thelionking.network.FlatulencePacket;
-import io.github.ron1196.thelionking.network.LKNetworking;
+import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.Items;
 import net.minecraft.server.level.ServerPlayer;
@@ -40,30 +40,30 @@ public class PumbaaBombEntity extends ThrowableItemProjectile {
         if (this.level().isClientSide) {
             return;
         }
-        this.level().explode(
-                this.getOwner(),
-                this.getX(),
-                this.getY(),
-                this.getZ(),
-                EXPLOSION_RADIUS,
-                false,
-                Level.ExplosionInteraction.TNT
-        );
+        this.level()
+                .explode(
+                        this.getOwner(),
+                        this.getX(),
+                        this.getY(),
+                        this.getZ(),
+                        EXPLOSION_RADIUS,
+                        false,
+                        Level.ExplosionInteraction.TNT);
         sendFlatulenceToNearbyPlayers();
         this.discard();
     }
 
     private void sendFlatulenceToNearbyPlayers() {
         AABB range = new AABB(
-                getX() - FLATULENCE_RANGE, getY() - FLATULENCE_RANGE, getZ() - FLATULENCE_RANGE,
-                getX() + FLATULENCE_RANGE, getY() + FLATULENCE_RANGE, getZ() + FLATULENCE_RANGE
-        );
+                getX() - FLATULENCE_RANGE,
+                getY() - FLATULENCE_RANGE,
+                getZ() - FLATULENCE_RANGE,
+                getX() + FLATULENCE_RANGE,
+                getY() + FLATULENCE_RANGE,
+                getZ() + FLATULENCE_RANGE);
         for (Player player : level().getEntitiesOfClass(Player.class, range)) {
             if (player instanceof ServerPlayer serverPlayer) {
-                LKNetworking.CHANNEL.send(
-                        PacketDistributor.PLAYER.with(() -> serverPlayer),
-                        new FlatulencePacket()
-                );
+                Networking.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new FlatulencePacket());
             }
         }
     }

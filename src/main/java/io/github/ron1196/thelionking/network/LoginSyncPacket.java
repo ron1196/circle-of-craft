@@ -3,16 +3,15 @@ package io.github.ron1196.thelionking.network;
 import io.github.ron1196.thelionking.data.PlayerData;
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.quest.questline.Questline;
-import io.github.ron1196.thelionking.quest.questline.QuestlineState;
 import io.github.ron1196.thelionking.quest.questline.QuestlineRegistry;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
-
+import io.github.ron1196.thelionking.quest.questline.QuestlineState;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class LoginSyncPacket {
 

@@ -62,14 +62,14 @@ public class LKFeatures {
             FEATURES.register("treasure_mound", () -> new TreasureMoundFeature(NoneFeatureConfiguration.CODEC));
 
     // ResourceKeys for configured features (referenced by tree growers and placed features)
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PRIDE_ACACIA_TREE_KEY =
-            ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "pride_acacia_tree"));
-    public static final ResourceKey<ConfiguredFeature<?, ?>> RAINFOREST_TREE_KEY =
-            ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "rainforest_tree"));
-    public static final ResourceKey<ConfiguredFeature<?, ?>> MANGO_TREE_KEY =
-            ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "mango_tree"));
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PASSION_TREE_KEY =
-            ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "passion_tree"));
-    public static final ResourceKey<ConfiguredFeature<?, ?>> BANANA_TREE_KEY =
-            ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "banana_tree"));
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PRIDE_ACACIA_TREE_KEY = ResourceKey.create(
+            Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "pride_acacia_tree"));
+    public static final ResourceKey<ConfiguredFeature<?, ?>> RAINFOREST_TREE_KEY = ResourceKey.create(
+            Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "rainforest_tree"));
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MANGO_TREE_KEY = ResourceKey.create(
+            Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "mango_tree"));
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PASSION_TREE_KEY = ResourceKey.create(
+            Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "passion_tree"));
+    public static final ResourceKey<ConfiguredFeature<?, ?>> BANANA_TREE_KEY = ResourceKey.create(
+            Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "banana_tree"));
 }

@@ -21,13 +21,9 @@ import org.jetbrains.annotations.Nullable;
 @Mod.EventBusSubscriber(modid = TheLionKingMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PlayerDataProvider implements ICapabilitySerializable<CompoundTag> {
 
-    public static final Capability<PlayerData> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
-    });
+    public static final Capability<PlayerData> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
-    public static final ResourceLocation IDENTIFIER = new ResourceLocation(
-            TheLionKingMod.MOD_ID,
-            "player_data"
-    );
+    public static final ResourceLocation IDENTIFIER = new ResourceLocation(TheLionKingMod.MOD_ID, "player_data");
 
     private final PlayerData data = new PlayerData();
     private final LazyOptional<PlayerData> optional = LazyOptional.of(() -> data);

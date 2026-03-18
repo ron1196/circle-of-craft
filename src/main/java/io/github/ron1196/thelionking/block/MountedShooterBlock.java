@@ -34,11 +34,13 @@ public class MountedShooterBlock extends Block {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite());
+        return this.defaultBlockState()
+                .setValue(FACING, context.getNearestLookingDirection().getOpposite());
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+    public void neighborChanged(
+            BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
         if (!level.isClientSide() && level.hasNeighborSignal(pos)) {
             shootDart(level, pos, state);
         }

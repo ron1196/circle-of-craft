@@ -1,6 +1,7 @@
 package io.github.ron1196.thelionking.block;
 
 import io.github.ron1196.thelionking.block.entity.OutlandsPoolBlockEntity;
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -19,8 +20,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nullable;
 
 public class OutlandsPoolBlock extends BaseEntityBlock {
 
@@ -55,8 +54,13 @@ public class OutlandsPoolBlock extends BaseEntityBlock {
             if (level.getBlockEntity(pos) instanceof OutlandsPoolBlockEntity pool) {
                 pool.collectItem(itemEntity.getItem().copy());
                 itemEntity.discard();
-                level.playSound(null, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS,
-                        0.7F, 1.6F + (level.random.nextFloat() - level.random.nextFloat()) * 0.4F);
+                level.playSound(
+                        null,
+                        pos,
+                        SoundEvents.FIRE_EXTINGUISH,
+                        SoundSource.BLOCKS,
+                        0.7F,
+                        1.6F + (level.random.nextFloat() - level.random.nextFloat()) * 0.4F);
             }
         }
 
@@ -68,7 +72,8 @@ public class OutlandsPoolBlock extends BaseEntityBlock {
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(
+            Level level, BlockState state, BlockEntityType<T> type) {
         if (!level.isClientSide()) {
             return (lvl, pos, st, be) -> {
                 if (be instanceof OutlandsPoolBlockEntity pool) pool.serverTick();

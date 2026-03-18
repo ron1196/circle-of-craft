@@ -20,8 +20,7 @@ public class WorldData extends SavedData {
     // Quest manager
     private final QuestlineManager questManager = new QuestlineManager(this);
 
-    public WorldData() {
-    }
+    public WorldData() {}
 
     public QuestlineManager getQuestManager() {
         return questManager;

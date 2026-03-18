@@ -10,9 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 public class DikDikRenderer extends MobRenderer<DikDikEntity, EntityModel<DikDikEntity>> {
 
     private static final ResourceLocation[] TEXTURES = {
-            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dikdik_0.png"),
-            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dikdik_1.png"),
-            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dikdik_2.png")
+        new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dikdik_0.png"),
+        new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dikdik_1.png"),
+        new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dikdik_2.png")
     };
 
     public DikDikRenderer(EntityRendererProvider.Context context, EntityModel<DikDikEntity> model, float shadowRadius) {

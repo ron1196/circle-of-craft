@@ -2,8 +2,9 @@ package io.github.ron1196.thelionking.event;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
-import io.github.ron1196.thelionking.network.LKNetworking;
+import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.network.SimbaSitPacket;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -12,8 +13,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import java.util.List;
 
 /**
  * Forge bus listener for client key input events.
@@ -34,14 +33,11 @@ public class ClientKeyHandler {
         if (player == null || level == null) return;
 
         AABB searchBox = player.getBoundingBox().inflate(SEARCH_RANGE);
-        List<SimbaEntity> simbas = level.getEntitiesOfClass(
-                SimbaEntity.class,
-                searchBox,
-                simba -> simba.isOwnedBy(player)
-        );
+        List<SimbaEntity> simbas =
+                level.getEntitiesOfClass(SimbaEntity.class, searchBox, simba -> simba.isOwnedBy(player));
 
         for (SimbaEntity simba : simbas) {
-            LKNetworking.CHANNEL.sendToServer(new SimbaSitPacket(simba.getId()));
+            Networking.CHANNEL.sendToServer(new SimbaSitPacket(simba.getId()));
         }
     }
 }

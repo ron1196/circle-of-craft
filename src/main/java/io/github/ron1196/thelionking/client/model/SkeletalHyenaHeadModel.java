@@ -22,11 +22,15 @@ public class SkeletalHyenaHeadModel extends HierarchicalModel<SkeletalHyenaHeadE
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        root.addOrReplaceChild("head",
+        root.addOrReplaceChild(
+                "head",
                 CubeListBuilder.create()
-                        .texOffs(0, 0).addBox(-3.0F, -6.0F, -3.0F, 6, 6, 6)
-                        .texOffs(0, 15).addBox(-3.0F, -8.0F, 0.0F, 1, 2, 2)
-                        .texOffs(6, 15).addBox(2.0F, -8.0F, 0.0F, 1, 2, 2),
+                        .texOffs(0, 0)
+                        .addBox(-3.0F, -6.0F, -3.0F, 6, 6, 6)
+                        .texOffs(0, 15)
+                        .addBox(-3.0F, -8.0F, 0.0F, 1, 2, 2)
+                        .texOffs(6, 15)
+                        .addBox(2.0F, -8.0F, 0.0F, 1, 2, 2),
                 PartPose.offset(0.0F, 24.0F, 0.0F));
 
         return LayerDefinition.create(mesh, 64, 32);
@@ -38,8 +42,13 @@ public class SkeletalHyenaHeadModel extends HierarchicalModel<SkeletalHyenaHeadE
     }
 
     @Override
-    public void setupAnim(@NotNull SkeletalHyenaHeadEntity entity, float limbSwing, float limbSwingAmount,
-                          float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(
+            @NotNull SkeletalHyenaHeadEntity entity,
+            float limbSwing,
+            float limbSwingAmount,
+            float ageInTicks,
+            float netHeadYaw,
+            float headPitch) {
         // Static head - no animation needed
     }
 }

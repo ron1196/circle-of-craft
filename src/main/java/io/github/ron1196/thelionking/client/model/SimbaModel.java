@@ -35,30 +35,39 @@ public class SimbaModel extends EntityModel<Mob> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        root.addOrReplaceChild("head",
+        root.addOrReplaceChild(
+                "head",
                 CubeListBuilder.create()
-                        .texOffs(0, 0).addBox(-4.0F, -4.0F, -7.0F, 8, 8, 8)
-                        .texOffs(52, 34).addBox(-2.0F, 0.0F, -9.0F, 4, 4, 2),
+                        .texOffs(0, 0)
+                        .addBox(-4.0F, -4.0F, -7.0F, 8, 8, 8)
+                        .texOffs(52, 34)
+                        .addBox(-2.0F, 0.0F, -9.0F, 4, 4, 2),
                 PartPose.offset(0.0F, 4.0F, -9.0F));
 
-        root.addOrReplaceChild("mane",
+        root.addOrReplaceChild(
+                "mane",
                 CubeListBuilder.create().texOffs(0, 36).addBox(-7.0F, -7.0F, -5.0F, 14, 14, 9),
                 PartPose.offset(0.0F, 4.0F, -9.0F));
 
-        root.addOrReplaceChild("body",
+        root.addOrReplaceChild(
+                "body",
                 CubeListBuilder.create().texOffs(0, 68).addBox(-6.0F, -10.0F, -7.0F, 12, 18, 10),
                 PartPose.offset(0.0F, 5.0F, 2.0F));
 
-        root.addOrReplaceChild("leg1",
+        root.addOrReplaceChild(
+                "leg1",
                 CubeListBuilder.create().texOffs(0, 19).addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4),
                 PartPose.offset(-4.0F, 12.0F, 7.0F));
-        root.addOrReplaceChild("leg2",
+        root.addOrReplaceChild(
+                "leg2",
                 CubeListBuilder.create().texOffs(0, 19).addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4),
                 PartPose.offset(4.0F, 12.0F, 7.0F));
-        root.addOrReplaceChild("leg3",
+        root.addOrReplaceChild(
+                "leg3",
                 CubeListBuilder.create().texOffs(0, 19).addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4),
                 PartPose.offset(-4.0F, 12.0F, -5.0F));
-        root.addOrReplaceChild("leg4",
+        root.addOrReplaceChild(
+                "leg4",
                 CubeListBuilder.create().texOffs(0, 19).addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4),
                 PartPose.offset(4.0F, 12.0F, -5.0F));
 
@@ -66,7 +75,8 @@ public class SimbaModel extends EntityModel<Mob> {
     }
 
     @Override
-    public void setupAnim(Mob entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(
+            Mob entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.xRot = headPitch * ((float) Math.PI / 180F);
         this.head.yRot = netHeadYaw * ((float) Math.PI / 180F);
         this.mane.xRot = this.head.xRot;
@@ -124,8 +134,7 @@ public class SimbaModel extends EntityModel<Mob> {
             float red,
             float green,
             float blue,
-            float alpha
-    ) {
+            float alpha) {
         head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         mane.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

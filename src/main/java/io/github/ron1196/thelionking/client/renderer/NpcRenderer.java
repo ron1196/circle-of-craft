@@ -13,15 +13,19 @@ public class NpcRenderer extends MobRenderer<Mob, EntityModel<Mob>> {
     private final ResourceLocation texture;
     private final float scale;
 
-    public NpcRenderer(EntityRendererProvider.Context context, EntityModel<Mob> model,
-                       String textureName, float shadowRadius, float scale) {
+    public NpcRenderer(
+            EntityRendererProvider.Context context,
+            EntityModel<Mob> model,
+            String textureName,
+            float shadowRadius,
+            float scale) {
         super(context, model, shadowRadius);
         this.texture = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/" + textureName + ".png");
         this.scale = scale;
     }
 
-    public NpcRenderer(EntityRendererProvider.Context context, EntityModel<Mob> model,
-                       String textureName, float shadowRadius) {
+    public NpcRenderer(
+            EntityRendererProvider.Context context, EntityModel<Mob> model, String textureName, float shadowRadius) {
         this(context, model, textureName, shadowRadius, 1.0F);
     }
 

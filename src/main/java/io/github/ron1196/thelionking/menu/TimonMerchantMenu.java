@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.menu;
 
 import io.github.ron1196.thelionking.registry.Items;
 import io.github.ron1196.thelionking.registry.LKMenuTypes;
+import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -14,8 +15,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 public class TimonMerchantMenu extends AbstractContainerMenu {
 
     public static final String TITLE_KEY = "container.thelionking.timon_merchant";
@@ -27,7 +26,8 @@ public class TimonMerchantMenu extends AbstractContainerMenu {
         }
 
         @Override
-        public @NotNull AbstractContainerMenu createMenu(int containerId, @NotNull Inventory inv, @NotNull Player player) {
+        public @NotNull AbstractContainerMenu createMenu(
+                int containerId, @NotNull Inventory inv, @NotNull Player player) {
             return new TimonMerchantMenu(containerId, inv);
         }
     };
@@ -36,12 +36,11 @@ public class TimonMerchantMenu extends AbstractContainerMenu {
 
     // Each entry is one trade slot: the item sold and its bug cost, matching old mod
     private static final List<TradeEntry> TRADES = List.of(
-            new TradeEntry(Items.TUNNAH_DIGGAH,   5),
-            new TradeEntry(Items.PUMBAA_BOMB,     6),
-            new TradeEntry(Items.CRYSTAL,         7),
+            new TradeEntry(Items.TUNNAH_DIGGAH, 5),
+            new TradeEntry(Items.PUMBAA_BOMB, 6),
+            new TradeEntry(Items.CRYSTAL, 7),
             new TradeEntry(Items.EXPERIENCE_GRUB, 4),
-            new TradeEntry(Items.AMULET,          10)
-    );
+            new TradeEntry(Items.AMULET, 10));
 
     private static final int TRADE_SLOT_X_START = 15;
     private static final int TRADE_SLOT_X_STEP = 33;
@@ -60,33 +59,23 @@ public class TimonMerchantMenu extends AbstractContainerMenu {
         // Trade slots — read-only, deduct bugs on pickup, restock automatically
         for (int i = 0; i < TRADES.size(); i++) {
             this.addSlot(new TimonTradeSlot(
-                    tradeInventory, i,
+                    tradeInventory,
+                    i,
                     TRADE_SLOT_X_START + i * TRADE_SLOT_X_STEP,
                     TRADE_SLOT_Y,
-                    TRADES.get(i).bugCost()
-            ));
+                    TRADES.get(i).bugCost()));
         }
 
         // Player inventory
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                this.addSlot(new Slot(
-                        playerInv,
-                        col + row * 9 + 9,
-                        PLAYER_INV_X + col * 18,
-                        PLAYER_INV_Y + row * 18
-                ));
+                this.addSlot(new Slot(playerInv, col + row * 9 + 9, PLAYER_INV_X + col * 18, PLAYER_INV_Y + row * 18));
             }
         }
 
         // Hotbar
         for (int col = 0; col < 9; col++) {
-            this.addSlot(new Slot(
-                    playerInv,
-                    col,
-                    PLAYER_INV_X + col * 18,
-                    HOTBAR_Y
-            ));
+            this.addSlot(new Slot(playerInv, col, PLAYER_INV_X + col * 18, HOTBAR_Y));
         }
     }
 
