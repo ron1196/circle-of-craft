@@ -55,7 +55,7 @@ public class RafikiEntity extends PathfinderMob {
     }
 
     @Override
-    public boolean hurt(DamageSource source, float amount) {
+    public boolean hurt(@NotNull DamageSource source, float amount) {
         return false;
     }
 
@@ -148,7 +148,7 @@ public class RafikiEntity extends PathfinderMob {
     }
 
     private void sendMessage(Player player, String message) {
-        player.sendSystemMessage(Component.literal("\u00a7e<Rafiki> \u00a7f" + message));
+        player.sendSystemMessage(Component.literal("§e<Rafiki> §f" + message));
     }
 
     private void sendSpeech(Player player, CharacterSpeech speech) {

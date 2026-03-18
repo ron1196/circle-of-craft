@@ -13,7 +13,7 @@ public class MushroomBlock extends BushBlock {
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
+    protected boolean mayPlaceOn(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
         return state.isSolidRender(level, pos);
     }
 }

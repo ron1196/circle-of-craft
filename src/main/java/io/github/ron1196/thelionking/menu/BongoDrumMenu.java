@@ -14,6 +14,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.NotNull;
 
 public class BongoDrumMenu extends AbstractContainerMenu {
 
@@ -40,7 +41,7 @@ public class BongoDrumMenu extends AbstractContainerMenu {
         // Enchant slot (center)
         addSlot(new SlotItemHandler(enchantSlot, 0, 43, 43) {
             @Override
-            public boolean mayPlace(ItemStack stack) {
+            public boolean mayPlace(@NotNull ItemStack stack) {
                 return stack.isEnchantable();
             }
 
@@ -146,12 +147,12 @@ public class BongoDrumMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean clickMenuButton(Player player, int id) {
+    public boolean clickMenuButton(@NotNull Player player, int id) {
         return clickEnchantButton(player, id);
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
         ItemStack result = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot.hasItem()) {
@@ -171,7 +172,7 @@ public class BongoDrumMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public void removed(Player player) {
+    public void removed(@NotNull Player player) {
         super.removed(player);
         // Drop enchant slot item back to player
         ItemStack enchantItem = enchantSlot.getStackInSlot(0);
@@ -185,7 +186,7 @@ public class BongoDrumMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player player) {
+    public boolean stillValid(@NotNull Player player) {
         return blockEntity == null || player.distanceToSqr(
                 blockEntity.getBlockPos().getX() + 0.5,
                 blockEntity.getBlockPos().getY() + 0.5,

@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -28,7 +29,7 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
         }
 
         @Override
-        public boolean isItemValid(int slot, ItemStack stack) {
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
             if (slot == 4) return false; // output slot
             return stack.getItem().isEdible();
         }
@@ -49,7 +50,9 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
         }
 
         @Override
-        public int getCount() { return 1; }
+        public int getCount() {
+            return 1;
+        }
     };
 
     public BugTrapBlockEntity(BlockPos pos, BlockState state) {
@@ -121,27 +124,27 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
+    protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
         tag.put("Items", items.serializeNBT());
         tag.putInt("TrapTimer", trapTimer);
     }
 
     @Override
-    public void load(CompoundTag tag) {
+    public void load(@NotNull CompoundTag tag) {
         super.load(tag);
         items.deserializeNBT(tag.getCompound("Items"));
         trapTimer = tag.getInt("TrapTimer");
     }
 
     @Override
-    public Component getDisplayName() {
+    public @NotNull Component getDisplayName() {
         return Component.translatable("container.thelionking.bug_trap");
     }
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int containerId, Inventory playerInv, Player player) {
+    public AbstractContainerMenu createMenu(int containerId, @NotNull Inventory playerInv, @NotNull Player player) {
         return new BugTrapMenu(containerId, playerInv, this);
     }
 }

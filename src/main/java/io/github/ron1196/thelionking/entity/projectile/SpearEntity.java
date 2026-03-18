@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.entity.projectile;
 
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.Items;
+import org.jetbrains.annotations.NotNull;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,8 +17,10 @@ import net.minecraft.world.phys.EntityHitResult;
 
 public class SpearEntity extends AbstractArrow implements net.minecraft.world.entity.projectile.ItemSupplier {
 
-    private static final EntityDataAccessor<Boolean> DATA_POISONED =
-            SynchedEntityData.defineId(SpearEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_POISONED = SynchedEntityData.defineId(
+            SpearEntity.class,
+            EntityDataSerializers.BOOLEAN
+    );
 
     public SpearEntity(EntityType<? extends AbstractArrow> type, Level level) {
         super(type, level);
@@ -44,7 +47,7 @@ public class SpearEntity extends AbstractArrow implements net.minecraft.world.en
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult result) {
+    protected void onHitEntity(@NotNull EntityHitResult result) {
         boolean poisoned = isPoisoned();
         float damage = poisoned
                 ? 5.0F + this.random.nextInt(4)
@@ -62,14 +65,12 @@ public class SpearEntity extends AbstractArrow implements net.minecraft.world.en
     }
 
     @Override
-    public ItemStack getItem() {
+    public @NotNull ItemStack getItem() {
         return getPickupItem();
     }
 
     @Override
-    protected ItemStack getPickupItem() {
-        return isPoisoned()
-                ? new ItemStack(Items.POISONED_SPEAR.get())
-                : new ItemStack(Items.GEMSBOK_SPEAR.get());
+    protected @NotNull ItemStack getPickupItem() {
+        return isPoisoned() ? new ItemStack(Items.POISONED_SPEAR.get()) : new ItemStack(Items.GEMSBOK_SPEAR.get());
     }
 }

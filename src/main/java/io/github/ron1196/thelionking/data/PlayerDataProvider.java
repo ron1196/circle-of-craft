@@ -45,7 +45,7 @@ public class PlayerDataProvider implements ICapabilitySerializable<CompoundTag> 
     }
 
     @Override
-    public void deserializeNBT(CompoundTag nbt) {
+    public void deserializeNBT(@NotNull CompoundTag nbt) {
         data.deserializeNBT(nbt);
     }
 

@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.entity.hostile;
 
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.Items;
+import org.jetbrains.annotations.NotNull;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
@@ -73,7 +74,7 @@ public class TermiteQueenEntity extends Monster {
     }
 
     @Override
-    public boolean hurt(DamageSource source, float amount) {
+    public boolean hurt(@NotNull DamageSource source, float amount) {
         if (source.is(DamageTypes.FELL_OUT_OF_WORLD)) {
             return super.hurt(source, amount);
         }
@@ -126,7 +127,7 @@ public class TermiteQueenEntity extends Monster {
     }
 
     @Override
-    protected void dropCustomDeathLoot(DamageSource source, int lootingLevel, boolean recentlyHit) {
+    protected void dropCustomDeathLoot(@NotNull DamageSource source, int lootingLevel, boolean recentlyHit) {
         super.dropCustomDeathLoot(source, lootingLevel, recentlyHit);
         int nukShardCount = MIN_NUKA_SHARDS + this.getRandom().nextInt(EXTRA_NUKA_SHARDS);
         for (int i = 0; i < nukShardCount; i++) {
@@ -139,13 +140,13 @@ public class TermiteQueenEntity extends Monster {
     }
 
     @Override
-    public void startSeenByPlayer(ServerPlayer player) {
+    public void startSeenByPlayer(@NotNull ServerPlayer player) {
         super.startSeenByPlayer(player);
         this.bossEvent.addPlayer(player);
     }
 
     @Override
-    public void stopSeenByPlayer(ServerPlayer player) {
+    public void stopSeenByPlayer(@NotNull ServerPlayer player) {
         super.stopSeenByPlayer(player);
         this.bossEvent.removePlayer(player);
     }

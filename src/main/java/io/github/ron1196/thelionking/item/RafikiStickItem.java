@@ -82,7 +82,7 @@ public class RafikiStickItem extends Item {
     // ── Right-click on block: grow saplings, crops, spread vegetation ──
 
     @Override
-    public @NotNull InteractionResult useOn(UseOnContext context) {
+    public @NotNull InteractionResult useOn(@NotNull UseOnContext context) {
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         Player player = context.getPlayer();

@@ -12,6 +12,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class CrocodileEntity extends Monster {
 
@@ -32,7 +33,7 @@ public class CrocodileEntity extends Monster {
     }
 
     @Override
-    public boolean doHurtTarget(Entity target) {
+    public boolean doHurtTarget(@NotNull Entity target) {
         if (this.isInWater()) {
             // Deal double damage when in water
             float baseDamage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
@@ -43,17 +44,17 @@ public class CrocodileEntity extends Monster {
     }
 
     @Override
-    protected SoundEvent getAmbientSound() {
+    protected @NotNull SoundEvent getAmbientSound() {
         return SoundEvents.CROCODILE_AMBIENT.get();
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
+    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
         return SoundEvents.CROCODILE_SNAP.get();
     }
 
     @Override
-    protected SoundEvent getDeathSound() {
+    protected @NotNull SoundEvent getDeathSound() {
         return SoundEvents.CROCODILE_DEATH.get();
     }
 

@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BedBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public class PrideBedBlockEntity extends BedBlockEntity {
 
@@ -13,7 +14,7 @@ public class PrideBedBlockEntity extends BedBlockEntity {
     }
 
     @Override
-    public BlockEntityType<?> getType() {
+    public @NotNull BlockEntityType<?> getType() {
         return LKBlockEntityTypes.PRIDE_BED.get();
     }
 }

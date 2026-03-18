@@ -97,6 +97,8 @@ Items using generated placeholder textures (not from old mod):
   - `BananaCakeBlock` — eating
   - `BugTrapBlock` — bug collection
   - `GrindingBowlBlock` — ingredient insertion / output extraction
+- [ ] **3 blocks override the deprecated `BlockBehaviour.onRemove()`** — same 1.21 migration. Migrate to the non-deprecated replacement when upgrading:
+  - `BugTrapBlock`, `GrindingBowlBlock`, `BongoDrumBlock` — all drop block entity contents on removal
 
 ## CharacterSpeech Split
 

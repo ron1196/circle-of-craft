@@ -37,6 +37,21 @@ public static final RegistryObject<Block> PRIDESTONE = BLOCKS.register("pridesto
 ### Data Files Per Block
 Each block needs: blockstate JSON, block model JSON, item model JSON, loot table JSON, lang entry. Recipes go in `data/thelionking/recipes/`.
 
+### Nullability Annotations
+**Always add `@NotNull` to every parameter and return type of an `@Override` method** unless the value can genuinely be null (use `@Nullable` then). NeoForge/Minecraft classes are annotated with both `@ParametersAreNonnullByDefault` (parameters) and `@MethodsReturnNonnullByDefault` (return types), so un-annotated overrides produce IDE warnings for both. Use `org.jetbrains.annotations.NotNull` / `org.jetbrains.annotations.Nullable` exclusively.
+
+```java
+@Override
+public @NotNull InteractionResult use(
+        @NotNull BlockState state,
+        @NotNull Level level,
+        @NotNull BlockPos pos,
+        @NotNull Player player,
+        @NotNull InteractionHand hand,
+        @NotNull BlockHitResult hit
+) { ... }
+```
+
 ### Workaround Policy
 **Never use temporary workarounds without tracking them.** Every "for now" substitution must be recorded in `docs/TODO_WORKAROUNDS.md`.
 
