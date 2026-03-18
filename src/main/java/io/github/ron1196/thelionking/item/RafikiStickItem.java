@@ -3,7 +3,7 @@ package io.github.ron1196.thelionking.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
-import io.github.ron1196.thelionking.registry.LKEnchantments;
+import io.github.ron1196.thelionking.registry.Enchantments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -119,7 +119,7 @@ public class RafikiStickItem extends Item {
         }
 
         // Non-special block — start thunder charge if enchanted
-        int thunderLevel = EnchantmentHelper.getTagEnchantmentLevel(LKEnchantments.RAFIKI_THUNDER.get(), stack);
+        int thunderLevel = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.RAFIKI_THUNDER.get(), stack);
         int cooldown = stack.getOrCreateTag().getInt(TAG_THUNDER_COOLDOWN);
         if (thunderLevel > 0 && cooldown <= 0) {
             player.startUsingItem(context.getHand());
@@ -136,7 +136,7 @@ public class RafikiStickItem extends Item {
             @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        int thunderLevel = EnchantmentHelper.getTagEnchantmentLevel(LKEnchantments.RAFIKI_THUNDER.get(), stack);
+        int thunderLevel = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.RAFIKI_THUNDER.get(), stack);
         if (thunderLevel <= 0) {
             return InteractionResultHolder.pass(stack);
         }
@@ -155,7 +155,7 @@ public class RafikiStickItem extends Item {
             @NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity, int timeLeft) {
         if (!(entity instanceof Player player)) return;
 
-        int thunderLevel = EnchantmentHelper.getTagEnchantmentLevel(LKEnchantments.RAFIKI_THUNDER.get(), stack);
+        int thunderLevel = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.RAFIKI_THUNDER.get(), stack);
         if (thunderLevel <= 0) return;
 
         double range = 2.0D + Math.pow(4, thunderLevel + 1);
@@ -282,7 +282,7 @@ public class RafikiStickItem extends Item {
 
         if (amount > 0 && entity instanceof Player) {
             int durabilityLevel =
-                    EnchantmentHelper.getTagEnchantmentLevel(LKEnchantments.RAFIKI_DURABILITY.get(), stack);
+                    EnchantmentHelper.getTagEnchantmentLevel(Enchantments.RAFIKI_DURABILITY.get(), stack);
             if (durabilityLevel > 0 && entity.level().random.nextInt(durabilityLevel + 1) > 0) {
                 return; // Durability enchantment prevented damage
             }

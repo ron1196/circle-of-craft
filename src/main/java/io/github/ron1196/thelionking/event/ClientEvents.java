@@ -14,8 +14,8 @@ import io.github.ron1196.thelionking.entity.projectile.DartEntity;
 import io.github.ron1196.thelionking.entity.projectile.SpearEntity;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.Items;
-import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
-import io.github.ron1196.thelionking.registry.LKMenuTypes;
+import io.github.ron1196.thelionking.registry.BlockEntityTypes;
+import io.github.ron1196.thelionking.registry.MenuTypes;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -279,8 +279,8 @@ public class ClientEvents {
                 EntityTypes.LK_LIGHTNING_BOLT.get(), net.minecraft.client.renderer.entity.LightningBoltRenderer::new);
 
         // Block entity renderers
-        event.registerBlockEntityRenderer(LKBlockEntityTypes.HYENA_HEAD.get(), HyenaHeadBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(LKBlockEntityTypes.PRIDE_BED.get(), PrideBedRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntityTypes.HYENA_HEAD.get(), HyenaHeadBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntityTypes.PRIDE_BED.get(), PrideBedRenderer::new);
     }
 
     @SubscribeEvent
@@ -291,12 +291,12 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            MenuScreens.register(LKMenuTypes.GRINDING_BOWL_MENU.get(), GrindingBowlScreen::new);
-            MenuScreens.register(LKMenuTypes.BUG_TRAP_MENU.get(), BugTrapScreen::new);
-            MenuScreens.register(LKMenuTypes.BONGO_DRUM_MENU.get(), BongoDrumScreen::new);
-            MenuScreens.register(LKMenuTypes.QUIVER_MENU.get(), QuiverScreen::new);
-            MenuScreens.register(LKMenuTypes.TIMON_MERCHANT_MENU.get(), TimonMerchantScreen::new);
-            MenuScreens.register(LKMenuTypes.SIMBA_INVENTORY_MENU.get(), SimbaInventoryScreen::new);
+            MenuScreens.register(MenuTypes.GRINDING_BOWL_MENU.get(), GrindingBowlScreen::new);
+            MenuScreens.register(MenuTypes.BUG_TRAP_MENU.get(), BugTrapScreen::new);
+            MenuScreens.register(MenuTypes.BONGO_DRUM_MENU.get(), BongoDrumScreen::new);
+            MenuScreens.register(MenuTypes.QUIVER_MENU.get(), QuiverScreen::new);
+            MenuScreens.register(MenuTypes.TIMON_MERCHANT_MENU.get(), TimonMerchantScreen::new);
+            MenuScreens.register(MenuTypes.SIMBA_INVENTORY_MENU.get(), SimbaInventoryScreen::new);
 
             // Hyena head item variant property
             ItemProperties.register(

@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.world.structure;
 
-import io.github.ron1196.thelionking.registry.LKFeatures;
+import io.github.ron1196.thelionking.registry.Features;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -43,11 +43,11 @@ public class LKStructurePiece extends StructurePiece {
     private static final StructureConfig DEFAULT_CONFIG = new StructureConfig(16, 0, 32, () -> null);
 
     private static final Map<String, StructureConfig> CONFIGS = Map.of(
-            "rafiki_tree", new StructureConfig(40, 0, 95, LKFeatures.RAFIKI_TREE),
-            "zira_mound", new StructureConfig(40, -50, 55, LKFeatures.ZIRA_MOUND),
-            "ticket_booth", new StructureConfig(16, 0, 32, LKFeatures.TICKET_BOOTH),
-            "timon_pumbaa_lodge", new StructureConfig(16, 0, 32, LKFeatures.TIMON_PUMBAA_LODGE),
-            "treasure_mound", new StructureConfig(16, 0, 32, LKFeatures.TREASURE_MOUND));
+            "rafiki_tree", new StructureConfig(40, 0, 95, Features.RAFIKI_TREE),
+            "zira_mound", new StructureConfig(40, -50, 55, Features.ZIRA_MOUND),
+            "ticket_booth", new StructureConfig(16, 0, 32, Features.TICKET_BOOTH),
+            "timon_pumbaa_lodge", new StructureConfig(16, 0, 32, Features.TIMON_PUMBAA_LODGE),
+            "treasure_mound", new StructureConfig(16, 0, 32, Features.TREASURE_MOUND));
 
     private static StructureConfig configFor(String path) {
         return CONFIGS.getOrDefault(path, DEFAULT_CONFIG);
@@ -80,12 +80,12 @@ public class LKStructurePiece extends StructurePiece {
     private final ResourceLocation featureId;
 
     public LKStructurePiece(BlockPos pos, ResourceLocation featureId) {
-        super(LKStructureTypes.LK_PIECE_TYPE.get(), 0, computeBoundingBox(pos, featureId));
+        super(StructureTypes.LK_PIECE_TYPE.get(), 0, computeBoundingBox(pos, featureId));
         this.featureId = featureId;
     }
 
     public LKStructurePiece(StructurePieceSerializationContext ctx, CompoundTag tag) {
-        super(LKStructureTypes.LK_PIECE_TYPE.get(), tag);
+        super(StructureTypes.LK_PIECE_TYPE.get(), tag);
         this.featureId = new ResourceLocation(tag.getString("FeatureId"));
     }
 

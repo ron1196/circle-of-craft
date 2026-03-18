@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.block.entity;
 
-import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import io.github.ron1196.thelionking.registry.BlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BedBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -15,6 +15,6 @@ public class PrideBedBlockEntity extends BedBlockEntity {
 
     @Override
     public @NotNull BlockEntityType<?> getType() {
-        return LKBlockEntityTypes.PRIDE_BED.get();
+        return BlockEntityTypes.PRIDE_BED.get();
     }
 }

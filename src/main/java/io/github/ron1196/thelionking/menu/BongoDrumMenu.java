@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.menu;
 
 import io.github.ron1196.thelionking.block.entity.BongoDrumBlockEntity;
-import io.github.ron1196.thelionking.registry.LKMenuTypes;
+import io.github.ron1196.thelionking.registry.MenuTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +32,7 @@ public class BongoDrumMenu extends AbstractContainerMenu {
     }
 
     public BongoDrumMenu(int containerId, Inventory playerInv, BongoDrumBlockEntity blockEntity) {
-        super(LKMenuTypes.BONGO_DRUM_MENU.get(), containerId);
+        super(MenuTypes.BONGO_DRUM_MENU.get(), containerId);
         this.blockEntity = blockEntity;
 
         ItemStackHandler noteHandler = blockEntity != null ? blockEntity.getNoteSlots() : new ItemStackHandler(8);

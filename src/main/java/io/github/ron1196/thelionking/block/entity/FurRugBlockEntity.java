@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.block.entity;
 
-import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import io.github.ron1196.thelionking.registry.BlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -14,7 +14,7 @@ public class FurRugBlockEntity extends BlockEntity {
     private int direction;
 
     public FurRugBlockEntity(BlockPos pos, BlockState state) {
-        super(LKBlockEntityTypes.FUR_RUG.get(), pos, state);
+        super(BlockEntityTypes.FUR_RUG.get(), pos, state);
     }
 
     public int getDirection() {

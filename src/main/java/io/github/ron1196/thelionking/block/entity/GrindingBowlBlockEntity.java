@@ -3,7 +3,7 @@ package io.github.ron1196.thelionking.block.entity;
 import io.github.ron1196.thelionking.menu.GrindingBowlMenu;
 import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.Items;
-import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import io.github.ron1196.thelionking.registry.BlockEntityTypes;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
@@ -117,7 +117,7 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
     };
 
     public GrindingBowlBlockEntity(BlockPos pos, BlockState state) {
-        super(LKBlockEntityTypes.GRINDING_BOWL.get(), pos, state);
+        super(BlockEntityTypes.GRINDING_BOWL.get(), pos, state);
     }
 
     @Override

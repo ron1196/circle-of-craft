@@ -7,12 +7,12 @@ import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.CreativeTabs;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.Items;
-import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
-import io.github.ron1196.thelionking.registry.LKEnchantments;
-import io.github.ron1196.thelionking.registry.LKFeatures;
-import io.github.ron1196.thelionking.registry.LKMenuTypes;
+import io.github.ron1196.thelionking.registry.BlockEntityTypes;
+import io.github.ron1196.thelionking.registry.Enchantments;
+import io.github.ron1196.thelionking.registry.Features;
+import io.github.ron1196.thelionking.registry.MenuTypes;
 import io.github.ron1196.thelionking.registry.SoundEvents;
-import io.github.ron1196.thelionking.world.structure.LKStructureTypes;
+import io.github.ron1196.thelionking.world.structure.StructureTypes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -31,13 +31,13 @@ public class TheLionKingMod {
 
         Blocks.BLOCKS.register(modEventBus);
         Items.ITEMS.register(modEventBus);
-        LKBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
+        BlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
         EntityTypes.ENTITY_TYPES.register(modEventBus);
-        LKMenuTypes.MENU_TYPES.register(modEventBus);
-        LKEnchantments.ENCHANTMENTS.register(modEventBus);
-        LKFeatures.FEATURES.register(modEventBus);
-        LKStructureTypes.STRUCTURE_TYPES.register(modEventBus);
-        LKStructureTypes.STRUCTURE_PIECE_TYPES.register(modEventBus);
+        MenuTypes.MENU_TYPES.register(modEventBus);
+        Enchantments.ENCHANTMENTS.register(modEventBus);
+        Features.FEATURES.register(modEventBus);
+        StructureTypes.STRUCTURE_TYPES.register(modEventBus);
+        StructureTypes.STRUCTURE_PIECE_TYPES.register(modEventBus);
         SoundEvents.SOUND_EVENTS.register(modEventBus);
         CreativeTabs.TABS.register(modEventBus);
 

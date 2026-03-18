@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.menu;
 
 import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
-import io.github.ron1196.thelionking.registry.LKMenuTypes;
+import io.github.ron1196.thelionking.registry.MenuTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -26,7 +26,7 @@ public class GrindingBowlMenu extends AbstractContainerMenu {
 
     // Server constructor
     public GrindingBowlMenu(int containerId, Inventory playerInv, ItemStackHandler handler, ContainerData data) {
-        super(LKMenuTypes.GRINDING_BOWL_MENU.get(), containerId);
+        super(MenuTypes.GRINDING_BOWL_MENU.get(), containerId);
         this.handler = handler;
         this.data = data;
 
@@ -44,7 +44,7 @@ public class GrindingBowlMenu extends AbstractContainerMenu {
             public void onTake(@NotNull Player player, @NotNull ItemStack stack) {
                 super.onTake(player, stack);
                 if (player instanceof ServerPlayer serverPlayer) {
-                    LionKingCriteriaTriggers.USE_GRINDING_BOWL.trigger(serverPlayer);
+                    LionKingCriteriaTriggers.USE_GRINDING_BOWL.trigger(serverPlayer, stack);
                 }
             }
         });

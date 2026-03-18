@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.block.entity;
 
 import io.github.ron1196.thelionking.registry.Items;
-import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import io.github.ron1196.thelionking.registry.BlockEntityTypes;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -20,7 +20,7 @@ public class OutlandsPoolBlockEntity extends BlockEntity {
     private static final int PROCESS_DELAY = 75;
 
     public OutlandsPoolBlockEntity(BlockPos pos, BlockState state) {
-        super(LKBlockEntityTypes.OUTLANDS_POOL.get(), pos, state);
+        super(BlockEntityTypes.OUTLANDS_POOL.get(), pos, state);
     }
 
     public void collectItem(ItemStack stack) {

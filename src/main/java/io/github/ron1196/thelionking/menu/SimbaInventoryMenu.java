@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.menu;
 
-import io.github.ron1196.thelionking.registry.LKMenuTypes;
+import io.github.ron1196.thelionking.registry.MenuTypes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -19,7 +19,7 @@ public class SimbaInventoryMenu extends AbstractContainerMenu {
     }
 
     public SimbaInventoryMenu(int containerId, Inventory playerInv, ItemStackHandler simbaInventory) {
-        super(LKMenuTypes.SIMBA_INVENTORY_MENU.get(), containerId);
+        super(MenuTypes.SIMBA_INVENTORY_MENU.get(), containerId);
         this.simbaInventory = simbaInventory;
 
         // Simba inventory slots (9 slots in a single row)

@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.item;
 
 import io.github.ron1196.thelionking.registry.Blocks;
-import io.github.ron1196.thelionking.registry.LKEnchantments;
+import io.github.ron1196.thelionking.registry.Enchantments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -9,7 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -40,9 +39,9 @@ public class TunnahDiggahItem extends PickaxeItem {
             return super.mineBlock(stack, level, state, pos, miner);
         }
 
-        int radius = 1 + EnchantmentHelper.getItemEnchantmentLevel(LKEnchantments.BIGGAH_DIGGAH.get(), stack);
-        boolean hasPrecision = EnchantmentHelper.getItemEnchantmentLevel(LKEnchantments.PRECISION.get(), stack) > 0;
-        boolean hasSilkTouch = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0;
+        int radius = 1 + EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BIGGAH_DIGGAH.get(), stack);
+        boolean hasPrecision = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PRECISION.get(), stack) > 0;
+        boolean hasSilkTouch = EnchantmentHelper.getItemEnchantmentLevel(net.minecraft.world.item.enchantment.Enchantments.SILK_TOUCH, stack) > 0;
 
         for (int dx = -radius; dx <= radius; dx++) {
             for (int dy = -radius; dy <= radius; dy++) {

@@ -6,6 +6,10 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 - [x] ~~**NPC entities use placeholder models**~~ — RESOLVED: Old mod also used lion model for Scar/Zira/Ticket Lion. Renamed `NpcPlaceholderModel` → `NpcLionModel` to reflect this is intentional.
 
+## Missing Item Behaviour
+
+- [ ] **`ground_rhino_horn` has no interaction logic** — Old mod: `LKItemGroundRhinoHorn.itemInteractionForEntity` right-click on a breeding animal forces `procreate()` (spawns baby, heart particles) and fires `USE_RHINO_HORN` trigger. Currently registered as a plain `Item`. Needs a `GroundRhinoHornItem` class with `interactLivingEntity` override. The `thelionking:use_rhino_horn` trigger is registered and wired into the `ground_rhino_horn` advancement — it just won't fire until the item class is implemented.
+
 ## Missing Items (not yet ported from old mod)
 
 - [x] ~~**Fire Sword / Pickaxe / Axe / Shovel**~~ — RESOLVED: These are the Kivulite tools (`KivuliteSwordItem`, etc.) with `FireToolHelper` auto-smelt logic.
@@ -25,10 +29,11 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 ## Advancements
 
-- [ ] **"Horn of Plenty" (`rhino_horn`) advancement uses wrong trigger** — Currently triggers on `use_grinding_bowl`, which fires on *any* output extraction from the grinding bowl. In the old mod this was specifically about grinding a rhino horn. Should either add item conditions to the `use_grinding_bowl` trigger so the advancement JSON can filter on `ground_rhino_horn`, or switch to vanilla's `inventory_changed` trigger checking for `ground_rhino_horn` in the player's inventory (simpler, matches how vanilla handles "obtain item X" advancements).
+- [x] ~~**"Horn of Plenty" (`rhino_horn`) advancement uses wrong trigger**~~ — RESOLVED: Replaced `PlayerTrigger` with custom `UseGrindingBowlTrigger` (passes output `ItemStack`). `rhino_horn.json` now filters on `thelionking:ground_rhino_horn` via `item` condition.
 - [ ] **Remaining advancement icon substitutions** (items not yet registered):
   - `outlandish_dart` → `dart_black`, `ticket_lion_helmet` → `ticket_lion_head`, `peacock_wings` → `peacock_gem`
   - ~~`tunnah_diggah`~~ FIXED: now uses real item, ~~`lion_dust`~~ previously resolved
+  - Note: advancement `rhino_horn` renamed to `ground_rhino_horn` for consistency with item name
 
 ## Missing World Generation
 

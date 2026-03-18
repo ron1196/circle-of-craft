@@ -16,7 +16,7 @@ import io.github.ron1196.thelionking.network.LoginSyncPacket;
 import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.Items;
-import io.github.ron1196.thelionking.registry.LKEnchantments;
+import io.github.ron1196.thelionking.registry.Enchantments;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -29,7 +29,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
@@ -84,7 +83,7 @@ public class LKForgeEvents {
         if (attacker instanceof Player player) {
             ItemStack weapon = player.getMainHandItem();
             int scourgeLevel =
-                    EnchantmentHelper.getItemEnchantmentLevel(LKEnchantments.SCOURGE_OF_HYENAS.get(), weapon);
+                    EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SCOURGE_OF_HYENAS.get(), weapon);
 
             if (scourgeLevel > 0 && (target instanceof HyenaEntity || target instanceof SkeletalHyenaEntity)) {
                 event.setAmount(event.getAmount() + 2.5F * scourgeLevel);
@@ -110,7 +109,7 @@ public class LKForgeEvents {
         // Hyena special drop: hyena head with looting
         if (entity instanceof HyenaEntity && killer instanceof Player player) {
             int lootingLevel =
-                    EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MOB_LOOTING, player.getMainHandItem());
+                    EnchantmentHelper.getItemEnchantmentLevel(net.minecraft.world.item.enchantment.Enchantments.MOB_LOOTING, player.getMainHandItem());
 
             float dropChance = 0.05F + 0.03F * lootingLevel;
             if (entity.level().random.nextFloat() < dropChance) {

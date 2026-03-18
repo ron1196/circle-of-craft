@@ -64,6 +64,6 @@ public class LKCodeStructure extends Structure {
 
     @Override
     public StructureType<?> type() {
-        return LKStructureTypes.LK_CODE_STRUCTURE.get();
+        return StructureTypes.LK_CODE_STRUCTURE.get();
     }
 }

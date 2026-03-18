@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.block.entity;
 
-import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import io.github.ron1196.thelionking.registry.BlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -15,7 +15,7 @@ public class HyenaHeadBlockEntity extends BlockEntity {
     private int rotation;
 
     public HyenaHeadBlockEntity(BlockPos pos, BlockState state) {
-        super(LKBlockEntityTypes.HYENA_HEAD.get(), pos, state);
+        super(BlockEntityTypes.HYENA_HEAD.get(), pos, state);
     }
 
     public int getHyenaType() {

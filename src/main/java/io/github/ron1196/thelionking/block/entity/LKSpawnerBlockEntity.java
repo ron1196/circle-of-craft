@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.block.entity;
 
-import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import io.github.ron1196.thelionking.registry.BlockEntityTypes;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -26,7 +26,7 @@ public class LKSpawnerBlockEntity extends BlockEntity {
     private int spawnRange = 4;
 
     public LKSpawnerBlockEntity(BlockPos pos, BlockState state) {
-        super(LKBlockEntityTypes.LK_SPAWNER.get(), pos, state);
+        super(BlockEntityTypes.LK_SPAWNER.get(), pos, state);
     }
 
     public void serverTick() {

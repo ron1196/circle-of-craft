@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.block.entity.PrideBedBlockEntity;
-import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import io.github.ron1196.thelionking.registry.BlockEntityTypes;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -51,7 +51,7 @@ public class PrideBedRenderer implements BlockEntityRenderer<PrideBedBlockEntity
             BlockState blockstate = blockEntity.getBlockState();
             DoubleBlockCombiner.NeighborCombineResult<? extends PrideBedBlockEntity> combineResult =
                     DoubleBlockCombiner.combineWithNeigbour(
-                            LKBlockEntityTypes.PRIDE_BED.get(),
+                            BlockEntityTypes.PRIDE_BED.get(),
                             BedBlock::getBlockType,
                             BedBlock::getConnectedDirection,
                             ChestBlock.FACING,

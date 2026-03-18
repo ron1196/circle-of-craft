@@ -7,28 +7,22 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LionKingCriteriaTriggers {
 
-    public static final PlayerTrigger SHOOT_DART =
-            new PlayerTrigger(new ResourceLocation(TheLionKingMod.MOD_ID, "shoot_dart"));
-    public static final PlayerTrigger QUEST_COMPLETE =
-            new PlayerTrigger(new ResourceLocation(TheLionKingMod.MOD_ID, "quest_complete"));
-    public static final PlayerTrigger USE_GRINDING_BOWL =
-            new PlayerTrigger(new ResourceLocation(TheLionKingMod.MOD_ID, "use_grinding_bowl"));
-    public static final PlayerTrigger RIDE_GIRAFFE =
-            new PlayerTrigger(new ResourceLocation(TheLionKingMod.MOD_ID, "ride_giraffe"));
-    public static final PlayerTrigger PLAY_BONGO_DRUM =
-            new PlayerTrigger(new ResourceLocation(TheLionKingMod.MOD_ID, "play_bongo_drum"));
-    public static final PlayerTrigger ENTER_PRIDE_LANDS =
-            new PlayerTrigger(new ResourceLocation(TheLionKingMod.MOD_ID, "enter_pride_lands"));
-    public static final PlayerTrigger ENTER_OUTLANDS =
-            new PlayerTrigger(new ResourceLocation(TheLionKingMod.MOD_ID, "enter_outlands"));
-    public static final PlayerTrigger ENTER_UPENDI =
-            new PlayerTrigger(new ResourceLocation(TheLionKingMod.MOD_ID, "enter_upendi"));
-    public static final PlayerTrigger BEHEAD_HYENA =
-            new PlayerTrigger(new ResourceLocation(TheLionKingMod.MOD_ID, "behead_hyena"));
-    public static final PlayerTrigger KILL_SCAR =
-            new PlayerTrigger(new ResourceLocation(TheLionKingMod.MOD_ID, "kill_scar"));
-    public static final PlayerTrigger KILL_ZIRA =
-            new PlayerTrigger(new ResourceLocation(TheLionKingMod.MOD_ID, "kill_zira"));
+    public static final PlayerTrigger SHOOT_DART = createTrigger("shoot_dart");
+    public static final PlayerTrigger QUEST_COMPLETE = createTrigger("quest_complete");
+    public static final UseGrindingBowlTrigger USE_GRINDING_BOWL = new UseGrindingBowlTrigger();
+    public static final PlayerTrigger RIDE_GIRAFFE = createTrigger("ride_giraffe");
+    public static final PlayerTrigger PLAY_BONGO_DRUM = createTrigger("play_bongo_drum");
+    public static final PlayerTrigger ENTER_PRIDE_LANDS = createTrigger("enter_pride_lands");
+    public static final PlayerTrigger ENTER_OUTLANDS = createTrigger("enter_outlands");
+    public static final PlayerTrigger ENTER_UPENDI = createTrigger("enter_upendi");
+    public static final PlayerTrigger BEHEAD_HYENA = createTrigger("behead_hyena");
+    public static final PlayerTrigger KILL_SCAR = createTrigger("kill_scar");
+    public static final PlayerTrigger KILL_ZIRA = createTrigger("kill_zira");
+    public static final PlayerTrigger USE_RHINO_HORN = createTrigger("use_rhino_horn");
+
+    private static PlayerTrigger createTrigger(String name) {
+        return new PlayerTrigger(new ResourceLocation(TheLionKingMod.MOD_ID, name));
+    }
 
     public static void register() {
         CriteriaTriggers.register(SHOOT_DART);
@@ -42,5 +36,6 @@ public class LionKingCriteriaTriggers {
         CriteriaTriggers.register(BEHEAD_HYENA);
         CriteriaTriggers.register(KILL_SCAR);
         CriteriaTriggers.register(KILL_ZIRA);
+        CriteriaTriggers.register(USE_RHINO_HORN);
     }
 }

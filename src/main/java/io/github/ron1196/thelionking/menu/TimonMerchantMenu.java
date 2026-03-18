@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.menu;
 
 import io.github.ron1196.thelionking.registry.Items;
-import io.github.ron1196.thelionking.registry.LKMenuTypes;
+import io.github.ron1196.thelionking.registry.MenuTypes;
 import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
@@ -54,7 +54,7 @@ public class TimonMerchantMenu extends AbstractContainerMenu {
     }
 
     public TimonMerchantMenu(int containerId, Inventory playerInv, ItemStackHandler tradeInventory) {
-        super(LKMenuTypes.TIMON_MERCHANT_MENU.get(), containerId);
+        super(MenuTypes.TIMON_MERCHANT_MENU.get(), containerId);
 
         // Trade slots — read-only, deduct bugs on pickup, restock automatically
         for (int i = 0; i < TRADES.size(); i++) {

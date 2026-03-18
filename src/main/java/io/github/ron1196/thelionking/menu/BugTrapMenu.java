@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.menu;
 
 import io.github.ron1196.thelionking.block.entity.BugTrapBlockEntity;
-import io.github.ron1196.thelionking.registry.LKMenuTypes;
+import io.github.ron1196.thelionking.registry.MenuTypes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -21,7 +21,7 @@ public class BugTrapMenu extends AbstractContainerMenu {
     }
 
     public BugTrapMenu(int containerId, Inventory playerInv, BugTrapBlockEntity blockEntity) {
-        super(LKMenuTypes.BUG_TRAP_MENU.get(), containerId);
+        super(MenuTypes.BUG_TRAP_MENU.get(), containerId);
         this.blockEntity = blockEntity;
 
         ItemStackHandler handler = blockEntity != null ? blockEntity.getInventory() : new ItemStackHandler(5);

@@ -2,16 +2,15 @@
   "parent": "thelionking:craft_grinding_bowl",
   "display": {
     "icon": { "item": "thelionking:ground_rhino_horn" },
-    "title": { "translate": "advancement.thelionking.rhino_horn.title" },
-    "description": { "translate": "advancement.thelionking.rhino_horn.description" },
+    "title": { "translate": "advancement.thelionking.ground_rhino_horn.title" },
+    "description": { "translate": "advancement.thelionking.ground_rhino_horn.description" },
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true
   },
   "criteria": {
     "requirement": {
-      "trigger": "thelionking:use_grinding_bowl",
-      "conditions": {}
+      "trigger": "thelionking:use_rhino_horn"
     }
   }
 }

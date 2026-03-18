@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.menu;
 
-import io.github.ron1196.thelionking.registry.LKMenuTypes;
+import io.github.ron1196.thelionking.registry.MenuTypes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -19,7 +19,7 @@ public class QuiverMenu extends AbstractContainerMenu {
     }
 
     public QuiverMenu(int containerId, Inventory playerInv, ItemStackHandler quiverInventory) {
-        super(LKMenuTypes.QUIVER_MENU.get(), containerId);
+        super(MenuTypes.QUIVER_MENU.get(), containerId);
         this.quiverInventory = quiverInventory;
 
         // Quiver slots (6 slots in a row)

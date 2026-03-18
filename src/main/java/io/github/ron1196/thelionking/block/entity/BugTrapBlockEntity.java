@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.block.entity;
 
 import io.github.ron1196.thelionking.menu.BugTrapMenu;
 import io.github.ron1196.thelionking.registry.Items;
-import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import io.github.ron1196.thelionking.registry.BlockEntityTypes;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -55,7 +55,7 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
     };
 
     public BugTrapBlockEntity(BlockPos pos, BlockState state) {
-        super(LKBlockEntityTypes.BUG_TRAP.get(), pos, state);
+        super(BlockEntityTypes.BUG_TRAP.get(), pos, state);
     }
 
     public void serverTick() {

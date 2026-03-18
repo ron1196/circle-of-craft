@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.block;
 
 import io.github.ron1196.thelionking.block.entity.GrindingBowlBlockEntity;
-import io.github.ron1196.thelionking.registry.LKBlockEntityTypes;
+import io.github.ron1196.thelionking.registry.BlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -78,6 +78,6 @@ public class GrindingBowlBlock extends BaseEntityBlock {
         if (level.isClientSide) {
             return null;
         }
-        return createTickerHelper(type, LKBlockEntityTypes.GRINDING_BOWL.get(), GrindingBowlBlockEntity::serverTick);
+        return createTickerHelper(type, BlockEntityTypes.GRINDING_BOWL.get(), GrindingBowlBlockEntity::serverTick);
     }
 }
