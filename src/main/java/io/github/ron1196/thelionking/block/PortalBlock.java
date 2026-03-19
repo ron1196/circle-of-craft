@@ -219,8 +219,8 @@ public class PortalBlock extends Block {
             return state.isAir() || state.is(portalBlock);
         }
 
-        private boolean isFrame(BlockPos pos) {
-            return level.getBlockState(pos).is(frameBlock);
+        private boolean isNotFrame(BlockPos pos) {
+            return !level.getBlockState(pos).is(frameBlock);
         }
 
         public boolean isValid() {
@@ -229,15 +229,15 @@ public class PortalBlock extends Block {
             // Side columns (left wall and right wall, y = 0..height-1)
             Direction leftDir = rightDir.getOpposite();
             for (int y = 0; y < height; y++) {
-                if (!isFrame(bottomLeft.above(y).relative(leftDir))) return false;
-                if (!isFrame(bottomLeft.above(y).relative(rightDir, width))) return false;
+                if (isNotFrame(bottomLeft.above(y).relative(leftDir))) return false;
+                if (isNotFrame(bottomLeft.above(y).relative(rightDir, width))) return false;
             }
 
             // Top and bottom rows, x = -1..width covers the corners too
             for (int x = -1; x <= width; x++) {
                 BlockPos col = bottomLeft.relative(rightDir, x);
-                if (!isFrame(col.below())) return false;
-                if (!isFrame(col.above(height))) return false;
+                if (isNotFrame(col.below())) return false;
+                if (isNotFrame(col.above(height))) return false;
             }
 
             // Interior must be empty
