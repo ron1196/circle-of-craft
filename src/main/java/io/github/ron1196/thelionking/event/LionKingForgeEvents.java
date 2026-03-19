@@ -86,17 +86,15 @@ public class LionKingForgeEvents {
   // Returns the portal destination for the player's current position, or null if not in a portal.
   // Each portal has a "home" dimension: standing inside it sends you to OVERWORLD, otherwise home.
   private static PortalResult resolvePortal(Level level, BlockPos pos) {
-    Map<Block, ResourceKey<Level>> portalHomes =
+    Map<Block, ResourceKey<Level>> portals =
         Map.of(
             LionKingBlocks.OUTLANDS_PORTAL.get(), Dimensions.OUTLANDS_LEVEL,
             LionKingBlocks.PRIDE_LANDS_PORTAL.get(), Dimensions.PRIDE_LANDS_LEVEL);
-
-    for (Map.Entry<Block, ResourceKey<Level>> entry : portalHomes.entrySet()) {
-      if (isInBlock(level, pos, entry.getKey())) {
-        ResourceKey<Level> home = entry.getValue();
-        ResourceKey<Level> destination = level.dimension().equals(home) ? Level.OVERWORLD : home;
-        return new PortalResult(destination, entry.getKey());
-      }
+    for (Map.Entry<Block, ResourceKey<Level>> entry : portals.entrySet()) {
+      if (!isInBlock(level, pos, entry.getKey())) continue;
+      ResourceKey<Level> home = entry.getValue();
+      ResourceKey<Level> destination = level.dimension().equals(home) ? Level.OVERWORLD : home;
+      return new PortalResult(destination, entry.getKey());
     }
     return null;
   }
