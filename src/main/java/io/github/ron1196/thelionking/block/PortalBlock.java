@@ -166,8 +166,10 @@ public class PortalBlock extends Block {
     }
 
     public static class PortalShape {
-        private static final int REQUIRED_WIDTH = 2;
-        private static final int REQUIRED_HEIGHT = 3;
+        private static final int MIN_WIDTH = 2;
+        private static final int MIN_HEIGHT = 3;
+        private static final int MAX_WIDTH = 21;
+        private static final int MAX_HEIGHT = 21;
 
         private final LevelAccessor level;
         private final Direction.Axis axis;
@@ -186,18 +188,18 @@ public class PortalBlock extends Block {
             this.frameBlock = frameBlock;
             this.portalBlock = portalBlock;
             this.bottomLeft = findBottomLeft(pos);
-            this.width = countInterior(bottomLeft, rightDir, REQUIRED_WIDTH + 1);
-            this.height = countInterior(bottomLeft, Direction.UP, REQUIRED_HEIGHT + 1);
+            this.width = countInterior(bottomLeft, rightDir, MAX_WIDTH);
+            this.height = countInterior(bottomLeft, Direction.UP, MAX_HEIGHT);
         }
 
         /** Walks left then down from {@code pos} to find the bottom-left interior corner. */
         private BlockPos findBottomLeft(BlockPos pos) {
             Direction leftDir = rightDir.getOpposite();
             BlockPos cursor = pos;
-            for (int i = 0; i < REQUIRED_WIDTH + 1 && isInterior(cursor.relative(leftDir)); i++) {
+            for (int i = 0; i < MAX_WIDTH && isInterior(cursor.relative(leftDir)); i++) {
                 cursor = cursor.relative(leftDir);
             }
-            for (int i = 0; i < REQUIRED_HEIGHT + 1 && isInterior(cursor.below()); i++) {
+            for (int i = 0; i < MAX_HEIGHT && isInterior(cursor.below()); i++) {
                 cursor = cursor.below();
             }
             return cursor;
@@ -222,7 +224,7 @@ public class PortalBlock extends Block {
         }
 
         public boolean isValid() {
-            if (width != REQUIRED_WIDTH || height != REQUIRED_HEIGHT) return false;
+            if (width < MIN_WIDTH || width > MAX_WIDTH || height < MIN_HEIGHT || height > MAX_HEIGHT) return false;
 
             // Side columns (left wall and right wall, y = 0..height-1)
             Direction leftDir = rightDir.getOpposite();
