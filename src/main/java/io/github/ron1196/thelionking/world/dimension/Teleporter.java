@@ -2,8 +2,10 @@ package io.github.ron1196.thelionking.world.dimension;
 
 import io.github.ron1196.thelionking.block.PortalBlock;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
+import com.google.common.base.Suppliers;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,11 +23,13 @@ import net.minecraftforge.common.util.ITeleporter;
 public class Teleporter implements ITeleporter {
 
   // Maps each portal block to its corresponding frame block.
-  private static Map<Block, Block> frameBlocks() {
-    return Map.of(
-        LionKingBlocks.OUTLANDS_PORTAL.get(), LionKingBlocks.OUTLANDS_PORTAL_FRAME.get(),
-        LionKingBlocks.PRIDE_LANDS_PORTAL.get(), LionKingBlocks.PRIDE_PORTAL_FRAME.get());
-  }
+  private static final Supplier<Map<Block, Block>> FRAME_BLOCKS =
+      Suppliers.memoize(
+          () ->
+              Map.of(
+                  LionKingBlocks.OUTLANDS_PORTAL.get(), LionKingBlocks.OUTLANDS_PORTAL_FRAME.get(),
+                  LionKingBlocks.PRIDE_LANDS_PORTAL.get(),
+                  LionKingBlocks.PRIDE_PORTAL_FRAME.get()));
 
   private final Block portalBlock;
 
@@ -56,7 +60,7 @@ public class Teleporter implements ITeleporter {
   }
 
   private BlockPos findOrCreatePortal(Entity entity, ServerLevel destWorld) {
-    Block frameBlock = frameBlocks().get(portalBlock);
+    Block frameBlock = FRAME_BLOCKS.get().get(portalBlock);
 
     BlockPos entityPos = entity.blockPosition();
     BlockPos destPos = new BlockPos(entityPos.getX(), entityPos.getY(), entityPos.getZ());
