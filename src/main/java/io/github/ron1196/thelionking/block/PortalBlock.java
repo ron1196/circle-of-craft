@@ -1,7 +1,6 @@
 package io.github.ron1196.thelionking.block;
 
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
-import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import io.github.ron1196.thelionking.world.dimension.Teleporter;
 import java.util.Map;
 import java.util.UUID;
@@ -37,10 +36,15 @@ public class PortalBlock extends Block {
     private static final Map<UUID, Integer> PORTAL_TICKS = new ConcurrentHashMap<>();
 
     private final boolean isOutlands;
+    private final ResourceKey<Level> dimensionA;
+    private final ResourceKey<Level> dimensionB;
 
-    public PortalBlock(Properties properties, boolean isOutlands) {
+    public PortalBlock(
+            Properties properties, boolean isOutlands, ResourceKey<Level> dimensionA, ResourceKey<Level> dimensionB) {
         super(properties);
         this.isOutlands = isOutlands;
+        this.dimensionA = dimensionA;
+        this.dimensionB = dimensionB;
         this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.X));
     }
 
@@ -119,7 +123,7 @@ public class PortalBlock extends Block {
     }
 
     private void teleportPlayer(ServerPlayer player) {
-        if (!isInValidDimension(player.level())) {
+        if (inInvalidDimension(player.level())) {
             player.sendSystemMessage(Component.literal("Hakuna Matata! This portal doesn't work here, cheater!"));
             return;
         }
@@ -129,16 +133,16 @@ public class PortalBlock extends Block {
     }
 
     private void teleportEntity(Entity entity, Level level) {
-        if (!isInValidDimension(level)) return;
+        if (inInvalidDimension(level)) return;
         entity.setPortalCooldown();
         ServerLevel destLevel = resolveDestination(level);
         if (destLevel == null) return;
         entity.changeDimension(destLevel, new Teleporter(this));
     }
 
-    private boolean isInValidDimension(Level level) {
+    private boolean inInvalidDimension(Level level) {
         ResourceKey<Level> dim = level.dimension();
-        return dim == Level.OVERWORLD || dim == getHomeDimension();
+        return dim != dimensionA && dim != dimensionB;
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────────
@@ -149,12 +153,7 @@ public class PortalBlock extends Block {
     }
 
     private ResourceKey<Level> getDestination(Level level) {
-        ResourceKey<Level> home = getHomeDimension();
-        return level.dimension() == home ? Level.OVERWORLD : home;
-    }
-
-    private ResourceKey<Level> getHomeDimension() {
-        return isOutlands ? Dimensions.OUTLANDS_LEVEL : Dimensions.PRIDE_LANDS_LEVEL;
+        return level.dimension() == dimensionA ? dimensionB : dimensionA;
     }
 
     private Block getFrameBlock() {
