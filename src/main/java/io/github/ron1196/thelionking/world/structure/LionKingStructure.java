@@ -19,63 +19,52 @@ import org.slf4j.LoggerFactory;
  */
 public class LionKingStructure extends Structure {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(LionKingStructure.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LionKingStructure.class);
 
-  public static final Codec<LionKingStructure> CODEC =
-      RecordCodecBuilder.create(
-          instance ->
-              instance
-                  .group(
-                      settingsCodec(instance),
-                      ResourceLocation.CODEC.fieldOf("feature_id").forGetter(s -> s.featureId))
-                  .apply(instance, LionKingStructure::new));
+    public static final Codec<LionKingStructure> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                    settingsCodec(instance),
+                    ResourceLocation.CODEC.fieldOf("feature_id").forGetter(s -> s.featureId))
+            .apply(instance, LionKingStructure::new));
 
-  private final ResourceLocation featureId;
+    private final ResourceLocation featureId;
 
-  public LionKingStructure(StructureSettings settings, ResourceLocation featureId) {
-    super(settings);
-    this.featureId = featureId;
-  }
-
-  public ResourceLocation getFeatureId() {
-    return featureId;
-  }
-
-  @Override
-  protected @NotNull Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
-    ChunkPos chunkPos = context.chunkPos();
-    int x = chunkPos.getMiddleBlockX();
-    int z = chunkPos.getMiddleBlockZ();
-    int y =
-        context
-            .chunkGenerator()
-            .getFirstOccupiedHeight(
-                x,
-                z,
-                Heightmap.Types.OCEAN_FLOOR_WG,
-                context.heightAccessor(),
-                context.randomState());
-
-    String path = featureId.getPath();
-
-    boolean valid = isValidPlacement(context, path, x, y, z);
-    if (!valid) {
-      return Optional.empty();
+    public LionKingStructure(StructureSettings settings, ResourceLocation featureId) {
+        super(settings);
+        this.featureId = featureId;
     }
 
-    BlockPos pos = new BlockPos(x, y, z);
+    public ResourceLocation getFeatureId() {
+        return featureId;
+    }
 
-    return Optional.of(
-        new GenerationStub(
-            pos, builder -> builder.addPiece(new LionKingStructurePiece(pos, featureId))));
-  }
+    @Override
+    protected @NotNull Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
+        ChunkPos chunkPos = context.chunkPos();
+        int x = chunkPos.getMiddleBlockX();
+        int z = chunkPos.getMiddleBlockZ();
+        int y = context.chunkGenerator()
+                .getFirstOccupiedHeight(
+                        x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
 
-  private boolean isValidPlacement(GenerationContext context, String path, int x, int y, int z) {
-    return LionKingPlacementStrategy.forStructure(path).isValid(context, x, y, z);
-  }
+        String path = featureId.getPath();
 
-  @Override
-  public StructureType<?> type() {
-    return StructureTypes.LK_CODE_STRUCTURE.get();
-  }
+        boolean valid = isValidPlacement(context, path, x, y, z);
+        if (!valid) {
+            return Optional.empty();
+        }
+
+        BlockPos pos = new BlockPos(x, y, z);
+
+        return Optional.of(
+                new GenerationStub(pos, builder -> builder.addPiece(new LionKingStructurePiece(pos, featureId))));
+    }
+
+    private boolean isValidPlacement(GenerationContext context, String path, int x, int y, int z) {
+        return LionKingPlacementStrategy.forStructure(path).isValid(context, x, y, z);
+    }
+
+    @Override
+    public StructureType<?> type() {
+        return StructureTypes.LK_CODE_STRUCTURE.get();
+    }
 }

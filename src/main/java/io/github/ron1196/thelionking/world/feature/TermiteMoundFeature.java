@@ -12,53 +12,53 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 
 public class TermiteMoundFeature extends Feature<NoneFeatureConfiguration> {
 
-  public TermiteMoundFeature(Codec<NoneFeatureConfiguration> codec) {
-    super(codec);
-  }
-
-  @Override
-  public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-    WorldGenLevel level = context.level();
-    BlockPos pos = context.origin();
-    RandomSource random = context.random();
-
-    BlockState mound = LionKingBlocks.TERMITE_MOUND.get().defaultBlockState();
-
-    boolean large = random.nextInt(5) == 0;
-
-    if (large) {
-      int maxHeight = 6 + random.nextInt(8);
-      for (int y = 0; y < maxHeight; y++) {
-        // Radius shrinks as we go up (cone shape)
-        int radius = Math.max(1, (int) ((maxHeight - y) * 0.5));
-        for (int x = -radius; x <= radius; x++) {
-          for (int z = -radius; z <= radius; z++) {
-            if (x * x + z * z <= radius * radius) {
-              BlockPos p = pos.offset(x, y, z);
-              if (level.getBlockState(p).isAir() || y == 0) {
-                level.setBlock(p, mound, 2);
-              }
-            }
-          }
-        }
-      }
-    } else {
-      int height = 3 + random.nextInt(3);
-      for (int y = 0; y < height; y++) {
-        int radius = Math.max(1, (height - y));
-        for (int x = -radius; x <= radius; x++) {
-          for (int z = -radius; z <= radius; z++) {
-            if (Math.abs(x) + Math.abs(z) <= radius) {
-              BlockPos p = pos.offset(x, y, z);
-              if (level.getBlockState(p).isAir() || y == 0) {
-                level.setBlock(p, mound, 2);
-              }
-            }
-          }
-        }
-      }
+    public TermiteMoundFeature(Codec<NoneFeatureConfiguration> codec) {
+        super(codec);
     }
 
-    return true;
-  }
+    @Override
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        WorldGenLevel level = context.level();
+        BlockPos pos = context.origin();
+        RandomSource random = context.random();
+
+        BlockState mound = LionKingBlocks.TERMITE_MOUND.get().defaultBlockState();
+
+        boolean large = random.nextInt(5) == 0;
+
+        if (large) {
+            int maxHeight = 6 + random.nextInt(8);
+            for (int y = 0; y < maxHeight; y++) {
+                // Radius shrinks as we go up (cone shape)
+                int radius = Math.max(1, (int) ((maxHeight - y) * 0.5));
+                for (int x = -radius; x <= radius; x++) {
+                    for (int z = -radius; z <= radius; z++) {
+                        if (x * x + z * z <= radius * radius) {
+                            BlockPos p = pos.offset(x, y, z);
+                            if (level.getBlockState(p).isAir() || y == 0) {
+                                level.setBlock(p, mound, 2);
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            int height = 3 + random.nextInt(3);
+            for (int y = 0; y < height; y++) {
+                int radius = Math.max(1, (height - y));
+                for (int x = -radius; x <= radius; x++) {
+                    for (int z = -radius; z <= radius; z++) {
+                        if (Math.abs(x) + Math.abs(z) <= radius) {
+                            BlockPos p = pos.offset(x, y, z);
+                            if (level.getBlockState(p).isAir() || y == 0) {
+                                level.setBlock(p, mound, 2);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
 }
