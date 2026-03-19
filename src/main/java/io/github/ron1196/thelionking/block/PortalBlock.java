@@ -1,14 +1,18 @@
 package io.github.ron1196.thelionking.block;
 
-import io.github.ron1196.thelionking.registry.LionKingBlocks;
+import io.github.ron1196.thelionking.network.Networking;
+import io.github.ron1196.thelionking.network.PortalOverlayPacket;
 import io.github.ron1196.thelionking.world.dimension.Teleporter;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -24,27 +28,34 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class PortalBlock extends Block {
+
+    private record PortalCountdown(int ticks, long lastTick) {}
 
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
 
     private static final VoxelShape X_AABB = Block.box(0.0, 0.0, 6.0, 16.0, 16.0, 10.0);
     private static final VoxelShape Z_AABB = Block.box(6.0, 0.0, 0.0, 10.0, 16.0, 16.0);
 
-    // Countdown ticks per player while they stand in the portal.
-    private static final Map<UUID, Integer> PORTAL_TICKS = new ConcurrentHashMap<>();
+    public static final int PORTAL_WAIT_TICKS = 100;
 
-    private final boolean isOutlands;
-    private final ResourceKey<Level> dimensionA;
-    private final ResourceKey<Level> dimensionB;
+    private static final Map<UUID, PortalCountdown> PORTAL_TICKS = new ConcurrentHashMap<>();
+
+    private final Supplier<Block> frameBlockSupplier;
+    private final ResourceKey<Level> homeDimension;
+    private final ResourceKey<Level> targetDimension;
 
     public PortalBlock(
-            Properties properties, boolean isOutlands, ResourceKey<Level> dimensionA, ResourceKey<Level> dimensionB) {
+            Properties properties,
+            Supplier<Block> frameBlockSupplier,
+            ResourceKey<Level> homeDimension,
+            ResourceKey<Level> targetDimension) {
         super(properties);
-        this.isOutlands = isOutlands;
-        this.dimensionA = dimensionA;
-        this.dimensionB = dimensionB;
+        this.frameBlockSupplier = frameBlockSupplier;
+        this.homeDimension = homeDimension;
+        this.targetDimension = targetDimension;
         this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.X));
     }
 
@@ -65,14 +76,13 @@ public class PortalBlock extends Block {
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull BlockState updateShape(
-            BlockState state,
-            Direction direction,
+            @NotNull BlockState state,
+            @NotNull Direction direction,
             @NotNull BlockState neighborState,
             @NotNull LevelAccessor level,
             @NotNull BlockPos pos,
             @NotNull BlockPos neighborPos) {
-        if (direction.getAxis() == state.getValue(AXIS)) return state;
-        return isValidPortalFrame(level, pos) ? state : Blocks.AIR.defaultBlockState();
+        return isPortalIntact(level, pos, state.getValue(AXIS)) ? state : Blocks.AIR.defaultBlockState();
     }
 
     @SuppressWarnings("deprecation")
@@ -80,7 +90,6 @@ public class PortalBlock extends Block {
     public void entityInside(
             @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
         if (!canTeleport(level, entity)) return;
-
         if (entity instanceof ServerPlayer player) {
             handlePlayerCountdown(player);
         } else {
@@ -115,11 +124,36 @@ public class PortalBlock extends Block {
     }
 
     private void handlePlayerCountdown(ServerPlayer player) {
-        int ticks = PORTAL_TICKS.merge(player.getUUID(), 1, Integer::sum);
-        if (ticks < player.getPortalWaitTime()) return;
-        PORTAL_TICKS.remove(player.getUUID());
+        long currentTick = player.level().getGameTime();
+        UUID uuid = player.getUUID();
+        var countdown = PORTAL_TICKS.compute(uuid, (_uuid, existing) -> advanceOrReset(existing, currentTick));
+
+        sendOverlayPacket(player, countdown.ticks);
+
+        if (countdown.ticks < PORTAL_WAIT_TICKS) return;
+        PORTAL_TICKS.remove(uuid);
         player.setPortalCooldown();
+        sendOverlayPacket(player, 0);
         teleportPlayer(player);
+    }
+
+    private void sendOverlayPacket(ServerPlayer player, int ticks) {
+        ResourceLocation id = BuiltInRegistries.BLOCK.getKey(this);
+        Networking.CHANNEL.sendTo(
+                new PortalOverlayPacket(ticks, id.getPath()),
+                player.connection.connection,
+                net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT);
+    }
+
+    private static PortalCountdown advanceOrReset(@Nullable PortalCountdown existing, long currentTick) {
+        if (existing == null || existing.lastTick < currentTick - 1) {
+            return new PortalCountdown(1, currentTick);
+        }
+        // Already counted this tick (player overlaps multiple portal blocks)
+        if (existing.lastTick == currentTick) {
+            return existing;
+        }
+        return new PortalCountdown(existing.ticks + 1, currentTick);
     }
 
     private void teleportPlayer(ServerPlayer player) {
@@ -142,7 +176,7 @@ public class PortalBlock extends Block {
 
     private boolean inInvalidDimension(Level level) {
         ResourceKey<Level> dim = level.dimension();
-        return dim != dimensionA && dim != dimensionB;
+        return dim != homeDimension && dim != targetDimension;
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────────
@@ -153,21 +187,27 @@ public class PortalBlock extends Block {
     }
 
     private ResourceKey<Level> getDestination(Level level) {
-        return level.dimension() == dimensionA ? dimensionB : dimensionA;
+        return level.dimension() == homeDimension ? targetDimension : homeDimension;
     }
 
-    private Block getFrameBlock() {
-        return isOutlands ? LionKingBlocks.OUTLANDS_PORTAL_FRAME.get() : LionKingBlocks.PRIDE_PORTAL_FRAME.get();
+    public Block getFrameBlock() {
+        return frameBlockSupplier.get();
     }
 
-    private boolean isValidPortalFrame(LevelAccessor level, BlockPos pos) {
+    private boolean isPortalIntact(LevelAccessor level, BlockPos pos, Direction.Axis axis) {
         Block frameBlock = getFrameBlock();
-        for (Direction dir : Direction.Plane.HORIZONTAL) {
-            BlockState state = level.getBlockState(pos.relative(dir));
-            if (!state.is(this) && !state.is(frameBlock)) {
-                return false;
-            }
+
+        // Check all neighbors within the portal plane: along-axis + up/down
+        Direction[] directions = axis == Direction.Axis.X
+                ? new Direction[] {Direction.EAST, Direction.WEST, Direction.UP, Direction.DOWN}
+                : new Direction[] {Direction.NORTH, Direction.SOUTH, Direction.UP, Direction.DOWN};
+
+        for (Direction dir : directions) {
+            BlockState neighbor = level.getBlockState(pos.relative(dir));
+            if (neighbor.is(this) || neighbor.is(frameBlock)) continue;
+            return false;
         }
+
         return true;
     }
 

@@ -759,7 +759,7 @@ public class LionKingBlocks {
                             .noLootTable()
                             .noOcclusion()
                             .pushReaction(PushReaction.BLOCK),
-                    false,
+                    PRIDE_PORTAL_FRAME,
                     Level.OVERWORLD,
                     Dimensions.PRIDE_LANDS_LEVEL));
 
@@ -774,7 +774,7 @@ public class LionKingBlocks {
                             .noLootTable()
                             .noOcclusion()
                             .pushReaction(PushReaction.BLOCK),
-                    true,
+                    OUTLANDS_PORTAL_FRAME,
                     Dimensions.PRIDE_LANDS_LEVEL,
                     Dimensions.OUTLANDS_LEVEL));
 }

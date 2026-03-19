@@ -1,14 +1,9 @@
 package io.github.ron1196.thelionking.world.dimension;
 
-import com.google.common.base.Suppliers;
 import io.github.ron1196.thelionking.block.PortalBlock;
-import io.github.ron1196.thelionking.registry.LionKingBlocks;
-import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
@@ -22,24 +17,24 @@ import net.minecraftforge.common.util.ITeleporter;
 
 public class Teleporter implements ITeleporter {
 
-    // Maps each portal block to its corresponding frame block.
-    private static final Supplier<Map<Block, Block>> FRAME_BLOCKS = Suppliers.memoize(() -> Map.of(
-            LionKingBlocks.OUTLANDS_PORTAL.get(),
-            LionKingBlocks.OUTLANDS_PORTAL_FRAME.get(),
-            LionKingBlocks.PRIDE_LANDS_PORTAL.get(),
-            LionKingBlocks.PRIDE_PORTAL_FRAME.get()));
+    private static final int SEARCH_RADIUS_CHUNKS = 8;
+    private static final int FRAME_WIDTH = 4;
+    private static final int FRAME_HEIGHT = 5;
+    private static final int FALLBACK_SURFACE_Y = 70;
 
-    private final Block portalBlock;
+    private final PortalBlock portalBlock;
 
-    public Teleporter(Block portalBlock) {
+    public Teleporter(PortalBlock portalBlock) {
         this.portalBlock = portalBlock;
     }
+
+    // ── ITeleporter overrides ─────────────────────────────────────────────────
 
     @Nullable
     @Override
     public PortalInfo getPortalInfo(
             Entity entity, ServerLevel destWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
-        BlockPos destPos = findOrCreatePortal(entity, destWorld);
+        BlockPos destPos = findOrCreatePortal(entity.blockPosition(), destWorld);
         return new PortalInfo(
                 new Vec3(destPos.getX() + 0.5, destPos.getY(), destPos.getZ() + 0.5),
                 Vec3.ZERO,
@@ -57,25 +52,32 @@ public class Teleporter implements ITeleporter {
         return repositionEntity.apply(false);
     }
 
-    private BlockPos findOrCreatePortal(Entity entity, ServerLevel destWorld) {
-        Block frameBlock = FRAME_BLOCKS.get().get(portalBlock);
+    // ── Portal lookup ─────────────────────────────────────────────────────────
 
-        BlockPos entityPos = entity.blockPosition();
-        BlockPos destPos = new BlockPos(entityPos.getX(), entityPos.getY(), entityPos.getZ());
-
-        // Search for existing portal in a small loaded area (16 block radius, only loaded chunks)
-        BlockPos existingPortal = findExistingPortal(destWorld, destPos, portalBlock);
-        if (existingPortal != null) {
-            return existingPortal;
-        }
-
-        // Create new portal at the destination
-        return createPortal(destWorld, destPos, frameBlock, portalBlock);
+    private BlockPos findOrCreatePortal(BlockPos entityPos, ServerLevel destWorld) {
+        BlockPos existing = findExistingPortal(destWorld, entityPos);
+        if (existing != null) return existing;
+        return createPortal(destWorld, entityPos);
     }
 
     @Nullable
-    private BlockPos findExistingPortal(ServerLevel level, BlockPos center, Block portalBlock) {
-        int range = 16;
+    private BlockPos findExistingPortal(ServerLevel level, BlockPos center) {
+        loadChunksAround(level, center);
+        return findClosestPortalBlock(level, center);
+    }
+
+    private void loadChunksAround(ServerLevel level, BlockPos center) {
+        ChunkPos centerChunk = new ChunkPos(center);
+        for (int cx = -SEARCH_RADIUS_CHUNKS; cx <= SEARCH_RADIUS_CHUNKS; cx++) {
+            for (int cz = -SEARCH_RADIUS_CHUNKS; cz <= SEARCH_RADIUS_CHUNKS; cz++) {
+                level.getChunk(centerChunk.x + cx, centerChunk.z + cz, ChunkStatus.FULL, true);
+            }
+        }
+    }
+
+    @Nullable
+    private BlockPos findClosestPortalBlock(ServerLevel level, BlockPos center) {
+        int range = SEARCH_RADIUS_CHUNKS * 16;
         BlockPos best = null;
         double bestDist = Double.MAX_VALUE;
 
@@ -84,23 +86,17 @@ public class Teleporter implements ITeleporter {
                 int checkX = center.getX() + x;
                 int checkZ = center.getZ() + z;
 
-                // Only check loaded chunks
-                if (!level.isLoaded(new BlockPos(checkX, 0, checkZ))) continue;
-
-                int surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING, checkX, checkZ);
-                // Search a vertical range around surface
-                int minY = Math.max(level.getMinBuildHeight(), surfaceY - 20);
-                int maxY = Math.min(level.getMaxBuildHeight(), surfaceY + 20);
-
-                for (int y = minY; y < maxY; y++) {
+                for (int y = level.getMinBuildHeight(); y < level.getMaxBuildHeight(); y++) {
                     BlockPos pos = new BlockPos(checkX, y, checkZ);
-                    if (level.getBlockState(pos).is(portalBlock)) {
-                        double dist = pos.distSqr(center);
-                        if (dist < bestDist) {
-                            bestDist = dist;
-                            best = pos;
-                        }
+                    if (!level.getBlockState(pos).is(portalBlock)) continue;
+
+                    double dist = pos.distSqr(center);
+                    if (!(dist < bestDist)) {
+                        continue;
                     }
+
+                    bestDist = dist;
+                    best = pos;
                 }
             }
         }
@@ -108,67 +104,104 @@ public class Teleporter implements ITeleporter {
         return best;
     }
 
-    private BlockPos createPortal(ServerLevel level, BlockPos pos, Block frameBlock, Block portalBlock) {
-        // Force chunk generation so heightmap is available
-        ChunkPos chunkPos = new ChunkPos(pos);
-        level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.FULL, true);
+    // ── Portal creation ───────────────────────────────────────────────────────
 
-        int surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos.getX(), pos.getZ());
-        if (surfaceY <= level.getMinBuildHeight() + 1) {
-            // Heightmap returned bottom, try world spawn instead
-            BlockPos spawn = level.getSharedSpawnPos();
-            level.getChunk(new ChunkPos(spawn).x, new ChunkPos(spawn).z, ChunkStatus.FULL, true);
-            surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, spawn.getX(), spawn.getZ());
-            pos = new BlockPos(spawn.getX(), surfaceY, spawn.getZ());
-            if (surfaceY <= level.getMinBuildHeight() + 1) {
-                surfaceY = 70;
-            }
-        }
-        BlockPos base = new BlockPos(pos.getX(), surfaceY, pos.getZ());
+    private BlockPos createPortal(ServerLevel level, BlockPos pos) {
+        BlockPos base = findSuitableSurface(level, pos);
+        Block frameBlock = portalBlock.getFrameBlock();
 
-        BlockState frame = frameBlock.defaultBlockState();
-        BlockState portal = portalBlock.defaultBlockState();
-        if (portal.hasProperty(PortalBlock.AXIS)) {
-            portal = portal.setValue(PortalBlock.AXIS, Direction.Axis.X);
-        }
-
-        // Build 4-wide x 5-tall frame with 2x3 portal interior
-        //  F F F F
-        //  F P P F
-        //  F P P F
-        //  F P P F
-        //  F F F F
-        for (int dx = 0; dx < 4; dx++) {
-            for (int dy = 0; dy < 5; dy++) {
-                BlockPos p = base.offset(dx, dy, 0);
-                boolean isEdge = dx == 0 || dx == 3 || dy == 0 || dy == 4;
-                level.setBlockAndUpdate(p, isEdge ? frame : portal);
-            }
-        }
-
-        // Clear space in front and behind the portal
-        for (int dx = 0; dx < 4; dx++) {
-            for (int dy = 0; dy < 5; dy++) {
-                for (int dz : new int[] {-1, 1}) {
-                    BlockPos p = base.offset(dx, dy, dz);
-                    if (!level.getBlockState(p).isAir()) {
-                        level.removeBlock(p, false);
-                    }
-                }
-            }
-        }
-
-        // Place solid ground under the portal
-        for (int dx = -1; dx < 5; dx++) {
-            for (int dz = -1; dz < 2; dz++) {
-                BlockPos p = base.offset(dx, -1, dz);
-                if (level.getBlockState(p).isAir()) {
-                    level.setBlockAndUpdate(p, frame);
-                }
-            }
-        }
+        clearSurroundings(level, base);
+        placeGround(level, base, frameBlock);
+        placeFrame(level, base, frameBlock);
+        clearInterior(level, base);
+        lightPortal(level, base);
 
         // Return position inside the portal (1 block in, 1 block up)
         return base.offset(1, 1, 0);
+    }
+
+    private BlockPos findSuitableSurface(ServerLevel level, BlockPos pos) {
+        forceLoadChunk(level, pos);
+
+        int surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos.getX(), pos.getZ());
+        if (surfaceY > level.getMinBuildHeight() + 1) {
+            return new BlockPos(pos.getX(), surfaceY, pos.getZ());
+        }
+
+        // Heightmap returned bottom — fall back to world spawn
+        BlockPos spawn = level.getSharedSpawnPos();
+        forceLoadChunk(level, spawn);
+
+        surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, spawn.getX(), spawn.getZ());
+        if (surfaceY <= level.getMinBuildHeight() + 1) {
+            surfaceY = FALLBACK_SURFACE_Y;
+        }
+
+        return new BlockPos(spawn.getX(), surfaceY, spawn.getZ());
+    }
+
+    private void forceLoadChunk(ServerLevel level, BlockPos pos) {
+        ChunkPos chunkPos = new ChunkPos(pos);
+        level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.FULL, true);
+    }
+
+    /**
+     * Builds a 4-wide x 5-tall frame (no interior fill):
+     * <pre>
+     *  F F F F
+     *  F . . F
+     *  F . . F
+     *  F . . F
+     *  F F F F
+     * </pre>
+     */
+    private void placeFrame(ServerLevel level, BlockPos base, Block frameBlock) {
+        BlockState frame = frameBlock.defaultBlockState();
+        for (int dx = 0; dx < FRAME_WIDTH; dx++) {
+            for (int dy = 0; dy < FRAME_HEIGHT; dy++) {
+                boolean isEdge = dx == 0 || dx == FRAME_WIDTH - 1 || dy == 0 || dy == FRAME_HEIGHT - 1;
+                if (!isEdge) continue;
+                level.setBlockAndUpdate(base.offset(dx, dy, 0), frame);
+            }
+        }
+    }
+
+    private void lightPortal(ServerLevel level, BlockPos base) {
+        // Interior bottom-left is at (1, 1) relative to base
+        BlockPos interiorPos = base.offset(1, 1, 0);
+        portalBlock.trySpawnPortal(level, interiorPos);
+    }
+
+    private void clearInterior(ServerLevel level, BlockPos base) {
+        for (int dx = 1; dx < FRAME_WIDTH - 1; dx++) {
+            for (int dy = 1; dy < FRAME_HEIGHT - 1; dy++) {
+                BlockPos p = base.offset(dx, dy, 0);
+                if (level.getBlockState(p).isAir()) continue;
+                level.removeBlock(p, false);
+            }
+        }
+    }
+
+    private void clearSurroundings(ServerLevel level, BlockPos base) {
+        for (int dx = 0; dx < FRAME_WIDTH; dx++) {
+            for (int dy = 0; dy < FRAME_HEIGHT; dy++) {
+                for (int dz : new int[] {-1, 1}) {
+                    BlockPos p = base.offset(dx, dy, dz);
+                    if (level.getBlockState(p).isAir()) continue;
+                    level.removeBlock(p, false);
+                }
+            }
+        }
+    }
+
+    private void placeGround(ServerLevel level, BlockPos base, Block frameBlock) {
+        BlockState frame = frameBlock.defaultBlockState();
+        for (int dx = -1; dx < FRAME_WIDTH + 1; dx++) {
+            for (int dz = -1; dz < 2; dz++) {
+                BlockPos p = base.offset(dx, -1, dz);
+                if (!level.getBlockState(p).isAir()) continue;
+                level.setBlockAndUpdate(p, frame);
+            }
+        }
     }
 }

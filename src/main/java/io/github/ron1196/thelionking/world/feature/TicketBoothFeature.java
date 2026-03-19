@@ -170,38 +170,38 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         // ============================================================
         // Front and back theater overhangs
         for (int i1 = 4; i1 < 15; i1++) {
-            // Front (z-1): upside-down stairs facing south
+            // Front (z-1): upside-down stairs facing north (old meta 7)
             FeatureHelper.placeBlock(
                     level,
                     i + i1,
                     j + 4,
                     k - 1,
-                    stairBlock.setValue(StairBlock.FACING, Direction.SOUTH).setValue(StairBlock.HALF, Half.TOP));
-            // Back (z+8): upside-down stairs facing north
+                    stairBlock.setValue(StairBlock.FACING, Direction.NORTH).setValue(StairBlock.HALF, Half.TOP));
+            // Back (z+8): upside-down stairs facing south (old meta 6)
             FeatureHelper.placeBlock(
                     level,
                     i + i1,
                     j + 4,
                     k + 8,
-                    stairBlock.setValue(StairBlock.FACING, Direction.NORTH).setValue(StairBlock.HALF, Half.TOP));
+                    stairBlock.setValue(StairBlock.FACING, Direction.SOUTH).setValue(StairBlock.HALF, Half.TOP));
         }
 
-        // Left wall overhang (x+3)
+        // Left wall overhang (x+3): upside-down facing west (old meta 5)
         for (int k1 = 0; k1 < 8; k1++) {
             FeatureHelper.placeBlock(
                     level,
                     i + 3,
                     j + 4,
                     k + k1,
-                    stairBlock.setValue(StairBlock.FACING, Direction.EAST).setValue(StairBlock.HALF, Half.TOP));
-            // Right wall overhang (x+14) only on sides, not screen area
+                    stairBlock.setValue(StairBlock.FACING, Direction.WEST).setValue(StairBlock.HALF, Half.TOP));
+            // Right wall overhang (x+14): upside-down facing east (old meta 4)
             if (k1 < 2 || k1 > 5) {
                 FeatureHelper.placeBlock(
                         level,
                         i + 14,
                         j + 4,
                         k + k1,
-                        stairBlock.setValue(StairBlock.FACING, Direction.WEST).setValue(StairBlock.HALF, Half.TOP));
+                        stairBlock.setValue(StairBlock.FACING, Direction.EAST).setValue(StairBlock.HALF, Half.TOP));
             }
         }
 
@@ -219,13 +219,13 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         // ============================================================
         // TICKET COUNTER ROOF: stairs at y+3
         // ============================================================
-        // Left side (x-3)
+        // Left side (x-3): facing east (old meta 0)
         for (int k1 = -2; k1 < 5; k1++) {
             if (k1 == 3) {
                 FeatureHelper.placeBlock(level, i - 3, j + 3, k + k1, planks); // solid above door
             } else {
                 FeatureHelper.placeBlock(
-                        level, i - 3, j + 3, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.WEST));
+                        level, i - 3, j + 3, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.EAST));
             }
         }
         // Front
@@ -238,12 +238,12 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
             FeatureHelper.placeBlock(
                     level, i + i1, j + 3, k + 5, stairBlock.setValue(StairBlock.FACING, Direction.NORTH));
         }
-        // Connection between counter and theater
-        generateSupports(level, i + 1, j + 3, k + 5, stairBlock, Direction.WEST);
+        // Connection between counter and theater (old meta 0 = EAST)
+        generateSupports(level, i + 1, j + 3, k + 5, stairBlock, Direction.EAST);
         FeatureHelper.placeBlock(level, i + 1, j + 3, k + 5, planks);
         for (int k1 = 6; k1 < 10; k1++) {
             FeatureHelper.placeBlock(
-                    level, i + 1, j + 3, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.WEST));
+                    level, i + 1, j + 3, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.EAST));
         }
 
         // ============================================================
@@ -251,9 +251,9 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         // ============================================================
         for (int k1 = -2; k1 < 10; k1++) {
             FeatureHelper.placeBlock(
-                    level, i + 2, j + 5, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.WEST));
+                    level, i + 2, j + 5, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.EAST));
             FeatureHelper.placeBlock(
-                    level, i + 16, j + 5, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.EAST));
+                    level, i + 16, j + 5, k + k1, stairBlock.setValue(StairBlock.FACING, Direction.WEST));
         }
         for (int i1 = 3; i1 < 16; i1++) {
             FeatureHelper.placeBlock(
@@ -268,13 +268,13 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         // ============================================================
         // SUPPORTS: fence posts under overhangs
         // ============================================================
-        generateSupports(level, i - 3, j + 3, k - 3, stairBlock, Direction.WEST);
-        generateSupports(level, i - 3, j + 3, k + 5, stairBlock, Direction.WEST);
-        generateSupports(level, i + 1, j + 3, k + 10, stairBlock, Direction.WEST);
+        generateSupports(level, i - 3, j + 3, k - 3, stairBlock, Direction.EAST);
+        generateSupports(level, i - 3, j + 3, k + 5, stairBlock, Direction.EAST);
+        generateSupports(level, i + 1, j + 3, k + 10, stairBlock, Direction.EAST);
         generateSupports(level, i + 4, j + 3, k + 10, stairBlock, Direction.NORTH);
-        generateSupports(level, i + 4, j + 3, k - 3, stairBlock, Direction.EAST);
-        FeatureHelper.placeBlock(level, i + 2, j + 5, k - 3, stairBlock.setValue(StairBlock.FACING, Direction.WEST));
-        FeatureHelper.placeBlock(level, i + 2, j + 5, k + 10, stairBlock.setValue(StairBlock.FACING, Direction.WEST));
+        generateSupports(level, i + 4, j + 3, k - 3, stairBlock, Direction.WEST);
+        FeatureHelper.placeBlock(level, i + 2, j + 5, k - 3, stairBlock.setValue(StairBlock.FACING, Direction.EAST));
+        FeatureHelper.placeBlock(level, i + 2, j + 5, k + 10, stairBlock.setValue(StairBlock.FACING, Direction.EAST));
         generateSupports(level, i + 16, j + 5, k - 3, stairBlock, Direction.SOUTH);
         generateSupports(level, i + 16, j + 5, k + 10, stairBlock, Direction.NORTH);
 

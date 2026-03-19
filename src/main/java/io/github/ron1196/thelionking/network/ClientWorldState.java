@@ -8,53 +8,66 @@ import java.util.Set;
 
 public class ClientWorldState {
 
-  // World state
-  public static boolean defeatedScar;
-  public static int ziraStage;
-  public static int pumbaaStage;
-  public static boolean outlandersHostile;
+    // World state
+    public static boolean defeatedScar;
+    public static int ziraStage;
+    public static int pumbaaStage;
+    public static boolean outlandersHostile;
 
-  // Quest state
-  public static final Map<String, QuestlineState> questStates = new HashMap<>();
+    // Quest state
+    public static final Map<String, QuestlineState> questStates = new HashMap<>();
 
-  // Player data
-  public static boolean receivedQuestBook;
-  public static int playerHomePortalX;
-  public static int playerHomePortalY;
-  public static int playerHomePortalZ;
-  public static boolean hasSimba;
-  public static final Set<String> claimedRewards = new HashSet<>();
+    // Player data
+    public static boolean receivedQuestBook;
+    public static int playerHomePortalX;
+    public static int playerHomePortalY;
+    public static int playerHomePortalZ;
+    public static boolean hasSimba;
+    public static final Set<String> claimedRewards = new HashSet<>();
 
-  // HUD overlay timers (in ticks, count down to 0)
-  public static int flatulenceTimer = 0;
+    // HUD overlay timers
+    public static int flatulenceTimer = 0;
 
-  /**
-   * Returns the stage ID string for the given quest. Empty string means the quest has not been
-   * initialized.
-   */
-  public static String getQuestStageId(String questId) {
-    QuestlineState state = questStates.get(questId);
-    return state != null ? state.getCurrentStageId() : "";
-  }
+    // Portal overlay state (counts UP from server, reset to 0 when player leaves portal)
+    public static int portalOverlayTicks = 0;
+    public static String portalBlockName = "";
+    public static long portalLastUpdateTick = 0;
 
-  public static boolean isQuestChecked(String questId) {
-    QuestlineState state = questStates.get(questId);
-    return state != null && state.isChecked();
-  }
+    /**
+     * Returns the stage ID string for the given quest. Empty string means the quest has not been
+     * initialized.
+     */
+    public static String getQuestStageId(String questId) {
+        QuestlineState state = questStates.get(questId);
+        return state != null ? state.getCurrentStageId() : "";
+    }
 
-  public static void reset() {
-    defeatedScar = false;
-    ziraStage = 0;
-    pumbaaStage = 0;
-    outlandersHostile = false;
-    questStates.clear();
+    public static boolean isQuestChecked(String questId) {
+        QuestlineState state = questStates.get(questId);
+        return state != null && state.isChecked();
+    }
 
-    receivedQuestBook = false;
-    playerHomePortalX = 0;
-    playerHomePortalY = 0;
-    playerHomePortalZ = 0;
-    hasSimba = false;
-    claimedRewards.clear();
-    flatulenceTimer = 0;
-  }
+    public static void reset() {
+        defeatedScar = false;
+
+        ziraStage = 0;
+        pumbaaStage = 0;
+
+        outlandersHostile = false;
+        questStates.clear();
+
+        receivedQuestBook = false;
+
+        playerHomePortalX = 0;
+        playerHomePortalY = 0;
+        playerHomePortalZ = 0;
+
+        hasSimba = false;
+        claimedRewards.clear();
+        flatulenceTimer = 0;
+
+        portalOverlayTicks = 0;
+        portalBlockName = "";
+        portalLastUpdateTick = 0;
+    }
 }
