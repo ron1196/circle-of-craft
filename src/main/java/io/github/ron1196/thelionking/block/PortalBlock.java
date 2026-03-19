@@ -16,6 +16,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -29,8 +30,8 @@ public class PortalBlock extends Block {
 
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
 
-    protected static final VoxelShape X_AABB = Block.box(0.0, 0.0, 6.0, 16.0, 16.0, 10.0);
-    protected static final VoxelShape Z_AABB = Block.box(6.0, 0.0, 0.0, 10.0, 16.0, 16.0);
+    private static final VoxelShape X_AABB = Block.box(0.0, 0.0, 6.0, 16.0, 16.0, 10.0);
+    private static final VoxelShape Z_AABB = Block.box(6.0, 0.0, 0.0, 10.0, 16.0, 16.0);
 
     // Countdown ticks per player while they stand in the portal.
     private static final Map<UUID, Integer> PORTAL_TICKS = new ConcurrentHashMap<>();
@@ -50,7 +51,9 @@ public class PortalBlock extends Block {
         this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.X));
     }
 
-    @SuppressWarnings("deprecation") // Mojang marks these to discourage direct calls; overriding is intended
+    // ── Block overrides ──────────────────────────────────────────────────────
+
+    @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(
             BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
@@ -71,24 +74,111 @@ public class PortalBlock extends Block {
             @NotNull LevelAccessor level,
             @NotNull BlockPos pos,
             @NotNull BlockPos neighborPos) {
-        Direction.Axis portalAxis = state.getValue(AXIS);
-        if (direction.getAxis() == portalAxis) {
-            // Check vertical neighbors
-            return state;
+        if (direction.getAxis() == state.getValue(AXIS)) return state;
+        return isValidPortalFrame(level, pos) ? state : Blocks.AIR.defaultBlockState();
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void entityInside(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
+        if (!canTeleport(level, entity)) return;
+
+        if (entity instanceof ServerPlayer player) {
+            handlePlayerCountdown(player);
+        } else {
+            teleportEntity(entity, level);
         }
-        if (!isValidPortalFrame(level, pos)) {
-            return net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
+    }
+
+    // ── Portal spawning ──────────────────────────────────────────────────────
+
+    public boolean trySpawnPortal(LevelAccessor level, BlockPos pos) {
+        return trySpawnPortalOnAxis(level, pos, Direction.Axis.X) || trySpawnPortalOnAxis(level, pos, Direction.Axis.Z);
+    }
+
+    private boolean trySpawnPortalOnAxis(LevelAccessor level, BlockPos pos, Direction.Axis axis) {
+        PortalShape shape = new PortalShape(level, pos, axis, getFrameBlock(), this);
+        if (!shape.isValid()) return false;
+        shape.createPortalBlocks();
+        return true;
+    }
+
+    // ── Teleportation ────────────────────────────────────────────────────────
+
+    private boolean canTeleport(Level level, Entity entity) {
+        if (level.isClientSide || entity.isPassenger() || entity.isVehicle() || !entity.canChangeDimensions()) {
+            return false;
         }
-        return state;
+        if (entity.isOnPortalCooldown()) {
+            entity.setPortalCooldown();
+            return false;
+        }
+        return true;
+    }
+
+    private void handlePlayerCountdown(ServerPlayer player) {
+        int ticks = PORTAL_TICKS.merge(player.getUUID(), 1, Integer::sum);
+        if (ticks < player.getPortalWaitTime()) return;
+        PORTAL_TICKS.remove(player.getUUID());
+        player.setPortalCooldown();
+        teleportPlayer(player);
+    }
+
+    private void teleportPlayer(ServerPlayer player) {
+        ServerLevel destLevel = resolveDestination(player.level());
+        if (destLevel == null) return;
+
+        Teleporter teleporter = buildTeleporter(player, destLevel.dimension());
+        player.changeDimension(destLevel, teleporter);
+    }
+
+    private void teleportEntity(Entity entity, Level level) {
+        entity.setPortalCooldown();
+        ServerLevel destLevel = resolveDestination(level);
+        if (destLevel != null) {
+            entity.changeDimension(destLevel, new Teleporter(this));
+        }
+    }
+
+    private Teleporter buildTeleporter(ServerPlayer player, ResourceKey<Level> destination) {
+        SavedPosition savedPos = RETURN_POSITIONS.remove(new ReturnKey(player.getUUID(), destination));
+        saveCurrentPosition(player);
+        if (savedPos != null) {
+            return Teleporter.returning(savedPos.pos(), savedPos.yaw(), savedPos.xRot());
+        }
+        return new Teleporter(this);
+    }
+
+    private void saveCurrentPosition(ServerPlayer player) {
+        RETURN_POSITIONS.put(
+                new ReturnKey(player.getUUID(), player.level().dimension()),
+                new SavedPosition(player.position(), player.getYRot(), player.getXRot()));
+    }
+
+    // ── Helpers ──────────────────────────────────────────────────────────────
+
+    private ServerLevel resolveDestination(Level level) {
+        ResourceKey<Level> destination = getDestination(level);
+        return level.getServer() != null ? level.getServer().getLevel(destination) : null;
+    }
+
+    private ResourceKey<Level> getDestination(Level level) {
+        ResourceKey<Level> home = getHomeDimension();
+        return level.dimension() == home ? Level.OVERWORLD : home;
+    }
+
+    private ResourceKey<Level> getHomeDimension() {
+        return isOutlands ? Dimensions.OUTLANDS_LEVEL : Dimensions.PRIDE_LANDS_LEVEL;
+    }
+
+    private Block getFrameBlock() {
+        return isOutlands ? LionKingBlocks.OUTLANDS_PORTAL_FRAME.get() : LionKingBlocks.PRIDE_PORTAL_FRAME.get();
     }
 
     private boolean isValidPortalFrame(LevelAccessor level, BlockPos pos) {
         Block frameBlock = getFrameBlock();
-        // Check we still have frame blocks around us
-        for (Direction dir : Direction.values()) {
-            if (dir == Direction.UP || dir == Direction.DOWN) continue;
-            BlockPos neighbor = pos.relative(dir);
-            BlockState state = level.getBlockState(neighbor);
+        for (Direction dir : Direction.Plane.HORIZONTAL) {
+            BlockState state = level.getBlockState(pos.relative(dir));
             if (!state.is(this) && !state.is(frameBlock)) {
                 return false;
             }
@@ -96,77 +186,7 @@ public class PortalBlock extends Block {
         return true;
     }
 
-    private Block getFrameBlock() {
-        return isOutlands ? LionKingBlocks.OUTLANDS_PORTAL_FRAME.get() : LionKingBlocks.PRIDE_PORTAL_FRAME.get();
-    }
-
-    public boolean trySpawnPortal(LevelAccessor level, BlockPos pos) {
-        PortalShape shape = new PortalShape(level, pos, Direction.Axis.X, getFrameBlock(), this);
-        if (shape.isValid()) {
-            shape.createPortalBlocks();
-            return true;
-        }
-        shape = new PortalShape(level, pos, Direction.Axis.Z, getFrameBlock(), this);
-        if (shape.isValid()) {
-            shape.createPortalBlocks();
-            return true;
-        }
-        return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void entityInside(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
-        if (level.isClientSide || entity.isPassenger() || entity.isVehicle() || !entity.canChangeDimensions()) return;
-        if (entity.isOnPortalCooldown()) {
-            entity.setPortalCooldown();
-            return;
-        }
-
-        if (entity instanceof ServerPlayer player) {
-            int ticks = PORTAL_TICKS.merge(player.getUUID(), 1, Integer::sum);
-            if (ticks < player.getPortalWaitTime()) return;
-            PORTAL_TICKS.remove(player.getUUID());
-            player.setPortalCooldown();
-            teleportPlayer(player);
-        } else {
-            // Non-player entities teleport instantly.
-            entity.setPortalCooldown();
-            ResourceKey<Level> destination = getDestination(level);
-            ServerLevel destLevel =
-                    level.getServer() != null ? level.getServer().getLevel(destination) : null;
-            if (destLevel != null) {
-                entity.changeDimension(destLevel, new Teleporter(this));
-            }
-        }
-    }
-
-    private void teleportPlayer(ServerPlayer player) {
-        Level level = player.level();
-        ResourceKey<Level> destination = getDestination(level);
-        ServerLevel destLevel = player.server.getLevel(destination);
-        if (destLevel == null) return;
-
-        // Return the player to where they came from, or find/create a portal on first visit.
-        ReturnKey returnKey = new ReturnKey(player.getUUID(), destination);
-        SavedPosition savedPos = RETURN_POSITIONS.remove(returnKey);
-        RETURN_POSITIONS.put(
-                new ReturnKey(player.getUUID(), level.dimension()),
-                new SavedPosition(player.position(), player.getYRot(), player.getXRot()));
-
-        Teleporter teleporter = savedPos != null
-                ? Teleporter.returning(savedPos.pos(), savedPos.yaw(), savedPos.xRot())
-                : new Teleporter(this);
-        player.changeDimension(destLevel, teleporter);
-    }
-
-    private ResourceKey<Level> getDestination(Level level) {
-        if (isOutlands) {
-            return level.dimension() == Dimensions.OUTLANDS_LEVEL ? Level.OVERWORLD : Dimensions.OUTLANDS_LEVEL;
-        } else {
-            return level.dimension() == Dimensions.PRIDE_LANDS_LEVEL ? Level.OVERWORLD : Dimensions.PRIDE_LANDS_LEVEL;
-        }
-    }
+    // ── Portal shape detection ───────────────────────────────────────────────
 
     public static class PortalShape {
         private static final int MIN_WIDTH = 2;
@@ -195,7 +215,23 @@ public class PortalBlock extends Block {
             this.height = countInterior(bottomLeft, Direction.UP, MAX_HEIGHT);
         }
 
-        /** Walks left then down from {@code pos} to find the bottom-left interior corner. */
+        public boolean isValid() {
+            if (width < MIN_WIDTH || width > MAX_WIDTH || height < MIN_HEIGHT || height > MAX_HEIGHT) return false;
+            return hasValidFrame() && hasEmptyInterior();
+        }
+
+        public void createPortalBlocks() {
+            BlockState portalState = buildPortalState();
+            forEachInterior((x, y) -> level.setBlock(interiorPos(x, y), portalState, 18));
+        }
+
+        private BlockState buildPortalState() {
+            BlockState state = portalBlock.defaultBlockState();
+            return state.hasProperty(PortalBlock.AXIS) ? state.setValue(PortalBlock.AXIS, axis) : state;
+        }
+
+        // ── Shape detection helpers ──────────────────────────────────────────
+
         private BlockPos findBottomLeft(BlockPos pos) {
             Direction leftDir = rightDir.getOpposite();
             BlockPos cursor = pos;
@@ -208,13 +244,45 @@ public class PortalBlock extends Block {
             return cursor;
         }
 
-        /** Counts consecutive interior blocks starting at {@code start} in {@code dir}. */
         private int countInterior(BlockPos start, Direction dir, int max) {
             int count = 0;
             for (BlockPos cursor = start; count < max && isInterior(cursor); cursor = cursor.relative(dir)) {
                 count++;
             }
             return count;
+        }
+
+        // ── Frame validation ─────────────────────────────────────────────────
+
+        private boolean hasValidFrame() {
+            Direction leftDir = rightDir.getOpposite();
+            // Side columns
+            for (int y = 0; y < height; y++) {
+                if (isNotFrame(bottomLeft.above(y).relative(leftDir))) return false;
+                if (isNotFrame(bottomLeft.above(y).relative(rightDir, width))) return false;
+            }
+            // Top and bottom rows (x = -1..width includes corners)
+            for (int x = -1; x <= width; x++) {
+                BlockPos col = bottomLeft.relative(rightDir, x);
+                if (isNotFrame(col.below())) return false;
+                if (isNotFrame(col.above(height))) return false;
+            }
+            return true;
+        }
+
+        private boolean hasEmptyInterior() {
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    if (!isInterior(interiorPos(x, y))) return false;
+                }
+            }
+            return true;
+        }
+
+        // ── Block checks ────────────────────────────────────────────────────
+
+        private BlockPos interiorPos(int x, int y) {
+            return bottomLeft.above(y).relative(rightDir, x);
         }
 
         private boolean isInterior(BlockPos pos) {
@@ -226,43 +294,17 @@ public class PortalBlock extends Block {
             return !level.getBlockState(pos).is(frameBlock);
         }
 
-        public boolean isValid() {
-            if (width < MIN_WIDTH || width > MAX_WIDTH || height < MIN_HEIGHT || height > MAX_HEIGHT) return false;
-
-            // Side columns (left wall and right wall, y = 0...height-1)
-            Direction leftDir = rightDir.getOpposite();
-            for (int y = 0; y < height; y++) {
-                if (isNotFrame(bottomLeft.above(y).relative(leftDir))) return false;
-                if (isNotFrame(bottomLeft.above(y).relative(rightDir, width))) return false;
-            }
-
-            // Top and bottom rows, x = -1...width covers the corners too
-            for (int x = -1; x <= width; x++) {
-                BlockPos col = bottomLeft.relative(rightDir, x);
-                if (isNotFrame(col.below())) return false;
-                if (isNotFrame(col.above(height))) return false;
-            }
-
-            // Interior must be empty
+        private void forEachInterior(InteriorAction action) {
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
-                    if (!isInterior(bottomLeft.above(y).relative(rightDir, x))) return false;
+                    action.apply(x, y);
                 }
             }
-
-            return true;
         }
 
-        public void createPortalBlocks() {
-            BlockState portalState = portalBlock.defaultBlockState();
-            if (portalState.hasProperty(PortalBlock.AXIS)) {
-                portalState = portalState.setValue(PortalBlock.AXIS, axis);
-            }
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
-                    level.setBlock(bottomLeft.above(y).relative(rightDir, x), portalState, 18);
-                }
-            }
+        @FunctionalInterface
+        private interface InteriorAction {
+            void apply(int x, int y);
         }
     }
 }
