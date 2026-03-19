@@ -760,6 +760,7 @@ public class LionKingBlocks {
                             .noOcclusion()
                             .pushReaction(PushReaction.BLOCK),
                     PRIDE_PORTAL_FRAME,
+                    ParticleTypes.PRIDE_LANDS_PORTAL,
                     Level.OVERWORLD,
                     Dimensions.PRIDE_LANDS_LEVEL));
 
@@ -775,6 +776,7 @@ public class LionKingBlocks {
                             .noOcclusion()
                             .pushReaction(PushReaction.BLOCK),
                     OUTLANDS_PORTAL_FRAME,
+                    ParticleTypes.OUTLANDS_PORTAL,
                     Dimensions.PRIDE_LANDS_LEVEL,
                     Dimensions.OUTLANDS_LEVEL));
 }

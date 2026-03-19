@@ -9,12 +9,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -41,19 +45,25 @@ public class PortalBlock extends Block {
 
     public static final int PORTAL_WAIT_TICKS = 100;
 
+    private static final int PARTICLES_PER_TICK = 8;
+    private static final int SOUND_CHANCE = 50;
+
     private static final Map<UUID, PortalCountdown> PORTAL_TICKS = new ConcurrentHashMap<>();
 
     private final Supplier<Block> frameBlockSupplier;
+    private final Supplier<SimpleParticleType> particleTypeSupplier;
     private final ResourceKey<Level> homeDimension;
     private final ResourceKey<Level> targetDimension;
 
     public PortalBlock(
             Properties properties,
             Supplier<Block> frameBlockSupplier,
+            Supplier<SimpleParticleType> particleTypeSupplier,
             ResourceKey<Level> homeDimension,
             ResourceKey<Level> targetDimension) {
         super(properties);
         this.frameBlockSupplier = frameBlockSupplier;
+        this.particleTypeSupplier = particleTypeSupplier;
         this.homeDimension = homeDimension;
         this.targetDimension = targetDimension;
         this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.X));
@@ -73,6 +83,29 @@ public class PortalBlock extends Block {
         builder.add(AXIS);
     }
 
+    @Override
+    public void animateTick(
+            @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+        if (random.nextInt(SOUND_CHANCE) == 0) {
+            level.playLocalSound(
+                    pos.getX() + 0.5,
+                    pos.getY() + 0.5,
+                    pos.getZ() + 0.5,
+                    SoundEvents.PORTAL_AMBIENT,
+                    SoundSource.BLOCKS,
+                    0.5F,
+                    random.nextFloat() * 0.4F + 0.8F,
+                    false);
+        }
+
+        for (int i = 0; i < PARTICLES_PER_TICK; i++) {
+            double x = pos.getX() + random.nextDouble();
+            double y = pos.getY() + random.nextDouble();
+            double z = pos.getZ() + random.nextDouble();
+            level.addParticle(particleTypeSupplier.get(), x, y, z, 0, 0, 0);
+        }
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull BlockState updateShape(
@@ -82,7 +115,9 @@ public class PortalBlock extends Block {
             @NotNull LevelAccessor level,
             @NotNull BlockPos pos,
             @NotNull BlockPos neighborPos) {
-        return isPortalIntact(level, pos, state.getValue(AXIS)) ? state : Blocks.AIR.defaultBlockState();
+        if (isPortalIntact(level, pos, state.getValue(AXIS))) return state;
+        level.playSound(null, pos, SoundEvents.GLASS_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
+        return Blocks.AIR.defaultBlockState();
     }
 
     @SuppressWarnings("deprecation")
@@ -132,6 +167,7 @@ public class PortalBlock extends Block {
 
         if (countdown.ticks < PORTAL_WAIT_TICKS) return;
         PORTAL_TICKS.remove(uuid);
+
         player.setPortalCooldown();
         sendOverlayPacket(player, 0);
         teleportPlayer(player);

@@ -1,6 +1,7 @@
 package io.github.ron1196.thelionking.network;
 
 import java.util.function.Supplier;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -28,13 +29,20 @@ public class PortalOverlayPacket {
         buf.writeUtf(portalBlockName);
     }
 
+    private static final float SPINNING_RAMP_RATE = 0.0125F;
+
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             ClientWorldState.portalOverlayTicks = ticks;
             ClientWorldState.portalBlockName = portalBlockName;
-            net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
+            Minecraft mc = Minecraft.getInstance();
             if (mc.level != null) {
                 ClientWorldState.portalLastUpdateTick = mc.level.getGameTime();
+            }
+            if (mc.player != null) {
+                float intensity = Math.min(ticks * SPINNING_RAMP_RATE, 1.0F);
+                mc.player.oSpinningEffectIntensity = mc.player.spinningEffectIntensity;
+                mc.player.spinningEffectIntensity = intensity;
             }
         });
         ctx.get().setPacketHandled(true);
