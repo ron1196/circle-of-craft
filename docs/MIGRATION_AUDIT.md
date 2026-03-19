@@ -212,13 +212,13 @@ All previously critical gaps have been addressed:
 |---------|-------------|--------|
 | Boss HP Bar | Vanilla `ServerBossEvent`: Scar (RED), Zira (PURPLE) | Done |
 | Flatulence Overlay | Full-screen `flatulence.png` fade triggered by Pumbaa bomb via `FlatulencePacket` — rendered in `HudOverlays` via `RenderGuiEvent.Post` | Done |
-| Portal Overlay | Screen tint when standing inside a Pride Lands or Outlands portal block | Low priority |
+| Portal Overlay | `PortalOverlayPacket` renders portal overlay with nausea wobble via `spinningEffectIntensity` | Done |
 
 ---
 
 ## 7. Networking
 
-**Status: 5 packets implemented**
+**Status: 6 packets implemented**
 
 | Packet | Direction | Status |
 |--------|-----------|--------|
@@ -227,6 +227,7 @@ All previously critical gaps have been addressed:
 | Simba Sit | C→S | Done (`SimbaSitPacket`) |
 | Login Sync | S→C | Done (`LoginSyncPacket` — syncs defeatedScar, ziraStage, pumbaaStage, outlandersHostile) |
 | Player Data Sync | S→C | Done (`PlayerDataSyncPacket` — player-specific state) |
+| Portal Overlay | S→C | Done (`PortalOverlayPacket` — screen tint + nausea wobble in portals) |
 
 ### Not Implemented
 
@@ -270,8 +271,8 @@ All previously critical gaps have been addressed:
 | Mango | `MangoTreeFeature` | Yes | Done (Phase 10) |
 | Passion | `PassionTreeFeature` | Yes | Done (Phase 10) |
 | Rainforest | `RainforestTreeFeature` | Yes | Done (Phase 10) |
-| Pride Acacia | — | Yes | JSON only, may not generate |
-| Huge Rainforest | — | No | Not ported |
+| Pride Acacia | — | Yes | Done (JSON only, reduced frequency) |
+| Mega Rainforest | — | Yes | Done (JSON only, `mega_jungle_trunk_placer`) |
 
 ### Landmark Structures (5/5 ported) — Phase 12
 
@@ -288,6 +289,8 @@ Also: `TermiteMoundFeature`, `FeatureHelper` utility class.
 ### Ore Generation
 
 - [x] Configured & placed features for pride coal ore, silver ore, peacock ore (Phase 10)
+- [x] Vanilla-style multi-pass ore placement (coal: 70/chunk, silver: 90/chunk, peacock: 15/chunk)
+- [x] Pridestone/corrupt_pridestone added to `stone_ore_replaceables` and `base_stone_overworld` tags
 
 ### Crop/Plant Features
 
@@ -298,15 +301,14 @@ Still using JSON-only configs. No dedicated Java feature classes.
 | Maize | `LKWorldGenMaize` | JSON config only |
 | Kiwano | `LKWorldGenKiwano` | JSON config only |
 | Yams | `LKWorldGenYams` | JSON config only |
-| Lily Pads | `LKWorldGenLily` | Not ported |
-| Tall Flowers | `LKWorldGenTallFlowers` | Not ported |
+| Lily Pads | `LKWorldGenLily` | Done (JSON, `random_patch` with `simple_random_selector`) |
+| Tall Flowers | `LKWorldGenTallFlowers` | SKIP — never generated (counts were 0 in old mod) |
 
 ### Other Missing World Gen
 
 - [ ] Dungeons (`LKWorldGenDungeons` — 10 per chunk in old code)
 - [ ] Outlands lava lakes (`LKWorldGenOutlandsLakes`)
-- [ ] Outsand generation
-- [ ] Zazu spawner areas
+- [x] ~~Zazu spawner areas~~ — SKIP: No dedicated spawner gen in old mod. Zazus spawn via biome config.
 
 ---
 
@@ -352,10 +354,7 @@ Still using JSON-only configs. No dedicated Java feature classes.
 
 ### Advancement Icons
 
-4 advancement icons use placeholder substitutions for items not yet registered:
-- `outlandish_dart`, `tunnah_diggah`, `ticket_lion_helmet`, `peacock_wings`
-
-(Previously 5 — `lion_dust` resolved: now `rafiki_dust` with real texture)
+All advancement icons resolved. Previously had placeholder substitutions for unregistered items — all now use real items.
 
 ---
 
@@ -363,14 +362,14 @@ Still using JSON-only configs. No dedicated Java feature classes.
 
 These systems are fully ported and functional:
 
-- **Dimensions:** 3/3 (Pride Lands, Outlands, Upendi) with correct properties
-- **Biomes:** 14/14 created with correct temperatures, mob spawning
-- **Portals:** Full portal mechanics (frame validation, teleportation, activation items)
+- **Dimensions:** 3/3 (Pride Lands, Outlands, Upendi) with correct properties, custom noise settings, correct terrain blocks
+- **Biomes:** 14/14 created with correct temperatures, mob spawning, precipitation, ore generation
+- **Portals:** Full portal mechanics (frame validation, teleportation, activation items, particles, nausea wobble, break sound)
 - **Enchantments:** 6/6 fully registered with correct levels and effects; custom `RAFIKI_STICK_CATEGORY` ensures Rafiki enchantments appear on enchanting table for Rafiki Stick only
 - **Advancements:** 33 JSON advancements with dependency chains
 - **Advancement Triggers:** 11 custom triggers (shoot dart, quest complete, enter dimensions, etc.)
 - **Sound Events:** All organized in subdirectories, 24 events registered
-- **Music:** 5 Lion King songs with streaming playback
+- **Music:** 5 Lion King songs with streaming playback; Circle of Life plays on entering Pride Lands
 - **Passive Entities:** 10 animals with models, renderers, spawn eggs
 - **Hostile Entities:** 9 mobs with AI, drops, models (including Termite Queen boss, Skeletal Hyena Head)
 - **NPC Entities:** 7 NPCs with dialogue, quest integration (Zira: boss fight lightning spawns, death explosion)
@@ -395,19 +394,16 @@ These systems are fully ported and functional:
 ## Remaining Work Summary
 
 ### Medium Priority
-- Pride Acacia tree Java feature (currently JSON only, may not generate)
-- Huge Rainforest tree feature (not ported)
-- Crop/plant world gen Java features (maize, kiwano, yams)
 - Crop block classes — Maize should be sugar-cane-like (not `CropBlock`), Yam should grow on grass
+- Respawn dimension redirect — dying in Outlands/Upendi should respawn in Pride Lands (needs Java event handler)
+- Upendi dimension-wide purple fog — old mod had `WorldProvider.getFogColor()`, needs custom `DimensionSpecialEffects`
 
 ### Low Priority
 - 1 item not ported: Rug Dye (replace with vanilla dyes)
-- 3 advancement icon placeholders: `outlandish_dart`, `ticket_lion_helmet`, `peacock_wings` (items not registered)
 - 1 event handler not ported: UseHoeEvent (Tilled Sand creation)
-- Missing world gen: dungeons, lava lakes, lily pads, tall flowers
+- Missing world gen: dungeons, Outlands lava lakes
 - Outlands Lava Lakes — needs re-port as `PlacedFeature` (old `WorldGenLakes` API removed in 1.18)
 - Code debt: `CharacterSpeech.java` monolithic enum, grinding bowl recipes hardcoded
-- Portal overlay (screen tint inside Pride Lands / Outlands portal blocks)
 
 ### Assets (Ongoing)
 - ~150 block textures need migration from old camelCase to snake_case
