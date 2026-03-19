@@ -1,6 +1,5 @@
 package io.github.ron1196.thelionking.event;
 
-import com.google.common.base.Suppliers;
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.command.LionKingCommands;
 import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
@@ -18,18 +17,8 @@ import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.registry.Enchantments;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.Items;
-import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
-import io.github.ron1196.thelionking.world.dimension.Teleporter;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -40,12 +29,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -56,76 +42,6 @@ import net.minecraftforge.network.PacketDistributor;
 
 @Mod.EventBusSubscriber(modid = TheLionKingMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class LionKingForgeEvents {
-
-  // Guard against re-entrancy: when we call changeDimension ourselves inside the
-  // event handler, NeoForge fires EntityTravelToDimensionEvent a second time —
-  // we let that second call through so the teleport actually completes.
-  private static final Set<UUID> handledPortalTeleports =
-      Collections.newSetFromMap(new ConcurrentHashMap<>());
-
-  // Tracks which portal block type each player is standing in, updated every tick by
-  // PortalBlock.entityInside. Using the Block directly avoids any position lookup ambiguity.
-  public static final Map<UUID, Block> PORTAL_BLOCK_CACHE = new ConcurrentHashMap<>();
-
-  // Saves each player's position before they enter a portal, keyed by (UUID, source dimension),
-  // so the return trip can drop them back where they came from.
-  private record ReturnKey(UUID uuid, ResourceKey<Level> dimension) {}
-
-  private record SavedPosition(Vec3 pos, float yaw, float xRot) {}
-
-  private static final Map<ReturnKey, SavedPosition> RETURN_POSITIONS = new ConcurrentHashMap<>();
-
-  private static final Supplier<Map<Block, ResourceKey<Level>>> PORTALS =
-      Suppliers.memoize(
-          () ->
-              Map.of(
-                  LionKingBlocks.OUTLANDS_PORTAL.get(), Dimensions.OUTLANDS_LEVEL,
-                  LionKingBlocks.PRIDE_LANDS_PORTAL.get(), Dimensions.PRIDE_LANDS_LEVEL));
-
-  // ── Portal interception ───────────────────────────────────────────────────
-
-  @SubscribeEvent
-  public static void onEntityTravelToDimension(EntityTravelToDimensionEvent event) {
-    if (!(event.getEntity() instanceof ServerPlayer player)) return;
-    if (handledPortalTeleports.contains(player.getUUID())) return;
-
-    // Look up the portal block type cached by PortalBlock.entityInside each tick.
-    // This avoids any world block lookup, which can fail due to hitbox/grid misalignment.
-    Block portalBlock = PORTAL_BLOCK_CACHE.get(player.getUUID());
-    if (portalBlock == null) return;
-
-    ResourceKey<Level> home = PORTALS.get().get(portalBlock);
-    if (home == null) return;
-
-    event.setCanceled(true);
-
-    ResourceKey<Level> destination =
-        player.level().dimension().equals(home) ? Level.OVERWORLD : home;
-    ServerLevel destLevel = player.server.getLevel(destination);
-    if (destLevel == null) return;
-
-    // Check for a saved return position in the destination dimension.
-    ReturnKey returnKey = new ReturnKey(player.getUUID(), destination);
-    SavedPosition savedPos = RETURN_POSITIONS.remove(returnKey);
-
-    // Save the player's current position so the return trip can bring them back here.
-    RETURN_POSITIONS.put(
-        new ReturnKey(player.getUUID(), player.level().dimension()),
-        new SavedPosition(player.position(), player.getYRot(), player.getXRot()));
-
-    Teleporter teleporter =
-        savedPos != null
-            ? Teleporter.returning(savedPos.pos(), savedPos.yaw(), savedPos.xRot())
-            : new Teleporter(portalBlock);
-
-    handledPortalTeleports.add(player.getUUID());
-    try {
-      player.changeDimension(destLevel, teleporter);
-    } finally {
-      handledPortalTeleports.remove(player.getUUID());
-      PORTAL_BLOCK_CACHE.remove(player.getUUID());
-    }
-  }
 
   // ── Commands ──────────────────────────────────────────────────────────────
 

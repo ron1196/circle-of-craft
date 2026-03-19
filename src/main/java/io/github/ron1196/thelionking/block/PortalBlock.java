@@ -1,16 +1,17 @@
 package io.github.ron1196.thelionking.block;
 
-import io.github.ron1196.thelionking.event.LionKingForgeEvents;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import io.github.ron1196.thelionking.world.dimension.Teleporter;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +31,16 @@ public class PortalBlock extends Block {
 
   protected static final VoxelShape X_AABB = Block.box(0.0, 0.0, 6.0, 16.0, 16.0, 10.0);
   protected static final VoxelShape Z_AABB = Block.box(6.0, 0.0, 0.0, 10.0, 16.0, 16.0);
+
+  // Countdown ticks per player while they stand in the portal.
+  private static final Map<UUID, Integer> PORTAL_TICKS = new ConcurrentHashMap<>();
+
+  // Saved entry position per (player, source dimension) for the return trip.
+  private record ReturnKey(UUID uuid, ResourceKey<Level> dimension) {}
+
+  private record SavedPosition(Vec3 pos, float yaw, float xRot) {}
+
+  private static final Map<ReturnKey, SavedPosition> RETURN_POSITIONS = new ConcurrentHashMap<>();
 
   private final boolean isOutlands;
 
@@ -117,23 +129,42 @@ public class PortalBlock extends Block {
       return;
     }
 
-    if (entity instanceof Player player) {
-      // Players get the vanilla countdown + overlay; the actual teleport is
-      // intercepted in LionKingForgeEvents.onEntityTravelToDimension().
-      LionKingForgeEvents.PORTAL_BLOCK_CACHE.put(player.getUUID(), this);
-      entity.handleInsidePortal(pos);
+    if (entity instanceof ServerPlayer player) {
+      int ticks = PORTAL_TICKS.merge(player.getUUID(), 1, Integer::sum);
+      if (ticks < player.getPortalWaitTime()) return;
+      PORTAL_TICKS.remove(player.getUUID());
+      player.setPortalCooldown();
+      teleportPlayer(player);
     } else {
-      // Non-player entities teleport instantly (no overlay needed).
+      // Non-player entities teleport instantly.
+      entity.setPortalCooldown();
       ResourceKey<Level> destination = getDestination(level);
-      MinecraftServer server = level.getServer();
-      if (server != null) {
-        ServerLevel destLevel = server.getLevel(destination);
-        if (destLevel != null) {
-          entity.setPortalCooldown();
-          entity.changeDimension(destLevel, new Teleporter(this));
-        }
+      ServerLevel destLevel =
+          level.getServer() != null ? level.getServer().getLevel(destination) : null;
+      if (destLevel != null) {
+        entity.changeDimension(destLevel, new Teleporter(this));
       }
     }
+  }
+
+  private void teleportPlayer(ServerPlayer player) {
+    Level level = player.level();
+    ResourceKey<Level> destination = getDestination(level);
+    ServerLevel destLevel = player.server.getLevel(destination);
+    if (destLevel == null) return;
+
+    // Return the player to where they came from, or find/create a portal on first visit.
+    ReturnKey returnKey = new ReturnKey(player.getUUID(), destination);
+    SavedPosition savedPos = RETURN_POSITIONS.remove(returnKey);
+    RETURN_POSITIONS.put(
+        new ReturnKey(player.getUUID(), level.dimension()),
+        new SavedPosition(player.position(), player.getYRot(), player.getXRot()));
+
+    Teleporter teleporter =
+        savedPos != null
+            ? Teleporter.returning(savedPos.pos(), savedPos.yaw(), savedPos.xRot())
+            : new Teleporter(this);
+    player.changeDimension(destLevel, teleporter);
   }
 
   private ResourceKey<Level> getDestination(Level level) {
