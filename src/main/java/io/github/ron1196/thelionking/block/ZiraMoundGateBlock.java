@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.block;
 
-import io.github.ron1196.thelionking.registry.Items;
+import io.github.ron1196.thelionking.registry.LionKingItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -19,39 +19,39 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ZiraMoundGateBlock extends Block {
 
-  public ZiraMoundGateBlock(Properties properties) {
-    super(properties);
-  }
-
-  @Override
-  public @NotNull InteractionResult use(
-      @NotNull BlockState state,
-      @NotNull Level level,
-      @NotNull BlockPos pos,
-      @NotNull Player player,
-      @NotNull InteractionHand hand,
-      @NotNull BlockHitResult hit) {
-    ItemStack held = player.getItemInHand(hand);
-    if (!held.is(Items.RAFIKI_STICK.get())) {
-      return InteractionResult.PASS;
+    public ZiraMoundGateBlock(Properties properties) {
+        super(properties);
     }
 
-    if (!level.isClientSide) {
-      breakGateChain(level, pos);
+    @Override
+    public @NotNull InteractionResult use(
+            @NotNull BlockState state,
+            @NotNull Level level,
+            @NotNull BlockPos pos,
+            @NotNull Player player,
+            @NotNull InteractionHand hand,
+            @NotNull BlockHitResult hit) {
+        ItemStack held = player.getItemInHand(hand);
+        if (!held.is(LionKingItems.RAFIKI_STICK.get())) {
+            return InteractionResult.PASS;
+        }
+
+        if (!level.isClientSide) {
+            breakGateChain(level, pos);
+        }
+
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
-    return InteractionResult.sidedSuccess(level.isClientSide);
-  }
+    private void breakGateChain(Level level, BlockPos pos) {
+        if (!(level.getBlockState(pos).getBlock() instanceof ZiraMoundGateBlock)) {
+            return;
+        }
 
-  private void breakGateChain(Level level, BlockPos pos) {
-    if (!(level.getBlockState(pos).getBlock() instanceof ZiraMoundGateBlock)) {
-      return;
+        level.destroyBlock(pos, false);
+
+        for (Direction dir : Direction.values()) {
+            breakGateChain(level, pos.relative(dir));
+        }
     }
-
-    level.destroyBlock(pos, false);
-
-    for (Direction dir : Direction.values()) {
-      breakGateChain(level, pos.relative(dir));
-    }
-  }
 }

@@ -1,8 +1,8 @@
 package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
-import io.github.ron1196.thelionking.registry.Items;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
+import io.github.ron1196.thelionking.registry.LionKingItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -251,19 +251,19 @@ public class TreasureMoundFeature extends Feature<NoneFeatureConfiguration> {
         switch (roll) {
             case 0:
                 // Termite dust (substitute for termites, 2-5)
-                return new ItemStack(Items.TERMITE_DUST.get(), 2 + random.nextInt(4));
+                return new ItemStack(LionKingItems.TERMITE_DUST.get(), 2 + random.nextInt(4));
             case 1:
                 // Black Darts (4-8)
-                return new ItemStack(Items.DART_BLACK.get(), 4 + random.nextInt(5));
+                return new ItemStack(LionKingItems.DART_BLACK.get(), 4 + random.nextInt(5));
             case 2:
                 // Nuka Shards (3-10)
-                return new ItemStack(Items.NUKA_SHARD.get(), 3 + random.nextInt(8));
+                return new ItemStack(LionKingItems.NUKA_SHARD.get(), 3 + random.nextInt(8));
             case 3:
                 // Black Feathers (2-5)
-                return new ItemStack(Items.FEATHER_BLACK.get(), 2 + random.nextInt(4));
+                return new ItemStack(LionKingItems.FEATHER_BLACK.get(), 2 + random.nextInt(4));
             case 4:
                 // Cooked Lion Meat (2-5)
-                return new ItemStack(Items.LION_COOKED.get(), 2 + random.nextInt(4));
+                return new ItemStack(LionKingItems.LION_COOKED.get(), 2 + random.nextInt(4));
             case 5: {
                 // Corrupt tool (random, enchanted)
                 ItemStack tool = getRandomCorruptTool(random);
@@ -278,15 +278,15 @@ public class TreasureMoundFeature extends Feature<NoneFeatureConfiguration> {
             }
             case 7:
                 // Kivulite (1-3)
-                return new ItemStack(Items.KIVULITE.get(), 1 + random.nextInt(3));
+                return new ItemStack(LionKingItems.KIVULITE.get(), 1 + random.nextInt(3));
             case 8:
                 // Extra Nuka Shards (3-10)
-                return new ItemStack(Items.NUKA_SHARD.get(), 3 + random.nextInt(8));
+                return new ItemStack(LionKingItems.NUKA_SHARD.get(), 3 + random.nextInt(8));
             case 9:
                 // Extra Black Darts (4-8)
-                return new ItemStack(Items.DART_BLACK.get(), 4 + random.nextInt(5));
+                return new ItemStack(LionKingItems.DART_BLACK.get(), 4 + random.nextInt(5));
             default:
-                return new ItemStack(Items.NUKA_SHARD.get(), 3 + random.nextInt(8));
+                return new ItemStack(LionKingItems.NUKA_SHARD.get(), 3 + random.nextInt(8));
         }
     }
 
@@ -294,17 +294,17 @@ public class TreasureMoundFeature extends Feature<NoneFeatureConfiguration> {
         int pick = random.nextInt(5);
         switch (pick) {
             case 0:
-                return new ItemStack(Items.CORRUPT_SWORD.get());
+                return new ItemStack(LionKingItems.CORRUPT_SWORD.get());
             case 1:
-                return new ItemStack(Items.CORRUPT_PICKAXE.get());
+                return new ItemStack(LionKingItems.CORRUPT_PICKAXE.get());
             case 2:
-                return new ItemStack(Items.CORRUPT_AXE.get());
+                return new ItemStack(LionKingItems.CORRUPT_AXE.get());
             case 3:
-                return new ItemStack(Items.CORRUPT_SHOVEL.get());
+                return new ItemStack(LionKingItems.CORRUPT_SHOVEL.get());
             case 4:
-                return new ItemStack(Items.CORRUPT_HOE.get());
+                return new ItemStack(LionKingItems.CORRUPT_HOE.get());
             default:
-                return new ItemStack(Items.CORRUPT_SWORD.get());
+                return new ItemStack(LionKingItems.CORRUPT_SWORD.get());
         }
     }
 
@@ -312,17 +312,17 @@ public class TreasureMoundFeature extends Feature<NoneFeatureConfiguration> {
         int pick = random.nextInt(5);
         switch (pick) {
             case 0:
-                return new ItemStack(Items.KIVULITE_SWORD.get());
+                return new ItemStack(LionKingItems.KIVULITE_SWORD.get());
             case 1:
-                return new ItemStack(Items.KIVULITE_PICKAXE.get());
+                return new ItemStack(LionKingItems.KIVULITE_PICKAXE.get());
             case 2:
-                return new ItemStack(Items.KIVULITE_AXE.get());
+                return new ItemStack(LionKingItems.KIVULITE_AXE.get());
             case 3:
-                return new ItemStack(Items.KIVULITE_SHOVEL.get());
+                return new ItemStack(LionKingItems.KIVULITE_SHOVEL.get());
             case 4:
-                return new ItemStack(Items.KIVULITE_HOE.get());
+                return new ItemStack(LionKingItems.KIVULITE_HOE.get());
             default:
-                return new ItemStack(Items.KIVULITE_SWORD.get());
+                return new ItemStack(LionKingItems.KIVULITE_SWORD.get());
         }
     }
 }

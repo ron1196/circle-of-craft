@@ -8,7 +8,7 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 ## Missing Item Behaviour
 
-- [ ] **`ground_rhino_horn` has no interaction logic** — Old mod: `LKItemGroundRhinoHorn.itemInteractionForEntity` right-click on a breeding animal forces `procreate()` (spawns baby, heart particles) and fires `USE_RHINO_HORN` trigger. Currently registered as a plain `Item`. Needs a `GroundRhinoHornItem` class with `interactLivingEntity` override. The `thelionking:use_rhino_horn` trigger is registered and wired into the `ground_rhino_horn` advancement — it just won't fire until the item class is implemented.
+- [x] ~~**`ground_rhino_horn` has no interaction logic**~~ — RESOLVED: `GroundRhinoHornItem` with `interactLivingEntity` — right-click on in-love animal with nearby mate forces instant breeding (1/3 fail chance with smoke). Fires `USE_RHINO_HORN` trigger.
 
 ## Missing Items (not yet ported from old mod)
 

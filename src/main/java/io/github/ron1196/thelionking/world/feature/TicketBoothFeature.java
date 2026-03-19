@@ -2,8 +2,8 @@ package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
 import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.Items;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
+import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.world.structure.LionKingStructurePiece;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -386,10 +386,10 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
             }
             Item ticketLionArmor =
                     switch (random.nextInt(4)) {
-                        case 0 -> Items.TICKET_LION_HEAD.get();
-                        case 1 -> Items.TICKET_LION_SUIT.get();
-                        case 2 -> Items.TICKET_LION_LEGS.get();
-                        default -> Items.TICKET_LION_FEET.get();
+                        case 0 -> LionKingItems.TICKET_LION_HEAD.get();
+                        case 1 -> LionKingItems.TICKET_LION_SUIT.get();
+                        case 2 -> LionKingItems.TICKET_LION_LEGS.get();
+                        default -> LionKingItems.TICKET_LION_FEET.get();
                     };
             chest.setItem(random.nextInt(chest.getContainerSize()), new ItemStack(ticketLionArmor));
         }

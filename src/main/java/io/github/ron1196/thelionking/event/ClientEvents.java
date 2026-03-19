@@ -15,7 +15,7 @@ import io.github.ron1196.thelionking.entity.projectile.DartEntity;
 import io.github.ron1196.thelionking.entity.projectile.SpearEntity;
 import io.github.ron1196.thelionking.registry.BlockEntityTypes;
 import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.Items;
+import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.registry.MenuTypes;
 import io.github.ron1196.thelionking.registry.ParticleTypes;
 import net.minecraft.client.KeyMapping;
@@ -316,7 +316,7 @@ public class ClientEvents {
 
             // Hyena head item variant property
             ItemProperties.register(
-                    Items.HYENA_HEAD_ITEM.get(),
+                    LionKingItems.HYENA_HEAD_ITEM.get(),
                     new ResourceLocation(TheLionKingMod.MOD_ID, "hyena_type"),
                     (stack, level, entity, seed) -> {
                         CompoundTag tag = stack.getTag();

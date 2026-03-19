@@ -12,20 +12,23 @@ import io.github.ron1196.thelionking.entity.hostile.SkeletalHyenaEntity;
 import io.github.ron1196.thelionking.entity.npc.ScarEntity;
 import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
+import io.github.ron1196.thelionking.item.GroundRhinoHornItem;
 import io.github.ron1196.thelionking.network.LoginSyncPacket;
 import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.registry.Enchantments;
 import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.Items;
+import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -36,6 +39,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
@@ -43,189 +47,193 @@ import net.minecraftforge.network.PacketDistributor;
 @Mod.EventBusSubscriber(modid = TheLionKingMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class LionKingForgeEvents {
 
-  // ── Commands ──────────────────────────────────────────────────────────────
+    // ── Commands ──────────────────────────────────────────────────────────────
 
-  @SubscribeEvent
-  public static void onRegisterCommands(RegisterCommandsEvent event) {
-    LionKingCommands.register(event.getDispatcher());
-  }
-
-  // ── Player Login — sync world state and quest data to client ───────────────
-
-  @SubscribeEvent
-  public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-    if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-      ServerLevel overworld = serverPlayer.server.overworld();
-      WorldData worldData = WorldData.get(overworld);
-      PlayerData playerData = PlayerDataProvider.get(serverPlayer);
-      Networking.CHANNEL.send(
-          PacketDistributor.PLAYER.with(() -> serverPlayer),
-          new LoginSyncPacket(worldData, playerData));
-    }
-  }
-
-  // ── AttackEntityEvent (punch Scar Rug to pick it up) ───────────────────────
-
-  @SubscribeEvent
-  public static void onAttackEntity(AttackEntityEvent event) {
-    if (event.getTarget() instanceof RugEntity rug) {
-      rug.dropAsItem();
-    }
-  }
-
-  // ── LivingHurtEvent ─────────────────────────────────────────────────────────
-
-  @SubscribeEvent
-  public static void onLivingHurt(LivingHurtEvent event) {
-    LivingEntity target = event.getEntity();
-    Entity attacker = event.getSource().getEntity();
-
-    // Scourge of Hyenas enchantment bonus damage
-    if (attacker instanceof Player player) {
-      ItemStack weapon = player.getMainHandItem();
-      int scourgeLevel =
-          EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SCOURGE_OF_HYENAS.get(), weapon);
-
-      if (scourgeLevel > 0
-          && (target instanceof HyenaEntity || target instanceof SkeletalHyenaEntity)) {
-        event.setAmount(event.getAmount() + 2.5F * scourgeLevel);
-      }
+    @SubscribeEvent
+    public static void onRegisterCommands(RegisterCommandsEvent event) {
+        LionKingCommands.register(event.getDispatcher());
     }
 
-    // Peacock boots negate fall damage
-    if (event.getSource().is(DamageTypes.FALL)) {
-      ItemStack boots = target.getItemBySlot(EquipmentSlot.FEET);
-      if (boots.is(Items.PEACOCK_BOOTS.get())) {
+    // ── Player Login — sync world state and quest data to client ───────────────
+
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+            ServerLevel overworld = serverPlayer.server.overworld();
+            WorldData worldData = WorldData.get(overworld);
+            PlayerData playerData = PlayerDataProvider.get(serverPlayer);
+            Networking.CHANNEL.send(
+                    PacketDistributor.PLAYER.with(() -> serverPlayer), new LoginSyncPacket(worldData, playerData));
+        }
+    }
+
+    // ── EntityInteract — Ground Rhino Horn intercepts before mobInteract() ──────
+
+    @SubscribeEvent
+    public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
+        ItemStack held = event.getItemStack();
+        if (!(held.getItem() instanceof GroundRhinoHornItem)) return;
+        if (!(event.getTarget() instanceof Animal animal)) return;
+        if (animal.isBaby()) return;
+
+        InteractionResult result = GroundRhinoHornItem.tryBreed(animal, event.getEntity(), held);
+        event.setCancellationResult(result);
         event.setCanceled(true);
-      }
-    }
-  }
-
-  // ── LivingDeathEvent ────────────────────────────────────────────────────────
-
-  @SubscribeEvent
-  public static void onLivingDeath(LivingDeathEvent event) {
-    LivingEntity entity = event.getEntity();
-    Entity killer = event.getSource().getEntity();
-
-    // Hyena special drop: hyena head with looting
-    if (entity instanceof HyenaEntity && killer instanceof Player player) {
-      int lootingLevel =
-          EnchantmentHelper.getItemEnchantmentLevel(
-              net.minecraft.world.item.enchantment.Enchantments.MOB_LOOTING,
-              player.getMainHandItem());
-
-      float dropChance = 0.05F + 0.03F * lootingLevel;
-      if (entity.level().random.nextFloat() < dropChance) {
-        entity.spawnAtLocation(new ItemStack(Items.HYENA_HEAD_ITEM.get()));
-        LionKingCriteriaTriggers.BEHEAD_HYENA.trigger((ServerPlayer) player);
-      }
     }
 
-    // Scar/Zira kill triggers
-    if (entity instanceof ScarEntity && killer instanceof ServerPlayer serverPlayer) {
-      LionKingCriteriaTriggers.KILL_SCAR.trigger(serverPlayer);
-    }
-    if (entity instanceof ZiraEntity && killer instanceof ServerPlayer serverPlayer) {
-      LionKingCriteriaTriggers.KILL_ZIRA.trigger(serverPlayer);
-    }
-  }
+    // ── AttackEntityEvent (punch Scar Rug to pick it up) ───────────────────────
 
-  // ── TickEvent.PlayerTickEvent ────────────────────────────────────────────────
-
-  @SubscribeEvent
-  public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-    if (event.phase != TickEvent.Phase.END) {
-      return;
-    }
-    if (event.player.level().isClientSide()) {
-      return;
+    @SubscribeEvent
+    public static void onAttackEntity(AttackEntityEvent event) {
+        if (event.getTarget() instanceof RugEntity rug) {
+            rug.dropAsItem();
+        }
     }
 
-    if (!(event.player instanceof ServerPlayer serverPlayer)) return;
-    if (!serverPlayer.isAlive()) return;
+    // ── LivingHurtEvent ─────────────────────────────────────────────────────────
 
-    PlayerData playerData = PlayerDataProvider.get(serverPlayer);
+    @SubscribeEvent
+    public static void onLivingHurt(LivingHurtEvent event) {
+        LivingEntity target = event.getEntity();
+        Entity attacker = event.getSource().getEntity();
 
-    // Dimension entry triggers (fire once per player)
-    if (serverPlayer.level().dimension() == Dimensions.PRIDE_LANDS_LEVEL
-        && !playerData.hasEnteredPrideLands()) {
-      playerData.setEnteredPrideLands(true);
-      LionKingCriteriaTriggers.ENTER_PRIDE_LANDS.trigger(serverPlayer);
-    } else if (serverPlayer.level().dimension() == Dimensions.OUTLANDS_LEVEL
-        && !playerData.hasEnteredOutlands()) {
-      playerData.setEnteredOutlands(true);
-      LionKingCriteriaTriggers.ENTER_OUTLANDS.trigger(serverPlayer);
-    } else if (serverPlayer.level().dimension() == Dimensions.UPENDI_LEVEL
-        && !playerData.hasEnteredUpendi()) {
-      playerData.setEnteredUpendi(true);
-      LionKingCriteriaTriggers.ENTER_UPENDI.trigger(serverPlayer);
-    }
-  }
+        // Scourge of Hyenas enchantment bonus damage
+        if (attacker instanceof Player player) {
+            ItemStack weapon = player.getMainHandItem();
+            int scourgeLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SCOURGE_OF_HYENAS.get(), weapon);
 
-  // ── TickEvent.LevelTickEvent ────────────────────────────────────────────────
+            if (scourgeLevel > 0 && (target instanceof HyenaEntity || target instanceof SkeletalHyenaEntity)) {
+                event.setAmount(event.getAmount() + 2.5F * scourgeLevel);
+            }
+        }
 
-  @SubscribeEvent
-  public static void onLevelTick(TickEvent.LevelTickEvent event) {
-    if (event.phase != TickEvent.Phase.END) {
-      return;
-    }
-    if (!(event.level instanceof ServerLevel serverLevel)) {
-      return;
+        // Peacock boots negate fall damage
+        if (event.getSource().is(DamageTypes.FALL)) {
+            ItemStack boots = target.getItemBySlot(EquipmentSlot.FEET);
+            if (boots.is(LionKingItems.PEACOCK_BOOTS.get())) {
+                event.setCanceled(true);
+            }
+        }
     }
 
-    // Save level data every 100 ticks if dirty
-    if (serverLevel.getGameTime() % 100 == 0) {
-      WorldData data = WorldData.get(serverLevel);
-      if (data.isDirty()) {
-        data.setDirty();
-      }
+    // ── LivingDeathEvent ────────────────────────────────────────────────────────
+
+    @SubscribeEvent
+    public static void onLivingDeath(LivingDeathEvent event) {
+        LivingEntity entity = event.getEntity();
+        Entity killer = event.getSource().getEntity();
+
+        // Hyena special drop: hyena head with looting
+        if (entity instanceof HyenaEntity && killer instanceof Player player) {
+            int lootingLevel = EnchantmentHelper.getItemEnchantmentLevel(
+                    net.minecraft.world.item.enchantment.Enchantments.MOB_LOOTING, player.getMainHandItem());
+
+            float dropChance = 0.05F + 0.03F * lootingLevel;
+            if (entity.level().random.nextFloat() < dropChance) {
+                entity.spawnAtLocation(new ItemStack(LionKingItems.HYENA_HEAD_ITEM.get()));
+                LionKingCriteriaTriggers.BEHEAD_HYENA.trigger((ServerPlayer) player);
+            }
+        }
+
+        // Scar/Zira kill triggers
+        if (entity instanceof ScarEntity && killer instanceof ServerPlayer serverPlayer) {
+            LionKingCriteriaTriggers.KILL_SCAR.trigger(serverPlayer);
+        }
+        if (entity instanceof ZiraEntity && killer instanceof ServerPlayer serverPlayer) {
+            LionKingCriteriaTriggers.KILL_ZIRA.trigger(serverPlayer);
+        }
     }
 
-    // Outlands: Zira stage 22 — spawn Zira with dramatic lightning when player is on surface
-    if (serverLevel.dimension() == Dimensions.OUTLANDS_LEVEL) {
-      handleZiraSpawnEvent(serverLevel);
+    // ── TickEvent.PlayerTickEvent ────────────────────────────────────────────────
+
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) {
+            return;
+        }
+        if (event.player.level().isClientSide()) {
+            return;
+        }
+
+        if (!(event.player instanceof ServerPlayer serverPlayer)) return;
+        if (!serverPlayer.isAlive()) return;
+
+        PlayerData playerData = PlayerDataProvider.get(serverPlayer);
+
+        // Dimension entry triggers (fire once per player)
+        if (serverPlayer.level().dimension() == Dimensions.PRIDE_LANDS_LEVEL && !playerData.hasEnteredPrideLands()) {
+            playerData.setEnteredPrideLands(true);
+            LionKingCriteriaTriggers.ENTER_PRIDE_LANDS.trigger(serverPlayer);
+        } else if (serverPlayer.level().dimension() == Dimensions.OUTLANDS_LEVEL && !playerData.hasEnteredOutlands()) {
+            playerData.setEnteredOutlands(true);
+            LionKingCriteriaTriggers.ENTER_OUTLANDS.trigger(serverPlayer);
+        } else if (serverPlayer.level().dimension() == Dimensions.UPENDI_LEVEL && !playerData.hasEnteredUpendi()) {
+            playerData.setEnteredUpendi(true);
+            LionKingCriteriaTriggers.ENTER_UPENDI.trigger(serverPlayer);
+        }
     }
-  }
 
-  /**
-   * When ziraStage == 22 and a player is on the surface of the Outlands, spawn Zira nearby with a
-   * visual lightning bolt.
-   */
-  private static void handleZiraSpawnEvent(ServerLevel level) {
-    WorldData data = WorldData.get(level);
-    if (data.ziraStage != 22) return;
-    if (level.players().isEmpty()) return;
+    // ── TickEvent.LevelTickEvent ────────────────────────────────────────────────
 
-    Player player = level.players().get(0);
-    int px = Mth.floor(player.getX());
-    int py = Mth.floor(player.getBoundingBox().minY);
-    int pz = Mth.floor(player.getZ());
+    @SubscribeEvent
+    public static void onLevelTick(TickEvent.LevelTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) {
+            return;
+        }
+        if (!(event.level instanceof ServerLevel serverLevel)) {
+            return;
+        }
 
-    // Player must be on the surface (can see sky and at heightmap level)
-    int surfaceY =
-        level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, new BlockPos(px, 0, pz)).getY();
-    if (!level.canSeeSky(new BlockPos(px, py, pz)) || py != surfaceY) return;
+        // Save level data every 100 ticks if dirty
+        if (serverLevel.getGameTime() % 100 == 0) {
+            WorldData data = WorldData.get(serverLevel);
+            if (data.isDirty()) {
+                data.setDirty();
+            }
+        }
 
-    // Spawn Zira at a random nearby position
-    int spawnX = px - 8 + level.random.nextInt(17);
-    int spawnZ = pz - 8 + level.random.nextInt(17);
-    int spawnY =
-        level
-            .getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, new BlockPos(spawnX, 0, spawnZ))
-            .getY();
-
-    ZiraEntity zira = EntityTypes.ZIRA.get().create(level);
-    if (zira != null) {
-      zira.moveTo(spawnX, spawnY, spawnZ, 0.0F, 0.0F);
-      zira.getLookControl().setLookAt(player.getX(), player.getEyeY(), player.getZ(), 10.0F, 40.0F);
-      level.addFreshEntity(zira);
-
-      // Visual lightning bolt at Zira's spawn position
-      level.addFreshEntity(new LightningBoltEntity(level, spawnX, spawnY, spawnZ, 0, player));
-
-      data.ziraStage = 23;
-      data.setDirty();
+        // Outlands: Zira stage 22 — spawn Zira with dramatic lightning when player is on surface
+        if (serverLevel.dimension() == Dimensions.OUTLANDS_LEVEL) {
+            handleZiraSpawnEvent(serverLevel);
+        }
     }
-  }
+
+    /**
+     * When ziraStage == 22 and a player is on the surface of the Outlands, spawn Zira nearby with a
+     * visual lightning bolt.
+     */
+    private static void handleZiraSpawnEvent(ServerLevel level) {
+        WorldData data = WorldData.get(level);
+        if (data.ziraStage != 22) return;
+        if (level.players().isEmpty()) return;
+
+        Player player = level.players().get(0);
+        int px = Mth.floor(player.getX());
+        int py = Mth.floor(player.getBoundingBox().minY);
+        int pz = Mth.floor(player.getZ());
+
+        // Player must be on the surface (can see sky and at heightmap level)
+        int surfaceY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, new BlockPos(px, 0, pz))
+                .getY();
+        if (!level.canSeeSky(new BlockPos(px, py, pz)) || py != surfaceY) return;
+
+        // Spawn Zira at a random nearby position
+        int spawnX = px - 8 + level.random.nextInt(17);
+        int spawnZ = pz - 8 + level.random.nextInt(17);
+        int spawnY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, new BlockPos(spawnX, 0, spawnZ))
+                .getY();
+
+        ZiraEntity zira = EntityTypes.ZIRA.get().create(level);
+        if (zira != null) {
+            zira.moveTo(spawnX, spawnY, spawnZ, 0.0F, 0.0F);
+            zira.getLookControl().setLookAt(player.getX(), player.getEyeY(), player.getZ(), 10.0F, 40.0F);
+            level.addFreshEntity(zira);
+
+            // Visual lightning bolt at Zira's spawn position
+            level.addFreshEntity(new LightningBoltEntity(level, spawnX, spawnY, spawnZ, 0, player));
+
+            data.ziraStage = 23;
+            data.setDirty();
+        }
+    }
 }
