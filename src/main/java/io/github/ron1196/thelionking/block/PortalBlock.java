@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -23,225 +24,249 @@ import org.jetbrains.annotations.NotNull;
 
 public class PortalBlock extends Block {
 
-    public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
+  public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
 
-    protected static final VoxelShape X_AABB = Block.box(0.0, 0.0, 6.0, 16.0, 16.0, 10.0);
-    protected static final VoxelShape Z_AABB = Block.box(6.0, 0.0, 0.0, 10.0, 16.0, 16.0);
+  protected static final VoxelShape X_AABB = Block.box(0.0, 0.0, 6.0, 16.0, 16.0, 10.0);
+  protected static final VoxelShape Z_AABB = Block.box(6.0, 0.0, 0.0, 10.0, 16.0, 16.0);
 
-    private final boolean isOutlands;
+  private final boolean isOutlands;
 
-    public PortalBlock(Properties properties, boolean isOutlands) {
-        super(properties);
-        this.isOutlands = isOutlands;
-        this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.X));
+  public PortalBlock(Properties properties, boolean isOutlands) {
+    super(properties);
+    this.isOutlands = isOutlands;
+    this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.X));
+  }
+
+  @Override
+  public @NotNull VoxelShape getShape(
+      BlockState state,
+      @NotNull BlockGetter level,
+      @NotNull BlockPos pos,
+      @NotNull CollisionContext context) {
+    return state.getValue(AXIS) == Direction.Axis.Z ? Z_AABB : X_AABB;
+  }
+
+  @Override
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+    builder.add(AXIS);
+  }
+
+  @Override
+  public @NotNull BlockState updateShape(
+      BlockState state,
+      Direction direction,
+      @NotNull BlockState neighborState,
+      @NotNull LevelAccessor level,
+      @NotNull BlockPos pos,
+      @NotNull BlockPos neighborPos) {
+    Direction.Axis portalAxis = state.getValue(AXIS);
+    if (direction.getAxis() == portalAxis) {
+      // Check vertical neighbors
+      return state;
     }
-
-    @Override
-    public @NotNull VoxelShape getShape(
-            BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-        return state.getValue(AXIS) == Direction.Axis.Z ? Z_AABB : X_AABB;
+    if (!isValidPortalFrame(level, pos)) {
+      return net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
     }
+    return state;
+  }
 
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(AXIS);
-    }
-
-    @Override
-    public @NotNull BlockState updateShape(
-            BlockState state,
-            Direction direction,
-            @NotNull BlockState neighborState,
-            @NotNull LevelAccessor level,
-            @NotNull BlockPos pos,
-            @NotNull BlockPos neighborPos) {
-        Direction.Axis portalAxis = state.getValue(AXIS);
-        if (direction.getAxis() == portalAxis) {
-            // Check vertical neighbors
-            return state;
-        }
-        if (!isValidPortalFrame(level, pos)) {
-            return net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
-        }
-        return state;
-    }
-
-    private boolean isValidPortalFrame(LevelAccessor level, BlockPos pos) {
-        Block frameBlock = getFrameBlock();
-        // Check we still have frame blocks around us
-        for (Direction dir : Direction.values()) {
-            if (dir == Direction.UP || dir == Direction.DOWN) continue;
-            BlockPos neighbor = pos.relative(dir);
-            BlockState state = level.getBlockState(neighbor);
-            if (!state.is(this) && !state.is(frameBlock)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private Block getFrameBlock() {
-        return isOutlands ? LionKingBlocks.OUTLANDS_PORTAL_FRAME.get() : LionKingBlocks.PRIDE_PORTAL_FRAME.get();
-    }
-
-    public boolean trySpawnPortal(LevelAccessor level, BlockPos pos) {
-        PortalShape shape = new PortalShape(level, pos, Direction.Axis.X, getFrameBlock(), this);
-        if (shape.isValid()) {
-            shape.createPortalBlocks();
-            return true;
-        }
-        shape = new PortalShape(level, pos, Direction.Axis.Z, getFrameBlock(), this);
-        if (shape.isValid()) {
-            shape.createPortalBlocks();
-            return true;
-        }
+  private boolean isValidPortalFrame(LevelAccessor level, BlockPos pos) {
+    Block frameBlock = getFrameBlock();
+    // Check we still have frame blocks around us
+    for (Direction dir : Direction.values()) {
+      if (dir == Direction.UP || dir == Direction.DOWN) continue;
+      BlockPos neighbor = pos.relative(dir);
+      BlockState state = level.getBlockState(neighbor);
+      if (!state.is(this) && !state.is(frameBlock)) {
         return false;
+      }
+    }
+    return true;
+  }
+
+  private Block getFrameBlock() {
+    return isOutlands
+        ? LionKingBlocks.OUTLANDS_PORTAL_FRAME.get()
+        : LionKingBlocks.PRIDE_PORTAL_FRAME.get();
+  }
+
+  public boolean trySpawnPortal(LevelAccessor level, BlockPos pos) {
+    PortalShape shape = new PortalShape(level, pos, Direction.Axis.X, getFrameBlock(), this);
+    if (shape.isValid()) {
+      shape.createPortalBlocks();
+      return true;
+    }
+    shape = new PortalShape(level, pos, Direction.Axis.Z, getFrameBlock(), this);
+    if (shape.isValid()) {
+      shape.createPortalBlocks();
+      return true;
+    }
+    return false;
+  }
+
+  @Override
+  public void entityInside(
+      @NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
+    if (level.isClientSide
+        || entity.isPassenger()
+        || entity.isVehicle()
+        || !entity.canChangeDimensions()) return;
+    if (entity.isOnPortalCooldown()) {
+      entity.setPortalCooldown();
+      return;
     }
 
-    @Override
-    public void entityInside(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
-        if (!level.isClientSide && !entity.isPassenger() && !entity.isVehicle() && entity.canChangeDimensions()) {
-            if (entity.isOnPortalCooldown()) {
-                entity.setPortalCooldown();
-                return;
-            }
-
-            ResourceKey<Level> destination;
-            if (isOutlands) {
-                destination =
-                        level.dimension() == Dimensions.OUTLANDS_LEVEL ? Level.OVERWORLD : Dimensions.OUTLANDS_LEVEL;
-            } else {
-                destination = level.dimension() == Dimensions.PRIDE_LANDS_LEVEL
-                        ? Level.OVERWORLD
-                        : Dimensions.PRIDE_LANDS_LEVEL;
-            }
-
-            MinecraftServer server = level.getServer();
-            if (server != null) {
-                ServerLevel destLevel = server.getLevel(destination);
-                if (destLevel != null) {
-                    entity.setPortalCooldown();
-                    entity.changeDimension(destLevel, new Teleporter(isOutlands));
-                }
-            }
+    if (entity instanceof Player) {
+      // Players get the vanilla countdown + overlay; the actual teleport is
+      // intercepted in LKForgeEvents.onEntityTravelToDimension().
+      entity.handleInsidePortal(pos);
+    } else {
+      // Non-player entities teleport instantly (no overlay needed).
+      ResourceKey<Level> destination = getDestination(level);
+      MinecraftServer server = level.getServer();
+      if (server != null) {
+        ServerLevel destLevel = server.getLevel(destination);
+        if (destLevel != null) {
+          entity.setPortalCooldown();
+          entity.changeDimension(destLevel, new Teleporter(isOutlands));
         }
+      }
+    }
+  }
+
+  private ResourceKey<Level> getDestination(Level level) {
+    if (isOutlands) {
+      return level.dimension() == Dimensions.OUTLANDS_LEVEL
+          ? Level.OVERWORLD
+          : Dimensions.OUTLANDS_LEVEL;
+    } else {
+      return level.dimension() == Dimensions.PRIDE_LANDS_LEVEL
+          ? Level.OVERWORLD
+          : Dimensions.PRIDE_LANDS_LEVEL;
+    }
+  }
+
+  public static class PortalShape {
+    private final LevelAccessor level;
+    private final Direction.Axis axis;
+    private final Block frameBlock;
+    private final Block portalBlock;
+    private BlockPos bottomLeft;
+    private int width;
+    private int height;
+
+    public PortalShape(
+        LevelAccessor level,
+        BlockPos pos,
+        Direction.Axis axis,
+        Block frameBlock,
+        Block portalBlock) {
+      this.level = level;
+      this.axis = axis;
+      this.frameBlock = frameBlock;
+      this.portalBlock = portalBlock;
+      this.calculateShape(pos);
     }
 
-    public static class PortalShape {
-        private final LevelAccessor level;
-        private final Direction.Axis axis;
-        private final Block frameBlock;
-        private final Block portalBlock;
-        private BlockPos bottomLeft;
-        private int width;
-        private int height;
+    private void calculateShape(BlockPos pos) {
+      // Find bottom-left corner
+      Direction leftDir = axis == Direction.Axis.X ? Direction.WEST : Direction.NORTH;
 
-        public PortalShape(
-                LevelAccessor level, BlockPos pos, Direction.Axis axis, Block frameBlock, Block portalBlock) {
-            this.level = level;
-            this.axis = axis;
-            this.frameBlock = frameBlock;
-            this.portalBlock = portalBlock;
-            this.calculateShape(pos);
-        }
+      // Go left until we hit a frame block
+      BlockPos cursor = pos;
+      while (level.getBlockState(cursor.relative(leftDir)).isAir()
+          || level.getBlockState(cursor.relative(leftDir)).is(portalBlock)) {
+        cursor = cursor.relative(leftDir);
+      }
 
-        private void calculateShape(BlockPos pos) {
-            // Find bottom-left corner
-            Direction leftDir = axis == Direction.Axis.X ? Direction.WEST : Direction.NORTH;
+      // Go down until we hit a frame block
+      while (level.getBlockState(cursor.below()).isAir()
+          || level.getBlockState(cursor.below()).is(portalBlock)) {
+        cursor = cursor.below();
+      }
 
-            // Go left until we hit a frame block
-            BlockPos cursor = pos;
-            while (level.getBlockState(cursor.relative(leftDir)).isAir()
-                    || level.getBlockState(cursor.relative(leftDir)).is(portalBlock)) {
-                cursor = cursor.relative(leftDir);
-            }
+      this.bottomLeft = cursor;
 
-            // Go down until we hit a frame block
-            while (level.getBlockState(cursor.below()).isAir()
-                    || level.getBlockState(cursor.below()).is(portalBlock)) {
-                cursor = cursor.below();
-            }
+      // Calculate width (should be 2)
+      Direction rightDir = leftDir.getOpposite();
+      this.width = 0;
+      cursor = bottomLeft;
+      while (this.width < 4) {
+        BlockState state = level.getBlockState(cursor);
+        if (!state.isAir() && !state.is(portalBlock)) break;
+        cursor = cursor.relative(rightDir);
+        this.width++;
+      }
 
-            this.bottomLeft = cursor;
-
-            // Calculate width (should be 2)
-            Direction rightDir = leftDir.getOpposite();
-            this.width = 0;
-            cursor = bottomLeft;
-            while (this.width < 4) {
-                BlockState state = level.getBlockState(cursor);
-                if (!state.isAir() && !state.is(portalBlock)) break;
-                cursor = cursor.relative(rightDir);
-                this.width++;
-            }
-
-            // Calculate height (should be 3)
-            this.height = 0;
-            cursor = bottomLeft;
-            while (this.height < 5) {
-                BlockState state = level.getBlockState(cursor);
-                if (!state.isAir() && !state.is(portalBlock)) break;
-                cursor = cursor.above();
-                this.height++;
-            }
-        }
-
-        public boolean isValid() {
-            if (width != 2 || height != 3) return false;
-
-            Direction leftDir = axis == Direction.Axis.X ? Direction.WEST : Direction.NORTH;
-            Direction rightDir = leftDir.getOpposite();
-
-            // Check frame blocks
-            for (int y = 0; y < height; y++) {
-                // Left column
-                if (!level.getBlockState(bottomLeft.above(y).relative(leftDir)).is(frameBlock)) return false;
-                // Right column
-                if (!level.getBlockState(bottomLeft.above(y).relative(rightDir, width))
-                        .is(frameBlock)) return false;
-            }
-
-            for (int x = 0; x < width; x++) {
-                BlockPos xPos = bottomLeft.relative(rightDir, x);
-                // Bottom row
-                if (!level.getBlockState(xPos.below()).is(frameBlock)) return false;
-                // Top row
-                if (!level.getBlockState(xPos.above(height)).is(frameBlock)) return false;
-            }
-
-            // Check corners
-            if (!level.getBlockState(bottomLeft.below().relative(leftDir)).is(frameBlock)) return false;
-            if (!level.getBlockState(bottomLeft.below().relative(rightDir, width))
-                    .is(frameBlock)) return false;
-            if (!level.getBlockState(bottomLeft.above(height).relative(leftDir)).is(frameBlock)) return false;
-            if (!level.getBlockState(bottomLeft.above(height).relative(rightDir, width))
-                    .is(frameBlock)) return false;
-
-            // Check interior is all air or portal
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
-                    BlockPos p = bottomLeft.above(y).relative(rightDir, x);
-                    BlockState state = level.getBlockState(p);
-                    if (!state.isAir() && !state.is(portalBlock)) return false;
-                }
-            }
-
-            return true;
-        }
-
-        public void createPortalBlocks() {
-            Direction rightDir = axis == Direction.Axis.X ? Direction.EAST : Direction.SOUTH;
-            BlockState portalState = portalBlock.defaultBlockState();
-            if (portalState.hasProperty(PortalBlock.AXIS)) {
-                portalState = portalState.setValue(PortalBlock.AXIS, axis);
-            }
-
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
-                    BlockPos p = bottomLeft.above(y).relative(rightDir, x);
-                    level.setBlock(p, portalState, 18);
-                }
-            }
-        }
+      // Calculate height (should be 3)
+      this.height = 0;
+      cursor = bottomLeft;
+      while (this.height < 5) {
+        BlockState state = level.getBlockState(cursor);
+        if (!state.isAir() && !state.is(portalBlock)) break;
+        cursor = cursor.above();
+        this.height++;
+      }
     }
+
+    public boolean isValid() {
+      if (width != 2 || height != 3) return false;
+
+      Direction leftDir = axis == Direction.Axis.X ? Direction.WEST : Direction.NORTH;
+      Direction rightDir = leftDir.getOpposite();
+
+      // Check frame blocks
+      for (int y = 0; y < height; y++) {
+        // Left column
+        if (!level.getBlockState(bottomLeft.above(y).relative(leftDir)).is(frameBlock))
+          return false;
+        // Right column
+        if (!level.getBlockState(bottomLeft.above(y).relative(rightDir, width)).is(frameBlock))
+          return false;
+      }
+
+      for (int x = 0; x < width; x++) {
+        BlockPos xPos = bottomLeft.relative(rightDir, x);
+        // Bottom row
+        if (!level.getBlockState(xPos.below()).is(frameBlock)) return false;
+        // Top row
+        if (!level.getBlockState(xPos.above(height)).is(frameBlock)) return false;
+      }
+
+      // Check corners
+      if (!level.getBlockState(bottomLeft.below().relative(leftDir)).is(frameBlock)) return false;
+      if (!level.getBlockState(bottomLeft.below().relative(rightDir, width)).is(frameBlock))
+        return false;
+      if (!level.getBlockState(bottomLeft.above(height).relative(leftDir)).is(frameBlock))
+        return false;
+      if (!level.getBlockState(bottomLeft.above(height).relative(rightDir, width)).is(frameBlock))
+        return false;
+
+      // Check interior is all air or portal
+      for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+          BlockPos p = bottomLeft.above(y).relative(rightDir, x);
+          BlockState state = level.getBlockState(p);
+          if (!state.isAir() && !state.is(portalBlock)) return false;
+        }
+      }
+
+      return true;
+    }
+
+    public void createPortalBlocks() {
+      Direction rightDir = axis == Direction.Axis.X ? Direction.EAST : Direction.SOUTH;
+      BlockState portalState = portalBlock.defaultBlockState();
+      if (portalState.hasProperty(PortalBlock.AXIS)) {
+        portalState = portalState.setValue(PortalBlock.AXIS, axis);
+      }
+
+      for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+          BlockPos p = bottomLeft.above(y).relative(rightDir, x);
+          level.setBlock(p, portalState, 18);
+        }
+      }
+    }
+  }
 }

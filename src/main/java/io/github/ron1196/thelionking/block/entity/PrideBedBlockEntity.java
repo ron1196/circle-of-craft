@@ -9,12 +9,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class PrideBedBlockEntity extends BedBlockEntity {
 
-    public PrideBedBlockEntity(BlockPos pos, BlockState state) {
-        super(pos, state);
-    }
+  public PrideBedBlockEntity(BlockPos pos, BlockState state) {
+    super(pos, state);
+  }
 
-    @Override
-    public @NotNull BlockEntityType<?> getType() {
-        return BlockEntityTypes.PRIDE_BED.get();
-    }
+  @Override
+  public @NotNull BlockEntityType<?> getType() {
+    return BlockEntityTypes.PRIDE_BED.get();
+  }
 }

@@ -18,46 +18,47 @@ import org.jetbrains.annotations.NotNull;
 
 public class ZebraEntity extends LionKingAnimal {
 
-    public ZebraEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
-        super(type, level);
-    }
+  public ZebraEntity(
+      EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
+    super(type, level);
+  }
 
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.goalSelector.addGoal(1, new AmbientPanicGoal(this));
-        this.goalSelector.addGoal(2, new AmbientAvoidGoal(this));
-    }
+  @Override
+  protected void registerGoals() {
+    super.registerGoals();
+    this.goalSelector.addGoal(1, new AmbientPanicGoal(this));
+    this.goalSelector.addGoal(2, new AmbientAvoidGoal(this));
+  }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return LionKingAnimal.createLKAnimalAttributes()
-                .add(Attributes.MAX_HEALTH, 12.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.22);
-    }
+  public static AttributeSupplier.Builder createAttributes() {
+    return LionKingAnimal.createLKAnimalAttributes()
+        .add(Attributes.MAX_HEALTH, 12.0)
+        .add(Attributes.MOVEMENT_SPEED, 0.22);
+  }
 
-    @Override
-    protected @NotNull SoundEvent getAmbientSound() {
-        return SoundEvents.ZEBRA_AMBIENT.get();
-    }
+  @Override
+  protected @NotNull SoundEvent getAmbientSound() {
+    return SoundEvents.ZEBRA_AMBIENT.get();
+  }
 
-    @Override
-    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
-        return SoundEvents.ZEBRA_HURT.get();
-    }
+  @Override
+  protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
+    return SoundEvents.ZEBRA_HURT.get();
+  }
 
-    @Override
-    protected @NotNull SoundEvent getDeathSound() {
-        return SoundEvents.ZEBRA_DEATH.get();
-    }
+  @Override
+  protected @NotNull SoundEvent getDeathSound() {
+    return SoundEvents.ZEBRA_DEATH.get();
+  }
 
-    @Override
-    protected ItemStack getQuestReward() {
-        return new ItemStack(Items.LEATHER, 3 + QUEST_RANDOM.nextInt(3));
-    }
+  @Override
+  protected ItemStack getQuestReward() {
+    return new ItemStack(Items.LEATHER, 3 + QUEST_RANDOM.nextInt(3));
+  }
 
-    @Nullable
-    @Override
-    public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob mate) {
-        return null;
-    }
+  @Nullable
+  @Override
+  public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob mate) {
+    return null;
+  }
 }

@@ -21,67 +21,68 @@ import org.jetbrains.annotations.NotNull;
 
 public class DikDikEntity extends LionKingAnimal {
 
-    private static final EntityDataAccessor<Integer> DATA_VARIANT =
-            SynchedEntityData.defineId(DikDikEntity.class, EntityDataSerializers.INT);
+  private static final EntityDataAccessor<Integer> DATA_VARIANT =
+      SynchedEntityData.defineId(DikDikEntity.class, EntityDataSerializers.INT);
 
-    public DikDikEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
-        super(type, level);
-    }
+  public DikDikEntity(
+      EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
+    super(type, level);
+  }
 
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_VARIANT, 0);
-    }
+  @Override
+  protected void defineSynchedData() {
+    super.defineSynchedData();
+    this.entityData.define(DATA_VARIANT, 0);
+  }
 
-    public int getVariant() {
-        return this.entityData.get(DATA_VARIANT);
-    }
+  public int getVariant() {
+    return this.entityData.get(DATA_VARIANT);
+  }
 
-    public void setVariant(int variant) {
-        this.entityData.set(DATA_VARIANT, variant);
-    }
+  public void setVariant(int variant) {
+    this.entityData.set(DATA_VARIANT, variant);
+  }
 
-    @Nullable
-    @Override
-    public SpawnGroupData finalizeSpawn(
-            @NotNull ServerLevelAccessor level,
-            @NotNull DifficultyInstance difficulty,
-            @NotNull MobSpawnType spawnType,
-            @Nullable SpawnGroupData groupData,
-            @Nullable CompoundTag tag) {
-        setVariant(this.random.nextInt(3));
-        return super.finalizeSpawn(level, difficulty, spawnType, groupData, tag);
-    }
+  @Nullable
+  @Override
+  public SpawnGroupData finalizeSpawn(
+      @NotNull ServerLevelAccessor level,
+      @NotNull DifficultyInstance difficulty,
+      @NotNull MobSpawnType spawnType,
+      @Nullable SpawnGroupData groupData,
+      @Nullable CompoundTag tag) {
+    setVariant(this.random.nextInt(3));
+    return super.finalizeSpawn(level, difficulty, spawnType, groupData, tag);
+  }
 
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.goalSelector.addGoal(1, new AmbientPanicGoal(this));
-        this.goalSelector.addGoal(2, new AmbientAvoidGoal(this));
-    }
+  @Override
+  protected void registerGoals() {
+    super.registerGoals();
+    this.goalSelector.addGoal(1, new AmbientPanicGoal(this));
+    this.goalSelector.addGoal(2, new AmbientAvoidGoal(this));
+  }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return LionKingAnimal.createLKAnimalAttributes()
-                .add(Attributes.MAX_HEALTH, 8.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.28);
-    }
+  public static AttributeSupplier.Builder createAttributes() {
+    return LionKingAnimal.createLKAnimalAttributes()
+        .add(Attributes.MAX_HEALTH, 8.0)
+        .add(Attributes.MOVEMENT_SPEED, 0.28);
+  }
 
-    @Nullable
-    @Override
-    public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob mate) {
-        return null;
-    }
+  @Nullable
+  @Override
+  public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob mate) {
+    return null;
+  }
 
-    @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putInt("Variant", getVariant());
-    }
+  @Override
+  public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+    super.addAdditionalSaveData(tag);
+    tag.putInt("Variant", getVariant());
+  }
 
-    @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        setVariant(tag.getInt("Variant"));
-    }
+  @Override
+  public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+    super.readAdditionalSaveData(tag);
+    setVariant(tag.getInt("Variant"));
+  }
 }

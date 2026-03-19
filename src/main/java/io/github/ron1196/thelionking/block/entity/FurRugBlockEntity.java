@@ -11,42 +11,42 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class FurRugBlockEntity extends BlockEntity {
 
-    private int direction;
+  private int direction;
 
-    public FurRugBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityTypes.FUR_RUG.get(), pos, state);
-    }
+  public FurRugBlockEntity(BlockPos pos, BlockState state) {
+    super(BlockEntityTypes.FUR_RUG.get(), pos, state);
+  }
 
-    public int getDirection() {
-        return direction;
-    }
+  public int getDirection() {
+    return direction;
+  }
 
-    public void setDirection(int direction) {
-        this.direction = direction & 3;
-        setChanged();
-    }
+  public void setDirection(int direction) {
+    this.direction = direction & 3;
+    setChanged();
+  }
 
-    @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.putInt("Direction", direction);
-    }
+  @Override
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.putInt("Direction", direction);
+  }
 
-    @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        direction = tag.getInt("Direction");
-    }
+  @Override
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    direction = tag.getInt("Direction");
+  }
 
-    @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        saveAdditional(tag);
-        return tag;
-    }
+  @Override
+  public CompoundTag getUpdateTag() {
+    CompoundTag tag = super.getUpdateTag();
+    saveAdditional(tag);
+    return tag;
+  }
 
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
+  @Override
+  public Packet<ClientGamePacketListener> getUpdatePacket() {
+    return ClientboundBlockEntityDataPacket.create(this);
+  }
 }

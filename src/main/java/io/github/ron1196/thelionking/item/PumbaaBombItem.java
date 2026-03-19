@@ -13,38 +13,38 @@ import org.jetbrains.annotations.NotNull;
 
 public class PumbaaBombItem extends Item {
 
-    public PumbaaBombItem() {
-        super(new Item.Properties().stacksTo(16));
+  public PumbaaBombItem() {
+    super(new Item.Properties().stacksTo(16));
+  }
+
+  @Override
+  public @NotNull InteractionResultHolder<ItemStack> use(
+      @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+    ItemStack stack = player.getItemInHand(hand);
+
+    if (!level.isClientSide) {
+      PumbaaBombEntity bomb = new PumbaaBombEntity(level, player);
+      bomb.setItem(stack);
+      bomb.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
+      level.addFreshEntity(bomb);
+
+      if (!player.getAbilities().instabuild) {
+        stack.shrink(1);
+      }
     }
 
-    @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(
-            @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+    level.playSound(
+        null,
+        player.getX(),
+        player.getY(),
+        player.getZ(),
+        SoundEvents.SNOWBALL_THROW,
+        SoundSource.PLAYERS,
+        0.5F,
+        0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
 
-        if (!level.isClientSide) {
-            PumbaaBombEntity bomb = new PumbaaBombEntity(level, player);
-            bomb.setItem(stack);
-            bomb.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
-            level.addFreshEntity(bomb);
+    player.getCooldowns().addCooldown(this, 20);
 
-            if (!player.getAbilities().instabuild) {
-                stack.shrink(1);
-            }
-        }
-
-        level.playSound(
-                null,
-                player.getX(),
-                player.getY(),
-                player.getZ(),
-                SoundEvents.SNOWBALL_THROW,
-                SoundSource.PLAYERS,
-                0.5F,
-                0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
-
-        player.getCooldowns().addCooldown(this, 20);
-
-        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
-    }
+    return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+  }
 }

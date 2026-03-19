@@ -14,30 +14,30 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-/**
- * Forge bus listener for client key input events.
- * Handles the Simba sit toggle keybind.
- */
-@Mod.EventBusSubscriber(modid = TheLionKingMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+/** Forge bus listener for client key input events. Handles the Simba sit toggle keybind. */
+@Mod.EventBusSubscriber(
+    modid = TheLionKingMod.MOD_ID,
+    bus = Mod.EventBusSubscriber.Bus.FORGE,
+    value = Dist.CLIENT)
 public class ClientKeyHandler {
 
-    private static final double SEARCH_RANGE = 64.0;
+  private static final double SEARCH_RANGE = 64.0;
 
-    @SubscribeEvent
-    public static void onKeyInput(InputEvent.Key event) {
-        if (!ClientEvents.SIMBA_SIT_KEY.consumeClick()) return;
+  @SubscribeEvent
+  public static void onKeyInput(InputEvent.Key event) {
+    if (!ClientEvents.SIMBA_SIT_KEY.consumeClick()) return;
 
-        Minecraft mc = Minecraft.getInstance();
-        Player player = mc.player;
-        Level level = mc.level;
-        if (player == null || level == null) return;
+    Minecraft mc = Minecraft.getInstance();
+    Player player = mc.player;
+    Level level = mc.level;
+    if (player == null || level == null) return;
 
-        AABB searchBox = player.getBoundingBox().inflate(SEARCH_RANGE);
-        List<SimbaEntity> simbas =
-                level.getEntitiesOfClass(SimbaEntity.class, searchBox, simba -> simba.isOwnedBy(player));
+    AABB searchBox = player.getBoundingBox().inflate(SEARCH_RANGE);
+    List<SimbaEntity> simbas =
+        level.getEntitiesOfClass(SimbaEntity.class, searchBox, simba -> simba.isOwnedBy(player));
 
-        for (SimbaEntity simba : simbas) {
-            Networking.CHANNEL.sendToServer(new SimbaSitPacket(simba.getId()));
-        }
+    for (SimbaEntity simba : simbas) {
+      Networking.CHANNEL.sendToServer(new SimbaSitPacket(simba.getId()));
     }
+  }
 }

@@ -25,57 +25,74 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class Features {
 
-    public static final DeferredRegister<Feature<?>> FEATURES =
-            DeferredRegister.create(ForgeRegistries.FEATURES, TheLionKingMod.MOD_ID);
+  public static final DeferredRegister<Feature<?>> FEATURES =
+      DeferredRegister.create(ForgeRegistries.FEATURES, TheLionKingMod.MOD_ID);
 
-    public static final RegistryObject<Feature<NoneFeatureConfiguration>> BANANA_TREE =
-            FEATURES.register("banana_tree", () -> new BananaTreeFeature(NoneFeatureConfiguration.CODEC));
+  public static final RegistryObject<Feature<NoneFeatureConfiguration>> BANANA_TREE =
+      FEATURES.register("banana_tree", () -> new BananaTreeFeature(NoneFeatureConfiguration.CODEC));
 
-    public static final RegistryObject<Feature<NoneFeatureConfiguration>> DEAD_TREE =
-            FEATURES.register("dead_tree", () -> new DeadTreeFeature(NoneFeatureConfiguration.CODEC));
+  public static final RegistryObject<Feature<NoneFeatureConfiguration>> DEAD_TREE =
+      FEATURES.register("dead_tree", () -> new DeadTreeFeature(NoneFeatureConfiguration.CODEC));
 
-    public static final RegistryObject<Feature<NoneFeatureConfiguration>> RAINFOREST_TREE =
-            FEATURES.register("rainforest_tree", () -> new RainforestTreeFeature(NoneFeatureConfiguration.CODEC));
+  public static final RegistryObject<Feature<NoneFeatureConfiguration>> RAINFOREST_TREE =
+      FEATURES.register(
+          "rainforest_tree", () -> new RainforestTreeFeature(NoneFeatureConfiguration.CODEC));
 
-    public static final RegistryObject<Feature<NoneFeatureConfiguration>> MANGO_TREE =
-            FEATURES.register("mango_tree", () -> new MangoTreeFeature(NoneFeatureConfiguration.CODEC));
+  public static final RegistryObject<Feature<NoneFeatureConfiguration>> MANGO_TREE =
+      FEATURES.register("mango_tree", () -> new MangoTreeFeature(NoneFeatureConfiguration.CODEC));
 
-    public static final RegistryObject<Feature<NoneFeatureConfiguration>> PASSION_TREE =
-            FEATURES.register("passion_tree", () -> new PassionTreeFeature(NoneFeatureConfiguration.CODEC));
+  public static final RegistryObject<Feature<NoneFeatureConfiguration>> PASSION_TREE =
+      FEATURES.register(
+          "passion_tree", () -> new PassionTreeFeature(NoneFeatureConfiguration.CODEC));
 
-    public static final RegistryObject<Feature<NoneFeatureConfiguration>> TERMITE_MOUND =
-            FEATURES.register("termite_mound", () -> new TermiteMoundFeature(NoneFeatureConfiguration.CODEC));
+  public static final RegistryObject<Feature<NoneFeatureConfiguration>> TERMITE_MOUND =
+      FEATURES.register(
+          "termite_mound", () -> new TermiteMoundFeature(NoneFeatureConfiguration.CODEC));
 
-    // Landmark structures
-    public static final RegistryObject<Feature<NoneFeatureConfiguration>> RAFIKI_TREE =
-            FEATURES.register("rafiki_tree", () -> new RafikiTreeFeature(NoneFeatureConfiguration.CODEC));
+  // Landmark structures
+  public static final RegistryObject<Feature<NoneFeatureConfiguration>> RAFIKI_TREE =
+      FEATURES.register("rafiki_tree", () -> new RafikiTreeFeature(NoneFeatureConfiguration.CODEC));
 
-    public static final RegistryObject<Feature<NoneFeatureConfiguration>> ZIRA_MOUND =
-            FEATURES.register("zira_mound", () -> new ZiraMoundFeature(NoneFeatureConfiguration.CODEC));
+  public static final RegistryObject<Feature<NoneFeatureConfiguration>> ZIRA_MOUND =
+      FEATURES.register("zira_mound", () -> new ZiraMoundFeature(NoneFeatureConfiguration.CODEC));
 
-    public static final RegistryObject<Feature<NoneFeatureConfiguration>> TICKET_BOOTH =
-            FEATURES.register("ticket_booth", () -> new TicketBoothFeature(NoneFeatureConfiguration.CODEC));
+  public static final RegistryObject<Feature<NoneFeatureConfiguration>> TICKET_BOOTH =
+      FEATURES.register(
+          "ticket_booth", () -> new TicketBoothFeature(NoneFeatureConfiguration.CODEC));
 
-    public static final RegistryObject<Feature<NoneFeatureConfiguration>> TIMON_PUMBAA_LODGE =
-            FEATURES.register("timon_pumbaa_lodge", () -> new TimonPumbaaLodgeFeature(NoneFeatureConfiguration.CODEC));
+  public static final RegistryObject<Feature<NoneFeatureConfiguration>> TIMON_PUMBAA_LODGE =
+      FEATURES.register(
+          "timon_pumbaa_lodge", () -> new TimonPumbaaLodgeFeature(NoneFeatureConfiguration.CODEC));
 
-    public static final RegistryObject<Feature<NoneFeatureConfiguration>> TREASURE_MOUND =
-            FEATURES.register("treasure_mound", () -> new TreasureMoundFeature(NoneFeatureConfiguration.CODEC));
+  public static final RegistryObject<Feature<NoneFeatureConfiguration>> TREASURE_MOUND =
+      FEATURES.register(
+          "treasure_mound", () -> new TreasureMoundFeature(NoneFeatureConfiguration.CODEC));
 
-    public static final RegistryObject<Feature<NoneFeatureConfiguration>> LILY_PAD =
-            FEATURES.register("lily_pad", () -> new LilyPadFeature(NoneFeatureConfiguration.CODEC));
+  public static final RegistryObject<Feature<NoneFeatureConfiguration>> LILY_PAD =
+      FEATURES.register("lily_pad", () -> new LilyPadFeature(NoneFeatureConfiguration.CODEC));
 
-    // ResourceKeys for configured features (referenced by tree growers and placed features)
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PRIDE_ACACIA_TREE_KEY = ResourceKey.create(
-            Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "pride_acacia_tree"));
-    public static final ResourceKey<ConfiguredFeature<?, ?>> RAINFOREST_TREE_KEY = ResourceKey.create(
-            Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "rainforest_tree"));
-    public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_RAINFOREST_TREE_KEY = ResourceKey.create(
-            Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "mega_rainforest_tree"));
-    public static final ResourceKey<ConfiguredFeature<?, ?>> MANGO_TREE_KEY = ResourceKey.create(
-            Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "mango_tree"));
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PASSION_TREE_KEY = ResourceKey.create(
-            Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "passion_tree"));
-    public static final ResourceKey<ConfiguredFeature<?, ?>> BANANA_TREE_KEY = ResourceKey.create(
-            Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "banana_tree"));
+  // ResourceKeys for configured features (referenced by tree growers and placed features)
+  public static final ResourceKey<ConfiguredFeature<?, ?>> PRIDE_ACACIA_TREE_KEY =
+      ResourceKey.create(
+          Registries.CONFIGURED_FEATURE,
+          new ResourceLocation(TheLionKingMod.MOD_ID, "pride_acacia_tree"));
+  public static final ResourceKey<ConfiguredFeature<?, ?>> RAINFOREST_TREE_KEY =
+      ResourceKey.create(
+          Registries.CONFIGURED_FEATURE,
+          new ResourceLocation(TheLionKingMod.MOD_ID, "rainforest_tree"));
+  public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_RAINFOREST_TREE_KEY =
+      ResourceKey.create(
+          Registries.CONFIGURED_FEATURE,
+          new ResourceLocation(TheLionKingMod.MOD_ID, "mega_rainforest_tree"));
+  public static final ResourceKey<ConfiguredFeature<?, ?>> MANGO_TREE_KEY =
+      ResourceKey.create(
+          Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "mango_tree"));
+  public static final ResourceKey<ConfiguredFeature<?, ?>> PASSION_TREE_KEY =
+      ResourceKey.create(
+          Registries.CONFIGURED_FEATURE,
+          new ResourceLocation(TheLionKingMod.MOD_ID, "passion_tree"));
+  public static final ResourceKey<ConfiguredFeature<?, ?>> BANANA_TREE_KEY =
+      ResourceKey.create(
+          Registries.CONFIGURED_FEATURE,
+          new ResourceLocation(TheLionKingMod.MOD_ID, "banana_tree"));
 }

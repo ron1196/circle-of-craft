@@ -20,68 +20,70 @@ import org.jetbrains.annotations.NotNull;
 
 public class HyenaHeadBlockEntityRenderer implements BlockEntityRenderer<HyenaHeadBlockEntity> {
 
-    private static final ResourceLocation[] TEXTURES = {
-        new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_0.png"),
-        new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_1.png"),
-        new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_2.png"),
-        new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/skeletal_hyena.png")
-    };
+  private static final ResourceLocation[] TEXTURES = {
+    new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_0.png"),
+    new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_1.png"),
+    new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_2.png"),
+    new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/skeletal_hyena.png")
+  };
 
-    private final ModelPart head;
+  private final ModelPart head;
 
-    public HyenaHeadBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
-        ModelPart root = context.bakeLayer(ClientEvents.HYENA_HEAD_LAYER);
-        this.head = root.getChild("head");
-    }
+  public HyenaHeadBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+    ModelPart root = context.bakeLayer(ClientEvents.HYENA_HEAD_LAYER);
+    this.head = root.getChild("head");
+  }
 
-    public static LayerDefinition createHeadLayer() {
-        MeshDefinition mesh = new MeshDefinition();
-        PartDefinition root = mesh.getRoot();
+  public static LayerDefinition createHeadLayer() {
+    MeshDefinition mesh = new MeshDefinition();
+    PartDefinition root = mesh.getRoot();
 
-        // Same head geometry as HyenaModel — head with ears
-        root.addOrReplaceChild(
-                "head",
-                CubeListBuilder.create()
-                        .texOffs(0, 0)
-                        .addBox(-3.0F, -3.0F, -2.0F, 6.0F, 6.0F, 6.0F)
-                        .texOffs(0, 15)
-                        .addBox(-3.0F, -5.0F, 1.0F, 1.0F, 2.0F, 2.0F)
-                        .texOffs(6, 15)
-                        .addBox(2.0F, -5.0F, 1.0F, 1.0F, 2.0F, 2.0F),
-                PartPose.ZERO);
+    // Same head geometry as HyenaModel — head with ears
+    root.addOrReplaceChild(
+        "head",
+        CubeListBuilder.create()
+            .texOffs(0, 0)
+            .addBox(-3.0F, -3.0F, -2.0F, 6.0F, 6.0F, 6.0F)
+            .texOffs(0, 15)
+            .addBox(-3.0F, -5.0F, 1.0F, 1.0F, 2.0F, 2.0F)
+            .texOffs(6, 15)
+            .addBox(2.0F, -5.0F, 1.0F, 1.0F, 2.0F, 2.0F),
+        PartPose.ZERO);
 
-        return LayerDefinition.create(mesh, 64, 32);
-    }
+    return LayerDefinition.create(mesh, 64, 32);
+  }
 
-    @Override
-    public void render(
-            HyenaHeadBlockEntity blockEntity,
-            float partialTick,
-            PoseStack poseStack,
-            @NotNull MultiBufferSource buffer,
-            int packedLight,
-            int packedOverlay) {
-        poseStack.pushPose();
+  @Override
+  public void render(
+      HyenaHeadBlockEntity blockEntity,
+      float partialTick,
+      PoseStack poseStack,
+      @NotNull MultiBufferSource buffer,
+      int packedLight,
+      int packedOverlay) {
+    poseStack.pushPose();
 
-        // Center on block
-        poseStack.translate(0.5F, 0.0F, 0.5F);
+    // Center on block
+    poseStack.translate(0.5F, 0.0F, 0.5F);
 
-        // Rotate based on block rotation property
-        int rotation = blockEntity.getBlockState().getValue(HyenaHeadBlock.ROTATION);
-        float angle = rotation * 22.5F;
-        poseStack.mulPose(Axis.YP.rotationDegrees(-angle));
+    // Rotate based on block rotation property
+    int rotation = blockEntity.getBlockState().getValue(HyenaHeadBlock.ROTATION);
+    float angle = rotation * 22.5F;
+    poseStack.mulPose(Axis.YP.rotationDegrees(-angle));
 
-        // Flip Y axis — entity models have Y pointing down, block rendering has Y pointing up
-        poseStack.scale(1.2F, -1.2F, 1.2F);
+    // Flip Y axis — entity models have Y pointing down, block rendering has Y pointing up
+    poseStack.scale(1.2F, -1.2F, 1.2F);
 
-        // Move head down (in flipped space, this moves it up visually)
-        poseStack.translate(0.0F, -0.25F, 0.0F);
+    // Move head down (in flipped space, this moves it up visually)
+    poseStack.translate(0.0F, -0.25F, 0.0F);
 
-        int hyenaType = blockEntity.getHyenaType();
-        if (hyenaType < 0 || hyenaType >= TEXTURES.length) hyenaType = 0;
-        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURES[hyenaType]));
-        head.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+    int hyenaType = blockEntity.getHyenaType();
+    if (hyenaType < 0 || hyenaType >= TEXTURES.length) hyenaType = 0;
+    VertexConsumer vertexConsumer =
+        buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURES[hyenaType]));
+    head.render(
+        poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
-        poseStack.popPose();
-    }
+    poseStack.popPose();
+  }
 }

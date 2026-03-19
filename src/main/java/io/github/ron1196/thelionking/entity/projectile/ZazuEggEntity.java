@@ -12,37 +12,37 @@ import net.minecraft.world.phys.HitResult;
 
 public class ZazuEggEntity extends ThrowableItemProjectile {
 
-    public ZazuEggEntity(EntityType<? extends ThrowableItemProjectile> type, Level level) {
-        super(type, level);
-    }
+  public ZazuEggEntity(EntityType<? extends ThrowableItemProjectile> type, Level level) {
+    super(type, level);
+  }
 
-    public ZazuEggEntity(Level level, LivingEntity shooter) {
-        super(EntityTypes.ZAZU_EGG.get(), shooter, level);
-    }
+  public ZazuEggEntity(Level level, LivingEntity shooter) {
+    super(EntityTypes.ZAZU_EGG.get(), shooter, level);
+  }
 
-    @Override
-    protected Item getDefaultItem() {
-        return Items.ZAZU_EGG.get();
-    }
+  @Override
+  protected Item getDefaultItem() {
+    return Items.ZAZU_EGG.get();
+  }
 
-    @Override
-    protected void onHit(HitResult result) {
-        super.onHit(result);
-        if (!this.level().isClientSide) {
-            // 1/8 chance to spawn a Zazu
-            if (this.random.nextInt(8) == 0) {
-                ZazuEntity zazu = EntityTypes.ZAZU.get().create(this.level());
-                if (zazu != null) {
-                    zazu.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-                    this.level().addFreshEntity(zazu);
-                }
-            }
-            this.discard();
+  @Override
+  protected void onHit(HitResult result) {
+    super.onHit(result);
+    if (!this.level().isClientSide) {
+      // 1/8 chance to spawn a Zazu
+      if (this.random.nextInt(8) == 0) {
+        ZazuEntity zazu = EntityTypes.ZAZU.get().create(this.level());
+        if (zazu != null) {
+          zazu.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+          this.level().addFreshEntity(zazu);
         }
+      }
+      this.discard();
     }
+  }
 
-    @Override
-    protected float getGravity() {
-        return 0.05F;
-    }
+  @Override
+  protected float getGravity() {
+    return 0.05F;
+  }
 }

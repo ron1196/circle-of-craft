@@ -78,7 +78,7 @@ tasks.withType(JavaCompile).configureEach {
 spotless {
     java {
         target 'src/main/java/**/*.java'
-        palantirJavaFormat('2.39.0')
+        googleJavaFormat()
         importOrder()
         removeUnusedImports()
     }

@@ -13,44 +13,48 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class UseGrindingBowlTrigger extends SimpleCriterionTrigger<UseGrindingBowlTrigger.TriggerInstance> {
+public class UseGrindingBowlTrigger
+    extends SimpleCriterionTrigger<UseGrindingBowlTrigger.TriggerInstance> {
 
-    private static final ResourceLocation ID = new ResourceLocation(TheLionKingMod.MOD_ID, "use_grinding_bowl");
+  private static final ResourceLocation ID =
+      new ResourceLocation(TheLionKingMod.MOD_ID, "use_grinding_bowl");
 
-    @Override
-    public @NotNull ResourceLocation getId() {
-        return ID;
+  @Override
+  public @NotNull ResourceLocation getId() {
+    return ID;
+  }
+
+  @Override
+  public @NotNull TriggerInstance createInstance(
+      JsonObject json,
+      @NotNull ContextAwarePredicate player,
+      @NotNull DeserializationContext context) {
+    ItemPredicate item = ItemPredicate.fromJson(json.get("item"));
+    return new TriggerInstance(player, item);
+  }
+
+  public void trigger(ServerPlayer player, ItemStack output) {
+    trigger(player, instance -> instance.matches(output));
+  }
+
+  public static class TriggerInstance extends AbstractCriterionTriggerInstance {
+
+    private final ItemPredicate item;
+
+    public TriggerInstance(ContextAwarePredicate player, ItemPredicate item) {
+      super(ID, player);
+      this.item = item;
+    }
+
+    public boolean matches(ItemStack stack) {
+      return item.matches(stack);
     }
 
     @Override
-    public @NotNull TriggerInstance createInstance(
-            JsonObject json, @NotNull ContextAwarePredicate player, @NotNull DeserializationContext context) {
-        ItemPredicate item = ItemPredicate.fromJson(json.get("item"));
-        return new TriggerInstance(player, item);
+    public @NotNull JsonObject serializeToJson(@NotNull SerializationContext context) {
+      JsonObject json = super.serializeToJson(context);
+      json.add("item", item.serializeToJson());
+      return json;
     }
-
-    public void trigger(ServerPlayer player, ItemStack output) {
-        trigger(player, instance -> instance.matches(output));
-    }
-
-    public static class TriggerInstance extends AbstractCriterionTriggerInstance {
-
-        private final ItemPredicate item;
-
-        public TriggerInstance(ContextAwarePredicate player, ItemPredicate item) {
-            super(ID, player);
-            this.item = item;
-        }
-
-        public boolean matches(ItemStack stack) {
-            return item.matches(stack);
-        }
-
-        @Override
-        public @NotNull JsonObject serializeToJson(@NotNull SerializationContext context) {
-            JsonObject json = super.serializeToJson(context);
-            json.add("item", item.serializeToJson());
-            return json;
-        }
-    }
+  }
 }

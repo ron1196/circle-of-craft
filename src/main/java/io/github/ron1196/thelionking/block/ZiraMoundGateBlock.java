@@ -14,44 +14,44 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Zira Mound Gate — indestructible block that can only be broken with the Rafiki Stick.
- * When broken, recursively destroys all adjacent gate blocks (chain break).
+ * Zira Mound Gate — indestructible block that can only be broken with the Rafiki Stick. When
+ * broken, recursively destroys all adjacent gate blocks (chain break).
  */
 public class ZiraMoundGateBlock extends Block {
 
-    public ZiraMoundGateBlock(Properties properties) {
-        super(properties);
+  public ZiraMoundGateBlock(Properties properties) {
+    super(properties);
+  }
+
+  @Override
+  public @NotNull InteractionResult use(
+      @NotNull BlockState state,
+      @NotNull Level level,
+      @NotNull BlockPos pos,
+      @NotNull Player player,
+      @NotNull InteractionHand hand,
+      @NotNull BlockHitResult hit) {
+    ItemStack held = player.getItemInHand(hand);
+    if (!held.is(Items.RAFIKI_STICK.get())) {
+      return InteractionResult.PASS;
     }
 
-    @Override
-    public @NotNull InteractionResult use(
-            @NotNull BlockState state,
-            @NotNull Level level,
-            @NotNull BlockPos pos,
-            @NotNull Player player,
-            @NotNull InteractionHand hand,
-            @NotNull BlockHitResult hit) {
-        ItemStack held = player.getItemInHand(hand);
-        if (!held.is(Items.RAFIKI_STICK.get())) {
-            return InteractionResult.PASS;
-        }
-
-        if (!level.isClientSide) {
-            breakGateChain(level, pos);
-        }
-
-        return InteractionResult.sidedSuccess(level.isClientSide);
+    if (!level.isClientSide) {
+      breakGateChain(level, pos);
     }
 
-    private void breakGateChain(Level level, BlockPos pos) {
-        if (!(level.getBlockState(pos).getBlock() instanceof ZiraMoundGateBlock)) {
-            return;
-        }
+    return InteractionResult.sidedSuccess(level.isClientSide);
+  }
 
-        level.destroyBlock(pos, false);
-
-        for (Direction dir : Direction.values()) {
-            breakGateChain(level, pos.relative(dir));
-        }
+  private void breakGateChain(Level level, BlockPos pos) {
+    if (!(level.getBlockState(pos).getBlock() instanceof ZiraMoundGateBlock)) {
+      return;
     }
+
+    level.destroyBlock(pos, false);
+
+    for (Direction dir : Direction.values()) {
+      breakGateChain(level, pos.relative(dir));
+    }
+  }
 }

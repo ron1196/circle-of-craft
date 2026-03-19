@@ -20,64 +20,68 @@ import org.jetbrains.annotations.Nullable;
 
 public class SkeletalHyenaHeadEntity extends Monster {
 
-    public SkeletalHyenaHeadEntity(EntityType<? extends SkeletalHyenaHeadEntity> type, Level level) {
-        super(type, level);
-        this.xpReward = 2;
-    }
+  public SkeletalHyenaHeadEntity(EntityType<? extends SkeletalHyenaHeadEntity> type, Level level) {
+    super(type, level);
+    this.xpReward = 2;
+  }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 15.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.3D)
-                .add(Attributes.ATTACK_DAMAGE, 3.0D);
-    }
+  public static AttributeSupplier.Builder createAttributes() {
+    return Monster.createMonsterAttributes()
+        .add(Attributes.MAX_HEALTH, 15.0D)
+        .add(Attributes.MOVEMENT_SPEED, 0.3D)
+        .add(Attributes.ATTACK_DAMAGE, 3.0D);
+  }
 
-    @Override
-    protected void registerGoals() {
-        this.goalSelector.addGoal(1, new HeadHopGoal(this));
+  @Override
+  protected void registerGoals() {
+    this.goalSelector.addGoal(1, new HeadHopGoal(this));
 
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
-    }
+    this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+  }
 
-    @Override
-    public void tick() {
-        if (!level().isClientSide && level().getDifficulty() == Difficulty.PEACEFUL) {
-            discard();
-            return;
-        }
-        super.tick();
+  @Override
+  public void tick() {
+    if (!level().isClientSide && level().getDifficulty() == Difficulty.PEACEFUL) {
+      discard();
+      return;
     }
+    super.tick();
+  }
 
-    @Override
-    public void playerTouch(@NotNull Player player) {
-        if (hasLineOfSight(player) && distanceToSqr(player) < 1.0D) {
-            player.hurt(damageSources().mobAttack(this), 3.0F);
-            playSound(SoundEvents.PLAYER_ATTACK_STRONG, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
-        }
+  @Override
+  public void playerTouch(@NotNull Player player) {
+    if (hasLineOfSight(player) && distanceToSqr(player) < 1.0D) {
+      player.hurt(damageSources().mobAttack(this), 3.0F);
+      playSound(
+          SoundEvents.PLAYER_ATTACK_STRONG,
+          1.0F,
+          (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
     }
+  }
 
-    @Override
-    protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
-        super.dropCustomDeathLoot(source, looting, recentlyHit);
-        if (recentlyHit && source.getEntity() instanceof Player && random.nextInt(40) == 0) {
-            ItemStack headStack = new ItemStack(Items.HYENA_HEAD_ITEM.get());
-            headStack.getOrCreateTagElement("BlockEntityTag").putInt("HyenaType", 3);
-            spawnAtLocation(headStack, 0.0F);
-        }
+  @Override
+  protected void dropCustomDeathLoot(
+      @NotNull DamageSource source, int looting, boolean recentlyHit) {
+    super.dropCustomDeathLoot(source, looting, recentlyHit);
+    if (recentlyHit && source.getEntity() instanceof Player && random.nextInt(40) == 0) {
+      ItemStack headStack = new ItemStack(Items.HYENA_HEAD_ITEM.get());
+      headStack.getOrCreateTagElement("BlockEntityTag").putInt("HyenaType", 3);
+      spawnAtLocation(headStack, 0.0F);
     }
+  }
 
-    @Override
-    protected @Nullable SoundEvent getHurtSound(@Nullable DamageSource source) {
-        return SoundEvents.SKELETON_HURT;
-    }
+  @Override
+  protected @Nullable SoundEvent getHurtSound(@Nullable DamageSource source) {
+    return SoundEvents.SKELETON_HURT;
+  }
 
-    @Override
-    protected @Nullable SoundEvent getDeathSound() {
-        return SoundEvents.SKELETON_DEATH;
-    }
+  @Override
+  protected @Nullable SoundEvent getDeathSound() {
+    return SoundEvents.SKELETON_DEATH;
+  }
 
-    @Override
-    public @NotNull MobType getMobType() {
-        return MobType.UNDEAD;
-    }
+  @Override
+  public @NotNull MobType getMobType() {
+    return MobType.UNDEAD;
+  }
 }

@@ -35,126 +35,128 @@ import org.jetbrains.annotations.Nullable;
 
 public class SimbaEntity extends TamableAnimal {
 
-    private static final EntityDataAccessor<Boolean> DATA_BABY =
-            SynchedEntityData.defineId(SimbaEntity.class, EntityDataSerializers.BOOLEAN);
+  private static final EntityDataAccessor<Boolean> DATA_BABY =
+      SynchedEntityData.defineId(SimbaEntity.class, EntityDataSerializers.BOOLEAN);
 
-    public final ItemStackHandler inventory = new ItemStackHandler(9);
+  public final ItemStackHandler inventory = new ItemStackHandler(9);
 
-    public SimbaEntity(EntityType<? extends SimbaEntity> type, Level level) {
-        super(type, level);
+  public SimbaEntity(EntityType<? extends SimbaEntity> type, Level level) {
+    super(type, level);
+  }
+
+  public static AttributeSupplier.Builder createAttributes() {
+    return TamableAnimal.createMobAttributes()
+        .add(Attributes.MAX_HEALTH, 30.0D)
+        .add(Attributes.MOVEMENT_SPEED, 0.25D)
+        .add(Attributes.ATTACK_DAMAGE, 6.0D);
+  }
+
+  @Override
+  protected void defineSynchedData() {
+    super.defineSynchedData();
+    this.entityData.define(DATA_BABY, false);
+  }
+
+  @Override
+  protected void registerGoals() {
+    this.goalSelector.addGoal(0, new FloatGoal(this));
+    this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
+    this.goalSelector.addGoal(2, new SimbaAttackGoal(this));
+    this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.3D, 4.0F, 2.0F, false));
+    this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
+    this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+    this.goalSelector.addGoal(7, new SimbaWanderGoal(this));
+
+    this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+    this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+    this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
+  }
+
+  @Override
+  public boolean isBaby() {
+    return this.entityData.get(DATA_BABY);
+  }
+
+  public void setBaby(boolean baby) {
+    this.entityData.set(DATA_BABY, baby);
+  }
+
+  @Override
+  public @Nullable AgeableMob getBreedOffspring(
+      @NotNull ServerLevel level, @NotNull AgeableMob otherParent) {
+    return null;
+  }
+
+  /** Toggles sitting state and notifies the player. Used by both mob interaction and keybind. */
+  public void toggleSitting(Player player) {
+    setOrderedToSit(!isOrderedToSit());
+    this.navigation.stop();
+    String msg = isOrderedToSit() ? "Simba sits down." : "Simba stands up and follows you.";
+    player.sendSystemMessage(Component.literal(msg));
+  }
+
+  @Override
+  public @NotNull InteractionResult mobInteract(
+      @NotNull Player player, @NotNull InteractionHand hand) {
+    if (level().isClientSide()) return InteractionResult.SUCCESS;
+
+    if (!isTame()) {
+      tame(player);
+      player.sendSystemMessage(Component.literal("Simba is now following you!"));
+      return InteractionResult.SUCCESS;
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return TamableAnimal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 30.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.25D)
-                .add(Attributes.ATTACK_DAMAGE, 6.0D);
+    if (isOwnedBy(player)) {
+      // Sneak+interact opens Simba's inventory
+      if (player.isShiftKeyDown() && player instanceof ServerPlayer serverPlayer) {
+        NetworkHooks.openScreen(
+            serverPlayer,
+            new MenuProvider() {
+              @Override
+              public @NotNull Component getDisplayName() {
+                return Component.translatable("container.thelionking.simba_inventory");
+              }
+
+              @Override
+              public @NotNull AbstractContainerMenu createMenu(
+                  int containerId, @NotNull Inventory inv, @NotNull Player p) {
+                return new SimbaInventoryMenu(containerId, inv, inventory);
+              }
+            });
+        return InteractionResult.SUCCESS;
+      }
+
+      // Toggle sitting
+      toggleSitting(player);
+      return InteractionResult.SUCCESS;
     }
 
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_BABY, false);
+    return InteractionResult.PASS;
+  }
+
+  @Override
+  public void die(@NotNull DamageSource source) {
+    super.die(source);
+    if (level().isClientSide()) return;
+    for (int i = 0; i < inventory.getSlots(); i++) {
+      ItemStack stack = inventory.getStackInSlot(i);
+      if (stack.isEmpty()) continue;
+      spawnAtLocation(stack);
+      inventory.setStackInSlot(i, ItemStack.EMPTY);
     }
+  }
 
-    @Override
-    protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(2, new SimbaAttackGoal(this));
-        this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.3D, 4.0F, 2.0F, false));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(7, new SimbaWanderGoal(this));
+  @Override
+  public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+    super.addAdditionalSaveData(tag);
+    tag.putBoolean("Baby", isBaby());
+    tag.put("Inventory", inventory.serializeNBT());
+  }
 
-        this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
-    }
-
-    @Override
-    public boolean isBaby() {
-        return this.entityData.get(DATA_BABY);
-    }
-
-    public void setBaby(boolean baby) {
-        this.entityData.set(DATA_BABY, baby);
-    }
-
-    @Override
-    public @Nullable AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob otherParent) {
-        return null;
-    }
-
-    /**
-     * Toggles sitting state and notifies the player. Used by both mob interaction and keybind.
-     */
-    public void toggleSitting(Player player) {
-        setOrderedToSit(!isOrderedToSit());
-        this.navigation.stop();
-        String msg = isOrderedToSit() ? "Simba sits down." : "Simba stands up and follows you.";
-        player.sendSystemMessage(Component.literal(msg));
-    }
-
-    @Override
-    public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
-        if (level().isClientSide()) return InteractionResult.SUCCESS;
-
-        if (!isTame()) {
-            tame(player);
-            player.sendSystemMessage(Component.literal("Simba is now following you!"));
-            return InteractionResult.SUCCESS;
-        }
-
-        if (isOwnedBy(player)) {
-            // Sneak+interact opens Simba's inventory
-            if (player.isShiftKeyDown() && player instanceof ServerPlayer serverPlayer) {
-                NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
-                    @Override
-                    public @NotNull Component getDisplayName() {
-                        return Component.translatable("container.thelionking.simba_inventory");
-                    }
-
-                    @Override
-                    public @NotNull AbstractContainerMenu createMenu(
-                            int containerId, @NotNull Inventory inv, @NotNull Player p) {
-                        return new SimbaInventoryMenu(containerId, inv, inventory);
-                    }
-                });
-                return InteractionResult.SUCCESS;
-            }
-
-            // Toggle sitting
-            toggleSitting(player);
-            return InteractionResult.SUCCESS;
-        }
-
-        return InteractionResult.PASS;
-    }
-
-    @Override
-    public void die(@NotNull DamageSource source) {
-        super.die(source);
-        if (level().isClientSide()) return;
-        for (int i = 0; i < inventory.getSlots(); i++) {
-            ItemStack stack = inventory.getStackInSlot(i);
-            if (stack.isEmpty()) continue;
-            spawnAtLocation(stack);
-            inventory.setStackInSlot(i, ItemStack.EMPTY);
-        }
-    }
-
-    @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putBoolean("Baby", isBaby());
-        tag.put("Inventory", inventory.serializeNBT());
-    }
-
-    @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        setBaby(tag.getBoolean("Baby"));
-        if (tag.contains("Inventory")) inventory.deserializeNBT(tag.getCompound("Inventory"));
-    }
+  @Override
+  public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+    super.readAdditionalSaveData(tag);
+    setBaby(tag.getBoolean("Baby"));
+    if (tag.contains("Inventory")) inventory.deserializeNBT(tag.getCompound("Inventory"));
+  }
 }

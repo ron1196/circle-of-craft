@@ -8,17 +8,20 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-public class AnimalRenderer<T extends LionKingAnimal, M extends EntityModel<T>> extends MobRenderer<T, M> {
+public class AnimalRenderer<T extends LionKingAnimal, M extends EntityModel<T>>
+    extends MobRenderer<T, M> {
 
-    private final ResourceLocation texture;
+  private final ResourceLocation texture;
 
-    public AnimalRenderer(EntityRendererProvider.Context context, M model, String textureName, float shadowRadius) {
-        super(context, model, shadowRadius);
-        this.texture = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/" + textureName + ".png");
-    }
+  public AnimalRenderer(
+      EntityRendererProvider.Context context, M model, String textureName, float shadowRadius) {
+    super(context, model, shadowRadius);
+    this.texture =
+        new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/" + textureName + ".png");
+  }
 
-    @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull T entity) {
-        return texture;
-    }
+  @Override
+  public @NotNull ResourceLocation getTextureLocation(@NotNull T entity) {
+    return texture;
+  }
 }

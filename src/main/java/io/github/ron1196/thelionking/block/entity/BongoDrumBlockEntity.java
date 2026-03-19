@@ -19,79 +19,80 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class BongoDrumBlockEntity extends BlockEntity implements MenuProvider {
 
-    private final ItemStackHandler noteSlots = new ItemStackHandler(8) {
+  private final ItemStackHandler noteSlots =
+      new ItemStackHandler(8) {
         @Override
         protected void onContentsChanged(int slot) {
-            setChanged();
+          setChanged();
         }
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            return stack.getItem() instanceof NoteItem;
+          return stack.getItem() instanceof NoteItem;
         }
-    };
+      };
 
-    private int note = 0;
+  private int note = 0;
 
-    public BongoDrumBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityTypes.BONGO_DRUM.get(), pos, state);
+  public BongoDrumBlockEntity(BlockPos pos, BlockState state) {
+    super(BlockEntityTypes.BONGO_DRUM.get(), pos, state);
+  }
+
+  public void cycleNote() {
+    note = (note + 1) % 25;
+    setChanged();
+  }
+
+  public int getNote() {
+    return note;
+  }
+
+  public ItemStackHandler getNoteSlots() {
+    return noteSlots;
+  }
+
+  public int calculateEnchantmentPower() {
+    int totalNoteValue = 0;
+    for (int i = 0; i < noteSlots.getSlots(); i++) {
+      ItemStack stack = noteSlots.getStackInSlot(i);
+      if (stack.getItem() instanceof NoteItem noteItem) {
+        totalNoteValue += stack.getCount() * noteItem.getNoteValue();
+      }
     }
+    return totalNoteValue / 7;
+  }
 
-    public void cycleNote() {
-        note = (note + 1) % 25;
-        setChanged();
+  public NonNullList<ItemStack> getDrops() {
+    NonNullList<ItemStack> drops = NonNullList.create();
+    for (int i = 0; i < noteSlots.getSlots(); i++) {
+      ItemStack stack = noteSlots.getStackInSlot(i);
+      if (!stack.isEmpty()) drops.add(stack);
     }
+    return drops;
+  }
 
-    public int getNote() {
-        return note;
-    }
+  @Override
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.put("NoteSlots", noteSlots.serializeNBT());
+    tag.putInt("Note", note);
+  }
 
-    public ItemStackHandler getNoteSlots() {
-        return noteSlots;
-    }
+  @Override
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    noteSlots.deserializeNBT(tag.getCompound("NoteSlots"));
+    note = tag.getInt("Note");
+  }
 
-    public int calculateEnchantmentPower() {
-        int totalNoteValue = 0;
-        for (int i = 0; i < noteSlots.getSlots(); i++) {
-            ItemStack stack = noteSlots.getStackInSlot(i);
-            if (stack.getItem() instanceof NoteItem noteItem) {
-                totalNoteValue += stack.getCount() * noteItem.getNoteValue();
-            }
-        }
-        return totalNoteValue / 7;
-    }
+  @Override
+  public Component getDisplayName() {
+    return Component.translatable("container.thelionking.bongo_drum");
+  }
 
-    public NonNullList<ItemStack> getDrops() {
-        NonNullList<ItemStack> drops = NonNullList.create();
-        for (int i = 0; i < noteSlots.getSlots(); i++) {
-            ItemStack stack = noteSlots.getStackInSlot(i);
-            if (!stack.isEmpty()) drops.add(stack);
-        }
-        return drops;
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.put("NoteSlots", noteSlots.serializeNBT());
-        tag.putInt("Note", note);
-    }
-
-    @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        noteSlots.deserializeNBT(tag.getCompound("NoteSlots"));
-        note = tag.getInt("Note");
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return Component.translatable("container.thelionking.bongo_drum");
-    }
-
-    @Nullable
-    @Override
-    public AbstractContainerMenu createMenu(int containerId, Inventory playerInv, Player player) {
-        return new BongoDrumMenu(containerId, playerInv, this);
-    }
+  @Nullable
+  @Override
+  public AbstractContainerMenu createMenu(int containerId, Inventory playerInv, Player player) {
+    return new BongoDrumMenu(containerId, playerInv, this);
+  }
 }

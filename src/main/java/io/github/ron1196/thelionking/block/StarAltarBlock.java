@@ -14,21 +14,27 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class StarAltarBlock extends Block {
 
-    protected static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 12.0, 16.0);
+  protected static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 12.0, 16.0);
 
-    public StarAltarBlock(Properties properties) {
-        super(properties);
-    }
+  public StarAltarBlock(Properties properties) {
+    super(properties);
+  }
 
-    @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return SHAPE;
-    }
+  @Override
+  public VoxelShape getShape(
+      BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    return SHAPE;
+  }
 
-    @Override
-    public InteractionResult use(
-            BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        // Quest interaction handled by LKForgeEvents
-        return InteractionResult.PASS;
-    }
+  @Override
+  public InteractionResult use(
+      BlockState state,
+      Level level,
+      BlockPos pos,
+      Player player,
+      InteractionHand hand,
+      BlockHitResult hit) {
+    // Quest interaction handled by LKForgeEvents
+    return InteractionResult.PASS;
+  }
 }

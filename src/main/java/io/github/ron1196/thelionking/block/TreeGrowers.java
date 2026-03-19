@@ -10,48 +10,54 @@ import org.jetbrains.annotations.NotNull;
 
 public class TreeGrowers {
 
-    public static final AbstractTreeGrower ACACIA = new AbstractTreeGrower() {
+  public static final AbstractTreeGrower ACACIA =
+      new AbstractTreeGrower() {
         @Override
         protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(
-                @NotNull RandomSource random, boolean bees) {
-            return Features.PRIDE_ACACIA_TREE_KEY;
+            @NotNull RandomSource random, boolean bees) {
+          return Features.PRIDE_ACACIA_TREE_KEY;
         }
-    };
+      };
 
-    public static final AbstractMegaTreeGrower RAINFOREST = new AbstractMegaTreeGrower() {
+  public static final AbstractMegaTreeGrower RAINFOREST =
+      new AbstractMegaTreeGrower() {
         @Override
         protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(
-                @NotNull RandomSource random, boolean bees) {
-            return Features.RAINFOREST_TREE_KEY;
+            @NotNull RandomSource random, boolean bees) {
+          return Features.RAINFOREST_TREE_KEY;
         }
 
         @Override
-        protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredMegaFeature(@NotNull RandomSource random) {
-            return Features.MEGA_RAINFOREST_TREE_KEY;
+        protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredMegaFeature(
+            @NotNull RandomSource random) {
+          return Features.MEGA_RAINFOREST_TREE_KEY;
         }
-    };
+      };
 
-    public static final AbstractTreeGrower MANGO = new AbstractTreeGrower() {
-        @Override
-        protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(
-                @NotNull RandomSource random, boolean bees) {
-            return Features.MANGO_TREE_KEY;
-        }
-    };
-
-    public static final AbstractTreeGrower PASSION = new AbstractTreeGrower() {
+  public static final AbstractTreeGrower MANGO =
+      new AbstractTreeGrower() {
         @Override
         protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(
-                @NotNull RandomSource random, boolean bees) {
-            return Features.PASSION_TREE_KEY;
+            @NotNull RandomSource random, boolean bees) {
+          return Features.MANGO_TREE_KEY;
         }
-    };
+      };
 
-    public static final AbstractTreeGrower BANANA = new AbstractTreeGrower() {
+  public static final AbstractTreeGrower PASSION =
+      new AbstractTreeGrower() {
         @Override
         protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(
-                @NotNull RandomSource random, boolean bees) {
-            return Features.BANANA_TREE_KEY;
+            @NotNull RandomSource random, boolean bees) {
+          return Features.PASSION_TREE_KEY;
         }
-    };
+      };
+
+  public static final AbstractTreeGrower BANANA =
+      new AbstractTreeGrower() {
+        @Override
+        protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(
+            @NotNull RandomSource random, boolean bees) {
+          return Features.BANANA_TREE_KEY;
+        }
+      };
 }

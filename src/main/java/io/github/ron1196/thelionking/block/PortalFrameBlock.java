@@ -21,79 +21,87 @@ import org.jetbrains.annotations.NotNull;
 
 public class PortalFrameBlock extends Block {
 
-    private record ActivationKey(Supplier<Item> item, boolean consumed) {
-        @SuppressWarnings("SameParameterValue")
-        static ActivationKey consumed(Supplier<Item> item) {
-            return new ActivationKey(item, true);
-        }
-
-        static ActivationKey kept(Supplier<Item> item) {
-            return new ActivationKey(item, false);
-        }
+  private record ActivationKey(Supplier<Item> item, boolean consumed) {
+    @SuppressWarnings("SameParameterValue")
+    static ActivationKey consumed(Supplier<Item> item) {
+      return new ActivationKey(item, true);
     }
 
-    private record PortalConfig(Supplier<Block> portal, List<ActivationKey> keys) {
-        static PortalConfig create(Supplier<Block> portal, ActivationKey... keys) {
-            return new PortalConfig(portal, List.of(keys));
+    static ActivationKey kept(Supplier<Item> item) {
+      return new ActivationKey(item, false);
+    }
+  }
+
+  private record PortalConfig(Supplier<Block> portal, List<ActivationKey> keys) {
+    static PortalConfig create(Supplier<Block> portal, ActivationKey... keys) {
+      return new PortalConfig(portal, List.of(keys));
+    }
+  }
+
+  private static final Map<Boolean, PortalConfig> ACTIVATION_KEYS =
+      Map.of(
+          false,
+              PortalConfig.create(
+                  LionKingBlocks.PRIDE_LANDS_PORTAL,
+                  ActivationKey.consumed(Items.TICKET),
+                  ActivationKey.kept(Items.RHYTHM_STAFF)),
+          true,
+              PortalConfig.create(
+                  LionKingBlocks.OUTLANDS_PORTAL,
+                  ActivationKey.consumed(Items.TICKET),
+                  ActivationKey.kept(Items.ZIRA_COIN)));
+
+  private final boolean isOutlands;
+
+  public PortalFrameBlock(Properties properties, boolean isOutlands) {
+    super(properties);
+    this.isOutlands = isOutlands;
+  }
+
+  @Override
+  @SuppressWarnings("deprecation")
+  public @NotNull InteractionResult use(
+      @NotNull BlockState state,
+      @NotNull Level level,
+      @NotNull BlockPos pos,
+      Player player,
+      @NotNull InteractionHand hand,
+      @NotNull BlockHitResult hit) {
+    ItemStack stack = player.getItemInHand(hand);
+    PortalConfig config = ACTIVATION_KEYS.get(isOutlands);
+    for (ActivationKey key : config.keys()) {
+      if (stack.is(key.item().get())) {
+        return tryCreatePortal(level, pos, player, stack, key, config);
+      }
+    }
+    return InteractionResult.PASS;
+  }
+
+  private InteractionResult tryCreatePortal(
+      Level level,
+      BlockPos pos,
+      Player player,
+      ItemStack stack,
+      ActivationKey key,
+      PortalConfig config) {
+    if (level.isClientSide) return InteractionResult.SUCCESS;
+
+    PortalBlock portalBlock = (PortalBlock) config.portal().get();
+
+    for (BlockPos testPos :
+        new BlockPos[] {
+          pos.above(), pos.below(), pos.north(), pos.south(), pos.east(), pos.west()
+        }) {
+      if (level.getBlockState(testPos).isAir()) {
+        if (portalBlock.trySpawnPortal(level, testPos)) {
+          level.playSound(null, pos, SoundEvents.PORTAL_TRIGGER, SoundSource.BLOCKS, 1.0F, 1.0F);
+          if (key.consumed() && !player.getAbilities().instabuild) {
+            stack.shrink(1);
+          }
+          return InteractionResult.CONSUME;
         }
+      }
     }
-
-    private static final Map<Boolean, PortalConfig> ACTIVATION_KEYS = Map.of(
-            false,
-                    PortalConfig.create(
-                            LionKingBlocks.PRIDE_LANDS_PORTAL,
-                            ActivationKey.consumed(Items.TICKET),
-                            ActivationKey.kept(Items.RHYTHM_STAFF)),
-            true,
-                    PortalConfig.create(
-                            LionKingBlocks.OUTLANDS_PORTAL,
-                            ActivationKey.consumed(Items.TICKET),
-                            ActivationKey.kept(Items.ZIRA_COIN)));
-
-    private final boolean isOutlands;
-
-    public PortalFrameBlock(Properties properties, boolean isOutlands) {
-        super(properties);
-        this.isOutlands = isOutlands;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public @NotNull InteractionResult use(
-            @NotNull BlockState state,
-            @NotNull Level level,
-            @NotNull BlockPos pos,
-            Player player,
-            @NotNull InteractionHand hand,
-            @NotNull BlockHitResult hit) {
-        ItemStack stack = player.getItemInHand(hand);
-        PortalConfig config = ACTIVATION_KEYS.get(isOutlands);
-        for (ActivationKey key : config.keys()) {
-            if (stack.is(key.item().get())) {
-                return tryCreatePortal(level, pos, player, stack, key, config);
-            }
-        }
-        return InteractionResult.PASS;
-    }
-
-    private InteractionResult tryCreatePortal(
-            Level level, BlockPos pos, Player player, ItemStack stack, ActivationKey key, PortalConfig config) {
-        if (level.isClientSide) return InteractionResult.SUCCESS;
-
-        PortalBlock portalBlock = (PortalBlock) config.portal().get();
-
-        for (BlockPos testPos :
-                new BlockPos[] {pos.above(), pos.below(), pos.north(), pos.south(), pos.east(), pos.west()}) {
-            if (level.getBlockState(testPos).isAir()) {
-                if (portalBlock.trySpawnPortal(level, testPos)) {
-                    level.playSound(null, pos, SoundEvents.PORTAL_TRIGGER, SoundSource.BLOCKS, 1.0F, 1.0F);
-                    if (key.consumed() && !player.getAbilities().instabuild) {
-                        stack.shrink(1);
-                    }
-                    return InteractionResult.CONSUME;
-                }
-            }
-        }
-        return InteractionResult.PASS;
-    }
+    return InteractionResult.PASS;
+  }
 }

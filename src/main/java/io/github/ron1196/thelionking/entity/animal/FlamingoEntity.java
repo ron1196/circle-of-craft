@@ -14,39 +14,40 @@ import org.jetbrains.annotations.NotNull;
 
 public class FlamingoEntity extends LionKingAnimal {
 
-    public FlamingoEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
-        super(type, level);
-    }
+  public FlamingoEntity(
+      EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
+    super(type, level);
+  }
 
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.goalSelector.addGoal(1, new PanicGoal(this, 1.5));
-    }
+  @Override
+  protected void registerGoals() {
+    super.registerGoals();
+    this.goalSelector.addGoal(1, new PanicGoal(this, 1.5));
+  }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return LionKingAnimal.createLKAnimalAttributes()
-                .add(Attributes.MAX_HEALTH, 10.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.2);
-    }
+  public static AttributeSupplier.Builder createAttributes() {
+    return LionKingAnimal.createLKAnimalAttributes()
+        .add(Attributes.MAX_HEALTH, 10.0)
+        .add(Attributes.MOVEMENT_SPEED, 0.2);
+  }
 
-    @Override
-    protected @NotNull SoundEvent getAmbientSound() {
-        return SoundEvents.FLAMINGO_AMBIENT.get();
-    }
+  @Override
+  protected @NotNull SoundEvent getAmbientSound() {
+    return SoundEvents.FLAMINGO_AMBIENT.get();
+  }
 
-    @Override
-    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
-        return SoundEvents.FLAMINGO_HURT.get();
-    }
+  @Override
+  protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
+    return SoundEvents.FLAMINGO_HURT.get();
+  }
 
-    @Override
-    protected @NotNull SoundEvent getDeathSound() {
-        return SoundEvents.FLAMINGO_DEATH.get();
-    }
+  @Override
+  protected @NotNull SoundEvent getDeathSound() {
+    return SoundEvents.FLAMINGO_DEATH.get();
+  }
 
-    @Override
-    protected ItemStack getQuestReward() {
-        return new ItemStack(Items.PINK_DYE, 3 + QUEST_RANDOM.nextInt(4));
-    }
+  @Override
+  protected ItemStack getQuestReward() {
+    return new ItemStack(Items.PINK_DYE, 3 + QUEST_RANDOM.nextInt(4));
+  }
 }

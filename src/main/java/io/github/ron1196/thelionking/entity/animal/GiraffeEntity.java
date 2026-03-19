@@ -27,201 +27,205 @@ import org.jetbrains.annotations.NotNull;
 
 public class GiraffeEntity extends LionKingAnimal {
 
-    private static final EntityDataAccessor<Boolean> DATA_SADDLED =
-            SynchedEntityData.defineId(GiraffeEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> DATA_TIE =
-            SynchedEntityData.defineId(GiraffeEntity.class, EntityDataSerializers.INT);
+  private static final EntityDataAccessor<Boolean> DATA_SADDLED =
+      SynchedEntityData.defineId(GiraffeEntity.class, EntityDataSerializers.BOOLEAN);
+  private static final EntityDataAccessor<Integer> DATA_TIE =
+      SynchedEntityData.defineId(GiraffeEntity.class, EntityDataSerializers.INT);
 
-    private static final int NO_TIE = -1;
-    private static final float RIDDEN_SPEED_MULTIPLIER = 1.0F;
+  private static final int NO_TIE = -1;
+  private static final float RIDDEN_SPEED_MULTIPLIER = 1.0F;
 
-    public enum TieColor {
-        BASE(0, Items.GIRAFFE_TIE),
-        WHITE(1, Items.GIRAFFE_TIE_WHITE),
-        BLUE(2, Items.GIRAFFE_TIE_BLUE),
-        YELLOW(3, Items.GIRAFFE_TIE_YELLOW),
-        RED(4, Items.GIRAFFE_TIE_RED),
-        PURPLE(5, Items.GIRAFFE_TIE_PURPLE),
-        GREEN(6, Items.GIRAFFE_TIE_GREEN),
-        BLACK(7, Items.GIRAFFE_TIE_BLACK);
+  public enum TieColor {
+    BASE(0, Items.GIRAFFE_TIE),
+    WHITE(1, Items.GIRAFFE_TIE_WHITE),
+    BLUE(2, Items.GIRAFFE_TIE_BLUE),
+    YELLOW(3, Items.GIRAFFE_TIE_YELLOW),
+    RED(4, Items.GIRAFFE_TIE_RED),
+    PURPLE(5, Items.GIRAFFE_TIE_PURPLE),
+    GREEN(6, Items.GIRAFFE_TIE_GREEN),
+    BLACK(7, Items.GIRAFFE_TIE_BLACK);
 
-        private final int id;
-        private final Supplier<Item> item;
+    private final int id;
+    private final Supplier<Item> item;
 
-        TieColor(int id, Supplier<Item> item) {
-            this.id = id;
-            this.item = item;
+    TieColor(int id, Supplier<Item> item) {
+      this.id = id;
+      this.item = item;
+    }
+
+    public int getId() {
+      return id;
+    }
+
+    public Item getItem() {
+      return item.get();
+    }
+
+    public static @Nullable TieColor fromItem(Item item) {
+      for (TieColor color : values()) {
+        if (color.getItem() == item) return color;
+      }
+      return null;
+    }
+  }
+
+  public GiraffeEntity(
+      EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
+    super(type, level);
+  }
+
+  @Override
+  protected void defineSynchedData() {
+    super.defineSynchedData();
+    this.entityData.define(DATA_SADDLED, false);
+    this.entityData.define(DATA_TIE, NO_TIE);
+  }
+
+  @Override
+  protected void registerGoals() {
+    super.registerGoals();
+    this.goalSelector.addGoal(1, new AmbientPanicGoal(this));
+    this.goalSelector.addGoal(
+        2,
+        new AvoidEntityGoal<>(
+            this,
+            LivingEntity.class,
+            12.0F,
+            1.0D,
+            1.5D,
+            e -> e instanceof LionEntity || e instanceof LionessEntity));
+  }
+
+  public static AttributeSupplier.Builder createAttributes() {
+    return LionKingAnimal.createLKAnimalAttributes()
+        .add(Attributes.MAX_HEALTH, 20.0)
+        .add(Attributes.MOVEMENT_SPEED, 0.2);
+  }
+
+  // ── Saddle & Tie ──
+
+  public boolean isSaddled() {
+    return this.entityData.get(DATA_SADDLED);
+  }
+
+  public void setSaddled(boolean saddled) {
+    this.entityData.set(DATA_SADDLED, saddled);
+  }
+
+  public int getTie() {
+    return this.entityData.get(DATA_TIE);
+  }
+
+  public void setTie(int tie) {
+    this.entityData.set(DATA_TIE, tie);
+  }
+
+  @Override
+  public @NotNull InteractionResult mobInteract(
+      @NotNull Player player, @NotNull InteractionHand hand) {
+    ItemStack stack = player.getItemInHand(hand);
+
+    // Apply giraffe saddle
+    if (stack.is(Items.GIRAFFE_SADDLE.get()) && !isSaddled() && !isBaby()) {
+      setSaddled(true);
+      if (!player.getAbilities().instabuild) {
+        stack.shrink(1);
+      }
+      playSound(SoundEvents.HORSE_SADDLE, 0.5F, 1.0F);
+      if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+        LionKingCriteriaTriggers.RIDE_GIRAFFE.trigger(serverPlayer);
+      }
+      return InteractionResult.sidedSuccess(level().isClientSide);
+    }
+
+    // Apply tie (must be saddled, adult, no existing tie, holding a tie item)
+    if (!isBaby() && isSaddled() && getTie() == NO_TIE) {
+      TieColor tieColor = TieColor.fromItem(stack.getItem());
+      if (tieColor != null) {
+        setTie(tieColor.getId());
+        if (!player.getAbilities().instabuild) {
+          stack.shrink(1);
         }
-
-        public int getId() {
-            return id;
-        }
-
-        public Item getItem() {
-            return item.get();
-        }
-
-        public static @Nullable TieColor fromItem(Item item) {
-            for (TieColor color : values()) {
-                if (color.getItem() == item) return color;
-            }
-            return null;
-        }
+        playSound(SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F, 1.0F);
+        return InteractionResult.sidedSuccess(level().isClientSide);
+      }
     }
 
-    public GiraffeEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
-        super(type, level);
+    // Mount the saddled giraffe
+    if (!level().isClientSide
+        && isSaddled()
+        && (getFirstPassenger() == null || getFirstPassenger() == player)) {
+      player.startRiding(this);
+      return InteractionResult.sidedSuccess(level().isClientSide);
     }
 
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_SADDLED, false);
-        this.entityData.define(DATA_TIE, NO_TIE);
+    return super.mobInteract(player, hand);
+  }
+
+  // ── Riding ──
+
+  @Override
+  public double getPassengersRidingOffset() {
+    return getBbHeight() * 0.93;
+  }
+
+  @Override
+  public boolean hurt(@NotNull DamageSource source, float amount) {
+    if (source.getEntity() == getFirstPassenger()) {
+      return false;
     }
+    return super.hurt(source, amount);
+  }
 
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.goalSelector.addGoal(1, new AmbientPanicGoal(this));
-        this.goalSelector.addGoal(
-                2,
-                new AvoidEntityGoal<>(
-                        this,
-                        LivingEntity.class,
-                        12.0F,
-                        1.0D,
-                        1.5D,
-                        e -> e instanceof LionEntity || e instanceof LionessEntity));
+  @Nullable
+  @Override
+  public LivingEntity getControllingPassenger() {
+    if (isSaddled() && getFirstPassenger() instanceof LivingEntity living) {
+      return living;
     }
+    return null;
+  }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return LionKingAnimal.createLKAnimalAttributes()
-                .add(Attributes.MAX_HEALTH, 20.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.2);
+  @Override
+  protected void tickRidden(@NotNull Player player, @NotNull Vec3 travelVec) {
+    super.tickRidden(player, travelVec);
+    this.setRot(player.getYRot(), player.getXRot() * 0.5F);
+    this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
+  }
+
+  @Override
+  protected @NotNull Vec3 getRiddenInput(@NotNull Player player, @NotNull Vec3 travelVec) {
+    float forward = player.zza;
+    float strafe = player.xxa * 0.5F;
+    if (forward <= 0.0F) {
+      forward *= 0.25F;
     }
+    return new Vec3(strafe, 0.0, forward);
+  }
 
-    // ── Saddle & Tie ──
+  @Override
+  protected float getRiddenSpeed(@NotNull Player player) {
+    return (float) getAttributeValue(Attributes.MOVEMENT_SPEED) * RIDDEN_SPEED_MULTIPLIER;
+  }
 
-    public boolean isSaddled() {
-        return this.entityData.get(DATA_SADDLED);
-    }
+  // ── Save/Load ──
 
-    public void setSaddled(boolean saddled) {
-        this.entityData.set(DATA_SADDLED, saddled);
-    }
+  @Override
+  public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+    super.addAdditionalSaveData(tag);
+    tag.putBoolean("Saddled", isSaddled());
+    tag.putInt("Tie", getTie());
+  }
 
-    public int getTie() {
-        return this.entityData.get(DATA_TIE);
-    }
+  @Override
+  public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+    super.readAdditionalSaveData(tag);
+    setSaddled(tag.getBoolean("Saddled"));
+    setTie(tag.getInt("Tie"));
+  }
 
-    public void setTie(int tie) {
-        this.entityData.set(DATA_TIE, tie);
-    }
-
-    @Override
-    public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
-
-        // Apply giraffe saddle
-        if (stack.is(Items.GIRAFFE_SADDLE.get()) && !isSaddled() && !isBaby()) {
-            setSaddled(true);
-            if (!player.getAbilities().instabuild) {
-                stack.shrink(1);
-            }
-            playSound(SoundEvents.HORSE_SADDLE, 0.5F, 1.0F);
-            if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-                LionKingCriteriaTriggers.RIDE_GIRAFFE.trigger(serverPlayer);
-            }
-            return InteractionResult.sidedSuccess(level().isClientSide);
-        }
-
-        // Apply tie (must be saddled, adult, no existing tie, holding a tie item)
-        if (!isBaby() && isSaddled() && getTie() == NO_TIE) {
-            TieColor tieColor = TieColor.fromItem(stack.getItem());
-            if (tieColor != null) {
-                setTie(tieColor.getId());
-                if (!player.getAbilities().instabuild) {
-                    stack.shrink(1);
-                }
-                playSound(SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F, 1.0F);
-                return InteractionResult.sidedSuccess(level().isClientSide);
-            }
-        }
-
-        // Mount the saddled giraffe
-        if (!level().isClientSide && isSaddled() && (getFirstPassenger() == null || getFirstPassenger() == player)) {
-            player.startRiding(this);
-            return InteractionResult.sidedSuccess(level().isClientSide);
-        }
-
-        return super.mobInteract(player, hand);
-    }
-
-    // ── Riding ──
-
-    @Override
-    public double getPassengersRidingOffset() {
-        return getBbHeight() * 0.93;
-    }
-
-    @Override
-    public boolean hurt(@NotNull DamageSource source, float amount) {
-        if (source.getEntity() == getFirstPassenger()) {
-            return false;
-        }
-        return super.hurt(source, amount);
-    }
-
-    @Nullable
-    @Override
-    public LivingEntity getControllingPassenger() {
-        if (isSaddled() && getFirstPassenger() instanceof LivingEntity living) {
-            return living;
-        }
-        return null;
-    }
-
-    @Override
-    protected void tickRidden(@NotNull Player player, @NotNull Vec3 travelVec) {
-        super.tickRidden(player, travelVec);
-        this.setRot(player.getYRot(), player.getXRot() * 0.5F);
-        this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
-    }
-
-    @Override
-    protected @NotNull Vec3 getRiddenInput(@NotNull Player player, @NotNull Vec3 travelVec) {
-        float forward = player.zza;
-        float strafe = player.xxa * 0.5F;
-        if (forward <= 0.0F) {
-            forward *= 0.25F;
-        }
-        return new Vec3(strafe, 0.0, forward);
-    }
-
-    @Override
-    protected float getRiddenSpeed(@NotNull Player player) {
-        return (float) getAttributeValue(Attributes.MOVEMENT_SPEED) * RIDDEN_SPEED_MULTIPLIER;
-    }
-
-    // ── Save/Load ──
-
-    @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putBoolean("Saddled", isSaddled());
-        tag.putInt("Tie", getTie());
-    }
-
-    @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        setSaddled(tag.getBoolean("Saddled"));
-        setTie(tag.getInt("Tie"));
-    }
-
-    @Override
-    protected ItemStack getQuestReward() {
-        return new ItemStack(Items.GIRAFFE_SADDLE.get(), 1);
-    }
+  @Override
+  protected ItemStack getQuestReward() {
+    return new ItemStack(Items.GIRAFFE_SADDLE.get(), 1);
+  }
 }

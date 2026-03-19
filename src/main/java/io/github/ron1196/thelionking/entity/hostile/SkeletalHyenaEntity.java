@@ -17,41 +17,42 @@ import org.jetbrains.annotations.NotNull;
 
 public class SkeletalHyenaEntity extends Monster {
 
-    public SkeletalHyenaEntity(EntityType<? extends Monster> type, Level level) {
-        super(type, level);
-    }
+  public SkeletalHyenaEntity(EntityType<? extends Monster> type, Level level) {
+    super(type, level);
+  }
 
-    @Override
-    protected void registerGoals() {
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, false));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+  @Override
+  protected void registerGoals() {
+    this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, false));
+    this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0));
+    this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+    this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
 
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
-    }
+    this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+  }
 
-    @Override
-    public @NotNull MobType getMobType() {
-        return MobType.UNDEAD;
-    }
+  @Override
+  public @NotNull MobType getMobType() {
+    return MobType.UNDEAD;
+  }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 20.0)
-                .add(Attributes.ATTACK_DAMAGE, 3.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.38);
-    }
+  public static AttributeSupplier.Builder createAttributes() {
+    return Monster.createMonsterAttributes()
+        .add(Attributes.MAX_HEALTH, 20.0)
+        .add(Attributes.ATTACK_DAMAGE, 3.0)
+        .add(Attributes.MOVEMENT_SPEED, 0.38);
+  }
 
-    @Override
-    protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
-        super.dropCustomDeathLoot(source, looting, recentlyHit);
-        if (this.random.nextInt(4) == 0) {
-            ItemStack head = new ItemStack(LionKingBlocks.HYENA_HEAD.get());
-            CompoundTag blockEntityTag = new CompoundTag();
-            blockEntityTag.putInt("HyenaType", 3); // skeletal variant
-            head.getOrCreateTag().put("BlockEntityTag", blockEntityTag);
-            this.spawnAtLocation(head);
-        }
+  @Override
+  protected void dropCustomDeathLoot(
+      @NotNull DamageSource source, int looting, boolean recentlyHit) {
+    super.dropCustomDeathLoot(source, looting, recentlyHit);
+    if (this.random.nextInt(4) == 0) {
+      ItemStack head = new ItemStack(LionKingBlocks.HYENA_HEAD.get());
+      CompoundTag blockEntityTag = new CompoundTag();
+      blockEntityTag.putInt("HyenaType", 3); // skeletal variant
+      head.getOrCreateTag().put("BlockEntityTag", blockEntityTag);
+      this.spawnAtLocation(head);
     }
+  }
 }

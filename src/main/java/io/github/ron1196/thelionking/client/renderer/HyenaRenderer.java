@@ -10,20 +10,21 @@ import org.jetbrains.annotations.NotNull;
 
 public class HyenaRenderer extends MobRenderer<HyenaEntity, EntityModel<HyenaEntity>> {
 
-    private static final ResourceLocation[] TEXTURES = {
-        new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_0.png"),
-        new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_1.png"),
-        new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_2.png")
-    };
+  private static final ResourceLocation[] TEXTURES = {
+    new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_0.png"),
+    new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_1.png"),
+    new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/hyena_2.png")
+  };
 
-    public HyenaRenderer(EntityRendererProvider.Context context, EntityModel<HyenaEntity> model, float shadowRadius) {
-        super(context, model, shadowRadius);
-    }
+  public HyenaRenderer(
+      EntityRendererProvider.Context context, EntityModel<HyenaEntity> model, float shadowRadius) {
+    super(context, model, shadowRadius);
+  }
 
-    @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull HyenaEntity entity) {
-        int variant = entity.getVariant();
-        if (variant < 0 || variant >= TEXTURES.length) variant = 0;
-        return TEXTURES[variant];
-    }
+  @Override
+  public @NotNull ResourceLocation getTextureLocation(@NotNull HyenaEntity entity) {
+    int variant = entity.getVariant();
+    if (variant < 0 || variant >= TEXTURES.length) variant = 0;
+    return TEXTURES[variant];
+  }
 }

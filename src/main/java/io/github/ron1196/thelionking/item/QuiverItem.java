@@ -17,27 +17,29 @@ import org.jetbrains.annotations.NotNull;
 
 public class QuiverItem extends Item {
 
-    public QuiverItem(Properties properties) {
-        super(properties);
-    }
+  public QuiverItem(Properties properties) {
+    super(properties);
+  }
 
-    @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(
-            @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
-        if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-            NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
-                @Override
-                public @NotNull Component getDisplayName() {
-                    return Component.translatable("container.thelionking.quiver");
-                }
+  @Override
+  public @NotNull InteractionResultHolder<ItemStack> use(
+      @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+    if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
+      NetworkHooks.openScreen(
+          serverPlayer,
+          new MenuProvider() {
+            @Override
+            public @NotNull Component getDisplayName() {
+              return Component.translatable("container.thelionking.quiver");
+            }
 
-                @Override
-                public @NotNull AbstractContainerMenu createMenu(
-                        int containerId, @NotNull Inventory inv, @NotNull Player p) {
-                    return new QuiverMenu(containerId, inv);
-                }
-            });
-        }
-        return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
+            @Override
+            public @NotNull AbstractContainerMenu createMenu(
+                int containerId, @NotNull Inventory inv, @NotNull Player p) {
+              return new QuiverMenu(containerId, inv);
+            }
+          });
     }
+    return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
+  }
 }

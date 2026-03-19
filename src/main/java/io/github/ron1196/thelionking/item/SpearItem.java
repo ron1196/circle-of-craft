@@ -13,38 +13,38 @@ import org.jetbrains.annotations.NotNull;
 
 public class SpearItem extends Item {
 
-    private final boolean isPoisoned;
+  private final boolean isPoisoned;
 
-    public SpearItem(boolean isPoisoned) {
-        super(new Item.Properties().durability(160));
-        this.isPoisoned = isPoisoned;
+  public SpearItem(boolean isPoisoned) {
+    super(new Item.Properties().durability(160));
+    this.isPoisoned = isPoisoned;
+  }
+
+  @Override
+  public @NotNull InteractionResultHolder<ItemStack> use(
+      @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+    ItemStack stack = player.getItemInHand(hand);
+
+    if (!level.isClientSide) {
+      SpearEntity spear = new SpearEntity(level, player, isPoisoned);
+      spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
+      level.addFreshEntity(spear);
+
+      if (!player.getAbilities().instabuild) {
+        player.setItemInHand(hand, ItemStack.EMPTY);
+      }
     }
 
-    @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(
-            @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+    level.playSound(
+        null,
+        player.getX(),
+        player.getY(),
+        player.getZ(),
+        SoundEvents.TRIDENT_THROW,
+        SoundSource.PLAYERS,
+        1.0F,
+        1.0F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
 
-        if (!level.isClientSide) {
-            SpearEntity spear = new SpearEntity(level, player, isPoisoned);
-            spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
-            level.addFreshEntity(spear);
-
-            if (!player.getAbilities().instabuild) {
-                player.setItemInHand(hand, ItemStack.EMPTY);
-            }
-        }
-
-        level.playSound(
-                null,
-                player.getX(),
-                player.getY(),
-                player.getZ(),
-                SoundEvents.TRIDENT_THROW,
-                SoundSource.PLAYERS,
-                1.0F,
-                1.0F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
-
-        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
-    }
+    return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+  }
 }

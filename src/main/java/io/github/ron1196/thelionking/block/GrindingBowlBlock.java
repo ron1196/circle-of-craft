@@ -21,63 +21,64 @@ import org.jetbrains.annotations.Nullable;
 
 public class GrindingBowlBlock extends BaseEntityBlock {
 
-    public GrindingBowlBlock(Properties properties) {
-        super(properties);
-    }
+  public GrindingBowlBlock(Properties properties) {
+    super(properties);
+  }
 
-    @Override
-    public @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
-        return RenderShape.MODEL;
-    }
+  @Override
+  public @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
+    return RenderShape.MODEL;
+  }
 
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        return new GrindingBowlBlockEntity(pos, state);
-    }
+  @Nullable
+  @Override
+  public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+    return new GrindingBowlBlockEntity(pos, state);
+  }
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public @NotNull InteractionResult use(
-            @NotNull BlockState state,
-            @NotNull Level level,
-            @NotNull BlockPos pos,
-            @NotNull Player player,
-            @NotNull InteractionHand hand,
-            @NotNull BlockHitResult hit) {
-        if (!level.isClientSide) {
-            BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof GrindingBowlBlockEntity grindingBowl) {
-                NetworkHooks.openScreen((ServerPlayer) player, grindingBowl, pos);
-            }
-        }
-        return InteractionResult.sidedSuccess(level.isClientSide);
+  @Override
+  @SuppressWarnings("deprecation")
+  public @NotNull InteractionResult use(
+      @NotNull BlockState state,
+      @NotNull Level level,
+      @NotNull BlockPos pos,
+      @NotNull Player player,
+      @NotNull InteractionHand hand,
+      @NotNull BlockHitResult hit) {
+    if (!level.isClientSide) {
+      BlockEntity be = level.getBlockEntity(pos);
+      if (be instanceof GrindingBowlBlockEntity grindingBowl) {
+        NetworkHooks.openScreen((ServerPlayer) player, grindingBowl, pos);
+      }
     }
+    return InteractionResult.sidedSuccess(level.isClientSide);
+  }
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(
-            @NotNull BlockState state,
-            @NotNull Level level,
-            @NotNull BlockPos pos,
-            @NotNull BlockState newState,
-            boolean isMoving) {
-        if (!state.is(newState.getBlock())) {
-            BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof GrindingBowlBlockEntity grindingBowl) {
-                grindingBowl.drops();
-            }
-        }
-        super.onRemove(state, level, pos, newState, isMoving);
+  @Override
+  @SuppressWarnings("deprecation")
+  public void onRemove(
+      @NotNull BlockState state,
+      @NotNull Level level,
+      @NotNull BlockPos pos,
+      @NotNull BlockState newState,
+      boolean isMoving) {
+    if (!state.is(newState.getBlock())) {
+      BlockEntity be = level.getBlockEntity(pos);
+      if (be instanceof GrindingBowlBlockEntity grindingBowl) {
+        grindingBowl.drops();
+      }
     }
+    super.onRemove(state, level, pos, newState, isMoving);
+  }
 
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(
-            @NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
-        if (level.isClientSide) {
-            return null;
-        }
-        return createTickerHelper(type, BlockEntityTypes.GRINDING_BOWL.get(), GrindingBowlBlockEntity::serverTick);
+  @Nullable
+  @Override
+  public <T extends BlockEntity> BlockEntityTicker<T> getTicker(
+      @NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
+    if (level.isClientSide) {
+      return null;
     }
+    return createTickerHelper(
+        type, BlockEntityTypes.GRINDING_BOWL.get(), GrindingBowlBlockEntity::serverTick);
+  }
 }

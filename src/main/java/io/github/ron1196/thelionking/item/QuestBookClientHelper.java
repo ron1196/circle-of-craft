@@ -7,7 +7,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class QuestBookClientHelper {
-    public static void openScreen() {
-        Minecraft.getInstance().setScreen(new QuestBookScreen());
-    }
+  public static void openScreen() {
+    Minecraft.getInstance().setScreen(new QuestBookScreen());
+  }
 }
