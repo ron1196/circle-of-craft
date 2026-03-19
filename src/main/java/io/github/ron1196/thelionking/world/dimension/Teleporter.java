@@ -1,8 +1,8 @@
 package io.github.ron1196.thelionking.world.dimension;
 
+import com.google.common.base.Suppliers;
 import io.github.ron1196.thelionking.block.PortalBlock;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
-import com.google.common.base.Suppliers;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -27,20 +27,34 @@ public class Teleporter implements ITeleporter {
       Suppliers.memoize(
           () ->
               Map.of(
-                  LionKingBlocks.OUTLANDS_PORTAL.get(), LionKingBlocks.OUTLANDS_PORTAL_FRAME.get(),
+                  LionKingBlocks.OUTLANDS_PORTAL.get(),
+                  LionKingBlocks.OUTLANDS_PORTAL_FRAME.get(),
                   LionKingBlocks.PRIDE_LANDS_PORTAL.get(),
                   LionKingBlocks.PRIDE_PORTAL_FRAME.get()));
 
-  private final Block portalBlock;
+  @Nullable private final Block portalBlock;
+  @Nullable private final PortalInfo fixedInfo;
 
   public Teleporter(Block portalBlock) {
     this.portalBlock = portalBlock;
+    this.fixedInfo = null;
+  }
+
+  private Teleporter(PortalInfo fixedInfo) {
+    this.portalBlock = null;
+    this.fixedInfo = fixedInfo;
+  }
+
+  /** Returns a Teleporter that places the entity at an exact position, skipping portal search. */
+  public static Teleporter returning(Vec3 pos, float yaw, float xRot) {
+    return new Teleporter(new PortalInfo(pos, Vec3.ZERO, yaw, xRot));
   }
 
   @Nullable
   @Override
   public PortalInfo getPortalInfo(
       Entity entity, ServerLevel destWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
+    if (fixedInfo != null) return fixedInfo;
     BlockPos destPos = findOrCreatePortal(entity, destWorld);
     return new PortalInfo(
         new Vec3(destPos.getX() + 0.5, destPos.getY(), destPos.getZ() + 0.5),
@@ -60,6 +74,7 @@ public class Teleporter implements ITeleporter {
   }
 
   private BlockPos findOrCreatePortal(Entity entity, ServerLevel destWorld) {
+    assert portalBlock != null; // only reachable when fixedInfo == null
     Block frameBlock = FRAME_BLOCKS.get().get(portalBlock);
 
     BlockPos entityPos = entity.blockPosition();

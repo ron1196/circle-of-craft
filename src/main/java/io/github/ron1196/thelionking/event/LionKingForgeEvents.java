@@ -29,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -66,6 +67,14 @@ public class LionKingForgeEvents {
   // PortalBlock.entityInside. Using the Block directly avoids any position lookup ambiguity.
   public static final Map<UUID, Block> PORTAL_BLOCK_CACHE = new ConcurrentHashMap<>();
 
+  // Saves each player's position before they enter a portal, keyed by (UUID, source dimension),
+  // so the return trip can drop them back where they came from.
+  private record ReturnKey(UUID uuid, ResourceKey<Level> dimension) {}
+
+  private record SavedPosition(Vec3 pos, float yaw, float xRot) {}
+
+  private static final Map<ReturnKey, SavedPosition> RETURN_POSITIONS = new ConcurrentHashMap<>();
+
   private static final Supplier<Map<Block, ResourceKey<Level>>> PORTALS =
       Suppliers.memoize(
           () ->
@@ -95,9 +104,23 @@ public class LionKingForgeEvents {
     ServerLevel destLevel = player.server.getLevel(destination);
     if (destLevel == null) return;
 
+    // Check for a saved return position in the destination dimension.
+    ReturnKey returnKey = new ReturnKey(player.getUUID(), destination);
+    SavedPosition savedPos = RETURN_POSITIONS.remove(returnKey);
+
+    // Save the player's current position so the return trip can bring them back here.
+    RETURN_POSITIONS.put(
+        new ReturnKey(player.getUUID(), player.level().dimension()),
+        new SavedPosition(player.position(), player.getYRot(), player.getXRot()));
+
+    Teleporter teleporter =
+        savedPos != null
+            ? Teleporter.returning(savedPos.pos(), savedPos.yaw(), savedPos.xRot())
+            : new Teleporter(portalBlock);
+
     handledPortalTeleports.add(player.getUUID());
     try {
-      player.changeDimension(destLevel, new Teleporter(portalBlock));
+      player.changeDimension(destLevel, teleporter);
     } finally {
       handledPortalTeleports.remove(player.getUUID());
       PORTAL_BLOCK_CACHE.remove(player.getUUID());
