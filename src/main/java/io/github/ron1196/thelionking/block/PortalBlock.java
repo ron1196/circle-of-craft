@@ -8,6 +8,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
@@ -35,13 +35,6 @@ public class PortalBlock extends Block {
 
     // Countdown ticks per player while they stand in the portal.
     private static final Map<UUID, Integer> PORTAL_TICKS = new ConcurrentHashMap<>();
-
-    // Saved entry position per (player, source dimension) for the return trip.
-    private record ReturnKey(UUID uuid, ResourceKey<Level> dimension) {}
-
-    private record SavedPosition(Vec3 pos, float yaw, float xRot) {}
-
-    private static final Map<ReturnKey, SavedPosition> RETURN_POSITIONS = new ConcurrentHashMap<>();
 
     private final boolean isOutlands;
 
@@ -80,7 +73,8 @@ public class PortalBlock extends Block {
 
     @SuppressWarnings("deprecation")
     @Override
-    public void entityInside(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
+    public void entityInside(
+            @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
         if (!canTeleport(level, entity)) return;
 
         if (entity instanceof ServerPlayer player) {
@@ -125,34 +119,26 @@ public class PortalBlock extends Block {
     }
 
     private void teleportPlayer(ServerPlayer player) {
+        if (!isInValidDimension(player.level())) {
+            player.sendSystemMessage(Component.literal("Hakuna Matata! This portal doesn't work here, cheater!"));
+            return;
+        }
         ServerLevel destLevel = resolveDestination(player.level());
         if (destLevel == null) return;
-
-        Teleporter teleporter = buildTeleporter(player, destLevel.dimension());
-        player.changeDimension(destLevel, teleporter);
+        player.changeDimension(destLevel, new Teleporter(this));
     }
 
     private void teleportEntity(Entity entity, Level level) {
+        if (!isInValidDimension(level)) return;
         entity.setPortalCooldown();
         ServerLevel destLevel = resolveDestination(level);
-        if (destLevel != null) {
-            entity.changeDimension(destLevel, new Teleporter(this));
-        }
+        if (destLevel == null) return;
+        entity.changeDimension(destLevel, new Teleporter(this));
     }
 
-    private Teleporter buildTeleporter(ServerPlayer player, ResourceKey<Level> destination) {
-        SavedPosition savedPos = RETURN_POSITIONS.remove(new ReturnKey(player.getUUID(), destination));
-        saveCurrentPosition(player);
-        if (savedPos != null) {
-            return Teleporter.returning(savedPos.pos(), savedPos.yaw(), savedPos.xRot());
-        }
-        return new Teleporter(this);
-    }
-
-    private void saveCurrentPosition(ServerPlayer player) {
-        RETURN_POSITIONS.put(
-                new ReturnKey(player.getUUID(), player.level().dimension()),
-                new SavedPosition(player.position(), player.getYRot(), player.getXRot()));
+    private boolean isInValidDimension(Level level) {
+        ResourceKey<Level> dim = level.dimension();
+        return dim == Level.OVERWORLD || dim == getHomeDimension();
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────────
