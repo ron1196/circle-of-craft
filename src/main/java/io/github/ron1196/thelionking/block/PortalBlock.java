@@ -50,6 +50,7 @@ public class PortalBlock extends Block {
         this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.X));
     }
 
+    @SuppressWarnings("deprecation") // Mojang marks these to discourage direct calls; overriding is intended
     @Override
     public @NotNull VoxelShape getShape(
             BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
@@ -61,6 +62,7 @@ public class PortalBlock extends Block {
         builder.add(AXIS);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public @NotNull BlockState updateShape(
             BlockState state,
@@ -112,6 +114,7 @@ public class PortalBlock extends Block {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void entityInside(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
         if (level.isClientSide || entity.isPassenger() || entity.isVehicle() || !entity.canChangeDimensions()) return;
@@ -226,14 +229,14 @@ public class PortalBlock extends Block {
         public boolean isValid() {
             if (width < MIN_WIDTH || width > MAX_WIDTH || height < MIN_HEIGHT || height > MAX_HEIGHT) return false;
 
-            // Side columns (left wall and right wall, y = 0..height-1)
+            // Side columns (left wall and right wall, y = 0...height-1)
             Direction leftDir = rightDir.getOpposite();
             for (int y = 0; y < height; y++) {
                 if (isNotFrame(bottomLeft.above(y).relative(leftDir))) return false;
                 if (isNotFrame(bottomLeft.above(y).relative(rightDir, width))) return false;
             }
 
-            // Top and bottom rows, x = -1..width covers the corners too
+            // Top and bottom rows, x = -1...width covers the corners too
             for (int x = -1; x <= width; x++) {
                 BlockPos col = bottomLeft.relative(rightDir, x);
                 if (isNotFrame(col.below())) return false;
