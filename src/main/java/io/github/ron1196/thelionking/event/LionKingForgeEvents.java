@@ -21,6 +21,7 @@ import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import io.github.ron1196.thelionking.world.dimension.Teleporter;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -66,39 +67,41 @@ public class LionKingForgeEvents {
     if (!(event.getEntity() instanceof ServerPlayer player)) return;
     if (handledPortalTeleports.contains(player.getUUID())) return;
 
-    Level level = player.level();
-    BlockPos pos = player.blockPosition();
-
-    boolean inPridePortal = isInBlock(level, pos, LionKingBlocks.PRIDE_LANDS_PORTAL.get());
-    boolean inOutPortal = isInBlock(level, pos, LionKingBlocks.OUTLANDS_PORTAL.get());
-    if (!inPridePortal && !inOutPortal) return;
+    PortalResult result = resolvePortal(player.level(), player.blockPosition());
+    if (result == null) return;
 
     event.setCanceled(true);
 
-    boolean isOutlands = inOutPortal;
-    ResourceKey<Level> destination;
-    if (isOutlands) {
-      destination =
-          level.dimension() == Dimensions.OUTLANDS_LEVEL
-              ? Level.OVERWORLD
-              : Dimensions.OUTLANDS_LEVEL;
-    } else {
-      destination =
-          level.dimension() == Dimensions.PRIDE_LANDS_LEVEL
-              ? Level.OVERWORLD
-              : Dimensions.PRIDE_LANDS_LEVEL;
-    }
-
-    ServerLevel destLevel = player.server.getLevel(destination);
+    ServerLevel destLevel = player.server.getLevel(result.destination());
     if (destLevel == null) return;
 
     handledPortalTeleports.add(player.getUUID());
     try {
-      player.changeDimension(destLevel, new Teleporter(isOutlands));
+      player.changeDimension(destLevel, new Teleporter(result.portalBlock()));
     } finally {
       handledPortalTeleports.remove(player.getUUID());
     }
   }
+
+  // Returns the portal destination for the player's current position, or null if not in a portal.
+  // Each portal has a "home" dimension: standing inside it sends you to OVERWORLD, otherwise home.
+  private static PortalResult resolvePortal(Level level, BlockPos pos) {
+    Map<Block, ResourceKey<Level>> portalHomes =
+        Map.of(
+            LionKingBlocks.OUTLANDS_PORTAL.get(), Dimensions.OUTLANDS_LEVEL,
+            LionKingBlocks.PRIDE_LANDS_PORTAL.get(), Dimensions.PRIDE_LANDS_LEVEL);
+
+    for (Map.Entry<Block, ResourceKey<Level>> entry : portalHomes.entrySet()) {
+      if (isInBlock(level, pos, entry.getKey())) {
+        ResourceKey<Level> home = entry.getValue();
+        ResourceKey<Level> destination = level.dimension().equals(home) ? Level.OVERWORLD : home;
+        return new PortalResult(destination, entry.getKey());
+      }
+    }
+    return null;
+  }
+
+  private record PortalResult(ResourceKey<Level> destination, Block portalBlock) {}
 
   private static boolean isInBlock(Level level, BlockPos pos, Block block) {
     return level.getBlockState(pos).is(block) || level.getBlockState(pos.above()).is(block);

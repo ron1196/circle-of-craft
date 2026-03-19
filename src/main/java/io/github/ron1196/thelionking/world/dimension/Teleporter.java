@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.world.dimension;
 
 import io.github.ron1196.thelionking.block.PortalBlock;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
+import java.util.Map;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
@@ -19,10 +20,17 @@ import net.minecraftforge.common.util.ITeleporter;
 
 public class Teleporter implements ITeleporter {
 
-  private final boolean isOutlands;
+  // Maps each portal block to its corresponding frame block.
+  private static Map<Block, Block> frameBlocks() {
+    return Map.of(
+        LionKingBlocks.OUTLANDS_PORTAL.get(), LionKingBlocks.OUTLANDS_PORTAL_FRAME.get(),
+        LionKingBlocks.PRIDE_LANDS_PORTAL.get(), LionKingBlocks.PRIDE_PORTAL_FRAME.get());
+  }
 
-  public Teleporter(boolean isOutlands) {
-    this.isOutlands = isOutlands;
+  private final Block portalBlock;
+
+  public Teleporter(Block portalBlock) {
+    this.portalBlock = portalBlock;
   }
 
   @Nullable
@@ -48,12 +56,7 @@ public class Teleporter implements ITeleporter {
   }
 
   private BlockPos findOrCreatePortal(Entity entity, ServerLevel destWorld) {
-    Block portalBlock =
-        isOutlands ? LionKingBlocks.OUTLANDS_PORTAL.get() : LionKingBlocks.PRIDE_LANDS_PORTAL.get();
-    Block frameBlock =
-        isOutlands
-            ? LionKingBlocks.OUTLANDS_PORTAL_FRAME.get()
-            : LionKingBlocks.PRIDE_PORTAL_FRAME.get();
+    Block frameBlock = frameBlocks().get(portalBlock);
 
     BlockPos entityPos = entity.blockPosition();
     BlockPos destPos = new BlockPos(entityPos.getX(), entityPos.getY(), entityPos.getZ());

@@ -128,7 +128,7 @@ public class PortalBlock extends Block {
         ServerLevel destLevel = server.getLevel(destination);
         if (destLevel != null) {
           entity.setPortalCooldown();
-          entity.changeDimension(destLevel, new Teleporter(isOutlands));
+          entity.changeDimension(destLevel, new Teleporter(this));
         }
       }
     }
