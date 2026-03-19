@@ -20,11 +20,13 @@ import io.github.ron1196.thelionking.registry.Items;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import io.github.ron1196.thelionking.world.dimension.Teleporter;
+import com.google.common.base.Suppliers;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -60,6 +62,13 @@ public class LionKingForgeEvents {
   private static final Set<UUID> handledPortalTeleports =
       Collections.newSetFromMap(new ConcurrentHashMap<>());
 
+  private static final Supplier<Map<Block, ResourceKey<Level>>> PORTALS =
+      Suppliers.memoize(
+          () ->
+              Map.of(
+                  LionKingBlocks.OUTLANDS_PORTAL.get(), Dimensions.OUTLANDS_LEVEL,
+                  LionKingBlocks.PRIDE_LANDS_PORTAL.get(), Dimensions.PRIDE_LANDS_LEVEL));
+
   // ── Portal interception ───────────────────────────────────────────────────
 
   @SubscribeEvent
@@ -86,11 +95,7 @@ public class LionKingForgeEvents {
   // Returns the portal destination for the player's current position, or null if not in a portal.
   // Each portal has a "home" dimension: standing inside it sends you to OVERWORLD, otherwise home.
   private static PortalResult resolvePortal(Level level, BlockPos pos) {
-    Map<Block, ResourceKey<Level>> portals =
-        Map.of(
-            LionKingBlocks.OUTLANDS_PORTAL.get(), Dimensions.OUTLANDS_LEVEL,
-            LionKingBlocks.PRIDE_LANDS_PORTAL.get(), Dimensions.PRIDE_LANDS_LEVEL);
-    for (Map.Entry<Block, ResourceKey<Level>> entry : portals.entrySet()) {
+    for (Map.Entry<Block, ResourceKey<Level>> entry : PORTALS.get().entrySet()) {
       if (!isInBlock(level, pos, entry.getKey())) continue;
       ResourceKey<Level> home = entry.getValue();
       ResourceKey<Level> destination = level.dimension().equals(home) ? Level.OVERWORLD : home;
