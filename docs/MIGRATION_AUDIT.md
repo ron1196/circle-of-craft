@@ -1,6 +1,6 @@
 # Migration Audit: Old 1.6.4 Mod → New 1.20.1 NeoForge Port
 
-Last updated: 2026-03-19
+Last updated: 2026-03-20
 
 This document tracks everything that has been migrated from the original Lion King mod
 and everything that still needs work.
@@ -105,7 +105,7 @@ All previously critical gaps have been addressed:
 
 ## 3. AI Goals
 
-**Status: 19 custom AI goals implemented** (Phase 11) — exceeds the original 16.
+**Status: 20 custom AI goals implemented** (Phase 11+) — exceeds the original 16.
 
 | AI Goal | Class | Used By | Status |
 |---------|-------|---------|--------|
@@ -127,6 +127,7 @@ All previously critical gaps have been addressed:
 | Ambient Wander | `AmbientWanderGoal` | Ambient mobs | Done |
 | Ambient Avoid | `AmbientAvoidGoal` | Ambient mobs | Done |
 | Head Hop | `HeadHopGoal` | Skeletal Hyena Head | Done |
+| Cross-Type Breed | `CrossTypeBreedGoal` | All LK animals | Done |
 
 ---
 
@@ -245,7 +246,7 @@ All previously critical gaps have been addressed:
 `LKForgeEvents.java` handles:
 - [x] `LivingHurtEvent` — Peacock boots fall damage negation, Scourge of Hyenas enchantment
 - [x] `LivingDeathEvent` — Hyena special drops (hyena head with looting)
-- [x] `PlayerInteractEvent.EntityInteract` — NPC dialogue (Rafiki, Timon, Ticket Lion)
+- [x] `PlayerInteractEvent.EntityInteract` — NPC dialogue (Rafiki, Timon, Ticket Lion), Ground Rhino Horn breeding
 - [x] `PlayerEvent.PlayerLoggedInEvent` / tick events — Quest updates, data saving
 - [x] `RegisterCommandsEvent` — `/lk` commands (10 subcommands)
 - [x] Zira spawn event — when quest stage 22, spawns Zira with visual lightning on Outlands surface
@@ -375,11 +376,11 @@ These systems are fully ported and functional:
 - **NPC Entities:** 7 NPCs with dialogue, quest integration (Zira: boss fight lightning spawns, death explosion)
 - **Projectile Entities:** 6 (Dart, Spear, Pumbaa Bomb, Thrown Termite, Coin, Zazu Egg)
 - **Interactive Entities:** Scar Rug / Zira Rug (talk on interact, quest reward)
-- **AI Goals:** 19 custom goals wired into entities
+- **AI Goals:** 20 custom goals wired into entities
 - **Block Entities:** 8 types (Grinding Bowl, Bongo Drum, Bug Trap, Hyena Head, Outlands Pool, Spawner, Fur Rug, Pride Bed)
 - **GUIs:** 7 screens (Grinding Bowl, Bongo Drum, Bug Trap, Quest Book, Quiver, Timon, Simba)
 - **Quest System:** 2 quest lines with stage progression, networking sync
-- **Networking:** 5 packets (quest sync, quest check, simba sit, login sync, player data sync)
+- **Networking:** 6 packets (quest sync, quest check, simba sit, login sync, player data sync, portal overlay)
 - **Event Handlers:** Forge bus events for combat, drops, NPC interaction, ticks
 - **Creative Tabs:** 8 organized tabs
 - **Tool Tiers:** 5 tiers with all tools registered

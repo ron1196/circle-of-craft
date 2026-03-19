@@ -73,7 +73,7 @@ public void onRemove(
 ```
 src/main/java/io/github/ron1196/thelionking/
   TheLionKingMod.java        — Main mod class, event bus registration
-  registry/                  — DeferredRegister classes (LKBlocks, LKItems, LKEntityTypes, etc.)
+  registry/                  — DeferredRegister classes (LionKingBlocks, LionKingItems, EntityTypes, etc.)
   block/                     — Block subclasses
   block/entity/              — BlockEntity classes
   item/                      — Item subclasses
@@ -86,10 +86,10 @@ src/main/java/io/github/ron1196/thelionking/
   world/dimension/           — Teleporter
   world/feature/             — Custom worldgen features
   quest/                     — Quest system (LKQuestBase, LKQuestRafiki, LKQuestOutlands)
-  data/                      — LKLevelData (SavedData), custom recipes
+  data/                      — WorldData (SavedData), PlayerData, custom triggers
   menu/                      — Container menus
-  network/                   — Packet handling (LKNetworking, SimbaSitPacket, QuestSyncPacket, QuestCheckPacket)
-  event/                     — Event handlers (LKCommonEvents, LKClientEvents, LKForgeEvents)
+  network/                   — Packet handling (Networking, SimbaSitPacket, QuestSyncPacket, QuestCheckPacket, etc.)
+  event/                     — Event handlers (CommonEvents, ClientEvents, LionKingForgeEvents)
   client/gui/                — Screens
   client/model/              — Entity models
   client/renderer/           — Entity & block entity renderers
@@ -125,17 +125,17 @@ src/main/resources/
 
 | File                          | Purpose                                  |
 |-------------------------------|------------------------------------------|
-| `registry/LKBlocks.java`     | All block registrations                  |
-| `registry/LKItems.java`      | All item registrations + block items     |
-| `registry/LKEntityTypes.java`| All entity type registrations            |
-| `registry/LKSoundEvents.java`| Sound event registrations                |
-| `registry/LKFeatures.java`   | Custom worldgen feature registrations    |
-| `event/LKCommonEvents.java`  | Entity attribute registration            |
-| `event/LKClientEvents.java`  | Renderers, models, GUI screens           |
-| `event/LKForgeEvents.java`   | Forge bus events (combat, NPC interaction, ticks) |
-| `network/LKNetworking.java`  | SimpleChannel packet registration        |
-| `data/LKLevelData.java`      | World-level saved data (quests, state)   |
-| `data/LKCriteriaTriggers.java`| Custom advancement triggers             |
+| `registry/LionKingBlocks.java` | All block registrations                |
+| `registry/LionKingItems.java`  | All item registrations + block items   |
+| `registry/EntityTypes.java`    | All entity type registrations          |
+| `registry/SoundEvents.java`  | Sound event registrations                |
+| `registry/Features.java`     | Custom worldgen feature registrations    |
+| `event/CommonEvents.java`    | Entity attribute registration            |
+| `event/ClientEvents.java`    | Renderers, models, GUI screens           |
+| `event/LionKingForgeEvents.java` | Forge bus events (combat, NPC interaction, breeding, ticks) |
+| `network/Networking.java`    | SimpleChannel packet registration        |
+| `data/WorldData.java`        | World-level saved data (quests, state)   |
+| `data/LionKingCriteriaTriggers.java` | Custom advancement triggers       |
 | `sounds.json`                | Maps sound event names to file paths     |
 | `lang/en_us.json`            | All translatable strings                 |
 

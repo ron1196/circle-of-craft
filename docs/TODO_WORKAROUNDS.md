@@ -8,7 +8,7 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 ## Missing Item Behaviour
 
-- [x] ~~**`ground_rhino_horn` has no interaction logic**~~ — RESOLVED: `GroundRhinoHornItem` with `interactLivingEntity` — right-click on in-love animal with nearby mate forces instant breeding (1/3 fail chance with smoke). Fires `USE_RHINO_HORN` trigger.
+- [x] ~~**`ground_rhino_horn` has no interaction logic**~~ — RESOLVED: `GroundRhinoHornItem` handled via `PlayerInteractEvent.EntityInteract` in `LionKingForgeEvents`. Right-click adult animal with nearby mate → sets both in love mode (1/3 fail chance with smoke). `CrossTypeBreedGoal` handles walk-toward + breeding, including cross-type pairs (lion ↔ lioness). Fires `USE_RHINO_HORN` trigger.
 
 ## Missing Items (not yet ported from old mod)
 
