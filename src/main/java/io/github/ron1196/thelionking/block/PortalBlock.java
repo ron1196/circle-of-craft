@@ -120,7 +120,7 @@ public class PortalBlock extends Block {
     if (entity instanceof Player player) {
       // Players get the vanilla countdown + overlay; the actual teleport is
       // intercepted in LionKingForgeEvents.onEntityTravelToDimension().
-      LionKingForgeEvents.PORTAL_ENTRANCE_CACHE.put(player.getUUID(), pos);
+      LionKingForgeEvents.PORTAL_BLOCK_CACHE.put(player.getUUID(), this);
       entity.handleInsidePortal(pos);
     } else {
       // Non-player entities teleport instantly (no overlay needed).

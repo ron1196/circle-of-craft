@@ -62,9 +62,9 @@ public class LionKingForgeEvents {
   private static final Set<UUID> handledPortalTeleports =
       Collections.newSetFromMap(new ConcurrentHashMap<>());
 
-  // Tracks the exact portal block pos each player is standing in, updated every tick by
-  // PortalBlock.entityInside. player.blockPosition() can be misaligned with the block grid.
-  public static final Map<UUID, BlockPos> PORTAL_ENTRANCE_CACHE = new ConcurrentHashMap<>();
+  // Tracks which portal block type each player is standing in, updated every tick by
+  // PortalBlock.entityInside. Using the Block directly avoids any position lookup ambiguity.
+  public static final Map<UUID, Block> PORTAL_BLOCK_CACHE = new ConcurrentHashMap<>();
 
   private static final Supplier<Map<Block, ResourceKey<Level>>> PORTALS =
       Suppliers.memoize(
@@ -80,42 +80,28 @@ public class LionKingForgeEvents {
     if (!(event.getEntity() instanceof ServerPlayer player)) return;
     if (handledPortalTeleports.contains(player.getUUID())) return;
 
-    // Use the cached portal pos recorded each tick by PortalBlock.entityInside.
-    // player.blockPosition() can be off by a block due to hitbox/block-grid alignment.
-    BlockPos portalPos =
-        PORTAL_ENTRANCE_CACHE.getOrDefault(player.getUUID(), player.blockPosition());
-    PortalResult result = resolvePortal(player.level(), portalPos);
-    if (result == null) return;
+    // Look up the portal block type cached by PortalBlock.entityInside each tick.
+    // This avoids any world block lookup, which can fail due to hitbox/grid misalignment.
+    Block portalBlock = PORTAL_BLOCK_CACHE.get(player.getUUID());
+    if (portalBlock == null) return;
+
+    ResourceKey<Level> home = PORTALS.get().get(portalBlock);
+    if (home == null) return;
 
     event.setCanceled(true);
 
-    ServerLevel destLevel = player.server.getLevel(result.destination());
+    ResourceKey<Level> destination =
+        player.level().dimension().equals(home) ? Level.OVERWORLD : home;
+    ServerLevel destLevel = player.server.getLevel(destination);
     if (destLevel == null) return;
 
     handledPortalTeleports.add(player.getUUID());
     try {
-      player.changeDimension(destLevel, new Teleporter(result.portalBlock()));
+      player.changeDimension(destLevel, new Teleporter(portalBlock));
     } finally {
       handledPortalTeleports.remove(player.getUUID());
+      PORTAL_BLOCK_CACHE.remove(player.getUUID());
     }
-  }
-
-  // Returns the portal destination for the player's current position, or null if not in a portal.
-  // Each portal has a "home" dimension: standing inside it sends you to OVERWORLD, otherwise home.
-  private static PortalResult resolvePortal(Level level, BlockPos pos) {
-    for (Map.Entry<Block, ResourceKey<Level>> entry : PORTALS.get().entrySet()) {
-      if (!isInBlock(level, pos, entry.getKey())) continue;
-      ResourceKey<Level> home = entry.getValue();
-      ResourceKey<Level> destination = level.dimension().equals(home) ? Level.OVERWORLD : home;
-      return new PortalResult(destination, entry.getKey());
-    }
-    return null;
-  }
-
-  private record PortalResult(ResourceKey<Level> destination, Block portalBlock) {}
-
-  private static boolean isInBlock(Level level, BlockPos pos, Block block) {
-    return level.getBlockState(pos).is(block) || level.getBlockState(pos.above()).is(block);
   }
 
   // ── Commands ──────────────────────────────────────────────────────────────
