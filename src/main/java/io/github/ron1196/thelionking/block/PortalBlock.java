@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.block;
 
+import io.github.ron1196.thelionking.event.LionKingForgeEvents;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import io.github.ron1196.thelionking.world.dimension.Teleporter;
@@ -116,9 +117,10 @@ public class PortalBlock extends Block {
       return;
     }
 
-    if (entity instanceof Player) {
+    if (entity instanceof Player player) {
       // Players get the vanilla countdown + overlay; the actual teleport is
-      // intercepted in LKForgeEvents.onEntityTravelToDimension().
+      // intercepted in LionKingForgeEvents.onEntityTravelToDimension().
+      LionKingForgeEvents.PORTAL_ENTRANCE_CACHE.put(player.getUUID(), pos);
       entity.handleInsidePortal(pos);
     } else {
       // Non-player entities teleport instantly (no overlay needed).

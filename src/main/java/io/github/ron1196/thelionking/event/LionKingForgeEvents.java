@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.event;
 
+import com.google.common.base.Suppliers;
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.command.LionKingCommands;
 import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
@@ -20,7 +21,6 @@ import io.github.ron1196.thelionking.registry.Items;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import io.github.ron1196.thelionking.world.dimension.Teleporter;
-import com.google.common.base.Suppliers;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -62,6 +62,10 @@ public class LionKingForgeEvents {
   private static final Set<UUID> handledPortalTeleports =
       Collections.newSetFromMap(new ConcurrentHashMap<>());
 
+  // Tracks the exact portal block pos each player is standing in, updated every tick by
+  // PortalBlock.entityInside. player.blockPosition() can be misaligned with the block grid.
+  public static final Map<UUID, BlockPos> PORTAL_ENTRANCE_CACHE = new ConcurrentHashMap<>();
+
   private static final Supplier<Map<Block, ResourceKey<Level>>> PORTALS =
       Suppliers.memoize(
           () ->
@@ -76,7 +80,11 @@ public class LionKingForgeEvents {
     if (!(event.getEntity() instanceof ServerPlayer player)) return;
     if (handledPortalTeleports.contains(player.getUUID())) return;
 
-    PortalResult result = resolvePortal(player.level(), player.blockPosition());
+    // Use the cached portal pos recorded each tick by PortalBlock.entityInside.
+    // player.blockPosition() can be off by a block due to hitbox/block-grid alignment.
+    BlockPos portalPos =
+        PORTAL_ENTRANCE_CACHE.getOrDefault(player.getUUID(), player.blockPosition());
+    PortalResult result = resolvePortal(player.level(), portalPos);
     if (result == null) return;
 
     event.setCanceled(true);
