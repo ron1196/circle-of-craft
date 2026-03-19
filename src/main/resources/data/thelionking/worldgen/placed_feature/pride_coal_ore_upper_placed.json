@@ -1,14 +1,14 @@
 {
   "feature": "thelionking:pride_coal_ore",
   "placement": [
-    { "type": "minecraft:count", "count": 30 },
+    { "type": "minecraft:count", "count": 40 },
     { "type": "minecraft:in_square" },
     {
       "type": "minecraft:height_range",
       "height": {
-        "type": "minecraft:trapezoid",
-        "min_inclusive": { "absolute": 0 },
-        "max_inclusive": { "absolute": 192 }
+        "type": "minecraft:uniform",
+        "min_inclusive": { "absolute": 136 },
+        "max_inclusive": { "absolute": 320 }
       }
     },
     { "type": "minecraft:biome" }

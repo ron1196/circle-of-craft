@@ -47,14 +47,15 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 Old `LKGuiIngame.java` — none ported. Implement via `RenderGuiOverlayEvent` in `LKClientEvents`.
 
 - [x] ~~**Boss HP Bar**~~ — RESOLVED: Vanilla `ServerBossEvent` in `ScarEntity` (RED) and `ZiraEntity` (PURPLE). Bar appears when player tracks the boss's chunk. No custom rendering needed.
-- [ ] **Portal Overlay** — Screen tint when player is inside a Pride Lands or Outlands portal block. Old: `renderPortalOverlay(float f, Minecraft mc, boolean isPrideLands)`
+- [x] ~~**Portal Overlay**~~ — RESOLVED: `PortalOverlayPacket` renders portal overlay with nausea wobble effect via `spinningEffectIntensity`.
 - [x] ~~**Flatulence Overlay**~~ — RESOLVED: `FlatulencePacket` (S→C) sent to all players within 15 blocks of a Pumbaa bomb explosion. `LKHudOverlays` renders `flatulence.png` full-screen with 60-tick fade via `RenderGuiEvent.Post`.
 
 ## Missing Event Handlers
 
 - [ ] **UseHoeEvent** — Tilled Sand creation when hoeing sand blocks
 - [x] ~~**BonemealEvent**~~ — SKIP: Both vanilla bonemeal and Hyena Meal work in all dimensions.
-- [ ] **Pride Lands Entry Song** — Play a song when the player enters the Pride Lands for the first time
+- [x] ~~**Pride Lands Entry Song**~~ — RESOLVED: `DimensionMusicHandler` plays Circle of Life on dimension change.
+- [ ] **Respawn Dimension Redirect** — Old mod: dying in Outlands or Upendi respawns the player in Pride Lands (not Overworld). Needs a `PlayerEvent.PlayerRespawnEvent` handler to teleport the player to Pride Lands world spawn when they die in those dimensions without a bed set.
 
 ## Missing Networking Packets
 

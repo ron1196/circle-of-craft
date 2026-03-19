@@ -1,14 +1,14 @@
 {
-  "feature": "thelionking:pride_coal_ore",
+  "feature": "thelionking:peacock_ore_buried",
   "placement": [
-    { "type": "minecraft:count", "count": 30 },
+    { "type": "minecraft:count", "count": 6 },
     { "type": "minecraft:in_square" },
     {
       "type": "minecraft:height_range",
       "height": {
         "type": "minecraft:trapezoid",
-        "min_inclusive": { "absolute": 0 },
-        "max_inclusive": { "absolute": 192 }
+        "min_inclusive": { "absolute": -144 },
+        "max_inclusive": { "absolute": 16 }
       }
     },
     { "type": "minecraft:biome" }

@@ -1,14 +1,14 @@
 {
-  "feature": "thelionking:pride_coal_ore",
+  "feature": "thelionking:silver_ore",
   "placement": [
-    { "type": "minecraft:count", "count": 30 },
+    { "type": "minecraft:count", "count": 12 },
     { "type": "minecraft:in_square" },
     {
       "type": "minecraft:height_range",
       "height": {
         "type": "minecraft:trapezoid",
-        "min_inclusive": { "absolute": 0 },
-        "max_inclusive": { "absolute": 192 }
+        "min_inclusive": { "absolute": -24 },
+        "max_inclusive": { "absolute": 56 }
       }
     },
     { "type": "minecraft:biome" }

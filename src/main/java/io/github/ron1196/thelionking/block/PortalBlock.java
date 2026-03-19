@@ -322,7 +322,7 @@ public class PortalBlock extends Block {
                 if (isNotFrame(bottomLeft.above(y).relative(leftDir))) return false;
                 if (isNotFrame(bottomLeft.above(y).relative(rightDir, width))) return false;
             }
-            // Top and bottom rows (x = -1..width includes corners)
+            // Top and bottom rows (x = -1...width includes corners)
             for (int x = -1; x <= width; x++) {
                 BlockPos col = bottomLeft.relative(rightDir, x);
                 if (isNotFrame(col.below())) return false;

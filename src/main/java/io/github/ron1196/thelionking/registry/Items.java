@@ -1,6 +1,7 @@
 package io.github.ron1196.thelionking.registry;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
+import net.minecraft.core.Direction;
 import io.github.ron1196.thelionking.entity.RugEntity;
 import io.github.ron1196.thelionking.item.*;
 import io.github.ron1196.thelionking.item.tier.LionKingArmorMaterials;
@@ -762,8 +763,13 @@ public class Items {
   // Misc nature
   public static final RegistryObject<BlockItem> ARID_GRASS_ITEM =
       registerBlockItem("arid_grass", LionKingBlocks.ARID_GRASS);
-  public static final RegistryObject<BlockItem> HYENA_TORCH_ITEM =
-      registerBlockItem("hyena_torch", LionKingBlocks.HYENA_TORCH);
+  public static final RegistryObject<Item> HYENA_TORCH_ITEM = ITEMS.register(
+      "hyena_torch",
+      () -> new StandingAndWallBlockItem(
+              LionKingBlocks.HYENA_TORCH.get(),
+              LionKingBlocks.HYENA_WALL_TORCH.get(),
+              new Item.Properties(),
+              Direction.DOWN));
   public static final RegistryObject<BlockItem> HANGING_BANANA_ITEM =
       registerBlockItem("hanging_banana", LionKingBlocks.HANGING_BANANA);
   public static final RegistryObject<BlockItem> KIWANO_BLOCK_ITEM =

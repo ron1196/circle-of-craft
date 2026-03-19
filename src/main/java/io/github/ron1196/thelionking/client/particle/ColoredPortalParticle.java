@@ -31,14 +31,7 @@ public class ColoredPortalParticle extends TextureSheetParticle {
     private final double originY;
     private final double originZ;
 
-    private ColoredPortalParticle(
-            ClientLevel level,
-            double x,
-            double y,
-            double z,
-            float red,
-            float green,
-            float blue) {
+    private ColoredPortalParticle(ClientLevel level, double x, double y, double z, float red, float green, float blue) {
         super(level, x, y, z);
         this.originX = x;
         this.originY = y;

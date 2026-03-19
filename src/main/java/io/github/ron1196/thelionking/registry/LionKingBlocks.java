@@ -32,7 +32,7 @@ public class LionKingBlocks {
             "corrupt_pridestone",
             () -> new Block(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_PURPLE)
-                    .strength(1.5F, 10.0F)
+                    .strength(1.05F, 10.0F)
                     .requiresCorrectToolForDrops()));
 
     public static final RegistryObject<Block> PRIDE_BRICK = BLOCKS.register(

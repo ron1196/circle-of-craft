@@ -6,6 +6,6 @@
       "type": "minecraft:fixed",
       "biome": "thelionking:upendi"
     },
-    "settings": "minecraft:overworld"
+    "settings": "thelionking:upendi"
   }
 }

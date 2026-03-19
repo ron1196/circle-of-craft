@@ -3,21 +3,40 @@
   "downfall": 1.0,
   "has_precipitation": true,
   "effects": {
-    "sky_color": 16747775,
-    "fog_color": 16747775,
-    "water_color": 4445678,
-    "water_fog_color": 270131,
-    "grass_color": 5470985,
-    "foliage_color": 5470985
+    "sky_color": 9339135,
+    "fog_color": 13718250,
+    "water_color": 16716100,
+    "water_fog_color": 16716100,
+    "grass_color": 1626657,
+    "foliage_color": 620293
   },
   "spawners": {
     "monster": [],
     "creature": [
-      { "type": "thelionking:lion", "weight": 10, "minCount": 1, "maxCount": 3 },
-      { "type": "thelionking:lioness", "weight": 12, "minCount": 2, "maxCount": 4 },
-      { "type": "thelionking:flamingo", "weight": 15, "minCount": 3, "maxCount": 6 },
-      { "type": "thelionking:dikdik", "weight": 8, "minCount": 2, "maxCount": 4 },
-      { "type": "thelionking:zazu", "weight": 20, "minCount": 4, "maxCount": 8 }
+      {
+        "type": "thelionking:lion",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "thelionking:lioness",
+        "weight": 12,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "thelionking:flamingo",
+        "weight": 10,
+        "minCount": 3,
+        "maxCount": 6
+      },
+      {
+        "type": "thelionking:dikdik",
+        "weight": 8,
+        "minCount": 2,
+        "maxCount": 4
+      }
     ],
     "ambient": [],
     "axolotls": [],
@@ -28,19 +47,43 @@
   },
   "spawn_costs": {},
   "carvers": {
-    "air": ["minecraft:cave", "minecraft:cave_extra_underground", "minecraft:canyon"]
+    "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon"
+    ]
   },
   "features": [
     [],
-    ["minecraft:lake_lava_underground"],
+    [
+      "minecraft:lake_lava_underground"
+    ],
+    [
+      "thelionking:pride_coal_ore_placed",
+      "thelionking:pride_coal_ore_upper_placed",
+      "thelionking:silver_ore_placed",
+      "thelionking:silver_ore_middle_placed",
+      "thelionking:silver_ore_small_placed",
+      "thelionking:peacock_ore_placed",
+      "thelionking:peacock_ore_large_placed",
+      "thelionking:peacock_ore_buried_placed"
+    ],
     [],
     [],
     [],
     [],
     [],
-    [],
-    ["thelionking:passion_tree_placed", "thelionking:mango_tree_placed", "thelionking:banana_tree_placed", "thelionking:mega_rainforest_tree_placed"],
-    ["minecraft:patch_grass_jungle", "minecraft:patch_tall_grass", "thelionking:lily_pad_placed"],
+    [
+      "thelionking:passion_tree_placed",
+      "thelionking:mango_tree_placed",
+      "thelionking:banana_tree_placed",
+      "thelionking:mega_rainforest_tree_placed"
+    ],
+    [
+      "minecraft:patch_grass_jungle",
+      "minecraft:patch_tall_grass",
+      "thelionking:lily_pad_placed"
+    ],
     [],
     []
   ]
