@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.entity.hostile;
 
 import io.github.ron1196.thelionking.entity.animal.*;
-import io.github.ron1196.thelionking.registry.Blocks;
+import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -145,7 +145,7 @@ public class HyenaEntity extends Monster {
     protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
         super.dropCustomDeathLoot(source, looting, recentlyHit);
         if (this.random.nextInt(4) == 0) {
-            ItemStack head = new ItemStack(Blocks.HYENA_HEAD.get());
+            ItemStack head = new ItemStack(LionKingBlocks.HYENA_HEAD.get());
             CompoundTag blockEntityTag = new CompoundTag();
             blockEntityTag.putInt("HyenaType", getVariant());
             head.getOrCreateTag().put("BlockEntityTag", blockEntityTag);

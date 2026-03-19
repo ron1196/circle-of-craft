@@ -14,9 +14,9 @@ import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.network.LoginSyncPacket;
 import io.github.ron1196.thelionking.network.Networking;
+import io.github.ron1196.thelionking.registry.Enchantments;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.Items;
-import io.github.ron1196.thelionking.registry.Enchantments;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -82,8 +82,7 @@ public class LKForgeEvents {
         // Scourge of Hyenas enchantment bonus damage
         if (attacker instanceof Player player) {
             ItemStack weapon = player.getMainHandItem();
-            int scourgeLevel =
-                    EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SCOURGE_OF_HYENAS.get(), weapon);
+            int scourgeLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SCOURGE_OF_HYENAS.get(), weapon);
 
             if (scourgeLevel > 0 && (target instanceof HyenaEntity || target instanceof SkeletalHyenaEntity)) {
                 event.setAmount(event.getAmount() + 2.5F * scourgeLevel);
@@ -108,8 +107,8 @@ public class LKForgeEvents {
 
         // Hyena special drop: hyena head with looting
         if (entity instanceof HyenaEntity && killer instanceof Player player) {
-            int lootingLevel =
-                    EnchantmentHelper.getItemEnchantmentLevel(net.minecraft.world.item.enchantment.Enchantments.MOB_LOOTING, player.getMainHandItem());
+            int lootingLevel = EnchantmentHelper.getItemEnchantmentLevel(
+                    net.minecraft.world.item.enchantment.Enchantments.MOB_LOOTING, player.getMainHandItem());
 
             float dropChance = 0.05F + 0.03F * lootingLevel;
             if (entity.level().random.nextFloat() < dropChance) {

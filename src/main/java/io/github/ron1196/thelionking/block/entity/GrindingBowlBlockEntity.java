@@ -1,9 +1,9 @@
 package io.github.ron1196.thelionking.block.entity;
 
 import io.github.ron1196.thelionking.menu.GrindingBowlMenu;
-import io.github.ron1196.thelionking.registry.Blocks;
-import io.github.ron1196.thelionking.registry.Items;
 import io.github.ron1196.thelionking.registry.BlockEntityTypes;
+import io.github.ron1196.thelionking.registry.Items;
+import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
@@ -63,18 +63,18 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
             RECIPES.put(Items.FEATHER_PINK.get(), net.minecraft.world.item.Items.PINK_DYE);
 
             // Flower → dye recipes
-            RECIPES.put(Blocks.WHITE_FLOWER.get().asItem(), net.minecraft.world.item.Items.WHITE_DYE);
-            RECIPES.put(Blocks.BLUE_FLOWER.get().asItem(), net.minecraft.world.item.Items.BLUE_DYE);
-            RECIPES.put(Blocks.PURPLE_FLOWER.get().asItem(), net.minecraft.world.item.Items.PURPLE_DYE);
-            RECIPES.put(Blocks.RED_FLOWER.get().asItem(), net.minecraft.world.item.Items.RED_DYE);
+            RECIPES.put(LionKingBlocks.WHITE_FLOWER.get().asItem(), net.minecraft.world.item.Items.WHITE_DYE);
+            RECIPES.put(LionKingBlocks.BLUE_FLOWER.get().asItem(), net.minecraft.world.item.Items.BLUE_DYE);
+            RECIPES.put(LionKingBlocks.PURPLE_FLOWER.get().asItem(), net.minecraft.world.item.Items.PURPLE_DYE);
+            RECIPES.put(LionKingBlocks.RED_FLOWER.get().asItem(), net.minecraft.world.item.Items.RED_DYE);
 
             // Leaf → dye recipes
-            RECIPES.put(Blocks.ACACIA_LEAVES.get().asItem(), net.minecraft.world.item.Items.GREEN_DYE);
-            RECIPES.put(Blocks.RAINFOREST_LEAVES.get().asItem(), net.minecraft.world.item.Items.GREEN_DYE);
-            RECIPES.put(Blocks.MANGO_LEAVES.get().asItem(), net.minecraft.world.item.Items.GREEN_DYE);
+            RECIPES.put(LionKingBlocks.ACACIA_LEAVES.get().asItem(), net.minecraft.world.item.Items.GREEN_DYE);
+            RECIPES.put(LionKingBlocks.RAINFOREST_LEAVES.get().asItem(), net.minecraft.world.item.Items.GREEN_DYE);
+            RECIPES.put(LionKingBlocks.MANGO_LEAVES.get().asItem(), net.minecraft.world.item.Items.GREEN_DYE);
 
             // Termite grinding
-            RECIPES.put(Items.BUG.get(), Items.TERMITE_DUST.get());
+            RECIPES.put(Items.TERMITE_THROWN.get(), Items.TERMITE_DUST.get());
 
             // Wheat → flour (vanilla compatibility)
             RECIPES.put(net.minecraft.world.item.Items.WHEAT, net.minecraft.world.item.Items.BREAD);

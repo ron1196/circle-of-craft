@@ -1,1 +1,7 @@
-{"parent":"minecraft:block/cube_all","textures":{"all":"thelionking:block/bug_trap"}}
+{
+  "render_type": "minecraft:cutout",
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "thelionking:block/bug_trap"
+  }
+}

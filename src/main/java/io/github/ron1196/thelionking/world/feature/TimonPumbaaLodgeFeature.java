@@ -1,8 +1,8 @@
 package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
-import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.EntityTypes;
+import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.LeavesBlock;
@@ -25,9 +25,10 @@ public class TimonPumbaaLodgeFeature extends Feature<NoneFeatureConfiguration> {
         WorldGenLevel level = context.level();
         BlockPos pos = context.origin();
 
-        BlockState log = Blocks.MANGO_LOG.get().defaultBlockState();
-        BlockState planks = Blocks.MANGO_PLANKS.get().defaultBlockState();
-        BlockState leaves = Blocks.MANGO_LEAVES.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
+        BlockState log = LionKingBlocks.MANGO_LOG.get().defaultBlockState();
+        BlockState planks = LionKingBlocks.MANGO_PLANKS.get().defaultBlockState();
+        BlockState leaves =
+                LionKingBlocks.MANGO_LEAVES.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
 
         // No strict ground check — structure system handles terrain placement
 

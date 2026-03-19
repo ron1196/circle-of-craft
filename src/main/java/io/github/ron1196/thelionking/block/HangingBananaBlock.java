@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.block;
 
-import io.github.ron1196.thelionking.registry.Blocks;
+import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -47,7 +47,7 @@ public class HangingBananaBlock extends HorizontalDirectionalBlock {
         Direction facing = state.getValue(FACING);
         BlockPos attachedTo = pos.relative(facing.getOpposite());
         BlockState attachedState = level.getBlockState(attachedTo);
-        return attachedState.is(Blocks.BANANA_LOG.get());
+        return attachedState.is(LionKingBlocks.BANANA_LOG.get());
     }
 
     @Override

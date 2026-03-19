@@ -1,9 +1,9 @@
 package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
-import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.Items;
+import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.world.structure.LKStructurePiece;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -55,7 +55,7 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         BlockState glowstone = net.minecraft.world.level.block.Blocks.GLOWSTONE.defaultBlockState();
         BlockState fence = net.minecraft.world.level.block.Blocks.OAK_FENCE.defaultBlockState();
         BlockState glassPane = net.minecraft.world.level.block.Blocks.GLASS_PANE.defaultBlockState();
-        BlockState portalFrame = Blocks.PRIDE_PORTAL_FRAME.get().defaultBlockState();
+        BlockState portalFrame = LionKingBlocks.PRIDE_PORTAL_FRAME.get().defaultBlockState();
         BlockState torch = net.minecraft.world.level.block.Blocks.TORCH.defaultBlockState();
         BlockState air = net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
         BlockState dirt = net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState();

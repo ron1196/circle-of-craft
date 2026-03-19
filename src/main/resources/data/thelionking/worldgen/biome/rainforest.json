@@ -95,11 +95,12 @@
     [],
     [
       "thelionking:rainforest_tree_placed",
-      "thelionking:huge_rainforest_tree_placed",
+      "thelionking:mega_rainforest_tree_placed",
       "thelionking:mango_tree_placed"
     ],
     [
       "minecraft:patch_tall_grass",
+      "thelionking:lily_pad_placed",
       "thelionking:yam_patch_placed"
     ],
     [],

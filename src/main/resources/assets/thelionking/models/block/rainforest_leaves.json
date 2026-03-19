@@ -1,1 +1,7 @@
-{"parent":"minecraft:block/leaves","textures":{"all":"thelionking:block/rainforest_leaves"}}
+{
+  "render_type": "minecraft:cutout_mipped",
+  "parent": "minecraft:block/leaves",
+  "textures": {
+    "all": "thelionking:block/rainforest_leaves"
+  }
+}

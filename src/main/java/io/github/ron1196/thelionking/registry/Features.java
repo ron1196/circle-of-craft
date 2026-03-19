@@ -3,6 +3,7 @@ package io.github.ron1196.thelionking.registry;
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.world.feature.BananaTreeFeature;
 import io.github.ron1196.thelionking.world.feature.DeadTreeFeature;
+import io.github.ron1196.thelionking.world.feature.LilyPadFeature;
 import io.github.ron1196.thelionking.world.feature.MangoTreeFeature;
 import io.github.ron1196.thelionking.world.feature.PassionTreeFeature;
 import io.github.ron1196.thelionking.world.feature.RafikiTreeFeature;
@@ -61,11 +62,16 @@ public class Features {
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> TREASURE_MOUND =
             FEATURES.register("treasure_mound", () -> new TreasureMoundFeature(NoneFeatureConfiguration.CODEC));
 
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> LILY_PAD =
+            FEATURES.register("lily_pad", () -> new LilyPadFeature(NoneFeatureConfiguration.CODEC));
+
     // ResourceKeys for configured features (referenced by tree growers and placed features)
     public static final ResourceKey<ConfiguredFeature<?, ?>> PRIDE_ACACIA_TREE_KEY = ResourceKey.create(
             Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "pride_acacia_tree"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> RAINFOREST_TREE_KEY = ResourceKey.create(
             Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "rainforest_tree"));
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_RAINFOREST_TREE_KEY = ResourceKey.create(
+            Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "mega_rainforest_tree"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> MANGO_TREE_KEY = ResourceKey.create(
             Registries.CONFIGURED_FEATURE, new ResourceLocation(TheLionKingMod.MOD_ID, "mango_tree"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> PASSION_TREE_KEY = ResourceKey.create(

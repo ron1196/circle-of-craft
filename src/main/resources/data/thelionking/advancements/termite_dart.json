@@ -1,7 +1,7 @@
 {
   "parent": "thelionking:enter_outlands",
   "display": {
-    "icon": { "item": "thelionking:dart_black" },
+    "icon": { "item": "thelionking:dart_outlandish" },
     "title": { "translate": "advancement.thelionking.termite_dart.title" },
     "description": { "translate": "advancement.thelionking.termite_dart.description" },
     "frame": "task",

@@ -4,6 +4,7 @@ import java.util.Random;
 
 public enum CharacterSpeech {
     MORNING_REPORT("Zazu", Speech.MORNING_REPORT),
+    ZAZU_SLEEPING("Zazu", Speech.ZAZU_SLEEPING),
     HYENA_BONES("Rafiki", Speech.HYENA_BONES),
     MENTION_SCAR("Rafiki", Speech.MENTION_SCAR),
     TERMITES("Rafiki", Speech.TERMITES),
@@ -47,6 +48,16 @@ public enum CharacterSpeech {
     }
 
     private static final class Speech {
+        static final String[] ZAZU_SLEEPING = {
+            "Shoo! The Morning Report isn't until sunrise, you nuisance!",
+            "Preposterous hour! A royal majordomo needs his rest. Come back at dawn.",
+            "Good heavens! My report is scheduled for sunrise. Come back then.",
+            "I am off-duty! Return at first light.",
+            "Protocol demands I sleep! Updates in the morning.",
+            "I'm a hornbill, not an owl! Begone — and come back at sunrise.",
+            "Unacceptable! Come back when the sun rises."
+        };
+
         static final String[] MORNING_REPORT = {
             "The chimps are going ape!",
             "As usual, Giraffes remain above it all.",

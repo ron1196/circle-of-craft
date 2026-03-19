@@ -10,7 +10,7 @@
   },
   "criteria": {
     "requirement": {
-      "trigger": "thelionking:enter_pride_lands",
+      "trigger": "thelionking:speak_to_zazu",
       "conditions": {}
     }
   }

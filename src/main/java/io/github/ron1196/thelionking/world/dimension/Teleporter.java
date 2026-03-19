@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.world.dimension;
 
 import io.github.ron1196.thelionking.block.PortalBlock;
-import io.github.ron1196.thelionking.registry.Blocks;
+import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
@@ -48,8 +48,9 @@ public class Teleporter implements ITeleporter {
     }
 
     private BlockPos findOrCreatePortal(Entity entity, ServerLevel destWorld) {
-        Block portalBlock = isOutlands ? Blocks.OUTLANDS_PORTAL.get() : Blocks.PRIDE_LANDS_PORTAL.get();
-        Block frameBlock = isOutlands ? Blocks.OUTLANDS_PORTAL_FRAME.get() : Blocks.PRIDE_PORTAL_FRAME.get();
+        Block portalBlock = isOutlands ? LionKingBlocks.OUTLANDS_PORTAL.get() : LionKingBlocks.PRIDE_LANDS_PORTAL.get();
+        Block frameBlock =
+                isOutlands ? LionKingBlocks.OUTLANDS_PORTAL_FRAME.get() : LionKingBlocks.PRIDE_PORTAL_FRAME.get();
 
         BlockPos entityPos = entity.blockPosition();
         BlockPos destPos = new BlockPos(entityPos.getX(), entityPos.getY(), entityPos.getZ());

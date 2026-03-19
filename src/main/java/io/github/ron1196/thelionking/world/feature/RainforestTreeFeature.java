@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
-import io.github.ron1196.thelionking.registry.Blocks;
+import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
@@ -35,8 +35,8 @@ public class RainforestTreeFeature extends Feature<NoneFeatureConfiguration> {
             }
         }
 
-        BlockState log = Blocks.RAINFOREST_LOG.get().defaultBlockState();
-        BlockState leaves = Blocks.RAINFOREST_LEAVES
+        BlockState log = LionKingBlocks.RAINFOREST_LOG.get().defaultBlockState();
+        BlockState leaves = LionKingBlocks.RAINFOREST_LEAVES
                 .get()
                 .defaultBlockState()
                 .setValue(net.minecraft.world.level.block.LeavesBlock.PERSISTENT, true);

@@ -3,13 +3,13 @@ package io.github.ron1196.thelionking;
 import com.mojang.logging.LogUtils;
 import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
 import io.github.ron1196.thelionking.network.Networking;
-import io.github.ron1196.thelionking.registry.Blocks;
-import io.github.ron1196.thelionking.registry.CreativeTabs;
-import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.Items;
 import io.github.ron1196.thelionking.registry.BlockEntityTypes;
+import io.github.ron1196.thelionking.registry.CreativeTabs;
 import io.github.ron1196.thelionking.registry.Enchantments;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.Features;
+import io.github.ron1196.thelionking.registry.Items;
+import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.registry.MenuTypes;
 import io.github.ron1196.thelionking.registry.SoundEvents;
 import io.github.ron1196.thelionking.world.structure.StructureTypes;
@@ -29,7 +29,7 @@ public class TheLionKingMod {
     public TheLionKingMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        Blocks.BLOCKS.register(modEventBus);
+        LionKingBlocks.BLOCKS.register(modEventBus);
         Items.ITEMS.register(modEventBus);
         BlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
         EntityTypes.ENTITY_TYPES.register(modEventBus);

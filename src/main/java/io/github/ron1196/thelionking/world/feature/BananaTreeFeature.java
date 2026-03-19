@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
-import io.github.ron1196.thelionking.registry.Blocks;
+import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -39,8 +39,8 @@ public class BananaTreeFeature extends Feature<NoneFeatureConfiguration> {
             }
         }
 
-        BlockState log = Blocks.BANANA_LOG.get().defaultBlockState();
-        BlockState leaves = Blocks.BANANA_LEAVES
+        BlockState log = LionKingBlocks.BANANA_LOG.get().defaultBlockState();
+        BlockState leaves = LionKingBlocks.BANANA_LEAVES
                 .get()
                 .defaultBlockState()
                 .setValue(net.minecraft.world.level.block.LeavesBlock.PERSISTENT, true);
@@ -79,7 +79,7 @@ public class BananaTreeFeature extends Feature<NoneFeatureConfiguration> {
             if (level.getBlockState(bananaPos).isAir()) {
                 level.setBlock(
                         bananaPos,
-                        Blocks.HANGING_BANANA
+                        LionKingBlocks.HANGING_BANANA
                                 .get()
                                 .defaultBlockState()
                                 .setValue(HorizontalDirectionalBlock.FACING, dir),

@@ -1,1 +1,7 @@
-{"parent":"minecraft:block/crop","textures":{"crop":"thelionking:block/maize_crop_stage1"}}
+{
+  "render_type": "minecraft:cutout",
+  "parent": "minecraft:block/crop",
+  "textures": {
+    "crop": "thelionking:block/maize_crop_stage1"
+  }
+}

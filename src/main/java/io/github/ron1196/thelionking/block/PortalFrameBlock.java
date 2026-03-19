@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.block;
 
-import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.Items;
+import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -41,12 +41,12 @@ public class PortalFrameBlock extends Block {
     private static final Map<Boolean, PortalConfig> ACTIVATION_KEYS = Map.of(
             false,
                     PortalConfig.create(
-                            Blocks.PRIDE_LANDS_PORTAL,
+                            LionKingBlocks.PRIDE_LANDS_PORTAL,
                             ActivationKey.consumed(Items.TICKET),
                             ActivationKey.kept(Items.RHYTHM_STAFF)),
             true,
                     PortalConfig.create(
-                            Blocks.OUTLANDS_PORTAL,
+                            LionKingBlocks.OUTLANDS_PORTAL,
                             ActivationKey.consumed(Items.TICKET),
                             ActivationKey.kept(Items.ZIRA_COIN)));
 

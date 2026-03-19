@@ -13,8 +13,9 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
 
-public class LKSpawnerBlockEntity extends BlockEntity {
+public class SpawnerBlockEntity extends BlockEntity {
 
     private ResourceLocation entityId = null;
     private int delay = -1;
@@ -25,7 +26,7 @@ public class LKSpawnerBlockEntity extends BlockEntity {
     private int requiredPlayerRange = 16;
     private int spawnRange = 4;
 
-    public LKSpawnerBlockEntity(BlockPos pos, BlockState state) {
+    public SpawnerBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityTypes.LK_SPAWNER.get(), pos, state);
     }
 
@@ -93,7 +94,7 @@ public class LKSpawnerBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
+    protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
         if (entityId != null) tag.putString("EntityId", entityId.toString());
         tag.putShort("Delay", (short) delay);
@@ -106,7 +107,7 @@ public class LKSpawnerBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag tag) {
+    public void load(@NotNull CompoundTag tag) {
         super.load(tag);
         if (tag.contains("EntityId")) entityId = new ResourceLocation(tag.getString("EntityId"));
         delay = tag.getShort("Delay");

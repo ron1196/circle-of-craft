@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.block;
 
-import io.github.ron1196.thelionking.registry.Blocks;
+import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import io.github.ron1196.thelionking.world.dimension.Teleporter;
 import net.minecraft.core.BlockPos;
@@ -81,7 +81,7 @@ public class PortalBlock extends Block {
     }
 
     private Block getFrameBlock() {
-        return isOutlands ? Blocks.OUTLANDS_PORTAL_FRAME.get() : Blocks.PRIDE_PORTAL_FRAME.get();
+        return isOutlands ? LionKingBlocks.OUTLANDS_PORTAL_FRAME.get() : LionKingBlocks.PRIDE_PORTAL_FRAME.get();
     }
 
     public boolean trySpawnPortal(LevelAccessor level, BlockPos pos) {

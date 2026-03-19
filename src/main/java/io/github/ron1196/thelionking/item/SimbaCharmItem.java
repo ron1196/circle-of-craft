@@ -1,8 +1,8 @@
 package io.github.ron1196.thelionking.item;
 
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
-import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.Items;
+import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
@@ -56,7 +56,7 @@ public class SimbaCharmItem extends Item {
         if (isActive(stack)) {
             return InteractionResult.PASS;
         }
-        if (!level.getBlockState(context.getClickedPos()).is(Blocks.STAR_ALTAR.get())) {
+        if (!level.getBlockState(context.getClickedPos()).is(LionKingBlocks.STAR_ALTAR.get())) {
             return InteractionResult.PASS;
         }
 

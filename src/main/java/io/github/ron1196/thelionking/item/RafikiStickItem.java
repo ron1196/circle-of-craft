@@ -281,8 +281,7 @@ public class RafikiStickItem extends Item {
         if (!stack.isDamageableItem()) return;
 
         if (amount > 0 && entity instanceof Player) {
-            int durabilityLevel =
-                    EnchantmentHelper.getTagEnchantmentLevel(Enchantments.RAFIKI_DURABILITY.get(), stack);
+            int durabilityLevel = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.RAFIKI_DURABILITY.get(), stack);
             if (durabilityLevel > 0 && entity.level().random.nextInt(durabilityLevel + 1) > 0) {
                 return; // Durability enchantment prevented damage
             }

@@ -1,8 +1,8 @@
 package io.github.ron1196.thelionking.block.entity;
 
 import io.github.ron1196.thelionking.menu.BugTrapMenu;
-import io.github.ron1196.thelionking.registry.Items;
 import io.github.ron1196.thelionking.registry.BlockEntityTypes;
+import io.github.ron1196.thelionking.registry.Items;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;

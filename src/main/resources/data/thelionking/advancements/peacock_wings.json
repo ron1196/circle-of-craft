@@ -1,7 +1,7 @@
 {
   "parent": "thelionking:peacock_ore",
   "display": {
-    "icon": { "item": "thelionking:peacock_gem" },
+    "icon": { "item": "thelionking:peacock_wings" },
     "title": { "translate": "advancement.thelionking.peacock_wings.title" },
     "description": { "translate": "advancement.thelionking.peacock_wings.description" },
     "frame": "task",

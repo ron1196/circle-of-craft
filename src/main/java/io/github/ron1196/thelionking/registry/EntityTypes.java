@@ -10,7 +10,7 @@ import io.github.ron1196.thelionking.entity.projectile.DartEntity;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.entity.projectile.PumbaaBombEntity;
 import io.github.ron1196.thelionking.entity.projectile.SpearEntity;
-import io.github.ron1196.thelionking.entity.projectile.ThrownTermiteEntity;
+import io.github.ron1196.thelionking.entity.projectile.TermiteThrownEntity;
 import io.github.ron1196.thelionking.entity.projectile.ZazuEggEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
@@ -107,13 +107,13 @@ public class EntityTypes {
                     .updateInterval(10)
                     .build("pumbaa_bomb"));
 
-    public static final RegistryObject<EntityType<ThrownTermiteEntity>> THROWN_TERMITE =
-            ENTITY_TYPES.register("thrown_termite", () -> EntityType.Builder.<ThrownTermiteEntity>of(
-                            ThrownTermiteEntity::new, MobCategory.MISC)
+    public static final RegistryObject<EntityType<TermiteThrownEntity>> TERMITE_THROWN =
+            ENTITY_TYPES.register("termite_thrown", () -> EntityType.Builder.<TermiteThrownEntity>of(
+                            TermiteThrownEntity::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F)
                     .clientTrackingRange(4)
                     .updateInterval(10)
-                    .build("thrown_termite"));
+                    .build("termite_thrown"));
 
     public static final RegistryObject<EntityType<CoinEntity>> COIN =
             ENTITY_TYPES.register("coin", () -> EntityType.Builder.<CoinEntity>of(CoinEntity::new, MobCategory.MISC)

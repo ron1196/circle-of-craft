@@ -19,6 +19,7 @@ public class LionKingCriteriaTriggers {
     public static final PlayerTrigger KILL_SCAR = createTrigger("kill_scar");
     public static final PlayerTrigger KILL_ZIRA = createTrigger("kill_zira");
     public static final PlayerTrigger USE_RHINO_HORN = createTrigger("use_rhino_horn");
+    public static final PlayerTrigger SPEAK_TO_ZAZU = createTrigger("speak_to_zazu");
 
     private static PlayerTrigger createTrigger(String name) {
         return new PlayerTrigger(new ResourceLocation(TheLionKingMod.MOD_ID, name));
@@ -37,5 +38,6 @@ public class LionKingCriteriaTriggers {
         CriteriaTriggers.register(KILL_SCAR);
         CriteriaTriggers.register(KILL_ZIRA);
         CriteriaTriggers.register(USE_RHINO_HORN);
+        CriteriaTriggers.register(SPEAK_TO_ZAZU);
     }
 }

@@ -1,1 +1,7 @@
-{"parent":"minecraft:block/cube_all","textures":{"all":"thelionking:block/outglass"}}
+{
+  "render_type": "minecraft:translucent",
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "thelionking:block/outglass"
+  }
+}

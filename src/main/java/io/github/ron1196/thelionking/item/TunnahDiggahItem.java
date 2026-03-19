@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.item;
 
-import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.Enchantments;
+import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -41,7 +41,9 @@ public class TunnahDiggahItem extends PickaxeItem {
 
         int radius = 1 + EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BIGGAH_DIGGAH.get(), stack);
         boolean hasPrecision = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PRECISION.get(), stack) > 0;
-        boolean hasSilkTouch = EnchantmentHelper.getItemEnchantmentLevel(net.minecraft.world.item.enchantment.Enchantments.SILK_TOUCH, stack) > 0;
+        boolean hasSilkTouch = EnchantmentHelper.getItemEnchantmentLevel(
+                        net.minecraft.world.item.enchantment.Enchantments.SILK_TOUCH, stack)
+                > 0;
 
         for (int dx = -radius; dx <= radius; dx++) {
             for (int dy = -radius; dy <= radius; dy++) {
@@ -76,8 +78,8 @@ public class TunnahDiggahItem extends PickaxeItem {
                 || state.is(net.minecraft.world.level.block.Blocks.STONE)
                 || state.is(net.minecraft.world.level.block.Blocks.NETHERRACK)
                 || state.is(net.minecraft.world.level.block.Blocks.END_STONE)
-                || state.is(Blocks.PRIDESTONE.get())
-                || state.is(Blocks.CORRUPT_PRIDESTONE.get());
+                || state.is(LionKingBlocks.PRIDESTONE.get())
+                || state.is(LionKingBlocks.CORRUPT_PRIDESTONE.get());
     }
 
     private static BlockState getDropState(BlockState state, boolean silkTouch) {

@@ -1,8 +1,8 @@
 package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
-import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.EntityTypes;
+import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
@@ -16,16 +16,18 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
  */
 public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
 
-    private static final BlockState TERMITE = Blocks.TERMITE_MOUND.get().defaultBlockState();
-    private static final BlockState GATE = Blocks.ZIRA_MOUND_GATE.get().defaultBlockState();
+    private static final BlockState TERMITE = LionKingBlocks.TERMITE_MOUND.get().defaultBlockState();
+    private static final BlockState GATE = LionKingBlocks.ZIRA_MOUND_GATE.get().defaultBlockState();
     private static final BlockState PORTAL_FRAME =
-            Blocks.OUTLANDS_PORTAL_FRAME.get().defaultBlockState();
-    private static final BlockState OUTLANDS_POOL = Blocks.OUTLANDS_POOL.get().defaultBlockState();
+            LionKingBlocks.OUTLANDS_PORTAL_FRAME.get().defaultBlockState();
+    private static final BlockState OUTLANDS_POOL =
+            LionKingBlocks.OUTLANDS_POOL.get().defaultBlockState();
     private static final BlockState OUTSHROOM_GLOWING =
-            Blocks.OUTSHROOM_GLOWING.get().defaultBlockState();
-    private static final BlockState OUTLANDS_ALTAR = Blocks.OUTLANDS_ALTAR.get().defaultBlockState();
+            LionKingBlocks.OUTSHROOM_GLOWING.get().defaultBlockState();
+    private static final BlockState OUTLANDS_ALTAR =
+            LionKingBlocks.OUTLANDS_ALTAR.get().defaultBlockState();
     private static final BlockState CORRUPT_PRIDESTONE =
-            Blocks.CORRUPT_PRIDESTONE.get().defaultBlockState();
+            LionKingBlocks.CORRUPT_PRIDESTONE.get().defaultBlockState();
     private static final BlockState BEDROCK = net.minecraft.world.level.block.Blocks.BEDROCK.defaultBlockState();
     private static final BlockState SAND = net.minecraft.world.level.block.Blocks.SAND.defaultBlockState();
     private static final BlockState SANDSTONE = net.minecraft.world.level.block.Blocks.SANDSTONE.defaultBlockState();
@@ -209,10 +211,10 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
     private boolean canReplace(WorldGenLevel level, int x, int y, int z) {
         BlockState state = level.getBlockState(new BlockPos(x, y, z));
         return !state.isAir()
-                && !state.is(Blocks.OUTLANDS_PORTAL_FRAME.get())
-                && !state.is(Blocks.TERMITE_MOUND.get())
-                && !state.is(Blocks.OUTSHROOM_GLOWING.get())
-                && !state.is(Blocks.OUTLANDS_POOL.get());
+                && !state.is(LionKingBlocks.OUTLANDS_PORTAL_FRAME.get())
+                && !state.is(LionKingBlocks.TERMITE_MOUND.get())
+                && !state.is(LionKingBlocks.OUTSHROOM_GLOWING.get())
+                && !state.is(LionKingBlocks.OUTLANDS_POOL.get());
     }
 
     private void generate0(WorldGenLevel level, int i, int j, int k) {

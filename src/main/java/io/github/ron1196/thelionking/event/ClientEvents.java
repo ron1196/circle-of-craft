@@ -12,9 +12,9 @@ import io.github.ron1196.thelionking.client.model.*;
 import io.github.ron1196.thelionking.client.renderer.*;
 import io.github.ron1196.thelionking.entity.projectile.DartEntity;
 import io.github.ron1196.thelionking.entity.projectile.SpearEntity;
+import io.github.ron1196.thelionking.registry.BlockEntityTypes;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.Items;
-import io.github.ron1196.thelionking.registry.BlockEntityTypes;
 import io.github.ron1196.thelionking.registry.MenuTypes;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -270,7 +270,7 @@ public class ClientEvents {
                     }
                 });
         event.registerEntityRenderer(EntityTypes.PUMBAA_BOMB.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(EntityTypes.THROWN_TERMITE.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(EntityTypes.TERMITE_THROWN.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(EntityTypes.COIN.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(EntityTypes.ZAZU_EGG.get(), ThrownItemRenderer::new);
 

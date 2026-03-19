@@ -3,6 +3,7 @@ package io.github.ron1196.thelionking.registry;
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.block.*;
 import io.github.ron1196.thelionking.block.MushroomBlock;
+import io.github.ron1196.thelionking.block.SpawnerBlock;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -12,7 +13,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class Blocks {
+public class LionKingBlocks {
 
     public static final DeferredRegister<Block> BLOCKS =
             DeferredRegister.create(ForgeRegistries.BLOCKS, TheLionKingMod.MOD_ID);
@@ -363,12 +364,12 @@ public class Blocks {
 
     public static final RegistryObject<Block> TERMITE_MOUND = BLOCKS.register(
             "termite_mound",
-            () -> new io.github.ron1196.thelionking.block.TermiteMoundBlock(
+            () -> new TermiteMoundBlock(
                     BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).strength(0.5F, 3.0F)));
 
     public static final RegistryObject<Block> ZIRA_MOUND_GATE = BLOCKS.register(
             "zira_mound_gate",
-            () -> new io.github.ron1196.thelionking.block.ZiraMoundGateBlock(BlockBehaviour.Properties.of()
+            () -> new ZiraMoundGateBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.DIRT)
                     .strength(-1.0F, 3600000.0F)
                     .noLootTable()));
@@ -394,22 +395,22 @@ public class Blocks {
     }
 
     public static final RegistryObject<LeavesBlock> ACACIA_LEAVES =
-            BLOCKS.register("pride_acacia_leaves", () -> new LKLeavesBlock(leavesProperties()));
+            BLOCKS.register("pride_acacia_leaves", () -> new LionKingLeavesBlock(leavesProperties()));
 
     public static final RegistryObject<LeavesBlock> RAINFOREST_LEAVES =
-            BLOCKS.register("rainforest_leaves", () -> new LKLeavesBlock(leavesProperties()));
+            BLOCKS.register("rainforest_leaves", () -> new LionKingLeavesBlock(leavesProperties()));
 
     public static final RegistryObject<LeavesBlock> MANGO_LEAVES =
-            BLOCKS.register("mango_leaves", () -> new LKLeavesBlock(leavesProperties()));
+            BLOCKS.register("mango_leaves", () -> new LionKingLeavesBlock(leavesProperties()));
 
     public static final RegistryObject<LeavesBlock> PASSION_LEAVES = BLOCKS.register(
-            "passion_leaves", () -> new LKLeavesBlock(leavesProperties().lightLevel(s -> 11)));
+            "passion_leaves", () -> new LionKingLeavesBlock(leavesProperties().lightLevel(s -> 11)));
 
     public static final RegistryObject<LeavesBlock> BANANA_LEAVES =
-            BLOCKS.register("banana_leaves", () -> new LKLeavesBlock(leavesProperties()));
+            BLOCKS.register("banana_leaves", () -> new LionKingLeavesBlock(leavesProperties()));
 
     public static final RegistryObject<LeavesBlock> RAFIKI_LEAVES = BLOCKS.register(
-            "rafiki_leaves", () -> new LKLeavesBlock(leavesProperties().strength(-1.0F, 3600000.0F)));
+            "rafiki_leaves", () -> new LionKingLeavesBlock(leavesProperties().strength(-1.0F, 3600000.0F)));
 
     // ========== Saplings ==========
     private static BlockBehaviour.Properties saplingProperties() {
@@ -422,20 +423,21 @@ public class Blocks {
     }
 
     public static final RegistryObject<Block> ACACIA_SAPLING = BLOCKS.register(
-            "pride_acacia_sapling", () -> new LKSaplingBlock(LKTreeGrowers.ACACIA, saplingProperties()));
+            "pride_acacia_sapling", () -> new LionKingSaplingBlock(TreeGrowers.ACACIA, saplingProperties()));
 
     public static final RegistryObject<Block> RAINFOREST_SAPLING = BLOCKS.register(
-            "rainforest_sapling", () -> new LKSaplingBlock(LKTreeGrowers.RAINFOREST, saplingProperties()));
+            "rainforest_sapling", () -> new LionKingSaplingBlock(TreeGrowers.RAINFOREST, saplingProperties()));
 
     public static final RegistryObject<Block> MANGO_SAPLING =
-            BLOCKS.register("mango_sapling", () -> new LKSaplingBlock(LKTreeGrowers.MANGO, saplingProperties()));
+            BLOCKS.register("mango_sapling", () -> new LionKingSaplingBlock(TreeGrowers.MANGO, saplingProperties()));
 
     public static final RegistryObject<Block> PASSION_SAPLING = BLOCKS.register(
             "passion_sapling",
-            () -> new LKSaplingBlock(LKTreeGrowers.PASSION, saplingProperties().lightLevel(s -> 11)));
+            () -> new LionKingSaplingBlock(
+                    TreeGrowers.PASSION, saplingProperties().lightLevel(s -> 11)));
 
     public static final RegistryObject<Block> BANANA_SAPLING =
-            BLOCKS.register("banana_sapling", () -> new LKSaplingBlock(LKTreeGrowers.BANANA, saplingProperties()));
+            BLOCKS.register("banana_sapling", () -> new LionKingSaplingBlock(TreeGrowers.BANANA, saplingProperties()));
 
     // ========== Rafiki Wood ==========
     public static final RegistryObject<Block> RAFIKI_WOOD = BLOCKS.register(
@@ -448,7 +450,7 @@ public class Blocks {
     // ========== Flowers ==========
     public static final RegistryObject<Block> WHITE_FLOWER = BLOCKS.register(
             "white_flower",
-            () -> new LKFlowerBlock(
+            () -> new LionKingFlowerBlock(
                     MobEffects.HEAL,
                     5,
                     BlockBehaviour.Properties.of()
@@ -459,7 +461,7 @@ public class Blocks {
 
     public static final RegistryObject<Block> BLUE_FLOWER = BLOCKS.register(
             "blue_flower",
-            () -> new LKFlowerBlock(
+            () -> new LionKingFlowerBlock(
                     MobEffects.NIGHT_VISION,
                     5,
                     BlockBehaviour.Properties.of()
@@ -486,24 +488,24 @@ public class Blocks {
                     .sound(SoundType.GRASS)));
 
     // ========== Waterlilies ==========
-    public static final RegistryObject<Block> RED_LILY = BLOCKS.register(
-            "red_lily",
+    public static final RegistryObject<Block> LILY_RED = BLOCKS.register(
+            "lily_red",
             () -> new WaterlilyBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
                     .instabreak()
                     .sound(SoundType.LILY_PAD)
                     .noOcclusion()));
 
-    public static final RegistryObject<Block> VIOLET_LILY = BLOCKS.register(
-            "violet_lily",
+    public static final RegistryObject<Block> LILY_VIOLET = BLOCKS.register(
+            "lily_violet",
             () -> new WaterlilyBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
                     .instabreak()
                     .sound(SoundType.LILY_PAD)
                     .noOcclusion()));
 
-    public static final RegistryObject<Block> WHITE_LILY = BLOCKS.register(
-            "white_lily",
+    public static final RegistryObject<Block> LILY_WHITE = BLOCKS.register(
+            "lily_white",
             () -> new WaterlilyBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
                     .instabreak()
@@ -563,7 +565,7 @@ public class Blocks {
     // ========== Hanging Banana ==========
     public static final RegistryObject<Block> HANGING_BANANA = BLOCKS.register(
             "hanging_banana",
-            () -> new io.github.ron1196.thelionking.block.HangingBananaBlock(BlockBehaviour.Properties.of()
+            () -> new HangingBananaBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_YELLOW)
                     .instabreak()
                     .sound(SoundType.WOOD)
@@ -656,7 +658,7 @@ public class Blocks {
     // ========== LK Spawner ==========
     public static final RegistryObject<Block> LK_SPAWNER = BLOCKS.register(
             "lk_spawner",
-            () -> new LKSpawnerBlock(BlockBehaviour.Properties.of()
+            () -> new SpawnerBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.STONE)
                     .strength(5.0F)
                     .requiresCorrectToolForDrops()
@@ -710,7 +712,7 @@ public class Blocks {
     // ========== Bed & Lever ==========
     public static final RegistryObject<BedBlock> PRIDE_BED = BLOCKS.register(
             "pride_bed",
-            () -> new io.github.ron1196.thelionking.block.PrideBedBlock(BlockBehaviour.Properties.of()
+            () -> new PrideBedBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.WOOD)
                     .strength(0.2F)
                     .sound(SoundType.WOOD)

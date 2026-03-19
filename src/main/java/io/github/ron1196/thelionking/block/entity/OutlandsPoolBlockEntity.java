@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.block.entity;
 
-import io.github.ron1196.thelionking.registry.Items;
 import io.github.ron1196.thelionking.registry.BlockEntityTypes;
+import io.github.ron1196.thelionking.registry.Items;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;

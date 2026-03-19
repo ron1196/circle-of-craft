@@ -16,7 +16,7 @@ public class CreativeTabs {
     public static final RegistryObject<CreativeModeTab> BLOCKS_TAB =
             TABS.register("blocks", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.thelionking.blocks"))
-                    .icon(() -> new ItemStack(Blocks.PRIDE_BRICK.get()))
+                    .icon(() -> new ItemStack(LionKingBlocks.PRIDE_BRICK.get()))
                     .displayItems((params, output) -> {
                         output.accept(Items.PRIDESTONE_BLOCK_ITEM.get());
                         output.accept(Items.CORRUPT_PRIDESTONE_BLOCK_ITEM.get());
@@ -72,7 +72,7 @@ public class CreativeTabs {
     public static final RegistryObject<CreativeModeTab> DECO_TAB =
             TABS.register("decorations", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.thelionking.decorations"))
-                    .icon(() -> new ItemStack(Blocks.ACACIA_LOG.get()))
+                    .icon(() -> new ItemStack(LionKingBlocks.ACACIA_LOG.get()))
                     .displayItems((params, output) -> {
                         // Logs
                         output.accept(Items.ACACIA_LOG_ITEM.get());
@@ -127,9 +127,9 @@ public class CreativeTabs {
                         output.accept(Items.PURPLE_FLOWER_ITEM.get());
                         output.accept(Items.RED_FLOWER_ITEM.get());
                         // Lilies
-                        output.accept(Items.RED_LILY_ITEM.get());
-                        output.accept(Items.VIOLET_LILY_ITEM.get());
-                        output.accept(Items.WHITE_LILY_ITEM.get());
+                        output.accept(Items.LILY_RED_ITEM.get());
+                        output.accept(Items.LILY_VIOLET_ITEM.get());
+                        output.accept(Items.LILY_WHITE_ITEM.get());
                         // Mushrooms
                         output.accept(Items.OUTSHROOM_ITEM.get());
                         output.accept(Items.OUTSHROOM_GLOWING_ITEM.get());
@@ -303,6 +303,7 @@ public class CreativeTabs {
                         output.accept(Items.PEACOCK_CHESTPLATE.get());
                         output.accept(Items.PEACOCK_LEGGINGS.get());
                         output.accept(Items.PEACOCK_BOOTS.get());
+                        output.accept(Items.PEACOCK_WINGS.get());
                         // Outlands Armor
                         output.accept(Items.OUTLANDS_HELMET.get());
                         // Ticket Lion Suit
@@ -316,12 +317,14 @@ public class CreativeTabs {
                         output.accept(Items.DART_YELLOW.get());
                         output.accept(Items.DART_PINK.get());
                         output.accept(Items.DART_BLACK.get());
+                        output.accept(Items.DART_OUTLANDISH.get());
                         output.accept(Items.DART_SHOOTER.get());
                         output.accept(Items.DART_SHOOTER_SILVER.get());
                         // Spears & Bombs
                         output.accept(Items.GEMSBOK_SPEAR.get());
                         output.accept(Items.POISONED_SPEAR.get());
                         output.accept(Items.PUMBAA_BOMB.get());
+                        output.accept(Items.TERMITE_THROWN.get());
                     })
                     .build());
 

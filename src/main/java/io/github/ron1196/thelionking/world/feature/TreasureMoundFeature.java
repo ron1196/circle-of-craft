@@ -1,8 +1,8 @@
 package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.serialization.Codec;
-import io.github.ron1196.thelionking.registry.Blocks;
 import io.github.ron1196.thelionking.registry.Items;
+import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -41,9 +41,9 @@ public class TreasureMoundFeature extends Feature<NoneFeatureConfiguration> {
         int j = origin.getY() + 1;
         int k = origin.getZ();
 
-        BlockState termite = Blocks.TERMITE_MOUND.get().defaultBlockState();
-        BlockState outsand = Blocks.OUTSAND.get().defaultBlockState();
-        BlockState prideBrick = Blocks.PRIDE_BRICK.get().defaultBlockState();
+        BlockState termite = LionKingBlocks.TERMITE_MOUND.get().defaultBlockState();
+        BlockState outsand = LionKingBlocks.OUTSAND.get().defaultBlockState();
+        BlockState prideBrick = LionKingBlocks.PRIDE_BRICK.get().defaultBlockState();
 
         // Replace ground with outsand (6x6 area)
         for (int dx = 0; dx < 6; dx++) {
@@ -208,7 +208,7 @@ public class TreasureMoundFeature extends Feature<NoneFeatureConfiguration> {
      */
     private boolean isSandLike(BlockState state) {
         return state.is(BlockTags.SAND)
-                || state.is(Blocks.OUTSAND.get())
+                || state.is(LionKingBlocks.OUTSAND.get())
                 || state.is(net.minecraft.world.level.block.Blocks.SAND)
                 || state.is(net.minecraft.world.level.block.Blocks.RED_SAND);
     }

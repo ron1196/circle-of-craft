@@ -30,17 +30,14 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 ## Advancements
 
 - [x] ~~**"Horn of Plenty" (`rhino_horn`) advancement uses wrong trigger**~~ — RESOLVED: Replaced `PlayerTrigger` with custom `UseGrindingBowlTrigger` (passes output `ItemStack`). `rhino_horn.json` now filters on `thelionking:ground_rhino_horn` via `item` condition.
-- [ ] **Remaining advancement icon substitutions** (items not yet registered):
-  - `outlandish_dart` → `dart_black`, `ticket_lion_helmet` → `ticket_lion_head`, `peacock_wings` → `peacock_gem`
-  - ~~`tunnah_diggah`~~ FIXED: now uses real item, ~~`lion_dust`~~ previously resolved
-  - Note: advancement `rhino_horn` renamed to `ground_rhino_horn` for consistency with item name
+- [x] ~~**Remaining advancement icon substitutions**~~ — RESOLVED: Registered `dart_outlandish` (plain Item + texture migrated) and `peacock_wings` (GEMSBOK chestplate + texture migrated). `ticket_lion_head` was already registered. Updated `termite_dart.json` and `peacock_wings.json` icons to real items. ~~`tunnah_diggah`~~ FIXED: now uses real item, ~~`lion_dust`~~ previously resolved. Advancement `rhino_horn` renamed to `ground_rhino_horn`.
 
 ## Missing World Generation
 
-- [ ] **Huge Rainforest Tree** — Old: `LKWorldGenHugeRainforest`, not ported (no Java feature or JSON config)
-- [ ] **Pride Acacia Tree** — JSON config only, no Java feature class, may not generate
-- [ ] **Lily Pad Distribution** — Old: `LKWorldGenLily`, not ported at all
-- [ ] **Tall Flower Distribution** — Old: `LKWorldGenTallFlowers`, not ported at all
+- [x] ~~**Huge Rainforest Tree**~~ — RESOLVED: Renamed to `mega_rainforest_tree` (matching vanilla naming). Uses `minecraft:tree` with `mega_jungle_trunk_placer` (h 25–50) + rainforest log/leaves + vine decorators. Placed feature wired into rainforest, rainforest_hills, and upendi biomes. No custom Java class needed.
+- [x] ~~**Pride Acacia Tree**~~ — RESOLVED: Uses `minecraft:tree` with `forking_trunk_placer` + acacia foliage placer + pride_acacia log/leaves. Placed feature wired into arid_savannah, wooded_savannah, savannah, pride_river, pride_mountains biomes. No custom Java class needed.
+- [x] ~~**Lily Pad Distribution**~~ — RESOLVED: `lily_pad` configured feature uses `random_patch` (10 tries, 7-block spread) with `simple_random_selector` picking between red/violet/white lily. Placed in rainforest, rainforest_hills, and upendi biomes.
+- [x] ~~**Tall Flower Distribution**~~ — SKIP: `LKWorldGenTallFlowers` existed but `purpleFlowersPerChunk` and `redFlowersPerChunk` were both 0 everywhere — never generated in the old mod.
 - [ ] **Dungeons** — Old: `LKWorldGenDungeons` (10 per chunk in Outlands), not ported
 - [ ] **Outlands Lava Lakes** — Old: `LKWorldGenOutlandsLakes` used removed API. Must be ported as a `PlacedFeature` using `LakeFeature` (1.18+ approach)
 - [x] ~~**Zazu Spawner Areas**~~ — SKIP: No dedicated spawner gen in old mod. Zazus spawn via biome config.
@@ -104,6 +101,7 @@ Items using generated placeholder textures (not from old mod):
   - `GrindingBowlBlock` — ingredient insertion / output extraction
 - [ ] **3 blocks override the deprecated `BlockBehaviour.onRemove()`** — same 1.21 migration. Migrate to the non-deprecated replacement when upgrading:
   - `BugTrapBlock`, `GrindingBowlBlock`, `BongoDrumBlock` — all drop block entity contents on removal
+- [ ] **`LionKingFlowerBlock` uses the deprecated `FlowerBlock(MobEffect, int, Properties)` constructor** — In 1.20.1, `FlowerBlock` deprecated this in favour of `FlowerBlock(Holder<MobEffect>, int, Properties)`, but `MobEffect.builtInRegistryHolder()` is not available in NeoForge 47.1.x. Suppressed with `@SuppressWarnings("deprecation")`. When upgrading to 1.21+, switch to `Holder<MobEffect>` and remove the annotation.
 
 ## CharacterSpeech Split
 
@@ -142,6 +140,8 @@ Items using generated placeholder textures (not from old mod):
 - [x] ~~**Simba Inventory GUI**~~ — RESOLVED: Sneak+interact on owned Simba opens `SimbaInventoryMenu`.
 
 ## Advancement Triggers (Not Fully Wired)
+
+- [ ] **`USE_GRINDING_BOWL` trigger is orphaned** — `UseGrindingBowlTrigger` is registered and fires in `GrindingBowlMenu.onTake`, but no advancement uses it. The old mod had no grinding achievement. Decision needed: remove the trigger + `UseGrindingBowlTrigger` class entirely, or add a new "first grind" advancement not present in the old mod.
 
 - [x] ~~**All 9 triggers wired**~~ — RESOLVED:
   - `SHOOT_DART` in DartShooterItem, `USE_GRINDING_BOWL` in GrindingBowlBlockEntity (nearest player)

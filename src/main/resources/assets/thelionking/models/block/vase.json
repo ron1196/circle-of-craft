@@ -1,4 +1,5 @@
 {
+  "render_type": "minecraft:cutout",
   "textures": {
     "side": "thelionking:block/vase",
     "top": "thelionking:block/vase_top",
