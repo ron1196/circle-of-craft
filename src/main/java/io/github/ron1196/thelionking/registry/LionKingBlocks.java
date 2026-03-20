@@ -49,6 +49,13 @@ public class LionKingBlocks {
                     .strength(1.5F, 10.0F)
                     .requiresCorrectToolForDrops()));
 
+    public static final RegistryObject<Block> CRACKED_PRIDE_BRICK = BLOCKS.register(
+            "cracked_pride_brick",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE)
+                    .strength(1.5F, 10.0F)
+                    .requiresCorrectToolForDrops()));
+
     public static final RegistryObject<Block> MOSSY_PRIDE_BRICK = BLOCKS.register(
             "mossy_pride_brick",
             () -> new Block(BlockBehaviour.Properties.of()

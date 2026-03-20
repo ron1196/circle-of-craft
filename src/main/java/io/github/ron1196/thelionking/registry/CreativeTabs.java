@@ -22,6 +22,7 @@ public class CreativeTabs {
                         output.accept(LionKingItems.CORRUPT_PRIDESTONE_BLOCK_ITEM.get());
                         output.accept(LionKingItems.PRIDE_BRICK_ITEM.get());
                         output.accept(LionKingItems.CORRUPT_PRIDE_BRICK_ITEM.get());
+                        output.accept(LionKingItems.CRACKED_PRIDE_BRICK_ITEM.get());
                         output.accept(LionKingItems.MOSSY_PRIDE_BRICK_ITEM.get());
                         output.accept(LionKingItems.MOSSY_CORRUPT_PRIDE_BRICK_ITEM.get());
                         output.accept(LionKingItems.PRIDE_PILLAR_ITEM.get());

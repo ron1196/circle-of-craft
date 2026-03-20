@@ -18,6 +18,10 @@ import org.jetbrains.annotations.NotNull;
 public class SpawnerBlockEntity extends BlockEntity {
 
   private ResourceLocation entityId = null;
+
+  public void setEntityId(ResourceLocation entityId) {
+    this.entityId = entityId;
+  }
   private int delay = -1;
   private int minSpawnDelay = 200;
   private int maxSpawnDelay = 800;

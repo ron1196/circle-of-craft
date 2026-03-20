@@ -38,7 +38,8 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 - [x] ~~**Pride Acacia Tree**~~ — RESOLVED: Uses `minecraft:tree` with `forking_trunk_placer` + acacia foliage placer + pride_acacia log/leaves. Placed feature wired into arid_savannah, wooded_savannah, savannah, pride_river, pride_mountains biomes. No custom Java class needed.
 - [x] ~~**Lily Pad Distribution**~~ — RESOLVED: `lily_pad` configured feature uses `random_patch` (10 tries, 7-block spread) with `simple_random_selector` picking between red/violet/white lily. Placed in rainforest, rainforest_hills, and upendi biomes.
 - [x] ~~**Tall Flower Distribution**~~ — SKIP: `LKWorldGenTallFlowers` existed but `purpleFlowersPerChunk` and `redFlowersPerChunk` were both 0 everywhere — never generated in the old mod.
-- [ ] **Dungeons** — Old: `LKWorldGenDungeons` (10 per chunk in Outlands), not ported
+- [x] ~~**Dungeons**~~ — RESOLVED: `PrideDungeonFeature` — 7x7x4 pride brick rooms with LK spawner (2/3 hyena, 1/3 crocodile) and 1-2 loot chests. Placed feature with 8 attempts per chunk at y 0-56 in all Outlands biomes.
+- [ ] **Nuka Ore & Kivulite Ore blocks** — Old mod used metadata variants: `prideCoal` meta 1 = Nuka Ore (`oreNuka.png`, drops nuka shards), `oreSilver` meta 1 = Kivulite Ore (`oreKivulite.png`, drops kivulite). Need separate blocks `nuka_ore` and `kivulite_ore`, textures migrated from `old/assets/textures/blocks/`, and placed features wired into Outlands biomes (replacing current silver/coal ore placements there)
 - [ ] **Outlands Lava Lakes** — Old: `LKWorldGenOutlandsLakes` used removed API. Must be ported as a `PlacedFeature` using `LakeFeature` (1.18+ approach)
 - [x] ~~**Zazu Spawner Areas**~~ — SKIP: No dedicated spawner gen in old mod. Zazus spawn via biome config.
 

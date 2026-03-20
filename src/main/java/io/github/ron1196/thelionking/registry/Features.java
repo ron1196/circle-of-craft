@@ -6,6 +6,7 @@ import io.github.ron1196.thelionking.world.feature.DeadTreeFeature;
 import io.github.ron1196.thelionking.world.feature.LilyPadFeature;
 import io.github.ron1196.thelionking.world.feature.MangoTreeFeature;
 import io.github.ron1196.thelionking.world.feature.PassionTreeFeature;
+import io.github.ron1196.thelionking.world.feature.PrideDungeonFeature;
 import io.github.ron1196.thelionking.world.feature.RafikiTreeFeature;
 import io.github.ron1196.thelionking.world.feature.RainforestTreeFeature;
 import io.github.ron1196.thelionking.world.feature.TermiteMoundFeature;
@@ -70,6 +71,10 @@ public class Features {
 
   public static final RegistryObject<Feature<NoneFeatureConfiguration>> LILY_PAD =
       FEATURES.register("lily_pad", () -> new LilyPadFeature(NoneFeatureConfiguration.CODEC));
+
+  public static final RegistryObject<Feature<NoneFeatureConfiguration>> PRIDE_DUNGEON =
+      FEATURES.register(
+          "pride_dungeon", () -> new PrideDungeonFeature(NoneFeatureConfiguration.CODEC));
 
   // ResourceKeys for configured features (referenced by tree growers and placed features)
   public static final ResourceKey<ConfiguredFeature<?, ?>> PRIDE_ACACIA_TREE_KEY =

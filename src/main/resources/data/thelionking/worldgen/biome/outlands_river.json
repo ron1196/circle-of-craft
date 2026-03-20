@@ -59,7 +59,9 @@
       "thelionking:silver_ore_middle_placed",
       "thelionking:silver_ore_small_placed"
     ],
-    [],
+    [
+      "thelionking:pride_dungeon_placed"
+    ],
     [],
     [],
     [],

@@ -414,6 +414,8 @@ public class LionKingItems {
             registerBlockItem("pride_brick", LionKingBlocks.PRIDE_BRICK);
     public static final RegistryObject<BlockItem> CORRUPT_PRIDE_BRICK_ITEM =
             registerBlockItem("corrupt_pride_brick", LionKingBlocks.CORRUPT_PRIDE_BRICK);
+    public static final RegistryObject<BlockItem> CRACKED_PRIDE_BRICK_ITEM =
+            registerBlockItem("cracked_pride_brick", LionKingBlocks.CRACKED_PRIDE_BRICK);
     public static final RegistryObject<BlockItem> MOSSY_PRIDE_BRICK_ITEM =
             registerBlockItem("mossy_pride_brick", LionKingBlocks.MOSSY_PRIDE_BRICK);
     public static final RegistryObject<BlockItem> MOSSY_CORRUPT_PRIDE_BRICK_ITEM =
