@@ -20,101 +20,92 @@ import net.minecraft.world.phys.AABB;
  */
 public class LightningBoltEntity extends LightningBolt {
 
-  private int power;
-  private Player castingPlayer;
-  private boolean firedSpawned;
+    private int power;
+    private Player castingPlayer;
+    private boolean firedSpawned;
 
-  public LightningBoltEntity(EntityType<? extends LightningBolt> type, Level level) {
-    super(type, level);
-  }
-
-  public LightningBoltEntity(
-      Level level, double x, double y, double z, int power, Player castingPlayer) {
-    super(EntityTypes.LK_LIGHTNING_BOLT.get(), level);
-    this.power = power;
-    this.castingPlayer = castingPlayer;
-    this.setPos(x, y, z);
-    // Prevent vanilla lightning from setting fires and converting entities
-    this.setVisualOnly(power == 0);
-  }
-
-  @Override
-  public void tick() {
-    // Spawn fires on first tick for powered bolts
-    if (!firedSpawned && power > 0 && !level().isClientSide) {
-      firedSpawned = true;
-      spawnFires();
+    public LightningBoltEntity(EntityType<? extends LightningBolt> type, Level level) {
+        super(type, level);
     }
 
-    // Let vanilla handle rendering state, sounds, and lifecycle
-    super.tick();
-
-    // Apply custom damage each active tick
-    if (!level().isClientSide && power > 0) {
-      damageNearbyEntities();
+    public LightningBoltEntity(Level level, double x, double y, double z, int power, Player castingPlayer) {
+        super(EntityTypes.LIGHTNING_BOLT.get(), level);
+        this.power = power;
+        this.castingPlayer = castingPlayer;
+        this.setPos(x, y, z);
+        // Prevent vanilla lightning from setting fires and converting entities
+        this.setVisualOnly(power == 0);
     }
-  }
 
-  private void spawnFires() {
-    BlockPos center = blockPosition();
-    tryPlaceFire(center);
-    for (int i = 0; i < power * 3; i++) {
-      BlockPos firePos =
-          center.offset(random.nextInt(3) - 1, random.nextInt(3) - 1, random.nextInt(3) - 1);
-      tryPlaceFire(firePos);
+    @Override
+    public void tick() {
+        // Spawn fires on first tick for powered bolts
+        if (!firedSpawned && power > 0 && !level().isClientSide) {
+            firedSpawned = true;
+            spawnFires();
+        }
+
+        // Let vanilla handle rendering state, sounds, and lifecycle
+        super.tick();
+
+        // Apply custom damage each active tick
+        if (!level().isClientSide && power > 0) {
+            damageNearbyEntities();
+        }
     }
-  }
 
-  private void tryPlaceFire(BlockPos pos) {
-    Level level = level();
-    if (!level.isEmptyBlock(pos)) {
-      return;
+    private void spawnFires() {
+        BlockPos center = blockPosition();
+        tryPlaceFire(center);
+        for (int i = 0; i < power * 3; i++) {
+            BlockPos firePos = center.offset(random.nextInt(3) - 1, random.nextInt(3) - 1, random.nextInt(3) - 1);
+            tryPlaceFire(firePos);
+        }
     }
-    level.setBlockAndUpdate(pos, BaseFireBlock.getState(level, pos));
-  }
 
-  private void damageNearbyEntities() {
-    double range = 3.0D;
-    AABB area =
-        new AABB(
-            getX() - range,
-            getY() - range,
-            getZ() - range,
-            getX() + range,
-            getY() + 6.0D + range,
-            getZ() + range);
-    List<Entity> entities = level().getEntities(this, area);
-
-    for (Entity entity : entities) {
-      if (shouldSkipEntity(entity)) {
-        continue;
-      }
-      DamageSource source =
-          castingPlayer != null
-              ? level().damageSources().playerAttack(castingPlayer)
-              : level().damageSources().inFire();
-      entity.hurt(source, (power * 3) + (random.nextInt(3) * 2));
-      entity.setSecondsOnFire(power + random.nextInt(4));
+    private void tryPlaceFire(BlockPos pos) {
+        Level level = level();
+        if (!level.isEmptyBlock(pos)) {
+            return;
+        }
+        level.setBlockAndUpdate(pos, BaseFireBlock.getState(level, pos));
     }
-  }
 
-  private boolean shouldSkipEntity(Entity entity) {
-    if (castingPlayer != null && entity == castingPlayer) {
-      return true;
-    }
-    if (entity.fireImmune()) {
-      return true;
-    }
-    return isLKFriendlyNPC(entity);
-  }
+    private void damageNearbyEntities() {
+        double range = 3.0D;
+        AABB area = new AABB(
+                getX() - range, getY() - range, getZ() - range, getX() + range, getY() + 6.0D + range, getZ() + range);
+        List<Entity> entities = level().getEntities(this, area);
 
-  private boolean isLKFriendlyNPC(Entity entity) {
-    EntityType<?> type = entity.getType();
-    return type == EntityTypes.RAFIKI.get()
-        || type == EntityTypes.SIMBA.get()
-        || type == EntityTypes.TIMON.get()
-        || type == EntityTypes.PUMBAA.get()
-        || type == EntityTypes.TICKET_LION.get()
-        || type == EntityTypes.ZAZU.get();
-  }
+        for (Entity entity : entities) {
+            if (shouldSkipEntity(entity)) {
+                continue;
+            }
+            DamageSource source = castingPlayer != null
+                    ? level().damageSources().playerAttack(castingPlayer)
+                    : level().damageSources().inFire();
+            entity.hurt(source, (power * 3) + (random.nextInt(3) * 2));
+            entity.setSecondsOnFire(power + random.nextInt(4));
+        }
+    }
+
+    private boolean shouldSkipEntity(Entity entity) {
+        if (castingPlayer != null && entity == castingPlayer) {
+            return true;
+        }
+        if (entity.fireImmune()) {
+            return true;
+        }
+        return isFriendlyEntity(entity);
+    }
+
+    private boolean isFriendlyEntity(Entity entity) {
+        EntityType<?> type = entity.getType();
+        return type == EntityTypes.RAFIKI.get()
+                || type == EntityTypes.SIMBA.get()
+                || type == EntityTypes.TIMON.get()
+                || type == EntityTypes.PUMBAA.get()
+                || type == EntityTypes.TICKET_LION.get()
+                || type == EntityTypes.ZAZU.get();
+    }
 }

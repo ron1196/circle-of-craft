@@ -8,7 +8,6 @@ import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import org.slf4j.Logger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
@@ -25,6 +24,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import org.slf4j.Logger;
 
 /**
  * Pride Dungeon — underground dungeon rooms in the Outlands dimension, ported from the old mod's
@@ -45,10 +45,8 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
     private static final int VINE_CHANCE = 4;
     private static final double CRACKED_BRICK_CHANCE = 0.1;
 
-    private static final ResourceLocation HYENA_ID =
-            new ResourceLocation(TheLionKingMod.MOD_ID, "hyena");
-    private static final ResourceLocation CROCODILE_ID =
-            new ResourceLocation(TheLionKingMod.MOD_ID, "crocodile");
+    private static final ResourceLocation HYENA_ID = new ResourceLocation(TheLionKingMod.MOD_ID, "hyena");
+    private static final ResourceLocation CROCODILE_ID = new ResourceLocation(TheLionKingMod.MOD_ID, "crocodile");
 
     public PrideDungeonFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
@@ -70,8 +68,8 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
 
         // Validate with base room size FIRST (matching old mod order — validate small, expand later)
         if (!isValidPlacement(level, cx, cy, cz, halfW, halfD)) {
-            LOGGER.debug("[PrideDungeon] FAILED validation at ({}, {}, {}), halfW={}, halfD={}",
-                    cx, cy, cz, halfW, halfD);
+            LOGGER.debug(
+                    "[PrideDungeon] FAILED validation at ({}, {}, {}), halfW={}, halfD={}", cx, cy, cz, halfW, halfD);
             return false;
         }
 
@@ -83,8 +81,14 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         ResourceLocation spawnerId = isCrocodile ? CROCODILE_ID : HYENA_ID;
-        LOGGER.info("[PrideDungeon] PLACED {} dungeon at ({}, {}, {}), halfW={}, halfD={}",
-                isCrocodile ? "crocodile" : "hyena", cx, cy, cz, halfW, halfD);
+        LOGGER.info(
+                "[PrideDungeon] PLACED {} dungeon at ({}, {}, {}), halfW={}, halfD={}",
+                isCrocodile ? "crocodile" : "hyena",
+                cx,
+                cy,
+                cz,
+                halfW,
+                halfD);
 
         BlockState prideBrick = LionKingBlocks.PRIDE_BRICK.get().defaultBlockState();
         BlockState mossyBrick = LionKingBlocks.MOSSY_PRIDE_BRICK.get().defaultBlockState();
@@ -95,9 +99,12 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         for (int bx = cx - halfW - 1; bx <= cx + halfW + 1; bx++) {
             for (int by = cy + ROOM_HEIGHT; by >= cy - 1; by--) {
                 for (int bz = cz - halfD - 1; bz <= cz + halfD + 1; bz++) {
-                    boolean isShell = bx == cx - halfW - 1 || by == cy - 1
-                            || bz == cz - halfD - 1 || bx == cx + halfW + 1
-                            || by == cy + ROOM_HEIGHT + 1 || bz == cz + halfD + 1;
+                    boolean isShell = bx == cx - halfW - 1
+                            || by == cy - 1
+                            || bz == cz - halfD - 1
+                            || bx == cx + halfW + 1
+                            || by == cy + ROOM_HEIGHT + 1
+                            || bz == cz + halfD + 1;
 
                     if (isShell) {
                         // Shell: skip non-solid blocks unless crocodile (which forces placement)
@@ -115,15 +122,12 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
                         // Floor: 75% mossy, 25% regular pride brick
                         if (by == cy - 1) {
                             level.setBlock(
-                                    new BlockPos(bx, by, bz),
-                                    random.nextInt(4) != 0 ? mossyBrick : prideBrick,
-                                    2);
+                                    new BlockPos(bx, by, bz), random.nextInt(4) != 0 ? mossyBrick : prideBrick, 2);
                         } else {
                             // Walls and ceiling: pride brick with occasional cracked
                             level.setBlock(
                                     new BlockPos(bx, by, bz),
-                                    random.nextDouble() < CRACKED_BRICK_CHANCE
-                                            ? crackedBrick : prideBrick,
+                                    random.nextDouble() < CRACKED_BRICK_CHANCE ? crackedBrick : prideBrick,
                                     2);
                         }
                     } else {
@@ -132,15 +136,13 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
                     }
 
                     // Crocodile variant: water floor + mossy brick below
-                    if (isCrocodile && isInterior(bx, bz, cx, cz, halfW, halfD)
-                            && by == cy - 1) {
+                    if (isCrocodile && isInterior(bx, bz, cx, cz, halfW, halfD) && by == cy - 1) {
                         if (bx != cx || bz != cz) {
                             // Water on floor level (not at spawner center)
-                            level.setBlock(new BlockPos(bx, by, bz),
-                                    Blocks.WATER.defaultBlockState(), 2);
+                            level.setBlock(new BlockPos(bx, by, bz), Blocks.WATER.defaultBlockState(), 2);
                             // Mossy brick below the water
-                            level.setBlock(new BlockPos(bx, by - 1, bz),
-                                    random.nextInt(4) != 0 ? mossyBrick : prideBrick, 2);
+                            level.setBlock(
+                                    new BlockPos(bx, by - 1, bz), random.nextInt(4) != 0 ? mossyBrick : prideBrick, 2);
                         }
                     }
                 }
@@ -171,17 +173,14 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
     }
 
     private boolean isInterior(int bx, int bz, int cx, int cz, int halfW, int halfD) {
-        return bx > cx - halfW - 1 && bx < cx + halfW + 1
-                && bz > cz - halfD - 1 && bz < cz + halfD + 1;
+        return bx > cx - halfW - 1 && bx < cx + halfW + 1 && bz > cz - halfD - 1 && bz < cz + halfD + 1;
     }
 
     /**
      * Validate placement using vanilla's dungeon approach: floor and ceiling must be solid,
      * walls may have 1-5 "entrance" positions (air at ground level with air above).
      */
-    private boolean isValidPlacement(
-            WorldGenLevel level, int cx, int cy, int cz, int halfW, int halfD
-    ) {
+    private boolean isValidPlacement(WorldGenLevel level, int cx, int cy, int cz, int halfW, int halfD) {
         int entrances = 0;
 
         for (int bx = cx - halfW - 1; bx <= cx + halfW + 1; bx++) {
@@ -202,11 +201,11 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
                     }
 
                     // Count wall entrances at ground level
-                    boolean isWall = bx == cx - halfW - 1 || bx == cx + halfW + 1
-                            || bz == cz - halfD - 1 || bz == cz + halfD + 1;
-                    if (isWall && by == cy
-                            && level.isEmptyBlock(pos)
-                            && level.isEmptyBlock(pos.above())) {
+                    boolean isWall = bx == cx - halfW - 1
+                            || bx == cx + halfW + 1
+                            || bz == cz - halfD - 1
+                            || bz == cz + halfD + 1;
+                    if (isWall && by == cy && level.isEmptyBlock(pos) && level.isEmptyBlock(pos.above())) {
                         entrances++;
                     }
                 }
@@ -216,24 +215,20 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         // Old mod's Pride Lands had very sparse caves (1 in 15 chunks), so dungeons were
         // buried in solid rock — found by mining. Only reject if too exposed (near surface).
         if (entrances > 5) {
-            LOGGER.debug("[PrideDungeon] Too exposed ({} entrances) at ({}, {}, {})",
-                    entrances, cx, cy, cz);
+            LOGGER.debug("[PrideDungeon] Too exposed ({} entrances) at ({}, {}, {})", entrances, cx, cy, cz);
             return false;
         }
         return true;
     }
 
     /** Place pride pillars at 2 random corners, matching old mod's paired corner logic. */
-    private void placePillars(
-            WorldGenLevel level, RandomSource random,
-            int cx, int cy, int cz, int halfW, int halfD
-    ) {
+    private void placePillars(WorldGenLevel level, RandomSource random, int cx, int cy, int cz, int halfW, int halfD) {
         BlockState pillar = LionKingBlocks.PRIDE_PILLAR.get().defaultBlockState();
         int[][] corners = {
-                {cx - halfW, cz - halfD},
-                {cx + halfW, cz - halfD},
-                {cx - halfW, cz + halfD},
-                {cx + halfW, cz + halfD},
+            {cx - halfW, cz - halfD},
+            {cx + halfW, cz - halfD},
+            {cx - halfW, cz + halfD},
+            {cx + halfW, cz + halfD},
         };
 
         // Pick 2 random corners (old mod picked j5 and j6 as indices 0-3, with -1 meaning none)
@@ -245,9 +240,7 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         for (int i = 0; i < corners.length; i++) {
             if (i == corner1 || i == corner2) {
                 for (int dy = 0; dy <= ROOM_HEIGHT; dy++) {
-                    level.setBlock(
-                            new BlockPos(corners[i][0], cy + dy, corners[i][1]),
-                            pillar, 2);
+                    level.setBlock(new BlockPos(corners[i][0], cy + dy, corners[i][1]), pillar, 2);
                 }
             }
         }
@@ -260,9 +253,7 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
     private static final int CHEST_PLACEMENT_RETRIES = 20;
 
     private void placeChests(
-            WorldGenLevel level, RandomSource random,
-            int cx, int cy, int cz, int halfW, int halfD, int chestAttempts
-    ) {
+            WorldGenLevel level, RandomSource random, int cx, int cy, int cz, int halfW, int halfD, int chestAttempts) {
         int placed = 0;
         for (int attempt = 0; attempt < CHEST_PLACEMENT_RETRIES && placed < chestAttempts; attempt++) {
             int chestX = cx + random.nextInt(halfW * 2 + 1) - halfW;
@@ -295,8 +286,8 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
 
             // Face away from the wall (into the room) so the player can open it
             Direction chestFacing = wallDir.getOpposite();
-            BlockState chestState = Blocks.CHEST.defaultBlockState()
-                    .setValue(BlockStateProperties.HORIZONTAL_FACING, chestFacing);
+            BlockState chestState =
+                    Blocks.CHEST.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, chestFacing);
             level.setBlock(chestPos, chestState, 2);
             fillChestLoot(level, chestPos, random);
             placed++;
@@ -323,8 +314,7 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         // 25% chance for a bonus passion sapling
         if (random.nextInt(4) == 0) {
             chest.setItem(
-                    random.nextInt(chest.getContainerSize()),
-                    new ItemStack(LionKingItems.PASSION_SAPLING_ITEM.get()));
+                    random.nextInt(chest.getContainerSize()), new ItemStack(LionKingItems.PASSION_SAPLING_ITEM.get()));
         }
     }
 
@@ -385,10 +375,7 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
     }
 
     /** Place vines on interior wall faces of crocodile dungeons, matching old mod logic. */
-    private void placeVines(
-            WorldGenLevel level, RandomSource random,
-            int cx, int cy, int cz, int halfW, int halfD
-    ) {
+    private void placeVines(WorldGenLevel level, RandomSource random, int cx, int cy, int cz, int halfW, int halfD) {
         for (int bx = cx - halfW - 1; bx <= cx + halfW + 1; bx++) {
             for (int by = cy + ROOM_HEIGHT; by >= cy - 1; by--) {
                 for (int bz = cz - halfD - 1; bz <= cz + halfD + 1; bz++) {
@@ -408,10 +395,7 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         }
     }
 
-    private void tryPlaceVine(
-            WorldGenLevel level, RandomSource random,
-            int x, int y, int z, BooleanProperty facing
-    ) {
+    private void tryPlaceVine(WorldGenLevel level, RandomSource random, int x, int y, int z, BooleanProperty facing) {
         if (random.nextInt(VINE_CHANCE) != 0) {
             return;
         }

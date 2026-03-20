@@ -21,6 +21,8 @@ import io.github.ron1196.thelionking.registry.ParticleTypes;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.renderer.entity.ArrowRenderer;
+import net.minecraft.client.renderer.entity.LightningBoltRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.nbt.CompoundTag;
@@ -130,9 +132,7 @@ public class ClientEvents {
         event.registerLayerDefinition(RUG_LAYER, RugModel::createBodyLayer);
 
         // Skeletal Hyena Head
-        event.registerLayerDefinition(
-                SKELETAL_HYENA_HEAD_LAYER,
-                io.github.ron1196.thelionking.client.model.SkeletalHyenaHeadModel::createBodyLayer);
+        event.registerLayerDefinition(SKELETAL_HYENA_HEAD_LAYER, SkeletalHyenaHeadModel::createBodyLayer);
 
         // Block entity layers
         event.registerLayerDefinition(HYENA_HEAD_LAYER, HyenaHeadBlockEntityRenderer::createHeadLayer);
@@ -232,46 +232,43 @@ public class ClientEvents {
                 EntityTypes.SKELETAL_HYENA_HEAD.get(),
                 ctx -> new MobRenderer<>(
                         ctx,
-                        new io.github.ron1196.thelionking.client.model.SkeletalHyenaHeadModel(
-                                ctx.bakeLayer(SKELETAL_HYENA_HEAD_LAYER)),
+                        new SkeletalHyenaHeadModel(ctx.bakeLayer(SKELETAL_HYENA_HEAD_LAYER)),
                         "hyena_skeleton",
                         0.3F));
 
         // Projectiles
-        event.registerEntityRenderer(
-                EntityTypes.DART.get(), ctx -> new net.minecraft.client.renderer.entity.ArrowRenderer<>(ctx) {
-                    private final ResourceLocation BLUE =
-                            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_blue.png");
-                    private final ResourceLocation RED =
-                            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_red.png");
-                    private final ResourceLocation YELLOW =
-                            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_yellow.png");
-                    private final ResourceLocation PINK =
-                            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_pink.png");
-                    private final ResourceLocation BLACK =
-                            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_black.png");
+        event.registerEntityRenderer(EntityTypes.DART.get(), ctx -> new ArrowRenderer<>(ctx) {
+            private final ResourceLocation BLUE =
+                    new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_blue.png");
+            private final ResourceLocation RED =
+                    new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_red.png");
+            private final ResourceLocation YELLOW =
+                    new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_yellow.png");
+            private final ResourceLocation PINK =
+                    new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_pink.png");
+            private final ResourceLocation BLACK =
+                    new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/dart_black.png");
 
-                    @Override
-                    public @NotNull ResourceLocation getTextureLocation(@NotNull DartEntity entity) {
-                        return switch (entity.getDartType()) {
-                            case RED -> RED;
-                            case YELLOW -> YELLOW;
-                            case PINK -> PINK;
-                            case BLACK -> BLACK;
-                            default -> BLUE;
-                        };
-                    }
-                });
-        event.registerEntityRenderer(
-                EntityTypes.SPEAR.get(), ctx -> new net.minecraft.client.renderer.entity.ArrowRenderer<>(ctx) {
-                    private final ResourceLocation SPEAR =
-                            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/spear.png");
+            @Override
+            public @NotNull ResourceLocation getTextureLocation(@NotNull DartEntity entity) {
+                return switch (entity.getDartType()) {
+                    case RED -> RED;
+                    case YELLOW -> YELLOW;
+                    case PINK -> PINK;
+                    case BLACK -> BLACK;
+                    default -> BLUE;
+                };
+            }
+        });
+        event.registerEntityRenderer(EntityTypes.SPEAR.get(), ctx -> new ArrowRenderer<>(ctx) {
+            private final ResourceLocation SPEAR =
+                    new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/spear.png");
 
-                    @Override
-                    public @NotNull ResourceLocation getTextureLocation(@NotNull SpearEntity entity) {
-                        return SPEAR;
-                    }
-                });
+            @Override
+            public @NotNull ResourceLocation getTextureLocation(@NotNull SpearEntity entity) {
+                return SPEAR;
+            }
+        });
         event.registerEntityRenderer(EntityTypes.PUMBAA_BOMB.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(EntityTypes.TERMITE_THROWN.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(EntityTypes.COIN.get(), ThrownItemRenderer::new);
@@ -279,8 +276,7 @@ public class ClientEvents {
 
         // Weather effects — uses vanilla lightning renderer since LightningBoltEntity extends
         // LightningBolt
-        event.registerEntityRenderer(
-                EntityTypes.LK_LIGHTNING_BOLT.get(), net.minecraft.client.renderer.entity.LightningBoltRenderer::new);
+        event.registerEntityRenderer(EntityTypes.LIGHTNING_BOLT.get(), LightningBoltRenderer::new);
 
         // Block entity renderers
         event.registerBlockEntityRenderer(BlockEntityTypes.HYENA_HEAD.get(), HyenaHeadBlockEntityRenderer::new);

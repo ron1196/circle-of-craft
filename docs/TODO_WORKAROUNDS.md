@@ -57,6 +57,7 @@ Old `LKGuiIngame.java` — none ported. Implement via `RenderGuiOverlayEvent` in
 - [x] ~~**BonemealEvent**~~ — SKIP: Both vanilla bonemeal and Hyena Meal work in all dimensions.
 - [x] ~~**Pride Lands Entry Song**~~ — RESOLVED: `DimensionMusicHandler` plays Circle of Life on dimension change.
 - [ ] **Respawn Dimension Redirect** — Old mod: dying in Outlands or Upendi respawns the player in Pride Lands (not Overworld). Needs a `PlayerEvent.PlayerRespawnEvent` handler to teleport the player to Pride Lands world spawn when they die in those dimensions without a bed set.
+- [ ] **Verify `handleZiraSpawnEvent`** — The Zira spawn event (ziraStage 22) in `LionKingForgeEvents` spawns a visual `LightningBoltEntity` which now triggers `onEntityJoinLevel` → `convertSandToOutsand`. Check that this doesn't create an unwanted outsand patch at Zira's spawn point. May need to skip conversion for our custom `LightningBoltEntity` subclass.
 
 ## Missing Networking Packets
 

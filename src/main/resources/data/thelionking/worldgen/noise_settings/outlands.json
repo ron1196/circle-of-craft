@@ -173,7 +173,7 @@
                 "then_run": {
                   "type": "minecraft:block",
                   "result_state": {
-                    "Name": "thelionking:outsand"
+                    "Name": "minecraft:sand"
                   }
                 }
               }

@@ -17,6 +17,7 @@ import io.github.ron1196.thelionking.network.LoginSyncPacket;
 import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.registry.Enchantments;
 import io.github.ron1196.thelionking.registry.EntityTypes;
+import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import net.minecraft.core.BlockPos;
@@ -25,16 +26,17 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -46,6 +48,20 @@ import net.minecraftforge.network.PacketDistributor;
 
 @Mod.EventBusSubscriber(modid = TheLionKingMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class LionKingForgeEvents {
+
+    // ── Outsand Lightning Constants ──────────────────────────────────────────
+    /** Average ticks between dry lightning strikes (~6 seconds at 20 tps). 120*/
+    private static final int DRY_LIGHTNING_CHANCE = 120;
+    /** How far from a player the lightning can strike (blocks in each axis). */
+    private static final int DRY_LIGHTNING_RANGE = 100;
+    /** Min radius of the outsand patch (inclusive). */
+    private static final int OUTSAND_MIN_RADIUS = 2;
+    /** Max radius of the outsand patch (inclusive). */
+    private static final int OUTSAND_MAX_RADIUS = 5;
+    /** Vertical range above/below strike point to convert sand. */
+    private static final int OUTSAND_VERTICAL_RANGE = 3;
+    /** 1-in-N chance for fire on air blocks above outsand. */
+    private static final int OUTSAND_FIRE_CHANCE = 8;
 
     // ── Commands ──────────────────────────────────────────────────────────────
 
@@ -72,6 +88,7 @@ public class LionKingForgeEvents {
     @SubscribeEvent
     public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
         ItemStack held = event.getItemStack();
+
         if (!(held.getItem() instanceof GroundRhinoHornItem)) return;
         if (!(event.getTarget() instanceof Animal animal)) return;
         if (animal.isBaby()) return;
@@ -192,10 +209,95 @@ public class LionKingForgeEvents {
             }
         }
 
-        // Outlands: Zira stage 22 — spawn Zira with dramatic lightning when player is on surface
+        // Outlands-specific tick events
         if (serverLevel.dimension() == Dimensions.OUTLANDS_LEVEL) {
             handleZiraSpawnEvent(serverLevel);
+            handleDryLightning(serverLevel);
         }
+    }
+
+    // ── EntityJoinLevelEvent ─────────────────────────────────────────────────
+
+    /**
+     * When any lightning bolt lands in the Outlands, convert nearby sand to outsand.
+     * Works for dry lightning, channeling tridents, commands, etc.
+     */
+    @SubscribeEvent
+    public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
+        if (!(event.getEntity() instanceof LightningBolt bolt)) return;
+        if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
+        if (serverLevel.dimension() != Dimensions.OUTLANDS_LEVEL) return;
+        convertSandToOutsand(serverLevel, bolt.blockPosition());
+    }
+
+    /**
+     * Converts sand blocks in a circular patch around the strike point to outsand.
+     * Occasionally sets fire on air blocks above. Matches the old mod's LKWorldGenOutsand.
+     */
+    private static void convertSandToOutsand(ServerLevel level, BlockPos center) {
+        int radius = level.random.nextInt(OUTSAND_MAX_RADIUS - OUTSAND_MIN_RADIUS + 1) + OUTSAND_MIN_RADIUS;
+        int radiusSq = radius * radius;
+
+        for (int dx = -radius; dx <= radius; dx++) {
+            for (int dz = -radius; dz <= radius; dz++) {
+                if (dx * dx + dz * dz > radiusSq) continue;
+                for (int dy = -OUTSAND_VERTICAL_RANGE; dy <= OUTSAND_VERTICAL_RANGE; dy++) {
+                    BlockPos pos = center.offset(dx, dy, dz);
+                    if (!level.getBlockState(pos).is(Blocks.SAND)) continue;
+
+                    level.setBlock(pos, LionKingBlocks.OUTSAND.get().defaultBlockState(), 3);
+
+                    BlockPos above = pos.above();
+                    if (level.random.nextInt(OUTSAND_FIRE_CHANCE) == 0 && level.isEmptyBlock(above)) {
+                        level.setBlock(above, BaseFireBlock.getState(level, above), 3);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Periodically spawns "dry lightning" in the Outlands near a random player.
+     * The lightning is visual-only (no vanilla fire/damage) — the outsand it creates
+     * is the hazard. Conversion is handled by {@link #onEntityJoinLevel}.
+     */
+    private static void handleDryLightning(ServerLevel level) {
+        if (level.players().isEmpty()) return;
+        if (level.random.nextInt(DRY_LIGHTNING_CHANCE) != 0) return;
+
+        // Pick a random player
+        Player player = level.players().get(level.random.nextInt(level.players().size()));
+
+        int px = Mth.floor(player.getX());
+        int pz = Mth.floor(player.getZ());
+
+        int strikeX = px + level.random.nextInt(DRY_LIGHTNING_RANGE * 2 + 1) - DRY_LIGHTNING_RANGE;
+        int strikeZ = pz + level.random.nextInt(DRY_LIGHTNING_RANGE * 2 + 1) - DRY_LIGHTNING_RANGE;
+        int strikeY = level.getHeight(Heightmap.Types.MOTION_BLOCKING, strikeX, strikeZ);
+
+        // Must be a surface block that can see the sky
+        BlockPos strikePos = new BlockPos(strikeX, strikeY, strikeZ);
+        if (!level.canSeeSky(strikePos)) return;
+
+        // Must have sand at or near the surface to be worth striking
+        if (!hasSandNearSurface(level, strikePos)) return;
+
+        // Spawn a visual-only vanilla lightning bolt — outsand conversion is event-driven
+        LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(level);
+        if (bolt != null) {
+            bolt.moveTo(strikeX + 0.5, strikeY, strikeZ + 0.5);
+            bolt.setVisualOnly(true);
+            level.addFreshEntity(bolt);
+        }
+    }
+
+    private static boolean hasSandNearSurface(ServerLevel level, BlockPos surface) {
+        for (int dy = -OUTSAND_VERTICAL_RANGE; dy <= OUTSAND_VERTICAL_RANGE; dy++) {
+            if (level.getBlockState(surface.offset(0, dy, 0)).is(Blocks.SAND)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
