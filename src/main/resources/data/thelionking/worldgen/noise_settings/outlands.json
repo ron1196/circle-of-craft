@@ -193,7 +193,7 @@
         "then_run": {
           "type": "minecraft:block",
           "result_state": {
-            "Name": "thelionking:corrupt_pridestone"
+            "Name": "minecraft:sand"
           }
         }
       }
