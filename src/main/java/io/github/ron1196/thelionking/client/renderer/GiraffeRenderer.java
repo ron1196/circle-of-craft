@@ -13,17 +13,21 @@ public class GiraffeRenderer extends MobRenderer<GiraffeEntity, GiraffeModel<Gir
 
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/giraffe.png");
-    private static final float BABY_SCALE = 0.5F;
 
-    public GiraffeRenderer(EntityRendererProvider.Context context, GiraffeModel<GiraffeEntity> model) {
+    private final float babyScale;
+
+    public GiraffeRenderer(
+            EntityRendererProvider.Context context, GiraffeModel<GiraffeEntity> model, float babyScale
+    ) {
         super(context, model, 0.8F);
+        this.babyScale = babyScale;
         this.addLayer(new GiraffeOverlayLayer(this));
     }
 
     @Override
     protected void scale(@NotNull GiraffeEntity entity, @NotNull PoseStack poseStack, float partialTick) {
         if (entity.isBaby()) {
-            poseStack.scale(BABY_SCALE, BABY_SCALE, BABY_SCALE);
+            poseStack.scale(babyScale, babyScale, babyScale);
         }
     }
 

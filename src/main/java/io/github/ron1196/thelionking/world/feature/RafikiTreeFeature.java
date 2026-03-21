@@ -42,8 +42,6 @@ public class RafikiTreeFeature extends Feature<NoneFeatureConfiguration> {
         int j = origin.getY();
         int k = origin.getZ();
 
-        LOGGER.info("Rafiki Tree generating at ({}, {}, {})", i, j, k);
-
         // Trunk: 40 layers of filled circles with Bresenham algorithm
         for (int j1 = 0; j1 < 40; j1++) {
             for (int i1 = 0; i1 > -2; i1--) {

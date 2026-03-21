@@ -88,7 +88,7 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         ResourceLocation spawnerId = isCrocodile ? CROCODILE_ID : HYENA_ID;
-        LOGGER.info(
+        LOGGER.debug(
                 "[PrideDungeon] Placed {} dungeon at ({}, {}, {}), halfW={}, halfD={}",
                 isCrocodile ? "crocodile" : "hyena",
                 cx,
@@ -117,9 +117,7 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
      * walls may have 0-5 "entrance" positions (air at ground level with air above).
      * Rooms must have at least 1 entrance to be reachable via caves.
      */
-    private boolean isValidPlacement(
-            WorldGenLevel level, int cx, int cy, int cz, int halfW, int halfD
-    ) {
+    private boolean isValidPlacement(WorldGenLevel level, int cx, int cy, int cz, int halfW, int halfD) {
         int entrances = 0;
 
         for (int bx = cx - halfW - 1; bx <= cx + halfW + 1; bx++) {
@@ -163,10 +161,12 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
             WorldGenLevel level,
             RandomSource random,
             Predicate<BlockState> canReplace,
-            int cx, int cy, int cz,
-            int halfW, int halfD,
-            boolean isCrocodile
-    ) {
+            int cx,
+            int cy,
+            int cz,
+            int halfW,
+            int halfD,
+            boolean isCrocodile) {
         BlockState prideBrick = LionKingBlocks.PRIDE_BRICK.get().defaultBlockState();
         BlockState mossyBrick = LionKingBlocks.MOSSY_PRIDE_BRICK.get().defaultBlockState();
         BlockState crackedBrick = LionKingBlocks.CRACKED_PRIDE_BRICK.get().defaultBlockState();
@@ -196,13 +196,12 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
                             if (by == cy - 1) {
                                 // Floor: 75% mossy, 25% regular pride brick
                                 this.safeSetBlock(
-                                        level, pos,
-                                        random.nextInt(4) != 0 ? mossyBrick : prideBrick,
-                                        canReplace);
+                                        level, pos, random.nextInt(4) != 0 ? mossyBrick : prideBrick, canReplace);
                             } else {
                                 // Walls and ceiling: pride brick with occasional cracked
                                 this.safeSetBlock(
-                                        level, pos,
+                                        level,
+                                        pos,
                                         random.nextDouble() < CRACKED_BRICK_CHANCE ? crackedBrick : prideBrick,
                                         canReplace);
                             }
@@ -224,31 +223,24 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
                     level.setBlock(floorPos, Blocks.WATER.defaultBlockState(), 2);
                     // Ensure solid floor under the water
                     BlockPos belowFloor = new BlockPos(bx, cy - 1, bz);
-                    this.safeSetBlock(
-                            level, belowFloor,
-                            random.nextInt(4) != 0 ? mossyBrick : prideBrick,
-                            canReplace);
+                    this.safeSetBlock(level, belowFloor, random.nextInt(4) != 0 ? mossyBrick : prideBrick, canReplace);
                 }
             }
         }
     }
 
     /** Check if a position is in the room interior (not shell). */
-    private boolean isInterior(
-            int bx, int by, int bz,
-            int cx, int cy, int cz,
-            int halfW, int halfD
-    ) {
-        return bx > cx - halfW - 1 && bx < cx + halfW + 1
-                && by > cy - 1 && by < cy + ROOM_HEIGHT
-                && bz > cz - halfD - 1 && bz < cz + halfD + 1;
+    private boolean isInterior(int bx, int by, int bz, int cx, int cy, int cz, int halfW, int halfD) {
+        return bx > cx - halfW - 1
+                && bx < cx + halfW + 1
+                && by > cy - 1
+                && by < cy + ROOM_HEIGHT
+                && bz > cz - halfD - 1
+                && bz < cz + halfD + 1;
     }
 
     /** Place pride pillars at 2 random corners, matching old mod's paired corner logic. */
-    private void placePillars(
-            WorldGenLevel level, RandomSource random,
-            int cx, int cy, int cz, int halfW, int halfD
-    ) {
+    private void placePillars(WorldGenLevel level, RandomSource random, int cx, int cy, int cz, int halfW, int halfD) {
         BlockState pillar = LionKingBlocks.PRIDE_PILLAR.get().defaultBlockState();
         int[][] corners = {
             {cx - halfW, cz - halfD},
@@ -276,11 +268,10 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         BlockPos spawnerPos = new BlockPos(cx, cy, cz);
         level.setBlock(spawnerPos, LionKingBlocks.LK_SPAWNER.get().defaultBlockState(), 2);
         BlockEntity be = level.getBlockEntity(spawnerPos);
-        if (be instanceof SpawnerBlockEntity spawnerBE) {
-            spawnerBE.setEntityId(spawnerId);
-        } else {
-            LOGGER.error("[PrideDungeon] Failed to get SpawnerBlockEntity at ({}, {}, {})", cx, cy, cz);
+        if (!(be instanceof SpawnerBlockEntity spawnerBE)) {
+            return;
         }
+        spawnerBE.setEntityId(spawnerId);
     }
 
     /**
@@ -288,10 +279,7 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
      * exactly 1 solid horizontal neighbor (against a wall). Up to chestAttempts chests placed.
      */
     private void placeChests(
-            WorldGenLevel level, RandomSource random,
-            int cx, int cy, int cz, int halfW, int halfD,
-            int chestAttempts
-    ) {
+            WorldGenLevel level, RandomSource random, int cx, int cy, int cz, int halfW, int halfD, int chestAttempts) {
         int placed = 0;
         for (int attempt = 0; attempt < CHEST_PLACEMENT_RETRIES && placed < chestAttempts; attempt++) {
             int chestX = cx + random.nextInt(halfW * 2 + 1) - halfW;
@@ -351,8 +339,8 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
 
         // 25% chance for a bonus passion sapling
         if (random.nextInt(4) == 0) {
-            chest.setItem(
-                    random.nextInt(chest.getContainerSize()), new ItemStack(LionKingItems.PASSION_SAPLING_ITEM.get()));
+            ItemStack passionItemStack = new ItemStack(LionKingItems.PASSION_SAPLING_ITEM.get());
+            chest.setItem(random.nextInt(chest.getContainerSize()), passionItemStack);
         }
     }
 
@@ -413,14 +401,12 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
     }
 
     /** Place vines on interior wall faces of crocodile dungeons. */
-    private void placeVines(
-            WorldGenLevel level, RandomSource random,
-            int cx, int cy, int cz, int halfW, int halfD
-    ) {
+    private void placeVines(WorldGenLevel level, RandomSource random, int cx, int cy, int cz, int halfW, int halfD) {
         for (int bx = cx - halfW - 1; bx <= cx + halfW + 1; bx++) {
             for (int by = cy + ROOM_HEIGHT; by >= cy; by--) {
                 for (int bz = cz - halfD - 1; bz <= cz + halfD + 1; bz++) {
                     BlockState state = level.getBlockState(new BlockPos(bx, by, bz));
+                    
                     if (!state.is(LionKingBlocks.PRIDE_BRICK.get())
                             && !state.is(LionKingBlocks.CRACKED_PRIDE_BRICK.get())
                             && !state.is(LionKingBlocks.MOSSY_PRIDE_BRICK.get())) {
@@ -436,10 +422,7 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         }
     }
 
-    private void tryPlaceVine(
-            WorldGenLevel level, RandomSource random,
-            int x, int y, int z, BooleanProperty facing
-    ) {
+    private void tryPlaceVine(WorldGenLevel level, RandomSource random, int x, int y, int z, BooleanProperty facing) {
         if (random.nextInt(VINE_CHANCE) != 0) {
             return;
         }

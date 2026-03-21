@@ -11,19 +11,22 @@ import org.jetbrains.annotations.NotNull;
 
 public class AnimalRenderer<T extends LionKingAnimal, M extends EntityModel<T>> extends MobRenderer<T, M> {
 
-    private static final float BABY_SCALE = 0.5F;
-
     private final ResourceLocation texture;
+    private final float babyScale;
 
-    public AnimalRenderer(EntityRendererProvider.Context context, M model, String textureName, float shadowRadius) {
+    public AnimalRenderer(
+            EntityRendererProvider.Context context, M model,
+            String textureName, float shadowRadius, float babyScale
+    ) {
         super(context, model, shadowRadius);
         this.texture = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/" + textureName + ".png");
+        this.babyScale = babyScale;
     }
 
     @Override
     protected void scale(@NotNull T entity, @NotNull PoseStack poseStack, float partialTick) {
         if (entity.isBaby()) {
-            poseStack.scale(BABY_SCALE, BABY_SCALE, BABY_SCALE);
+            poseStack.scale(babyScale, babyScale, babyScale);
         }
     }
 
