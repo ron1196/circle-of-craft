@@ -50,7 +50,8 @@
   "features": [
     [],
     [
-      "minecraft:lake_lava_underground"
+      "thelionking:outlands_lava_lake_underground_placed",
+      "thelionking:outlands_lava_lake_surface_placed"
     ],
     [
       "thelionking:pride_coal_ore_placed",
