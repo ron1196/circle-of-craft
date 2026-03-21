@@ -8,12 +8,16 @@ import io.github.ron1196.thelionking.registry.SoundEvents;
 import javax.annotation.Nullable;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -59,6 +63,18 @@ public class ZebraEntity extends LionKingAnimal {
     @Override
     protected ItemStack getQuestReward() {
         return new ItemStack(Items.LEATHER, 3 + QUEST_RANDOM.nextInt(3));
+    }
+
+    @Override
+    public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
+        ItemStack held = player.getItemInHand(hand);
+        if (held.is(LionKingItems.JAR_EMPTY.get()) && !isBaby()) {
+            player.playSound(SoundEvents.ZEBRA_AMBIENT.get(), 1.0F, 1.0F);
+            ItemStack milkJar = new ItemStack(LionKingItems.JAR_MILK.get());
+            player.setItemInHand(hand, ItemUtils.createFilledResult(held, player, milkJar));
+            return InteractionResult.sidedSuccess(this.level().isClientSide());
+        }
+        return super.mobInteract(player, hand);
     }
 
     @Override

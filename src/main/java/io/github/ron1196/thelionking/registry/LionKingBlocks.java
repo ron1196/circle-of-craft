@@ -1,5 +1,7 @@
 package io.github.ron1196.thelionking.registry;
 
+import static io.github.ron1196.thelionking.registry.LionKingBlocksRegistryHelper.*;
+
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.block.*;
 import io.github.ron1196.thelionking.block.MushroomBlock;
@@ -9,6 +11,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.registries.DeferredRegister;
@@ -21,12 +24,7 @@ public class LionKingBlocks {
             DeferredRegister.create(ForgeRegistries.BLOCKS, TheLionKingMod.MOD_ID);
 
     // ========== Pridestone & Variants ==========
-    public static final RegistryObject<Block> PRIDESTONE = BLOCKS.register(
-            "pridestone",
-            () -> new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.STONE)
-                    .strength(1.5F, 10.0F)
-                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> PRIDESTONE = stoneBlock("pridestone");
 
     public static final RegistryObject<Block> CORRUPT_PRIDESTONE = BLOCKS.register(
             "corrupt_pridestone",
@@ -35,281 +33,91 @@ public class LionKingBlocks {
                     .strength(1.05F, 10.0F)
                     .requiresCorrectToolForDrops()));
 
-    public static final RegistryObject<Block> PRIDE_BRICK = BLOCKS.register(
-            "pride_brick",
-            () -> new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.STONE)
-                    .strength(1.5F, 10.0F)
-                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> PRIDE_BRICK = stoneBlock("pride_brick");
+    public static final RegistryObject<Block> CORRUPT_PRIDE_BRICK =
+            stoneBlock("corrupt_pride_brick", MapColor.COLOR_PURPLE);
+    public static final RegistryObject<Block> CRACKED_PRIDE_BRICK = stoneBlock("cracked_pride_brick");
+    public static final RegistryObject<Block> MOSSY_PRIDE_BRICK = stoneBlock("mossy_pride_brick");
+    public static final RegistryObject<Block> MOSSY_CORRUPT_PRIDE_BRICK =
+            stoneBlock("mossy_corrupt_pride_brick", MapColor.COLOR_PURPLE);
 
-    public static final RegistryObject<Block> CORRUPT_PRIDE_BRICK = BLOCKS.register(
-            "corrupt_pride_brick",
-            () -> new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_PURPLE)
-                    .strength(1.5F, 10.0F)
-                    .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> CRACKED_PRIDE_BRICK = BLOCKS.register(
-            "cracked_pride_brick",
-            () -> new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.STONE)
-                    .strength(1.5F, 10.0F)
-                    .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> MOSSY_PRIDE_BRICK = BLOCKS.register(
-            "mossy_pride_brick",
-            () -> new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.STONE)
-                    .strength(1.5F, 10.0F)
-                    .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> MOSSY_CORRUPT_PRIDE_BRICK = BLOCKS.register(
-            "mossy_corrupt_pride_brick",
-            () -> new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_PURPLE)
-                    .strength(1.5F, 10.0F)
-                    .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> PRIDE_PILLAR = BLOCKS.register(
-            "pride_pillar",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.STONE)
-                    .strength(1.2F, 8.0F)
-                    .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> CORRUPT_PRIDE_PILLAR = BLOCKS.register(
-            "corrupt_pride_pillar",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_PURPLE)
-                    .strength(1.2F, 8.0F)
-                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> PRIDE_PILLAR =
+            BLOCKS.register("pride_pillar", () -> new RotatedPillarBlock(pillarProps(MapColor.STONE)));
+    public static final RegistryObject<Block> CORRUPT_PRIDE_PILLAR =
+            BLOCKS.register("corrupt_pride_pillar", () -> new RotatedPillarBlock(pillarProps(MapColor.COLOR_PURPLE)));
 
     // ========== Ores ==========
-    public static final RegistryObject<Block> PRIDE_COAL_ORE = BLOCKS.register(
-            "pride_coal_ore",
-            () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.STONE)
-                    .strength(3.0F, 5.0F)
-                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> PRIDE_COAL_ORE =
+            BLOCKS.register("pride_coal_ore", () -> new DropExperienceBlock(oreProps()));
 
-    public static final RegistryObject<Block> SILVER_ORE = BLOCKS.register(
-            "silver_ore",
-            () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.STONE)
-                    .strength(3.0F, 5.0F)
-                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SILVER_ORE =
+            BLOCKS.register("silver_ore", () -> new DropExperienceBlock(oreProps()));
 
-    public static final RegistryObject<Block> PEACOCK_ORE = BLOCKS.register(
-            "peacock_ore",
-            () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.STONE)
-                    .strength(3.0F, 5.0F)
-                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> PEACOCK_ORE =
+            BLOCKS.register("peacock_ore", () -> new DropExperienceBlock(oreProps()));
 
     // ========== Storage Blocks ==========
-    public static final RegistryObject<Block> SILVER_BLOCK = BLOCKS.register(
-            "silver_block",
-            () -> new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.METAL)
-                    .strength(5.0F, 10.0F)
-                    .requiresCorrectToolForDrops()
-                    .sound(SoundType.METAL)));
+    public static final RegistryObject<Block> SILVER_BLOCK =
+            BLOCKS.register("silver_block", () -> new Block(metalProps()));
 
-    public static final RegistryObject<Block> PEACOCK_BLOCK = BLOCKS.register(
-            "peacock_block",
-            () -> new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.METAL)
-                    .strength(5.0F, 10.0F)
-                    .requiresCorrectToolForDrops()
-                    .sound(SoundType.METAL)));
+    public static final RegistryObject<Block> PEACOCK_BLOCK =
+            BLOCKS.register("peacock_block", () -> new Block(metalProps()));
 
     // ========== Wood - Acacia ==========
-    public static final RegistryObject<Block> ACACIA_LOG = BLOCKS.register(
-            "pride_acacia_log",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.WOOD)
-                    .strength(2.0F)
-                    .sound(SoundType.WOOD)));
-
-    public static final RegistryObject<Block> ACACIA_PLANKS = BLOCKS.register(
-            "pride_acacia_planks",
-            () -> new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.WOOD)
-                    .strength(2.0F, 5.0F)
-                    .sound(SoundType.WOOD)));
-
-    public static final RegistryObject<StairBlock> ACACIA_STAIRS = BLOCKS.register(
-            "pride_acacia_stairs",
-            () -> new StairBlock(
-                    () -> ACACIA_PLANKS.get().defaultBlockState(),
-                    BlockBehaviour.Properties.copy(ACACIA_PLANKS.get())));
-
-    public static final RegistryObject<SlabBlock> ACACIA_SLAB = BLOCKS.register(
-            "pride_acacia_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(ACACIA_PLANKS.get())));
+    public static final RegistryObject<Block> ACACIA_LOG = log("pride_acacia_log");
+    public static final RegistryObject<Block> ACACIA_PLANKS = planks("pride_acacia_planks");
+    public static final RegistryObject<StairBlock> ACACIA_STAIRS = stairs("pride_acacia_stairs", ACACIA_PLANKS);
+    public static final RegistryObject<SlabBlock> ACACIA_SLAB = slab("pride_acacia_slab", ACACIA_PLANKS);
 
     // ========== Wood - Rainforest ==========
-    public static final RegistryObject<Block> RAINFOREST_LOG = BLOCKS.register(
-            "rainforest_log",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.WOOD)
-                    .strength(2.0F)
-                    .sound(SoundType.WOOD)));
-
-    public static final RegistryObject<Block> RAINFOREST_PLANKS = BLOCKS.register(
-            "rainforest_planks",
-            () -> new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.WOOD)
-                    .strength(2.0F, 5.0F)
-                    .sound(SoundType.WOOD)));
-
-    public static final RegistryObject<StairBlock> RAINFOREST_STAIRS = BLOCKS.register(
-            "rainforest_stairs",
-            () -> new StairBlock(
-                    () -> RAINFOREST_PLANKS.get().defaultBlockState(),
-                    BlockBehaviour.Properties.copy(RAINFOREST_PLANKS.get())));
-
-    public static final RegistryObject<SlabBlock> RAINFOREST_SLAB = BLOCKS.register(
-            "rainforest_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(RAINFOREST_PLANKS.get())));
+    public static final RegistryObject<Block> RAINFOREST_LOG = log("rainforest_log");
+    public static final RegistryObject<Block> RAINFOREST_PLANKS = planks("rainforest_planks");
+    public static final RegistryObject<StairBlock> RAINFOREST_STAIRS = stairs("rainforest_stairs", RAINFOREST_PLANKS);
+    public static final RegistryObject<SlabBlock> RAINFOREST_SLAB = slab("rainforest_slab", RAINFOREST_PLANKS);
 
     // ========== Wood - Mango ==========
-    public static final RegistryObject<Block> MANGO_LOG = BLOCKS.register(
-            "mango_log",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.WOOD)
-                    .strength(2.0F)
-                    .sound(SoundType.WOOD)));
-
-    public static final RegistryObject<Block> MANGO_PLANKS = BLOCKS.register(
-            "mango_planks",
-            () -> new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.WOOD)
-                    .strength(2.0F, 5.0F)
-                    .sound(SoundType.WOOD)));
-
-    public static final RegistryObject<StairBlock> MANGO_STAIRS = BLOCKS.register(
-            "mango_stairs",
-            () -> new StairBlock(
-                    () -> MANGO_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(MANGO_PLANKS.get())));
-
-    public static final RegistryObject<SlabBlock> MANGO_SLAB =
-            BLOCKS.register("mango_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(MANGO_PLANKS.get())));
+    public static final RegistryObject<Block> MANGO_LOG = log("mango_log");
+    public static final RegistryObject<Block> MANGO_PLANKS = planks("mango_planks");
+    public static final RegistryObject<StairBlock> MANGO_STAIRS = stairs("mango_stairs", MANGO_PLANKS);
+    public static final RegistryObject<SlabBlock> MANGO_SLAB = slab("mango_slab", MANGO_PLANKS);
 
     // ========== Wood - Passion ==========
-    public static final RegistryObject<Block> PASSION_LOG = BLOCKS.register(
-            "passion_log",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.WOOD)
-                    .strength(2.0F)
-                    .sound(SoundType.WOOD)));
-
-    public static final RegistryObject<Block> PASSION_PLANKS = BLOCKS.register(
-            "passion_planks",
-            () -> new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.WOOD)
-                    .strength(2.0F, 5.0F)
-                    .sound(SoundType.WOOD)));
-
-    public static final RegistryObject<StairBlock> PASSION_STAIRS = BLOCKS.register(
-            "passion_stairs",
-            () -> new StairBlock(
-                    () -> PASSION_PLANKS.get().defaultBlockState(),
-                    BlockBehaviour.Properties.copy(PASSION_PLANKS.get())));
-
-    public static final RegistryObject<SlabBlock> PASSION_SLAB =
-            BLOCKS.register("passion_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(PASSION_PLANKS.get())));
+    public static final RegistryObject<Block> PASSION_LOG = log("passion_log");
+    public static final RegistryObject<Block> PASSION_PLANKS = planks("passion_planks");
+    public static final RegistryObject<StairBlock> PASSION_STAIRS = stairs("passion_stairs", PASSION_PLANKS);
+    public static final RegistryObject<SlabBlock> PASSION_SLAB = slab("passion_slab", PASSION_PLANKS);
 
     // ========== Wood - Banana ==========
-    public static final RegistryObject<Block> BANANA_LOG = BLOCKS.register(
-            "banana_log",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.WOOD)
-                    .strength(2.0F)
-                    .sound(SoundType.WOOD)));
-
-    public static final RegistryObject<Block> BANANA_PLANKS = BLOCKS.register(
-            "banana_planks",
-            () -> new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.WOOD)
-                    .strength(2.0F, 5.0F)
-                    .sound(SoundType.WOOD)));
-
-    public static final RegistryObject<StairBlock> BANANA_STAIRS = BLOCKS.register(
-            "banana_stairs",
-            () -> new StairBlock(
-                    () -> BANANA_PLANKS.get().defaultBlockState(),
-                    BlockBehaviour.Properties.copy(BANANA_PLANKS.get())));
-
-    public static final RegistryObject<SlabBlock> BANANA_SLAB =
-            BLOCKS.register("banana_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(BANANA_PLANKS.get())));
+    public static final RegistryObject<Block> BANANA_LOG = log("banana_log");
+    public static final RegistryObject<Block> BANANA_PLANKS = planks("banana_planks");
+    public static final RegistryObject<StairBlock> BANANA_STAIRS = stairs("banana_stairs", BANANA_PLANKS);
+    public static final RegistryObject<SlabBlock> BANANA_SLAB = slab("banana_slab", BANANA_PLANKS);
 
     // ========== Wood - Deadwood ==========
-    public static final RegistryObject<Block> DEADWOOD_LOG = BLOCKS.register(
-            "deadwood_log",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_GRAY)
-                    .strength(2.0F)
-                    .sound(SoundType.WOOD)));
-
-    public static final RegistryObject<Block> DEADWOOD_PLANKS = BLOCKS.register(
-            "deadwood_planks",
-            () -> new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_GRAY)
-                    .strength(2.0F, 5.0F)
-                    .sound(SoundType.WOOD)));
-
-    public static final RegistryObject<StairBlock> DEADWOOD_STAIRS = BLOCKS.register(
-            "deadwood_stairs",
-            () -> new StairBlock(
-                    () -> DEADWOOD_PLANKS.get().defaultBlockState(),
-                    BlockBehaviour.Properties.copy(DEADWOOD_PLANKS.get())));
-
-    public static final RegistryObject<SlabBlock> DEADWOOD_SLAB = BLOCKS.register(
-            "deadwood_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(DEADWOOD_PLANKS.get())));
+    public static final RegistryObject<Block> DEADWOOD_LOG = log("deadwood_log", MapColor.COLOR_GRAY);
+    public static final RegistryObject<Block> DEADWOOD_PLANKS = planks("deadwood_planks", MapColor.COLOR_GRAY);
+    public static final RegistryObject<StairBlock> DEADWOOD_STAIRS = stairs("deadwood_stairs", DEADWOOD_PLANKS);
+    public static final RegistryObject<SlabBlock> DEADWOOD_SLAB = slab("deadwood_slab", DEADWOOD_PLANKS);
 
     // ========== Stone Stairs & Slabs ==========
-    public static final RegistryObject<StairBlock> PRIDESTONE_STAIRS = BLOCKS.register(
-            "pridestone_stairs",
-            () -> new StairBlock(
-                    () -> PRIDESTONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(PRIDESTONE.get())));
-
-    public static final RegistryObject<SlabBlock> PRIDESTONE_SLAB =
-            BLOCKS.register("pridestone_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(PRIDESTONE.get())));
-
-    public static final RegistryObject<StairBlock> PRIDE_BRICK_STAIRS = BLOCKS.register(
-            "pride_brick_stairs",
-            () -> new StairBlock(
-                    () -> PRIDE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.copy(PRIDE_BRICK.get())));
-
-    public static final RegistryObject<SlabBlock> PRIDE_BRICK_SLAB =
-            BLOCKS.register("pride_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(PRIDE_BRICK.get())));
-
-    public static final RegistryObject<StairBlock> CORRUPT_PRIDESTONE_STAIRS = BLOCKS.register(
-            "corrupt_pridestone_stairs",
-            () -> new StairBlock(
-                    () -> CORRUPT_PRIDESTONE.get().defaultBlockState(),
-                    BlockBehaviour.Properties.copy(CORRUPT_PRIDESTONE.get())));
-
-    public static final RegistryObject<SlabBlock> CORRUPT_PRIDESTONE_SLAB = BLOCKS.register(
-            "corrupt_pridestone_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(CORRUPT_PRIDESTONE.get())));
-
-    public static final RegistryObject<StairBlock> CORRUPT_PRIDE_BRICK_STAIRS = BLOCKS.register(
-            "corrupt_pride_brick_stairs",
-            () -> new StairBlock(
-                    () -> CORRUPT_PRIDE_BRICK.get().defaultBlockState(),
-                    BlockBehaviour.Properties.copy(CORRUPT_PRIDE_BRICK.get())));
-
-    public static final RegistryObject<SlabBlock> CORRUPT_PRIDE_BRICK_SLAB = BLOCKS.register(
-            "corrupt_pride_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(CORRUPT_PRIDE_BRICK.get())));
+    public static final RegistryObject<StairBlock> PRIDESTONE_STAIRS = stairs("pridestone_stairs", PRIDESTONE);
+    public static final RegistryObject<SlabBlock> PRIDESTONE_SLAB = slab("pridestone_slab", PRIDESTONE);
+    public static final RegistryObject<StairBlock> PRIDE_BRICK_STAIRS = stairs("pride_brick_stairs", PRIDE_BRICK);
+    public static final RegistryObject<SlabBlock> PRIDE_BRICK_SLAB = slab("pride_brick_slab", PRIDE_BRICK);
+    public static final RegistryObject<StairBlock> CORRUPT_PRIDESTONE_STAIRS =
+            stairs("corrupt_pridestone_stairs", CORRUPT_PRIDESTONE);
+    public static final RegistryObject<SlabBlock> CORRUPT_PRIDESTONE_SLAB =
+            slab("corrupt_pridestone_slab", CORRUPT_PRIDESTONE);
+    public static final RegistryObject<StairBlock> CORRUPT_PRIDE_BRICK_STAIRS =
+            stairs("corrupt_pride_brick_stairs", CORRUPT_PRIDE_BRICK);
+    public static final RegistryObject<SlabBlock> CORRUPT_PRIDE_BRICK_SLAB =
+            slab("corrupt_pride_brick_slab", CORRUPT_PRIDE_BRICK);
 
     // ========== Walls ==========
-    public static final RegistryObject<WallBlock> PRIDESTONE_WALL =
-            BLOCKS.register("pridestone_wall", () -> new WallBlock(BlockBehaviour.Properties.copy(PRIDESTONE.get())));
-
-    public static final RegistryObject<WallBlock> PRIDE_BRICK_WALL =
-            BLOCKS.register("pride_brick_wall", () -> new WallBlock(BlockBehaviour.Properties.copy(PRIDE_BRICK.get())));
-
-    public static final RegistryObject<WallBlock> CORRUPT_PRIDESTONE_WALL = BLOCKS.register(
-            "corrupt_pridestone_wall", () -> new WallBlock(BlockBehaviour.Properties.copy(CORRUPT_PRIDESTONE.get())));
+    public static final RegistryObject<WallBlock> PRIDESTONE_WALL = wall("pridestone_wall", PRIDESTONE);
+    public static final RegistryObject<WallBlock> PRIDE_BRICK_WALL = wall("pride_brick_wall", PRIDE_BRICK);
+    public static final RegistryObject<WallBlock> CORRUPT_PRIDESTONE_WALL =
+            wall("corrupt_pridestone_wall", CORRUPT_PRIDESTONE);
 
     // ========== Redstone ==========
     public static final RegistryObject<PressurePlateBlock> PRIDESTONE_PRESSURE_PLATE = BLOCKS.register(
@@ -321,15 +129,12 @@ public class LionKingBlocks {
                             .strength(0.5F)
                             .noCollission()
                             .requiresCorrectToolForDrops(),
-                    net.minecraft.world.level.block.state.properties.BlockSetType.STONE));
+                    BlockSetType.STONE));
 
     public static final RegistryObject<ButtonBlock> PRIDESTONE_BUTTON = BLOCKS.register(
             "pridestone_button",
             () -> new ButtonBlock(
-                    BlockBehaviour.Properties.of().strength(0.5F).noCollission(),
-                    net.minecraft.world.level.block.state.properties.BlockSetType.STONE,
-                    20,
-                    false));
+                    BlockBehaviour.Properties.of().strength(0.5F).noCollission(), BlockSetType.STONE, 20, false));
 
     // ========== Misc Blocks ==========
     public static final RegistryObject<Block> DRIED_MAIZE_BLOCK = BLOCKS.register(
@@ -339,14 +144,8 @@ public class LionKingBlocks {
                     .strength(0.5F)
                     .sound(SoundType.GRASS)));
 
-    public static final RegistryObject<StairBlock> DRIED_MAIZE_STAIRS = BLOCKS.register(
-            "dried_maize_stairs",
-            () -> new StairBlock(
-                    () -> DRIED_MAIZE_BLOCK.get().defaultBlockState(),
-                    BlockBehaviour.Properties.copy(DRIED_MAIZE_BLOCK.get())));
-
-    public static final RegistryObject<SlabBlock> DRIED_MAIZE_SLAB = BLOCKS.register(
-            "dried_maize_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(DRIED_MAIZE_BLOCK.get())));
+    public static final RegistryObject<StairBlock> DRIED_MAIZE_STAIRS = stairs("dried_maize_stairs", DRIED_MAIZE_BLOCK);
+    public static final RegistryObject<SlabBlock> DRIED_MAIZE_SLAB = slab("dried_maize_slab", DRIED_MAIZE_BLOCK);
 
     public static final RegistryObject<Block> OUTSAND = BLOCKS.register(
             "outsand",
@@ -391,62 +190,24 @@ public class LionKingBlocks {
                     .sound(SoundType.WOOD)));
 
     // ========== Leaves ==========
-    private static BlockBehaviour.Properties leavesProperties() {
-        return BlockBehaviour.Properties.of()
-                .mapColor(MapColor.PLANT)
-                .strength(0.2F)
-                .randomTicks()
-                .sound(SoundType.GRASS)
-                .noOcclusion()
-                .isValidSpawn((s, g, p, e) -> false)
-                .isSuffocating((s, g, p) -> false)
-                .isViewBlocking((s, g, p) -> false);
-    }
-
-    public static final RegistryObject<LeavesBlock> ACACIA_LEAVES =
-            BLOCKS.register("pride_acacia_leaves", () -> new LionKingLeavesBlock(leavesProperties()));
-
-    public static final RegistryObject<LeavesBlock> RAINFOREST_LEAVES =
-            BLOCKS.register("rainforest_leaves", () -> new LionKingLeavesBlock(leavesProperties()));
-
-    public static final RegistryObject<LeavesBlock> MANGO_LEAVES =
-            BLOCKS.register("mango_leaves", () -> new LionKingLeavesBlock(leavesProperties()));
-
+    public static final RegistryObject<LeavesBlock> ACACIA_LEAVES = leaves("pride_acacia_leaves");
+    public static final RegistryObject<LeavesBlock> RAINFOREST_LEAVES = leaves("rainforest_leaves");
+    public static final RegistryObject<LeavesBlock> MANGO_LEAVES = leaves("mango_leaves");
     public static final RegistryObject<LeavesBlock> PASSION_LEAVES = BLOCKS.register(
-            "passion_leaves", () -> new LionKingLeavesBlock(leavesProperties().lightLevel(s -> 11)));
-
-    public static final RegistryObject<LeavesBlock> BANANA_LEAVES =
-            BLOCKS.register("banana_leaves", () -> new LionKingLeavesBlock(leavesProperties()));
-
+            "passion_leaves", () -> new LionKingLeavesBlock(leavesProps().lightLevel(s -> 11)));
+    public static final RegistryObject<LeavesBlock> BANANA_LEAVES = leaves("banana_leaves");
     public static final RegistryObject<LeavesBlock> RAFIKI_LEAVES = BLOCKS.register(
-            "rafiki_leaves", () -> new LionKingLeavesBlock(leavesProperties().strength(-1.0F, 3600000.0F)));
+            "rafiki_leaves", () -> new LionKingLeavesBlock(leavesProps().strength(-1.0F, 3600000.0F)));
 
     // ========== Saplings ==========
-    private static BlockBehaviour.Properties saplingProperties() {
-        return BlockBehaviour.Properties.of()
-                .mapColor(MapColor.PLANT)
-                .noCollission()
-                .randomTicks()
-                .instabreak()
-                .sound(SoundType.GRASS);
-    }
-
-    public static final RegistryObject<Block> ACACIA_SAPLING = BLOCKS.register(
-            "pride_acacia_sapling", () -> new LionKingSaplingBlock(TreeGrowers.ACACIA, saplingProperties()));
-
-    public static final RegistryObject<Block> RAINFOREST_SAPLING = BLOCKS.register(
-            "rainforest_sapling", () -> new LionKingSaplingBlock(TreeGrowers.RAINFOREST, saplingProperties()));
-
-    public static final RegistryObject<Block> MANGO_SAPLING =
-            BLOCKS.register("mango_sapling", () -> new LionKingSaplingBlock(TreeGrowers.MANGO, saplingProperties()));
-
+    public static final RegistryObject<Block> ACACIA_SAPLING = sapling("pride_acacia_sapling", TreeGrowers.ACACIA);
+    public static final RegistryObject<Block> RAINFOREST_SAPLING =
+            sapling("rainforest_sapling", TreeGrowers.RAINFOREST);
+    public static final RegistryObject<Block> MANGO_SAPLING = sapling("mango_sapling", TreeGrowers.MANGO);
     public static final RegistryObject<Block> PASSION_SAPLING = BLOCKS.register(
             "passion_sapling",
-            () -> new LionKingSaplingBlock(
-                    TreeGrowers.PASSION, saplingProperties().lightLevel(s -> 11)));
-
-    public static final RegistryObject<Block> BANANA_SAPLING =
-            BLOCKS.register("banana_sapling", () -> new LionKingSaplingBlock(TreeGrowers.BANANA, saplingProperties()));
+            () -> new LionKingSaplingBlock(TreeGrowers.PASSION, saplingProps().lightLevel(s -> 11)));
+    public static final RegistryObject<Block> BANANA_SAPLING = sapling("banana_sapling", TreeGrowers.BANANA);
 
     // ========== Rafiki Wood ==========
     public static final RegistryObject<Block> RAFIKI_WOOD = BLOCKS.register(
@@ -457,97 +218,34 @@ public class LionKingBlocks {
                     .sound(SoundType.WOOD)));
 
     // ========== Flowers ==========
-    public static final RegistryObject<Block> WHITE_FLOWER = BLOCKS.register(
-            "white_flower",
-            () -> new LionKingFlowerBlock(
-                    MobEffects.HEAL,
-                    5,
-                    BlockBehaviour.Properties.of()
-                            .mapColor(MapColor.PLANT)
-                            .noCollission()
-                            .instabreak()
-                            .sound(SoundType.GRASS)));
+    public static final RegistryObject<Block> WHITE_FLOWER =
+            BLOCKS.register("white_flower", () -> new LionKingFlowerBlock(MobEffects.HEAL, 5, flowerProps()));
 
-    public static final RegistryObject<Block> BLUE_FLOWER = BLOCKS.register(
-            "blue_flower",
-            () -> new LionKingFlowerBlock(
-                    MobEffects.NIGHT_VISION,
-                    5,
-                    BlockBehaviour.Properties.of()
-                            .mapColor(MapColor.PLANT)
-                            .noCollission()
-                            .instabreak()
-                            .sound(SoundType.GRASS)));
+    public static final RegistryObject<Block> BLUE_FLOWER =
+            BLOCKS.register("blue_flower", () -> new LionKingFlowerBlock(MobEffects.NIGHT_VISION, 5, flowerProps()));
 
     // ========== Tall Flowers ==========
-    public static final RegistryObject<Block> PURPLE_FLOWER = BLOCKS.register(
-            "purple_flower",
-            () -> new DoublePlantBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT)
-                    .noCollission()
-                    .instabreak()
-                    .sound(SoundType.GRASS)));
+    public static final RegistryObject<Block> PURPLE_FLOWER =
+            BLOCKS.register("purple_flower", () -> new DoublePlantBlock(flowerProps()));
 
-    public static final RegistryObject<Block> RED_FLOWER = BLOCKS.register(
-            "red_flower",
-            () -> new DoublePlantBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT)
-                    .noCollission()
-                    .instabreak()
-                    .sound(SoundType.GRASS)));
+    public static final RegistryObject<Block> RED_FLOWER =
+            BLOCKS.register("red_flower", () -> new DoublePlantBlock(flowerProps()));
 
     // ========== Waterlilies ==========
-    public static final RegistryObject<Block> LILY_RED = BLOCKS.register(
-            "lily_red",
-            () -> new WaterlilyBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT)
-                    .instabreak()
-                    .sound(SoundType.LILY_PAD)
-                    .noOcclusion()));
-
-    public static final RegistryObject<Block> LILY_VIOLET = BLOCKS.register(
-            "lily_violet",
-            () -> new WaterlilyBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT)
-                    .instabreak()
-                    .sound(SoundType.LILY_PAD)
-                    .noOcclusion()));
-
-    public static final RegistryObject<Block> LILY_WHITE = BLOCKS.register(
-            "lily_white",
-            () -> new WaterlilyBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT)
-                    .instabreak()
-                    .sound(SoundType.LILY_PAD)
-                    .noOcclusion()));
+    public static final RegistryObject<Block> LILY_RED = lily("lily_red");
+    public static final RegistryObject<Block> LILY_VIOLET = lily("lily_violet");
+    public static final RegistryObject<Block> LILY_WHITE = lily("lily_white");
 
     // ========== Mushrooms ==========
-    public static final RegistryObject<Block> OUTSHROOM = BLOCKS.register(
-            "outshroom",
-            () -> new MushroomBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT)
-                    .noCollission()
-                    .instabreak()
-                    .sound(SoundType.GRASS)));
+    public static final RegistryObject<Block> OUTSHROOM =
+            BLOCKS.register("outshroom", () -> new MushroomBlock(flowerProps()));
 
     public static final RegistryObject<Block> OUTSHROOM_GLOWING = BLOCKS.register(
-            "outshroom_glowing",
-            () -> new MushroomBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT)
-                    .noCollission()
-                    .instabreak()
-                    .sound(SoundType.GRASS)
-                    .lightLevel(s -> 12)));
+            "outshroom_glowing", () -> new MushroomBlock(flowerProps().lightLevel(s -> 12)));
 
     // ========== Arid Grass ==========
     public static final RegistryObject<Block> ARID_GRASS = BLOCKS.register(
-            "arid_grass",
-            () -> new AridGrassBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT)
-                    .noCollission()
-                    .instabreak()
-                    .sound(SoundType.GRASS)
-                    .offsetType(BlockBehaviour.OffsetType.XZ)));
+            "arid_grass", () -> new AridGrassBlock(flowerProps().offsetType(BlockBehaviour.OffsetType.XZ)));
 
     // ========== Hyena Torch ==========
     public static final RegistryObject<Block> HYENA_TORCH = BLOCKS.register(
@@ -582,33 +280,14 @@ public class LionKingBlocks {
                     .noOcclusion()));
 
     // ========== Crops ==========
-    public static final RegistryObject<Block> MAIZE_CROP = BLOCKS.register(
-            "maize_crop",
-            () -> new MaizeCropBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT)
-                    .noCollission()
-                    .noOcclusion()
-                    .randomTicks()
-                    .instabreak()
-                    .sound(SoundType.CROP)));
+    public static final RegistryObject<Block> MAIZE_CROP =
+            BLOCKS.register("maize_crop", () -> new MaizeCropBlock(cropProps().noOcclusion()));
 
-    public static final RegistryObject<Block> YAM_CROP = BLOCKS.register(
-            "yam_crop",
-            () -> new YamCropBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT)
-                    .noCollission()
-                    .randomTicks()
-                    .instabreak()
-                    .sound(SoundType.CROP)));
+    public static final RegistryObject<Block> YAM_CROP =
+            BLOCKS.register("yam_crop", () -> new YamCropBlock(cropProps()));
 
-    public static final RegistryObject<Block> KIWANO_STEM = BLOCKS.register(
-            "kiwano_stem",
-            () -> new CropBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT)
-                    .noCollission()
-                    .randomTicks()
-                    .instabreak()
-                    .sound(SoundType.WOOD)));
+    public static final RegistryObject<Block> KIWANO_STEM =
+            BLOCKS.register("kiwano_stem", () -> new CropBlock(cropProps().sound(SoundType.WOOD)));
 
     public static final RegistryObject<Block> KIWANO_BLOCK = BLOCKS.register(
             "kiwano_block",

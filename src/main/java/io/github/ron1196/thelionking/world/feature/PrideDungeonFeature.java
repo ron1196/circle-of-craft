@@ -268,7 +268,10 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
                             if (by == cy - 1) {
                                 // Floor: 75% mossy, 25% regular pride brick
                                 this.safeSetBlock(
-                                        level, pos, random.nextInt(MOSSY_FLOOR_DENOMINATOR) != 0 ? mossyBrick : prideBrick, canReplace);
+                                        level,
+                                        pos,
+                                        random.nextInt(MOSSY_FLOOR_DENOMINATOR) != 0 ? mossyBrick : prideBrick,
+                                        canReplace);
                             } else {
                                 // Walls and ceiling: pride brick with occasional cracked
                                 this.safeSetBlock(
@@ -295,7 +298,11 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
                     level.setBlock(floorPos, Blocks.WATER.defaultBlockState(), 2);
                     // Ensure solid floor under the water
                     BlockPos belowFloor = new BlockPos(bx, cy - 1, bz);
-                    this.safeSetBlock(level, belowFloor, random.nextInt(MOSSY_FLOOR_DENOMINATOR) != 0 ? mossyBrick : prideBrick, canReplace);
+                    this.safeSetBlock(
+                            level,
+                            belowFloor,
+                            random.nextInt(MOSSY_FLOOR_DENOMINATOR) != 0 ? mossyBrick : prideBrick,
+                            canReplace);
                 }
             }
         }

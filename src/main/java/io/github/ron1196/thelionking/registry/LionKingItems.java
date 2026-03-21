@@ -1,5 +1,7 @@
 package io.github.ron1196.thelionking.registry;
 
+import static io.github.ron1196.thelionking.registry.LionKingItemsRegistryHelper.*;
+
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.entity.RugEntity;
 import io.github.ron1196.thelionking.item.*;
@@ -10,7 +12,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
-import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -20,232 +22,60 @@ public class LionKingItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, TheLionKingMod.MOD_ID);
 
-    // ========== Block Items ==========
-    // These are registered automatically with blocks via registerBlockItem helper
-
     // ========== Material Items ==========
-    public static final RegistryObject<Item> PRIDESTONE_ITEM =
-            ITEMS.register("pridestone_item", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> CORRUPT_PRIDESTONE_ITEM =
-            ITEMS.register("corrupt_pridestone_item", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> SILVER_INGOT =
-            ITEMS.register("silver_ingot", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> PEACOCK_GEM =
-            ITEMS.register("peacock_gem", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> KIVULITE =
-            ITEMS.register("kivulite", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> HYENA_BONE =
-            ITEMS.register("hyena_bone", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> HYENA_BONE_SHARD =
-            ITEMS.register("hyena_bone_shard", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> TERMITE_DUST =
-            ITEMS.register("termite_dust", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> PRIDESTONE_ITEM = simpleItem("pridestone_item");
+    public static final RegistryObject<Item> CORRUPT_PRIDESTONE_ITEM = simpleItem("corrupt_pridestone_item");
+    public static final RegistryObject<Item> SILVER_INGOT = simpleItem("silver_ingot");
+    public static final RegistryObject<Item> PEACOCK_GEM = simpleItem("peacock_gem");
+    public static final RegistryObject<Item> KIVULITE = simpleItem("kivulite");
+    public static final RegistryObject<Item> HYENA_BONE = simpleItem("hyena_bone");
+    public static final RegistryObject<Item> HYENA_BONE_SHARD = simpleItem("hyena_bone_shard");
+    public static final RegistryObject<Item> TERMITE_DUST = simpleItem("termite_dust");
     public static final RegistryObject<Item> TERMITE_THROWN = ITEMS.register("termite_thrown", ThrownTermiteItem::new);
-
-    public static final RegistryObject<Item> MANGO_DUST =
-            ITEMS.register("mango_dust", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> FEATHER_BLUE =
-            ITEMS.register("feather_blue", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> FEATHER_YELLOW =
-            ITEMS.register("feather_yellow", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> FEATHER_RED =
-            ITEMS.register("feather_red", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> FEATHER_BLACK =
-            ITEMS.register("feather_black", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> FEATHER_PINK =
-            ITEMS.register("feather_pink", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> POISON = ITEMS.register("poison", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> NUKA_SHARD =
-            ITEMS.register("nuka_shard", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> OUTLANDER_FUR =
-            ITEMS.register("outlander_fur", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> ZEBRA_HIDE =
-            ITEMS.register("zebra_hide", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> GEMSBOK_HIDE =
-            ITEMS.register("gemsbok_hide", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> GEMSBOK_HORN =
-            ITEMS.register("gemsbok_horn", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> RHINO_HORN =
-            ITEMS.register("rhino_horn", () -> new Item(new Item.Properties()));
-
+    public static final RegistryObject<Item> MANGO_DUST = simpleItem("mango_dust");
+    public static final RegistryObject<Item> FEATHER_BLUE = simpleItem("feather_blue");
+    public static final RegistryObject<Item> FEATHER_YELLOW = simpleItem("feather_yellow");
+    public static final RegistryObject<Item> FEATHER_RED = simpleItem("feather_red");
+    public static final RegistryObject<Item> FEATHER_BLACK = simpleItem("feather_black");
+    public static final RegistryObject<Item> FEATHER_PINK = simpleItem("feather_pink");
+    public static final RegistryObject<Item> POISON = simpleItem("poison");
+    public static final RegistryObject<Item> NUKA_SHARD = simpleItem("nuka_shard");
+    public static final RegistryObject<Item> OUTLANDER_FUR = simpleItem("outlander_fur");
+    public static final RegistryObject<Item> ZEBRA_HIDE = simpleItem("zebra_hide");
+    public static final RegistryObject<Item> GEMSBOK_HIDE = simpleItem("gemsbok_hide");
+    public static final RegistryObject<Item> GEMSBOK_HORN = simpleItem("gemsbok_horn");
+    public static final RegistryObject<Item> RHINO_HORN = simpleItem("rhino_horn");
     public static final RegistryObject<Item> GROUND_RHINO_HORN =
-            ITEMS.register("ground_rhino_horn", () -> new GroundRhinoHornItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> CORN_KERNELS =
-            ITEMS.register("corn_kernels", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> DRIED_MAIZE =
-            ITEMS.register("dried_maize", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> LION_FUR =
-            ITEMS.register("lion_fur", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> BUG = ITEMS.register("bug", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> CRYSTAL =
-            ITEMS.register("crystal", () -> new Item(new Item.Properties().stacksTo(16)));
+            registerItem("ground_rhino_horn", GroundRhinoHornItem::new);
+    public static final RegistryObject<Item> CORN_KERNELS = simpleItem("corn_kernels");
+    public static final RegistryObject<Item> DRIED_MAIZE = simpleItem("dried_maize");
+    public static final RegistryObject<Item> LION_FUR = simpleItem("lion_fur");
+    public static final RegistryObject<Item> BUG = simpleItem("bug");
+    public static final RegistryObject<Item> CRYSTAL = simpleItem("crystal", 16);
 
     // ========== Food Items ==========
-    public static final RegistryObject<Item> LION_RAW = ITEMS.register(
-            "lion_raw",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(3)
-                            .saturationMod(0.3F)
-                            .meat()
-                            .build())));
+    public static final RegistryObject<Item> LION_RAW = meatItem("lion_raw", 3, 0.3F);
+    public static final RegistryObject<Item> LION_COOKED = meatItem("lion_cooked", 8, 0.8F);
+    public static final RegistryObject<Item> ZEBRA_RAW = meatItem("zebra_raw", 2, 0.1F);
+    public static final RegistryObject<Item> ZEBRA_COOKED = meatItem("zebra_cooked", 6, 0.4F);
+    public static final RegistryObject<Item> RHINO_RAW = meatItem("rhino_raw", 2, 0.1F);
+    public static final RegistryObject<Item> RHINO_COOKED = meatItem("rhino_cooked", 7, 0.4F);
+    public static final RegistryObject<Item> MANGO = foodItem("mango", 3, 0.3F);
+    public static final RegistryObject<Item> BANANA = foodItem("banana", 2, 0.3F);
+    public static final RegistryObject<Item> CORN = foodItem("corn", 1, 0.1F);
+    public static final RegistryObject<Item> POPCORN = foodItem("popcorn", 3, 0.4F);
+    public static final RegistryObject<Item> KIWANO = foodItem("kiwano", 2, 0.3F);
+    public static final RegistryObject<Item> ROAST_YAM = foodItem("roast_yam", 6, 0.6F);
+    public static final RegistryObject<Item> BANANA_BREAD = foodItem("banana_bread", 3, 0.5F);
+    public static final RegistryObject<Item> CHOCOLATE_MUFASA = foodItem("chocolate_mufasa", 16, 0.8F);
 
-    public static final RegistryObject<Item> LION_COOKED = ITEMS.register(
-            "lion_cooked",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(8)
-                            .saturationMod(0.8F)
-                            .meat()
-                            .build())));
+    public static final RegistryObject<Item> OUTLANDER_MEAT = meatEffectItem("outlander_meat", 3, 0.2F, 600, 0.8F);
+    public static final RegistryObject<Item> CROCODILE_MEAT = meatEffectItem("crocodile_meat", 4, 0.4F, 300, 0.3F);
 
-    public static final RegistryObject<Item> ZEBRA_RAW = ITEMS.register(
-            "zebra_raw",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(2)
-                            .saturationMod(0.1F)
-                            .meat()
-                            .build())));
-
-    public static final RegistryObject<Item> ZEBRA_COOKED = ITEMS.register(
-            "zebra_cooked",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(6)
-                            .saturationMod(0.4F)
-                            .meat()
-                            .build())));
-
-    public static final RegistryObject<Item> RHINO_RAW = ITEMS.register(
-            "rhino_raw",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(2)
-                            .saturationMod(0.1F)
-                            .meat()
-                            .build())));
-
-    public static final RegistryObject<Item> RHINO_COOKED = ITEMS.register(
-            "rhino_cooked",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(7)
-                            .saturationMod(0.4F)
-                            .meat()
-                            .build())));
-
-    public static final RegistryObject<Item> MANGO = ITEMS.register(
-            "mango",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(3)
-                            .saturationMod(0.3F)
-                            .build())));
-
-    public static final RegistryObject<Item> BANANA = ITEMS.register(
-            "banana",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(2)
-                            .saturationMod(0.3F)
-                            .build())));
-
-    public static final RegistryObject<Item> CORN = ITEMS.register(
-            "corn",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(1)
-                            .saturationMod(0.1F)
-                            .build())));
-
-    public static final RegistryObject<Item> POPCORN = ITEMS.register(
-            "popcorn",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(3)
-                            .saturationMod(0.4F)
-                            .build())));
-
-    public static final RegistryObject<Item> KIWANO = ITEMS.register(
-            "kiwano",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(2)
-                            .saturationMod(0.3F)
-                            .build())));
-
-    public static final RegistryObject<Item> OUTLANDER_MEAT = ITEMS.register(
-            "outlander_meat",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(3)
-                            .saturationMod(0.2F)
-                            .meat()
-                            .effect(() -> new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.8F)
-                            .build())));
-
-    public static final RegistryObject<Item> CROCODILE_MEAT = ITEMS.register(
-            "crocodile_meat",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(4)
-                            .saturationMod(0.4F)
-                            .meat()
-                            .effect(() -> new MobEffectInstance(MobEffects.HUNGER, 300, 0), 0.3F)
-                            .build())));
-
-    public static final RegistryObject<Item> ROAST_YAM = ITEMS.register(
-            "roast_yam",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(6)
-                            .saturationMod(0.6F)
-                            .build())));
-
-    public static final RegistryObject<Item> BANANA_BREAD = ITEMS.register(
-            "banana_bread",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(3)
-                            .saturationMod(0.5F)
-                            .build())));
-
-    public static final RegistryObject<Item> CHOCOLATE_MUFASA = ITEMS.register(
-            "chocolate_mufasa",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(16)
-                            .saturationMod(0.8F)
-                            .build())));
-
-    public static final RegistryObject<Item> BUG_STEW = ITEMS.register(
+    public static final RegistryObject<Item> BUG_STEW = registerItem(
             "bug_stew",
-            () -> new Item(new Item.Properties()
+            Item::new,
+            new Item.Properties()
                     .food(new FoodProperties.Builder()
                             .nutrition(8)
                             .saturationMod(0.5F)
@@ -253,16 +83,17 @@ public class LionKingItems {
                             .effect(() -> new MobEffectInstance(MobEffects.POISON, 60, 0), 0.12F)
                             .build())
                     .stacksTo(1)
-                    .craftRemainder(net.minecraft.world.item.Items.BOWL)));
+                    .craftRemainder(Items.BOWL));
 
-    public static final RegistryObject<Item> EXPERIENCE_GRUB = ITEMS.register(
+    public static final RegistryObject<Item> EXPERIENCE_GRUB = registerItem(
             "experience_grub",
-            () -> new io.github.ron1196.thelionking.item.ExperienceGrubItem(new Item.Properties()
+            ExperienceGrubItem::new,
+            new Item.Properties()
                     .food(new FoodProperties.Builder()
                             .nutrition(0)
                             .saturationMod(0.0F)
                             .alwaysEat()
-                            .build())));
+                            .build()));
 
     // ========== Pridestone Tools ==========
     public static final RegistryObject<SwordItem> PRIDESTONE_SWORD = ITEMS.register(
@@ -343,68 +174,40 @@ public class LionKingItems {
             "corrupt_hoe", () -> new HoeItem(LionKingToolTiers.CORRUPT_PRIDESTONE, -1, -2.0F, new Item.Properties()));
 
     // ========== Silver Armor ==========
-    public static final RegistryObject<ArmorItem> SILVER_HELMET = ITEMS.register(
-            "silver_helmet",
-            () -> new ArmorItem(LionKingArmorMaterials.SILVER, ArmorItem.Type.HELMET, new Item.Properties()));
-
-    public static final RegistryObject<ArmorItem> SILVER_CHESTPLATE = ITEMS.register(
-            "silver_chestplate",
-            () -> new ArmorItem(LionKingArmorMaterials.SILVER, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
-
-    public static final RegistryObject<ArmorItem> SILVER_LEGGINGS = ITEMS.register(
-            "silver_leggings",
-            () -> new ArmorItem(LionKingArmorMaterials.SILVER, ArmorItem.Type.LEGGINGS, new Item.Properties()));
-
-    public static final RegistryObject<ArmorItem> SILVER_BOOTS = ITEMS.register(
-            "silver_boots",
-            () -> new ArmorItem(LionKingArmorMaterials.SILVER, ArmorItem.Type.BOOTS, new Item.Properties()));
+    public static final RegistryObject<ArmorItem> SILVER_HELMET =
+            armorItem("silver_helmet", LionKingArmorMaterials.SILVER, ArmorItem.Type.HELMET);
+    public static final RegistryObject<ArmorItem> SILVER_CHESTPLATE =
+            armorItem("silver_chestplate", LionKingArmorMaterials.SILVER, ArmorItem.Type.CHESTPLATE);
+    public static final RegistryObject<ArmorItem> SILVER_LEGGINGS =
+            armorItem("silver_leggings", LionKingArmorMaterials.SILVER, ArmorItem.Type.LEGGINGS);
+    public static final RegistryObject<ArmorItem> SILVER_BOOTS =
+            armorItem("silver_boots", LionKingArmorMaterials.SILVER, ArmorItem.Type.BOOTS);
 
     // ========== Gemsbok Armor ==========
-    public static final RegistryObject<ArmorItem> GEMSBOK_HELMET = ITEMS.register(
-            "gemsbok_helmet",
-            () -> new ArmorItem(LionKingArmorMaterials.GEMSBOK, ArmorItem.Type.HELMET, new Item.Properties()));
-
-    public static final RegistryObject<ArmorItem> GEMSBOK_CHESTPLATE = ITEMS.register(
-            "gemsbok_chestplate",
-            () -> new ArmorItem(LionKingArmorMaterials.GEMSBOK, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
-
-    public static final RegistryObject<ArmorItem> GEMSBOK_LEGGINGS = ITEMS.register(
-            "gemsbok_leggings",
-            () -> new ArmorItem(LionKingArmorMaterials.GEMSBOK, ArmorItem.Type.LEGGINGS, new Item.Properties()));
-
-    public static final RegistryObject<ArmorItem> GEMSBOK_BOOTS = ITEMS.register(
-            "gemsbok_boots",
-            () -> new ArmorItem(LionKingArmorMaterials.GEMSBOK, ArmorItem.Type.BOOTS, new Item.Properties()));
+    public static final RegistryObject<ArmorItem> GEMSBOK_HELMET =
+            armorItem("gemsbok_helmet", LionKingArmorMaterials.GEMSBOK, ArmorItem.Type.HELMET);
+    public static final RegistryObject<ArmorItem> GEMSBOK_CHESTPLATE =
+            armorItem("gemsbok_chestplate", LionKingArmorMaterials.GEMSBOK, ArmorItem.Type.CHESTPLATE);
+    public static final RegistryObject<ArmorItem> GEMSBOK_LEGGINGS =
+            armorItem("gemsbok_leggings", LionKingArmorMaterials.GEMSBOK, ArmorItem.Type.LEGGINGS);
+    public static final RegistryObject<ArmorItem> GEMSBOK_BOOTS =
+            armorItem("gemsbok_boots", LionKingArmorMaterials.GEMSBOK, ArmorItem.Type.BOOTS);
 
     // ========== Peacock Armor ==========
-    public static final RegistryObject<ArmorItem> PEACOCK_HELMET = ITEMS.register(
-            "peacock_helmet",
-            () -> new ArmorItem(LionKingArmorMaterials.PEACOCK, ArmorItem.Type.HELMET, new Item.Properties()));
-
-    public static final RegistryObject<ArmorItem> PEACOCK_CHESTPLATE = ITEMS.register(
-            "peacock_chestplate",
-            () -> new ArmorItem(LionKingArmorMaterials.PEACOCK, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
-
-    public static final RegistryObject<ArmorItem> PEACOCK_LEGGINGS = ITEMS.register(
-            "peacock_leggings",
-            () -> new ArmorItem(LionKingArmorMaterials.PEACOCK, ArmorItem.Type.LEGGINGS, new Item.Properties()));
-
-    public static final RegistryObject<ArmorItem> PEACOCK_BOOTS = ITEMS.register(
-            "peacock_boots",
-            () -> new ArmorItem(LionKingArmorMaterials.PEACOCK, ArmorItem.Type.BOOTS, new Item.Properties()));
+    public static final RegistryObject<ArmorItem> PEACOCK_HELMET =
+            armorItem("peacock_helmet", LionKingArmorMaterials.PEACOCK, ArmorItem.Type.HELMET);
+    public static final RegistryObject<ArmorItem> PEACOCK_CHESTPLATE =
+            armorItem("peacock_chestplate", LionKingArmorMaterials.PEACOCK, ArmorItem.Type.CHESTPLATE);
+    public static final RegistryObject<ArmorItem> PEACOCK_LEGGINGS =
+            armorItem("peacock_leggings", LionKingArmorMaterials.PEACOCK, ArmorItem.Type.LEGGINGS);
+    public static final RegistryObject<ArmorItem> PEACOCK_BOOTS =
+            armorItem("peacock_boots", LionKingArmorMaterials.PEACOCK, ArmorItem.Type.BOOTS);
 
     // ========== Special Armor ==========
-    public static final RegistryObject<ArmorItem> PEACOCK_WINGS = ITEMS.register(
-            "peacock_wings",
-            () -> new ArmorItem(LionKingArmorMaterials.GEMSBOK, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+    public static final RegistryObject<ArmorItem> PEACOCK_WINGS =
+            armorItem("peacock_wings", LionKingArmorMaterials.GEMSBOK, ArmorItem.Type.CHESTPLATE);
 
-    // ========== Block Items (auto-registered with blocks) ==========
-    // Helper method to create block items
-    private static RegistryObject<BlockItem> registerBlockItem(
-            String name, RegistryObject<? extends net.minecraft.world.level.block.Block> block) {
-        return ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
-    }
-
+    // ========== Block Items ==========
     // Pridestone & Variants
     public static final RegistryObject<BlockItem> PRIDESTONE_BLOCK_ITEM =
             registerBlockItem("pridestone", LionKingBlocks.PRIDESTONE);
@@ -548,7 +351,6 @@ public class LionKingItems {
     public static final RegistryObject<BlockItem> PUMBAA_BOX_ITEM =
             registerBlockItem("pumbaa_box", LionKingBlocks.PUMBAA_BOX);
 
-    // ========== Phase 2: Nature Block Items ==========
     // Leaves
     public static final RegistryObject<BlockItem> ACACIA_LEAVES_ITEM =
             registerBlockItem("pride_acacia_leaves", LionKingBlocks.ACACIA_LEAVES);
@@ -620,58 +422,40 @@ public class LionKingItems {
 
     // Crop seeds
     public static final RegistryObject<Item> KIWANO_SEEDS = ITEMS.register(
-            "kiwano_seeds",
-            () -> new net.minecraft.world.item.ItemNameBlockItem(
-                    LionKingBlocks.KIWANO_STEM.get(), new Item.Properties()));
+            "kiwano_seeds", () -> new ItemNameBlockItem(LionKingBlocks.KIWANO_STEM.get(), new Item.Properties()));
 
-    public static final RegistryObject<Item> YAM = ITEMS.register(
-            "yam",
-            () -> new net.minecraft.world.item.ItemNameBlockItem(LionKingBlocks.YAM_CROP.get(), new Item.Properties()));
+    public static final RegistryObject<Item> YAM =
+            ITEMS.register("yam", () -> new ItemNameBlockItem(LionKingBlocks.YAM_CROP.get(), new Item.Properties()));
 
     public static final RegistryObject<Item> MAIZE_STALKS = ITEMS.register(
-            "maize_stalks",
-            () -> new net.minecraft.world.item.ItemNameBlockItem(
-                    LionKingBlocks.MAIZE_CROP.get(), new Item.Properties()));
+            "maize_stalks", () -> new ItemNameBlockItem(LionKingBlocks.MAIZE_CROP.get(), new Item.Properties()));
 
     // Decorative block entities
     public static final RegistryObject<BlockItem> HYENA_HEAD_ITEM = ITEMS.register(
-            "hyena_head",
-            () -> new io.github.ron1196.thelionking.item.HyenaHeadBlockItem(
-                    LionKingBlocks.HYENA_HEAD.get(), new Item.Properties()));
+            "hyena_head", () -> new HyenaHeadBlockItem(LionKingBlocks.HYENA_HEAD.get(), new Item.Properties()));
     public static final RegistryObject<BlockItem> FUR_RUG_ITEM = registerBlockItem("fur_rug", LionKingBlocks.FUR_RUG);
 
     // ========== Outlands Armor ==========
-    public static final RegistryObject<ArmorItem> OUTLANDS_HELMET = ITEMS.register(
-            "outlands_helmet",
-            () -> new ArmorItem(LionKingArmorMaterials.OUTLANDS, ArmorItem.Type.HELMET, new Item.Properties()));
+    public static final RegistryObject<ArmorItem> OUTLANDS_HELMET =
+            armorItem("outlands_helmet", LionKingArmorMaterials.OUTLANDS, ArmorItem.Type.HELMET);
 
     // ========== Ticket Lion Suit ==========
-    public static final RegistryObject<ArmorItem> TICKET_LION_HEAD = ITEMS.register(
-            "ticket_lion_head",
-            () -> new ArmorItem(LionKingArmorMaterials.TICKET_LION, ArmorItem.Type.HELMET, new Item.Properties()));
-    public static final RegistryObject<ArmorItem> TICKET_LION_SUIT = ITEMS.register(
-            "ticket_lion_suit",
-            () -> new ArmorItem(LionKingArmorMaterials.TICKET_LION, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final RegistryObject<ArmorItem> TICKET_LION_LEGS = ITEMS.register(
-            "ticket_lion_legs",
-            () -> new ArmorItem(LionKingArmorMaterials.TICKET_LION, ArmorItem.Type.LEGGINGS, new Item.Properties()));
-    public static final RegistryObject<ArmorItem> TICKET_LION_FEET = ITEMS.register(
-            "ticket_lion_feet",
-            () -> new ArmorItem(LionKingArmorMaterials.TICKET_LION, ArmorItem.Type.BOOTS, new Item.Properties()));
+    public static final RegistryObject<ArmorItem> TICKET_LION_HEAD =
+            armorItem("ticket_lion_head", LionKingArmorMaterials.TICKET_LION, ArmorItem.Type.HELMET);
+    public static final RegistryObject<ArmorItem> TICKET_LION_SUIT =
+            armorItem("ticket_lion_suit", LionKingArmorMaterials.TICKET_LION, ArmorItem.Type.CHESTPLATE);
+    public static final RegistryObject<ArmorItem> TICKET_LION_LEGS =
+            armorItem("ticket_lion_legs", LionKingArmorMaterials.TICKET_LION, ArmorItem.Type.LEGGINGS);
+    public static final RegistryObject<ArmorItem> TICKET_LION_FEET =
+            armorItem("ticket_lion_feet", LionKingArmorMaterials.TICKET_LION, ArmorItem.Type.BOOTS);
 
     // ========== Darts ==========
-    public static final RegistryObject<Item> DART_BLUE =
-            ITEMS.register("dart_blue", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> DART_RED =
-            ITEMS.register("dart_red", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> DART_YELLOW =
-            ITEMS.register("dart_yellow", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> DART_PINK =
-            ITEMS.register("dart_pink", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> DART_BLACK =
-            ITEMS.register("dart_black", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> DART_OUTLANDISH =
-            ITEMS.register("dart_outlandish", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> DART_BLUE = simpleItem("dart_blue");
+    public static final RegistryObject<Item> DART_RED = simpleItem("dart_red");
+    public static final RegistryObject<Item> DART_YELLOW = simpleItem("dart_yellow");
+    public static final RegistryObject<Item> DART_PINK = simpleItem("dart_pink");
+    public static final RegistryObject<Item> DART_BLACK = simpleItem("dart_black");
+    public static final RegistryObject<Item> DART_OUTLANDISH = simpleItem("dart_outlandish");
 
     // ========== Dart Shooters ==========
     public static final RegistryObject<Item> DART_SHOOTER =
@@ -688,143 +472,77 @@ public class LionKingItems {
     // ========== Bombs ==========
     public static final RegistryObject<Item> PUMBAA_BOMB = ITEMS.register("pumbaa_bomb", PumbaaBombItem::new);
 
-    // ========== Phase 3: Spawn Eggs ==========
-    public static final RegistryObject<Item> LION_SPAWN_EGG = ITEMS.register(
-            "lion_spawn_egg", () -> new ForgeSpawnEggItem(EntityTypes.LION, 0xD4A030, 0x8B6914, new Item.Properties()));
-    public static final RegistryObject<Item> LIONESS_SPAWN_EGG = ITEMS.register(
-            "lioness_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.LIONESS, 0xD4A030, 0xC8A848, new Item.Properties()));
-    public static final RegistryObject<Item> ZEBRA_SPAWN_EGG = ITEMS.register(
-            "zebra_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.ZEBRA, 0xFFFFFF, 0x222222, new Item.Properties()));
-    public static final RegistryObject<Item> GIRAFFE_SPAWN_EGG = ITEMS.register(
-            "giraffe_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.GIRAFFE, 0xE8B84B, 0x8B5E3C, new Item.Properties()));
-    public static final RegistryObject<Item> RHINO_SPAWN_EGG = ITEMS.register(
-            "rhino_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.RHINO, 0x808080, 0x505050, new Item.Properties()));
-    public static final RegistryObject<Item> GEMSBOK_SPAWN_EGG = ITEMS.register(
-            "gemsbok_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.GEMSBOK, 0xC8A878, 0x4A3B2A, new Item.Properties()));
-    public static final RegistryObject<Item> DIKDIK_SPAWN_EGG = ITEMS.register(
-            "dikdik_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.DIKDIK, 0xB8956A, 0x8B7355, new Item.Properties()));
-    public static final RegistryObject<Item> FLAMINGO_SPAWN_EGG = ITEMS.register(
-            "flamingo_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.FLAMINGO, 0xFF69B4, 0xFF1493, new Item.Properties()));
-    public static final RegistryObject<Item> ZAZU_SPAWN_EGG = ITEMS.register(
-            "zazu_spawn_egg", () -> new ForgeSpawnEggItem(EntityTypes.ZAZU, 0x4169E1, 0xFFD700, new Item.Properties()));
-    public static final RegistryObject<Item> BUG_SPAWN_EGG = ITEMS.register(
-            "bug_spawn_egg", () -> new ForgeSpawnEggItem(EntityTypes.BUG, 0x4B3621, 0x2E1F0F, new Item.Properties()));
+    // ========== Spawn Eggs - Passive ==========
+    public static final RegistryObject<Item> LION_SPAWN_EGG = spawnEgg(EntityTypes.LION, 0xD4A030, 0x8B6914);
+    public static final RegistryObject<Item> LIONESS_SPAWN_EGG = spawnEgg(EntityTypes.LIONESS, 0xD4A030, 0xC8A848);
+    public static final RegistryObject<Item> ZEBRA_SPAWN_EGG = spawnEgg(EntityTypes.ZEBRA, 0xFFFFFF, 0x222222);
+    public static final RegistryObject<Item> GIRAFFE_SPAWN_EGG = spawnEgg(EntityTypes.GIRAFFE, 0xE8B84B, 0x8B5E3C);
+    public static final RegistryObject<Item> RHINO_SPAWN_EGG = spawnEgg(EntityTypes.RHINO, 0x808080, 0x505050);
+    public static final RegistryObject<Item> GEMSBOK_SPAWN_EGG = spawnEgg(EntityTypes.GEMSBOK, 0xC8A878, 0x4A3B2A);
+    public static final RegistryObject<Item> DIKDIK_SPAWN_EGG = spawnEgg(EntityTypes.DIKDIK, 0xB8956A, 0x8B7355);
+    public static final RegistryObject<Item> FLAMINGO_SPAWN_EGG = spawnEgg(EntityTypes.FLAMINGO, 0xFF69B4, 0xFF1493);
+    public static final RegistryObject<Item> ZAZU_SPAWN_EGG = spawnEgg(EntityTypes.ZAZU, 0x4169E1, 0xFFD700);
+    public static final RegistryObject<Item> BUG_SPAWN_EGG = spawnEgg(EntityTypes.BUG, 0x4B3621, 0x2E1F0F);
 
-    // ========== Phase 4: Hostile Spawn Eggs ==========
-    public static final RegistryObject<Item> HYENA_SPAWN_EGG = ITEMS.register(
-            "hyena_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.HYENA, 0x8B7355, 0x4A3B2A, new Item.Properties()));
-    public static final RegistryObject<Item> SKELETAL_HYENA_SPAWN_EGG = ITEMS.register(
-            "skeletal_hyena_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.SKELETAL_HYENA, 0xC8C8C8, 0x505050, new Item.Properties()));
-    public static final RegistryObject<Item> OUTLANDER_SPAWN_EGG = ITEMS.register(
-            "outlander_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.OUTLANDER, 0x5C3A1E, 0x3A2510, new Item.Properties()));
-    public static final RegistryObject<Item> VULTURE_SPAWN_EGG = ITEMS.register(
-            "vulture_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.VULTURE, 0x2A1F14, 0x8B0000, new Item.Properties()));
-    public static final RegistryObject<Item> CROCODILE_SPAWN_EGG = ITEMS.register(
-            "crocodile_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.CROCODILE, 0x3B5323, 0x1A2E0A, new Item.Properties()));
-    public static final RegistryObject<Item> TERMITE_SPAWN_EGG = ITEMS.register(
-            "termite_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.TERMITE, 0xD2B48C, 0x8B6914, new Item.Properties()));
-    public static final RegistryObject<Item> TERMITE_QUEEN_SPAWN_EGG = ITEMS.register(
-            "termite_queen_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.TERMITE_QUEEN, 0xD2B48C, 0xFF4500, new Item.Properties()));
+    // ========== Spawn Eggs - Hostile ==========
+    public static final RegistryObject<Item> HYENA_SPAWN_EGG = spawnEgg(EntityTypes.HYENA, 0x8B7355, 0x4A3B2A);
+    public static final RegistryObject<Item> SKELETAL_HYENA_SPAWN_EGG =
+            spawnEgg(EntityTypes.SKELETAL_HYENA, 0xC8C8C8, 0x505050);
+    public static final RegistryObject<Item> OUTLANDER_SPAWN_EGG = spawnEgg(EntityTypes.OUTLANDER, 0x5C3A1E, 0x3A2510);
+    public static final RegistryObject<Item> VULTURE_SPAWN_EGG = spawnEgg(EntityTypes.VULTURE, 0x2A1F14, 0x8B0000);
+    public static final RegistryObject<Item> CROCODILE_SPAWN_EGG = spawnEgg(EntityTypes.CROCODILE, 0x3B5323, 0x1A2E0A);
+    public static final RegistryObject<Item> TERMITE_SPAWN_EGG = spawnEgg(EntityTypes.TERMITE, 0xD2B48C, 0x8B6914);
+    public static final RegistryObject<Item> TERMITE_QUEEN_SPAWN_EGG =
+            spawnEgg(EntityTypes.TERMITE_QUEEN, 0xD2B48C, 0xFF4500);
 
-    // ========== Ticket Lion Spawn Egg ==========
-    public static final RegistryObject<Item> TICKET_LION_SPAWN_EGG = ITEMS.register(
-            "ticket_lion_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.TICKET_LION, 0xD4A030, 0x4169E1, new Item.Properties()));
+    // ========== Spawn Eggs - Special ==========
+    public static final RegistryObject<Item> TICKET_LION_SPAWN_EGG =
+            spawnEgg(EntityTypes.TICKET_LION, 0xD4A030, 0x4169E1);
 
-    // ========== NPC Spawn Eggs ==========
-    public static final RegistryObject<Item> RAFIKI_SPAWN_EGG = ITEMS.register(
-            "rafiki_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.RAFIKI, 0x8B4513, 0xFFD700, new Item.Properties()));
-    public static final RegistryObject<Item> SIMBA_SPAWN_EGG = ITEMS.register(
-            "simba_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.SIMBA, 0xD4A030, 0xFFD700, new Item.Properties()));
-    public static final RegistryObject<Item> TIMON_SPAWN_EGG = ITEMS.register(
-            "timon_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.TIMON, 0xB8860B, 0xFFE4B5, new Item.Properties()));
-    public static final RegistryObject<Item> PUMBAA_SPAWN_EGG = ITEMS.register(
-            "pumbaa_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.PUMBAA, 0x8B4513, 0x654321, new Item.Properties()));
-    public static final RegistryObject<Item> SCAR_SPAWN_EGG = ITEMS.register(
-            "scar_spawn_egg", () -> new ForgeSpawnEggItem(EntityTypes.SCAR, 0x2F1A00, 0x000000, new Item.Properties()));
-    public static final RegistryObject<Item> ZIRA_SPAWN_EGG = ITEMS.register(
-            "zira_spawn_egg", () -> new ForgeSpawnEggItem(EntityTypes.ZIRA, 0x5C3A1E, 0x8B0000, new Item.Properties()));
+    // ========== Spawn Eggs - NPCs ==========
+    public static final RegistryObject<Item> RAFIKI_SPAWN_EGG = spawnEgg(EntityTypes.RAFIKI, 0x8B4513, 0xFFD700);
+    public static final RegistryObject<Item> SIMBA_SPAWN_EGG = spawnEgg(EntityTypes.SIMBA, 0xD4A030, 0xFFD700);
+    public static final RegistryObject<Item> TIMON_SPAWN_EGG = spawnEgg(EntityTypes.TIMON, 0xB8860B, 0xFFE4B5);
+    public static final RegistryObject<Item> PUMBAA_SPAWN_EGG = spawnEgg(EntityTypes.PUMBAA, 0x8B4513, 0x654321);
+    public static final RegistryObject<Item> SCAR_SPAWN_EGG = spawnEgg(EntityTypes.SCAR, 0x2F1A00, 0x000000);
+    public static final RegistryObject<Item> ZIRA_SPAWN_EGG = spawnEgg(EntityTypes.ZIRA, 0x5C3A1E, 0x8B0000);
 
     // ========== Jar Items ==========
-    public static final RegistryObject<Item> JAR_EMPTY =
-            ITEMS.register("jar_empty", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> JAR_WATER =
-            ITEMS.register("jar_water", () -> new Item(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> JAR_EMPTY = registerItem("jar_empty", JarItem::new, itemProps(16));
+    // craftRemainder(JAR_EMPTY.get()) must be inside the lambda — .get() fails during static init
+    public static final RegistryObject<Item> JAR_WATER = ITEMS.register(
+            "jar_water", () -> new FilledJarItem(Fluids.WATER, itemProps(16).craftRemainder(JAR_EMPTY.get())));
     public static final RegistryObject<Item> JAR_MILK =
-            ITEMS.register("jar_milk", () -> new Item(new Item.Properties().stacksTo(16)));
+            ITEMS.register("jar_milk", () -> new ZebraMilkItem(itemProps(16).craftRemainder(JAR_EMPTY.get())));
     public static final RegistryObject<Item> JAR_LAVA = ITEMS.register(
-            "jar_lava", () -> new Item(new Item.Properties().stacksTo(16).craftRemainder(JAR_EMPTY.get())));
+            "jar_lava", () -> new FilledJarItem(Fluids.LAVA, itemProps(16).craftRemainder(JAR_EMPTY.get())));
     public static final RegistryObject<Item> MANGO_JUICE = ITEMS.register(
             "mango_juice",
-            () -> new Item(new Item.Properties()
-                    .stacksTo(16)
-                    .food(new FoodProperties.Builder()
-                            .nutrition(6)
-                            .saturationMod(0.5F)
-                            .build())
-                    .craftRemainder(JAR_EMPTY.get())));
+            () -> new MangoJuiceItem(itemProps(16).food(foodProps(6, 0.5F)).craftRemainder(JAR_EMPTY.get())));
 
-    public static final RegistryObject<Item> HYENA_MEAL =
-            ITEMS.register("hyena_meal", () -> new HyenaMealItem(new Item.Properties()));
+    public static final RegistryObject<Item> HYENA_MEAL = registerItem("hyena_meal", HyenaMealItem::new);
 
     // ========== Giraffe Ties ==========
-    public static final RegistryObject<Item> GIRAFFE_TIE =
-            ITEMS.register("giraffe_tie", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> GIRAFFE_TIE_WHITE =
-            ITEMS.register("giraffe_tie_white", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> GIRAFFE_TIE_BLUE =
-            ITEMS.register("giraffe_tie_blue", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> GIRAFFE_TIE_YELLOW =
-            ITEMS.register("giraffe_tie_yellow", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> GIRAFFE_TIE_RED =
-            ITEMS.register("giraffe_tie_red", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> GIRAFFE_TIE_PURPLE =
-            ITEMS.register("giraffe_tie_purple", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> GIRAFFE_TIE_GREEN =
-            ITEMS.register("giraffe_tie_green", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> GIRAFFE_TIE_BLACK =
-            ITEMS.register("giraffe_tie_black", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> GIRAFFE_TIE = simpleItem("giraffe_tie");
+    public static final RegistryObject<Item> GIRAFFE_TIE_WHITE = simpleItem("giraffe_tie_white");
+    public static final RegistryObject<Item> GIRAFFE_TIE_BLUE = simpleItem("giraffe_tie_blue");
+    public static final RegistryObject<Item> GIRAFFE_TIE_YELLOW = simpleItem("giraffe_tie_yellow");
+    public static final RegistryObject<Item> GIRAFFE_TIE_RED = simpleItem("giraffe_tie_red");
+    public static final RegistryObject<Item> GIRAFFE_TIE_PURPLE = simpleItem("giraffe_tie_purple");
+    public static final RegistryObject<Item> GIRAFFE_TIE_GREEN = simpleItem("giraffe_tie_green");
+    public static final RegistryObject<Item> GIRAFFE_TIE_BLACK = simpleItem("giraffe_tie_black");
 
     // ========== Tunnah Diggah ==========
     public static final RegistryObject<Item> TUNNAH_DIGGAH = ITEMS.register(
             "tunnah_diggah", () -> new TunnahDiggahItem(Tiers.IRON, 1, -2.8F, new Item.Properties().durability(690)));
 
     // ========== Quest & Special Items ==========
-    public static final RegistryObject<Item> AMULET =
-            ITEMS.register("amulet", () -> new Item(new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> SIMBA_CHARM = ITEMS.register(
-            "simba_charm", () -> new io.github.ron1196.thelionking.item.SimbaCharmItem(new Item.Properties()));
-    public static final RegistryObject<Item> GIRAFFE_SADDLE =
-            ITEMS.register("giraffe_saddle", () -> new Item(new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> DART_QUIVER =
-            ITEMS.register("dart_quiver", () -> new QuiverItem(new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> PASSION_FRUIT = ITEMS.register(
-            "passion_fruit",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(3)
-                            .saturationMod(0.3F)
-                            .build())));
-    public static final RegistryObject<Item> ZAZU_EGG =
-            ITEMS.register("zazu_egg", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> AMULET = simpleItem("amulet", 1);
+    public static final RegistryObject<Item> SIMBA_CHARM = registerItem("simba_charm", SimbaCharmItem::new);
+    public static final RegistryObject<Item> GIRAFFE_SADDLE = simpleItem("giraffe_saddle", 1);
+    public static final RegistryObject<Item> DART_QUIVER = registerItem("dart_quiver", QuiverItem::new, itemProps(1));
+    public static final RegistryObject<Item> PASSION_FRUIT = foodItem("passion_fruit", 3, 0.3F);
+    public static final RegistryObject<Item> ZAZU_EGG = simpleItem("zazu_egg");
 
     // ========== Block Entity Items ==========
     public static final RegistryObject<BlockItem> GRINDING_BOWL_ITEM =
@@ -839,29 +557,19 @@ public class LionKingItems {
             registerBlockItem("lk_spawner", LionKingBlocks.LK_SPAWNER);
 
     // ========== Quest / NPC Items ==========
-    public static final RegistryObject<Item> QUEST_BOOK = ITEMS.register(
-            "quest_book", () -> new io.github.ron1196.thelionking.item.QuestBookItem(new Item.Properties()));
+    public static final RegistryObject<Item> QUEST_BOOK = registerItem("quest_book", QuestBookItem::new);
 
-    public static final RegistryObject<Item> TICKET =
-            ITEMS.register("ticket", () -> new io.github.ron1196.thelionking.item.TicketItem(new Item.Properties()));
+    public static final RegistryObject<Item> TICKET = registerItem("ticket", TicketItem::new);
 
-    public static final RegistryObject<Item> RHYTHM_STAFF =
-            ITEMS.register("rhythm_staff", () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> RHYTHM_STAFF = simpleItem("rhythm_staff", 1);
 
-    public static final RegistryObject<Item> RAFIKI_COIN =
-            ITEMS.register("rafiki_coin", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> RAFIKI_COIN = simpleItem("rafiki_coin");
+    public static final RegistryObject<Item> ZIRA_COIN = simpleItem("zira_coin");
+    public static final RegistryObject<Item> WAYWARD_FEATHER = simpleItem("wayward_feather");
 
-    public static final RegistryObject<Item> ZIRA_COIN =
-            ITEMS.register("zira_coin", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> RAFIKI_STICK = registerItem("rafiki_stick", RafikiStickItem::new);
 
-    public static final RegistryObject<Item> WAYWARD_FEATHER =
-            ITEMS.register("wayward_feather", () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> RAFIKI_STICK = ITEMS.register(
-            "rafiki_stick", () -> new io.github.ron1196.thelionking.item.RafikiStickItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> RAFIKI_DUST = ITEMS.register(
-            "rafiki_dust", () -> new io.github.ron1196.thelionking.item.RafikiDustItem(new Item.Properties()));
+    public static final RegistryObject<Item> RAFIKI_DUST = registerItem("rafiki_dust", RafikiDustItem::new);
 
     // ========== Phase 12: Missing Block Items ==========
     public static final RegistryObject<BlockItem> BANANA_CAKE_ITEM =
@@ -877,8 +585,8 @@ public class LionKingItems {
     public static final RegistryObject<BlockItem> VASE_ITEM = registerBlockItem("vase", LionKingBlocks.VASE);
 
     // ========== Bed & Lever ==========
-    public static final RegistryObject<BlockItem> PRIDE_BED_ITEM = ITEMS.register(
-            "pride_bed", () -> new BedItem(LionKingBlocks.PRIDE_BED.get(), new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<BlockItem> PRIDE_BED_ITEM =
+            ITEMS.register("pride_bed", () -> new BedItem(LionKingBlocks.PRIDE_BED.get(), itemProps(1)));
     public static final RegistryObject<BlockItem> PRIDE_LEVER_ITEM =
             registerBlockItem("pride_lever", LionKingBlocks.PRIDE_LEVER);
 
@@ -890,14 +598,13 @@ public class LionKingItems {
 
     // ========== Scar / Zira Rugs ==========
     public static final RegistryObject<Item> SCAR_RUG =
-            ITEMS.register("scar_rug", () -> new RugItem(RugEntity.TYPE_SCAR, new Item.Properties().stacksTo(1)));
+            ITEMS.register("scar_rug", () -> new RugItem(RugEntity.TYPE_SCAR, itemProps(1)));
     public static final RegistryObject<Item> ZIRA_RUG =
-            ITEMS.register("zira_rug", () -> new RugItem(RugEntity.TYPE_ZIRA, new Item.Properties().stacksTo(1)));
+            ITEMS.register("zira_rug", () -> new RugItem(RugEntity.TYPE_ZIRA, itemProps(1)));
 
     // ========== Skeletal Hyena Head Spawn Egg ==========
-    public static final RegistryObject<Item> SKELETAL_HYENA_HEAD_SPAWN_EGG = ITEMS.register(
-            "skeletal_hyena_head_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.SKELETAL_HYENA_HEAD, 0xC8C8C8, 0x3A3A3A, new Item.Properties()));
+    public static final RegistryObject<Item> SKELETAL_HYENA_HEAD_SPAWN_EGG =
+            spawnEgg(EntityTypes.SKELETAL_HYENA_HEAD, 0xC8C8C8, 0x3A3A3A);
 
     // ========== Notes (for Bongo Drum) ==========
     public static final RegistryObject<Item> NOTE_C =
