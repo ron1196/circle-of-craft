@@ -89,6 +89,7 @@
     [
       "minecraft:lake_lava_underground"
     ],
+    [],
     [
       "thelionking:pride_coal_ore_placed",
       "thelionking:pride_coal_ore_upper_placed",
@@ -97,21 +98,18 @@
       "thelionking:silver_ore_small_placed",
       "thelionking:peacock_ore_placed",
       "thelionking:peacock_ore_large_placed",
-      "thelionking:peacock_ore_buried_placed"
-    ],
-    [
+      "thelionking:peacock_ore_buried_placed",
       "thelionking:pride_dungeon_placed"
     ],
     [],
     [],
-    [],
-    [],
     [
-      "thelionking:pride_acacia_tree_placed"
-    ],
-    [
+      "thelionking:pride_acacia_tree_placed",
       "minecraft:patch_grass_savanna"
     ],
+    [],
+    [],
+    [],
     [],
     []
   ]

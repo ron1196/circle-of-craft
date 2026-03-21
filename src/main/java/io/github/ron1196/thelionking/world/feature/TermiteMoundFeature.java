@@ -3,6 +3,7 @@ package io.github.ron1196.thelionking.world.feature;
 import com.mojang.serialization.Codec;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,6 +22,15 @@ public class TermiteMoundFeature extends Feature<NoneFeatureConfiguration> {
         WorldGenLevel level = context.level();
         BlockPos pos = context.origin();
         RandomSource random = context.random();
+
+        // Only place on solid ground (dirt, sand, stone) — not on trees
+        BlockState ground = level.getBlockState(pos.below());
+        if (ground.is(BlockTags.LEAVES) || ground.is(BlockTags.LOGS)) {
+            return false;
+        }
+        if (!ground.isSolid()) {
+            return false;
+        }
 
         BlockState mound = LionKingBlocks.TERMITE_MOUND.get().defaultBlockState();
 

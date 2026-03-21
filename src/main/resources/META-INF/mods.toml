@@ -9,6 +9,9 @@ displayName = "${mod_name}"
 authors = "${mod_authors}"
 description = '''${mod_description}'''
 
+[[mixins]]
+config = "thelionking.mixins.json"
+
 [[dependencies.thelionking]]
 modId = "forge"
 mandatory = true

@@ -23,6 +23,13 @@ import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -336,6 +343,49 @@ public class LionKingForgeEvents {
 
             data.ziraStage = 23;
             data.setDirty();
+        }
+    }
+
+    // ── Outlands Water → Lava Replacement ──────────────────────────────────
+    // The vanilla aquifer system has a hardcoded lava short-circuit that
+    // floods all caves when default_fluid is lava. To work around this,
+    // we keep default_fluid as water (so caves stay dry like overworld)
+    // and replace water with lava after chunk generation in the Outlands.
+
+    @SubscribeEvent
+    public static void onChunkLoad(ChunkEvent.Load event) {
+        if (!(event.getLevel() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+        if (!serverLevel.dimension().equals(Dimensions.OUTLANDS_LEVEL)) {
+            return;
+        }
+        if (!(event.getChunk() instanceof LevelChunk chunk)) {
+            return;
+        }
+
+        int minY = chunk.getMinBuildHeight();
+        LevelChunkSection[] sections = chunk.getSections();
+        for (int sectionIdx = 0; sectionIdx < sections.length; sectionIdx++) {
+            LevelChunkSection section = sections[sectionIdx];
+            if (section == null || !section.maybeHas(state -> state.is(Blocks.WATER))) {
+                continue;
+            }
+            int sectionY = minY + (sectionIdx << 4);
+            for (int x = 0; x < 16; x++) {
+                for (int y = 0; y < 16; y++) {
+                    for (int z = 0; z < 16; z++) {
+                        BlockState state = section.getBlockState(x, y, z);
+                        if (state.getFluidState().is(Fluids.WATER)
+                                || state.getFluidState().is(Fluids.FLOWING_WATER)) {
+                            section.setBlockState(
+                                    x, y, z,
+                                    Blocks.LAVA.defaultBlockState(),
+                                    false);
+                        }
+                    }
+                }
+            }
         }
     }
 }

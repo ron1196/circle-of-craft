@@ -58,6 +58,7 @@
     [
       "minecraft:lake_lava_underground"
     ],
+    [],
     [
       "thelionking:pride_coal_ore_placed",
       "thelionking:pride_coal_ore_upper_placed",
@@ -70,20 +71,18 @@
     ],
     [],
     [],
-    [],
-    [],
-    [],
     [
       "thelionking:passion_tree_placed",
       "thelionking:mango_tree_placed",
       "thelionking:banana_tree_placed",
-      "thelionking:mega_rainforest_tree_placed"
-    ],
-    [
+      "thelionking:mega_rainforest_tree_placed",
       "minecraft:patch_grass_jungle",
       "minecraft:patch_tall_grass",
       "thelionking:lily_pad_placed"
     ],
+    [],
+    [],
+    [],
     [],
     []
   ]

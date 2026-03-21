@@ -4,7 +4,10 @@
     "fluid": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "minecraft:lava"
+        "Name": "minecraft:lava",
+        "Properties": {
+          "level": "0"
+        }
       }
     },
     "barrier": {

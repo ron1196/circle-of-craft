@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "io.github.ron1196.thelionking.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "mixins": [
+    "OutlandsFluidMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
