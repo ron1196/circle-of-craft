@@ -46,14 +46,39 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
+    // Room geometry
     private static final int ROOM_HEIGHT = 3;
-    private static final int CHEST_LOOT_ATTEMPTS = 8;
-    private static final int CHEST_PLACEMENT_RETRIES = 20;
-    private static final int VINE_MAX_LENGTH = 6;
-    private static final int VINE_CHANCE = 4;
-    private static final double CRACKED_BRICK_CHANCE = 0.1;
+    private static final int BASE_HALF_SIZE_MIN = 2;
+    private static final int BASE_HALF_SIZE_RANGE = 2; // nextInt(2) gives 0-1, so half-size = 2-3
+    private static final int CROC_EXPANSION_MIN = 1;
+    private static final int CROC_EXPANSION_RANGE = 2; // nextInt(2) gives 0-1, so expansion = 1-2
+    private static final int CORNER_COUNT = 4;
+
+    // Variant selection
+    private static final int CROCODILE_CHANCE = 3; // 1 in 3 chance for crocodile variant
+
+    // Entrance validation
     private static final int MIN_ENTRANCES = 1;
     private static final int MAX_ENTRANCES = 5;
+
+    // Block material chances
+    private static final double CRACKED_BRICK_CHANCE = 0.1;
+    private static final int MOSSY_FLOOR_DENOMINATOR = 4; // 3 in 4 = 75% mossy
+    private static final int PILLAR_SKIP_CHANCE = 4; // 1 in 4 chance to skip a pillar
+
+    // Chest and loot
+    private static final int HYENA_CHEST_COUNT = 2;
+    private static final int CROC_CHEST_COUNT = 3;
+    private static final int CHEST_LOOT_ATTEMPTS = 8;
+    private static final int CHEST_PLACEMENT_RETRIES = 20;
+    private static final int REQUIRED_SOLID_NEIGHBORS = 1;
+    private static final int ENCHANT_CHANCE = 3; // 2 in 3 chance to enchant
+    private static final int ENCHANT_LEVEL = 3;
+    private static final int PASSION_SAPLING_CHANCE = 4; // 1 in 4
+
+    // Vines (crocodile variant only)
+    private static final int VINE_MAX_LENGTH = 6;
+    private static final int VINE_CHANCE = 4; // 1 in 4 chance per wall face
 
     private static final ResourceLocation HYENA_ID = new ResourceLocation(TheLionKingMod.MOD_ID, "hyena");
     private static final ResourceLocation CROCODILE_ID = new ResourceLocation(TheLionKingMod.MOD_ID, "crocodile");
@@ -119,8 +144,8 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         int cz = origin.getZ();
 
         // Random half-widths (2-3 blocks from center), matching old mod
-        int halfW = random.nextInt(2) + 2;
-        int halfD = random.nextInt(2) + 2;
+        int halfW = random.nextInt(BASE_HALF_SIZE_RANGE) + BASE_HALF_SIZE_MIN;
+        int halfD = random.nextInt(BASE_HALF_SIZE_RANGE) + BASE_HALF_SIZE_MIN;
 
         // Validate with base room size FIRST (matching old mod order — validate small, expand later)
         if (!isValidPlacement(level, cx, cy, cz, halfW, halfD)) {
@@ -128,10 +153,10 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         // Determine variant and expand AFTER validation (old mod expanded post-validation)
-        boolean isCrocodile = random.nextInt(3) == 0;
+        boolean isCrocodile = random.nextInt(CROCODILE_CHANCE) == 0;
         if (isCrocodile) {
-            halfW += random.nextInt(2) + 1;
-            halfD += random.nextInt(2) + 1;
+            halfW += random.nextInt(CROC_EXPANSION_RANGE) + CROC_EXPANSION_MIN;
+            halfD += random.nextInt(CROC_EXPANSION_RANGE) + CROC_EXPANSION_MIN;
         }
 
         ResourceLocation spawnerId = isCrocodile ? CROCODILE_ID : HYENA_ID;
@@ -147,7 +172,7 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         buildRoom(level, random, canReplace, cx, cy, cz, halfW, halfD, isCrocodile);
         placePillars(level, random, cx, cy, cz, halfW, halfD);
 
-        int chestAttempts = isCrocodile ? 3 : 2;
+        int chestAttempts = isCrocodile ? CROC_CHEST_COUNT : HYENA_CHEST_COUNT;
         placeChests(level, random, cx, cy, cz, halfW, halfD, chestAttempts);
 
         placeSpawner(level, cx, cy, cz, spawnerId);
@@ -243,7 +268,7 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
                             if (by == cy - 1) {
                                 // Floor: 75% mossy, 25% regular pride brick
                                 this.safeSetBlock(
-                                        level, pos, random.nextInt(4) != 0 ? mossyBrick : prideBrick, canReplace);
+                                        level, pos, random.nextInt(MOSSY_FLOOR_DENOMINATOR) != 0 ? mossyBrick : prideBrick, canReplace);
                             } else {
                                 // Walls and ceiling: pride brick with occasional cracked
                                 this.safeSetBlock(
@@ -270,7 +295,7 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
                     level.setBlock(floorPos, Blocks.WATER.defaultBlockState(), 2);
                     // Ensure solid floor under the water
                     BlockPos belowFloor = new BlockPos(bx, cy - 1, bz);
-                    this.safeSetBlock(level, belowFloor, random.nextInt(4) != 0 ? mossyBrick : prideBrick, canReplace);
+                    this.safeSetBlock(level, belowFloor, random.nextInt(MOSSY_FLOOR_DENOMINATOR) != 0 ? mossyBrick : prideBrick, canReplace);
                 }
             }
         }
@@ -301,10 +326,10 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         };
 
         // Pick 2 random corners (old mod picked j5 and j6 as indices 0-3, with -1 meaning none)
-        int corner1 = random.nextInt(4);
-        int corner2 = random.nextInt(4);
-        if (random.nextInt(4) == 0) corner1 = -1;
-        if (random.nextInt(4) == 0) corner2 = -1;
+        int corner1 = random.nextInt(CORNER_COUNT);
+        int corner2 = random.nextInt(CORNER_COUNT);
+        if (random.nextInt(PILLAR_SKIP_CHANCE) == 0) corner1 = -1;
+        if (random.nextInt(PILLAR_SKIP_CHANCE) == 0) corner2 = -1;
 
         for (int i = 0; i < corners.length; i++) {
             if (i == corner1 || i == corner2) {
@@ -357,7 +382,7 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
                     hasAdjacentChest = true;
                 }
             }
-            if (solidNeighbors != 1 || hasAdjacentChest) {
+            if (solidNeighbors != REQUIRED_SOLID_NEIGHBORS || hasAdjacentChest) {
                 continue;
             }
 
@@ -383,15 +408,15 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         for (int i = 0; i < CHEST_LOOT_ATTEMPTS; i++) {
             ItemStack loot = FeatureHelper.pickLoot(DUNGEON_LOOT, random);
             if (loot != null) {
-                if (loot.isEnchantable() && random.nextInt(3) != 0) {
-                    EnchantmentHelper.enchantItem(random, loot, 3, false);
+                if (loot.isEnchantable() && random.nextInt(ENCHANT_CHANCE) != 0) {
+                    EnchantmentHelper.enchantItem(random, loot, ENCHANT_LEVEL, false);
                 }
                 chest.setItem(random.nextInt(chest.getContainerSize()), loot);
             }
         }
 
         // 25% chance for a bonus passion sapling
-        if (random.nextInt(4) == 0) {
+        if (random.nextInt(PASSION_SAPLING_CHANCE) == 0) {
             ItemStack passionItemStack = new ItemStack(LionKingItems.PASSION_SAPLING_ITEM.get());
             chest.setItem(random.nextInt(chest.getContainerSize()), passionItemStack);
         }
