@@ -111,8 +111,6 @@ public class LionKingStructurePiece extends StructurePiece {
         int originY = this.boundingBox.minY();
         BlockPos origin = new BlockPos(originX, originY, originZ);
 
-        LOGGER.info("[LKPiece] {} — originY={}, chunkBox={}", featureId, originY, box);
-
         CURRENT_BOX.set(box);
         try {
             FeaturePlaceContext<NoneFeatureConfiguration> context = new FeaturePlaceContext<>(
