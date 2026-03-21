@@ -72,9 +72,6 @@ Items using generated placeholder textures (not from old mod):
 
 - [ ] **Grinding bowl recipes are hardcoded in `GrindingBowlBlockEntity.getRecipes()`** — 29 recipes live in a static `Map<Item, Item>` inside the block entity. Should be refactored to a custom `RecipeType<GrindingBowlRecipe>` + `RecipeSerializer` with JSON recipes under `data/thelionking/recipes/grinding/`. This would decouple game content from machine logic and enable datapack compatibility.
 
-## Networking (Not Fully Wired)
-
-- [ ] **`SimbaSitPacket`** — Sit toggle works via `mobInteract()`. Packet exists for future keybind (toggle sit from distance).
 
 ## Advancement Triggers (Not Fully Wired)
 

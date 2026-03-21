@@ -593,7 +593,7 @@ public class LionKingBlocks {
 
     public static final RegistryObject<Block> YAM_CROP = BLOCKS.register(
             "yam_crop",
-            () -> new CropBlock(BlockBehaviour.Properties.of()
+            () -> new YamCropBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
                     .noCollission()
                     .randomTicks()

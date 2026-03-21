@@ -88,7 +88,7 @@ public class ClientEvents {
             "key.thelionking.simba_sit",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_X,
+            GLFW.GLFW_KEY_Z,
             "key.categories.thelionking");
 
     private static ModelLayerLocation layer(String name) {
