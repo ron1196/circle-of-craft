@@ -584,9 +584,10 @@ public class LionKingBlocks {
     // ========== Crops ==========
     public static final RegistryObject<Block> MAIZE_CROP = BLOCKS.register(
             "maize_crop",
-            () -> new CropBlock(BlockBehaviour.Properties.of()
+            () -> new MaizeCropBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
                     .noCollission()
+                    .noOcclusion()
                     .randomTicks()
                     .instabreak()
                     .sound(SoundType.CROP)));

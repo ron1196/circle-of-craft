@@ -64,8 +64,8 @@ Items using generated placeholder textures (not from old mod):
 
 ## Crop Block Classes (Wrong Base Class)
 
-- [ ] **Maize is `CropBlock` but should be sugar cane-like** — Old mod: multi-block tall, grows near water, not on farmland. Needs custom block class extending `BushBlock` or similar, with water-adjacent check and multi-block stacking.
-- [ ] **Yam is `CropBlock` but should grow on grass** — Old mod places yams on grass blocks, but `CropBlock.canSurvive()` requires farmland. Needs `mayPlaceOn` override to accept grass.
+- [x] **Maize is `CropBlock` but should be sugar cane-like** — Replaced with `MaizeCropBlock`: stacks up to 4 tall, requires adjacent water on grass/dirt, has_corn state for harvestable corn ears.
+- [x] **Yam is `CropBlock` but should grow on grass** — Replaced with `YamCropBlock`: `mayPlaceOn` accepts dirt tag (grass, dirt, etc.).
 - [ ] **Kiwano worldgen places `kiwano_block` (fruit) on sand** — Matches old mod. Stem (`kiwano_stem`) is the crop version for player farming.
 
 ## Grinding Bowl Recipes (Hardcoded)
