@@ -5,7 +5,8 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 ## Missing World Generation
 
 - [ ] **Nuka Ore & Kivulite Ore blocks** — Old mod used metadata variants: `prideCoal` meta 1 = Nuka Ore (`oreNuka.png`, drops nuka shards), `oreSilver` meta 1 = Kivulite Ore (`oreKivulite.png`, drops kivulite). Need separate blocks `nuka_ore` and `kivulite_ore`, textures migrated from `old/assets/textures/blocks/`, and placed features wired into Outlands biomes (replacing current silver/coal ore placements there)
-- [ ] **Outlands Lava Lakes** — Old: `LKWorldGenOutlandsLakes` used removed API. Must be ported as a `PlacedFeature` using `LakeFeature` (1.18+ approach)
+- [x] **Outlands Lava Lakes** — Ported using vanilla `LakeFeature` with corrupt pridestone barrier. Underground (rarity 5) + surface (rarity 40) placed features in all 3 Outlands biomes.
+- [ ] **Outlands Dungeon variant** — Pride Dungeons currently use the same loot table in both Pride Lands and Outlands. Outlands dungeons should have better/different loot (e.g. kivulite items, corrupt tools, rare gems) to reward exploring a more dangerous dimension. May also want Outlands-specific building materials (corrupt pride brick?) instead of regular pride brick.
 
 ## Missing Event Handlers
 

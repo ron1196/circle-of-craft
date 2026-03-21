@@ -54,7 +54,9 @@
       "thelionking:peacock_ore_large_placed",
       "thelionking:peacock_ore_buried_placed"
     ],
-    [],
+    [
+      "thelionking:pride_dungeon_placed"
+    ],
     [],
     [],
     [],

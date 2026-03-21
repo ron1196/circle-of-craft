@@ -7,8 +7,8 @@
       "type": "minecraft:height_range",
       "height": {
         "type": "minecraft:trapezoid",
-        "min_inclusive": { "absolute": 0 },
-        "max_inclusive": { "absolute": 18 }
+        "min_inclusive": { "absolute": -64 },
+        "max_inclusive": { "absolute": 16 }
       }
     },
     { "type": "minecraft:biome" }
