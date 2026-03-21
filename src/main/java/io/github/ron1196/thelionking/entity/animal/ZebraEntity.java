@@ -20,6 +20,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class ZebraEntity extends LionKingAnimal {
 
+    public static final float BABY_SCALE = 0.5F; // foals are relatively large at birth
+    public static final float SHADOW_RADIUS = 0.7F;
+
     public ZebraEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
     }

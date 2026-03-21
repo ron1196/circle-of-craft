@@ -15,9 +15,7 @@ public class AnimalRenderer<T extends LionKingAnimal, M extends EntityModel<T>> 
     private final float babyScale;
 
     public AnimalRenderer(
-            EntityRendererProvider.Context context, M model,
-            String textureName, float shadowRadius, float babyScale
-    ) {
+            EntityRendererProvider.Context context, M model, String textureName, float shadowRadius, float babyScale) {
         super(context, model, shadowRadius);
         this.texture = new ResourceLocation(TheLionKingMod.MOD_ID, "textures/entity/" + textureName + ".png");
         this.babyScale = babyScale;

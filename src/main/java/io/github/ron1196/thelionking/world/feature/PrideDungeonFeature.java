@@ -6,6 +6,8 @@ import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.block.entity.SpawnerBlockEntity;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.registry.LionKingItems;
+import io.github.ron1196.thelionking.world.feature.FeatureHelper.LootEntry;
+import java.util.List;
 import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -55,6 +57,51 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
 
     private static final ResourceLocation HYENA_ID = new ResourceLocation(TheLionKingMod.MOD_ID, "hyena");
     private static final ResourceLocation CROCODILE_ID = new ResourceLocation(TheLionKingMod.MOD_ID, "crocodile");
+
+    // ── Dungeon loot sub-pools ─────────────────────────────────────────────
+
+    private static final List<LootEntry> DARTS_AND_FEATHERS = List.of(
+            LootEntry.of(r -> new ItemStack(LionKingItems.DART_BLUE.get(), 3 + r.nextInt(5))),
+            LootEntry.of(r -> new ItemStack(LionKingItems.DART_YELLOW.get(), 3 + r.nextInt(4))),
+            LootEntry.of(r -> new ItemStack(LionKingItems.DART_RED.get(), 3 + r.nextInt(4))),
+            LootEntry.of(r -> new ItemStack(LionKingItems.FEATHER_BLUE.get(), 3 + r.nextInt(4))),
+            LootEntry.of(r -> new ItemStack(LionKingItems.FEATHER_YELLOW.get(), 3 + r.nextInt(3))),
+            LootEntry.of(r -> new ItemStack(LionKingItems.FEATHER_RED.get(), 3 + r.nextInt(3))),
+            LootEntry.of(() -> new ItemStack(LionKingItems.DART_SHOOTER_SILVER.get())));
+
+    private static final List<LootEntry> SILVER_EQUIPMENT = List.of(
+            LootEntry.of(() -> new ItemStack(LionKingItems.SILVER_SHOVEL.get())),
+            LootEntry.of(() -> new ItemStack(LionKingItems.SILVER_PICKAXE.get())),
+            LootEntry.of(() -> new ItemStack(LionKingItems.SILVER_AXE.get())),
+            LootEntry.of(() -> new ItemStack(LionKingItems.SILVER_SWORD.get())),
+            LootEntry.of(() -> new ItemStack(LionKingItems.SILVER_HELMET.get())),
+            LootEntry.of(() -> new ItemStack(LionKingItems.SILVER_BOOTS.get())),
+            LootEntry.of(r -> new ItemStack(LionKingItems.NOTE_B.get(), 1 + r.nextInt(3))));
+
+    private static final List<LootEntry> TREASURES = List.of(
+            LootEntry.of(r -> new ItemStack(LionKingItems.PEACOCK_GEM.get(), 1 + r.nextInt(2))),
+            LootEntry.of(() -> new ItemStack(Items.COMPASS)),
+            LootEntry.of(() -> new ItemStack(LionKingItems.JAR_EMPTY.get())));
+
+    // ── Main dungeon loot table (matching old mod's LKDungeonLoot pool) ──
+    // Weight controls relative probability. Higher weight = more common.
+    private static final List<LootEntry> DUNGEON_LOOT = List.of(
+            // Common supplies
+            LootEntry.of(r -> new ItemStack(LionKingItems.HYENA_BONE.get(), 2 + r.nextInt(3))),
+            LootEntry.of(r -> new ItemStack(LionKingItems.BUG.get(), 2 + r.nextInt(4))),
+            LootEntry.of(r -> new ItemStack(LionKingItems.CHOCOLATE_MUFASA.get(), 1 + r.nextInt(3))),
+            LootEntry.of(r -> new ItemStack(LionKingItems.SILVER_INGOT.get(), 2 + r.nextInt(3))),
+            LootEntry.of(r -> new ItemStack(LionKingItems.MANGO.get(), 1 + r.nextInt(3))),
+
+            // Darts and feathers (weight 3 — most common drop)
+            new LootEntry(3, r -> FeatureHelper.pickLoot(DARTS_AND_FEATHERS, r)),
+
+            // Equipment
+            LootEntry.of(() -> new ItemStack(LionKingItems.DART_QUIVER.get())),
+            new LootEntry(2, r -> FeatureHelper.pickLoot(SILVER_EQUIPMENT, r)),
+
+            // Rare treasures
+            LootEntry.of(r -> FeatureHelper.pickLoot(TREASURES, r)));
 
     public PrideDungeonFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
@@ -229,7 +276,9 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         }
     }
 
-    /** Check if a position is in the room interior (not shell). */
+    /**
+     * Check if a position is in the room interior (not shell).
+     */
     private boolean isInterior(int bx, int by, int bz, int cx, int cy, int cz, int halfW, int halfD) {
         return bx > cx - halfW - 1
                 && bx < cx + halfW + 1
@@ -239,7 +288,9 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
                 && bz < cz + halfD + 1;
     }
 
-    /** Place pride pillars at 2 random corners, matching old mod's paired corner logic. */
+    /**
+     * Place pride pillars at 2 random corners, matching old mod's paired corner logic.
+     */
     private void placePillars(WorldGenLevel level, RandomSource random, int cx, int cy, int cz, int halfW, int halfD) {
         BlockState pillar = LionKingBlocks.PRIDE_PILLAR.get().defaultBlockState();
         int[][] corners = {
@@ -320,7 +371,9 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         }
     }
 
-    /** Fill a chest with loot matching the old mod's dungeon loot pool. */
+    /**
+     * Fill a chest with loot matching the old mod's dungeon loot pool.
+     */
     private void fillChestLoot(WorldGenLevel level, BlockPos chestPos, RandomSource random) {
         BlockEntity be = level.getBlockEntity(chestPos);
         if (!(be instanceof ChestBlockEntity chest)) {
@@ -328,7 +381,7 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         for (int i = 0; i < CHEST_LOOT_ATTEMPTS; i++) {
-            ItemStack loot = getRandomLoot(random);
+            ItemStack loot = FeatureHelper.pickLoot(DUNGEON_LOOT, random);
             if (loot != null) {
                 if (loot.isEnchantable() && random.nextInt(3) != 0) {
                     EnchantmentHelper.enchantItem(random, loot, 3, false);
@@ -345,68 +398,14 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
     }
 
     /**
-     * Generate a random loot item matching the old mod's LKDungeonLoot pool:
-     * hyena bones, bugs, darts, feathers, silver dart shooter, chocolate mufasa,
-     * silver ingots, dart quiver, mangos, peacock gems, compass, jar, silver tools/armor.
+     * Place vines on interior wall faces of crocodile dungeons.
      */
-    private ItemStack getRandomLoot(RandomSource random) {
-        int roll = random.nextInt(12);
-        return switch (roll) {
-            case 0 -> new ItemStack(LionKingItems.HYENA_BONE.get(), 2 + random.nextInt(3));
-            case 1 -> new ItemStack(LionKingItems.BUG.get(), 2 + random.nextInt(4));
-            case 2, 3, 4 -> getRandomDartOrFeather(random);
-            case 5 -> new ItemStack(LionKingItems.CHOCOLATE_MUFASA.get(), 1 + random.nextInt(3));
-            case 6 -> new ItemStack(LionKingItems.SILVER_INGOT.get(), 2 + random.nextInt(3));
-            case 7 -> new ItemStack(LionKingItems.DART_QUIVER.get());
-            case 8 -> new ItemStack(LionKingItems.MANGO.get(), 1 + random.nextInt(3));
-            case 9 -> getRandomTreasure(random);
-            case 10, 11 -> getRandomSilverEquipment(random);
-            default -> null;
-        };
-    }
-
-    private ItemStack getRandomDartOrFeather(RandomSource random) {
-        return switch (random.nextInt(7)) {
-            case 0 -> new ItemStack(LionKingItems.DART_BLUE.get(), 3 + random.nextInt(5));
-            case 1 -> new ItemStack(LionKingItems.DART_YELLOW.get(), 3 + random.nextInt(4));
-            case 2 -> new ItemStack(LionKingItems.DART_RED.get(), 3 + random.nextInt(4));
-            case 3 -> new ItemStack(LionKingItems.FEATHER_BLUE.get(), 3 + random.nextInt(4));
-            case 4 -> new ItemStack(LionKingItems.FEATHER_YELLOW.get(), 3 + random.nextInt(3));
-            case 5 -> new ItemStack(LionKingItems.FEATHER_RED.get(), 3 + random.nextInt(3));
-            case 6 -> new ItemStack(LionKingItems.DART_SHOOTER_SILVER.get());
-            default -> new ItemStack(LionKingItems.DART_BLUE.get(), 3 + random.nextInt(5));
-        };
-    }
-
-    private ItemStack getRandomTreasure(RandomSource random) {
-        return switch (random.nextInt(3)) {
-            case 0 -> new ItemStack(LionKingItems.PEACOCK_GEM.get(), 1 + random.nextInt(2));
-            case 1 -> new ItemStack(Items.COMPASS);
-            case 2 -> new ItemStack(LionKingItems.JAR_EMPTY.get());
-            default -> new ItemStack(Items.COMPASS);
-        };
-    }
-
-    private ItemStack getRandomSilverEquipment(RandomSource random) {
-        return switch (random.nextInt(7)) {
-            case 0 -> new ItemStack(LionKingItems.SILVER_SHOVEL.get());
-            case 1 -> new ItemStack(LionKingItems.SILVER_PICKAXE.get());
-            case 2 -> new ItemStack(LionKingItems.SILVER_AXE.get());
-            case 3 -> new ItemStack(LionKingItems.SILVER_SWORD.get());
-            case 4 -> new ItemStack(LionKingItems.SILVER_HELMET.get());
-            case 5 -> new ItemStack(LionKingItems.SILVER_BOOTS.get());
-            case 6 -> new ItemStack(LionKingItems.NOTE_B.get(), 1 + random.nextInt(3));
-            default -> new ItemStack(LionKingItems.SILVER_SWORD.get());
-        };
-    }
-
-    /** Place vines on interior wall faces of crocodile dungeons. */
     private void placeVines(WorldGenLevel level, RandomSource random, int cx, int cy, int cz, int halfW, int halfD) {
         for (int bx = cx - halfW - 1; bx <= cx + halfW + 1; bx++) {
             for (int by = cy + ROOM_HEIGHT; by >= cy; by--) {
                 for (int bz = cz - halfD - 1; bz <= cz + halfD + 1; bz++) {
                     BlockState state = level.getBlockState(new BlockPos(bx, by, bz));
-                    
+
                     if (!state.is(LionKingBlocks.PRIDE_BRICK.get())
                             && !state.is(LionKingBlocks.CRACKED_PRIDE_BRICK.get())
                             && !state.is(LionKingBlocks.MOSSY_PRIDE_BRICK.get())) {

@@ -31,6 +31,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class GiraffeEntity extends LionKingAnimal {
 
+    public static final float BABY_SCALE = 0.35F; // calves ~1.8m vs adult ~5.5m
+    public static final float SHADOW_RADIUS = 0.8F;
+
     private static final EntityDataAccessor<Boolean> DATA_SADDLED =
             SynchedEntityData.defineId(GiraffeEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_TIE =

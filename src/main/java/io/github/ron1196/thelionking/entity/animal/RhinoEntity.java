@@ -20,6 +20,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class RhinoEntity extends LionKingAnimal {
 
+    public static final float BABY_SCALE = 0.35F; // tiny calves, massive adults
+    public static final float SHADOW_RADIUS = 0.9F;
+
     public RhinoEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
     }

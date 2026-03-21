@@ -21,6 +21,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class LionEntity extends LionKingAnimal {
 
+    public static final float BABY_SCALE = 0.4F; // cubs are small relative to adults
+    public static final float SHADOW_RADIUS = 0.7F;
+
     public LionEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
     }

@@ -18,6 +18,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class GemsbokEntity extends LionKingAnimal {
 
+    public static final float BABY_SCALE = 0.5F; // antelope calves are proportional
+    public static final float SHADOW_RADIUS = 0.6F;
+
     public GemsbokEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
     }

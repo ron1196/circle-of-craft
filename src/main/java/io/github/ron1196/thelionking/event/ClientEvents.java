@@ -11,6 +11,7 @@ import io.github.ron1196.thelionking.client.gui.TimonMerchantScreen;
 import io.github.ron1196.thelionking.client.model.*;
 import io.github.ron1196.thelionking.client.particle.ColoredPortalParticle;
 import io.github.ron1196.thelionking.client.renderer.*;
+import io.github.ron1196.thelionking.entity.animal.*;
 import io.github.ron1196.thelionking.entity.projectile.DartEntity;
 import io.github.ron1196.thelionking.entity.projectile.SpearEntity;
 import io.github.ron1196.thelionking.registry.BlockEntityTypes;
@@ -138,50 +139,84 @@ public class ClientEvents {
         event.registerLayerDefinition(HYENA_HEAD_LAYER, HyenaHeadBlockEntityRenderer::createHeadLayer);
     }
 
-    // Baby scale factors based on real-life baby-to-adult body size ratios
-    private static final float LION_BABY_SCALE = 0.4F;       // cubs are small relative to adults
-    private static final float ZEBRA_BABY_SCALE = 0.5F;      // foals are relatively large at birth
-    private static final float GIRAFFE_BABY_SCALE = 0.35F;   // calves ~1.8m vs adult ~5.5m
-    private static final float RHINO_BABY_SCALE = 0.35F;     // tiny calves, massive adults
-    private static final float GEMSBOK_BABY_SCALE = 0.5F;    // antelope calves are proportional
-    private static final float DIKDIK_BABY_SCALE = 0.55F;    // already small animals, fawns are large relative
-    private static final float FLAMINGO_BABY_SCALE = 0.3F;   // chicks are small fluffy things
-    private static final float ZAZU_BABY_SCALE = 0.4F;       // hornbill chicks are small
-    private static final float BUG_BABY_SCALE = 0.5F;        // insects — generic half scale
-
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         // Passive
         event.registerEntityRenderer(
                 EntityTypes.LION.get(),
-                ctx -> new AnimalRenderer<>(ctx, new LionModel<>(ctx.bakeLayer(LION_LAYER)), "lion", 0.7F, LION_BABY_SCALE));
+                ctx -> new AnimalRenderer<>(
+                        ctx,
+                        new LionModel<>(ctx.bakeLayer(LION_LAYER)),
+                        "lion",
+                        LionEntity.SHADOW_RADIUS,
+                        LionEntity.BABY_SCALE));
         event.registerEntityRenderer(
                 EntityTypes.LIONESS.get(),
-                ctx -> new AnimalRenderer<>(ctx, new LionModel<>(ctx.bakeLayer(LIONESS_LAYER)), "lioness", 0.6F, LION_BABY_SCALE));
+                ctx -> new AnimalRenderer<>(
+                        ctx,
+                        new LionModel<>(ctx.bakeLayer(LIONESS_LAYER)),
+                        "lioness",
+                        LionessEntity.SHADOW_RADIUS,
+                        LionessEntity.BABY_SCALE));
         event.registerEntityRenderer(
                 EntityTypes.ZEBRA.get(),
-                ctx -> new AnimalRenderer<>(ctx, new ZebraModel<>(ctx.bakeLayer(ZEBRA_LAYER)), "zebra", 0.7F, ZEBRA_BABY_SCALE));
+                ctx -> new AnimalRenderer<>(
+                        ctx,
+                        new ZebraModel<>(ctx.bakeLayer(ZEBRA_LAYER)),
+                        "zebra",
+                        ZebraEntity.SHADOW_RADIUS,
+                        ZebraEntity.BABY_SCALE));
         event.registerEntityRenderer(
                 EntityTypes.GIRAFFE.get(),
-                ctx -> new GiraffeRenderer(ctx, new GiraffeModel<>(ctx.bakeLayer(GIRAFFE_LAYER)), GIRAFFE_BABY_SCALE));
+                ctx -> new GiraffeRenderer(
+                        ctx, new GiraffeModel<>(ctx.bakeLayer(GIRAFFE_LAYER)), GiraffeEntity.BABY_SCALE));
         event.registerEntityRenderer(
                 EntityTypes.RHINO.get(),
-                ctx -> new AnimalRenderer<>(ctx, new RhinoModel<>(ctx.bakeLayer(RHINO_LAYER)), "rhino", 0.9F, RHINO_BABY_SCALE));
+                ctx -> new AnimalRenderer<>(
+                        ctx,
+                        new RhinoModel<>(ctx.bakeLayer(RHINO_LAYER)),
+                        "rhino",
+                        RhinoEntity.SHADOW_RADIUS,
+                        RhinoEntity.BABY_SCALE));
         event.registerEntityRenderer(
                 EntityTypes.GEMSBOK.get(),
-                ctx -> new AnimalRenderer<>(ctx, new GemsbokModel<>(ctx.bakeLayer(GEMSBOK_LAYER)), "gemsbok", 0.6F, GEMSBOK_BABY_SCALE));
+                ctx -> new AnimalRenderer<>(
+                        ctx,
+                        new GemsbokModel<>(ctx.bakeLayer(GEMSBOK_LAYER)),
+                        "gemsbok",
+                        GemsbokEntity.SHADOW_RADIUS,
+                        GemsbokEntity.BABY_SCALE));
         event.registerEntityRenderer(
                 EntityTypes.DIKDIK.get(),
-                ctx -> new DikDikRenderer(ctx, new DikDikModel<>(ctx.bakeLayer(DIKDIK_LAYER)), 0.3F, DIKDIK_BABY_SCALE));
+                ctx -> new DikDikRenderer(
+                        ctx,
+                        new DikDikModel<>(ctx.bakeLayer(DIKDIK_LAYER)),
+                        DikDikEntity.SHADOW_RADIUS,
+                        DikDikEntity.BABY_SCALE));
         event.registerEntityRenderer(
                 EntityTypes.FLAMINGO.get(),
-                ctx -> new AnimalRenderer<>(ctx, new FlamingoModel<>(ctx.bakeLayer(FLAMINGO_LAYER)), "flamingo", 0.3F, FLAMINGO_BABY_SCALE));
+                ctx -> new AnimalRenderer<>(
+                        ctx,
+                        new FlamingoModel<>(ctx.bakeLayer(FLAMINGO_LAYER)),
+                        "flamingo",
+                        FlamingoEntity.SHADOW_RADIUS,
+                        FlamingoEntity.BABY_SCALE));
         event.registerEntityRenderer(
                 EntityTypes.ZAZU.get(),
-                ctx -> new AnimalRenderer<>(ctx, new ZazuModel<>(ctx.bakeLayer(ZAZU_LAYER)), "zazu", 0.25F, ZAZU_BABY_SCALE));
+                ctx -> new AnimalRenderer<>(
+                        ctx,
+                        new ZazuModel<>(ctx.bakeLayer(ZAZU_LAYER)),
+                        "zazu",
+                        ZazuEntity.SHADOW_RADIUS,
+                        ZazuEntity.BABY_SCALE));
         event.registerEntityRenderer(
                 EntityTypes.BUG.get(),
-                ctx -> new AnimalRenderer<>(ctx, new BugModel<>(ctx.bakeLayer(BUG_LAYER)), "bug", 0.15F, BUG_BABY_SCALE));
+                ctx -> new AnimalRenderer<>(
+                        ctx,
+                        new BugModel<>(ctx.bakeLayer(BUG_LAYER)),
+                        "bug",
+                        BugEntity.SHADOW_RADIUS,
+                        BugEntity.BABY_SCALE));
 
         // Hostile
         event.registerEntityRenderer(

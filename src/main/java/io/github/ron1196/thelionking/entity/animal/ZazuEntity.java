@@ -28,6 +28,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class ZazuEntity extends LionKingAnimal {
 
+    public static final float BABY_SCALE = 0.4F; // hornbill chicks are small
+    public static final float SHADOW_RADIUS = 0.25F;
+
     private static final int TALK_COOLDOWN = 300;
 
     private int talkTick = TALK_COOLDOWN;

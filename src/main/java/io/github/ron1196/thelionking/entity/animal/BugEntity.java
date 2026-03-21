@@ -12,27 +12,29 @@ import org.jetbrains.annotations.NotNull;
 
 public class BugEntity extends LionKingAnimal {
 
-  public BugEntity(
-      EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
-    super(type, level);
-  }
+    public static final float BABY_SCALE = 0.5F; // insects — generic half scale
+    public static final float SHADOW_RADIUS = 0.15F;
 
-  @Override
-  protected void registerGoals() {
-    super.registerGoals();
-    this.goalSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.PanicGoal(this, 1.5));
-    this.goalSelector.addGoal(2, new BugFindTrapGoal(this));
-  }
+    public BugEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
+        super(type, level);
+    }
 
-  public static AttributeSupplier.Builder createAttributes() {
-    return LionKingAnimal.createLKAnimalAttributes()
-        .add(Attributes.MAX_HEALTH, 2.0)
-        .add(Attributes.MOVEMENT_SPEED, 0.3);
-  }
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        this.goalSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.PanicGoal(this, 1.5));
+        this.goalSelector.addGoal(2, new BugFindTrapGoal(this));
+    }
 
-  @Nullable
-  @Override
-  public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob mate) {
-    return null;
-  }
+    public static AttributeSupplier.Builder createAttributes() {
+        return LionKingAnimal.createLKAnimalAttributes()
+                .add(Attributes.MAX_HEALTH, 2.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.3);
+    }
+
+    @Nullable
+    @Override
+    public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob mate) {
+        return null;
+    }
 }

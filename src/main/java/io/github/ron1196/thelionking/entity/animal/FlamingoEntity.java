@@ -18,6 +18,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class FlamingoEntity extends LionKingAnimal {
 
+    public static final float BABY_SCALE = 0.3F; // chicks are small fluffy things
+    public static final float SHADOW_RADIUS = 0.3F;
+
     public FlamingoEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
         super(type, level);
     }

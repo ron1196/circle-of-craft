@@ -21,68 +21,70 @@ import org.jetbrains.annotations.NotNull;
 
 public class DikDikEntity extends LionKingAnimal {
 
-  private static final EntityDataAccessor<Integer> DATA_VARIANT =
-      SynchedEntityData.defineId(DikDikEntity.class, EntityDataSerializers.INT);
+    public static final float BABY_SCALE = 0.55F; // already small animals, fawns are large relative
+    public static final float SHADOW_RADIUS = 0.3F;
 
-  public DikDikEntity(
-      EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
-    super(type, level);
-  }
+    private static final EntityDataAccessor<Integer> DATA_VARIANT =
+            SynchedEntityData.defineId(DikDikEntity.class, EntityDataSerializers.INT);
 
-  @Override
-  protected void defineSynchedData() {
-    super.defineSynchedData();
-    this.entityData.define(DATA_VARIANT, 0);
-  }
+    public DikDikEntity(EntityType<? extends net.minecraft.world.entity.animal.Animal> type, Level level) {
+        super(type, level);
+    }
 
-  public int getVariant() {
-    return this.entityData.get(DATA_VARIANT);
-  }
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_VARIANT, 0);
+    }
 
-  public void setVariant(int variant) {
-    this.entityData.set(DATA_VARIANT, variant);
-  }
+    public int getVariant() {
+        return this.entityData.get(DATA_VARIANT);
+    }
 
-  @Nullable
-  @Override
-  public SpawnGroupData finalizeSpawn(
-      @NotNull ServerLevelAccessor level,
-      @NotNull DifficultyInstance difficulty,
-      @NotNull MobSpawnType spawnType,
-      @Nullable SpawnGroupData groupData,
-      @Nullable CompoundTag tag) {
-    setVariant(this.random.nextInt(3));
-    return super.finalizeSpawn(level, difficulty, spawnType, groupData, tag);
-  }
+    public void setVariant(int variant) {
+        this.entityData.set(DATA_VARIANT, variant);
+    }
 
-  @Override
-  protected void registerGoals() {
-    super.registerGoals();
-    this.goalSelector.addGoal(1, new AmbientPanicGoal(this));
-    this.goalSelector.addGoal(2, new AmbientAvoidGoal(this));
-  }
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(
+            @NotNull ServerLevelAccessor level,
+            @NotNull DifficultyInstance difficulty,
+            @NotNull MobSpawnType spawnType,
+            @Nullable SpawnGroupData groupData,
+            @Nullable CompoundTag tag) {
+        setVariant(this.random.nextInt(3));
+        return super.finalizeSpawn(level, difficulty, spawnType, groupData, tag);
+    }
 
-  public static AttributeSupplier.Builder createAttributes() {
-    return LionKingAnimal.createLKAnimalAttributes()
-        .add(Attributes.MAX_HEALTH, 8.0)
-        .add(Attributes.MOVEMENT_SPEED, 0.28);
-  }
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        this.goalSelector.addGoal(1, new AmbientPanicGoal(this));
+        this.goalSelector.addGoal(2, new AmbientAvoidGoal(this));
+    }
 
-  @Nullable
-  @Override
-  public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob mate) {
-    return null;
-  }
+    public static AttributeSupplier.Builder createAttributes() {
+        return LionKingAnimal.createLKAnimalAttributes()
+                .add(Attributes.MAX_HEALTH, 8.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.28);
+    }
 
-  @Override
-  public void addAdditionalSaveData(@NotNull CompoundTag tag) {
-    super.addAdditionalSaveData(tag);
-    tag.putInt("Variant", getVariant());
-  }
+    @Nullable
+    @Override
+    public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob mate) {
+        return null;
+    }
 
-  @Override
-  public void readAdditionalSaveData(@NotNull CompoundTag tag) {
-    super.readAdditionalSaveData(tag);
-    setVariant(tag.getInt("Variant"));
-  }
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("Variant", getVariant());
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        setVariant(tag.getInt("Variant"));
+    }
 }

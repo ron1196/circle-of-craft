@@ -3,6 +3,8 @@ package io.github.ron1196.thelionking.world.feature;
 import com.mojang.serialization.Codec;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.registry.LionKingItems;
+import io.github.ron1196.thelionking.world.feature.FeatureHelper.LootEntry;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -227,102 +229,55 @@ public class TreasureMoundFeature extends Feature<NoneFeatureConfiguration> {
         }
     }
 
-    /** Fill a chest with 4 random loot items matching the old mod's treasure mound loot table. */
+    // ── Treasure mound loot sub-pools ──────────────────────────────────────
+
+    private static final List<LootEntry> CORRUPT_TOOLS = List.of(
+            LootEntry.of(() -> new ItemStack(LionKingItems.CORRUPT_SWORD.get())),
+            LootEntry.of(() -> new ItemStack(LionKingItems.CORRUPT_PICKAXE.get())),
+            LootEntry.of(() -> new ItemStack(LionKingItems.CORRUPT_AXE.get())),
+            LootEntry.of(() -> new ItemStack(LionKingItems.CORRUPT_SHOVEL.get())),
+            LootEntry.of(() -> new ItemStack(LionKingItems.CORRUPT_HOE.get())));
+
+    private static final List<LootEntry> KIVULITE_TOOLS = List.of(
+            LootEntry.of(() -> new ItemStack(LionKingItems.KIVULITE_SWORD.get())),
+            LootEntry.of(() -> new ItemStack(LionKingItems.KIVULITE_PICKAXE.get())),
+            LootEntry.of(() -> new ItemStack(LionKingItems.KIVULITE_AXE.get())),
+            LootEntry.of(() -> new ItemStack(LionKingItems.KIVULITE_SHOVEL.get())),
+            LootEntry.of(() -> new ItemStack(LionKingItems.KIVULITE_HOE.get())));
+
+    // ── Main treasure mound loot table ─────────────────────────────────────
+    private static final int CHEST_SLOT_COUNT = 4;
+
+    private static final List<LootEntry> TREASURE_MOUND_LOOT = List.of(
+            LootEntry.of(r -> new ItemStack(LionKingItems.TERMITE_DUST.get(), 2 + r.nextInt(4))),
+            new LootEntry(2, r -> new ItemStack(LionKingItems.DART_BLACK.get(), 4 + r.nextInt(5))),
+            new LootEntry(2, r -> new ItemStack(LionKingItems.NUKA_SHARD.get(), 3 + r.nextInt(8))),
+            LootEntry.of(r -> new ItemStack(LionKingItems.FEATHER_BLACK.get(), 2 + r.nextInt(4))),
+            LootEntry.of(r -> new ItemStack(LionKingItems.LION_COOKED.get(), 2 + r.nextInt(4))),
+            LootEntry.of(r -> enchantedTool(r, CORRUPT_TOOLS)),
+            LootEntry.of(r -> enchantedTool(r, KIVULITE_TOOLS)),
+            LootEntry.of(r -> new ItemStack(LionKingItems.KIVULITE.get(), 1 + r.nextInt(3))));
+
+    private static ItemStack enchantedTool(RandomSource random, List<LootEntry> toolPool) {
+        ItemStack tool = FeatureHelper.pickLoot(toolPool, random);
+        if (tool != null) {
+            EnchantmentHelper.enchantItem(random, tool, 3, false);
+        }
+        return tool;
+    }
+
+    /** Fill a chest with random loot matching the old mod's treasure mound loot table. */
     private void fillChestLoot(WorldGenLevel level, BlockPos chestPos, RandomSource random) {
         BlockEntity be = level.getBlockEntity(chestPos);
         if (!(be instanceof ChestBlockEntity chest)) {
             return;
         }
 
-        for (int slot = 0; slot < 4; slot++) {
-            ItemStack loot = getRandomLoot(random);
-            chest.setItem(slot, loot);
-        }
-    }
-
-    /**
-     * Generate a random loot item matching the old mod's treasure mound loot pool: - Termites (2-5) —
-     * using termite_dust as termite item equivalent - Black Darts (4-8) - Nuka Shards (3-10) - Black
-     * Feathers (2-5) - Cooked Lion Meat (2-5) - Corrupt/Kivulite Tools (random, sometimes enchanted)
-     * - Kivulite (1-3)
-     */
-    private ItemStack getRandomLoot(RandomSource random) {
-        int roll = random.nextInt(10);
-        switch (roll) {
-            case 0:
-                // Termite dust (substitute for termites, 2-5)
-                return new ItemStack(LionKingItems.TERMITE_DUST.get(), 2 + random.nextInt(4));
-            case 1:
-                // Black Darts (4-8)
-                return new ItemStack(LionKingItems.DART_BLACK.get(), 4 + random.nextInt(5));
-            case 2:
-                // Nuka Shards (3-10)
-                return new ItemStack(LionKingItems.NUKA_SHARD.get(), 3 + random.nextInt(8));
-            case 3:
-                // Black Feathers (2-5)
-                return new ItemStack(LionKingItems.FEATHER_BLACK.get(), 2 + random.nextInt(4));
-            case 4:
-                // Cooked Lion Meat (2-5)
-                return new ItemStack(LionKingItems.LION_COOKED.get(), 2 + random.nextInt(4));
-            case 5: {
-                // Corrupt tool (random, enchanted)
-                ItemStack tool = getRandomCorruptTool(random);
-                EnchantmentHelper.enchantItem(random, tool, 3, false);
-                return tool;
+        for (int slot = 0; slot < CHEST_SLOT_COUNT; slot++) {
+            ItemStack loot = FeatureHelper.pickLoot(TREASURE_MOUND_LOOT, random);
+            if (loot != null) {
+                chest.setItem(slot, loot);
             }
-            case 6: {
-                // Kivulite tool (random, enchanted)
-                ItemStack tool = getRandomKivuliteTool(random);
-                EnchantmentHelper.enchantItem(random, tool, 3, false);
-                return tool;
-            }
-            case 7:
-                // Kivulite (1-3)
-                return new ItemStack(LionKingItems.KIVULITE.get(), 1 + random.nextInt(3));
-            case 8:
-                // Extra Nuka Shards (3-10)
-                return new ItemStack(LionKingItems.NUKA_SHARD.get(), 3 + random.nextInt(8));
-            case 9:
-                // Extra Black Darts (4-8)
-                return new ItemStack(LionKingItems.DART_BLACK.get(), 4 + random.nextInt(5));
-            default:
-                return new ItemStack(LionKingItems.NUKA_SHARD.get(), 3 + random.nextInt(8));
-        }
-    }
-
-    private ItemStack getRandomCorruptTool(RandomSource random) {
-        int pick = random.nextInt(5);
-        switch (pick) {
-            case 0:
-                return new ItemStack(LionKingItems.CORRUPT_SWORD.get());
-            case 1:
-                return new ItemStack(LionKingItems.CORRUPT_PICKAXE.get());
-            case 2:
-                return new ItemStack(LionKingItems.CORRUPT_AXE.get());
-            case 3:
-                return new ItemStack(LionKingItems.CORRUPT_SHOVEL.get());
-            case 4:
-                return new ItemStack(LionKingItems.CORRUPT_HOE.get());
-            default:
-                return new ItemStack(LionKingItems.CORRUPT_SWORD.get());
-        }
-    }
-
-    private ItemStack getRandomKivuliteTool(RandomSource random) {
-        int pick = random.nextInt(5);
-        switch (pick) {
-            case 0:
-                return new ItemStack(LionKingItems.KIVULITE_SWORD.get());
-            case 1:
-                return new ItemStack(LionKingItems.KIVULITE_PICKAXE.get());
-            case 2:
-                return new ItemStack(LionKingItems.KIVULITE_AXE.get());
-            case 3:
-                return new ItemStack(LionKingItems.KIVULITE_SHOVEL.get());
-            case 4:
-                return new ItemStack(LionKingItems.KIVULITE_HOE.get());
-            default:
-                return new ItemStack(LionKingItems.KIVULITE_SWORD.get());
         }
     }
 }

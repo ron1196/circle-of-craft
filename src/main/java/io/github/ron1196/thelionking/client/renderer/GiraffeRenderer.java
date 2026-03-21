@@ -16,10 +16,8 @@ public class GiraffeRenderer extends MobRenderer<GiraffeEntity, GiraffeModel<Gir
 
     private final float babyScale;
 
-    public GiraffeRenderer(
-            EntityRendererProvider.Context context, GiraffeModel<GiraffeEntity> model, float babyScale
-    ) {
-        super(context, model, 0.8F);
+    public GiraffeRenderer(EntityRendererProvider.Context context, GiraffeModel<GiraffeEntity> model, float babyScale) {
+        super(context, model, GiraffeEntity.SHADOW_RADIUS);
         this.babyScale = babyScale;
         this.addLayer(new GiraffeOverlayLayer(this));
     }

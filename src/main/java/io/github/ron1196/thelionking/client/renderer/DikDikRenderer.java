@@ -20,9 +20,10 @@ public class DikDikRenderer extends MobRenderer<DikDikEntity, EntityModel<DikDik
     private final float babyScale;
 
     public DikDikRenderer(
-            EntityRendererProvider.Context context, EntityModel<DikDikEntity> model,
-            float shadowRadius, float babyScale
-    ) {
+            EntityRendererProvider.Context context,
+            EntityModel<DikDikEntity> model,
+            float shadowRadius,
+            float babyScale) {
         super(context, model, shadowRadius);
         this.babyScale = babyScale;
     }
