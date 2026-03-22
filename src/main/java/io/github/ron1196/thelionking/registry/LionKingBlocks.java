@@ -56,6 +56,12 @@ public class LionKingBlocks {
     public static final RegistryObject<Block> PEACOCK_ORE =
             BLOCKS.register("peacock_ore", () -> new DropExperienceBlock(oreProps()));
 
+    public static final RegistryObject<Block> KIVULITE_ORE =
+            BLOCKS.register("kivulite_ore", () -> new DropExperienceBlock(oreProps()));
+
+    public static final RegistryObject<Block> NUKA_ORE =
+            BLOCKS.register("nuka_ore", () -> new DropExperienceBlock(oreProps()));
+
     // ========== Storage Blocks ==========
     public static final RegistryObject<Block> SILVER_BLOCK =
             BLOCKS.register("silver_block", () -> new Block(metalProps()));

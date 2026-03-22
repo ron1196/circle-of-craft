@@ -235,6 +235,10 @@ public class LionKingItems {
             registerBlockItem("silver_ore", LionKingBlocks.SILVER_ORE);
     public static final RegistryObject<BlockItem> PEACOCK_ORE_ITEM =
             registerBlockItem("peacock_ore", LionKingBlocks.PEACOCK_ORE);
+    public static final RegistryObject<BlockItem> KIVULITE_ORE_ITEM =
+            registerBlockItem("kivulite_ore", LionKingBlocks.KIVULITE_ORE);
+    public static final RegistryObject<BlockItem> NUKA_ORE_ITEM =
+            registerBlockItem("nuka_ore", LionKingBlocks.NUKA_ORE);
     public static final RegistryObject<BlockItem> SILVER_BLOCK_ITEM =
             registerBlockItem("silver_block", LionKingBlocks.SILVER_BLOCK);
     public static final RegistryObject<BlockItem> PEACOCK_BLOCK_ITEM =

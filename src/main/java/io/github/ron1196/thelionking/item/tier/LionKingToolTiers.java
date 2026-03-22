@@ -23,7 +23,7 @@ public class LionKingToolTiers {
             3, 1475, 8.0F, 3.0F, 9, BlockTags.NEEDS_DIAMOND_TOOL, () -> Ingredient.of(LionKingItems.PEACOCK_GEM.get()));
 
     public static final ForgeTier KIVULITE = new ForgeTier(
-            2, 70, 6.0F, 0.0F, 3, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(LionKingItems.KIVULITE.get()));
+            2, 100, 6.0F, 0.0F, 3, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(LionKingItems.KIVULITE.get()));
 
     public static final ForgeTier CORRUPT_PRIDESTONE = new ForgeTier(
             1,

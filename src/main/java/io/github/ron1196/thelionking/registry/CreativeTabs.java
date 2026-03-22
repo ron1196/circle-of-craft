@@ -44,6 +44,8 @@ public class CreativeTabs {
                         output.accept(LionKingItems.PRIDE_COAL_ORE_ITEM.get());
                         output.accept(LionKingItems.SILVER_ORE_ITEM.get());
                         output.accept(LionKingItems.PEACOCK_ORE_ITEM.get());
+                        output.accept(LionKingItems.KIVULITE_ORE_ITEM.get());
+                        output.accept(LionKingItems.NUKA_ORE_ITEM.get());
                         output.accept(LionKingItems.SILVER_BLOCK_ITEM.get());
                         output.accept(LionKingItems.PEACOCK_BLOCK_ITEM.get());
                         output.accept(LionKingItems.OUTSAND_ITEM.get());

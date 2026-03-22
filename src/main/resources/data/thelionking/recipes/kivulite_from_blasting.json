@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": { "item": "thelionking:kivulite_ore" },
+  "result": "thelionking:kivulite",
+  "experience": 0.8,
+  "cookingtime": 100
+}
