@@ -380,6 +380,7 @@ public class LionKingBlocks {
                     .mapColor(MapColor.GOLD)
                     .strength(5.0F, 1200.0F)
                     .requiresCorrectToolForDrops()
+                    .noOcclusion()
                     .lightLevel(s -> 7)));
 
     public static final RegistryObject<Block> OUTLANDS_ALTAR = BLOCKS.register(

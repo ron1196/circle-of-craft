@@ -12,211 +12,242 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 public class QuestBookScreen extends Screen {
 
-  private static final ResourceLocation BOOK_LEFT =
-      new ResourceLocation(TheLionKingMod.MOD_ID, "textures/gui/book_left.png");
-  private static final ResourceLocation BOOK_RIGHT =
-      new ResourceLocation(TheLionKingMod.MOD_ID, "textures/gui/book_right.png");
+    private static final ResourceLocation BOOK_LEFT =
+            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/gui/book_left.png");
+    private static final ResourceLocation BOOK_RIGHT =
+            new ResourceLocation(TheLionKingMod.MOD_ID, "textures/gui/book_right.png");
 
-  private static final int BOOK_WIDTH = 202;
-  private static final int BOOK_HEIGHT = 256;
-  private static final int TEXTURE_SIZE = 256;
+    private static final int BOOK_WIDTH = 202;
+    private static final int BOOK_HEIGHT = 256;
+    private static final int TEXTURE_SIZE = 256;
+    private static final int CONTENT_OFFSET_Y = 50;
+    private static final int TITLE_OFFSET_Y = 25;
+    private static final int LEFT_PAGE_PADDING = 30;
+    private static final int RIGHT_PAGE_PADDING = 15;
+    private static final int BUTTON_WIDTH = 155;
+    private static final int TEXT_WRAP_WIDTH = 170;
+    private static final int CHECKMARK_WRAP_WIDTH = 155;
+    private static final int LINE_HEIGHT = 10;
+    private static final int SECTION_GAP = 8;
+    private static final int HEADING_GAP = 12;
+    private static final int STATUS_GAP = 16;
 
-  private int selectedQuest = -1;
+    private static final int COLOR_BOOK_TEXT = 0x140C02;
+    private static final int COLOR_BODY_TEXT = 0x404040;
+    private static final int COLOR_GREEN = 0x00AA00;
 
-  public QuestBookScreen() {
-    super(Component.literal("Quest Book"));
-  }
+    private int selectedQuest = -1;
 
-  @Override
-  protected void init() {
-    super.init();
-
-    int centerX = (this.width - BOOK_WIDTH * 2) / 2;
-    int topY = (this.height - BOOK_HEIGHT) / 2;
-
-    List<Questline> quests = QuestlineRegistry.getOrdered();
-    int buttonY = topY + 30;
-    for (int i = 0; i < quests.size(); i++) {
-      Questline quest = quests.get(i);
-      final int questIdx = i;
-      addRenderableWidget(
-          Button.builder(
-                  Component.literal(quest.getDisplayName()),
-                  btn -> {
-                    selectedQuest = questIdx;
-                    // Mark as checked on server
-                    Networking.CHANNEL.sendToServer(new QuestCheckPacket(quest.getId()));
-                  })
-              .bounds(centerX + 15, buttonY, 170, 20)
-              .build());
-      buttonY += 24;
-    }
-  }
-
-  @Override
-  public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-    renderBackground(graphics);
-
-    int centerX = (this.width - BOOK_WIDTH * 2) / 2;
-    int topY = (this.height - BOOK_HEIGHT) / 2;
-
-    // Draw book pages
-    graphics.blit(
-        BOOK_LEFT, centerX, topY, 0, 0, BOOK_WIDTH, BOOK_HEIGHT, TEXTURE_SIZE, TEXTURE_SIZE);
-    graphics.blit(
-        BOOK_RIGHT,
-        centerX + BOOK_WIDTH,
-        topY,
-        0,
-        0,
-        BOOK_WIDTH,
-        BOOK_HEIGHT,
-        TEXTURE_SIZE,
-        TEXTURE_SIZE);
-
-    // Left page title
-    graphics.drawCenteredString(
-        font, "\u00a7lQuests", centerX + BOOK_WIDTH / 2, topY + 12, 0x140C02);
-
-    List<Questline> quests = QuestlineRegistry.getOrdered();
-
-    // Draw quest status indicators
-    int buttonY = topY + 30;
-    for (Questline quest : quests) {
-      String stageId = ClientWorldState.getQuestStageId(quest.getId());
-      boolean complete = quest.isComplete(stageId);
-      boolean started = quest.isStarted(stageId) && !complete;
-      // A quest is "in progress" if started but not complete, and past the first stage
-      boolean inProgress = started && quest.getStageIndex(stageId) > 0;
-      String status;
-      int color;
-      if (complete) {
-        status = "\u2714";
-        color = 0x00AA00;
-      } else if (inProgress) {
-        status = "\u25B6";
-        color = 0xFFAA00;
-      } else if (canStartOnClient(quest)) {
-        status = "\u25CB";
-        color = 0x5555FF;
-      } else {
-        status = "\u2716";
-        color = 0xAA0000;
-      }
-      graphics.drawString(font, status, centerX + 188, buttonY + 6, color, false);
-      buttonY += 24;
+    public QuestBookScreen() {
+        super(Component.literal("Quest Book"));
     }
 
-    // Right page: quest details
-    if (selectedQuest >= 0 && selectedQuest < quests.size()) {
-      Questline quest = quests.get(selectedQuest);
-      String stageId = ClientWorldState.getQuestStageId(quest.getId());
-      boolean complete = quest.isComplete(stageId);
-      int stageIndex = quest.getStageIndex(stageId);
-      int rightX = centerX + BOOK_WIDTH + 15;
-      int textY = topY + 15;
+    @Override
+    protected void init() {
+        super.init();
 
-      // Quest name
-      graphics.drawString(font, "\u00a7l" + quest.getDisplayName(), rightX, textY, 0x140C02, false);
-      textY += 16;
+        int centerX = (this.width - BOOK_WIDTH * 2) / 2;
+        int topY = (this.height - BOOK_HEIGHT) / 2;
 
-      // Status
-      String statusText;
-      if (complete) {
-        statusText = "\u00a72Complete";
-      } else if (stageIndex > 0) {
-        statusText =
-            "\u00a76In Progress (Stage " + stageIndex + "/" + (quest.getNumStages() - 1) + ")";
-      } else if (canStartOnClient(quest)) {
-        statusText = "\u00a79Available";
-      } else {
-        statusText = "\u00a74Locked";
-      }
-      graphics.drawString(font, statusText, rightX, textY, 0x140C02, false);
-      textY += 16;
-
-      // Current objective
-      if (!complete && stageIndex >= 0) {
-        IStageId currentStage = stageIndex >= 0 ? quest.getStageOrder().get(stageIndex) : null;
-        if (currentStage != null) {
-          String objective = quest.getObjectiveByStage(currentStage);
-          if (!objective.isEmpty()) {
-            graphics.drawString(font, "\u00a7nObjective:", rightX, textY, 0x140C02, false);
-            textY += 12;
-            for (var line :
-                font.getSplitter()
-                    .splitLines(objective, 170, net.minecraft.network.chat.Style.EMPTY)) {
-              graphics.drawString(font, line.getString(), rightX, textY, 0x404040, false);
-              textY += 10;
-            }
-          }
+        List<Questline> quests = QuestlineRegistry.getOrdered();
+        int buttonY = topY + CONTENT_OFFSET_Y;
+        for (int i = 0; i < quests.size(); i++) {
+            Questline quest = quests.get(i);
+            final int questIdx = i;
+            addRenderableWidget(Button.builder(Component.literal(quest.getDisplayName()), btn -> {
+                        selectedQuest = questIdx;
+                        Networking.CHANNEL.sendToServer(new QuestCheckPacket(quest.getId()));
+                    })
+                    .bounds(centerX + LEFT_PAGE_PADDING, buttonY, BUTTON_WIDTH, 20)
+                    .build());
+            buttonY += 24;
         }
-      }
+    }
 
-      // Requirements
-      if (!canStartOnClient(quest) && stageIndex <= 0) {
+    @Override
+    public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        renderBackground(graphics);
+
+        int centerX = (this.width - BOOK_WIDTH * 2) / 2;
+        int topY = (this.height - BOOK_HEIGHT) / 2;
+
+        renderBookPages(graphics, centerX, topY);
+        renderLeftPage(graphics, centerX, topY);
+        renderRightPage(graphics, centerX, topY);
+
+        super.render(graphics, mouseX, mouseY, partialTick);
+    }
+
+    private void renderBookPages(GuiGraphics graphics, int centerX, int topY) {
+        graphics.blit(BOOK_LEFT, centerX, topY, 0, 0, BOOK_WIDTH, BOOK_HEIGHT, TEXTURE_SIZE, TEXTURE_SIZE);
+        graphics.blit(
+                BOOK_RIGHT, centerX + BOOK_WIDTH, topY, 0, 0, BOOK_WIDTH, BOOK_HEIGHT, TEXTURE_SIZE, TEXTURE_SIZE);
+    }
+
+    private void renderLeftPage(GuiGraphics graphics, int centerX, int topY) {
+        graphics.drawCenteredString(font, "§lQuests", centerX + BOOK_WIDTH / 2, topY + TITLE_OFFSET_Y, COLOR_BOOK_TEXT);
+
+        List<Questline> quests = QuestlineRegistry.getOrdered();
+        int buttonY = topY + CONTENT_OFFSET_Y;
+        for (Questline quest : quests) {
+            renderQuestStatusIcon(graphics, quest, centerX + LEFT_PAGE_PADDING + BUTTON_WIDTH + 5, buttonY + 6);
+            buttonY += 24;
+        }
+    }
+
+    private void renderQuestStatusIcon(GuiGraphics graphics, Questline quest, int x, int y) {
+        String stageId = ClientWorldState.getQuestStageId(quest.getId());
+        boolean complete = quest.isComplete(stageId);
+        boolean started = quest.isStarted(stageId) && !complete;
+        boolean inProgress = started && quest.getStageIndex(stageId) > 0;
+
+        String status;
+        int color;
+        if (complete) {
+            status = "✔";
+            color = 0x00AA00;
+        } else if (inProgress) {
+            status = "▶";
+            color = 0xFFAA00;
+        } else if (canStartOnClient(quest)) {
+            status = "○";
+            color = 0x5555FF;
+        } else {
+            status = "✖";
+            color = 0xAA0000;
+        }
+
+        graphics.drawString(font, status, x, y, color, false);
+    }
+
+    private void renderRightPage(GuiGraphics graphics, int centerX, int topY) {
+        List<Questline> quests = QuestlineRegistry.getOrdered();
+        int rightX = centerX + BOOK_WIDTH + RIGHT_PAGE_PADDING;
+
+        if (selectedQuest < 0 || selectedQuest >= quests.size()) {
+            graphics.drawString(font, "Select a quest from", rightX, topY + 60, COLOR_BODY_TEXT, false);
+            graphics.drawString(font, "the left page.", rightX, topY + 72, COLOR_BODY_TEXT, false);
+            return;
+        }
+
+        Questline quest = quests.get(selectedQuest);
+        String stageId = ClientWorldState.getQuestStageId(quest.getId());
+        boolean complete = quest.isComplete(stageId);
+        int stageIndex = quest.getStageIndex(stageId);
+
+        int textY = topY + CONTENT_OFFSET_Y;
+        textY = renderQuestHeader(graphics, quest, complete, stageIndex, rightX, textY);
+        textY = renderCurrentObjective(graphics, quest, complete, stageIndex, rightX, textY);
+        textY = renderRequirements(graphics, quest, stageIndex, rightX, textY);
+        renderCompletedStages(graphics, quest, stageIndex, rightX, textY);
+    }
+
+    private int renderQuestHeader(
+            GuiGraphics graphics, Questline quest, boolean complete, int stageIndex, int x, int y) {
+        graphics.drawString(font, "§l" + quest.getDisplayName(), x, y, COLOR_BOOK_TEXT, false);
+        y += STATUS_GAP;
+
+        String statusText;
+        if (complete) {
+            statusText = "§2Complete";
+        } else if (stageIndex > 0) {
+            statusText = "§6In Progress (Stage " + stageIndex + "/" + (quest.getNumStages() - 1) + ")";
+        } else if (canStartOnClient(quest)) {
+            statusText = "§9Available";
+        } else {
+            statusText = "§4Locked";
+        }
+        graphics.drawString(font, statusText, x, y, COLOR_BOOK_TEXT, false);
+        y += STATUS_GAP;
+
+        return y;
+    }
+
+    private int renderCurrentObjective(
+            GuiGraphics graphics, Questline quest, boolean complete, int stageIndex, int x, int y) {
+        if (complete || stageIndex < 0) return y;
+
+        IStageId currentStage = quest.getStageOrder().get(stageIndex);
+        if (currentStage == null) return y;
+
+        String objective = quest.getObjectiveByStage(currentStage);
+        if (objective.isEmpty()) return y;
+
+        graphics.drawString(font, "§nObjective:", x, y, COLOR_BOOK_TEXT, false);
+        y += HEADING_GAP;
+
+        for (FormattedText line : font.getSplitter().splitLines(objective, TEXT_WRAP_WIDTH, Style.EMPTY)) {
+            graphics.drawString(font, line.getString(), x, y, COLOR_BODY_TEXT, false);
+            y += LINE_HEIGHT;
+        }
+
+        return y;
+    }
+
+    private int renderRequirements(GuiGraphics graphics, Questline quest, int stageIndex, int x, int y) {
+        if (canStartOnClient(quest) || stageIndex > 0) return y;
+
         String[] prereqs = quest.getPrerequisites();
-        if (prereqs != null) {
-          textY += 4;
-          graphics.drawString(font, "\u00a7nRequirements:", rightX, textY, 0x140C02, false);
-          textY += 12;
-          for (String req : prereqs) {
-            graphics.drawString(font, "- " + req, rightX, textY, 0x404040, false);
-            textY += 10;
-          }
-        }
-      }
+        if (prereqs == null) return y;
 
-      // Completed stages
-      if (stageIndex > 0) {
-        textY += 8;
-        graphics.drawString(font, "\u00a7nCompleted:", rightX, textY, 0x140C02, false);
-        textY += 12;
+        y += 4;
+        graphics.drawString(font, "§nRequirements:", x, y, COLOR_BOOK_TEXT, false);
+        y += HEADING_GAP;
+
+        for (String req : prereqs) {
+            graphics.drawString(font, "- " + req, x, y, COLOR_BODY_TEXT, false);
+            y += LINE_HEIGHT;
+        }
+
+        return y;
+    }
+
+    private void renderCompletedStages(GuiGraphics graphics, Questline quest, int stageIndex, int x, int y) {
+        if (stageIndex <= 0) return;
+
+        y += SECTION_GAP;
+        graphics.drawString(font, "§nCompleted:", x, y, COLOR_BOOK_TEXT, false);
+        y += HEADING_GAP;
+
         List<IStageId> stages = quest.getStageOrder();
         for (int s = 0; s < stageIndex; s++) {
-          String stageObj = quest.getObjectiveByStage(stages.get(s));
-          if (stageObj != null && !stageObj.isEmpty() && !stageObj.equals("Quest complete")) {
-            String line = "\u00a72\u2714 " + stageObj;
-            for (var wrappedLine :
-                font.getSplitter().splitLines(line, 170, net.minecraft.network.chat.Style.EMPTY)) {
-              graphics.drawString(font, wrappedLine.getString(), rightX, textY, 0x404040, false);
-              textY += 10;
+            String stageObj = quest.getObjectiveByStage(stages.get(s));
+            if (stageObj == null || stageObj.isEmpty() || stageObj.equals("Quest complete")) continue;
+
+            List<FormattedText> lines = font.getSplitter().splitLines(stageObj, CHECKMARK_WRAP_WIDTH, Style.EMPTY);
+            for (int i = 0; i < lines.size(); i++) {
+                String prefix = i == 0 ? "§2✔ " : "§2   ";
+                graphics.drawString(font, prefix + lines.get(i).getString(), x, y, COLOR_GREEN, false);
+                y += LINE_HEIGHT;
             }
-          }
         }
-      }
-    } else {
-      // No quest selected
-      int rightX = centerX + BOOK_WIDTH + 15;
-      graphics.drawString(font, "Select a quest from", rightX, topY + 40, 0x404040, false);
-      graphics.drawString(font, "the left page.", rightX, topY + 52, 0x404040, false);
     }
 
-    super.render(graphics, mouseX, mouseY, partialTick);
-  }
-
-  private static boolean canStartOnClient(Questline quest) {
-    String[] prereqs = quest.getPrerequisites();
-    if (prereqs == null) return true;
-    for (String prereqName : prereqs) {
-      for (Questline other : QuestlineRegistry.getOrdered()) {
-        if (other.getDisplayName().equals(prereqName)
-            || ("Complete " + other.getDisplayName()).equals(prereqName)) {
-          if (!other.isComplete(ClientWorldState.getQuestStageId(other.getId()))) {
-            return false;
-          }
+    private static boolean canStartOnClient(Questline quest) {
+        String[] prereqs = quest.getPrerequisites();
+        if (prereqs == null) return true;
+        for (String prereqName : prereqs) {
+            for (Questline other : QuestlineRegistry.getOrdered()) {
+                if (other.getDisplayName().equals(prereqName)
+                        || ("Complete " + other.getDisplayName()).equals(prereqName)) {
+                    if (!other.isComplete(ClientWorldState.getQuestStageId(other.getId()))) {
+                        return false;
+                    }
+                }
+            }
         }
-      }
+        return true;
     }
-    return true;
-  }
 
-  @Override
-  public boolean isPauseScreen() {
-    return false;
-  }
+    @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
 }

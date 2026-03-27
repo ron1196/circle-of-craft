@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DDD",
+    "SSS"
+  ],
+  "key": {
+    "D": { "item": "thelionking:rafiki_dust" },
+    "S": { "item": "thelionking:silver_ingot" }
+  },
+  "result": {
+    "item": "thelionking:star_altar",
+    "count": 1
+  }
+}

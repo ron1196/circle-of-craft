@@ -6,7 +6,6 @@ import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.stage.StageTrigger;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
-import io.github.ron1196.thelionking.registry.LionKingItems;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -73,32 +72,25 @@ public class PumbaaEntity extends PathfinderMob {
     }
 
     @Override
-    protected @NotNull InteractionResult mobInteract(
-            @NotNull Player player, @NotNull InteractionHand hand
-    ) {
+    protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         if (level().isClientSide()) return InteractionResult.SUCCESS;
         if (talkCooldown > 0) return InteractionResult.SUCCESS;
         if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
 
         ServerLevel serverLevel = (ServerLevel) level();
         QuestlineManager qm = WorldData.get(serverLevel.getServer().overworld()).getQuestManager();
-        OutlandsQuestline.Stage stage =
-                qm.getStage("outlands", OutlandsQuestline.Stage.class);
+        OutlandsQuestline.Stage stage = qm.getStage("outlands", OutlandsQuestline.Stage.class);
 
         switch (stage) {
             case TALK_TO_PUMBAA -> {
                 talkCooldown = TALK_COOLDOWN_TICKS;
                 sendChat(player, "Pumbaa", "Hi there, kid.");
                 sendChat(player, "Timon", "You look down. Can we help?");
-                sendChat(
-                        player,
-                        "Pumbaa",
-                        "What's that you say? Outlanders have taken over Rafiki's tree?");
+                sendChat(player, "Pumbaa", "What's that you say? Outlanders have taken over Rafiki's tree?");
                 sendChat(
                         player,
                         "Timon",
-                        "Outlanders? Man, I hate Outlanders. Almost as much as I hate hyenas, "
-                                + "and I HATE hyenas.");
+                        "Outlanders? Man, I hate Outlanders. Almost as much as I hate hyenas, " + "and I HATE hyenas.");
                 sendChat(
                         player,
                         "Timon",
@@ -132,19 +124,9 @@ public class PumbaaEntity extends PathfinderMob {
     private void spawnPumbaaBox() {
         if (level().isClientSide()) return;
         spawnFartParticles();
-        level().playSound(
-                null,
-                blockPosition(),
-                SoundEvents.GENERIC_EAT,
-                SoundSource.NEUTRAL,
-                0.8F,
-                1.0F);
+        level().playSound(null, blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, 0.8F, 1.0F);
         ItemEntity item = new ItemEntity(
-                level(),
-                getX() + 0.5,
-                getY() + 0.5,
-                getZ() + 0.5,
-                new ItemStack(LionKingBlocks.PUMBAA_BOX.get()));
+                level(), getX() + 0.5, getY() + 0.5, getZ() + 0.5, new ItemStack(LionKingBlocks.PUMBAA_BOX.get()));
         level().addFreshEntity(item);
     }
 
@@ -154,8 +136,7 @@ public class PumbaaEntity extends PathfinderMob {
                     + "to heat things up, and some planks to put it all in.",
             "The flatulence needs to be extremely powerful for there to be even a hope of "
                     + "this working. Get us those ingredients!",
-            "Bring Pumbaa planks, sixteen bugs, a termite and a jar of lava and "
-                    + "he'll give you the flatulence.",
+            "Bring Pumbaa planks, sixteen bugs, a termite and a jar of lava and " + "he'll give you the flatulence.",
             "Kid, we want to help, but I just don't have those ingredients yet!"
         };
         int index = random.nextInt(speeches.length);
@@ -183,13 +164,13 @@ public class PumbaaEntity extends PathfinderMob {
     private void spawnFartParticles() {
         for (int i = 0; i < 5; i++) {
             level().addParticle(
-                    ParticleTypes.SMOKE,
-                    getX() - 0.5 + random.nextFloat(),
-                    getY() + 0.5 + random.nextFloat(),
-                    getZ() - 0.5 + random.nextFloat(),
-                    0,
-                    0.05,
-                    0);
+                            ParticleTypes.SMOKE,
+                            getX() - 0.5 + random.nextFloat(),
+                            getY() + 0.5 + random.nextFloat(),
+                            getZ() - 0.5 + random.nextFloat(),
+                            0,
+                            0.05,
+                            0);
         }
     }
 }

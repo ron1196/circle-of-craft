@@ -1,8 +1,11 @@
 package io.github.ron1196.thelionking.block;
 
+import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -14,8 +17,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Zira Mound Gate — indestructible block that can only be broken with the Rafiki Stick. When
- * broken, recursively destroys all adjacent gate blocks (chain break).
+ * Zira Mound Gate — indestructible block that can only be broken with the Rafiki Stick
+ * after completing the Rafiki questline. When broken, recursively destroys all adjacent
+ * gate blocks (chain break).
  */
 public class ZiraMoundGateBlock extends Block {
 
@@ -24,6 +28,7 @@ public class ZiraMoundGateBlock extends Block {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public @NotNull InteractionResult use(
             @NotNull BlockState state,
             @NotNull Level level,
@@ -37,6 +42,12 @@ public class ZiraMoundGateBlock extends Block {
         }
 
         if (!level.isClientSide) {
+            ServerLevel serverLevel = (ServerLevel) level;
+            if (!WorldData.get(serverLevel).getQuestManager().isComplete("rafiki")) {
+                player.sendSystemMessage(
+                        Component.literal("§e<Rafiki's Stick> §fThe gate resists... the quest is not yet complete."));
+                return InteractionResult.SUCCESS;
+            }
             breakGateChain(level, pos);
         }
 

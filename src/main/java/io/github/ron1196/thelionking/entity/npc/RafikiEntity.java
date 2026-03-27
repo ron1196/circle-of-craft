@@ -129,8 +129,8 @@ public class RafikiEntity extends PathfinderMob {
                     case COLLECT_BONES -> "Welcome to the Pride Lands! I am Rafiki. Bring me sixty-four hyena bones and I will give you my stick.";
                     case DEFEAT_SCAR -> "Excellent! Here is my stick. Now go and defeat Scar!";
                     case RETURN_AFTER_SCAR -> "Well done! Scar has been defeated. Now come back and see me.";
-                    case COLLECT_TERMITES -> "Well done! Scar has been defeated. Now bring me four ground termites.";
-                    case COLLECT_MANGOES -> "Good! Now bring me four ground mangoes.";
+                    case COLLECT_TERMITES -> "This portal will take you to the Outlands. I want you to go there and bring me four termite dust.";
+                    case COLLECT_MANGOES -> "Good! Now bring me four mango dust.";
                     case USE_STAR_ALTAR -> "Perfect! Now craft a Star Altar and use the Rafiki Dust on it.";
                     case COMPLETE -> "Wonderful! The spirits of the great kings smile upon you!";
                     default -> null;

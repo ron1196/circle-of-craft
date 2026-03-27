@@ -33,8 +33,7 @@ public class PumbaaBoxBlock extends Block {
             @NotNull BlockPos pos,
             @NotNull Player player,
             @NotNull InteractionHand hand,
-            @NotNull BlockHitResult hit
-    ) {
+            @NotNull BlockHitResult hit) {
         if (level.isClientSide()) {
             spawnSmokeParticles(level, pos);
             return InteractionResult.SUCCESS;
@@ -43,10 +42,8 @@ public class PumbaaBoxBlock extends Block {
         if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.PASS;
 
         ServerLevel serverLevel = (ServerLevel) level;
-        QuestlineManager qm =
-                WorldData.get(serverLevel.getServer().overworld()).getQuestManager();
-        OutlandsQuestline.Stage stage =
-                qm.getStage("outlands", OutlandsQuestline.Stage.class);
+        QuestlineManager qm = WorldData.get(serverLevel.getServer().overworld()).getQuestManager();
+        OutlandsQuestline.Stage stage = qm.getStage("outlands", OutlandsQuestline.Stage.class);
 
         if (stage == OutlandsQuestline.Stage.USE_PUMBAA_BOX) {
             explode(level, pos, serverPlayer, qm);
@@ -58,20 +55,17 @@ public class PumbaaBoxBlock extends Block {
     }
 
     private void explode(
-            @NotNull Level level,
-            @NotNull BlockPos pos,
-            @NotNull ServerPlayer player,
-            @NotNull QuestlineManager qm
-    ) {
+            @NotNull Level level, @NotNull BlockPos pos, @NotNull ServerPlayer player, @NotNull QuestlineManager qm) {
         level.removeBlock(pos, false);
         level.addParticle(
-                ParticleTypes.EXPLOSION_EMITTER,
-                pos.getX() + 0.5, pos.getY() + 2.0, pos.getZ() + 0.5,
-                0.0, 0.0, 0.0);
+                ParticleTypes.EXPLOSION_EMITTER, pos.getX() + 0.5, pos.getY() + 2.0, pos.getZ() + 0.5, 0.0, 0.0, 0.0);
         level.playSound(
-                null, pos,
-                SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS,
-                4.0F, (1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F);
+                null,
+                pos,
+                SoundEvents.GENERIC_EXPLODE,
+                SoundSource.BLOCKS,
+                4.0F,
+                (1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F);
         qm.tryAdvance("outlands", player, StageTrigger.PUMBAA_BOX_USED);
     }
 
@@ -85,7 +79,9 @@ public class PumbaaBoxBlock extends Block {
                     pos.getX() + 0.5 + (level.random.nextFloat() - 0.5) * 1.5,
                     pos.getY() + 0.9 + level.random.nextFloat(),
                     pos.getZ() + 0.5 + (level.random.nextFloat() - 0.5) * 1.5,
-                    dx, dy, dz);
+                    dx,
+                    dy,
+                    dz);
         }
     }
 }

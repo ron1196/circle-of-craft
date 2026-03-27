@@ -1,13 +1,13 @@
 package io.github.ron1196.thelionking.quest.stage;
 
 public enum StageTrigger {
-  RAFIKI_TALK,
-  SCAR_KILLED,
-  STAR_ALTAR_USED,
-  ENTER_OUTLANDS,
-  ZIRA_TALK,
-  ZIRA_KILLED,
-  PUMBAA_TALK,
-  PUMBAA_BOX_USED,
-  ZIRA_SPAWN_EVENT
+    RAFIKI_TALK,
+    SCAR_KILLED,
+    STAR_ALTAR_USED,
+    ENTER_OUTLANDS,
+    ZIRA_TALK,
+    ZIRA_KILLED,
+    PUMBAA_TALK,
+    PUMBAA_BOX_USED,
+    ZIRA_SPAWN_EVENT
 }

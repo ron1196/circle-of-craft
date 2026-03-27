@@ -9,29 +9,31 @@ import org.jetbrains.annotations.NotNull;
 
 public class WorldData extends SavedData {
 
-  private static final String DATA_NAME = TheLionKingMod.MOD_ID + "_data";
+    private static final String DATA_NAME = TheLionKingMod.MOD_ID + "_data";
 
-  private final QuestlineManager questManager = new QuestlineManager(this);
+    private final QuestlineManager questManager = new QuestlineManager(this);
 
-  public WorldData() {}
+    public WorldData() {}
 
-  public QuestlineManager getQuestManager() {
-    return questManager;
-  }
+    public QuestlineManager getQuestManager() {
+        return questManager;
+    }
 
-  public static WorldData get(ServerLevel level) {
-    return level.getDataStorage().computeIfAbsent(WorldData::load, WorldData::new, DATA_NAME);
-  }
+    public static WorldData get(ServerLevel level) {
+        // Always use overworld data storage so quest state is shared across all dimensions
+        ServerLevel overworld = level.getServer().overworld();
+        return overworld.getDataStorage().computeIfAbsent(WorldData::load, WorldData::new, DATA_NAME);
+    }
 
-  public static WorldData load(CompoundTag tag) {
-    WorldData data = new WorldData();
-    data.questManager.readFromNBT(tag);
-    return data;
-  }
+    public static WorldData load(CompoundTag tag) {
+        WorldData data = new WorldData();
+        data.questManager.readFromNBT(tag);
+        return data;
+    }
 
-  @Override
-  public @NotNull CompoundTag save(CompoundTag tag) {
-    questManager.writeToNBT(tag);
-    return tag;
-  }
+    @Override
+    public @NotNull CompoundTag save(CompoundTag tag) {
+        questManager.writeToNBT(tag);
+        return tag;
+    }
 }

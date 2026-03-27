@@ -12,12 +12,12 @@ import io.github.ron1196.thelionking.entity.hostile.SkeletalHyenaEntity;
 import io.github.ron1196.thelionking.entity.npc.ScarEntity;
 import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
-import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
-import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
-import io.github.ron1196.thelionking.quest.stage.StageTrigger;
 import io.github.ron1196.thelionking.item.GroundRhinoHornItem;
 import io.github.ron1196.thelionking.network.LoginSyncPacket;
 import io.github.ron1196.thelionking.network.Networking;
+import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
+import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
+import io.github.ron1196.thelionking.quest.stage.StageTrigger;
 import io.github.ron1196.thelionking.registry.Enchantments;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
@@ -26,13 +26,6 @@ import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.chunk.LevelChunkSection;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -43,7 +36,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -52,6 +49,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
@@ -194,6 +192,9 @@ public class LionKingForgeEvents {
         } else if (serverPlayer.level().dimension() == Dimensions.OUTLANDS_LEVEL && !playerData.hasEnteredOutlands()) {
             playerData.setEnteredOutlands(true);
             LionKingCriteriaTriggers.ENTER_OUTLANDS.trigger(serverPlayer);
+            WorldData.get(serverPlayer.serverLevel())
+                    .getQuestManager()
+                    .tryAdvance("outlands", serverPlayer, StageTrigger.ENTER_OUTLANDS);
         } else if (serverPlayer.level().dimension() == Dimensions.UPENDI_LEVEL && !playerData.hasEnteredUpendi()) {
             playerData.setEnteredUpendi(true);
             LionKingCriteriaTriggers.ENTER_UPENDI.trigger(serverPlayer);
@@ -317,8 +318,7 @@ public class LionKingForgeEvents {
     private static void handleZiraSpawnEvent(ServerLevel level) {
         WorldData data = WorldData.get(level);
         QuestlineManager qm = data.getQuestManager();
-        OutlandsQuestline.Stage stage =
-                qm.getStage("outlands", OutlandsQuestline.Stage.class);
+        OutlandsQuestline.Stage stage = qm.getStage("outlands", OutlandsQuestline.Stage.class);
         if (stage != OutlandsQuestline.Stage.ZIRA_RETURNS) return;
         if (level.players().isEmpty()) return;
 
@@ -385,10 +385,7 @@ public class LionKingForgeEvents {
                         BlockState state = section.getBlockState(x, y, z);
                         if (state.getFluidState().is(Fluids.WATER)
                                 || state.getFluidState().is(Fluids.FLOWING_WATER)) {
-                            section.setBlockState(
-                                    x, y, z,
-                                    Blocks.LAVA.defaultBlockState(),
-                                    false);
+                            section.setBlockState(x, y, z, Blocks.LAVA.defaultBlockState(), false);
                         }
                     }
                 }

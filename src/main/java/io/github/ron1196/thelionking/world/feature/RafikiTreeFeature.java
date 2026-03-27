@@ -28,6 +28,7 @@ public class RafikiTreeFeature extends Feature<NoneFeatureConfiguration> {
     private static final BlockState TORCH = net.minecraft.world.level.block.Blocks.TORCH.defaultBlockState();
     private static final BlockState PORTAL_FRAME =
             LionKingBlocks.OUTLANDS_PORTAL_FRAME.get().defaultBlockState();
+    private static final BlockState GATE = LionKingBlocks.ZIRA_MOUND_GATE.get().defaultBlockState();
     private static final BlockState AIR = net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
 
     public RafikiTreeFeature(Codec<NoneFeatureConfiguration> codec) {
@@ -10122,12 +10123,12 @@ public class RafikiTreeFeature extends Feature<NoneFeatureConfiguration> {
         setBlock(level, i, j, k, -9, 42, -1, AIR);
         setBlock(level, i, j, k, -9, 41, -1, AIR);
         setBlock(level, i, j, k, -9, 41, 0, AIR);
-        setBlock(level, i, j, k, -9, 41, 0, WOOD);
-        setBlock(level, i, j, k, -9, 41, -1, WOOD);
-        setBlock(level, i, j, k, -9, 42, 0, WOOD);
-        setBlock(level, i, j, k, -9, 42, -1, WOOD);
-        setBlock(level, i, j, k, -9, 43, 0, WOOD);
-        setBlock(level, i, j, k, -9, 43, -1, WOOD);
+        setBlock(level, i, j, k, -9, 41, 0, GATE);
+        setBlock(level, i, j, k, -9, 41, -1, GATE);
+        setBlock(level, i, j, k, -9, 42, 0, GATE);
+        setBlock(level, i, j, k, -9, 42, -1, GATE);
+        setBlock(level, i, j, k, -9, 43, 0, GATE);
+        setBlock(level, i, j, k, -9, 43, -1, GATE);
         setBlock(level, i, j, k, -8, 43, -1, WOOD);
         setBlock(level, i, j, k, -8, 43, -1, AIR);
         setBlock(level, i, j, k, -7, 41, 0, WOOD);
