@@ -190,7 +190,7 @@ public class LionKingBlocks {
 
     public static final RegistryObject<Block> PUMBAA_BOX = BLOCKS.register(
             "pumbaa_box",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new PumbaaBoxBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.WOOD)
                     .strength(1.0F)
                     .sound(SoundType.WOOD)));

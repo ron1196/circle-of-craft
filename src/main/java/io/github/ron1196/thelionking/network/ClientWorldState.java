@@ -8,12 +8,6 @@ import java.util.Set;
 
 public class ClientWorldState {
 
-    // World state
-    public static boolean defeatedScar;
-    public static int ziraStage;
-    public static int pumbaaStage;
-    public static boolean outlandersHostile;
-
     // Quest state
     public static final Map<String, QuestlineState> questStates = new HashMap<>();
 
@@ -48,12 +42,6 @@ public class ClientWorldState {
     }
 
     public static void reset() {
-        defeatedScar = false;
-
-        ziraStage = 0;
-        pumbaaStage = 0;
-
-        outlandersHostile = false;
         questStates.clear();
 
         receivedQuestBook = false;

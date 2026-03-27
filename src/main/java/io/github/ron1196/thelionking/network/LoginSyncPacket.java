@@ -15,12 +15,6 @@ import net.minecraftforge.network.NetworkEvent;
 
 public class LoginSyncPacket {
 
-  // World state
-  private final boolean defeatedScar;
-  private final int ziraStage;
-  private final int pumbaaStage;
-  private final boolean outlandersHostile;
-
   // Quest data
   private final List<QuestEntry> questEntries;
 
@@ -35,12 +29,6 @@ public class LoginSyncPacket {
   private record QuestEntry(String questId, String stageId, boolean checked) {}
 
   public LoginSyncPacket(WorldData worldData, PlayerData playerData) {
-    // World
-    this.defeatedScar = worldData.defeatedScar;
-    this.ziraStage = worldData.ziraStage;
-    this.pumbaaStage = worldData.pumbaaStage;
-    this.outlandersHostile = worldData.outlandersHostile;
-
     // Quests
     this.questEntries = new ArrayList<>();
     for (Questline quest : QuestlineRegistry.getOrdered()) {
@@ -58,12 +46,6 @@ public class LoginSyncPacket {
   }
 
   public LoginSyncPacket(FriendlyByteBuf buf) {
-    // World
-    this.defeatedScar = buf.readBoolean();
-    this.ziraStage = buf.readVarInt();
-    this.pumbaaStage = buf.readVarInt();
-    this.outlandersHostile = buf.readBoolean();
-
     // Quests
     int questCount = buf.readVarInt();
     this.questEntries = new ArrayList<>(questCount);
@@ -89,12 +71,6 @@ public class LoginSyncPacket {
   }
 
   public void encode(FriendlyByteBuf buf) {
-    // World
-    buf.writeBoolean(defeatedScar);
-    buf.writeVarInt(ziraStage);
-    buf.writeVarInt(pumbaaStage);
-    buf.writeBoolean(outlandersHostile);
-
     // Quests
     buf.writeVarInt(questEntries.size());
     for (QuestEntry entry : questEntries) {
@@ -120,12 +96,6 @@ public class LoginSyncPacket {
     NetworkEvent.Context context = ctx.get();
     context.enqueueWork(
         () -> {
-          // World state
-          ClientWorldState.defeatedScar = defeatedScar;
-          ClientWorldState.ziraStage = ziraStage;
-          ClientWorldState.pumbaaStage = pumbaaStage;
-          ClientWorldState.outlandersHostile = outlandersHostile;
-
           // Quest state
           ClientWorldState.questStates.clear();
           for (QuestEntry entry : questEntries) {

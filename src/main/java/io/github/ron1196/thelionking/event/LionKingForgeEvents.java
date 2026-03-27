@@ -12,6 +12,9 @@ import io.github.ron1196.thelionking.entity.hostile.SkeletalHyenaEntity;
 import io.github.ron1196.thelionking.entity.npc.ScarEntity;
 import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
+import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
+import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
+import io.github.ron1196.thelionking.quest.stage.StageTrigger;
 import io.github.ron1196.thelionking.item.GroundRhinoHornItem;
 import io.github.ron1196.thelionking.network.LoginSyncPacket;
 import io.github.ron1196.thelionking.network.Networking;
@@ -308,12 +311,15 @@ public class LionKingForgeEvents {
     }
 
     /**
-     * When ziraStage == 22 and a player is on the surface of the Outlands, spawn Zira nearby with a
-     * visual lightning bolt.
+     * When the Outlands quest is at the ZIRA_RETURNS stage and a player is on the surface,
+     * spawn Zira nearby with a visual lightning bolt and advance the quest.
      */
     private static void handleZiraSpawnEvent(ServerLevel level) {
         WorldData data = WorldData.get(level);
-        if (data.ziraStage != 22) return;
+        QuestlineManager qm = data.getQuestManager();
+        OutlandsQuestline.Stage stage =
+                qm.getStage("outlands", OutlandsQuestline.Stage.class);
+        if (stage != OutlandsQuestline.Stage.ZIRA_RETURNS) return;
         if (level.players().isEmpty()) return;
 
         Player player = level.players().get(0);
@@ -341,8 +347,9 @@ public class LionKingForgeEvents {
             // Visual lightning bolt at Zira's spawn position
             level.addFreshEntity(new LightningBoltEntity(level, spawnX, spawnY, spawnZ, 0, player));
 
-            data.ziraStage = 23;
-            data.setDirty();
+            if (player instanceof ServerPlayer sp) {
+                qm.tryAdvance("outlands", sp, StageTrigger.ZIRA_SPAWN_EVENT);
+            }
         }
     }
 

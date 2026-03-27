@@ -235,6 +235,15 @@ public class QuestlineManager {
     return false;
   }
 
+  /**
+   * Returns true if Outlanders in the mound should be hostile to players. This is derived from the
+   * Outlands questline stage: hostile from USE_PUMBAA_BOX until the quest is complete.
+   */
+  public boolean areOutlandersHostile() {
+    return isStageAtOrPast("outlands", OutlandsQuestline.Stage.USE_PUMBAA_BOX)
+        && !isComplete("outlands");
+  }
+
   // -- Sync ---------------------------------------------------------------
 
   public void syncToPlayer(ServerPlayer player) {

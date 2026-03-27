@@ -74,6 +74,14 @@ Items using generated placeholder textures (not from old mod):
 - [ ] **Grinding bowl recipes are hardcoded in `GrindingBowlBlockEntity.getRecipes()`** — 29 recipes live in a static `Map<Item, Item>` inside the block entity. Should be refactored to a custom `RecipeType<GrindingBowlRecipe>` + `RecipeSerializer` with JSON recipes under `data/thelionking/recipes/grinding/`. This would decouple game content from machine logic and enable datapack compatibility.
 
 
+## Missing Quest Mechanics
+
+- [ ] **Scar has no natural spawn** — `ScarEntity` is registered but has no spawning logic (no biome spawn entry, no structure placement, no quest-triggered spawn). In the old mod, Scar appeared at Pride Rock. Needs either a structure-based placement or a quest-triggered spawn (e.g. spawning near the player when the `DEFEAT_SCAR` stage is reached). Currently only accessible via `/summon thelionking:scar`.
+- [ ] **Outlands quest stage 4 (`THROW_IN_OUTWATER`) has no trigger** — The Outwater throwing mechanic is not implemented. Stage blocks progression until manually advanced. Needs: detect player throwing ingots into an Outwater pool block and fire a trigger to advance.
+- [ ] **Outlands quest stage 6 (`FOLLOW_OUTLANDERS`) has no trigger** — The Outlander follow/march mechanic is not implemented. Needs: Outlander NPCs path to Pride Lands and trigger fires on arrival or proximity.
+- [ ] **Outlands quest stage 7 (`ZIRA_OCCUPIES_TREE`) has no trigger** — Zira occupying Rafiki's tree is not implemented. Needs: Zira entity placed at tree location, quest auto-advances or triggers on player proximity.
+- [ ] **Outlands quest stage 11 (`RAFIKI_RETURNS`) has no trigger** — Rafiki returning to his tree after Pumbaa Box is not implemented. Needs: Rafiki entity returns to tree, quest auto-advances or triggers on player proximity.
+
 ## Advancement Triggers (Not Fully Wired)
 
 - [ ] **`USE_GRINDING_BOWL` trigger is orphaned** — `UseGrindingBowlTrigger` is registered and fires in `GrindingBowlMenu.onTake`, but no advancement uses it. The old mod had no grinding achievement. Decision needed: remove the trigger + `UseGrindingBowlTrigger` class entirely, or add a new "first grind" advancement not present in the old mod.
