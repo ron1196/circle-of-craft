@@ -6,6 +6,7 @@ import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.block.entity.SpawnerBlockEntity;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.registry.LionKingItems;
+import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import io.github.ron1196.thelionking.world.feature.FeatureHelper.LootEntry;
 import java.util.List;
 import java.util.function.Predicate;
@@ -31,8 +32,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import org.slf4j.Logger;
 
 /**
- * Pride Dungeon — underground dungeon rooms in the Outlands dimension, ported from the old mod's
- * LKWorldGenDungeons.
+ * Underground dungeon rooms for Pride Lands and Outlands, ported from the old mod's
+ * WorldGenDungeons. Outlands dungeons use better loot (kivulite, corrupt tools).
  *
  * <p>Two variants: Hyena (2/3 chance) and Crocodile (1/3 chance). Crocodile dungeons are
  * larger, have a water floor, and vines on walls. Both use pride brick walls with cracked
@@ -42,7 +43,7 @@ import org.slf4j.Logger;
  * entrances (wall openings), solid floor and ceiling, and use safeSetBlock to respect
  * the FEATURES_CANNOT_REPLACE tag.
  */
-public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
+public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
@@ -86,49 +87,77 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
     // ── Dungeon loot sub-pools ─────────────────────────────────────────────
 
     private static final List<LootEntry> DARTS_AND_FEATHERS = List.of(
-            LootEntry.of(r -> new ItemStack(LionKingItems.DART_BLUE.get(), 3 + r.nextInt(5))),
-            LootEntry.of(r -> new ItemStack(LionKingItems.DART_YELLOW.get(), 3 + r.nextInt(4))),
-            LootEntry.of(r -> new ItemStack(LionKingItems.DART_RED.get(), 3 + r.nextInt(4))),
-            LootEntry.of(r -> new ItemStack(LionKingItems.FEATHER_BLUE.get(), 3 + r.nextInt(4))),
-            LootEntry.of(r -> new ItemStack(LionKingItems.FEATHER_YELLOW.get(), 3 + r.nextInt(3))),
-            LootEntry.of(r -> new ItemStack(LionKingItems.FEATHER_RED.get(), 3 + r.nextInt(3))),
-            LootEntry.of(() -> new ItemStack(LionKingItems.DART_SHOOTER_SILVER.get())));
+            LootEntry.of(LionKingItems.DART_BLUE, 3, 5),
+            LootEntry.of(LionKingItems.DART_YELLOW, 3, 4),
+            LootEntry.of(LionKingItems.DART_RED, 3, 4),
+            LootEntry.of(LionKingItems.FEATHER_BLUE, 3, 4),
+            LootEntry.of(LionKingItems.FEATHER_YELLOW, 3, 3),
+            LootEntry.of(LionKingItems.FEATHER_RED, 3, 3),
+            LootEntry.of(LionKingItems.DART_SHOOTER_SILVER));
 
     private static final List<LootEntry> SILVER_EQUIPMENT = List.of(
-            LootEntry.of(() -> new ItemStack(LionKingItems.SILVER_SHOVEL.get())),
-            LootEntry.of(() -> new ItemStack(LionKingItems.SILVER_PICKAXE.get())),
-            LootEntry.of(() -> new ItemStack(LionKingItems.SILVER_AXE.get())),
-            LootEntry.of(() -> new ItemStack(LionKingItems.SILVER_SWORD.get())),
-            LootEntry.of(() -> new ItemStack(LionKingItems.SILVER_HELMET.get())),
-            LootEntry.of(() -> new ItemStack(LionKingItems.SILVER_BOOTS.get())),
-            LootEntry.of(r -> new ItemStack(LionKingItems.NOTE_B.get(), 1 + r.nextInt(3))));
+            LootEntry.of(LionKingItems.SILVER_SHOVEL),
+            LootEntry.of(LionKingItems.SILVER_PICKAXE),
+            LootEntry.of(LionKingItems.SILVER_AXE),
+            LootEntry.of(LionKingItems.SILVER_SWORD),
+            LootEntry.of(LionKingItems.SILVER_HELMET),
+            LootEntry.of(LionKingItems.SILVER_BOOTS),
+            LootEntry.of(LionKingItems.NOTE_B, 1, 3));
 
     private static final List<LootEntry> TREASURES = List.of(
-            LootEntry.of(r -> new ItemStack(LionKingItems.PEACOCK_GEM.get(), 1 + r.nextInt(2))),
-            LootEntry.of(() -> new ItemStack(Items.COMPASS)),
-            LootEntry.of(() -> new ItemStack(LionKingItems.JAR_EMPTY.get())));
+            LootEntry.of(LionKingItems.PEACOCK_GEM, 1, 2),
+            LootEntry.of(() -> Items.COMPASS),
+            LootEntry.of(LionKingItems.JAR_EMPTY));
 
-    // ── Main dungeon loot table (matching old mod's LKDungeonLoot pool) ──
+    // ── Main dungeon loot table (matching old mod's DungeonLoot pool) ──
     // Weight controls relative probability. Higher weight = more common.
     private static final List<LootEntry> DUNGEON_LOOT = List.of(
             // Common supplies
-            LootEntry.of(r -> new ItemStack(LionKingItems.HYENA_BONE.get(), 2 + r.nextInt(3))),
-            LootEntry.of(r -> new ItemStack(LionKingItems.BUG.get(), 2 + r.nextInt(4))),
-            LootEntry.of(r -> new ItemStack(LionKingItems.CHOCOLATE_MUFASA.get(), 1 + r.nextInt(3))),
-            LootEntry.of(r -> new ItemStack(LionKingItems.SILVER_INGOT.get(), 2 + r.nextInt(3))),
-            LootEntry.of(r -> new ItemStack(LionKingItems.MANGO.get(), 1 + r.nextInt(3))),
+            LootEntry.of(LionKingItems.HYENA_BONE, 2, 3),
+            LootEntry.of(LionKingItems.BUG, 2, 4),
+            LootEntry.of(LionKingItems.CHOCOLATE_MUFASA, 1, 3),
+            LootEntry.of(LionKingItems.SILVER_INGOT, 2, 3),
+            LootEntry.of(LionKingItems.MANGO, 1, 3),
 
             // Darts and feathers (weight 3 — most common drop)
-            new LootEntry(3, r -> FeatureHelper.pickLoot(DARTS_AND_FEATHERS, r)),
+            LootEntry.of(3, r -> FeatureHelper.pickLoot(DARTS_AND_FEATHERS, r)),
 
             // Equipment
-            LootEntry.of(() -> new ItemStack(LionKingItems.DART_QUIVER.get())),
-            new LootEntry(2, r -> FeatureHelper.pickLoot(SILVER_EQUIPMENT, r)),
+            LootEntry.of(LionKingItems.DART_QUIVER),
+            LootEntry.of(2, r -> FeatureHelper.pickLoot(SILVER_EQUIPMENT, r)),
 
             // Rare treasures
             LootEntry.of(r -> FeatureHelper.pickLoot(TREASURES, r)));
 
-    public PrideDungeonFeature(Codec<NoneFeatureConfiguration> codec) {
+    // ── Outlands dungeon loot (better rewards for a more dangerous dimension) ──
+
+    private static final List<LootEntry> OUTLANDS_EQUIPMENT = List.of(
+            LootEntry.of(LionKingItems.KIVULITE_SWORD),
+            LootEntry.of(LionKingItems.KIVULITE_PICKAXE),
+            LootEntry.of(LionKingItems.KIVULITE_AXE),
+            LootEntry.of(LionKingItems.CORRUPT_SWORD),
+            LootEntry.of(LionKingItems.CORRUPT_PICKAXE));
+
+    private static final List<LootEntry> OUTLANDS_LOOT = List.of(
+            // Common Outlands supplies
+            LootEntry.of(LionKingItems.NUKA_SHARD, 3, 6),
+            LootEntry.of(LionKingItems.KIVULITE, 2, 4),
+            LootEntry.of(LionKingItems.SILVER_INGOT, 3, 4),
+            LootEntry.of(LionKingItems.CHOCOLATE_MUFASA, 2, 4),
+
+            // Outlands darts (black darts are Outlands-exclusive)
+            LootEntry.of(3, LionKingItems.DART_BLACK, 4, 6),
+            LootEntry.of(LionKingItems.DART_SHOOTER_SILVER),
+
+            // Outlands equipment (better than Pride Lands silver)
+            LootEntry.of(2, r -> FeatureHelper.pickLoot(OUTLANDS_EQUIPMENT, r)),
+
+            // Rare treasures
+            LootEntry.of(LionKingItems.PEACOCK_GEM, 2, 3),
+            LootEntry.of(LionKingItems.ZIRA_COIN),
+            LootEntry.of(LionKingItems.JAR_EMPTY));
+
+    public DungeonFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
@@ -161,7 +190,7 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
 
         ResourceLocation spawnerId = isCrocodile ? CROCODILE_ID : HYENA_ID;
         LOGGER.debug(
-                "[PrideDungeon] Placed {} dungeon at ({}, {}, {}), halfW={}, halfD={}",
+                "[Dungeon] Placed {} dungeon at ({}, {}, {}), halfW={}, halfD={}",
                 isCrocodile ? "crocodile" : "hyena",
                 cx,
                 cy,
@@ -172,8 +201,9 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
         buildRoom(level, random, canReplace, cx, cy, cz, halfW, halfD, isCrocodile);
         placePillars(level, random, cx, cy, cz, halfW, halfD);
 
+        boolean isOutlands = level.getLevel().dimension() == Dimensions.OUTLANDS_LEVEL;
         int chestAttempts = isCrocodile ? CROC_CHEST_COUNT : HYENA_CHEST_COUNT;
-        placeChests(level, random, cx, cy, cz, halfW, halfD, chestAttempts);
+        placeChests(level, random, cx, cy, cz, halfW, halfD, chestAttempts, isOutlands);
 
         placeSpawner(level, cx, cy, cz, spawnerId);
 
@@ -362,7 +392,15 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
      * exactly 1 solid horizontal neighbor (against a wall). Up to chestAttempts chests placed.
      */
     private void placeChests(
-            WorldGenLevel level, RandomSource random, int cx, int cy, int cz, int halfW, int halfD, int chestAttempts) {
+            WorldGenLevel level,
+            RandomSource random,
+            int cx,
+            int cy,
+            int cz,
+            int halfW,
+            int halfD,
+            int chestAttempts,
+            boolean isOutlands) {
         int placed = 0;
         for (int attempt = 0; attempt < CHEST_PLACEMENT_RETRIES && placed < chestAttempts; attempt++) {
             int chestX = cx + random.nextInt(halfW * 2 + 1) - halfW;
@@ -398,7 +436,7 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
             BlockState chestState =
                     Blocks.CHEST.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, chestFacing);
             level.setBlock(chestPos, chestState, 2);
-            fillChestLoot(level, chestPos, random);
+            fillChestLoot(level, chestPos, random, isOutlands);
             placed++;
         }
     }
@@ -406,14 +444,15 @@ public class PrideDungeonFeature extends Feature<NoneFeatureConfiguration> {
     /**
      * Fill a chest with loot matching the old mod's dungeon loot pool.
      */
-    private void fillChestLoot(WorldGenLevel level, BlockPos chestPos, RandomSource random) {
+    private void fillChestLoot(WorldGenLevel level, BlockPos chestPos, RandomSource random, boolean isOutlands) {
         BlockEntity be = level.getBlockEntity(chestPos);
         if (!(be instanceof ChestBlockEntity chest)) {
             return;
         }
 
+        List<LootEntry> lootTable = isOutlands ? OUTLANDS_LOOT : DUNGEON_LOOT;
         for (int i = 0; i < CHEST_LOOT_ATTEMPTS; i++) {
-            ItemStack loot = FeatureHelper.pickLoot(DUNGEON_LOOT, random);
+            ItemStack loot = FeatureHelper.pickLoot(lootTable, random);
             if (loot != null) {
                 if (loot.isEnchantable() && random.nextInt(ENCHANT_CHANCE) != 0) {
                     EnchantmentHelper.enchantItem(random, loot, ENCHANT_LEVEL, false);

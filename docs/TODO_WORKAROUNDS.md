@@ -4,13 +4,11 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 ## Missing World Generation
 
-- [x] **Nuka Ore & Kivulite Ore blocks** — Added as separate blocks (`nuka_ore`, `kivulite_ore`) with textures migrated from old assets. Kivulite: 3 placement layers (main/middle/small), Nuka: 2 layers (main/upper). Pride coal and silver ore removed from Outlands biomes. Vanilla ore veins disabled in all dimensions. Kivulite durability bumped 70→100. Both ores added to `mineable/pickaxe` tag.
-- [x] **Outlands Lava Lakes** — Ported using vanilla `LakeFeature` with corrupt pridestone barrier. Underground (rarity 5) + surface (rarity 40) placed features in all 3 Outlands biomes.
-- [ ] **Outlands Dungeon variant** — Pride Dungeons currently use the same loot table in both Pride Lands and Outlands. Outlands dungeons should have better/different loot (e.g. kivulite items, corrupt tools, rare gems) to reward exploring a more dangerous dimension. May also want Outlands-specific building materials (corrupt pride brick?) instead of regular pride brick.
+- [x] ~~**Outlands Dungeon variant**~~ — RESOLVED: Outlands dungeons now use a separate loot table with kivulite/corrupt tools, black darts, nuka shards, and zira coins.
 
 ## Missing Event Handlers
 
-- [ ] **UseHoeEvent** — Tilled Sand creation when hoeing sand blocks
+- [x] ~~**UseHoeEvent**~~ — RESOLVED: Right-clicking sand with a hoe creates tilled sand. Added in `LionKingForgeEvents.onRightClickBlock`.
 - [ ] **Respawn Dimension Redirect** — Old mod: dying in Outlands or Upendi respawns the player in Pride Lands (not Overworld). Needs a `PlayerEvent.PlayerRespawnEvent` handler to teleport the player to Pride Lands world spawn when they die in those dimensions without a bed set.
 - [ ] **Verify `handleZiraSpawnEvent`** — The Zira spawn event (ziraStage 22) in `LionKingForgeEvents` spawns a visual `LightningBoltEntity` which now triggers `onEntityJoinLevel` → `convertSandToOutsand`. Check that this doesn't create an unwanted outsand patch at Zira's spawn point. May need to skip conversion for our custom `LightningBoltEntity` subclass.
 
@@ -29,17 +27,16 @@ Items using generated placeholder textures (not from old mod):
 - [ ] **`mounted_shooter` block textures** — Old mod only had item textures; block front/side/top are solid-color placeholders
 - [ ] **`outlands_altar` block texture** — No old texture exists; reusing `corrupt_pridestone.png`
 - [ ] **`tilled_sand` item texture** — Generated sandy placeholder; block textures from old mod are correct
-- [ ] **`star_altar` item texture** — Generated placeholder; block textures (side/top) from old mod are correct
+- [ ] **`star_altar` item texture** — Generated placeholder (unused — item model inherits block model 3D render). Can delete the file.
 - [ ] **`outlands_altar` item texture** — Generated dark placeholder
 - [ ] **~150 block textures** need migration from old camelCase to snake_case
 - [ ] **~160 item textures** need migration
 
 ## Deprecated BlockBehaviour.use() Override
 
-- [ ] **8 blocks override the deprecated `BlockBehaviour.use()` method** — Mojang deprecated this in 1.20.1 in preparation for a refactor that landed in 1.21, where it was split into `useWithoutItem()` (empty-hand interaction) and `useItemOn()` (item-in-hand interaction). No non-deprecated replacement exists in 1.20.1, so each block currently suppresses the warning with `@SuppressWarnings("deprecation")`. When upgrading to 1.21+, migrate all 8 blocks:
+- [ ] **7 blocks override the deprecated `BlockBehaviour.use()` method** — Mojang deprecated this in 1.20.1 in preparation for a refactor that landed in 1.21, where it was split into `useWithoutItem()` (empty-hand interaction) and `useItemOn()` (item-in-hand interaction). No non-deprecated replacement exists in 1.20.1, so each block currently suppresses the warning with `@SuppressWarnings("deprecation")`. When upgrading to 1.21+, migrate all 7 blocks:
   - `PortalFrameBlock` — item-triggered portal creation
-  - `ZiraMoundGateBlock` — Rafiki Stick chain-break
-  - `StarAltarBlock` — star altar activation
+  - `ZiraMoundGateBlock` — Rafiki Stick chain-break (also checks quest completion)
   - `OutlandsAltarBlock` — outlands altar activation
   - `BongoDrumBlock` — drum playing
   - `BananaCakeBlock` — eating
@@ -63,16 +60,13 @@ Items using generated placeholder textures (not from old mod):
 
 - [ ] **Kiwano, Maize, and Yam 3D models need rework** — Current block models don't look right. Need proper crop stage models matching the old mod's appearance.
 
-## Crop Block Classes (Wrong Base Class)
+## Crop Blocks
 
-- [x] **Maize is `CropBlock` but should be sugar cane-like** — Replaced with `MaizeCropBlock`: stacks up to 4 tall, requires adjacent water on grass/dirt, has_corn state for harvestable corn ears.
-- [x] **Yam is `CropBlock` but should grow on grass** — Replaced with `YamCropBlock`: `mayPlaceOn` accepts dirt tag (grass, dirt, etc.).
 - [ ] **Kiwano worldgen places `kiwano_block` (fruit) on sand** — Matches old mod. Stem (`kiwano_stem`) is the crop version for player farming.
 
 ## Grinding Bowl Recipes (Hardcoded)
 
 - [ ] **Grinding bowl recipes are hardcoded in `GrindingBowlBlockEntity.getRecipes()`** — 29 recipes live in a static `Map<Item, Item>` inside the block entity. Should be refactored to a custom `RecipeType<GrindingBowlRecipe>` + `RecipeSerializer` with JSON recipes under `data/thelionking/recipes/grinding/`. This would decouple game content from machine logic and enable datapack compatibility.
-
 
 ## Missing Quest Mechanics
 
@@ -81,6 +75,10 @@ Items using generated placeholder textures (not from old mod):
 - [ ] **Outlands quest stage 6 (`FOLLOW_OUTLANDERS`) has no trigger** — The Outlander follow/march mechanic is not implemented. Needs: Outlander NPCs path to Pride Lands and trigger fires on arrival or proximity.
 - [ ] **Outlands quest stage 7 (`ZIRA_OCCUPIES_TREE`) has no trigger** — Zira occupying Rafiki's tree is not implemented. Needs: Zira entity placed at tree location, quest auto-advances or triggers on player proximity.
 - [ ] **Outlands quest stage 11 (`RAFIKI_RETURNS`) has no trigger** — Rafiki returning to his tree after Pumbaa Box is not implemented. Needs: Rafiki entity returns to tree, quest auto-advances or triggers on player proximity.
+
+## New Features
+
+- [ ] **Pride Compass — points to last-used portal** — Create a custom compass item that reads `PlayerData.homePortalX/Y/Z` and points the needle toward the player's last-used portal. Saves automatically when entering a portal. Replace the vanilla compass in dungeon loot with this item. Needs: custom item class, client-side needle rendering, item texture.
 
 ## Advancement Triggers (Not Fully Wired)
 

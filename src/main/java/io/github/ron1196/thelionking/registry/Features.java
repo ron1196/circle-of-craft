@@ -4,10 +4,10 @@ import com.mojang.serialization.Codec;
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.world.feature.BananaTreeFeature;
 import io.github.ron1196.thelionking.world.feature.DeadTreeFeature;
+import io.github.ron1196.thelionking.world.feature.DungeonFeature;
 import io.github.ron1196.thelionking.world.feature.LilyPadFeature;
 import io.github.ron1196.thelionking.world.feature.MangoTreeFeature;
 import io.github.ron1196.thelionking.world.feature.PassionTreeFeature;
-import io.github.ron1196.thelionking.world.feature.PrideDungeonFeature;
 import io.github.ron1196.thelionking.world.feature.RafikiTreeFeature;
 import io.github.ron1196.thelionking.world.feature.RainforestTreeFeature;
 import io.github.ron1196.thelionking.world.feature.TermiteMoundFeature;
@@ -71,8 +71,8 @@ public class Features {
             register("treasure_mound", TreasureMoundFeature::new);
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> LILY_PAD =
             register("lily_pad", LilyPadFeature::new);
-    public static final RegistryObject<Feature<NoneFeatureConfiguration>> PRIDE_DUNGEON =
-            register("pride_dungeon", PrideDungeonFeature::new);
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> DUNGEON =
+            register("dungeon", DungeonFeature::new);
 
     // ── Configured Feature Keys (referenced by tree growers and placed features) ──
 

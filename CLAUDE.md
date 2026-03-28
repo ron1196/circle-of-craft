@@ -65,6 +65,18 @@ public void onRemove(
 ) {
 ```
 
+### WorldData Access
+**Always call `WorldData.get(anyServerLevel)`** — the method internally routes to the overworld's data storage. Never bypass this by accessing `level.getDataStorage()` directly. Quest state and world flags must be shared across all dimensions.
+
+### Testing Commands
+Use `/lk quest` for quest testing:
+- `/lk quest info <questId>` — show current stage
+- `/lk quest advance <questId>` — skip to next stage (bypasses triggers/items)
+- `/lk quest set <questId> <stage>` — jump to specific stage
+- `/lk quest reset <questId>` — reset to first stage
+
+Quest IDs: `rafiki`, `outlands`. Stage names match the enum values (e.g., `FIND_RAFIKI`, `COLLECT_BONES`).
+
 ### Workaround Policy
 **Never use temporary workarounds without tracking them.** Every "for now" substitution must be recorded in `docs/TODO_WORKAROUNDS.md`.
 
@@ -85,7 +97,10 @@ src/main/java/io/github/ron1196/thelionking/
   entity/ai/                 — Custom AI goals
   world/dimension/           — Teleporter
   world/feature/             — Custom worldgen features
-  quest/                     — Quest system (LKQuestBase, LKQuestRafiki, LKQuestOutlands)
+  quest/                     — Quest system (Questline, QuestlineManager, QuestlineRegistry)
+  quest/questline/           — Questline definitions (RafikiQuestline, OutlandsQuestline)
+  quest/stage/               — Stage, StageTrigger, ClaimableReward, IStageId
+  command/                   — Debug/testing commands (LionKingCommands)
   data/                      — WorldData (SavedData), PlayerData, custom triggers
   menu/                      — Container menus
   network/                   — Packet handling (Networking, SimbaSitPacket, QuestSyncPacket, QuestCheckPacket, etc.)
@@ -134,7 +149,8 @@ src/main/resources/
 | `event/ClientEvents.java`    | Renderers, models, GUI screens           |
 | `event/LionKingForgeEvents.java` | Forge bus events (combat, NPC interaction, breeding, ticks) |
 | `network/Networking.java`    | SimpleChannel packet registration        |
-| `data/WorldData.java`        | World-level saved data (quests, state)   |
+| `data/WorldData.java`        | World-level saved data (always uses overworld storage) |
+| `command/LionKingCommands.java` | Debug commands: `/lk quest`, `/lk pridelands`, etc. |
 | `data/LionKingCriteriaTriggers.java` | Custom advancement triggers       |
 | `sounds.json`                | Maps sound event names to file paths     |
 | `lang/en_us.json`            | All translatable strings                 |

@@ -232,31 +232,31 @@ public class TreasureMoundFeature extends Feature<NoneFeatureConfiguration> {
     // ── Treasure mound loot sub-pools ──────────────────────────────────────
 
     private static final List<LootEntry> CORRUPT_TOOLS = List.of(
-            LootEntry.of(() -> new ItemStack(LionKingItems.CORRUPT_SWORD.get())),
-            LootEntry.of(() -> new ItemStack(LionKingItems.CORRUPT_PICKAXE.get())),
-            LootEntry.of(() -> new ItemStack(LionKingItems.CORRUPT_AXE.get())),
-            LootEntry.of(() -> new ItemStack(LionKingItems.CORRUPT_SHOVEL.get())),
-            LootEntry.of(() -> new ItemStack(LionKingItems.CORRUPT_HOE.get())));
+            LootEntry.of(LionKingItems.CORRUPT_SWORD),
+            LootEntry.of(LionKingItems.CORRUPT_PICKAXE),
+            LootEntry.of(LionKingItems.CORRUPT_AXE),
+            LootEntry.of(LionKingItems.CORRUPT_SHOVEL),
+            LootEntry.of(LionKingItems.CORRUPT_HOE));
 
     private static final List<LootEntry> KIVULITE_TOOLS = List.of(
-            LootEntry.of(() -> new ItemStack(LionKingItems.KIVULITE_SWORD.get())),
-            LootEntry.of(() -> new ItemStack(LionKingItems.KIVULITE_PICKAXE.get())),
-            LootEntry.of(() -> new ItemStack(LionKingItems.KIVULITE_AXE.get())),
-            LootEntry.of(() -> new ItemStack(LionKingItems.KIVULITE_SHOVEL.get())),
-            LootEntry.of(() -> new ItemStack(LionKingItems.KIVULITE_HOE.get())));
+            LootEntry.of(LionKingItems.KIVULITE_SWORD),
+            LootEntry.of(LionKingItems.KIVULITE_PICKAXE),
+            LootEntry.of(LionKingItems.KIVULITE_AXE),
+            LootEntry.of(LionKingItems.KIVULITE_SHOVEL),
+            LootEntry.of(LionKingItems.KIVULITE_HOE));
 
     // ── Main treasure mound loot table ─────────────────────────────────────
     private static final int CHEST_SLOT_COUNT = 4;
 
     private static final List<LootEntry> TREASURE_MOUND_LOOT = List.of(
-            LootEntry.of(r -> new ItemStack(LionKingItems.TERMITE_DUST.get(), 2 + r.nextInt(4))),
-            new LootEntry(2, r -> new ItemStack(LionKingItems.DART_BLACK.get(), 4 + r.nextInt(5))),
-            new LootEntry(2, r -> new ItemStack(LionKingItems.NUKA_SHARD.get(), 3 + r.nextInt(8))),
-            LootEntry.of(r -> new ItemStack(LionKingItems.FEATHER_BLACK.get(), 2 + r.nextInt(4))),
-            LootEntry.of(r -> new ItemStack(LionKingItems.LION_COOKED.get(), 2 + r.nextInt(4))),
+            LootEntry.of(LionKingItems.TERMITE_DUST, 2, 4),
+            LootEntry.of(2, LionKingItems.DART_BLACK, 4, 5),
+            LootEntry.of(2, LionKingItems.NUKA_SHARD, 3, 8),
+            LootEntry.of(LionKingItems.FEATHER_BLACK, 2, 4),
+            LootEntry.of(LionKingItems.LION_COOKED, 2, 4),
             LootEntry.of(r -> enchantedTool(r, CORRUPT_TOOLS)),
             LootEntry.of(r -> enchantedTool(r, KIVULITE_TOOLS)),
-            LootEntry.of(r -> new ItemStack(LionKingItems.KIVULITE.get(), 1 + r.nextInt(3))));
+            LootEntry.of(LionKingItems.KIVULITE, 1, 3));
 
     private static ItemStack enchantedTool(RandomSource random, List<LootEntry> toolPool) {
         ItemStack tool = FeatureHelper.pickLoot(toolPool, random);

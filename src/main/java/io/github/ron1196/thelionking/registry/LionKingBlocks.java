@@ -287,13 +287,13 @@ public class LionKingBlocks {
 
     // ========== Crops ==========
     public static final RegistryObject<Block> MAIZE_CROP =
-            BLOCKS.register("maize_crop", () -> new MaizeCropBlock(cropProps().noOcclusion()));
+            BLOCKS.register("maize_crop", () -> new MaizeCropBlock(cropProps()));
 
     public static final RegistryObject<Block> YAM_CROP =
             BLOCKS.register("yam_crop", () -> new YamCropBlock(cropProps()));
 
     public static final RegistryObject<Block> KIWANO_STEM =
-            BLOCKS.register("kiwano_stem", () -> new CropBlock(cropProps().sound(SoundType.WOOD)));
+            BLOCKS.register("kiwano_stem", () -> new KiwanoStemBlock(cropProps().sound(SoundType.WOOD)));
 
     public static final RegistryObject<Block> KIWANO_BLOCK = BLOCKS.register(
             "kiwano_block",
@@ -396,7 +396,9 @@ public class LionKingBlocks {
             () -> new TilledSandBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.SAND)
                     .strength(0.6F)
-                    .sound(SoundType.GRAVEL)));
+                    .sound(SoundType.SAND)
+                    .randomTicks()
+                    .noOcclusion()));
 
     public static final RegistryObject<Block> VASE = BLOCKS.register(
             "vase",

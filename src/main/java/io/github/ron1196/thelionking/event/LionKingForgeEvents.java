@@ -91,6 +91,40 @@ public class LionKingForgeEvents {
         }
     }
 
+    // ── RightClickBlock — Hoe on sand creates tilled sand ─────────────────────
+
+    @SubscribeEvent
+    public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        if (event.getLevel().isClientSide()) return;
+
+        ItemStack held = event.getItemStack();
+        if (!(held.getItem() instanceof net.minecraft.world.item.HoeItem)) return;
+
+        BlockPos pos = event.getPos();
+        BlockState state = event.getLevel().getBlockState(pos);
+        if (!state.is(Blocks.SAND)) return;
+
+        // Must have air above (same check as vanilla farmland)
+        if (!event.getLevel().getBlockState(pos.above()).isAir()) return;
+
+        event.getLevel().setBlock(pos, LionKingBlocks.TILLED_SAND.get().defaultBlockState(), 11);
+        event.getLevel()
+                .playSound(
+                        null,
+                        pos,
+                        net.minecraft.sounds.SoundEvents.HOE_TILL,
+                        net.minecraft.sounds.SoundSource.BLOCKS,
+                        1.0F,
+                        1.0F);
+
+        if (!event.getEntity().getAbilities().instabuild) {
+            held.hurtAndBreak(1, event.getEntity(), player -> player.broadcastBreakEvent(event.getHand()));
+        }
+
+        event.setCancellationResult(InteractionResult.SUCCESS);
+        event.setCanceled(true);
+    }
+
     // ── EntityInteract — Ground Rhino Horn intercepts before mobInteract() ──────
 
     @SubscribeEvent

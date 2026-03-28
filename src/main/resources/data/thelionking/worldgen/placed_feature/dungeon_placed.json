@@ -1,5 +1,5 @@
 {
-  "feature": "thelionking:pride_dungeon",
+  "feature": "thelionking:dungeon",
   "placement": [
     { "type": "minecraft:count", "count": 8 },
     { "type": "minecraft:in_square" },

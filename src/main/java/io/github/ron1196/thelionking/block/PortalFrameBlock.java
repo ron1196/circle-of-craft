@@ -40,15 +40,15 @@ public class PortalFrameBlock extends Block {
 
     private static final Map<Boolean, PortalConfig> ACTIVATION_KEYS = Map.of(
             false,
-                    PortalConfig.create(
-                            LionKingBlocks.PRIDE_LANDS_PORTAL,
-                            ActivationKey.consumed(LionKingItems.TICKET),
-                            ActivationKey.kept(LionKingItems.RHYTHM_STAFF)),
+            PortalConfig.create(
+                    LionKingBlocks.PRIDE_LANDS_PORTAL,
+                    ActivationKey.consumed(LionKingItems.TICKET),
+                    ActivationKey.kept(LionKingItems.RAFIKI_STICK)),
             true,
-                    PortalConfig.create(
-                            LionKingBlocks.OUTLANDS_PORTAL,
-                            ActivationKey.consumed(LionKingItems.TICKET),
-                            ActivationKey.kept(LionKingItems.ZIRA_COIN)));
+            PortalConfig.create(
+                    LionKingBlocks.OUTLANDS_PORTAL,
+                    ActivationKey.consumed(LionKingItems.TICKET),
+                    ActivationKey.kept(LionKingItems.ZIRA_COIN)));
 
     private final boolean isOutlands;
 
