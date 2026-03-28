@@ -203,6 +203,40 @@ public class LionKingForgeEvents {
         }
     }
 
+    // ── Respawn redirect — dying in Outlands/Upendi respawns in Pride Lands ────
+
+    /** Tracks which players died in a mod dimension so we can redirect after respawn. */
+    private static final java.util.Set<java.util.UUID> DIED_IN_MOD_DIMENSION = new java.util.HashSet<>();
+
+    @SubscribeEvent
+    public static void onPlayerDeath(LivingDeathEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+
+        boolean isModDimension = player.level().dimension() == Dimensions.OUTLANDS_LEVEL
+                || player.level().dimension() == Dimensions.UPENDI_LEVEL;
+        if (!isModDimension) return;
+
+        // Only mark for redirect if the player has no bed/respawn anchor anywhere
+        if (player.getRespawnPosition() == null) {
+            DIED_IN_MOD_DIMENSION.add(player.getUUID());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        if (event.isEndConquered()) return;
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        if (!DIED_IN_MOD_DIMENSION.remove(player.getUUID())) return;
+
+        ServerLevel prideLands = player.server.getLevel(Dimensions.PRIDE_LANDS_LEVEL);
+        if (prideLands == null) return;
+
+        BlockPos spawn = prideLands.getSharedSpawnPos();
+        int y = prideLands.getHeight(Heightmap.Types.MOTION_BLOCKING, spawn.getX(), spawn.getZ()) + 1;
+        player.teleportTo(prideLands, spawn.getX() + 0.5, y, spawn.getZ() + 0.5,
+                player.getYRot(), player.getXRot());
+    }
+
     // ── TickEvent.PlayerTickEvent ────────────────────────────────────────────────
 
     @SubscribeEvent
