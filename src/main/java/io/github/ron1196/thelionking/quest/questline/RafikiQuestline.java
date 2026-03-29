@@ -56,13 +56,8 @@ public class RafikiQuestline {
                         COLLECT_MANGOES,
                         new QuestObjective(
                                 "Bring Rafiki 4 mango dust", List.of(new ItemRequirement(LionKingItems.MANGO_DUST, 4))))
-                .stage(
-                        USE_STAR_ALTAR,
-                        new QuestObjective(
-                                "Craft a Star Altar and use Rafiki Dust on it"))
-                .stage(
-                        RafikiQuestline.Stage.COMPLETE,
-                        new QuestObjective("Quest complete"))
+                .stage(USE_STAR_ALTAR, new QuestObjective("Craft a Star Altar and use Rafiki Dust on it"))
+                .stage(RafikiQuestline.Stage.COMPLETE, new QuestObjective("Quest complete"))
                 .claimableReward(COLLECT_BONES, new ClaimableReward(LionKingItems.RAFIKI_STICK, 1))
                 .trigger(FIND_RAFIKI, RAFIKI_TALK)
                 .trigger(COLLECT_BONES, RAFIKI_TALK)

@@ -33,6 +33,8 @@ public class RafikiEntity extends PathfinderMob {
 
     public RafikiEntity(EntityType<? extends RafikiEntity> type, Level level) {
         super(type, level);
+        this.setCustomName(Component.literal("Rafiki"));
+        this.setCustomNameVisible(true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

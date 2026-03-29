@@ -34,6 +34,8 @@ public class PumbaaEntity extends PathfinderMob {
 
     public PumbaaEntity(EntityType<? extends PumbaaEntity> type, Level level) {
         super(type, level);
+        this.setCustomName(Component.literal("Pumbaa"));
+        this.setCustomNameVisible(true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

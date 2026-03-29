@@ -37,6 +37,8 @@ public class ScarEntity extends Monster {
 
     public ScarEntity(EntityType<? extends ScarEntity> type, Level level) {
         super(type, level);
+        this.setCustomName(Component.literal("Scar"));
+        this.setCustomNameVisible(true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

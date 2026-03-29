@@ -42,6 +42,8 @@ public class SimbaEntity extends TamableAnimal {
 
     public SimbaEntity(EntityType<? extends SimbaEntity> type, Level level) {
         super(type, level);
+        this.setCustomName(net.minecraft.network.chat.Component.literal("Simba"));
+        this.setCustomNameVisible(true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

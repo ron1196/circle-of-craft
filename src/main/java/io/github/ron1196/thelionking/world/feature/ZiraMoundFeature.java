@@ -88,22 +88,23 @@ public class ZiraMoundFeature extends Feature<NoneFeatureConfiguration> {
         generate30(level, i, j, k);
         generate31(level, i, j, k);
         generate32(level, i, j, k);
-        generatePoolCover(level, i, j, k);
 
         // Step 2: Shape terrain — clear above mound, fill shell (only above interior ceilings)
         shapeMoundTerrain(level, i, j, k);
 
-        // Outlands Altar
+        // Outlands Altar with master pool block at pool level below
+        placeAt(level, i, j + 4, k, OUTLANDS_POOL);
         placeAt(level, i, j + 8, k, OUTLANDS_ALTAR);
 
         FeatureHelper.spawnEntity(level, EntityTypes.ZIRA.get(), i + 0.5, j + ZIRA_Y_OFFSET, k + 0.5);
 
-        // Place all gate blocks last so they can't be overwritten by other structure passes
+        // Place gate and pool cover blocks last so they can't be overwritten
         java.util.List<BlockPos> gates = DEFERRED_GATES.get();
         for (BlockPos gatePos : gates) {
             placeAt(level, gatePos.getX(), gatePos.getY(), gatePos.getZ(), GATE);
         }
         gates.clear();
+        generatePoolCover(level, i, j, k);
 
         return true;
     }

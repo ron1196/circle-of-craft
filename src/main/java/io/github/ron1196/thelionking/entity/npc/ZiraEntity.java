@@ -55,6 +55,8 @@ public class ZiraEntity extends Monster {
 
     public ZiraEntity(EntityType<? extends ZiraEntity> type, Level level) {
         super(type, level);
+        this.setCustomName(Component.literal("Zira"));
+        this.setCustomNameVisible(true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -80,7 +82,6 @@ public class ZiraEntity extends Monster {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2D, false));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
 
@@ -94,6 +95,7 @@ public class ZiraEntity extends Monster {
     public void setHostile(boolean hostile) {
         this.entityData.set(DATA_HOSTILE, hostile);
         if (hostile) {
+            this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
             this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         }
     }
