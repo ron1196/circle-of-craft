@@ -141,7 +141,11 @@ public class EntityTypes {
     public static final RegistryObject<EntityType<ScarEntity>> SCAR =
             registerMonster("scar", ScarEntity::new, 1.3F, 1.6F);
     public static final RegistryObject<EntityType<ZiraEntity>> ZIRA =
-            registerMonster("zira", ZiraEntity::new, 1.2F, 1.3F);
+            ENTITY_TYPES.register("zira", () -> EntityType.Builder.of(ZiraEntity::new, MobCategory.MONSTER)
+                    .sized(1.2F, 1.3F)
+                    .clientTrackingRange(10)
+                    .fireImmune()
+                    .build("zira"));
 
     // ── Interactive Entities ─────────────────────────────────────────────────
 

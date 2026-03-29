@@ -43,10 +43,6 @@ public enum CharacterSpeech {
         return "§e<" + speech.characterName + "> §f" + speech.speeches[random.nextInt(speech.speeches.length)];
     }
 
-    public String getCharacterName() {
-        return characterName;
-    }
-
     private static final class Speech {
         static final String[] ZAZU_SLEEPING = {
             "Shoo! The Morning Report isn't until sunrise, you nuisance!",

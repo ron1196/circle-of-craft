@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * Custom lightning bolt used by Rafiki's Stick, Lion Dust, Simba's Charm, and Zira events. Extends
@@ -29,10 +30,14 @@ public class LightningBoltEntity extends LightningBolt {
     }
 
     public LightningBoltEntity(Level level, double x, double y, double z, int power, Player castingPlayer) {
+        this(level, new Vec3(x, y, z), power, castingPlayer);
+    }
+
+    public LightningBoltEntity(Level level, Vec3 pos, int power, Player castingPlayer) {
         super(EntityTypes.LIGHTNING_BOLT.get(), level);
         this.power = power;
         this.castingPlayer = castingPlayer;
-        this.setPos(x, y, z);
+        this.setPos(pos);
         // Prevent vanilla lightning from setting fires and converting entities
         this.setVisualOnly(power == 0);
     }

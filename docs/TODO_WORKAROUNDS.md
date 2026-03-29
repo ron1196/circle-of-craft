@@ -2,47 +2,53 @@
 
 This file tracks all "for now" substitutions and temporary workarounds that need to be revisited.
 
-## Missing Event Handlers
-
-- [ ] **Verify `handleZiraSpawnEvent`** — The Zira spawn event in `LionKingForgeEvents` spawns a visual `LightningBoltEntity` which may trigger `onEntityJoinLevel` → `convertSandToOutsand`. Check that this doesn't create an unwanted outsand patch at Zira's spawn point. May need to skip conversion for our custom `LightningBoltEntity` subclass.
-
 ## Bed Texture
 
-- [ ] **Pride Bed 64x64 texture** — The old mod had 6 separate 16x16 face textures stitched into a single 64x64 entity texture. May need artist review for pixel-perfect accuracy.
+- [ ] **Pride Bed 64x64 texture** — The old mod had 6 separate 16x16 face textures stitched into a single 64x64 entity
+  texture. May need artist review for pixel-perfect accuracy.
 
 ## Placeholder Textures
 
 - [ ] **`kivulite_hoe`** — Old mod had no kivulite hoe; using generated teal placeholder
 - [ ] **`corrupt_hoe`** — Old mod had no corrupt hoe; using generated purple placeholder
-- [ ] **`mounted_shooter` block textures** — Old mod only had item textures; block front/side/top are solid-color placeholders
+- [ ] **`mounted_shooter` block textures** — Old mod only had item textures; block front/side/top are solid-color
+  placeholders
 - [ ] **`outlands_altar` block texture** — No old texture exists; reusing `corrupt_pridestone.png`
 - [ ] **`tilled_sand` item texture** — Generated sandy placeholder; block textures from old mod are correct
-- [ ] **`star_altar` item texture** — Generated placeholder (unused — item model inherits block model 3D render). Can delete the file.
+- [ ] **`star_altar` item texture** — Generated placeholder (unused — item model inherits block model 3D render). Can
+  delete the file.
 - [ ] **`outlands_altar` item texture** — Generated dark placeholder
 - [ ] **~150 block textures** need migration from old camelCase to snake_case
 - [ ] **~160 item textures** need migration
 
 ## Deprecated API (1.21+ Migration)
 
-- [ ] **7 blocks override deprecated `BlockBehaviour.use()`** — No replacement in 1.20.1. When upgrading to 1.21+, split into `useWithoutItem()` / `useItemOn()`: `PortalFrameBlock`, `ZiraMoundGateBlock`, `OutlandsAltarBlock`, `BongoDrumBlock`, `BananaCakeBlock`, `BugTrapBlock`, `GrindingBowlBlock`
-- [ ] **3 blocks override deprecated `BlockBehaviour.onRemove()`** — `BugTrapBlock`, `GrindingBowlBlock`, `BongoDrumBlock`
+- [ ] **7 blocks override deprecated `BlockBehaviour.use()`** — No replacement in 1.20.1. When upgrading to 1.21+, split
+  into `useWithoutItem()` / `useItemOn()`: `PortalFrameBlock`, `ZiraMoundGateBlock`, `OutlandsAltarBlock`,
+  `BongoDrumBlock`, `BananaCakeBlock`, `BugTrapBlock`, `GrindingBowlBlock`
+- [ ] **3 blocks override deprecated `BlockBehaviour.onRemove()`** — `BugTrapBlock`, `GrindingBowlBlock`,
+  `BongoDrumBlock`
 - [ ] **`LionKingFlowerBlock` deprecated `FlowerBlock` constructor** — Switch to `Holder<MobEffect>` in 1.21+
 
 ## CharacterSpeech Split
 
-- [ ] **`CharacterSpeech.java` is monolithic** — Should split dialogue into respective entity/questline classes. Keep shared `SpeechUtil.giveSpeech()` helper.
+- [ ] **`CharacterSpeech.java` is monolithic** — Should split dialogue into respective entity/questline classes. Keep
+  shared `SpeechUtil.giveSpeech()` helper.
 
 ## Crop Block Models
 
-- [ ] **Kiwano, Maize, and Yam 3D models need rework** — Current block models don't look right. Kiwano stem textures are generated placeholders.
+- [ ] **Kiwano, Maize, and Yam 3D models need rework** — Current block models don't look right. Kiwano stem textures are
+  generated placeholders.
 
 ## Crop Blocks
 
-- [ ] **Kiwano worldgen places `kiwano_block` (fruit) on sand** — Matches old mod. Stem (`kiwano_stem`) is the crop version for player farming.
+- [ ] **Kiwano worldgen places `kiwano_block` (fruit) on sand** — Matches old mod. Stem (`kiwano_stem`) is the crop
+  version for player farming.
 
 ## Grinding Bowl Recipes (Hardcoded)
 
-- [ ] **29 recipes hardcoded in `GrindingBowlBlockEntity`** — Should be refactored to `RecipeType<GrindingBowlRecipe>` + JSON recipes for datapack compatibility.
+- [ ] **29 recipes hardcoded in `GrindingBowlBlockEntity`** — Should be refactored to `RecipeType<GrindingBowlRecipe>` +
+  JSON recipes for datapack compatibility.
 
 ## Missing Quest Mechanics
 
@@ -54,8 +60,10 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 ## New Features
 
-- [ ] **Pride Compass — points to last-used portal** — Custom compass item reading `PlayerData.homePortalX/Y/Z`. Replace vanilla compass in dungeon loot.
+- [ ] **Pride Compass — points to last-used portal** — Custom compass item reading `PlayerData.homePortalX/Y/Z`. Replace
+  vanilla compass in dungeon loot.
 
 ## Advancement Triggers
 
-- [ ] **`USE_GRINDING_BOWL` trigger is orphaned** — Registered and fires but no advancement uses it. Remove or add a "first grind" advancement.
+- [ ] **`USE_GRINDING_BOWL` trigger is orphaned** — Registered and fires but no advancement uses it. Remove or add a "
+  first grind" advancement.

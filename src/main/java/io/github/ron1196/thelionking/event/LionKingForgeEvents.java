@@ -233,8 +233,7 @@ public class LionKingForgeEvents {
 
         BlockPos spawn = prideLands.getSharedSpawnPos();
         int y = prideLands.getHeight(Heightmap.Types.MOTION_BLOCKING, spawn.getX(), spawn.getZ()) + 1;
-        player.teleportTo(prideLands, spawn.getX() + 0.5, y, spawn.getZ() + 0.5,
-                player.getYRot(), player.getXRot());
+        player.teleportTo(prideLands, spawn.getX() + 0.5, y, spawn.getZ() + 0.5, player.getYRot(), player.getXRot());
     }
 
     // ── TickEvent.PlayerTickEvent ────────────────────────────────────────────────
@@ -395,27 +394,28 @@ public class LionKingForgeEvents {
         int py = Mth.floor(player.getBoundingBox().minY);
         int pz = Mth.floor(player.getZ());
 
-        // Player must be on the surface (can see sky and at heightmap level)
-        int surfaceY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, new BlockPos(px, 0, pz))
-                .getY();
+        // Player must be on the surface (can see sky and at heightmap level, matching old mod)
+        int surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING, px, pz);
         if (!level.canSeeSky(new BlockPos(px, py, pz)) || py != surfaceY) return;
 
-        // Spawn Zira at a random nearby position
-        int spawnX = px - 8 + level.random.nextInt(17);
-        int spawnZ = pz - 8 + level.random.nextInt(17);
-        int spawnY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, new BlockPos(spawnX, 0, spawnZ))
-                .getY();
+        // Spawn Zira in front of the player, 10-12 blocks away
+        float yawRad = (float) Math.toRadians(player.getYRot());
+        int distance = 10 + level.random.nextInt(3);
+        int spawnX = px - Mth.floor(Math.sin(yawRad) * distance);
+        int spawnZ = pz + Mth.floor(Math.cos(yawRad) * distance);
+        int spawnY = level.getHeight(Heightmap.Types.MOTION_BLOCKING, spawnX, spawnZ);
 
         ZiraEntity zira = EntityTypes.ZIRA.get().create(level);
         if (zira != null) {
-            zira.moveTo(spawnX, spawnY, spawnZ, 0.0F, 0.0F);
-            zira.getLookControl().setLookAt(player.getX(), player.getEyeY(), player.getZ(), 10.0F, 40.0F);
+            zira.moveTo(spawnX + 0.5, spawnY, spawnZ + 0.5, player.getYRot() + 180, 0.0F);
+            zira.setHostile(true);
             level.addFreshEntity(zira);
 
             // Visual lightning bolt at Zira's spawn position
             level.addFreshEntity(new LightningBoltEntity(level, spawnX, spawnY, spawnZ, 0, player));
 
             if (player instanceof ServerPlayer sp) {
+                sp.sendSystemMessage(net.minecraft.network.chat.Component.literal("§c§lZira has returned!"));
                 qm.tryAdvance("outlands", sp, StageTrigger.ZIRA_SPAWN_EVENT);
             }
         }
