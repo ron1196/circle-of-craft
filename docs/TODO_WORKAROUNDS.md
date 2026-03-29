@@ -4,15 +4,9 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 ## Placeholder Textures
 
-- [ ] **`kivulite_hoe`** — Old mod had no kivulite hoe; using generated teal placeholder
 - [ ] **`corrupt_hoe`** — Old mod had no corrupt hoe; using generated purple placeholder
-- [ ] **`mounted_shooter` block textures** — Old mod only had item textures; block front/side/top are solid-color
-  placeholders
-- [ ] **`outlands_altar` block texture** — No old texture exists; reusing `corrupt_pridestone.png`
-- [ ] **`tilled_sand` item texture** — Generated sandy placeholder; block textures from old mod are correct
-- [ ] **`star_altar` item texture** — Generated placeholder (unused — item model inherits block model 3D render). Can
-  delete the file.
-- [ ] **`outlands_altar` item texture** — Generated dark placeholder
+- [ ] **`mounted_shooter` block textures** — Old mod only had item textures; block front/side/top are solid-color placeholders
+- [ ] **`outlands_altar` block/item texture** — No old texture exists; block reuses `corrupt_pridestone.png`, item is placeholder
 - [ ] **~150 block textures** need migration from old camelCase to snake_case
 - [ ] **~160 item textures** need migration
 
