@@ -5,7 +5,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class LionKingLeavesBlock extends LeavesBlock {
 
-  public LionKingLeavesBlock(BlockBehaviour.Properties properties) {
-    super(properties);
-  }
+    public LionKingLeavesBlock(BlockBehaviour.Properties properties) {
+        super(properties);
+    }
 }

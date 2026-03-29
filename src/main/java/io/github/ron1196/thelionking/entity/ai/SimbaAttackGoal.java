@@ -9,7 +9,7 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
  */
 public class SimbaAttackGoal extends MeleeAttackGoal {
 
-  public SimbaAttackGoal(PathfinderMob mob) {
-    super(mob, 1.3D, true);
-  }
+    public SimbaAttackGoal(PathfinderMob mob) {
+        super(mob, 1.3D, true);
+    }
 }

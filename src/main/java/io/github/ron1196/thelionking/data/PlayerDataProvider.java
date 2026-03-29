@@ -21,59 +21,55 @@ import org.jetbrains.annotations.Nullable;
 @Mod.EventBusSubscriber(modid = TheLionKingMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PlayerDataProvider implements ICapabilitySerializable<CompoundTag> {
 
-  public static final Capability<PlayerData> CAPABILITY =
-      CapabilityManager.get(new CapabilityToken<>() {});
+    public static final Capability<PlayerData> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
-  public static final ResourceLocation IDENTIFIER =
-      new ResourceLocation(TheLionKingMod.MOD_ID, "player_data");
+    public static final ResourceLocation IDENTIFIER = new ResourceLocation(TheLionKingMod.MOD_ID, "player_data");
 
-  private final PlayerData data = new PlayerData();
-  private final LazyOptional<PlayerData> optional = LazyOptional.of(() -> data);
+    private final PlayerData data = new PlayerData();
+    private final LazyOptional<PlayerData> optional = LazyOptional.of(() -> data);
 
-  // ── Capability methods ──────────────────────────────────────────────────────
+    // ── Capability methods ──────────────────────────────────────────────────────
 
-  @Override
-  public @NotNull <T> LazyOptional<T> getCapability(
-      @NotNull Capability<T> cap, @Nullable Direction side) {
-    return CAPABILITY.orEmpty(cap, optional);
-  }
-
-  @Override
-  public CompoundTag serializeNBT() {
-    return data.serializeNBT();
-  }
-
-  @Override
-  public void deserializeNBT(@NotNull CompoundTag nbt) {
-    data.deserializeNBT(nbt);
-  }
-
-  // ── Helper ──────────────────────────────────────────────────────────────────
-
-  public static PlayerData get(Player player) {
-    return player
-        .getCapability(CAPABILITY)
-        .orElseThrow(() -> new IllegalStateException("PlayerData capability missing on player"));
-  }
-
-  // ── Events ──────────────────────────────────────────────────────────────────
-
-  @SubscribeEvent
-  public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
-    if (event.getObject() instanceof Player) {
-      event.addCapability(IDENTIFIER, new PlayerDataProvider());
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        return CAPABILITY.orEmpty(cap, optional);
     }
-  }
 
-  @SubscribeEvent
-  public static void onPlayerClone(PlayerEvent.Clone event) {
-    event.getOriginal().reviveCaps();
-    try {
-      PlayerData original = get(event.getOriginal());
-      PlayerData clone = get(event.getEntity());
-      clone.copyFrom(original);
-    } finally {
-      event.getOriginal().invalidateCaps();
+    @Override
+    public CompoundTag serializeNBT() {
+        return data.serializeNBT();
     }
-  }
+
+    @Override
+    public void deserializeNBT(@NotNull CompoundTag nbt) {
+        data.deserializeNBT(nbt);
+    }
+
+    // ── Helper ──────────────────────────────────────────────────────────────────
+
+    public static PlayerData get(Player player) {
+        return player.getCapability(CAPABILITY)
+                .orElseThrow(() -> new IllegalStateException("PlayerData capability missing on player"));
+    }
+
+    // ── Events ──────────────────────────────────────────────────────────────────
+
+    @SubscribeEvent
+    public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
+        if (event.getObject() instanceof Player) {
+            event.addCapability(IDENTIFIER, new PlayerDataProvider());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerClone(PlayerEvent.Clone event) {
+        event.getOriginal().reviveCaps();
+        try {
+            PlayerData original = get(event.getOriginal());
+            PlayerData clone = get(event.getEntity());
+            clone.copyFrom(original);
+        } finally {
+            event.getOriginal().invalidateCaps();
+        }
+    }
 }

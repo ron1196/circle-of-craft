@@ -14,27 +14,25 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public class KivuliteShovelItem extends ShovelItem {
 
-  public KivuliteShovelItem(
-      Tier tier, float attackDamage, float attackSpeed, Properties properties) {
-    super(tier, attackDamage, attackSpeed, properties);
-  }
-
-  @Override
-  public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, Player player) {
-    Level level = player.level();
-    BlockState state = level.getBlockState(pos);
-
-    // Auto-smelt if the shovel is effective against this block
-    if (isCorrectToolForDrops(state)
-        && FireToolHelper.tryAutoSmelt(stack, level, state, pos, player)) {
-      return true;
+    public KivuliteShovelItem(Tier tier, float attackDamage, float attackSpeed, Properties properties) {
+        super(tier, attackDamage, attackSpeed, properties);
     }
 
-    // Special: clay → bricks
-    if (FireToolHelper.trySmeltClay(stack, level, state, pos, player)) {
-      return true;
-    }
+    @Override
+    public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, Player player) {
+        Level level = player.level();
+        BlockState state = level.getBlockState(pos);
 
-    return super.onBlockStartBreak(stack, pos, player);
-  }
+        // Auto-smelt if the shovel is effective against this block
+        if (isCorrectToolForDrops(state) && FireToolHelper.tryAutoSmelt(stack, level, state, pos, player)) {
+            return true;
+        }
+
+        // Special: clay → bricks
+        if (FireToolHelper.trySmeltClay(stack, level, state, pos, player)) {
+            return true;
+        }
+
+        return super.onBlockStartBreak(stack, pos, player);
+    }
 }

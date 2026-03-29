@@ -2,11 +2,6 @@
 
 This file tracks all "for now" substitutions and temporary workarounds that need to be revisited.
 
-## Bed Texture
-
-- [ ] **Pride Bed 64x64 texture** — The old mod had 6 separate 16x16 face textures stitched into a single 64x64 entity
-  texture. May need artist review for pixel-perfect accuracy.
-
 ## Placeholder Textures
 
 - [ ] **`kivulite_hoe`** — Old mod had no kivulite hoe; using generated teal placeholder

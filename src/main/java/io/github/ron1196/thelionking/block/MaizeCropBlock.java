@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.block;
 
+import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Maize — sugar cane-like stacking plant that grows near water on grass/dirt.
  *
- * <p>Ported from old mod's LKBlockMaize. Stacks up to 4 blocks tall, requires adjacent
+ * <p>Ported from old mod's BlockMaize. Stacks up to 4 blocks tall, requires adjacent
  * water at the base. Has a corn ear state that can be harvested by right-clicking.
  */
 public class MaizeCropBlock extends Block {
@@ -80,18 +81,17 @@ public class MaizeCropBlock extends Block {
     public boolean canSurvive(@NotNull BlockState state, @NotNull LevelReader level, @NotNull BlockPos pos) {
         BlockState below = level.getBlockState(pos.below());
 
-        // Can stack on top of another maize block
-        if (below.is(this)) {
+        if (below.is(this)) { // Can stack on top of another maize block
             return true;
         }
 
-        // Can be placed on farmland
-        if (below.is(Blocks.FARMLAND)) {
+        // Can be placed on farmland or tilled sand
+        if (below.is(Blocks.FARMLAND) || below.is(LionKingBlocks.TILLED_SAND.get())) {
             return true;
         }
 
-        // Can be placed on grass/dirt if water is adjacent at the same level as the ground block
-        if (below.is(Blocks.GRASS_BLOCK) || below.is(Blocks.DIRT)) {
+        // Can be placed on grass/dirt/sand if water is adjacent (sugar cane style)
+        if (below.is(Blocks.GRASS_BLOCK) || below.is(Blocks.DIRT) || below.is(Blocks.SAND)) {
             return hasAdjacentWater(level, pos.below());
         }
 
@@ -178,9 +178,8 @@ public class MaizeCropBlock extends Block {
             BlockState below = level.getBlockState(pos.below(depth));
             if (below.is(Blocks.FARMLAND)) {
                 // Hydrated farmland grows faster
-                return below.getValue(net.minecraft.world.level.block.FarmBlock.MOISTURE) > 0
-                        ? HYDRATED_GROWTH_RATE
-                        : DRY_GROWTH_RATE;
+                Integer moistureValue = below.getValue(TilledSandBlock.MOISTURE);
+                return moistureValue > 0 ? HYDRATED_GROWTH_RATE : DRY_GROWTH_RATE;
             }
             if (!below.is(this)) {
                 break;

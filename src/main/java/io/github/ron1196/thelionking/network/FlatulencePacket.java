@@ -9,14 +9,14 @@ import net.minecraftforge.network.NetworkEvent;
  */
 public class FlatulencePacket {
 
-  public FlatulencePacket() {}
+    public FlatulencePacket() {}
 
-  public FlatulencePacket(FriendlyByteBuf buf) {}
+    public FlatulencePacket(FriendlyByteBuf buf) {}
 
-  public void encode(FriendlyByteBuf buf) {}
+    public void encode(FriendlyByteBuf buf) {}
 
-  public void handle(Supplier<NetworkEvent.Context> ctx) {
-    ctx.get().enqueueWork(() -> ClientWorldState.flatulenceTimer = 60);
-    ctx.get().setPacketHandled(true);
-  }
+    public void handle(Supplier<NetworkEvent.Context> ctx) {
+        ctx.get().enqueueWork(() -> ClientWorldState.flatulenceTimer = 60);
+        ctx.get().setPacketHandled(true);
+    }
 }

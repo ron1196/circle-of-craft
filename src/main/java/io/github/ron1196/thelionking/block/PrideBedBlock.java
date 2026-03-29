@@ -10,12 +10,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class PrideBedBlock extends BedBlock {
 
-  public PrideBedBlock(Properties properties) {
-    super(DyeColor.BROWN, properties);
-  }
+    public PrideBedBlock(Properties properties) {
+        super(DyeColor.BROWN, properties);
+    }
 
-  @Override
-  public @NotNull BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-    return new PrideBedBlockEntity(pos, state);
-  }
+    @Override
+    public @NotNull BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+        return new PrideBedBlockEntity(pos, state);
+    }
 }

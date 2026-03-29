@@ -9,19 +9,19 @@ import org.jetbrains.annotations.NotNull;
  */
 public class NoteItem extends Item {
 
-  private final int noteValue;
+    private final int noteValue;
 
-  public NoteItem(int noteValue, Properties properties) {
-    super(properties);
-    this.noteValue = noteValue;
-  }
+    public NoteItem(int noteValue, Properties properties) {
+        super(properties);
+        this.noteValue = noteValue;
+    }
 
-  public int getNoteValue() {
-    return noteValue;
-  }
+    public int getNoteValue() {
+        return noteValue;
+    }
 
-  @Override
-  public boolean isFoil(@NotNull ItemStack stack) {
-    return true;
-  }
+    @Override
+    public boolean isFoil(@NotNull ItemStack stack) {
+        return true;
+    }
 }

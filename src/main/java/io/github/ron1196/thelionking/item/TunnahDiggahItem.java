@@ -20,78 +20,74 @@ import org.jetbrains.annotations.NotNull;
  */
 public class TunnahDiggahItem extends PickaxeItem {
 
-  public TunnahDiggahItem(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
-    super(tier, attackDamage, attackSpeed, properties);
-  }
-
-  @Override
-  public boolean mineBlock(
-      @NotNull ItemStack stack,
-      @NotNull Level level,
-      @NotNull BlockState state,
-      @NotNull BlockPos pos,
-      @NotNull LivingEntity miner) {
-    if (level.isClientSide || !(level instanceof ServerLevel serverLevel)) {
-      return super.mineBlock(stack, level, state, pos, miner);
+    public TunnahDiggahItem(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
+        super(tier, attackDamage, attackSpeed, properties);
     }
 
-    if (!isAoETarget(state)) {
-      return super.mineBlock(stack, level, state, pos, miner);
-    }
-
-    int radius =
-        1 + EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BIGGAH_DIGGAH.get(), stack);
-    boolean hasPrecision =
-        EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PRECISION.get(), stack) > 0;
-    boolean hasSilkTouch =
-        EnchantmentHelper.getItemEnchantmentLevel(
-                net.minecraft.world.item.enchantment.Enchantments.SILK_TOUCH, stack)
-            > 0;
-
-    for (int dx = -radius; dx <= radius; dx++) {
-      for (int dy = -radius; dy <= radius; dy++) {
-        for (int dz = -radius; dz <= radius; dz++) {
-          if (dx == 0 && dy == 0 && dz == 0) continue;
-
-          BlockPos targetPos = pos.offset(dx, dy, dz);
-          BlockState targetState = level.getBlockState(targetPos);
-
-          if (!isAoETarget(targetState)) continue;
-
-          // Drop with chance: 33% normally, 66% with Precision
-          boolean shouldDrop =
-              hasPrecision ? level.random.nextInt(3) > 0 : level.random.nextInt(3) == 0;
-
-          if (shouldDrop) {
-            BlockState dropState = getDropState(targetState, hasSilkTouch);
-            Block.popResource(level, targetPos, new ItemStack(dropState.getBlock()));
-          }
-
-          level.destroyBlock(targetPos, false);
-          stack.hurtAndBreak(1, miner, e -> e.broadcastBreakEvent(miner.getUsedItemHand()));
+    @Override
+    public boolean mineBlock(
+            @NotNull ItemStack stack,
+            @NotNull Level level,
+            @NotNull BlockState state,
+            @NotNull BlockPos pos,
+            @NotNull LivingEntity miner) {
+        if (level.isClientSide || !(level instanceof ServerLevel serverLevel)) {
+            return super.mineBlock(stack, level, state, pos, miner);
         }
-      }
+
+        if (!isAoETarget(state)) {
+            return super.mineBlock(stack, level, state, pos, miner);
+        }
+
+        int radius = 1 + EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BIGGAH_DIGGAH.get(), stack);
+        boolean hasPrecision = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PRECISION.get(), stack) > 0;
+        boolean hasSilkTouch = EnchantmentHelper.getItemEnchantmentLevel(
+                        net.minecraft.world.item.enchantment.Enchantments.SILK_TOUCH, stack)
+                > 0;
+
+        for (int dx = -radius; dx <= radius; dx++) {
+            for (int dy = -radius; dy <= radius; dy++) {
+                for (int dz = -radius; dz <= radius; dz++) {
+                    if (dx == 0 && dy == 0 && dz == 0) continue;
+
+                    BlockPos targetPos = pos.offset(dx, dy, dz);
+                    BlockState targetState = level.getBlockState(targetPos);
+
+                    if (!isAoETarget(targetState)) continue;
+
+                    // Drop with chance: 33% normally, 66% with Precision
+                    boolean shouldDrop = hasPrecision ? level.random.nextInt(3) > 0 : level.random.nextInt(3) == 0;
+
+                    if (shouldDrop) {
+                        BlockState dropState = getDropState(targetState, hasSilkTouch);
+                        Block.popResource(level, targetPos, new ItemStack(dropState.getBlock()));
+                    }
+
+                    level.destroyBlock(targetPos, false);
+                    stack.hurtAndBreak(1, miner, e -> e.broadcastBreakEvent(miner.getUsedItemHand()));
+                }
+            }
+        }
+
+        return super.mineBlock(stack, level, state, pos, miner);
     }
 
-    return super.mineBlock(stack, level, state, pos, miner);
-  }
+    private static boolean isAoETarget(BlockState state) {
+        return state.is(net.minecraft.world.level.block.Blocks.DIRT)
+                || state.is(net.minecraft.world.level.block.Blocks.GRASS_BLOCK)
+                || state.is(net.minecraft.world.level.block.Blocks.STONE)
+                || state.is(net.minecraft.world.level.block.Blocks.NETHERRACK)
+                || state.is(net.minecraft.world.level.block.Blocks.END_STONE)
+                || state.is(LionKingBlocks.PRIDESTONE.get())
+                || state.is(LionKingBlocks.CORRUPT_PRIDESTONE.get());
+    }
 
-  private static boolean isAoETarget(BlockState state) {
-    return state.is(net.minecraft.world.level.block.Blocks.DIRT)
-        || state.is(net.minecraft.world.level.block.Blocks.GRASS_BLOCK)
-        || state.is(net.minecraft.world.level.block.Blocks.STONE)
-        || state.is(net.minecraft.world.level.block.Blocks.NETHERRACK)
-        || state.is(net.minecraft.world.level.block.Blocks.END_STONE)
-        || state.is(LionKingBlocks.PRIDESTONE.get())
-        || state.is(LionKingBlocks.CORRUPT_PRIDESTONE.get());
-  }
-
-  private static BlockState getDropState(BlockState state, boolean silkTouch) {
-    if (silkTouch) return state;
-    if (state.is(net.minecraft.world.level.block.Blocks.GRASS_BLOCK))
-      return net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState();
-    if (state.is(net.minecraft.world.level.block.Blocks.STONE))
-      return net.minecraft.world.level.block.Blocks.COBBLESTONE.defaultBlockState();
-    return state;
-  }
+    private static BlockState getDropState(BlockState state, boolean silkTouch) {
+        if (silkTouch) return state;
+        if (state.is(net.minecraft.world.level.block.Blocks.GRASS_BLOCK))
+            return net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState();
+        if (state.is(net.minecraft.world.level.block.Blocks.STONE))
+            return net.minecraft.world.level.block.Blocks.COBBLESTONE.defaultBlockState();
+        return state;
+    }
 }

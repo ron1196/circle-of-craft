@@ -9,14 +9,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class LionKingSaplingBlock extends SaplingBlock {
 
-  public LionKingSaplingBlock(AbstractTreeGrower grower, Properties properties) {
-    super(grower, properties);
-  }
+    public LionKingSaplingBlock(AbstractTreeGrower grower, Properties properties) {
+        super(grower, properties);
+    }
 
-  @Override
-  protected boolean mayPlaceOn(
-      @NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
-    return super.mayPlaceOn(state, level, pos)
-        || state.is(net.minecraft.world.level.block.Blocks.SAND);
-  }
+    @Override
+    protected boolean mayPlaceOn(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
+        return super.mayPlaceOn(state, level, pos) || state.is(net.minecraft.world.level.block.Blocks.SAND);
+    }
 }

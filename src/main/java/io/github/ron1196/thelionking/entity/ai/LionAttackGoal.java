@@ -12,18 +12,17 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 /** Lions hunt prey animals and attack hyenas on sight. */
 public class LionAttackGoal extends NearestAttackableTargetGoal<LivingEntity> {
 
-  public LionAttackGoal(PathfinderMob mob) {
-    super(
-        mob,
-        LivingEntity.class,
-        2,
-        true,
-        false,
-        e ->
-            e instanceof ZebraEntity
-                || e instanceof DikDikEntity
-                || e instanceof GemsbokEntity
-                || e instanceof HyenaEntity
-                || e instanceof SkeletalHyenaEntity);
-  }
+    public LionAttackGoal(PathfinderMob mob) {
+        super(
+                mob,
+                LivingEntity.class,
+                2,
+                true,
+                false,
+                e -> e instanceof ZebraEntity
+                        || e instanceof DikDikEntity
+                        || e instanceof GemsbokEntity
+                        || e instanceof HyenaEntity
+                        || e instanceof SkeletalHyenaEntity);
+    }
 }

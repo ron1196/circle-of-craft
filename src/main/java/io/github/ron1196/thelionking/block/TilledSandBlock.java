@@ -1,29 +1,76 @@
 package io.github.ron1196.thelionking.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.IPlantable;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Tilled Sand — the farmland equivalent for sand. Created by hoeing sand.
- * Supports Kiwano Stem crops. Reverts to sand (not dirt) when conditions aren't met.
+ * Supports crops (especially Kiwano Stem). Reverts to sand when conditions aren't met.
+ * Does NOT extend FarmBlock to avoid hardcoded dirt reversion.
  */
-public class TilledSandBlock extends FarmBlock {
+public class TilledSandBlock extends Block {
 
+    public static final IntegerProperty MOISTURE = BlockStateProperties.MOISTURE;
+    private static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 15.0, 16.0);
     private static final int WATER_SEARCH_RADIUS = 4;
 
     public TilledSandBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(MOISTURE, 0));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(MOISTURE);
+    }
+
+    @Override
+    public @NotNull VoxelShape getShape(
+            @NotNull BlockState state,
+            @NotNull BlockGetter level,
+            @NotNull BlockPos pos,
+            @NotNull CollisionContext context) {
+        return SHAPE;
+    }
+
+    @Override
+    public boolean useShapeForLightOcclusion(@NotNull BlockState state) {
+        return true;
+    }
+
+    // ── Survival / reversion ────────────────────────────────────────────────
+
+    @Override
+    public @NotNull BlockState updateShape(
+            @NotNull BlockState state,
+            @NotNull Direction direction,
+            @NotNull BlockState neighborState,
+            @NotNull LevelAccessor level,
+            @NotNull BlockPos pos,
+            @NotNull BlockPos neighborPos) {
+        if (direction == Direction.UP && level.getBlockState(pos.above()).isSolid()) {
+            level.scheduleTick(pos, this, 1);
+        }
+        return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }
 
     @Override
@@ -32,7 +79,7 @@ public class TilledSandBlock extends FarmBlock {
             @NotNull ServerLevel level,
             @NotNull BlockPos pos,
             @NotNull RandomSource random) {
-        if (!state.canSurvive(level, pos)) {
+        if (level.getBlockState(pos.above()).isSolid()) {
             turnToSand(level, pos);
         }
     }
@@ -45,15 +92,14 @@ public class TilledSandBlock extends FarmBlock {
             @NotNull RandomSource random) {
         int moisture = state.getValue(MOISTURE);
         if (isNearWater(level, pos)) {
-            if (moisture >= 7) return;
-            level.setBlock(pos, state.setValue(MOISTURE, 7), 2);
-            return;
-        }
-        if (moisture <= 0) {
+            if (moisture < 7) {
+                level.setBlock(pos, state.setValue(MOISTURE, 7), 2);
+            }
+        } else if (moisture > 0) {
+            level.setBlock(pos, state.setValue(MOISTURE, moisture - 1), 2);
+        } else if (!hasCrop(level, pos)) {
             turnToSand(level, pos);
-            return;
         }
-        level.setBlock(pos, state.setValue(MOISTURE, moisture - 1), 2);
     }
 
     @Override
@@ -63,7 +109,6 @@ public class TilledSandBlock extends FarmBlock {
             @NotNull BlockPos pos,
             @NotNull Entity entity,
             float fallDistance) {
-        // Vanilla FarmBlock turns to dirt on fall — we turn to sand
         if (!level.isClientSide && level.random.nextFloat() < fallDistance - 0.5F) {
             turnToSand(level, pos);
         }
@@ -79,14 +124,9 @@ public class TilledSandBlock extends FarmBlock {
             @NotNull Block neighborBlock,
             @NotNull BlockPos neighborPos,
             boolean movedByPiston) {
-        super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
-        // Solid block placed on top → revert to sand (old mod behavior)
         if (level.getBlockState(pos.above()).isSolid()) {
             turnToSand(level, pos);
-            return;
-        }
-        // Nothing below → revert to sand (gravity, but instant instead of falling entity)
-        if (!level.getBlockState(pos.below()).isSolid()) {
+        } else if (!level.getBlockState(pos.below()).isSolid()) {
             turnToSand(level, pos);
         }
     }
@@ -99,25 +139,32 @@ public class TilledSandBlock extends FarmBlock {
             @NotNull BlockPos pos,
             @NotNull BlockState oldState,
             boolean movedByPiston) {
-        super.onPlace(state, level, pos, oldState, movedByPiston);
         if (!level.getBlockState(pos.below()).isSolid()) {
             turnToSand(level, pos);
         }
     }
 
-    private static void turnToSand(Level level, BlockPos pos) {
-        level.setBlockAndUpdate(
-                pos, pushEntitiesUp(level.getBlockState(pos), Blocks.SAND.defaultBlockState(), level, pos));
-    }
+    // ── Plant support ───────────────────────────────────────────────────────
 
     @Override
     public boolean canSustainPlant(
             @NotNull BlockState state,
             @NotNull BlockGetter level,
             @NotNull BlockPos pos,
-            @NotNull net.minecraft.core.Direction facing,
-            @NotNull net.minecraftforge.common.IPlantable plantable) {
+            @NotNull Direction facing,
+            @NotNull IPlantable plantable) {
         return true;
+    }
+
+    // ── Helpers ──────────────────────────────────────────────────────────────
+
+    private static void turnToSand(Level level, BlockPos pos) {
+        BlockState sand = Blocks.SAND.defaultBlockState();
+        level.setBlockAndUpdate(pos, pushEntitiesUp(level.getBlockState(pos), sand, level, pos));
+    }
+
+    private static boolean hasCrop(BlockGetter level, BlockPos pos) {
+        return level.getBlockState(pos.above()).getBlock() instanceof CropBlock;
     }
 
     private static boolean isNearWater(LevelReader level, BlockPos pos) {

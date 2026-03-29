@@ -18,39 +18,39 @@ import org.jetbrains.annotations.NotNull;
 
 public class QuestBookItem extends Item {
 
-  public QuestBookItem(Properties properties) {
-    super(properties.stacksTo(1).rarity(Rarity.UNCOMMON));
-  }
-
-  @Override
-  public @NotNull InteractionResultHolder<ItemStack> use(
-      Level level, @NotNull Player player, @NotNull InteractionHand hand) {
-    if (level.isClientSide()) {
-      QuestBookClientHelper.openScreen();
+    public QuestBookItem(Properties properties) {
+        super(properties.stacksTo(1).rarity(Rarity.UNCOMMON));
     }
-    return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
-  }
 
-  @Override
-  public boolean isFoil(@NotNull ItemStack stack) {
-    return hasUncheckedQuests();
-  }
-
-  @Override
-  public void appendHoverText(
-      @NotNull ItemStack stack,
-      @Nullable Level level,
-      @NotNull List<Component> tooltip,
-      @NotNull TooltipFlag flag) {
-    if (hasUncheckedQuests()) {
-      tooltip.add(Component.literal("§eNew quests available"));
+    @Override
+    public @NotNull InteractionResultHolder<ItemStack> use(
+            Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+        if (level.isClientSide()) {
+            QuestBookClientHelper.openScreen();
+        }
+        return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
     }
-  }
 
-  private static boolean hasUncheckedQuests() {
-    for (Questline quest : QuestlineRegistry.getOrdered()) {
-      if (!ClientWorldState.isQuestChecked(quest.getId())) return true;
+    @Override
+    public boolean isFoil(@NotNull ItemStack stack) {
+        return hasUncheckedQuests();
     }
-    return false;
-  }
+
+    @Override
+    public void appendHoverText(
+            @NotNull ItemStack stack,
+            @Nullable Level level,
+            @NotNull List<Component> tooltip,
+            @NotNull TooltipFlag flag) {
+        if (hasUncheckedQuests()) {
+            tooltip.add(Component.literal("§eNew quests available"));
+        }
+    }
+
+    private static boolean hasUncheckedQuests() {
+        for (Questline quest : QuestlineRegistry.getOrdered()) {
+            if (!ClientWorldState.isQuestChecked(quest.getId())) return true;
+        }
+        return false;
+    }
 }

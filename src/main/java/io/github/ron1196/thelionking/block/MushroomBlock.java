@@ -8,13 +8,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class MushroomBlock extends BushBlock {
 
-  public MushroomBlock(Properties properties) {
-    super(properties);
-  }
+    public MushroomBlock(Properties properties) {
+        super(properties);
+    }
 
-  @Override
-  protected boolean mayPlaceOn(
-      @NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
-    return state.isSolidRender(level, pos);
-  }
+    @Override
+    protected boolean mayPlaceOn(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
+        return state.isSolidRender(level, pos);
+    }
 }

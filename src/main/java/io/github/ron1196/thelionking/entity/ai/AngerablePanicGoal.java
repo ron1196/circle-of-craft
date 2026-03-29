@@ -10,26 +10,26 @@ import net.minecraft.world.entity.ai.goal.PanicGoal;
  */
 public class AngerablePanicGoal extends PanicGoal {
 
-  private final PathfinderMob mob;
+    private final PathfinderMob mob;
 
-  public AngerablePanicGoal(PathfinderMob mob, double speedModifier) {
-    super(mob, speedModifier);
-    this.mob = mob;
-  }
-
-  @Override
-  public boolean canUse() {
-    if (mob instanceof NeutralMob neutralMob) {
-      if (neutralMob.isAngry()) return false;
+    public AngerablePanicGoal(PathfinderMob mob, double speedModifier) {
+        super(mob, speedModifier);
+        this.mob = mob;
     }
-    return super.canUse();
-  }
 
-  @Override
-  public boolean canContinueToUse() {
-    if (mob instanceof NeutralMob neutralMob) {
-      if (neutralMob.isAngry()) return false;
+    @Override
+    public boolean canUse() {
+        if (mob instanceof NeutralMob neutralMob) {
+            if (neutralMob.isAngry()) return false;
+        }
+        return super.canUse();
     }
-    return super.canContinueToUse();
-  }
+
+    @Override
+    public boolean canContinueToUse() {
+        if (mob instanceof NeutralMob neutralMob) {
+            if (neutralMob.isAngry()) return false;
+        }
+        return super.canContinueToUse();
+    }
 }
