@@ -8,7 +8,7 @@ import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.questline.RafikiQuestline.Stage;
-import io.github.ron1196.thelionking.quest.stage.StageTrigger;
+import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -98,7 +98,7 @@ public class RafikiEntity extends PathfinderMob {
         }
 
         // Try to advance the quest (rewards are given automatically in tryAdvance)
-        if (quests.tryAdvance("rafiki", serverPlayer, StageTrigger.RAFIKI_TALK)) {
+        if (quests.tryAdvance("rafiki", serverPlayer, QuestTrigger.RAFIKI_TALK)) {
             Stage newStage = quests.getStage("rafiki", Stage.class);
             sendStageDialogue(player, newStage);
             syncPlayerData(serverPlayer, playerData);

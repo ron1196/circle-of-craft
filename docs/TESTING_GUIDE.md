@@ -64,7 +64,7 @@ Right-click. Expected: "The Ticket Lion can sell you passage to the Pride Lands!
 #### What exists
 - `LKNetworking.java` — SimpleChannel on `thelionking:main`, protocol version `"1"`
 - `SimbaSitPacket` — Client→Server, toggles Simba sit/stand
-- `QuestSyncPacket` — Server→Client, syncs quest index/stage/checked
+- `QuestSyncPacket` — Server→Client, syncs quest index/stageKey/checked
 - `QuestCheckPacket` — Client→Server, marks quest objective checked
 
 #### How to test LAN
@@ -278,7 +278,7 @@ Fly around at speed. Structures are surface-level and visible. For Outlands:
 ## Phase 13: Advancements, Quests & Polish
 
 ### What it does
-11 custom advancement triggers, 21 advancements updated from `impossible` to real triggers, quest stage transitions (Rafiki 7 stages, Outlands 10 stages), workaround fixes.
+11 custom advancement triggers, 21 advancements updated from `impossible` to real triggers, quest stageKey transitions (Rafiki 7 stages, Outlands 10 stages), workaround fixes.
 
 ### Tests
 
@@ -298,26 +298,26 @@ Test real triggers (these fire when the custom trigger is activated in code):
 - Get a mango → `get_mango`
 
 #### Rafiki Quest Progression
-1. `/summon thelionking:rafiki` → right-click → get Quest Book (stage 0→1)
-2. Collect 5 hyena bones (`/give @p thelionking:hyena_bone 5`) → talk to Rafiki (stage 1→2)
-3. Find Simba NPC → interact (stage 2→3)
-4. Kill 10 hyenas (stage 3→4)
-5. Kill Scar: `/summon thelionking:scar` → kill (stage 4→5)
-6. Return to Rafiki → talk (stage 5→6)
-7. Receives rewards: Simba Charm, 16 gold ingots, Rafiki Staff (stage 6→7 COMPLETE)
+1. `/summon thelionking:rafiki` → right-click → get Quest Book (stageKey 0→1)
+2. Collect 5 hyena bones (`/give @p thelionking:hyena_bone 5`) → talk to Rafiki (stageKey 1→2)
+3. Find Simba NPC → interact (stageKey 2→3)
+4. Kill 10 hyenas (stageKey 3→4)
+5. Kill Scar: `/summon thelionking:scar` → kill (stageKey 4→5)
+6. Return to Rafiki → talk (stageKey 5→6)
+7. Receives rewards: Simba Charm, 16 gold ingots, Rafiki Staff (stageKey 6→7 COMPLETE)
 
-Note: Quest stage advancement relies on `tryAdvanceStage()` being called, which happens in the player tick handler every 20 ticks. Some stages need manual NPC interaction triggers to be fully wired.
+Note: Quest stageKey advancement relies on `tryAdvanceStage()` being called, which happens in the player tick handler every 20 ticks. Some stages need manual NPC interaction triggers to be fully wired.
 
 #### Outlands Quest Progression
-1. Enter Outlands dimension (stage 0→1)
-2. Find and talk to Zira NPC (stage 1→2)
-3. Collect 20 corrupt pridestone (stage 2→3)
-4. Kill 15 outlanders (stage 3→4)
-5. Find Outlands Altar (stage 4→5)
-6. Place offering on altar (stage 5→6)
-7. Kill Termite Queen (stage 6→7)
-8. Kill Zira (stage 7→8)
-9. Return to Pride Lands (stage 8→9)
+1. Enter Outlands dimension (stageKey 0→1)
+2. Find and talk to Zira NPC (stageKey 1→2)
+3. Collect 20 corrupt pridestone (stageKey 2→3)
+4. Kill 15 outlanders (stageKey 3→4)
+5. Find Outlands Altar (stageKey 4→5)
+6. Place offering on altar (stageKey 5→6)
+7. Kill Termite Queen (stageKey 6→7)
+8. Kill Zira (stageKey 7→8)
+9. Return to Pride Lands (stageKey 8→9)
 10. Complete — rewards: Wayward Feathers, Kivulite, Diamonds, Amulet
 
 #### Bug Stew Recipe Fix
@@ -356,5 +356,5 @@ These are implemented but not fully wired end-to-end:
 | Timon trade GUI | Menu + screen exist | `player.openMenu()` call in NPC interaction |
 | Quiver GUI | Menu + screen exist | Right-click handler on dart_quiver item |
 | Simba Inventory GUI | Menu + screen exist | Right-click handler on Simba entity |
-| Quest stage auto-advance | Logic in `tryAdvanceStage()` | Some stages need NPC interaction hooks to call it |
+| Quest stageKey auto-advance | Logic in `tryAdvanceStage()` | Some stages need NPC interaction hooks to call it |
 | Advancement triggers | Custom triggers registered | Some need to be fired from game events (e.g. `LKCriteriaTriggers.SHOOT_DART.trigger(player)`) |

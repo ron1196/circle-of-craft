@@ -17,7 +17,7 @@ import io.github.ron1196.thelionking.network.LoginSyncPacket;
 import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
-import io.github.ron1196.thelionking.quest.stage.StageTrigger;
+import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.Enchantments;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
@@ -261,7 +261,7 @@ public class LionKingForgeEvents {
             LionKingCriteriaTriggers.ENTER_OUTLANDS.trigger(serverPlayer);
             WorldData.get(serverPlayer.serverLevel())
                     .getQuestManager()
-                    .tryAdvance("outlands", serverPlayer, StageTrigger.ENTER_OUTLANDS);
+                    .tryAdvance("outlands", serverPlayer, QuestTrigger.ENTER_OUTLANDS);
         } else if (serverPlayer.level().dimension() == Dimensions.UPENDI_LEVEL && !playerData.hasEnteredUpendi()) {
             playerData.setEnteredUpendi(true);
             LionKingCriteriaTriggers.ENTER_UPENDI.trigger(serverPlayer);
@@ -385,8 +385,8 @@ public class LionKingForgeEvents {
     private static void handleZiraSpawnEvent(ServerLevel level) {
         WorldData data = WorldData.get(level);
         QuestlineManager qm = data.getQuestManager();
-        OutlandsQuestline.Stage stage = qm.getStage("outlands", OutlandsQuestline.Stage.class);
-        if (stage != OutlandsQuestline.Stage.ZIRA_RETURNS) return;
+        OutlandsQuestline.Stage stageKey = qm.getStage("outlands", OutlandsQuestline.Stage.class);
+        if (stageKey != OutlandsQuestline.Stage.ZIRA_RETURNS) return;
         if (level.players().isEmpty()) return;
 
         Player player = level.players().get(0);
@@ -416,7 +416,7 @@ public class LionKingForgeEvents {
 
             if (player instanceof ServerPlayer sp) {
                 sp.sendSystemMessage(net.minecraft.network.chat.Component.literal("§c§lZira has returned!"));
-                qm.tryAdvance("outlands", sp, StageTrigger.ZIRA_SPAWN_EVENT);
+                qm.tryAdvance("outlands", sp, QuestTrigger.ZIRA_SPAWN_EVENT);
             }
         }
     }

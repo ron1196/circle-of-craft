@@ -249,7 +249,7 @@ All previously critical gaps have been addressed:
 - [x] `PlayerInteractEvent.EntityInteract` — NPC dialogue (Rafiki, Timon, Ticket Lion), Ground Rhino Horn breeding
 - [x] `PlayerEvent.PlayerLoggedInEvent` / tick events — Quest updates, data saving
 - [x] `RegisterCommandsEvent` — `/lk` commands (10 subcommands)
-- [x] Zira spawn event — when quest stage 22, spawns Zira with visual lightning on Outlands surface
+- [x] Zira spawn event — when quest stageKey 22, spawns Zira with visual lightning on Outlands surface
 
 ### Not Implemented
 
@@ -379,7 +379,7 @@ These systems are fully ported and functional:
 - **AI Goals:** 20 custom goals wired into entities
 - **Block Entities:** 8 types (Grinding Bowl, Bongo Drum, Bug Trap, Hyena Head, Outlands Pool, Spawner, Fur Rug, Pride Bed)
 - **GUIs:** 7 screens (Grinding Bowl, Bongo Drum, Bug Trap, Quest Book, Quiver, Timon, Simba)
-- **Quest System:** 2 quest lines with stage progression, networking sync
+- **Quest System:** 2 quest lines with stageKey progression, networking sync
 - **Networking:** 6 packets (quest sync, quest check, simba sit, login sync, player data sync, portal overlay)
 - **Event Handlers:** Forge bus events for combat, drops, NPC interaction, ticks
 - **Creative Tabs:** 8 organized tabs

@@ -5,7 +5,7 @@ import io.github.ron1196.thelionking.data.PlayerDataProvider;
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
-import io.github.ron1196.thelionking.quest.stage.StageTrigger;
+import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import net.minecraft.network.chat.Component;
@@ -71,7 +71,7 @@ public class RafikiDustItem extends Item {
         // Progress Rafiki quest via star altar usage
         if (player instanceof ServerPlayer serverPlayer) {
             WorldData data = WorldData.get((ServerLevel) level);
-            if (data.getQuestManager().tryAdvance("rafiki", serverPlayer, StageTrigger.STAR_ALTAR_USED)) {
+            if (data.getQuestManager().tryAdvance("rafiki", serverPlayer, QuestTrigger.STAR_ALTAR_USED)) {
                 broadcastMessage(level, "§e<Rafiki> §fYou see? He lives in you! Ohohoho!");
             }
         }

@@ -10,7 +10,7 @@ import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline.Stage;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
-import io.github.ron1196.thelionking.quest.stage.StageTrigger;
+import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -178,7 +178,7 @@ public class ZiraEntity extends Monster {
         }
 
         // Try to advance the quest (rewards are given automatically in tryAdvance)
-        if (quests.tryAdvance("outlands", serverPlayer, StageTrigger.ZIRA_TALK)) {
+        if (quests.tryAdvance("outlands", serverPlayer, QuestTrigger.ZIRA_TALK)) {
             syncPlayerData(serverPlayer, playerData);
             sendStageDialogue(player, quests.getStage("outlands", Stage.class));
             return InteractionResult.SUCCESS;
@@ -217,7 +217,7 @@ public class ZiraEntity extends Monster {
 
         if (source.getEntity() instanceof ServerPlayer serverPlayer) {
             WorldData data = WorldData.get(serverLevel);
-            data.getQuestManager().tryAdvance("outlands", serverPlayer, StageTrigger.ZIRA_KILLED);
+            data.getQuestManager().tryAdvance("outlands", serverPlayer, QuestTrigger.ZIRA_KILLED);
             broadcastMessage("This is not over... Scar's legacy will live on...");
         }
 

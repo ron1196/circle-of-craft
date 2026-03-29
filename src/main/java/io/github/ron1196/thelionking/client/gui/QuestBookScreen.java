@@ -6,7 +6,7 @@ import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.network.QuestCheckPacket;
 import io.github.ron1196.thelionking.quest.questline.Questline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineRegistry;
-import io.github.ron1196.thelionking.quest.stage.IStageId;
+import io.github.ron1196.thelionking.quest.stage.StageId;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -174,7 +174,7 @@ public class QuestBookScreen extends Screen {
             GuiGraphics graphics, Questline quest, boolean complete, int stageIndex, int x, int y) {
         if (complete || stageIndex < 0) return y;
 
-        IStageId currentStage = quest.getStageOrder().get(stageIndex);
+        StageId currentStage = quest.getStageOrder().get(stageIndex);
         if (currentStage == null) return y;
 
         String objective = quest.getObjectiveByStage(currentStage);
@@ -216,7 +216,7 @@ public class QuestBookScreen extends Screen {
         graphics.drawString(font, "§nCompleted:", x, y, COLOR_BOOK_TEXT, false);
         y += HEADING_GAP;
 
-        List<IStageId> stages = quest.getStageOrder();
+        List<StageId> stages = quest.getStageOrder();
         for (int s = 0; s < stageIndex; s++) {
             String stageObj = quest.getObjectiveByStage(stages.get(s));
             if (stageObj == null || stageObj.isEmpty() || stageObj.equals("Quest complete")) continue;

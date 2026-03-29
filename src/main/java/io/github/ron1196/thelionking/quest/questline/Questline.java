@@ -1,9 +1,9 @@
 package io.github.ron1196.thelionking.quest.questline;
 
 import io.github.ron1196.thelionking.quest.stage.ClaimableReward;
-import io.github.ron1196.thelionking.quest.stage.IStageId;
-import io.github.ron1196.thelionking.quest.stage.Stage;
-import io.github.ron1196.thelionking.quest.stage.StageTrigger;
+import io.github.ron1196.thelionking.quest.stage.QuestObjective;
+import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
+import io.github.ron1196.thelionking.quest.stage.StageId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,13 +22,13 @@ public class Questline {
     private final String id;
     private final String displayName;
     private final Supplier<ItemStack> icon;
-    private final List<IStageId> stageOrder;
-    private final Map<IStageId, Stage> stageData;
+    private final List<StageId> stageOrder;
+    private final Map<StageId, QuestObjective> stageData;
     private final Predicate<QuestlineManager> canStart;
     private final String[] prerequisites;
-    private final Map<IStageId, StageTrigger> triggerByStage;
-    private final Map<IStageId, BiConsumer<ServerPlayer, QuestlineManager>> customTransitions;
-    private final Map<IStageId, List<ClaimableReward>> claimableRewards;
+    private final Map<StageId, QuestTrigger> triggerByStage;
+    private final Map<StageId, BiConsumer<ServerPlayer, QuestlineManager>> customTransitions;
+    private final Map<StageId, List<ClaimableReward>> claimableRewards;
 
     private Questline(Builder builder) {
         this.id = builder.id;
@@ -42,8 +42,8 @@ public class Questline {
         this.triggerByStage = Map.copyOf(builder.triggerByStage);
         this.customTransitions = Map.copyOf(builder.customTransitions);
 
-        Map<IStageId, List<ClaimableReward>> rewardsCopy = new HashMap<>();
-        for (Map.Entry<IStageId, List<ClaimableReward>> entry : builder.claimableRewards.entrySet()) {
+        Map<StageId, List<ClaimableReward>> rewardsCopy = new HashMap<>();
+        for (Map.Entry<StageId, List<ClaimableReward>> entry : builder.claimableRewards.entrySet()) {
             rewardsCopy.put(entry.getKey(), List.copyOf(entry.getValue()));
         }
         this.claimableRewards = Collections.unmodifiableMap(rewardsCopy);
@@ -61,7 +61,7 @@ public class Questline {
         return icon.get();
     }
 
-    public List<IStageId> getStageOrder() {
+    public List<StageId> getStageOrder() {
         return stageOrder;
     }
 
@@ -70,12 +70,12 @@ public class Questline {
     }
 
     @Nullable
-    public Stage getStageData(IStageId stage) {
+    public QuestObjective getStageData(StageId stage) {
         return stageData.get(stage);
     }
 
-    public String getObjectiveByStage(IStageId stage) {
-        Stage data = stageData.get(stage);
+    public String getObjectiveByStage(StageId stage) {
+        QuestObjective data = stageData.get(stage);
         return data != null ? data.objectiveText() : "";
     }
 
@@ -83,7 +83,7 @@ public class Questline {
      * Get the objective text for a stage identified by its string name.
      */
     public String getObjectiveByStageId(String stageId) {
-        IStageId stage = findStageByName(stageId);
+        StageId stage = findStageByName(stageId);
         return stage != null ? getObjectiveByStage(stage) : "";
     }
 
@@ -96,23 +96,23 @@ public class Questline {
     }
 
     @Nullable
-    public StageTrigger getTriggerForStage(IStageId stage) {
+    public QuestTrigger getTriggerForStage(StageId stage) {
         return triggerByStage.get(stage);
     }
 
     @Nullable
-    public BiConsumer<ServerPlayer, QuestlineManager> getCustomTransition(IStageId stage) {
+    public BiConsumer<ServerPlayer, QuestlineManager> getCustomTransition(StageId stage) {
         return customTransitions.get(stage);
     }
 
-    public List<ClaimableReward> getClaimableRewards(IStageId stage) {
+    public List<ClaimableReward> getClaimableRewards(StageId stage) {
         return claimableRewards.getOrDefault(stage, List.of());
     }
 
     /**
      * Returns the first stage in this questline's progression.
      */
-    public IStageId getFirstStage() {
+    public StageId getFirstStage() {
         return stageOrder.get(0);
     }
 
@@ -120,7 +120,7 @@ public class Questline {
      * Returns the next stage after {@code current}, or null if current is the last stage.
      */
     @Nullable
-    public IStageId getNextStage(IStageId current) {
+    public StageId getNextStage(StageId current) {
         int idx = stageOrder.indexOf(current);
         if (idx < 0 || idx >= stageOrder.size() - 1) return null;
         return stageOrder.get(idx + 1);
@@ -129,7 +129,7 @@ public class Questline {
     /**
      * Returns true if the given stage is the last stage in this questline.
      */
-    public boolean isLastStage(IStageId stage) {
+    public boolean isLastStage(StageId stage) {
         return !stageOrder.isEmpty() && stageOrder.get(stageOrder.size() - 1).equals(stage);
     }
 
@@ -165,14 +165,14 @@ public class Questline {
     /**
      * Returns the index of a stage in the progression order, or -1 if not found.
      */
-    public int getStageIndex(IStageId stage) {
+    public int getStageIndex(StageId stage) {
         return stageOrder.indexOf(stage);
     }
 
     /**
      * Returns true if {@code current} is at or past {@code target} in the stage order.
      */
-    public boolean isAtOrPast(String currentStageId, IStageId target) {
+    public boolean isAtOrPast(String currentStageId, StageId target) {
         int currentIdx = getStageIndex(currentStageId);
         int targetIdx = getStageIndex(target);
         return targetIdx >= 0 && currentIdx >= targetIdx;
@@ -182,9 +182,9 @@ public class Questline {
      * Find a stage enum value by its string name.
      */
     @Nullable
-    public IStageId findStageByName(String stageId) {
+    public StageId findStageByName(String stageId) {
         if (stageId.isEmpty()) return null;
-        for (IStageId stage : stageOrder) {
+        for (StageId stage : stageOrder) {
             if (stage.name().equals(stageId)) return stage;
         }
         return null;
@@ -198,13 +198,13 @@ public class Questline {
         private final String id;
         private String displayName = "";
         private Supplier<ItemStack> icon = () -> ItemStack.EMPTY;
-        private final List<IStageId> stageOrder = new ArrayList<>();
-        private final Map<IStageId, Stage> stageData = new LinkedHashMap<>();
+        private final List<StageId> stageOrder = new ArrayList<>();
+        private final Map<StageId, QuestObjective> stageData = new LinkedHashMap<>();
         private Predicate<QuestlineManager> canStart = m -> true;
         private String[] prerequisites = null;
-        private final Map<IStageId, StageTrigger> triggerByStage = new HashMap<>();
-        private final Map<IStageId, BiConsumer<ServerPlayer, QuestlineManager>> customTransitions = new HashMap<>();
-        private final Map<IStageId, List<ClaimableReward>> claimableRewards = new HashMap<>();
+        private final Map<StageId, QuestTrigger> triggerByStage = new HashMap<>();
+        private final Map<StageId, BiConsumer<ServerPlayer, QuestlineManager>> customTransitions = new HashMap<>();
+        private final Map<StageId, List<ClaimableReward>> claimableRewards = new HashMap<>();
 
         private Builder(String id) {
             this.id = id;
@@ -220,7 +220,7 @@ public class Questline {
             return this;
         }
 
-        public Builder stage(IStageId stageId, Stage data) {
+        public Builder stage(StageId stageId, QuestObjective data) {
             this.stageOrder.add(stageId);
             this.stageData.put(stageId, data);
             return this;
@@ -236,17 +236,17 @@ public class Questline {
             return this;
         }
 
-        public Builder trigger(IStageId stage, StageTrigger trigger) {
+        public Builder trigger(StageId stage, QuestTrigger trigger) {
             this.triggerByStage.put(stage, trigger);
             return this;
         }
 
-        public Builder customTransition(IStageId stage, BiConsumer<ServerPlayer, QuestlineManager> action) {
+        public Builder customTransition(StageId stage, BiConsumer<ServerPlayer, QuestlineManager> action) {
             this.customTransitions.put(stage, action);
             return this;
         }
 
-        public Builder claimableReward(IStageId stage, ClaimableReward reward) {
+        public Builder claimableReward(StageId stage, ClaimableReward reward) {
             this.claimableRewards.computeIfAbsent(stage, k -> new ArrayList<>()).add(reward);
             return this;
         }

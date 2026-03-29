@@ -3,7 +3,7 @@ package io.github.ron1196.thelionking.block;
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
-import io.github.ron1196.thelionking.quest.stage.StageTrigger;
+import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -43,9 +43,9 @@ public class PumbaaBoxBlock extends Block {
 
         ServerLevel serverLevel = (ServerLevel) level;
         QuestlineManager qm = WorldData.get(serverLevel.getServer().overworld()).getQuestManager();
-        OutlandsQuestline.Stage stage = qm.getStage("outlands", OutlandsQuestline.Stage.class);
+        OutlandsQuestline.Stage stageKey = qm.getStage("outlands", OutlandsQuestline.Stage.class);
 
-        if (stage == OutlandsQuestline.Stage.USE_PUMBAA_BOX) {
+        if (stageKey == OutlandsQuestline.Stage.USE_PUMBAA_BOX) {
             explode(level, pos, serverPlayer, qm);
             return InteractionResult.CONSUME;
         }
@@ -66,7 +66,7 @@ public class PumbaaBoxBlock extends Block {
                 SoundSource.BLOCKS,
                 4.0F,
                 (1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F);
-        qm.tryAdvance("outlands", player, StageTrigger.PUMBAA_BOX_USED);
+        qm.tryAdvance("outlands", player, QuestTrigger.PUMBAA_BOX_USED);
     }
 
     private static void spawnSmokeParticles(@NotNull Level level, @NotNull BlockPos pos) {

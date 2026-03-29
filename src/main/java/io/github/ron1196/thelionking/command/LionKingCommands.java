@@ -10,7 +10,7 @@ import io.github.ron1196.thelionking.quest.questline.Questline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.questline.QuestlineRegistry;
 import io.github.ron1196.thelionking.quest.questline.QuestlineState;
-import io.github.ron1196.thelionking.quest.stage.IStageId;
+import io.github.ron1196.thelionking.quest.stage.StageId;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import java.util.List;
 import net.minecraft.commands.CommandSourceStack;
@@ -100,8 +100,8 @@ public class LionKingCommands {
             String questId = StringArgumentType.getString(ctx, "questId");
             Questline quest = QuestlineRegistry.get(questId);
             if (quest != null) {
-                List<IStageId> stageOrder = quest.getStageOrder();
-                List<String> stages = stageOrder.stream().map(IStageId::name).toList();
+                List<StageId> stageOrder = quest.getStageOrder();
+                List<String> stages = stageOrder.stream().map(StageId::name).toList();
                 return SharedSuggestionProvider.suggest(stages, builder);
             }
         } catch (IllegalArgumentException ignored) {
@@ -137,7 +137,7 @@ public class LionKingCommands {
                 false);
 
         if (!complete && stageIndex >= 0) {
-            IStageId currentStage = quest.getStageOrder().get(stageIndex);
+            StageId currentStage = quest.getStageOrder().get(stageIndex);
             String objective = quest.getObjectiveByStage(currentStage);
             source.sendSuccess(() -> Component.literal("§7Objective: " + objective), false);
         }
@@ -166,11 +166,11 @@ public class LionKingCommands {
         }
 
         // Force-advance by directly setting the next stage (bypasses trigger/item checks)
-        IStageId currentStage = quest.findStageByName(currentStageId);
+        StageId currentStage = quest.findStageByName(currentStageId);
         if (currentStage == null) {
             currentStage = quest.getFirstStage();
         }
-        IStageId nextStage = quest.getNextStage(currentStage);
+        StageId nextStage = quest.getNextStage(currentStage);
         if (nextStage == null) {
             source.sendFailure(Component.literal("No next stage."));
             return 0;
@@ -199,7 +199,7 @@ public class LionKingCommands {
             return 0;
         }
 
-        IStageId target = quest.findStageByName(stageName);
+        StageId target = quest.findStageByName(stageName);
         if (target == null) {
             source.sendFailure(Component.literal("Unknown stage: " + stageName));
             return 0;

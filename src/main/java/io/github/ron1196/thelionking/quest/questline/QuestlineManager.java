@@ -6,9 +6,9 @@ import io.github.ron1196.thelionking.data.PlayerDataProvider;
 import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.network.QuestSyncPacket;
 import io.github.ron1196.thelionking.quest.stage.ClaimableReward;
-import io.github.ron1196.thelionking.quest.stage.IStageId;
-import io.github.ron1196.thelionking.quest.stage.Stage;
-import io.github.ron1196.thelionking.quest.stage.StageTrigger;
+import io.github.ron1196.thelionking.quest.stage.QuestObjective;
+import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
+import io.github.ron1196.thelionking.quest.stage.StageId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +49,7 @@ public class QuestlineManager {
      * Returns the typed enum stage for the given quest. If the quest has not been initialized (empty
      * stageId), returns the first stage.
      */
-    public <T extends Enum<T> & IStageId> T getStage(String questId, Class<T> stageClass) {
+    public <T extends Enum<T> & StageId> T getStage(String questId, Class<T> stageClass) {
         String stageId = getStageId(questId);
         if (stageId.isEmpty()) {
             return stageClass.getEnumConstants()[0];
@@ -62,7 +62,7 @@ public class QuestlineManager {
      * the questline's stage order.
      */
     @Nullable
-    private IStageId resolveCurrentStage(String questId) {
+    private StageId resolveCurrentStage(String questId) {
         Questline quest = QuestlineRegistry.get(questId);
         if (quest == null) return null;
         String stageId = getStageId(questId);
@@ -83,7 +83,7 @@ public class QuestlineManager {
      * Returns true if the current stage for {@code questId} is at or past {@code target} in the
      * questline's stage order.
      */
-    public boolean isStageAtOrPast(String questId, IStageId target) {
+    public boolean isStageAtOrPast(String questId, StageId target) {
         Questline quest = QuestlineRegistry.get(questId);
         if (quest == null) return false;
         String stageId = getStageId(questId);
@@ -100,23 +100,23 @@ public class QuestlineManager {
         return quest.canStart(this);
     }
 
-    public boolean tryAdvance(String questId, ServerPlayer player, StageTrigger trigger) {
+    public boolean tryAdvance(String questId, ServerPlayer player, QuestTrigger trigger) {
         Questline quest = QuestlineRegistry.get(questId);
         if (quest == null) return false;
 
         if (!quest.canStart(this)) return false;
 
         QuestlineState state = getState(questId);
-        IStageId currentStage = resolveCurrentStage(questId);
+        StageId currentStage = resolveCurrentStage(questId);
         if (currentStage == null) return false;
 
         // Already at the last stage (complete) — can't advance further
         if (quest.isLastStage(currentStage)) return false;
 
-        StageTrigger expected = quest.getTriggerForStage(currentStage);
+        QuestTrigger expected = quest.getTriggerForStage(currentStage);
         if (expected == null || expected != trigger) return false;
 
-        Stage stageDef = quest.getStageData(currentStage);
+        QuestObjective stageDef = quest.getStageData(currentStage);
         if (stageDef == null) return false;
 
         if (!checkRequirements(player, stageDef.requirements())) return false;
@@ -128,7 +128,7 @@ public class QuestlineManager {
         }
 
         // Advance to the next stage
-        IStageId nextStage = quest.getNextStage(currentStage);
+        StageId nextStage = quest.getNextStage(currentStage);
         if (nextStage != null) {
             state.setCurrentStageId(nextStage.name());
         }
@@ -151,12 +151,12 @@ public class QuestlineManager {
         if (quest == null) return -1;
         PlayerData playerData = PlayerDataProvider.get(player);
         String currentStageId = getStageId(questId);
-        List<IStageId> stages = quest.getStageOrder();
+        List<StageId> stages = quest.getStageOrder();
         int currentIndex = quest.getStageIndex(currentStageId);
 
         // Iterate through completed stages (before the current one)
         for (int i = 0; i < currentIndex; i++) {
-            IStageId stage = stages.get(i);
+            StageId stage = stages.get(i);
             String rewardKey = questId + ":" + stage.name();
             if (playerData.hasClaimedReward(rewardKey)) continue;
             List<ClaimableReward> rewards = quest.getClaimableRewards(stage);
@@ -170,7 +170,7 @@ public class QuestlineManager {
         return -1;
     }
 
-    private void claimRewards(Questline quest, IStageId completedStage, ServerPlayer player) {
+    private void claimRewards(Questline quest, StageId completedStage, ServerPlayer player) {
         List<ClaimableReward> rewards = quest.getClaimableRewards(completedStage);
         if (rewards.isEmpty()) return;
         String rewardKey = quest.getId() + ":" + completedStage.name();
@@ -182,14 +182,14 @@ public class QuestlineManager {
         playerData.claimReward(rewardKey);
     }
 
-    private boolean checkRequirements(ServerPlayer player, List<Stage.ItemRequirement> requirements) {
-        for (Stage.ItemRequirement req : requirements) {
+    private boolean checkRequirements(ServerPlayer player, List<QuestObjective.ItemRequirement> requirements) {
+        for (QuestObjective.ItemRequirement req : requirements) {
             if (!hasRequirement(player, req)) return false;
         }
         return true;
     }
 
-    private boolean hasRequirement(ServerPlayer player, Stage.ItemRequirement req) {
+    private boolean hasRequirement(ServerPlayer player, QuestObjective.ItemRequirement req) {
         return switch (req.source()) {
             case MAIN_HAND -> {
                 ItemStack held = player.getMainHandItem();
@@ -208,13 +208,13 @@ public class QuestlineManager {
         };
     }
 
-    private void consumeRequirements(ServerPlayer player, List<Stage.ItemRequirement> requirements) {
-        for (Stage.ItemRequirement req : requirements) {
+    private void consumeRequirements(ServerPlayer player, List<QuestObjective.ItemRequirement> requirements) {
+        for (QuestObjective.ItemRequirement req : requirements) {
             consumeRequirement(player, req);
         }
     }
 
-    private void consumeRequirement(ServerPlayer player, Stage.ItemRequirement req) {
+    private void consumeRequirement(ServerPlayer player, QuestObjective.ItemRequirement req) {
         switch (req.source()) {
             case MAIN_HAND -> player.getMainHandItem().shrink(req.count());
             case INVENTORY -> {

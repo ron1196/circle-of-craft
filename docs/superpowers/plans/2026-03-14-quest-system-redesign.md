@@ -159,8 +159,8 @@ this.claimableRewards = Map.copyOf(builder.claimableRewards);
 Add getter:
 
 ```java
-public List<ClaimableReward> getClaimableRewards(int stage) {
-    return claimableRewards.get(stage);
+public List<ClaimableReward> getClaimableRewards(int stageKey) {
+    return claimableRewards.get(stageKey);
 }
 ```
 
@@ -201,10 +201,10 @@ git commit -m "feat(quest): add claimableRewards to LKQuest builder"
 
 - [ ] **Step 1: Update buildRafikiQuest() — remove ItemReward from stages, add claimableReward()**
 
-In `buildRafikiQuest()`, change the stage 1 definition from:
+In `buildRafikiQuest()`, change the stageKey 1 definition from:
 
 ```java
-.stage(new LKQuestStage(
+.stageKey(new LKQuestStage(
         "Bring Rafiki 64 hyena bones",
         List.of(new ItemRequirement(() -> LKItems.HYENA_BONE.get(), 64)),
         List.of(new ItemReward(() -> LKItems.RHYTHM_STAFF.get(), 1))))
@@ -213,7 +213,7 @@ In `buildRafikiQuest()`, change the stage 1 definition from:
 To:
 
 ```java
-.stage(new LKQuestStage(
+.stageKey(new LKQuestStage(
         "Bring Rafiki 64 hyena bones",
         List.of(new ItemRequirement(() -> LKItems.HYENA_BONE.get(), 64))))
 ```
@@ -228,7 +228,7 @@ Remove the `LKQuestStage.*` static import for `ItemReward` if present. Add impor
 
 - [ ] **Step 2: Update buildOutlandsQuest() — same pattern**
 
-Remove all `ItemReward` third arguments from stages. The Outlands quest currently has no item rewards in its stage definitions, so this is just removing empty `List.of()` third arguments from the 3-arg LKQuestStage constructor calls. Update them to use the 2-arg or 1-arg constructors as appropriate.
+Remove all `ItemReward` third arguments from stages. The Outlands quest currently has no item rewards in its stageKey definitions, so this is just removing empty `List.of()` third arguments from the 3-arg LKQuestStage constructor calls. Update them to use the 2-arg or 1-arg constructors as appropriate.
 
 - [ ] **Step 3: Compile**
 
@@ -847,7 +847,7 @@ public class LoginSyncPacket {
     private final boolean hasSimba;
     private final Set<String> claimedRewards;
 
-    private record QuestEntry(String questId, int stage, boolean checked) {}
+    private record QuestEntry(String questId, int stageKey, boolean checked) {}
 
     public LoginSyncPacket(LKWorldData worldData, LKPlayerData playerData) {
         this.defeatedScar = worldData.defeatedScar;
@@ -902,7 +902,7 @@ public class LoginSyncPacket {
         buf.writeVarInt(questEntries.size());
         for (QuestEntry entry : questEntries) {
             buf.writeUtf(entry.questId());
-            buf.writeVarInt(entry.stage());
+            buf.writeVarInt(entry.stageKey());
             buf.writeBoolean(entry.checked());
         }
 
@@ -930,7 +930,7 @@ public class LoginSyncPacket {
             ClientWorldState.questStates.clear();
             for (QuestEntry entry : questEntries) {
                 ClientWorldState.questStates.put(entry.questId(),
-                        new LKQuestState(entry.stage(), entry.checked()));
+                        new LKQuestState(entry.stageKey(), entry.checked()));
             }
 
             // Player state
@@ -1097,7 +1097,7 @@ protected InteractionResult mobInteract(Player player, InteractionHand hand) {
     LKWorldData worldData = LKWorldData.get(serverLevel);
     LKQuestManager quests = worldData.getQuestManager();
     LKPlayerData playerData = LKPlayerDataProvider.get(serverPlayer);
-    int stage = quests.getStage("rafiki");
+    int stageKey = quests.getStage("rafiki");
 
     // Give quest book on first meeting
     if (!playerData.hasReceivedQuestBook()) {
@@ -1121,7 +1121,7 @@ protected InteractionResult mobInteract(Player player, InteractionHand hand) {
     }
 
     // Quest didn't advance — give contextual speech
-    switch (stage) {
+    switch (stageKey) {
         case LKQuestRegistry.RAFIKI_COLLECT_BONES -> sendSpeech(player, LKCharacterSpeech.HYENA_BONES);
         case LKQuestRegistry.RAFIKI_DEFEAT_SCAR -> sendSpeech(player, LKCharacterSpeech.MENTION_SCAR);
         case LKQuestRegistry.RAFIKI_COLLECT_TERMITES -> sendSpeech(player, LKCharacterSpeech.TERMITES);
@@ -1141,14 +1141,14 @@ protected InteractionResult mobInteract(Player player, InteractionHand hand) {
 private int tryClaimNextReward(ServerPlayer player, LKPlayerData playerData, LKQuestManager quests) {
     LKQuest quest = LKQuestRegistry.get("rafiki");
     int currentStage = quests.getStage("rafiki");
-    for (int stage = 0; stage < currentStage; stage++) {
-        java.util.List<ClaimableReward> rewards = quest.getClaimableRewards(stage);
+    for (int stageKey = 0; stageKey < currentStage; stageKey++) {
+        java.util.List<ClaimableReward> rewards = quest.getClaimableRewards(stageKey);
         if (rewards == null) continue;
         for (ClaimableReward reward : rewards) {
             if (!playerData.hasClaimedReward(reward.rewardKey())) {
                 player.addItem(new ItemStack(reward.item().get(), reward.count()));
                 playerData.claimReward(reward.rewardKey());
-                return stage;
+                return stageKey;
             }
         }
     }

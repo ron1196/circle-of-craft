@@ -70,10 +70,10 @@ public void onRemove(
 
 ### Testing Commands
 Use `/lk quest` for quest testing:
-- `/lk quest info <questId>` — show current stage
-- `/lk quest advance <questId>` — skip to next stage (bypasses triggers/items)
-- `/lk quest set <questId> <stage>` — jump to specific stage
-- `/lk quest reset <questId>` — reset to first stage
+- `/lk quest info <questId>` — show current stageKey
+- `/lk quest advance <questId>` — skip to next stageKey (bypasses triggers/items)
+- `/lk quest set <questId> <stageKey>` — jump to specific stageKey
+- `/lk quest reset <questId>` — reset to first stageKey
 
 Quest IDs: `rafiki`, `outlands`. Stage names match the enum values (e.g., `FIND_RAFIKI`, `COLLECT_BONES`).
 
@@ -99,7 +99,7 @@ src/main/java/io/github/ron1196/thelionking/
   world/feature/             — Custom worldgen features
   quest/                     — Quest system (Questline, QuestlineManager, QuestlineRegistry)
   quest/questline/           — Questline definitions (RafikiQuestline, OutlandsQuestline)
-  quest/stage/               — Stage, StageTrigger, ClaimableReward, IStageId
+  quest/stageKey/               — Stage, StageTrigger, ClaimableReward, IStageId
   command/                   — Debug/testing commands (LionKingCommands)
   data/                      — WorldData (SavedData), PlayerData, custom triggers
   menu/                      — Container menus

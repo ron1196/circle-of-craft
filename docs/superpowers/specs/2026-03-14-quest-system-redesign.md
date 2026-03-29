@@ -91,12 +91,12 @@ Holds `Map<String, LKQuestState>` — one state per registered quest.
 **Core method `tryAdvance(questId, player, trigger)`:**
 1. Look up quest definition and current state
 2. If complete, return false
-3. If no trigger is defined for the current stage, return false (stage cannot be advanced via `tryAdvance`)
-4. If trigger doesn't match expected trigger for current stage, return false
+3. If no trigger is defined for the current stageKey, return false (stageKey cannot be advanced via `tryAdvance`)
+4. If trigger doesn't match expected trigger for current stageKey, return false
 5. Check item requirements against the advancing player
 6. Consume items from the advancing player
-7. Run custom transition (if defined for this stage)
-8. Increment stage, set checked = false
+7. Run custom transition (if defined for this stageKey)
+8. Increment stageKey, set checked = false
 9. Mark `LKWorldData` dirty
 10. Sync to all players
 11. Return true
@@ -161,10 +161,10 @@ Builds both quests declaratively. Example for Rafiki:
 LKQuest.builder("rafiki")
     .displayName("Rafiki's Quest")
     .icon(() -> new ItemStack(LKItems.RHYTHM_STAFF.get()))
-    .stage(new LKQuestStage("Find Rafiki and speak to him"))
-    .stage(new LKQuestStage("Bring Rafiki 64 hyena bones",
+    .stageKey(new LKQuestStage("Find Rafiki and speak to him"))
+    .stageKey(new LKQuestStage("Bring Rafiki 64 hyena bones",
         List.of(new ItemRequirement(() -> LKItems.HYENA_BONE.get(), 64))))
-    .stage(new LKQuestStage("Defeat Scar"))
+    .stageKey(new LKQuestStage("Defeat Scar"))
     // ... remaining stages
     .trigger(0, RAFIKI_TALK)
     .trigger(1, RAFIKI_TALK)
@@ -193,10 +193,10 @@ All quest NPCs follow this pattern:
 ```
 Player clicks NPC:
   1. Find earliest unclaimed reward for this player
-     → If found: give reward, send stage dialogue, return
+     → If found: give reward, send stageKey dialogue, return
   2. Try to advance quest (trigger + requirements)
      → If advanced: send advancement dialogue, return
-  3. Send contextual speech (hints based on current stage)
+  3. Send contextual speech (hints based on current stageKey)
 ```
 
 ### Reward Claiming
@@ -207,8 +207,8 @@ Helper method on `LKQuest` or utility class:
 static boolean tryClaimNextReward(LKQuest quest, LKQuestManager manager,
                                    ServerPlayer player, LKPlayerData playerData) {
     int currentStage = manager.getStage(quest.getId());
-    for (int stage = 0; stage < currentStage; stage++) {
-        List<ClaimableReward> rewards = quest.getClaimableRewards(stage);
+    for (int stageKey = 0; stageKey < currentStage; stageKey++) {
+        List<ClaimableReward> rewards = quest.getClaimableRewards(stageKey);
         if (rewards == null) continue;
         for (ClaimableReward reward : rewards) {
             if (!playerData.hasClaimedReward(reward.rewardKey())) {
@@ -222,15 +222,15 @@ static boolean tryClaimNextReward(LKQuest quest, LKQuestManager manager,
 }
 ```
 
-The method returns true when a reward is claimed. The NPC determines which dialogue to send based on which stage's reward was just claimed. The NPC can query the stage by checking which reward key was most recently added to `claimedRewards`, or the helper can return the stage index.
+The method returns true when a reward is claimed. The NPC determines which dialogue to send based on which stageKey's reward was just claimed. The NPC can query the stageKey by checking which reward key was most recently added to `claimedRewards`, or the helper can return the stageKey index.
 
 ### RafikiEntity Interaction
 
 ```
 1. Give quest book if not received (check LKPlayerData.receivedQuestBook)
-2. Try claim next reward → if claimed, send stage dialogue, return
+2. Try claim next reward → if claimed, send stageKey dialogue, return
 3. Try advance quest with RAFIKI_TALK → if advanced, send advancement dialogue, return
-4. Send contextual speech based on current stage
+4. Send contextual speech based on current stageKey
 ```
 
 ### ZiraEntity Interaction
@@ -322,7 +322,7 @@ addAdditionalSaveData(CompoundTag tag):
 
 Encoding order:
 1. World flags: `defeatedScar` (boolean), `ziraStage` (varint), `outlandersHostile` (boolean), `pumbaaStage` (varint)
-2. Quest states: count (varint), then for each: questId (utf), stage (varint), checked (boolean)
+2. Quest states: count (varint), then for each: questId (utf), stageKey (varint), checked (boolean)
 3. Player data: `receivedQuestBook` (boolean), `homePortalX` (int), `homePortalY` (int), `homePortalZ` (int), `hasSimba` (boolean), claimedRewards count (varint), then each reward key (utf)
 
 Old world-level `homePortalX/Y/Z` fields are no longer sent in the world section.
@@ -358,7 +358,7 @@ Bump from `"2"` to `"3"`.
 - Reads `canStart` by checking prerequisite quest completion on client state
 - Sends `QuestCheckPacket` with quest ID when selected
 - Shows portal location from `ClientWorldState.homePortalX/Y/Z` (player's portal)
-- Shows reward status per stage (claimed/unclaimed) using `ClientWorldState.claimedRewards`
+- Shows reward status per stageKey (claimed/unclaimed) using `ClientWorldState.claimedRewards`
 
 ### `QuestBookItem`
 

@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.entity.npc;
 
 import io.github.ron1196.thelionking.data.WorldData;
-import io.github.ron1196.thelionking.quest.stage.StageTrigger;
+import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -116,7 +116,7 @@ public class ScarEntity extends Monster {
             return;
         }
         WorldData data = WorldData.get(serverLevel);
-        data.getQuestManager().tryAdvance("rafiki", serverPlayer, StageTrigger.SCAR_KILLED);
+        data.getQuestManager().tryAdvance("rafiki", serverPlayer, QuestTrigger.SCAR_KILLED);
         serverPlayer.sendSystemMessage(Component.literal("§e<Scar> §fThis... is not... the end..."));
     }
 

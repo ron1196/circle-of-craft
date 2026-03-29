@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.world.item.Item;
 
-public record Stage(String objectiveText, List<ItemRequirement> requirements) {
-    public Stage(String objectiveText) {
+public record QuestObjective(String objectiveText, List<ItemRequirement> requirements) {
+    public QuestObjective(String objectiveText) {
         this(objectiveText, List.of());
     }
 

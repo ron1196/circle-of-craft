@@ -1,12 +1,13 @@
 package io.github.ron1196.thelionking.quest.questline;
 
 import static io.github.ron1196.thelionking.quest.questline.RafikiQuestline.Stage.*;
-import static io.github.ron1196.thelionking.quest.stage.Stage.ItemRequirement;
-import static io.github.ron1196.thelionking.quest.stage.StageTrigger.*;
+import static io.github.ron1196.thelionking.quest.stage.QuestObjective.ItemRequirement;
+import static io.github.ron1196.thelionking.quest.stage.QuestTrigger.*;
 
 import io.github.ron1196.thelionking.block.PortalBlock;
 import io.github.ron1196.thelionking.quest.stage.ClaimableReward;
-import io.github.ron1196.thelionking.quest.stage.IStageId;
+import io.github.ron1196.thelionking.quest.stage.QuestObjective;
+import io.github.ron1196.thelionking.quest.stage.StageId;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import java.util.List;
@@ -23,7 +24,7 @@ public class RafikiQuestline {
 
     private static final int GATE_SEARCH_RADIUS = 20;
 
-    public enum Stage implements IStageId {
+    public enum Stage implements StageId {
         FIND_RAFIKI,
         COLLECT_BONES,
         DEFEAT_SCAR,
@@ -38,30 +39,30 @@ public class RafikiQuestline {
         return Questline.builder("rafiki")
                 .displayName("Rafiki's Quest")
                 .icon(() -> new ItemStack(LionKingItems.RAFIKI_STICK.get()))
-                .stage(FIND_RAFIKI, new io.github.ron1196.thelionking.quest.stage.Stage("Find Rafiki and speak to him"))
+                .stage(FIND_RAFIKI, new QuestObjective("Find Rafiki and speak to him"))
                 .stage(
                         COLLECT_BONES,
-                        new io.github.ron1196.thelionking.quest.stage.Stage(
+                        new QuestObjective(
                                 "Bring Rafiki 64 hyena bones",
                                 List.of(new ItemRequirement(LionKingItems.HYENA_BONE, 64))))
-                .stage(DEFEAT_SCAR, new io.github.ron1196.thelionking.quest.stage.Stage("Defeat Scar"))
-                .stage(RETURN_AFTER_SCAR, new io.github.ron1196.thelionking.quest.stage.Stage("Return to Rafiki"))
+                .stage(DEFEAT_SCAR, new QuestObjective("Defeat Scar"))
+                .stage(RETURN_AFTER_SCAR, new QuestObjective("Return to Rafiki"))
                 .stage(
                         COLLECT_TERMITES,
-                        new io.github.ron1196.thelionking.quest.stage.Stage(
+                        new QuestObjective(
                                 "Bring Rafiki 4 termite dust",
                                 List.of(new ItemRequirement(LionKingItems.TERMITE_DUST, 4))))
                 .stage(
                         COLLECT_MANGOES,
-                        new io.github.ron1196.thelionking.quest.stage.Stage(
+                        new QuestObjective(
                                 "Bring Rafiki 4 mango dust", List.of(new ItemRequirement(LionKingItems.MANGO_DUST, 4))))
                 .stage(
                         USE_STAR_ALTAR,
-                        new io.github.ron1196.thelionking.quest.stage.Stage(
+                        new QuestObjective(
                                 "Craft a Star Altar and use Rafiki Dust on it"))
                 .stage(
                         RafikiQuestline.Stage.COMPLETE,
-                        new io.github.ron1196.thelionking.quest.stage.Stage("Quest complete"))
+                        new QuestObjective("Quest complete"))
                 .claimableReward(COLLECT_BONES, new ClaimableReward(LionKingItems.RAFIKI_STICK, 1))
                 .trigger(FIND_RAFIKI, RAFIKI_TALK)
                 .trigger(COLLECT_BONES, RAFIKI_TALK)

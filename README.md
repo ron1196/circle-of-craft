@@ -38,8 +38,8 @@ This is a **ground-up port** of the classic Lion King Mod (originally for Minecr
 - **NPCs** — Rafiki, Simba, Scar, Zira, and the Ticket Lion, each with unique interactions.
 
 ### Quest System
-- **Rafiki's Quest** — A multi-stage adventure. Collect hyena bones, earn Rafiki's Stick, hunt down Scar in his cave, and ultimately summon your own companion Simba who fights for you and carries your items.
-- **Outlands Quest** — A 10-stage quest line in the dangerous Outlands.
+- **Rafiki's Quest** — A multi-stageKey adventure. Collect hyena bones, earn Rafiki's Stick, hunt down Scar in his cave, and ultimately summon your own companion Simba who fights for you and carries your items.
+- **Outlands Quest** — A 10-stageKey quest line in the dangerous Outlands.
 - **Book of Quests** — Tracks your progress, describes items, and shows crafting recipes.
 
 ### Blocks, Items & Crafting

@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.quest.stage;
 
-public enum StageTrigger {
+public enum QuestTrigger {
     RAFIKI_TALK,
     SCAR_KILLED,
     STAR_ALTAR_USED,

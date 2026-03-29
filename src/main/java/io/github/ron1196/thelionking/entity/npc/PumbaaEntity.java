@@ -4,7 +4,7 @@ import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.ai.PumbaaFollowTimonGoal;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
-import io.github.ron1196.thelionking.quest.stage.StageTrigger;
+import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -79,9 +79,9 @@ public class PumbaaEntity extends PathfinderMob {
 
         ServerLevel serverLevel = (ServerLevel) level();
         QuestlineManager qm = WorldData.get(serverLevel.getServer().overworld()).getQuestManager();
-        OutlandsQuestline.Stage stage = qm.getStage("outlands", OutlandsQuestline.Stage.class);
+        OutlandsQuestline.Stage stageKey = qm.getStage("outlands", OutlandsQuestline.Stage.class);
 
-        switch (stage) {
+        switch (stageKey) {
             case TALK_TO_PUMBAA -> {
                 talkCooldown = TALK_COOLDOWN_TICKS;
                 sendChat(player, "Pumbaa", "Hi there, kid.");
@@ -102,11 +102,11 @@ public class PumbaaEntity extends PathfinderMob {
                         "Bring Pumbaa some planks, sixteen bugs, a jar of lava and a "
                                 + "thrown termite, and we'll cook up some weapons of gas "
                                 + "destruction.");
-                qm.tryAdvance("outlands", serverPlayer, StageTrigger.PUMBAA_TALK);
+                qm.tryAdvance("outlands", serverPlayer, QuestTrigger.PUMBAA_TALK);
             }
             case GATHER_PUMBAA_INGREDIENTS -> {
                 talkCooldown = TALK_COOLDOWN_TICKS;
-                if (qm.tryAdvance("outlands", serverPlayer, StageTrigger.PUMBAA_TALK)) {
+                if (qm.tryAdvance("outlands", serverPlayer, QuestTrigger.PUMBAA_TALK)) {
                     sendChat(player, "Pumbaa", "Stand back!");
                     spawnPumbaaBox();
                 } else {
