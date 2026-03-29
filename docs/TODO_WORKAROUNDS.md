@@ -42,7 +42,6 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 ## Missing Quest Mechanics
 
 - [ ] **Scar has no natural spawn** — Needs structure placement or quest-triggered spawn. Currently only `/summon`.
-- [ ] **Outlands quest stage 4 (`THROW_IN_OUTWATER`)** — No trigger. Outwater throwing mechanic not implemented.
 - [ ] **Outlands quest stage 6 (`FOLLOW_OUTLANDERS`)** — No trigger. Outlander march mechanic not implemented.
 - [ ] **Outlands quest stage 7 (`ZIRA_OCCUPIES_TREE`)** — No trigger. Zira tree occupation not implemented.
 - [ ] **Outlands quest stage 11 (`RAFIKI_RETURNS`)** — No trigger. Rafiki return mechanic not implemented.

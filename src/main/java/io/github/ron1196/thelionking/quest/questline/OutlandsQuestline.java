@@ -56,7 +56,9 @@ public class OutlandsQuestline {
                                         new ItemRequirement(LionKingItems.SILVER_INGOT, 2, Source.INVENTORY))))
                 .stage(
                         THROW_IN_OUTWATER,
-                        new io.github.ron1196.thelionking.quest.stage.Stage("Throw the ingots into the Outwater"))
+                        new io.github.ron1196.thelionking.quest.stage.Stage(
+                                "Use the Outwater pool and bring Zira the Outlandish Helm",
+                                List.of(new ItemRequirement(() -> LionKingItems.OUTLANDS_HELMET.get(), 1, Source.INVENTORY))))
                 .stage(
                         COLLECT_FEATHERS,
                         new io.github.ron1196.thelionking.quest.stage.Stage(
@@ -90,6 +92,7 @@ public class OutlandsQuestline {
                 .trigger(OutlandsQuestline.Stage.ENTER_OUTLANDS, StageTrigger.ENTER_OUTLANDS)
                 .trigger(FIND_ZIRA, ZIRA_TALK)
                 .trigger(COLLECT_INGOTS, ZIRA_TALK)
+                .trigger(THROW_IN_OUTWATER, ZIRA_TALK)
                 .trigger(COLLECT_FEATHERS, ZIRA_TALK)
                 .trigger(TALK_TO_PUMBAA, PUMBAA_TALK)
                 .trigger(GATHER_PUMBAA_INGREDIENTS, PUMBAA_TALK)

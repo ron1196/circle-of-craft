@@ -202,7 +202,8 @@ public class ZiraEntity extends Monster {
         String message =
                 switch (newStage) {
                     case COLLECT_INGOTS -> "So... a human dares to enter my domain. Perhaps you can be of use to me.";
-                    case THROW_IN_OUTWATER -> "Good. Now throw these ingots into the Outwater.";
+                    case THROW_IN_OUTWATER -> "Good. I've opened up a lower cavern in this mound. There's a pool of Outwater in there - throw the ingots in and come back.";
+                    case COLLECT_FEATHERS -> "Ah, the Outlandish Helm! That has some very useful tricks. Now I need Wayward Feathers - throw colored feathers into the Outwater.";
                     case FOLLOW_OUTLANDERS -> "Excellent. You have served me well. Now... follow my Outlanders.";
                     default -> null;
                 };
