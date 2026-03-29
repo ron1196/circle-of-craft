@@ -6,7 +6,7 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 - [ ] **`corrupt_hoe`** — Old mod had no corrupt hoe; using generated purple placeholder
 - [ ] **`mounted_shooter` block textures** — Old mod only had item textures; block front/side/top are solid-color placeholders
-- [ ] **`outlands_altar` block/item texture** — No old texture exists; block reuses `corrupt_pridestone.png`, item is placeholder
+- [x] ~~**`outlands_altar` textures**~~ — RESOLVED: Migrated `poolFocus_top/side` from old assets. Fixed shape to 10/16 height. Added `noOcclusion`.
 - [ ] **~150 block textures** need migration from old camelCase to snake_case
 - [ ] **~160 item textures** need migration
 

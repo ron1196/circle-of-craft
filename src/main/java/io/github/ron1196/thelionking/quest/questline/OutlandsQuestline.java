@@ -5,10 +5,16 @@ import static io.github.ron1196.thelionking.quest.stage.Stage.ItemRequirement;
 import static io.github.ron1196.thelionking.quest.stage.Stage.Source;
 import static io.github.ron1196.thelionking.quest.stage.StageTrigger.*;
 
+import io.github.ron1196.thelionking.block.PoolCoverBlock;
 import io.github.ron1196.thelionking.quest.stage.IStageId;
 import io.github.ron1196.thelionking.quest.stage.StageTrigger;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import java.util.List;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -90,6 +96,28 @@ public class OutlandsQuestline {
                 .trigger(USE_PUMBAA_BOX, PUMBAA_BOX_USED)
                 .trigger(ZIRA_RETURNS, ZIRA_SPAWN_EVENT)
                 .trigger(DEFEAT_ZIRA, ZIRA_KILLED)
+                .customTransition(COLLECT_INGOTS, OutlandsQuestline::openPoolCover)
                 .build();
+    }
+
+    private static final int POOL_SEARCH_RADIUS = 30;
+
+    private static void openPoolCover(ServerPlayer player, QuestlineManager manager) {
+        ServerLevel level = player.serverLevel();
+        BlockPos playerPos = player.blockPosition();
+
+        boolean cleared = false;
+        for (BlockPos pos : BlockPos.betweenClosed(
+                playerPos.offset(-POOL_SEARCH_RADIUS, -POOL_SEARCH_RADIUS, -POOL_SEARCH_RADIUS),
+                playerPos.offset(POOL_SEARCH_RADIUS, POOL_SEARCH_RADIUS, POOL_SEARCH_RADIUS))) {
+            if (level.getBlockState(pos).getBlock() instanceof PoolCoverBlock) {
+                level.destroyBlock(pos, false);
+                cleared = true;
+            }
+        }
+
+        if (cleared) {
+            level.playSound(null, playerPos, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
+        }
     }
 }

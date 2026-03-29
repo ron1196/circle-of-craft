@@ -188,6 +188,13 @@ public class LionKingBlocks {
                     .strength(-1.0F, 3600000.0F)
                     .noLootTable()));
 
+    public static final RegistryObject<Block> POOL_COVER = BLOCKS.register(
+            "pool_cover",
+            () -> new PoolCoverBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.DIRT)
+                    .strength(-1.0F, 3600000.0F)
+                    .noLootTable()));
+
     public static final RegistryObject<Block> PUMBAA_BOX = BLOCKS.register(
             "pumbaa_box",
             () -> new PumbaaBoxBlock(BlockBehaviour.Properties.of()
@@ -389,6 +396,7 @@ public class LionKingBlocks {
                     .mapColor(MapColor.COLOR_PURPLE)
                     .strength(5.0F, 1200.0F)
                     .requiresCorrectToolForDrops()
+                    .noOcclusion()
                     .lightLevel(s -> 7)));
 
     public static final RegistryObject<Block> TILLED_SAND = BLOCKS.register(
