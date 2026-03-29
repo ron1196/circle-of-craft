@@ -26,18 +26,10 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 ## Crop Block Models
 
-- [ ] **Kiwano, Maize, and Yam 3D models need rework** — Current block models don't look right. Kiwano stem textures are
-  generated placeholders.
-
-## Crop Blocks
-
-- [ ] **Kiwano worldgen places `kiwano_block` (fruit) on sand** — Matches old mod. Stem (`kiwano_stem`) is the crop
-  version for player farming.
 
 ## Grinding Bowl Recipes (Hardcoded)
 
-- [ ] **29 recipes hardcoded in `GrindingBowlBlockEntity`** — Should be refactored to `RecipeType<GrindingBowlRecipe>` +
-  JSON recipes for datapack compatibility.
+- [x] ~~**Grinding bowl recipes**~~ — RESOLVED: Refactored to `RecipeType<GrindingBowlRecipe>` + 25 JSON recipes in `recipes/grinding/`.
 
 ## Missing Quest Mechanics
 

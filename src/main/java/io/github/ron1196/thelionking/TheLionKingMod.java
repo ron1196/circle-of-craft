@@ -33,6 +33,8 @@ public class TheLionKingMod {
         StructureTypes.STRUCTURE_PIECE_TYPES.register(modEventBus);
         SoundEvents.SOUND_EVENTS.register(modEventBus);
         ParticleTypes.PARTICLE_TYPES.register(modEventBus);
+        RecipeTypes.RECIPE_TYPES.register(modEventBus);
+        RecipeTypes.RECIPE_SERIALIZERS.register(modEventBus);
         CreativeTabs.TABS.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);

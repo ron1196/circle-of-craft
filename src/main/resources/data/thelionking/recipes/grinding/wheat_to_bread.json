@@ -1,0 +1,5 @@
+{
+  "type": "thelionking:grinding",
+  "ingredient": { "item": "minecraft:wheat" },
+  "result": { "item": "minecraft:bread" }
+}

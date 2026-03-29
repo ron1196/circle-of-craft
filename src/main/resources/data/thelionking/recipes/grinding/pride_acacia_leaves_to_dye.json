@@ -1,0 +1,5 @@
+{
+  "type": "thelionking:grinding",
+  "ingredient": { "item": "thelionking:pride_acacia_leaves" },
+  "result": { "item": "minecraft:green_dye" }
+}

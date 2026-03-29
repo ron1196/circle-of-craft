@@ -33,13 +33,13 @@ import org.jetbrains.annotations.Nullable;
  */
 public class OutlandsPoolBlockEntity extends BlockEntity {
 
-    private final List<ItemStack> items = new ArrayList<>();
-    private int timer = -1;
-
     private static final int PROCESS_DELAY_COMPLETE = 40;
     private static final int PROCESS_DELAY_WAITING = 75;
     private static final int SEARCH_RADIUS = 15;
     private static final int SEARCH_HEIGHT = 10;
+
+    private final List<ItemStack> items = new ArrayList<>();
+    private int timer = -1;
 
     public OutlandsPoolBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityTypes.OUTLANDS_POOL.get(), pos, state);

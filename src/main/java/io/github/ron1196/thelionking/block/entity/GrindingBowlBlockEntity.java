@@ -1,22 +1,21 @@
 package io.github.ron1196.thelionking.block.entity;
 
 import io.github.ron1196.thelionking.menu.GrindingBowlMenu;
+import io.github.ron1196.thelionking.recipe.GrindingBowlRecipe;
 import io.github.ron1196.thelionking.registry.BlockEntityTypes;
-import io.github.ron1196.thelionking.registry.LionKingBlocks;
-import io.github.ron1196.thelionking.registry.LionKingItems;
-import java.util.HashMap;
-import java.util.Map;
+import io.github.ron1196.thelionking.registry.RecipeTypes;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -33,54 +32,6 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
     public static final int SLOT_INPUT = 0;
     public static final int SLOT_OUTPUT = 1;
     public static final int MAX_GRIND_TIME = 200;
-
-    private static final Map<Item, Item> RECIPES = new HashMap<>();
-
-    private static Map<Item, Item> getRecipes() {
-        if (RECIPES.isEmpty()) {
-            // Bone grinding
-            RECIPES.put(LionKingItems.HYENA_BONE.get(), LionKingItems.HYENA_BONE_SHARD.get());
-            RECIPES.put(net.minecraft.world.item.Items.BONE, net.minecraft.world.item.Items.BONE_MEAL);
-
-            // Fruit/plant grinding
-            RECIPES.put(LionKingItems.MANGO.get(), LionKingItems.MANGO_DUST.get());
-            RECIPES.put(LionKingItems.RHINO_HORN.get(), LionKingItems.GROUND_RHINO_HORN.get());
-            RECIPES.put(LionKingItems.NUKA_SHARD.get(), LionKingItems.POISON.get());
-            RECIPES.put(LionKingItems.CORN.get(), LionKingItems.CORN_KERNELS.get());
-            RECIPES.put(LionKingItems.DRIED_MAIZE.get(), LionKingItems.CORN_KERNELS.get());
-
-            // Stone grinding
-            RECIPES.put(LionKingItems.PRIDESTONE_ITEM.get(), net.minecraft.world.item.Items.SAND);
-            RECIPES.put(LionKingItems.CORRUPT_PRIDESTONE_ITEM.get(), net.minecraft.world.item.Items.SAND);
-            RECIPES.put(net.minecraft.world.item.Items.COBBLESTONE, net.minecraft.world.item.Items.GRAVEL);
-            RECIPES.put(net.minecraft.world.item.Items.GRAVEL, net.minecraft.world.item.Items.SAND);
-
-            // Feather → dye recipes
-            RECIPES.put(LionKingItems.FEATHER_BLUE.get(), net.minecraft.world.item.Items.BLUE_DYE);
-            RECIPES.put(LionKingItems.FEATHER_YELLOW.get(), net.minecraft.world.item.Items.YELLOW_DYE);
-            RECIPES.put(LionKingItems.FEATHER_RED.get(), net.minecraft.world.item.Items.RED_DYE);
-            RECIPES.put(LionKingItems.FEATHER_BLACK.get(), net.minecraft.world.item.Items.BLACK_DYE);
-            RECIPES.put(LionKingItems.FEATHER_PINK.get(), net.minecraft.world.item.Items.PINK_DYE);
-
-            // Flower → dye recipes
-            RECIPES.put(LionKingBlocks.WHITE_FLOWER.get().asItem(), net.minecraft.world.item.Items.WHITE_DYE);
-            RECIPES.put(LionKingBlocks.BLUE_FLOWER.get().asItem(), net.minecraft.world.item.Items.BLUE_DYE);
-            RECIPES.put(LionKingBlocks.PURPLE_FLOWER.get().asItem(), net.minecraft.world.item.Items.PURPLE_DYE);
-            RECIPES.put(LionKingBlocks.RED_FLOWER.get().asItem(), net.minecraft.world.item.Items.RED_DYE);
-
-            // Leaf → dye recipes
-            RECIPES.put(LionKingBlocks.ACACIA_LEAVES.get().asItem(), net.minecraft.world.item.Items.GREEN_DYE);
-            RECIPES.put(LionKingBlocks.RAINFOREST_LEAVES.get().asItem(), net.minecraft.world.item.Items.GREEN_DYE);
-            RECIPES.put(LionKingBlocks.MANGO_LEAVES.get().asItem(), net.minecraft.world.item.Items.GREEN_DYE);
-
-            // Termite grinding
-            RECIPES.put(LionKingItems.TERMITE_THROWN.get(), LionKingItems.TERMITE_DUST.get());
-
-            // Wheat → flour (vanilla compatibility)
-            RECIPES.put(net.minecraft.world.item.Items.WHEAT, net.minecraft.world.item.Items.BREAD);
-        }
-        return RECIPES;
-    }
 
     private final ItemStackHandler inventory = new ItemStackHandler(2) {
         @Override
@@ -160,22 +111,24 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
     }
 
     public static void serverTick(
-            Level ignoredLevel, BlockPos ignoredPos, BlockState ignoredState, GrindingBowlBlockEntity entity) {
+            Level level, BlockPos ignoredPos, BlockState ignoredState, GrindingBowlBlockEntity entity
+    ) {
         ItemStack input = entity.inventory.getStackInSlot(SLOT_INPUT);
         if (input.isEmpty()) {
             entity.resetGrindTime();
             return;
         }
 
-        Item result = getRecipes().get(input.getItem());
-        if (result == null) {
+        Optional<GrindingBowlRecipe> recipe = findRecipe(level, input);
+        if (recipe.isEmpty()) {
             entity.resetGrindTime();
             return;
         }
 
+        ItemStack resultStack = recipe.get().getResult();
         ItemStack outputSlot = entity.inventory.getStackInSlot(SLOT_OUTPUT);
         if (!outputSlot.isEmpty()) {
-            if (!outputSlot.is(result) || outputSlot.getCount() >= outputSlot.getMaxStackSize()) {
+            if (!outputSlot.is(resultStack.getItem()) || outputSlot.getCount() >= outputSlot.getMaxStackSize()) {
                 entity.resetGrindTime();
                 return;
             }
@@ -189,13 +142,18 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
 
         entity.inventory.extractItem(SLOT_INPUT, 1, false);
         if (outputSlot.isEmpty()) {
-            entity.inventory.setStackInSlot(SLOT_OUTPUT, new ItemStack(result, 1));
+            entity.inventory.setStackInSlot(SLOT_OUTPUT, resultStack.copy());
         } else {
             outputSlot.grow(1);
         }
 
         entity.grindTime = 0;
         entity.setChanged();
+    }
+
+    private static Optional<GrindingBowlRecipe> findRecipe(Level level, ItemStack input) {
+        SimpleContainer container = new SimpleContainer(input);
+        return level.getRecipeManager().getRecipeFor(RecipeTypes.GRINDING_TYPE.get(), container, level);
     }
 
     private void resetGrindTime() {

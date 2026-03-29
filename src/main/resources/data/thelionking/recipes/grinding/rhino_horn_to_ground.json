@@ -1,0 +1,5 @@
+{
+  "type": "thelionking:grinding",
+  "ingredient": { "item": "thelionking:rhino_horn" },
+  "result": { "item": "thelionking:ground_rhino_horn" }
+}

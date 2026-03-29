@@ -1,0 +1,5 @@
+{
+  "type": "thelionking:grinding",
+  "ingredient": { "item": "thelionking:feather_black" },
+  "result": { "item": "minecraft:black_dye" }
+}

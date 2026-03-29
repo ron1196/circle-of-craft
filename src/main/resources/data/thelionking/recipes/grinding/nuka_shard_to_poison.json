@@ -1,0 +1,5 @@
+{
+  "type": "thelionking:grinding",
+  "ingredient": { "item": "thelionking:nuka_shard" },
+  "result": { "item": "thelionking:poison" }
+}

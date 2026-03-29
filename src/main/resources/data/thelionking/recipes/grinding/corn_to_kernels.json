@@ -1,0 +1,5 @@
+{
+  "type": "thelionking:grinding",
+  "ingredient": { "item": "thelionking:corn" },
+  "result": { "item": "thelionking:corn_kernels" }
+}
