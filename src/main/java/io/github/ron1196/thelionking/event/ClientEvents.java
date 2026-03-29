@@ -327,6 +327,9 @@ public class ClientEvents {
         // Block entity renderers
         event.registerBlockEntityRenderer(BlockEntityTypes.HYENA_HEAD.get(), HyenaHeadBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityTypes.PRIDE_BED.get(), PrideBedRenderer::new);
+        event.registerBlockEntityRenderer(
+                BlockEntityTypes.GRINDING_BOWL.get(),
+                io.github.ron1196.thelionking.client.renderer.GrindingBowlRenderer::new);
     }
 
     @SubscribeEvent

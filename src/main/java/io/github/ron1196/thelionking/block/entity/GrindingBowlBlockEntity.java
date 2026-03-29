@@ -43,6 +43,9 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
     private final LazyOptional<ItemStackHandler> inventoryCap = LazyOptional.of(() -> inventory);
 
     private int grindTime = 0;
+    private float stickRotation = 0;
+    private float prevStickRotation = 0;
+    private static final float STICK_ROTATION_SPEED = 8.0F;
 
     private final ContainerData data = new ContainerData() {
         @Override
@@ -110,9 +113,36 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
         grindTime = tag.getInt("GrindTime");
     }
 
+    @Override
+    public @NotNull CompoundTag getUpdateTag() {
+        CompoundTag tag = super.getUpdateTag();
+        tag.putInt("GrindTime", grindTime);
+        return tag;
+    }
+
+    @Override
+    public net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    public boolean isGrinding() {
+        return grindTime > 0;
+    }
+
+    public float getStickRotation(float partialTick) {
+        return prevStickRotation + (stickRotation - prevStickRotation) * partialTick;
+    }
+
+    public static void clientTick(
+            Level ignoredLevel, BlockPos ignoredPos, BlockState ignoredState, GrindingBowlBlockEntity entity) {
+        entity.prevStickRotation = entity.stickRotation;
+        if (entity.grindTime > 0) {
+            entity.stickRotation += STICK_ROTATION_SPEED;
+        }
+    }
+
     public static void serverTick(
-            Level level, BlockPos ignoredPos, BlockState ignoredState, GrindingBowlBlockEntity entity
-    ) {
+            Level level, BlockPos ignoredPos, BlockState ignoredState, GrindingBowlBlockEntity entity) {
         ItemStack input = entity.inventory.getStackInSlot(SLOT_INPUT);
         if (input.isEmpty()) {
             entity.resetGrindTime();
@@ -136,6 +166,9 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
 
         entity.grindTime++;
         entity.setChanged();
+        if (entity.grindTime == 1) {
+            entity.syncToClient(); // Notify client grinding started
+        }
         if (entity.grindTime < MAX_GRIND_TIME) {
             return;
         }
@@ -157,11 +190,16 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
     }
 
     private void resetGrindTime() {
-        if (grindTime == 0) {
-            return;
-        }
+        if (grindTime == 0) return;
         grindTime = 0;
         setChanged();
+        syncToClient();
+    }
+
+    private void syncToClient() {
+        if (level != null && !level.isClientSide()) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
     }
 
     public ItemStackHandler getInventory() {
@@ -172,9 +210,7 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
         if (level == null) return;
         for (int i = 0; i < inventory.getSlots(); i++) {
             ItemStack stack = inventory.getStackInSlot(i);
-            if (stack.isEmpty()) {
-                continue;
-            }
+            if (stack.isEmpty()) continue;
             Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
         }
     }

@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class MushroomBlock extends BushBlock {
 
-    private static final VoxelShape SHAPE = Block.box(4.8, 0.0, 4.8, 11.2, 16.0, 11.2);
+    private static final VoxelShape SHAPE = Block.box(4.8, 0.0, 4.8, 11.2, 10.0, 11.2);
 
     public MushroomBlock(Properties properties) {
         super(properties);

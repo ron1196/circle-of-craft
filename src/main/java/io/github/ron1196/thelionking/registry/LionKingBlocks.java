@@ -307,20 +307,22 @@ public class LionKingBlocks {
             () -> new Block(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_GREEN)
                     .strength(1.0F)
-                    .sound(SoundType.WOOD)));
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()));
 
     // ========== Decorative Block Entities ==========
     public static final RegistryObject<Block> HYENA_HEAD = BLOCKS.register(
             "hyena_head",
             () -> new HyenaHeadBlock(
-                    BlockBehaviour.Properties.of().strength(1.0F).noCollission()));
+                    BlockBehaviour.Properties.of().strength(1.0F).noCollission().noOcclusion()));
 
     public static final RegistryObject<Block> FUR_RUG = BLOCKS.register(
             "fur_rug",
             () -> new FurRugBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.WOOL)
                     .strength(0.5F)
-                    .sound(SoundType.WOOL)));
+                    .sound(SoundType.WOOL)
+                    .noOcclusion()));
 
     // ========== Grinding Bowl ==========
     public static final RegistryObject<Block> GRINDING_BOWL = BLOCKS.register(
@@ -328,7 +330,8 @@ public class LionKingBlocks {
             () -> new GrindingBowlBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.STONE)
                     .strength(2.0F)
-                    .requiresCorrectToolForDrops()));
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()));
 
     // ========== Bug Trap ==========
     public static final RegistryObject<Block> BUG_TRAP = BLOCKS.register(
@@ -379,7 +382,8 @@ public class LionKingBlocks {
             () -> new MountedShooterBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.WOOD)
                     .strength(2.0F)
-                    .sound(SoundType.WOOD)));
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()));
 
     public static final RegistryObject<Block> STAR_ALTAR = BLOCKS.register(
             "star_altar",
@@ -413,7 +417,8 @@ public class LionKingBlocks {
             () -> new VaseBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.TERRACOTTA_WHITE)
                     .strength(0.5F)
-                    .sound(SoundType.STONE)));
+                    .sound(SoundType.STONE)
+                    .noOcclusion()));
 
     // ========== Bed & Lever ==========
     public static final RegistryObject<BedBlock> PRIDE_BED = BLOCKS.register(

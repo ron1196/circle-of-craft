@@ -14,10 +14,7 @@ import org.jetbrains.annotations.Nullable;
 public class GrindingBowlRecipeSerializer implements RecipeSerializer<GrindingBowlRecipe> {
 
     @Override
-    public @NotNull GrindingBowlRecipe fromJson(
-            @NotNull ResourceLocation recipeId,
-            @NotNull JsonObject json
-    ) {
+    public @NotNull GrindingBowlRecipe fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject json) {
         Ingredient ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "ingredient"));
         ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
         return new GrindingBowlRecipe(recipeId, ingredient, result);
@@ -25,19 +22,14 @@ public class GrindingBowlRecipeSerializer implements RecipeSerializer<GrindingBo
 
     @Override
     public @Nullable GrindingBowlRecipe fromNetwork(
-            @NotNull ResourceLocation recipeId,
-            @NotNull FriendlyByteBuf buffer
-    ) {
+            @NotNull ResourceLocation recipeId, @NotNull FriendlyByteBuf buffer) {
         Ingredient ingredient = Ingredient.fromNetwork(buffer);
         ItemStack result = buffer.readItem();
         return new GrindingBowlRecipe(recipeId, ingredient, result);
     }
 
     @Override
-    public void toNetwork(
-            @NotNull FriendlyByteBuf buffer,
-            @NotNull GrindingBowlRecipe recipe
-    ) {
+    public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull GrindingBowlRecipe recipe) {
         recipe.getIngredient().toNetwork(buffer);
         buffer.writeItem(recipe.getResult());
     }

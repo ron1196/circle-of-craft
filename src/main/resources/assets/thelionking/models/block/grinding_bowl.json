@@ -1,7 +1,22 @@
 {
-  "parent": "minecraft:block/cube_column",
+  "parent": "minecraft:block/block",
   "textures": {
-    "end": "thelionking:block/grinding_bowl_top",
-    "side": "thelionking:block/grinding_bowl_side"
-  }
+    "top": "thelionking:block/grinding_bowl_top",
+    "side": "thelionking:block/grinding_bowl_side",
+    "particle": "thelionking:block/grinding_bowl_side"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 10, 16],
+      "faces": {
+        "down":  {"texture": "#top", "cullface": "down"},
+        "up":    {"texture": "#top"},
+        "north": {"texture": "#side", "cullface": "north", "uv": [0, 6, 16, 16]},
+        "south": {"texture": "#side", "cullface": "south", "uv": [0, 6, 16, 16]},
+        "west":  {"texture": "#side", "cullface": "west", "uv": [0, 6, 16, 16]},
+        "east":  {"texture": "#side", "cullface": "east", "uv": [0, 6, 16, 16]}
+      }
+    }
+  ]
 }

@@ -32,7 +32,8 @@ final class LionKingBlocksRegistryHelper {
         return BlockBehaviour.Properties.of()
                 .mapColor(color)
                 .strength(1.2F, 8.0F)
-                .requiresCorrectToolForDrops();
+                .requiresCorrectToolForDrops()
+                .noOcclusion();
     }
 
     static BlockBehaviour.Properties oreProps() {
