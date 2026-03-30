@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.block.entity;
 
+import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.menu.GrindingBowlMenu;
 import io.github.ron1196.thelionking.recipe.GrindingBowlRecipe;
 import io.github.ron1196.thelionking.registry.BlockEntityTypes;
@@ -37,6 +38,7 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            syncToClient();
         }
     };
 
@@ -116,6 +118,7 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
     @Override
     public @NotNull CompoundTag getUpdateTag() {
         CompoundTag tag = super.getUpdateTag();
+        tag.put("Inventory", inventory.serializeNBT());
         tag.putInt("GrindTime", grindTime);
         return tag;
     }
@@ -125,12 +128,32 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
         return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
     }
 
+    @Override
+    public void onDataPacket(
+            @NotNull net.minecraft.network.Connection net,
+            net.minecraft.network.protocol.game.@NotNull ClientboundBlockEntityDataPacket pkt) {
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) {
+            load(tag);
+        }
+    }
+
     public boolean isGrinding() {
         return grindTime > 0;
     }
 
+    /** Returns 0.0 (just started) to 1.0 (about to finish). */
+    public float getGrindProgress() {
+        if (grindTime <= 0) return 0;
+        return (float) grindTime / MAX_GRIND_TIME;
+    }
+
     public float getStickRotation(float partialTick) {
         return prevStickRotation + (stickRotation - prevStickRotation) * partialTick;
+    }
+
+    public ItemStack getInputItem() {
+        return inventory.getStackInSlot(SLOT_INPUT);
     }
 
     public static void clientTick(
@@ -166,8 +189,8 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
 
         entity.grindTime++;
         entity.setChanged();
-        if (entity.grindTime == 1) {
-            entity.syncToClient(); // Notify client grinding started
+        if (entity.grindTime == 1 || entity.grindTime % 20 == 0) {
+            entity.syncToClient();
         }
         if (entity.grindTime < MAX_GRIND_TIME) {
             return;
@@ -180,8 +203,7 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
             outputSlot.grow(1);
         }
 
-        entity.grindTime = 0;
-        entity.setChanged();
+        entity.resetGrindTime();
     }
 
     private static Optional<GrindingBowlRecipe> findRecipe(Level level, ItemStack input) {

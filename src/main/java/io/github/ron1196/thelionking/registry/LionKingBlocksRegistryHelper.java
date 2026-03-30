@@ -95,6 +95,7 @@ final class LionKingBlocksRegistryHelper {
         return BlockBehaviour.Properties.of()
                 .mapColor(MapColor.PLANT)
                 .noCollission()
+                .randomTicks()
                 .instabreak()
                 .sound(SoundType.GRASS);
     }
