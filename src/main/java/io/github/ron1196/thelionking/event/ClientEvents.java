@@ -83,6 +83,9 @@ public class ClientEvents {
     // Block entity layers
     public static final ModelLayerLocation HYENA_HEAD_LAYER = layer("hyena_head");
 
+    // Block entity models
+    public static final ModelLayerLocation MOUNTED_SHOOTER_LAYER = layer("mounted_shooter");
+
     // Keybinds
     public static final KeyMapping SIMBA_SIT_KEY = new KeyMapping(
             "key.thelionking.simba_sit",
@@ -137,6 +140,7 @@ public class ClientEvents {
 
         // Block entity layers
         event.registerLayerDefinition(HYENA_HEAD_LAYER, HyenaHeadBlockEntityRenderer::createHeadLayer);
+        event.registerLayerDefinition(MOUNTED_SHOOTER_LAYER, MountedShooterModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -330,6 +334,7 @@ public class ClientEvents {
         event.registerBlockEntityRenderer(
                 BlockEntityTypes.GRINDING_BOWL.get(),
                 io.github.ron1196.thelionking.client.renderer.GrindingBowlRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntityTypes.MOUNTED_SHOOTER.get(), MountedShooterRenderer::new);
     }
 
     @SubscribeEvent

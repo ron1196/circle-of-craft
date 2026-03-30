@@ -1,1 +1,6 @@
-{"parent":"thelionking:block/mounted_shooter"}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "thelionking:item/mounted_shooter"
+  }
+}

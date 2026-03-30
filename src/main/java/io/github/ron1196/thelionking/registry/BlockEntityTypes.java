@@ -45,4 +45,9 @@ public class BlockEntityTypes {
     public static final RegistryObject<BlockEntityType<PrideBedBlockEntity>> PRIDE_BED = BLOCK_ENTITY_TYPES.register(
             "pride_bed", () -> BlockEntityType.Builder.of(PrideBedBlockEntity::new, LionKingBlocks.PRIDE_BED.get())
                     .build(null));
+
+    public static final RegistryObject<BlockEntityType<MountedShooterBlockEntity>> MOUNTED_SHOOTER =
+            BLOCK_ENTITY_TYPES.register("mounted_shooter", () -> BlockEntityType.Builder.of(
+                            MountedShooterBlockEntity::new, LionKingBlocks.MOUNTED_SHOOTER.get())
+                    .build(null));
 }
