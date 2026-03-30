@@ -4,7 +4,7 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 ## Placeholder Textures
 
-- [ ] **`corrupt_hoe`** — Old mod had no corrupt hoe; using generated purple placeholder
+- [x] ~~**`corrupt_hoe`**~~ — RESOLVED: Proper texture added.
 - [x] ~~**`mounted_shooter` needs BlockEntityRenderer**~~ — RESOLVED: Ported 3D model + BlockEntityRenderer from old mod. Block now extends BaseEntityBlock with fire recoil animation.
 - [x] ~~**`outlands_altar` textures**~~ — RESOLVED: Migrated `poolFocus_top/side` from old assets. Fixed shape to 10/16 height. Added `noOcclusion`.
 - [ ] **~150 block textures** need migration from old camelCase to snake_case
