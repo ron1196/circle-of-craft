@@ -14,15 +14,9 @@
     "monster": [
       {
         "type": "thelionking:hyena",
-        "weight": 10,
+        "weight": 8,
         "minCount": 2,
         "maxCount": 4
-      },
-      {
-        "type": "thelionking:crocodile",
-        "weight": 10,
-        "minCount": 1,
-        "maxCount": 1
       }
     ],
     "creature": [

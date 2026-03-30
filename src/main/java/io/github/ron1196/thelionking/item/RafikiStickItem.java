@@ -219,10 +219,10 @@ public class RafikiStickItem extends Item {
         }
     }
 
-    private static final double SCAR_DETECT_RANGE = 120.0;
+    private static final double SCAR_DETECT_RANGE = 250.0;
     private static final int SCAR_HINT_INTERVAL = 60;
-    private static final double SCAR_NEAR_DISTANCE = 30.0;
-    private static final double SCAR_CLOSE_DISTANCE = 15.0;
+    private static final double SCAR_NEAR_DISTANCE = 100.0;
+    private static final double SCAR_CLOSE_DISTANCE = 50.0;
 
     @Override
     public void inventoryTick(

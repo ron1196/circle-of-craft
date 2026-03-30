@@ -13,6 +13,7 @@ public class WorldData extends SavedData {
 
     private final QuestlineManager questManager = new QuestlineManager(this);
     private boolean scarSpawned = false;
+    private boolean scarDefeated = false;
 
     public WorldData() {}
 
@@ -29,6 +30,15 @@ public class WorldData extends SavedData {
         setDirty();
     }
 
+    public boolean isScarDefeated() {
+        return scarDefeated;
+    }
+
+    public void setScarDefeated(boolean defeated) {
+        this.scarDefeated = defeated;
+        setDirty();
+    }
+
     public static WorldData get(ServerLevel level) {
         // Always use overworld data storage so quest state is shared across all dimensions
         ServerLevel overworld = level.getServer().overworld();
@@ -39,6 +49,7 @@ public class WorldData extends SavedData {
         WorldData data = new WorldData();
         data.questManager.readFromNBT(tag);
         data.scarSpawned = tag.getBoolean("ScarSpawned");
+        data.scarDefeated = tag.getBoolean("ScarDefeated");
         return data;
     }
 
@@ -46,6 +57,7 @@ public class WorldData extends SavedData {
     public @NotNull CompoundTag save(CompoundTag tag) {
         questManager.writeToNBT(tag);
         tag.putBoolean("ScarSpawned", scarSpawned);
+        tag.putBoolean("ScarDefeated", scarDefeated);
         return tag;
     }
 }

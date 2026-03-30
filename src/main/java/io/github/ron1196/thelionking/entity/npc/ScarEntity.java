@@ -1,7 +1,6 @@
 package io.github.ron1196.thelionking.entity.npc;
 
 import io.github.ron1196.thelionking.data.WorldData;
-import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.SoundEvents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -10,6 +9,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -36,10 +36,13 @@ public class ScarEntity extends Monster {
 
     private boolean hasSpoken = false;
 
-    /** Ticks between distant roars (audible from far away to help player find Scar). */
+    /**
+     * Ticks between distant roars (audible from far away to help player find Scar).
+     */
     private static final int ROAR_INTERVAL_MIN = 200;
+
     private static final int ROAR_INTERVAL_RANGE = 400;
-    private static final float ROAR_VOLUME = 10.0F;
+    private static final float ROAR_VOLUME = 16.0F;
     private int roarCooldown = 100;
 
     public ScarEntity(EntityType<? extends ScarEntity> type, Level level) {
@@ -99,21 +102,27 @@ public class ScarEntity extends Monster {
     public void tick() {
         super.tick();
 
-        if (!level().isClientSide()) {
-            bossEvent.setProgress(getHealth() / getMaxHealth());
-
-            // Periodic loud roar — audible from far away to help player find Scar
-            if (roarCooldown > 0) {
-                roarCooldown--;
-            } else {
-                level().playSound(null, blockPosition(), SoundEvents.LION_ROAR.get(),
-                        net.minecraft.sounds.SoundSource.HOSTILE, ROAR_VOLUME,
-                        0.8F + random.nextFloat() * 0.3F);
-                roarCooldown = ROAR_INTERVAL_MIN + random.nextInt(ROAR_INTERVAL_RANGE);
-            }
+        if (level().isClientSide()) {
+            return;
         }
 
-        if (level().isClientSide() || hasSpoken) {
+        bossEvent.setProgress(getHealth() / getMaxHealth());
+
+        // Periodic loud roar — audible from far away to help player find Scar
+        if (roarCooldown > 0) {
+            roarCooldown--;
+        } else {
+            level().playSound(
+                            null,
+                            blockPosition(),
+                            SoundEvents.LION_ROAR.get(),
+                            SoundSource.HOSTILE,
+                            ROAR_VOLUME,
+                            0.8F + random.nextFloat() * 0.3F);
+            roarCooldown = ROAR_INTERVAL_MIN + random.nextInt(ROAR_INTERVAL_RANGE);
+        }
+
+        if (hasSpoken) {
             return;
         }
 
@@ -125,18 +134,22 @@ public class ScarEntity extends Monster {
         hasSpoken = true;
     }
 
+    private static final double DEATH_MESSAGE_RANGE = 50.0;
+
     @Override
     public void die(@NotNull DamageSource source) {
         super.die(source);
-        if (level().isClientSide() || !(level() instanceof ServerLevel serverLevel)) {
-            return;
-        }
-        if (!(source.getEntity() instanceof ServerPlayer serverPlayer)) {
-            return;
-        }
+        if (level().isClientSide() || !(level() instanceof ServerLevel serverLevel)) return;
+
+        // Mark Scar as dead in world data — Rafiki will advance the quest when talked to
         WorldData data = WorldData.get(serverLevel);
-        data.getQuestManager().tryAdvance("rafiki", serverPlayer, QuestTrigger.SCAR_KILLED);
-        serverPlayer.sendSystemMessage(Component.literal("§e<Scar> §fThis... is not... the end..."));
+        data.setScarDefeated(true);
+
+        // Message nearby players
+        for (Player player :
+                level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(DEATH_MESSAGE_RANGE))) {
+            player.sendSystemMessage(Component.literal("§e<Scar> §fThis... is not... the end..."));
+        }
     }
 
     @Override

@@ -99,7 +99,13 @@ public class RafikiEntity extends PathfinderMob {
             return InteractionResult.SUCCESS;
         }
 
-        // Try to advance the quest (rewards are given automatically in tryAdvance)
+        // Try to advance the quest
+        // DEFEAT_SCAR requires scarDefeated — block RAFIKI_TALK unless Scar is dead
+        if (stage == Stage.DEFEAT_SCAR && !data.isScarDefeated()) {
+            sendSpeech(player, CharacterSpeech.MENTION_SCAR);
+            return InteractionResult.SUCCESS;
+        }
+
         if (quests.tryAdvance("rafiki", serverPlayer, QuestTrigger.RAFIKI_TALK)) {
             Stage newStage = quests.getStage("rafiki", Stage.class);
             sendStageDialogue(player, newStage);
@@ -110,7 +116,6 @@ public class RafikiEntity extends PathfinderMob {
         // Quest didn't advance — give contextual speech
         switch (stage) {
             case COLLECT_BONES -> sendSpeech(player, CharacterSpeech.HYENA_BONES);
-            case DEFEAT_SCAR -> sendSpeech(player, CharacterSpeech.MENTION_SCAR);
             case COLLECT_TERMITES -> sendSpeech(player, CharacterSpeech.TERMITES);
             case COLLECT_MANGOES -> sendSpeech(player, CharacterSpeech.MANGOES);
             case USE_STAR_ALTAR -> sendSpeech(player, CharacterSpeech.STAR_ALTAR);
@@ -130,8 +135,7 @@ public class RafikiEntity extends PathfinderMob {
                 switch (newStage) {
                     case COLLECT_BONES -> "Welcome to the Pride Lands! I am Rafiki. Bring me sixty-four hyena bones and I will give you my stick.";
                     case DEFEAT_SCAR -> "Excellent! Here is my stick. Now go and defeat Scar!";
-                    case RETURN_AFTER_SCAR -> "Well done! Scar has been defeated. Now come back and see me.";
-                    case COLLECT_TERMITES -> "This portal will take you to the Outlands. I want you to go there and bring me four termite dust.";
+                    case COLLECT_TERMITES -> "Well done! Scar has been defeated. This portal will take you to the Outlands. I want you to go there and bring me four termite dust.";
                     case COLLECT_MANGOES -> "Good! Now bring me four mango dust.";
                     case USE_STAR_ALTAR -> "Perfect! Now craft a Star Altar and use the Rafiki Dust on it.";
                     case COMPLETE -> "Wonderful! The spirits of the great kings smile upon you!";

@@ -25,7 +25,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 public class RafikiQuestline {
@@ -36,7 +35,6 @@ public class RafikiQuestline {
         FIND_RAFIKI,
         COLLECT_BONES,
         DEFEAT_SCAR,
-        RETURN_AFTER_SCAR,
         COLLECT_TERMITES,
         COLLECT_MANGOES,
         USE_STAR_ALTAR,
@@ -53,8 +51,7 @@ public class RafikiQuestline {
                         new QuestObjective(
                                 "Bring Rafiki 64 hyena bones",
                                 List.of(new ItemRequirement(LionKingItems.HYENA_BONE, 64))))
-                .stage(DEFEAT_SCAR, new QuestObjective("Defeat Scar"))
-                .stage(RETURN_AFTER_SCAR, new QuestObjective("Return to Rafiki"))
+                .stage(DEFEAT_SCAR, new QuestObjective("Defeat Scar and return to Rafiki"))
                 .stage(
                         COLLECT_TERMITES,
                         new QuestObjective(
@@ -69,13 +66,12 @@ public class RafikiQuestline {
                 .claimableReward(COLLECT_BONES, new ClaimableReward(LionKingItems.RAFIKI_STICK, 1))
                 .trigger(FIND_RAFIKI, RAFIKI_TALK)
                 .trigger(COLLECT_BONES, RAFIKI_TALK)
-                .trigger(DEFEAT_SCAR, SCAR_KILLED)
-                .trigger(RETURN_AFTER_SCAR, RAFIKI_TALK)
+                .trigger(DEFEAT_SCAR, RAFIKI_TALK)
                 .trigger(COLLECT_TERMITES, RAFIKI_TALK)
                 .trigger(COLLECT_MANGOES, RAFIKI_TALK)
                 .trigger(USE_STAR_ALTAR, STAR_ALTAR_USED)
                 .customTransition(COLLECT_BONES, RafikiQuestline::spawnScar)
-                .customTransition(RETURN_AFTER_SCAR, RafikiQuestline::openOutlandsPortal)
+                .customTransition(DEFEAT_SCAR, RafikiQuestline::openOutlandsPortal)
                 .build();
     }
 
@@ -110,16 +106,18 @@ public class RafikiQuestline {
             scar.moveTo(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, 0F, 0F);
             scar.setPersistenceRequired();
             level.addFreshEntity(scar);
-            level.addFreshEntity(new LightningBoltEntity(level,
-                    spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 0, player));
+            level.addFreshEntity(
+                    new LightningBoltEntity(level, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 0, player));
 
             data.setScarSpawned(true);
 
             String direction = getCompassDirection(player.blockPosition(), spawnPos);
+            player.sendSystemMessage(Component.literal("§e<Rafiki> §fI hear Scar has returned to the Pride Lands! "
+                    + "He was seen lurking in the caves "
+                    + direction + ". " + "Find him and defeat him — my stick is the only weapon that can harm him!"));
+            // Debug: show exact coordinates for testing
             player.sendSystemMessage(Component.literal(
-                    "§e<Rafiki> §fI hear Scar has returned to the Pride Lands! " +
-                    "He was seen lurking in the caves " + direction + ". " +
-                    "Find him and defeat him — my stick is the only weapon that can harm him!"));
+                    "§7[Debug] Scar spawned at " + spawnPos.getX() + ", " + spawnPos.getY() + ", " + spawnPos.getZ()));
         }
     }
 

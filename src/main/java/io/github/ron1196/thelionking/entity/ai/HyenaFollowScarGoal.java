@@ -35,8 +35,8 @@ public class HyenaFollowScarGoal extends Goal {
         // Don't follow if already fighting
         if (hyena.getTarget() != null) return false;
 
-        List<ScarEntity> scars = hyena.level().getEntitiesOfClass(
-                ScarEntity.class, hyena.getBoundingBox().inflate(SCAR_DETECTION_RANGE));
+        List<ScarEntity> scars = hyena.level()
+                .getEntitiesOfClass(ScarEntity.class, hyena.getBoundingBox().inflate(SCAR_DETECTION_RANGE));
         if (scars.isEmpty()) return false;
 
         target = scars.get(0);
