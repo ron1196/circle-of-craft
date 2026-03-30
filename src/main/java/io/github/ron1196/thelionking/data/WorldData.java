@@ -12,11 +12,21 @@ public class WorldData extends SavedData {
     private static final String DATA_NAME = TheLionKingMod.MOD_ID + "_data";
 
     private final QuestlineManager questManager = new QuestlineManager(this);
+    private boolean scarSpawned = false;
 
     public WorldData() {}
 
     public QuestlineManager getQuestManager() {
         return questManager;
+    }
+
+    public boolean isScarSpawned() {
+        return scarSpawned;
+    }
+
+    public void setScarSpawned(boolean spawned) {
+        this.scarSpawned = spawned;
+        setDirty();
     }
 
     public static WorldData get(ServerLevel level) {
@@ -28,12 +38,14 @@ public class WorldData extends SavedData {
     public static WorldData load(CompoundTag tag) {
         WorldData data = new WorldData();
         data.questManager.readFromNBT(tag);
+        data.scarSpawned = tag.getBoolean("ScarSpawned");
         return data;
     }
 
     @Override
     public @NotNull CompoundTag save(CompoundTag tag) {
         questManager.writeToNBT(tag);
+        tag.putBoolean("ScarSpawned", scarSpawned);
         return tag;
     }
 }
