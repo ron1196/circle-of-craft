@@ -1,6 +1,5 @@
 package io.github.ron1196.thelionking.block.entity;
 
-import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.menu.GrindingBowlMenu;
 import io.github.ron1196.thelionking.recipe.GrindingBowlRecipe;
 import io.github.ron1196.thelionking.registry.BlockEntityTypes;

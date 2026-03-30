@@ -2,7 +2,6 @@ package io.github.ron1196.thelionking.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.block.entity.GrindingBowlBlockEntity;
 import io.github.ron1196.thelionking.client.model.GrindingStickModel;
 import net.minecraft.client.Minecraft;
