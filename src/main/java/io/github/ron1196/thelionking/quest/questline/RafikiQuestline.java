@@ -112,12 +112,9 @@ public class RafikiQuestline {
             data.setScarSpawned(true);
 
             String direction = getCompassDirection(player.blockPosition(), spawnPos);
-            player.sendSystemMessage(Component.literal("§e<Rafiki> §fI hear Scar has returned to the Pride Lands! "
-                    + "He was seen lurking in the caves "
-                    + direction + ". " + "Find him and defeat him — my stick is the only weapon that can harm him!"));
-            // Debug: show exact coordinates for testing
-            player.sendSystemMessage(Component.literal(
-                    "§7[Debug] Scar spawned at " + spawnPos.getX() + ", " + spawnPos.getY() + ", " + spawnPos.getZ()));
+            player.sendSystemMessage(Component.literal("§e<Rafiki> §fI hear Scar has returned to de Pride Lands! "
+                    + "He was seen lurking in de caves "
+                    + direction + ". Find him and defeat him — my stick is de only weapon dat can harm him!"));
         }
     }
 

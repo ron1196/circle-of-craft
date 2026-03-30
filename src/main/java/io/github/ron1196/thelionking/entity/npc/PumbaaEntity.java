@@ -24,6 +24,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class PumbaaEntity extends PathfinderMob {
@@ -127,8 +128,9 @@ public class PumbaaEntity extends PathfinderMob {
         if (level().isClientSide()) return;
         spawnFartParticles();
         level().playSound(null, blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, 0.8F, 1.0F);
-        ItemEntity item = new ItemEntity(
-                level(), getX() + 0.5, getY() + 0.5, getZ() + 0.5, new ItemStack(LionKingBlocks.PUMBAA_BOX.get()));
+        var boxPos = new Vec3(getX() + 0.5, getY() + 0.5, getZ() + 0.5);
+        var boxStack = new ItemStack(LionKingBlocks.PUMBAA_BOX.get());
+        var item = new ItemEntity(level(), boxPos.x, boxPos.y, boxPos.z, boxStack);
         level().addFreshEntity(item);
     }
 
@@ -160,7 +162,7 @@ public class PumbaaEntity extends PathfinderMob {
     }
 
     private void sendChat(@NotNull Player player, String name, String message) {
-        player.sendSystemMessage(Component.literal("\u00a7e<" + name + "> \u00a7f" + message));
+        player.sendSystemMessage(Component.literal("§e<" + name + "> §f" + message));
     }
 
     private void spawnFartParticles() {

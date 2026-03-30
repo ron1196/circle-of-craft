@@ -223,6 +223,7 @@ public class RafikiStickItem extends Item {
     private static final int SCAR_HINT_INTERVAL = 60;
     private static final double SCAR_NEAR_DISTANCE = 100.0;
     private static final double SCAR_CLOSE_DISTANCE = 50.0;
+    private static final double SCAR_VERY_CLOSE_DISTANCE = 25.0;
 
     @Override
     public void inventoryTick(
@@ -254,7 +255,9 @@ public class RafikiStickItem extends Item {
         double distance = entity.distanceTo(scar);
 
         String message;
-        if (distance < SCAR_CLOSE_DISTANCE) {
+        if (distance < SCAR_VERY_CLOSE_DISTANCE) {
+            message = "§c§lThe stick shakes wildly! Scar is right here!";
+        } else if (distance < SCAR_CLOSE_DISTANCE) {
             message = "§6§lThe stick shakes violently! Scar is very close!";
         } else if (distance < SCAR_NEAR_DISTANCE) {
             message = "§6The stick trembles strongly...";

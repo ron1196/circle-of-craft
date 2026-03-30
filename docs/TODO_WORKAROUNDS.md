@@ -47,3 +47,5 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 
 - [ ] **`USE_GRINDING_BOWL` trigger is orphaned** — Registered and fires but no advancement uses it. Remove or add a "
   first grind" advancement.
+- [ ] **`feed_animal` trigger never fires** — Registered for "The Animal Whisperer" advancement (feed animal with Animalspeak Amulet). Needs Animalspeak Amulet feature implemented.
+- [ ] **`teleport_simba` trigger never fires** — Registered for "Nants Ingonyama" advancement (take Simba through a portal). Needs Simba portal teleport feature implemented.

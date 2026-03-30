@@ -10,6 +10,8 @@ import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.questline.RafikiQuestline.Stage;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.LionKingItems;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -29,7 +31,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class RafikiEntity extends PathfinderMob {
 
+    private static final int MAX_WANDER_DISTANCE = 10;
+    private static final int LEASH_CHECK_INTERVAL = 100;
+
     private int talkCooldown = 0;
+    private BlockPos homePos = null;
+    private int leashCheckTimer = 0;
 
     public RafikiEntity(EntityType<? extends RafikiEntity> type, Level level) {
         super(type, level);
@@ -67,6 +74,40 @@ public class RafikiEntity extends PathfinderMob {
         if (talkCooldown > 0) talkCooldown--;
         if (this.getHealth() < this.getMaxHealth()) {
             this.setHealth(this.getMaxHealth());
+        }
+        if (!level().isClientSide()) {
+            teleportHomeIfTooFar();
+        }
+    }
+
+    private void teleportHomeIfTooFar() {
+        if (homePos == null) {
+            homePos = blockPosition();
+            return;
+        }
+        if (++leashCheckTimer < LEASH_CHECK_INTERVAL) return;
+        leashCheckTimer = 0;
+
+        if (blockPosition().distSqr(homePos) > MAX_WANDER_DISTANCE * MAX_WANDER_DISTANCE) {
+            this.moveTo(homePos.getX() + 0.5, homePos.getY(), homePos.getZ() + 0.5, getYRot(), getXRot());
+        }
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        if (homePos != null) {
+            tag.putInt("HomeX", homePos.getX());
+            tag.putInt("HomeY", homePos.getY());
+            tag.putInt("HomeZ", homePos.getZ());
+        }
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("HomeX")) {
+            homePos = new BlockPos(tag.getInt("HomeX"), tag.getInt("HomeY"), tag.getInt("HomeZ"));
         }
     }
 
@@ -119,7 +160,7 @@ public class RafikiEntity extends PathfinderMob {
             case COLLECT_TERMITES -> sendSpeech(player, CharacterSpeech.TERMITES);
             case COLLECT_MANGOES -> sendSpeech(player, CharacterSpeech.MANGOES);
             case USE_STAR_ALTAR -> sendSpeech(player, CharacterSpeech.STAR_ALTAR);
-            case COMPLETE -> sendSpeech(player, CharacterSpeech.HINT);
+            case COMPLETE -> sendSpeech(player, CharacterSpeech.COMPLETE_HINT);
             default -> {}
         }
 
@@ -133,12 +174,12 @@ public class RafikiEntity extends PathfinderMob {
     private void sendStageDialogue(Player player, Stage newStage) {
         String message =
                 switch (newStage) {
-                    case COLLECT_BONES -> "Welcome to the Pride Lands! I am Rafiki. Bring me sixty-four hyena bones and I will give you my stick.";
-                    case DEFEAT_SCAR -> "Excellent! Here is my stick. Now go and defeat Scar!";
-                    case COLLECT_TERMITES -> "Well done! Scar has been defeated. This portal will take you to the Outlands. I want you to go there and bring me four termite dust.";
-                    case COLLECT_MANGOES -> "Good! Now bring me four mango dust.";
-                    case USE_STAR_ALTAR -> "Perfect! Now craft a Star Altar and use the Rafiki Dust on it.";
-                    case COMPLETE -> "Wonderful! The spirits of the great kings smile upon you!";
+                    case COLLECT_BONES -> "Ahh, welcome to de Pride Lands! I am Rafiki. Bring me sixty-four hyena bones and I will give you my stick, eh?";
+                    case DEFEAT_SCAR -> "Excellent! Here is my stick — it is de only weapon dat can harm Scar! Watch de hyenas... dey know where deir master hides. Follow dem, and you will find him!";
+                    case COLLECT_TERMITES -> "Hah! You did it! Scar is no more! Now, dis portal will take you to de Outlands. Go dere and bring old Rafiki four termite dust, yes?";
+                    case COLLECT_MANGOES -> "Very good! Now bring me four mango dust. De spirits are pleased wit your progress!";
+                    case USE_STAR_ALTAR -> "Ahh, perfect! Now craft a Star Altar and use de Rafiki Dust on it. De ancestors are waiting!";
+                    case COMPLETE -> "It is done! De spirits of de great kings smile upon you! Rafiki is very proud, hehe!";
                     default -> null;
                 };
         if (message != null) sendMessage(player, message);

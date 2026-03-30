@@ -11,6 +11,7 @@ public enum CharacterSpeech {
     MANGOES("Rafiki", Speech.MANGOES),
     STAR_ALTAR("Rafiki", Speech.STAR_ALTAR),
     HINT("Rafiki", Speech.HINT),
+    COMPLETE_HINT("Rafiki", Speech.COMPLETE_HINT),
     FLOWERS("Rafiki", Speech.FLOWERS),
     BUGS("Timon", Speech.BUGS),
     MORE_BUGS("Timon", Speech.MORE_BUGS),
@@ -74,93 +75,106 @@ public enum CharacterSpeech {
         };
 
         static final String[] HYENA_BONES = {
-            "I need sixty-four hyena bones if you want one of my sticks.",
-            "You don't have those hyena bones yet? A cub could do better!",
+            "I need sixty-four hyena bones if you want one of my sticks, eh?",
+            "You don't have dose hyena bones yet? A cub could do better!",
             "Bring me a stack of hyena bones if you want me to give you a stick.",
-            "No stick for you until I get my hyena bones!",
-            "Help rid the Pride Lands of hyenas first. Then you'll get your stick.",
+            "No stick for you until I get my hyena bones! Hehe!",
+            "Help rid de Pride Lands of hyenas first. Den you'll get your stick.",
             "If you want my stick, I need sixty-four hyena bones.",
-            "What happened to that stack of hyena bones you promised me?",
-            "Come back when you have the hyena bones."
+            "What happened to dat stack of hyena bones you promised me?",
+            "Come back when you have de hyena bones."
         };
 
         static final String[] MENTION_SCAR = {
-            "You need to kill Scar! He's a danger to us all!",
-            "While Scar lives, the Pride Lands are in danger!",
-            "May the great kings of the past watch over you.",
-            "I think Scar is in a cave somewhere nearby...",
-            "You should try looking underground for Scar.",
-            "My stick is the only weapon which can harm Scar."
+            "You must find Scar! He is a danger to us all!",
+            "While Scar lives, de Pride Lands are in danger!",
+            "May de great kings of de past watch over you.",
+            "I tink Scar is hiding in a cave somewhere nearby... follow de hyenas, dey will lead you to him!",
+            "You should try looking underground for Scar. Hold my stick — it will guide you!",
+            "My stick is de only weapon dat can harm Scar. Remember dat!"
         };
 
         static final String[] TERMITES = {
-            "I know the Outlands are dangerous, but we can't continue until you bring me four termite dust.",
-            "I need four termite dust!",
-            "Once I have four termite dust, we can carry on.",
-            "You'll need to put the termites in a Grinding Bowl.",
+            "I know de Outlands are dangerous, but we can't continue until you bring me four termite dust.",
+            "I need four termite dust! Chop chop!",
+            "Once I have four termite dust, we can carry on, yes?",
+            "You'll need to put de termites in a Grinding Bowl.",
             "I need termite dust for a reason, you know...",
-            "Do you have those termite dust yet?",
-            "Find some termites, put them in a Grinding Bowl, and bring them to old Rafiki."
+            "Do you have dose termite dust yet?",
+            "Find some termites, put dem in a Grinding Bowl, and bring dem to old Rafiki."
         };
 
         static final String[] MANGOES = {
             "Bring me four mango dust!",
-            "I only need four mango dust, then we can carry on!",
-            "Hurry up with the mango dust!",
-            "I want my mango dust.",
-            "Have you been eating all the mangoes?",
-            "You need to find four mangoes and put them all in the Grinding Bowl.",
-            "You don't have the mangoes yet? It's not as if they grow on trees..."
+            "I only need four mango dust, den we can carry on!",
+            "Hurry up wit de mango dust!",
+            "I want my mango dust, hehe.",
+            "Have you been eating all de mangoes?",
+            "You need to find four mangoes and put dem all in de Grinding Bowl.",
+            "You don't have de mangoes yet? It's not as if dey grow on trees... oh wait, dey do! Hahaha!"
         };
 
         static final String[] STAR_ALTAR = {
-            "You need to craft a Star Altar with three Rafiki Dust and three silver ingots.",
-            "Use some Rafiki Dust on the Star Altar!",
-            "The Star Altar must be placed in view of the sky.",
-            "Go and use the Star Altar."
+            "You need to craft a Star Altar wit three Rafiki Dust and three silver ingots.",
+            "Use some Rafiki Dust on de Star Altar!",
+            "De Star Altar must be placed in view of de sky. De ancestors must see it!",
+            "Go and use de Star Altar. De spirits are waiting!"
         };
 
         static final String[] HINT = {
-            "Are you taking good care of Simba?",
-            "How is Simba doing? Is he dead yet?",
-            "I hope you've been feeding Simba.",
-            "Don't listen to me, I'm just a crazy old monkey.",
-            "When Simba grows up, he can carry things for you!",
+            "Don't listen to me, I'm just a crazy old monkey! Hahaha!",
             "Why not go and kill some more hyenas? Pesky, slobbering, mangy creatures...",
-            "Have you found Timon and Pumbaa yet?",
             "You are a baboon, and I am not. Ha!",
-            "You had better be replanting all those mango trees!",
-            "Go and play with Simba.",
             "I hear you can find chocolate treats in dungeons round here.",
-            "Zebras are black, with white stripes.",
-            "Did you know that my stick can harvest leaves?",
-            "I wish there were some bananas nearby.",
-            "I wasn't always this old, you know.",
-            "Try taking Simba into some water. It can be a rewarding experience.",
-            "Where have all the flowers gone?",
-            "If you've lost your Pride Lands portal, you can look in the Book of Quests to find its location.",
-            "Peacock Gems are useful for making very powerful tools.",
-            "If a Rafiki Tree falls in the Pride Lands and no one is around, does it make a sound?",
-            "I hear that angry lions will calm down again when fed Zebra Milk.",
-            "You can take Simba through portals to other realms! Just craft an Astral Charm and give it to him.",
-            "Lightning strikes in the Outlands form Outsand.",
-            "You can recharge Voided Charms at the Star Altar.",
-            "In Upendi... where the passion fruit grows sweet!",
-            "I hear there are minerals in the Outlands with dark and dangerous powers.",
-            "You smell of Pumbaa Flatulence...",
-            "Roses are red, Zazus are blue. Some poems rhyme... and this one does too.",
-            "Corrupt Pridestone makes some of the strongest tools, but they weaken very quickly.",
-            "You should try enchanting my stick. The results can be thunderously good.",
-            "Some of the termite mounds in the Outlands have treasure inside them!",
+            "Zebras are black, wit white stripes.",
+            "Did you know dat my stick can harvest leaves?",
+            "I wish dere were some bananas nearby.",
+            "I wasn't always dis old, you know.",
+            "Where have all de flowers gone?",
+            "If a Rafiki Tree falls in de Pride Lands and no one is around, does it make a sound?",
+            "Roses are red, Zazus are blue. Some poems rhyme... and dis one does too.",
             "I haven't seen Ticket Lion in a while. He's an old friend of mine, you know.",
-            "Don't even think about stealing any torches from my tree.",
+            "Don't even tink about stealing any torches from my tree!",
+            "Giraffes have come to de Pride Lands! I love giraffes!",
+            "What time does de narwhal bacon? Hahaha!",
+            "Asante sana, squash banana, wewe nugu, mimi hapana!",
+            "Ah yes, de past can hurt. But de way I see it, you can either run from it... or learn from it!",
+            "It does not matter! It is in de past! Hahaha!",
+            "De question is... who are YOU?",
+            "Change is good. But it is not easy.",
+            "Oh ho ho ho! You follow old Rafiki, he knows de way!",
+            "De circle of life moves us all.",
+            "Peacock Gems are useful for making very powerful tools."
+        };
+
+        static final String[] COMPLETE_HINT = {
+            "Are you taking good care of Simba?",
+            "How is Simba doing? Is he dead yet? Hehe!",
+            "I hope you've been feeding Simba.",
+            "When Simba grows up, he can carry tings for you!",
+            "Go and play wit Simba.",
+            "You had better be replanting all dose mango trees!",
+            "Have you found Timon and Pumbaa yet?",
+            "Try taking Simba into some water. It can be a rewarding experience, hehe!",
+            "If you've lost your Pride Lands portal, you can look in de Book of Quests to find its location.",
+            "I hear dat angry lions will calm down again when fed Zebra Milk.",
+            "You can take Simba through portals to other realms! Just craft an Astral Charm and give it to him.",
+            "Lightning strikes in de Outlands form Outsand.",
+            "You can recharge Voided Charms at de Star Altar.",
+            "In Upendi... where de passion fruit grows sweet!",
+            "I hear dere are minerals in de Outlands wit dark and dangerous powers.",
+            "You smell of Pumbaa Flatulence... phew!",
+            "Corrupt Pridestone makes some of de strongest tools, but dey weaken very quickly.",
+            "You should try enchanting my stick. De results can be thunderously good!",
+            "Some of de termite mounds in de Outlands have treasure inside dem!",
             "Mango! Milk! A bug and a bowl! Stewing insects is my goal!",
             "Beware of speaking to Zira. You can't trust her!",
-            "Be careful in the Outlands. There are dangerous and evil creatures there.",
+            "Be careful in de Outlands. Dere are dangerous and evil creatures dere.",
             "Do you still have Scar's rug?",
             "Have you tried crafting some Peacock Wings yet?",
-            "Giraffes have come to the Pride Lands! I love giraffes!",
-            "What time does the narwhal bacon?"
+            "Remember who you are! You are more dan what you have become.",
+            "Look harder... he lives in you!",
+            "De king has returned."
         };
 
         static final String[] FLOWERS = {

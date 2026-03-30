@@ -99,7 +99,7 @@ src/main/java/io/github/ron1196/thelionking/
   world/feature/             — Custom worldgen features
   quest/                     — Quest system (Questline, QuestlineManager, QuestlineRegistry)
   quest/questline/           — Questline definitions (RafikiQuestline, OutlandsQuestline)
-  quest/stageKey/               — Stage, StageTrigger, ClaimableReward, IStageId
+  quest/stage/                  — QuestObjective, QuestTrigger, ClaimableReward, StageId
   command/                   — Debug/testing commands (LionKingCommands)
   data/                      — WorldData (SavedData), PlayerData, custom triggers
   menu/                      — Container menus
@@ -145,7 +145,7 @@ src/main/resources/
 | `registry/EntityTypes.java`    | All entity type registrations          |
 | `registry/SoundEvents.java`  | Sound event registrations                |
 | `registry/Features.java`     | Custom worldgen feature registrations    |
-| `event/CommonEvents.java`    | Entity attribute registration            |
+| `event/CommonEvents.java`    | Entity attributes + spawn placement rules |
 | `event/ClientEvents.java`    | Renderers, models, GUI screens           |
 | `event/LionKingForgeEvents.java` | Forge bus events (combat, NPC interaction, breeding, ticks) |
 | `network/Networking.java`    | SimpleChannel packet registration        |

@@ -135,7 +135,7 @@ public class EntityTypes {
     public static final RegistryObject<EntityType<SimbaEntity>> SIMBA =
             registerCreature("simba", SimbaEntity::new, 1.3F, 1.6F);
     public static final RegistryObject<EntityType<TimonEntity>> TIMON =
-            registerCreature("timon", TimonEntity::new, 0.6F, 1.2F);
+            registerCreature("timon", TimonEntity::new, 0.4F, 0.9F);
     public static final RegistryObject<EntityType<PumbaaEntity>> PUMBAA =
             registerCreature("pumbaa", PumbaaEntity::new, 1.2F, 1.3F);
     public static final RegistryObject<EntityType<ScarEntity>> SCAR =

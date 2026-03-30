@@ -10,7 +10,7 @@
   },
   "criteria": {
     "requirement": {
-      "trigger": "thelionking:quest_complete",
+      "trigger": "thelionking:feed_animal",
       "conditions": {}
     }
   }

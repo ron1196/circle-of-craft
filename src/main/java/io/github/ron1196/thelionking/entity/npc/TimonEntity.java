@@ -26,6 +26,8 @@ public class TimonEntity extends PathfinderMob {
 
     public TimonEntity(EntityType<? extends TimonEntity> type, Level level) {
         super(type, level);
+        this.setCustomName(Component.literal("Timon"));
+        this.setCustomNameVisible(true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

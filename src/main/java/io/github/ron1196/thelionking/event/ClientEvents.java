@@ -247,13 +247,13 @@ public class ClientEvents {
         // NPCs — proper models ported from original mod (shadow, scale from old code)
         event.registerEntityRenderer(
                 EntityTypes.RAFIKI.get(),
-                ctx -> new NpcRenderer(ctx, new RafikiModel(ctx.bakeLayer(RAFIKI_LAYER)), "rafiki", 0.35F, 0.5F));
+                ctx -> new NpcRenderer(ctx, new RafikiModel(ctx.bakeLayer(RAFIKI_LAYER)), "rafiki", 0.35F));
         event.registerEntityRenderer(
                 EntityTypes.SIMBA.get(),
-                ctx -> new NpcRenderer(ctx, new SimbaModel(ctx.bakeLayer(SIMBA_LAYER)), "simba", 0.5F, 0.5F));
+                ctx -> new NpcRenderer(ctx, new SimbaModel(ctx.bakeLayer(SIMBA_LAYER)), "simba", 0.5F));
         event.registerEntityRenderer(
                 EntityTypes.TIMON.get(),
-                ctx -> new NpcRenderer(ctx, new TimonModel(ctx.bakeLayer(TIMON_LAYER)), "timon", 0.2F, 0.5F));
+                ctx -> new NpcRenderer(ctx, new TimonModel(ctx.bakeLayer(TIMON_LAYER)), "timon", 0.2F));
         event.registerEntityRenderer(
                 EntityTypes.PUMBAA.get(),
                 ctx -> new NpcRenderer(ctx, new PumbaaModel(ctx.bakeLayer(PUMBAA_LAYER)), "pumbaa", 0.6F));

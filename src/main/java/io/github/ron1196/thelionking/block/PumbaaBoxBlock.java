@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.block;
 
+import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
@@ -67,6 +68,7 @@ public class PumbaaBoxBlock extends Block {
                 4.0F,
                 (1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F);
         qm.tryAdvance("outlands", player, QuestTrigger.PUMBAA_BOX_USED);
+        LionKingCriteriaTriggers.TRADE_PUMBAA.trigger(player);
     }
 
     private static void spawnSmokeParticles(@NotNull Level level, @NotNull BlockPos pos) {

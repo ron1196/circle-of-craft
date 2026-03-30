@@ -141,6 +141,13 @@ public class QuestlineManager {
         // Fire advancement trigger on every quest stage advance
         LionKingCriteriaTriggers.QUEST_COMPLETE.trigger(player);
 
+        // Fire quest-specific completion trigger
+        if (nextStage != null && nextStage.name().equals("COMPLETE")) {
+            if ("rafiki".equals(questId)) {
+                LionKingCriteriaTriggers.COMPLETE_RAFIKI_QUEST.trigger(player);
+            }
+        }
+
         syncToAllPlayers(player.server);
 
         return true;

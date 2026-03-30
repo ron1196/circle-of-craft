@@ -9,6 +9,10 @@ public class LionKingCriteriaTriggers {
 
     public static final PlayerTrigger SHOOT_DART = createTrigger("shoot_dart");
     public static final PlayerTrigger QUEST_COMPLETE = createTrigger("quest_complete");
+    public static final PlayerTrigger COMPLETE_RAFIKI_QUEST = createTrigger("complete_rafiki_quest");
+    public static final PlayerTrigger TRADE_PUMBAA = createTrigger("trade_pumbaa");
+    public static final PlayerTrigger FEED_ANIMAL = createTrigger("feed_animal");
+    public static final PlayerTrigger TELEPORT_SIMBA = createTrigger("teleport_simba");
     public static final UseGrindingBowlTrigger USE_GRINDING_BOWL = new UseGrindingBowlTrigger();
     public static final PlayerTrigger RIDE_GIRAFFE = createTrigger("ride_giraffe");
     public static final PlayerTrigger PLAY_BONGO_DRUM = createTrigger("play_bongo_drum");
@@ -28,6 +32,10 @@ public class LionKingCriteriaTriggers {
     public static void register() {
         CriteriaTriggers.register(SHOOT_DART);
         CriteriaTriggers.register(QUEST_COMPLETE);
+        CriteriaTriggers.register(COMPLETE_RAFIKI_QUEST);
+        CriteriaTriggers.register(TRADE_PUMBAA);
+        CriteriaTriggers.register(FEED_ANIMAL);
+        CriteriaTriggers.register(TELEPORT_SIMBA);
         CriteriaTriggers.register(USE_GRINDING_BOWL);
         CriteriaTriggers.register(RIDE_GIRAFFE);
         CriteriaTriggers.register(PLAY_BONGO_DRUM);
