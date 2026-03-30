@@ -1,1 +1,6 @@
-{"parent":"minecraft:block/orientable","textures":{"top":"thelionking:block/mounted_shooter_top","front":"thelionking:block/mounted_shooter_front","side":"thelionking:block/mounted_shooter_side"}}
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "thelionking:item/mounted_shooter"
+  }
+}

@@ -7,8 +7,7 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 - [x] ~~**`corrupt_hoe`**~~ — RESOLVED: Proper texture added.
 - [x] ~~**`mounted_shooter` needs BlockEntityRenderer**~~ — RESOLVED: Ported 3D model + BlockEntityRenderer from old mod. Block now extends BaseEntityBlock with fire recoil animation.
 - [x] ~~**`outlands_altar` textures**~~ — RESOLVED: Migrated `poolFocus_top/side` from old assets. Fixed shape to 10/16 height. Added `noOcclusion`.
-- [ ] **~150 block textures** need migration from old camelCase to snake_case
-- [ ] **~160 item textures** need migration
+- [x] ~~**Remaining placeholder textures**~~ — RESOLVED: Migrated maize crop stages, banana cake bottom from old mod. Deleted unused mounted shooter face textures and tilled sand item texture.
 
 ## Deprecated API (1.21+ Migration)
 
