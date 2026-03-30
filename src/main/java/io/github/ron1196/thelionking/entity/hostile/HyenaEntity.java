@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.entity.hostile;
 
+import io.github.ron1196.thelionking.entity.ai.HyenaFollowScarGoal;
 import io.github.ron1196.thelionking.entity.animal.*;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import javax.annotation.Nullable;
@@ -93,9 +94,10 @@ public class HyenaEntity extends Monster {
                                                 .size()
                                         < 3));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2, false));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(3, new HyenaFollowScarGoal(this));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));

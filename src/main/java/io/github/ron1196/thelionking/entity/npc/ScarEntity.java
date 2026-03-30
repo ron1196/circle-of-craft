@@ -39,7 +39,7 @@ public class ScarEntity extends Monster {
     /** Ticks between distant roars (audible from far away to help player find Scar). */
     private static final int ROAR_INTERVAL_MIN = 200;
     private static final int ROAR_INTERVAL_RANGE = 400;
-    private static final float ROAR_VOLUME = 4.0F;
+    private static final float ROAR_VOLUME = 10.0F;
     private int roarCooldown = 100;
 
     public ScarEntity(EntityType<? extends ScarEntity> type, Level level) {

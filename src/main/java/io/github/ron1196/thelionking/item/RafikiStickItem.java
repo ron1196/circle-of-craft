@@ -2,8 +2,13 @@ package io.github.ron1196.thelionking.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import io.github.ron1196.thelionking.data.WorldData;
+import io.github.ron1196.thelionking.entity.npc.ScarEntity;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
+import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
+import io.github.ron1196.thelionking.quest.questline.RafikiQuestline;
 import io.github.ron1196.thelionking.registry.Enchantments;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -214,20 +219,60 @@ public class RafikiStickItem extends Item {
         }
     }
 
+    private static final double SCAR_DETECT_RANGE = 120.0;
+    private static final int SCAR_HINT_INTERVAL = 60;
+    private static final double SCAR_NEAR_DISTANCE = 30.0;
+    private static final double SCAR_CLOSE_DISTANCE = 15.0;
+
     @Override
     public void inventoryTick(
             @NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
-        if (level.isClientSide) {
-            return;
+        if (level.isClientSide) return;
+
+        // Thunder cooldown
+        if (stack.hasTag()) {
+            int cooldown = stack.getOrCreateTag().getInt(TAG_THUNDER_COOLDOWN);
+            if (cooldown > 0) {
+                stack.getOrCreateTag().putInt(TAG_THUNDER_COOLDOWN, cooldown - 1);
+            }
         }
-        if (!stack.hasTag()) {
-            return;
+
+        // Scar tracking — only when held in hand during DEFEAT_SCAR quest stage
+        if (!isSelected || !(entity instanceof Player player)) return;
+        if (!(level instanceof ServerLevel serverLevel)) return;
+        if (entity.tickCount % SCAR_HINT_INTERVAL != 0) return;
+
+        QuestlineManager quests = WorldData.get(serverLevel).getQuestManager();
+        RafikiQuestline.Stage stage = quests.getStage("rafiki", RafikiQuestline.Stage.class);
+        if (stage != RafikiQuestline.Stage.DEFEAT_SCAR) return;
+
+        List<ScarEntity> scars = level.getEntitiesOfClass(
+                ScarEntity.class, entity.getBoundingBox().inflate(SCAR_DETECT_RANGE));
+        if (scars.isEmpty()) return;
+
+        ScarEntity scar = scars.get(0);
+        double distance = entity.distanceTo(scar);
+
+        String message;
+        if (distance < SCAR_CLOSE_DISTANCE) {
+            message = "§6§lThe stick shakes violently! Scar is very close!";
+        } else if (distance < SCAR_NEAR_DISTANCE) {
+            message = "§6The stick trembles strongly...";
+        } else {
+            message = "§7The stick trembles faintly...";
         }
-        assert stack.getTag() != null;
-        int cooldown = stack.getTag().getInt(TAG_THUNDER_COOLDOWN);
-        if (cooldown > 0) {
-            stack.getTag().putInt(TAG_THUNDER_COOLDOWN, cooldown - 1);
-        }
+        player.displayClientMessage(net.minecraft.network.chat.Component.literal(message), true);
+
+        // Set glint tag for nearby Scar
+        stack.getOrCreateTag().putBoolean(TAG_SCAR_NEARBY, distance < SCAR_NEAR_DISTANCE);
+    }
+
+    private static final String TAG_SCAR_NEARBY = "ScarNearby";
+
+    @Override
+    public boolean isFoil(@NotNull ItemStack stack) {
+        if (super.isFoil(stack)) return true;
+        return stack.hasTag() && stack.getOrCreateTag().getBoolean(TAG_SCAR_NEARBY);
     }
 
     @Override
