@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.entity.npc;
 
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
+import io.github.ron1196.thelionking.registry.SoundEvents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -34,6 +35,12 @@ public class ScarEntity extends Monster {
             "§e<Scar> §fSo, you've come to challenge me? " + "How delightfully brave... and foolish.";
 
     private boolean hasSpoken = false;
+
+    /** Ticks between distant roars (audible from far away to help player find Scar). */
+    private static final int ROAR_INTERVAL_MIN = 200;
+    private static final int ROAR_INTERVAL_RANGE = 400;
+    private static final float ROAR_VOLUME = 4.0F;
+    private int roarCooldown = 100;
 
     public ScarEntity(EntityType<? extends ScarEntity> type, Level level) {
         super(type, level);
@@ -94,6 +101,16 @@ public class ScarEntity extends Monster {
 
         if (!level().isClientSide()) {
             bossEvent.setProgress(getHealth() / getMaxHealth());
+
+            // Periodic loud roar — audible from far away to help player find Scar
+            if (roarCooldown > 0) {
+                roarCooldown--;
+            } else {
+                level().playSound(null, blockPosition(), SoundEvents.LION_ROAR.get(),
+                        net.minecraft.sounds.SoundSource.HOSTILE, ROAR_VOLUME,
+                        0.8F + random.nextFloat() * 0.3F);
+                roarCooldown = ROAR_INTERVAL_MIN + random.nextInt(ROAR_INTERVAL_RANGE);
+            }
         }
 
         if (level().isClientSide() || hasSpoken) {
