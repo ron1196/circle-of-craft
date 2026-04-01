@@ -20,8 +20,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class WaywardFeatherItem extends Item {
 
-    private static final int MARCH_STAGE_START = OutlandsQuestline.Stage.FOLLOW_OUTLANDERS.ordinal();
-    private static final int MARCH_STAGE_END = OutlandsQuestline.Stage.ZIRA_OCCUPIES_TREE.ordinal();
+    private static final java.util.Set<OutlandsQuestline.Stage> MARCH_STAGES =
+            java.util.EnumSet.of(OutlandsQuestline.Stage.FOLLOW_OUTLANDERS, OutlandsQuestline.Stage.ZIRA_OCCUPIES_TREE);
 
     public WaywardFeatherItem(Properties properties) {
         super(properties.stacksTo(16).rarity(Rarity.UNCOMMON));
@@ -76,9 +76,9 @@ public class WaywardFeatherItem extends Item {
     }
 
     private static boolean isDuringMarch(ServerPlayer player) {
-        WorldData data = WorldData.get(player.serverLevel());
-        OutlandsQuestline.Stage stage = data.getQuestManager().getStage("outlands", OutlandsQuestline.Stage.class);
-        int ordinal = stage.ordinal();
-        return ordinal >= MARCH_STAGE_START && ordinal <= MARCH_STAGE_END;
+        OutlandsQuestline.Stage stage = WorldData.get(player.serverLevel())
+                .getQuestManager()
+                .getStage("outlands", OutlandsQuestline.Stage.class);
+        return MARCH_STAGES.contains(stage);
     }
 }

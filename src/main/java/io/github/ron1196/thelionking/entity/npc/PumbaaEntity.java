@@ -6,11 +6,14 @@ import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
+import io.github.ron1196.thelionking.registry.LionKingItems;
+import io.github.ron1196.thelionking.registry.LionKingSoundEvents;
 import io.github.ron1196.thelionking.util.ChatHelper;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -23,16 +26,25 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class PumbaaEntity extends PathfinderMob {
 
     private static final int TALK_COOLDOWN_TICKS = 140;
+    private static final int COOKING_EAT_START = 20;
+    private static final int COOKING_EAT_END = 48;
+    private static final int COOKING_EAT_INTERVAL = 4;
+    private static final int COOKING_SPAWN_TICK = 100;
+    private static final int COOKING_DONE_TICK = 140;
+    private static final int FART_PARTICLE_COUNT = 14;
 
     private int talkCooldown = 0;
+    private boolean cookingBox = false;
+    private int cookingTimer = 0;
 
     public PumbaaEntity(EntityType<? extends PumbaaEntity> type, Level level) {
         super(type, level);
@@ -69,9 +81,53 @@ public class PumbaaEntity extends PathfinderMob {
     public void tick() {
         super.tick();
         if (talkCooldown > 0) talkCooldown--;
+        if (this.getHealth() < this.getMaxHealth()) this.setHealth(this.getMaxHealth());
 
-        if (level().isClientSide() && random.nextInt(1200) == 0) {
-            spawnFartParticles();
+        if (!level().isClientSide() && random.nextInt(1200) == 0) {
+            fart();
+        }
+
+        if (cookingBox) {
+            tickCookingAnimation();
+        }
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundEvents.PIG_AMBIENT;
+    }
+
+    @Override
+    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
+        return SoundEvents.PIG_HURT;
+    }
+
+    @Override
+    protected @NotNull SoundEvent getDeathSound() {
+        return SoundEvents.PIG_DEATH;
+    }
+
+    private void tickCookingAnimation() {
+        cookingTimer++;
+
+        // Eating/munching sounds
+        if (cookingTimer >= COOKING_EAT_START
+                && cookingTimer <= COOKING_EAT_END
+                && cookingTimer % COOKING_EAT_INTERVAL == 0) {
+            level().playSound(
+                            null,
+                            blockPosition(),
+                            SoundEvents.GENERIC_EAT,
+                            SoundSource.NEUTRAL,
+                            0.8F + 0.5F * random.nextInt(2),
+                            (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+        }
+
+        // Spawn the box + fart
+        if (cookingTimer >= COOKING_SPAWN_TICK && !level().isClientSide()) {
+            spawnPumbaaBox();
+            cookingBox = false;
+            cookingTimer = 0;
         }
     }
 
@@ -94,9 +150,27 @@ public class PumbaaEntity extends PathfinderMob {
                 talkCooldown = TALK_COOLDOWN_TICKS;
                 if (qm.tryAdvance("outlands", serverPlayer, QuestTrigger.PUMBAA_TALK)) {
                     ChatHelper.sendNpcMessage(player, "Pumbaa", "Stand back!");
-                    spawnPumbaaBox();
+                    cookingBox = true;
+                    cookingTimer = 0;
                 } else {
                     sendMissingIngredientsDialogue(player);
+                }
+            }
+            case USE_PUMBAA_BOX -> {
+                talkCooldown = TALK_COOLDOWN_TICKS;
+                // If the player lost their Pumbaa Box, let them re-craft with ingredients
+                if (!playerHasPumbaaBox(player)) {
+                    if (hasBoxIngredients(player)) {
+                        consumeBoxIngredients(player);
+                        ChatHelper.sendNpcMessage(player, "Pumbaa", "Stand back! Here's another one.");
+                        cookingBox = true;
+                        cookingTimer = 0;
+                    } else {
+                        sendMissingIngredientsDialogue(player);
+                    }
+                } else {
+                    ChatHelper.sendNpcMessage(
+                            player, "Timon", "You already have the box! Go place it near Rafiki's tree.");
                 }
             }
             default -> {
@@ -139,12 +213,41 @@ public class PumbaaEntity extends PathfinderMob {
 
     private void spawnPumbaaBox() {
         if (level().isClientSide()) return;
-        spawnFartParticles();
-        level().playSound(null, blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, 0.8F, 1.0F);
-        var boxPos = new Vec3(getX() + 0.5, getY() + 0.5, getZ() + 0.5);
+
+        // Pumbaa jumps
+        setDeltaMovement(0, 1.5, 0);
+
+        // Spawn the box item
         var boxStack = new ItemStack(LionKingBlocks.PUMBAA_BOX.get());
-        var item = new ItemEntity(level(), boxPos.x, boxPos.y, boxPos.z, boxStack);
+        var item = new ItemEntity(level(), getX() + 0.5, getY() + 0.5, getZ() + 0.5, boxStack);
         level().addFreshEntity(item);
+
+        // Fart sound + particles
+        fart();
+    }
+
+    private void fart() {
+        level().playSound(
+                        null,
+                        blockPosition(),
+                        LionKingSoundEvents.FLATULENCE.get(),
+                        SoundSource.NEUTRAL,
+                        0.5F,
+                        (1.0F + (random.nextFloat() - random.nextFloat()) * 0.2F) * 0.7F);
+        if (level() instanceof ServerLevel serverLevel) {
+            for (int i = 0; i < FART_PARTICLE_COUNT; i++) {
+                serverLevel.sendParticles(
+                        ParticleTypes.CAMPFIRE_COSY_SMOKE,
+                        getX() + (random.nextFloat() * getBbWidth() * 2.0F) - getBbWidth(),
+                        getY() + 0.5 + random.nextFloat() * getBbHeight(),
+                        getZ() + (random.nextFloat() * getBbWidth() * 2.0F) - getBbWidth(),
+                        1,
+                        random.nextGaussian() * 0.02,
+                        random.nextGaussian() * 0.02,
+                        random.nextGaussian() * 0.02,
+                        0);
+            }
+        }
     }
 
     private void sendMissingIngredientsDialogue(@NotNull Player player) {
@@ -174,16 +277,50 @@ public class PumbaaEntity extends PathfinderMob {
         ChatHelper.sendNpcMessage(player, "Pumbaa", speeches[random.nextInt(speeches.length)]);
     }
 
-    private void spawnFartParticles() {
-        for (int i = 0; i < 5; i++) {
-            level().addParticle(
-                            ParticleTypes.SMOKE,
-                            getX() - 0.5 + random.nextFloat(),
-                            getY() + 0.5 + random.nextFloat(),
-                            getZ() - 0.5 + random.nextFloat(),
-                            0,
-                            0.05,
-                            0);
+    // ── Pumbaa Box ingredient helpers ───────────────────────────────────────
+
+    private static final int REQUIRED_BUG_COUNT = 16;
+
+    private static boolean playerHasPumbaaBox(@NotNull Player player) {
+        for (ItemStack stack : player.getInventory().items) {
+            if (stack.is(LionKingBlocks.PUMBAA_BOX.get().asItem())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean hasBoxIngredients(@NotNull Player player) {
+        return countInInventory(player, LionKingItems.BUG.get()) >= REQUIRED_BUG_COUNT
+                && countInInventory(player, Items.OAK_PLANKS) >= 1
+                && countInInventory(player, LionKingItems.JAR_LAVA.get()) >= 1
+                && countInInventory(player, LionKingItems.TERMITE_THROWN.get()) >= 1;
+    }
+
+    private static void consumeBoxIngredients(@NotNull Player player) {
+        shrinkFromInventory(player, LionKingItems.BUG.get(), REQUIRED_BUG_COUNT);
+        shrinkFromInventory(player, Items.OAK_PLANKS, 1);
+        shrinkFromInventory(player, LionKingItems.JAR_LAVA.get(), 1);
+        shrinkFromInventory(player, LionKingItems.TERMITE_THROWN.get(), 1);
+    }
+
+    private static int countInInventory(@NotNull Player player, Item item) {
+        int total = 0;
+        for (ItemStack stack : player.getInventory().items) {
+            if (stack.is(item)) total += stack.getCount();
+        }
+        return total;
+    }
+
+    private static void shrinkFromInventory(@NotNull Player player, Item item, int amount) {
+        int remaining = amount;
+        for (ItemStack stack : player.getInventory().items) {
+            if (remaining <= 0) break;
+            if (stack.is(item)) {
+                int take = Math.min(remaining, stack.getCount());
+                stack.shrink(take);
+                remaining -= take;
+            }
         }
     }
 }

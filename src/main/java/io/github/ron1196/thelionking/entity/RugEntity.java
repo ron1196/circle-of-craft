@@ -3,7 +3,7 @@ package io.github.ron1196.thelionking.entity;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingItems;
-import io.github.ron1196.thelionking.registry.SoundEvents;
+import io.github.ron1196.thelionking.registry.LionKingSoundEvents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -101,7 +101,7 @@ public class RugEntity extends Entity {
             level().playSound(
                             null,
                             this,
-                            SoundEvents.LION_ROAR.get(),
+                            LionKingSoundEvents.LION_ROAR.get(),
                             SoundSource.NEUTRAL,
                             1.0F,
                             (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
@@ -129,7 +129,7 @@ public class RugEntity extends Entity {
         level().playSound(
                         null,
                         this,
-                        SoundEvents.LION_ANGRY.get(),
+                        LionKingSoundEvents.LION_ANGRY.get(),
                         SoundSource.NEUTRAL,
                         1.0F,
                         (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);

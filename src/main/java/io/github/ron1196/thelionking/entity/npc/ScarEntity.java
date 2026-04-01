@@ -1,7 +1,8 @@
 package io.github.ron1196.thelionking.entity.npc;
 
 import io.github.ron1196.thelionking.data.WorldData;
-import io.github.ron1196.thelionking.registry.SoundEvents;
+import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
+import io.github.ron1196.thelionking.registry.LionKingSoundEvents;
 import io.github.ron1196.thelionking.util.ChatHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -116,7 +117,7 @@ public class ScarEntity extends Monster {
             level().playSound(
                             null,
                             blockPosition(),
-                            SoundEvents.LION_ROAR.get(),
+                            LionKingSoundEvents.LION_ROAR.get(),
                             SoundSource.HOSTILE,
                             ROAR_VOLUME,
                             0.8F + random.nextFloat() * 0.3F);
@@ -142,14 +143,14 @@ public class ScarEntity extends Monster {
         super.die(source);
         if (level().isClientSide() || !(level() instanceof ServerLevel serverLevel)) return;
 
-        // Mark Scar as dead in world data — Rafiki will advance the quest when talked to
+        // Advance quest for nearby players and send death message
         WorldData data = WorldData.get(serverLevel);
-        data.setScarDefeated(true);
-
-        // Message nearby players
         for (Player player :
                 level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(DEATH_MESSAGE_RANGE))) {
             ChatHelper.sendNpcMessage(player, "Scar", "This... is not... the end...");
+            if (player instanceof ServerPlayer sp) {
+                data.getQuestManager().tryAdvance("rafiki", sp, QuestTrigger.SCAR_KILLED);
+            }
         }
     }
 

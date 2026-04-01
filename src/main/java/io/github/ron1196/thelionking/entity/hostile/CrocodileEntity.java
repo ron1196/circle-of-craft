@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.entity.hostile;
 
-import io.github.ron1196.thelionking.registry.SoundEvents;
+import io.github.ron1196.thelionking.registry.LionKingSoundEvents;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -45,17 +45,17 @@ public class CrocodileEntity extends Monster {
 
     @Override
     protected @NotNull SoundEvent getAmbientSound() {
-        return SoundEvents.CROCODILE_AMBIENT.get();
+        return LionKingSoundEvents.CROCODILE_AMBIENT.get();
     }
 
     @Override
     protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
-        return SoundEvents.CROCODILE_SNAP.get();
+        return LionKingSoundEvents.CROCODILE_SNAP.get();
     }
 
     @Override
     protected @NotNull SoundEvent getDeathSound() {
-        return SoundEvents.CROCODILE_DEATH.get();
+        return LionKingSoundEvents.CROCODILE_DEATH.get();
     }
 
     public static AttributeSupplier.Builder createAttributes() {

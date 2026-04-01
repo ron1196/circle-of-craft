@@ -6,14 +6,14 @@ import static io.github.ron1196.thelionking.quest.stage.QuestObjective.Source;
 import static io.github.ron1196.thelionking.quest.stage.QuestTrigger.*;
 
 import io.github.ron1196.thelionking.block.PoolCoverBlock;
+import io.github.ron1196.thelionking.block.RafikiLeavesBlock;
+import io.github.ron1196.thelionking.block.RafikiWoodBlock;
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.hostile.OutlanderEntity;
-import io.github.ron1196.thelionking.entity.npc.RafikiEntity;
 import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
 import io.github.ron1196.thelionking.quest.stage.QuestObjective;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.quest.stage.StageId;
-import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.util.ChatHelper;
 import java.util.List;
@@ -26,6 +26,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class OutlandsQuestline {
@@ -104,7 +105,6 @@ public class OutlandsQuestline {
                 .trigger(DEFEAT_ZIRA, ZIRA_KILLED)
                 .customTransition(COLLECT_INGOTS, OutlandsQuestline::openPoolCover)
                 .customTransition(COLLECT_FEATHERS, OutlandsQuestline::startMarch)
-                .customTransition(USE_PUMBAA_BOX, OutlandsQuestline::rafikiReturns)
                 .build();
     }
 
@@ -142,7 +142,7 @@ public class OutlandsQuestline {
         sendNpcMessage(
                 player,
                 "Zira",
-                "Well, you've done better dan I expected. Now I can finally leave dis accursed wasteland! Come, Outlanders, and let us reclaim what was once ours!");
+                "Well, you've done better than I expected. Now I can finally leave this accursed wasteland! Come, Outlanders, and let us reclaim what was once ours!");
 
         // Kill all Outlanders nearby with flame particles
         AABB searchBox = player.getBoundingBox().inflate(MARCH_KILL_RADIUS);
@@ -167,7 +167,6 @@ public class OutlandsQuestline {
                 level.random.nextFloat() * 0.4F + 0.8F);
 
         // Set world flags — Zira now occupies Rafiki's tree
-        data.setZiraOccupiesTree(true);
         data.resetZiraTreeTalkCount();
 
         // Quest stays at FOLLOW_OUTLANDERS — advances to ZIRA_OCCUPIES_TREE when player enters Pride Lands
@@ -176,51 +175,6 @@ public class OutlandsQuestline {
     }
 
     // ── Pumbaa Box explosion → Rafiki returns ───────────────────────────
-
-    private static void rafikiReturns(ServerPlayer player, QuestlineManager manager) {
-        ServerLevel level = player.serverLevel();
-        WorldData data = WorldData.get(level);
-
-        // Clear occupation flags
-        data.setZiraOccupiesTree(false);
-
-        // Kill Zira (spawn Rafiki at her position) and Outlanders nearby
-        AABB searchArea = player.getBoundingBox().inflate(TREE_KILL_RADIUS);
-        for (ZiraEntity zira : level.getEntitiesOfClass(ZiraEntity.class, searchArea)) {
-            spawnFlameParticles(level, zira);
-
-            // Spawn Rafiki where Zira was standing
-            RafikiEntity rafiki = EntityTypes.RAFIKI.get().create(level);
-            if (rafiki != null) {
-                rafiki.moveTo(zira.getX(), zira.getY(), zira.getZ(), zira.getYRot(), 0F);
-                rafiki.setPersistenceRequired();
-                level.addFreshEntity(rafiki);
-            }
-
-            // Explosion particles around Zira
-            for (int i = 0; i < 10; i++) {
-                double x = zira.getX() + level.random.nextGaussian() * 5;
-                double y = zira.getY() + 3 + level.random.nextFloat() * 8;
-                double z = zira.getZ() + level.random.nextGaussian() * 5;
-                level.sendParticles(ParticleTypes.EXPLOSION, x, y, z, 1, 0, 0, 0, 0);
-            }
-
-            zira.discard();
-        }
-        for (OutlanderEntity outlander : level.getEntitiesOfClass(OutlanderEntity.class, searchArea)) {
-            spawnFlameParticles(level, outlander);
-            outlander.discard();
-        }
-
-        // Flatulence + explosion sounds
-        level.playSound(null, player.blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4.0F, 0.7F);
-
-        // Rafiki's return dialogue
-        sendNpcMessage(
-                player,
-                "Rafiki",
-                "Ohoho! Old Rafiki was never gone for good! But you've kicked up quite a stink here, haven't you?");
-    }
 
     // ── Helpers ──────────────────────────────────────────────────────────
 
@@ -244,5 +198,20 @@ public class OutlandsQuestline {
 
     private static void sendNpcMessage(ServerPlayer player, String name, String message) {
         ChatHelper.sendNpcMessage(player, name, message);
+    }
+
+    private static final int TREE_CORRUPTION_RADIUS = 50;
+
+    public static void setTreeCorruption(ServerLevel level, BlockPos center, boolean corrupt) {
+        int r = TREE_CORRUPTION_RADIUS;
+        for (BlockPos pos : BlockPos.betweenClosed(center.offset(-r, -r, -r), center.offset(r, r, r))) {
+            BlockState state = level.getBlockState(pos);
+            if (state.getBlock() instanceof RafikiWoodBlock && state.getValue(RafikiWoodBlock.CORRUPT) != corrupt) {
+                level.setBlock(pos, state.setValue(RafikiWoodBlock.CORRUPT, corrupt), 3);
+            } else if (state.getBlock() instanceof RafikiLeavesBlock
+                    && state.getValue(RafikiLeavesBlock.CORRUPT) != corrupt) {
+                level.setBlock(pos, state.setValue(RafikiLeavesBlock.CORRUPT, corrupt), 3);
+            }
+        }
     }
 }

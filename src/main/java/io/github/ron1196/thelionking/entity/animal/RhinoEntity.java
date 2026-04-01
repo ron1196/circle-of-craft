@@ -2,7 +2,7 @@ package io.github.ron1196.thelionking.entity.animal;
 
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingItems;
-import io.github.ron1196.thelionking.registry.SoundEvents;
+import io.github.ron1196.thelionking.registry.LionKingSoundEvents;
 import javax.annotation.Nullable;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -46,17 +46,17 @@ public class RhinoEntity extends LionKingAnimal {
 
     @Override
     protected @NotNull SoundEvent getAmbientSound() {
-        return SoundEvents.RHINO_AMBIENT.get();
+        return LionKingSoundEvents.RHINO_AMBIENT.get();
     }
 
     @Override
     protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
-        return SoundEvents.RHINO_HURT.get();
+        return LionKingSoundEvents.RHINO_HURT.get();
     }
 
     @Override
     protected @NotNull SoundEvent getDeathSound() {
-        return SoundEvents.RHINO_DEATH.get();
+        return LionKingSoundEvents.RHINO_DEATH.get();
     }
 
     @Override

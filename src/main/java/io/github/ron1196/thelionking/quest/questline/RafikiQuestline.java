@@ -5,7 +5,6 @@ import static io.github.ron1196.thelionking.quest.stage.QuestObjective.ItemRequi
 import static io.github.ron1196.thelionking.quest.stage.QuestTrigger.*;
 
 import io.github.ron1196.thelionking.block.PortalBlock;
-import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.npc.ScarEntity;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.quest.stage.ClaimableReward;
@@ -65,7 +64,7 @@ public class RafikiQuestline {
                 .claimableReward(COLLECT_BONES, new ClaimableReward(LionKingItems.RAFIKI_STICK, 1))
                 .trigger(FIND_RAFIKI, RAFIKI_TALK)
                 .trigger(COLLECT_BONES, RAFIKI_TALK)
-                .trigger(DEFEAT_SCAR, RAFIKI_TALK)
+                .trigger(DEFEAT_SCAR, SCAR_KILLED)
                 .trigger(COLLECT_TERMITES, RAFIKI_TALK)
                 .trigger(COLLECT_MANGOES, RAFIKI_TALK)
                 .trigger(USE_STAR_ALTAR, STAR_ALTAR_USED)
@@ -87,9 +86,6 @@ public class RafikiQuestline {
      */
     private static void spawnScar(ServerPlayer player, QuestlineManager manager) {
         ServerLevel level = player.serverLevel();
-        WorldData data = WorldData.get(level);
-
-        if (data.isScarSpawned()) return;
 
         BlockPos spawnPos = findCaveSpawn(level, player.blockPosition());
         if (spawnPos == null) {
@@ -107,8 +103,6 @@ public class RafikiQuestline {
             level.addFreshEntity(scar);
             level.addFreshEntity(
                     new LightningBoltEntity(level, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 0, player));
-
-            data.setScarSpawned(true);
         }
     }
 

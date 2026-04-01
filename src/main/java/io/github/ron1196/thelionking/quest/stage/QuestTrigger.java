@@ -1,13 +1,17 @@
 package io.github.ron1196.thelionking.quest.stage;
 
 public enum QuestTrigger {
+    // Rafiki questline (in stage order)
     RAFIKI_TALK,
+    SCAR_KILLED,
     STAR_ALTAR_USED,
+
+    // Outlands questline (in stage order)
     ENTER_OUTLANDS,
     ZIRA_TALK,
-    ZIRA_KILLED,
+    ENTER_PRIDE_LANDS,
     PUMBAA_TALK,
     PUMBAA_BOX_USED,
     ZIRA_SPAWN_EVENT,
-    ENTER_PRIDE_LANDS
+    ZIRA_KILLED
 }

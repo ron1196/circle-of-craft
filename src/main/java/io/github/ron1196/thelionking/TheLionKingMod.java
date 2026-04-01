@@ -31,7 +31,7 @@ public class TheLionKingMod {
         Features.FEATURES.register(modEventBus);
         StructureTypes.STRUCTURE_TYPES.register(modEventBus);
         StructureTypes.STRUCTURE_PIECE_TYPES.register(modEventBus);
-        SoundEvents.SOUND_EVENTS.register(modEventBus);
+        LionKingSoundEvents.SOUND_EVENTS.register(modEventBus);
         ParticleTypes.PARTICLE_TYPES.register(modEventBus);
         RecipeTypes.RECIPE_TYPES.register(modEventBus);
         RecipeTypes.RECIPE_SERIALIZERS.register(modEventBus);

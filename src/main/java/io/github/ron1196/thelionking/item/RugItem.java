@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.item;
 
 import io.github.ron1196.thelionking.entity.RugEntity;
-import io.github.ron1196.thelionking.registry.SoundEvents;
+import io.github.ron1196.thelionking.registry.LionKingSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -52,7 +52,7 @@ public class RugItem extends Item {
                 level.playSound(
                         null,
                         rug,
-                        SoundEvents.LION_AMBIENT.get(),
+                        LionKingSoundEvents.LION_AMBIENT.get(),
                         SoundSource.NEUTRAL,
                         1.0F,
                         (level.random.nextFloat() - level.random.nextFloat()) * 0.2F + 1.0F);

@@ -1,7 +1,10 @@
 package io.github.ron1196.thelionking.data;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
+import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
+import java.util.EnumSet;
+import java.util.Set;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -12,11 +15,9 @@ public class WorldData extends SavedData {
     private static final String DATA_NAME = TheLionKingMod.MOD_ID + "_data";
 
     private final QuestlineManager questManager = new QuestlineManager(this);
-    private boolean scarSpawned = false;
-    private boolean scarDefeated = false;
-    private boolean ziraOccupiesTree = false;
     private int ziraTreeTalkCount = 0;
     private int pumbaaTalkCount = 0;
+    private int flatulenceExplosionsRemaining = 0;
 
     public WorldData() {}
 
@@ -24,31 +25,14 @@ public class WorldData extends SavedData {
         return questManager;
     }
 
-    public boolean isScarSpawned() {
-        return scarSpawned;
-    }
-
-    public void setScarSpawned(boolean spawned) {
-        this.scarSpawned = spawned;
-        setDirty();
-    }
-
-    public boolean isScarDefeated() {
-        return scarDefeated;
-    }
-
-    public void setScarDefeated(boolean defeated) {
-        this.scarDefeated = defeated;
-        setDirty();
-    }
+    private static final Set<OutlandsQuestline.Stage> TREE_OCCUPATION_STAGES = EnumSet.of(
+            OutlandsQuestline.Stage.ZIRA_OCCUPIES_TREE,
+            OutlandsQuestline.Stage.TALK_TO_PUMBAA,
+            OutlandsQuestline.Stage.GATHER_PUMBAA_INGREDIENTS,
+            OutlandsQuestline.Stage.USE_PUMBAA_BOX);
 
     public boolean isZiraOccupiesTree() {
-        return ziraOccupiesTree;
-    }
-
-    public void setZiraOccupiesTree(boolean occupies) {
-        this.ziraOccupiesTree = occupies;
-        setDirty();
+        return TREE_OCCUPATION_STAGES.contains(questManager.getStage("outlands", OutlandsQuestline.Stage.class));
     }
 
     public int getZiraTreeTalkCount() {
@@ -79,6 +63,22 @@ public class WorldData extends SavedData {
         setDirty();
     }
 
+    public int getFlatulenceExplosionsRemaining() {
+        return flatulenceExplosionsRemaining;
+    }
+
+    public void setFlatulenceExplosionsRemaining(int count) {
+        this.flatulenceExplosionsRemaining = count;
+        setDirty();
+    }
+
+    public void decrementFlatulenceExplosions() {
+        if (this.flatulenceExplosionsRemaining > 0) {
+            this.flatulenceExplosionsRemaining--;
+            setDirty();
+        }
+    }
+
     @SuppressWarnings("resource") // ServerLevel is managed by the server, never closed manually
     public static WorldData get(ServerLevel level) {
         // Always use overworld data storage so quest state is shared across all dimensions
@@ -89,22 +89,18 @@ public class WorldData extends SavedData {
     public static WorldData load(CompoundTag tag) {
         WorldData data = new WorldData();
         data.questManager.readFromNBT(tag);
-        data.scarSpawned = tag.getBoolean("ScarSpawned");
-        data.scarDefeated = tag.getBoolean("ScarDefeated");
-        data.ziraOccupiesTree = tag.getBoolean("ZiraOccupiesTree");
         data.ziraTreeTalkCount = tag.getInt("ZiraTreeTalkCount");
         data.pumbaaTalkCount = tag.getInt("PumbaaTalkCount");
+        data.flatulenceExplosionsRemaining = tag.getInt("FlatulenceExplosionsRemaining");
         return data;
     }
 
     @Override
     public @NotNull CompoundTag save(CompoundTag tag) {
         questManager.writeToNBT(tag);
-        tag.putBoolean("ScarSpawned", scarSpawned);
-        tag.putBoolean("ScarDefeated", scarDefeated);
-        tag.putBoolean("ZiraOccupiesTree", ziraOccupiesTree);
         tag.putInt("ZiraTreeTalkCount", ziraTreeTalkCount);
         tag.putInt("PumbaaTalkCount", pumbaaTalkCount);
+        tag.putInt("FlatulenceExplosionsRemaining", flatulenceExplosionsRemaining);
         return tag;
     }
 }

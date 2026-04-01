@@ -106,6 +106,7 @@ public class RafikiEntity extends PathfinderMob {
             zira.setPersistenceRequired();
             serverLevel.addFreshEntity(zira);
         }
+        OutlandsQuestline.setTreeCorruption(serverLevel, blockPosition(), true);
         spawnOutlanderEscort(serverLevel);
     }
 
@@ -196,9 +197,8 @@ public class RafikiEntity extends PathfinderMob {
             return InteractionResult.SUCCESS;
         }
 
-        // Try to advance the quest
-        // DEFEAT_SCAR requires scarDefeated — block RAFIKI_TALK unless Scar is dead
-        if (stage == Stage.DEFEAT_SCAR && !data.isScarDefeated()) {
+        // DEFEAT_SCAR — Scar must be killed (SCAR_KILLED trigger), just give hints
+        if (stage == Stage.DEFEAT_SCAR) {
             sendSpeech(player, CharacterSpeech.MENTION_SCAR);
             return InteractionResult.SUCCESS;
         }

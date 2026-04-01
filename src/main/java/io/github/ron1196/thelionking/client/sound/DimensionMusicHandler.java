@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.client.sound;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
-import io.github.ron1196.thelionking.registry.SoundEvents;
+import io.github.ron1196.thelionking.registry.LionKingSoundEvents;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -44,7 +44,7 @@ public class DimensionMusicHandler {
     private static void onDimensionChanged(Minecraft mc, ResourceKey<Level> newDimension) {
         if (newDimension == Dimensions.PRIDE_LANDS_LEVEL) {
             stopCurrentMusic(mc);
-            currentMusic = SimpleSoundInstance.forMusic(SoundEvents.MUSIC_CIRCLE_OF_LIFE.get());
+            currentMusic = SimpleSoundInstance.forMusic(LionKingSoundEvents.MUSIC_CIRCLE_OF_LIFE.get());
             mc.getSoundManager().play(currentMusic);
         }
     }

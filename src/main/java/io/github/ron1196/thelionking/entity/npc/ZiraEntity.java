@@ -8,6 +8,7 @@ import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
+import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline.Stage;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
@@ -89,6 +90,7 @@ public class ZiraEntity extends Monster {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2D, false));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
 
@@ -101,7 +103,6 @@ public class ZiraEntity extends Monster {
 
     public void setHostile(boolean hostile) {
         this.entityData.set(DATA_HOSTILE, hostile);
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         if (hostile) {
             this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         }
@@ -132,6 +133,12 @@ public class ZiraEntity extends Monster {
 
         if (level().isClientSide) return;
         if (!isHostile()) {
+            // If occupation ended, replace self with Rafiki
+            if (level() instanceof ServerLevel serverLevel
+                    && !WorldData.get(serverLevel).isZiraOccupiesTree()) {
+                spawnRafikiAndDiscard(serverLevel);
+                return;
+            }
             teleportHomeIfTooFar();
             return;
         }
@@ -233,9 +240,9 @@ public class ZiraEntity extends Monster {
         int talkCount = data.getZiraTreeTalkCount();
         String message =
                 switch (talkCount) {
-                    case 0 -> "Ah, de Pride Lands! Just as I remember dem. Dis tree will serve well as de starting point for our conquest.";
-                    case 1 -> "And don't worry, I disposed of dat idiotic Rafiki who lived here. Would you like to hear de old fool's last words before we removed him?";
-                    default -> "'Find Timon and Pumbaa! Dey'll know what to do!' Ha! As if you would even consider betraying de Outlanders.";
+                    case 0 -> "Ah, the Pride Lands! Just as I remember them. This tree will serve well as the starting point for our conquest.";
+                    case 1 -> "And don't worry, I disposed of that idiotic Rafiki who lived here. Would you like to hear the old fool's last words before we removed him?";
+                    default -> "'Find Timon and Pumbaa! They'll know what to do!' Ha! As if you would even consider betraying the Outlanders.";
                 };
         ChatHelper.sendNpcMessage(player, "Zira", message);
 
@@ -272,6 +279,17 @@ public class ZiraEntity extends Monster {
     @Override
     public int getExperienceReward() {
         return 100;
+    }
+
+    private void spawnRafikiAndDiscard(ServerLevel serverLevel) {
+        OutlandsQuestline.setTreeCorruption(serverLevel, blockPosition(), false);
+        RafikiEntity rafiki = EntityTypes.RAFIKI.get().create(serverLevel);
+        if (rafiki != null) {
+            rafiki.moveTo(getX(), getY(), getZ(), getYRot(), 0F);
+            rafiki.setPersistenceRequired();
+            serverLevel.addFreshEntity(rafiki);
+        }
+        this.discard();
     }
 
     private void teleportHomeIfTooFar() {

@@ -68,6 +68,12 @@ public void onRemove(
 ### WorldData Access
 **Always call `WorldData.get(anyServerLevel)`** — the method internally routes to the overworld's data storage. Never bypass this by accessing `level.getDataStorage()` directly. Quest state and world flags must be shared across all dimensions.
 
+### Quest State
+**Never store boolean flags for quest state that can be derived from the quest stage.** Use `QuestlineManager.getStage()` as the single source of truth. Entities should check the stage in their `tick()` and react accordingly (e.g., Rafiki despawns when stage is in tree-occupation range). Use `EnumSet` for stage range checks — never compare `ordinal()`.
+
+### NPC Chat
+Use `ChatHelper.sendNpcMessage(player, name, message)` for all NPC dialogue — never inline `§e<Name> §f` formatting. For broadcasts use `ChatHelper.broadcastNpcMessage(level, name, message)`. Direction utilities are in `DirectionHelper`.
+
 ### Testing Commands
 Use `/lk quest` for quest testing:
 - `/lk quest info <questId>` — show current stageKey
@@ -149,7 +155,9 @@ src/main/resources/
 | `event/ClientEvents.java`    | Renderers, models, GUI screens           |
 | `event/LionKingForgeEvents.java` | Forge bus events (combat, NPC interaction, breeding, ticks) |
 | `network/Networking.java`    | SimpleChannel packet registration        |
-| `data/WorldData.java`        | World-level saved data (always uses overworld storage) |
+| `data/WorldData.java`        | World-level saved data (overworld storage), quest-derived state |
+| `util/ChatHelper.java`       | NPC message formatting (`sendNpcMessage`, `broadcastNpcMessage`) |
+| `util/DirectionHelper.java`  | Compass direction utility |
 | `command/LionKingCommands.java` | Debug commands: `/lk quest`, `/lk pridelands`, etc. |
 | `data/LionKingCriteriaTriggers.java` | Custom advancement triggers       |
 | `sounds.json`                | Maps sound event names to file paths     |

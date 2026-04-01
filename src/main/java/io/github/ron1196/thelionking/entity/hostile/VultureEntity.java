@@ -1,6 +1,6 @@
 package io.github.ron1196.thelionking.entity.hostile;
 
-import io.github.ron1196.thelionking.registry.SoundEvents;
+import io.github.ron1196.thelionking.registry.LionKingSoundEvents;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -37,17 +37,17 @@ public class VultureEntity extends Monster {
 
     @Override
     protected @NotNull SoundEvent getAmbientSound() {
-        return SoundEvents.VULTURE_AMBIENT.get();
+        return LionKingSoundEvents.VULTURE_AMBIENT.get();
     }
 
     @Override
     protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
-        return SoundEvents.VULTURE_HURT.get();
+        return LionKingSoundEvents.VULTURE_HURT.get();
     }
 
     @Override
     protected @NotNull SoundEvent getDeathSound() {
-        return SoundEvents.VULTURE_HURT.get();
+        return LionKingSoundEvents.VULTURE_HURT.get();
     }
 
     public static AttributeSupplier.Builder createAttributes() {

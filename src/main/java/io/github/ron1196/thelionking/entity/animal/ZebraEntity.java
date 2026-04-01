@@ -4,7 +4,7 @@ import io.github.ron1196.thelionking.entity.ai.AmbientAvoidGoal;
 import io.github.ron1196.thelionking.entity.ai.AmbientPanicGoal;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingItems;
-import io.github.ron1196.thelionking.registry.SoundEvents;
+import io.github.ron1196.thelionking.registry.LionKingSoundEvents;
 import javax.annotation.Nullable;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -47,17 +47,17 @@ public class ZebraEntity extends LionKingAnimal {
 
     @Override
     protected @NotNull SoundEvent getAmbientSound() {
-        return SoundEvents.ZEBRA_AMBIENT.get();
+        return LionKingSoundEvents.ZEBRA_AMBIENT.get();
     }
 
     @Override
     protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
-        return SoundEvents.ZEBRA_HURT.get();
+        return LionKingSoundEvents.ZEBRA_HURT.get();
     }
 
     @Override
     protected @NotNull SoundEvent getDeathSound() {
-        return SoundEvents.ZEBRA_DEATH.get();
+        return LionKingSoundEvents.ZEBRA_DEATH.get();
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ZebraEntity extends LionKingAnimal {
     public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack held = player.getItemInHand(hand);
         if (held.is(LionKingItems.JAR_EMPTY.get()) && !isBaby()) {
-            player.playSound(SoundEvents.ZEBRA_AMBIENT.get(), 1.0F, 1.0F);
+            player.playSound(LionKingSoundEvents.ZEBRA_AMBIENT.get(), 1.0F, 1.0F);
             ItemStack milkJar = new ItemStack(LionKingItems.JAR_MILK.get());
             player.setItemInHand(hand, ItemUtils.createFilledResult(held, player, milkJar));
             return InteractionResult.sidedSuccess(this.level().isClientSide());

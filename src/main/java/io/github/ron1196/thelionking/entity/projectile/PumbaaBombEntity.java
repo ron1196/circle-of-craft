@@ -30,7 +30,7 @@ public class PumbaaBombEntity extends ThrowableItemProjectile {
     }
 
     @Override
-    protected Item getDefaultItem() {
+    protected @NotNull Item getDefaultItem() {
         return LionKingItems.PUMBAA_BOMB.get();
     }
 

@@ -3,7 +3,7 @@ package io.github.ron1196.thelionking.entity.animal;
 import io.github.ron1196.thelionking.entity.ai.LionAttackGoal;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingItems;
-import io.github.ron1196.thelionking.registry.SoundEvents;
+import io.github.ron1196.thelionking.registry.LionKingSoundEvents;
 import javax.annotation.Nullable;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -46,17 +46,17 @@ public class LionessEntity extends LionKingAnimal {
 
     @Override
     protected @NotNull SoundEvent getAmbientSound() {
-        return SoundEvents.LION_AMBIENT.get();
+        return LionKingSoundEvents.LION_AMBIENT.get();
     }
 
     @Override
     protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
-        return SoundEvents.LION_ANGRY.get();
+        return LionKingSoundEvents.LION_ANGRY.get();
     }
 
     @Override
     protected @NotNull SoundEvent getDeathSound() {
-        return SoundEvents.LION_DEATH.get();
+        return LionKingSoundEvents.LION_DEATH.get();
     }
 
     @Override
