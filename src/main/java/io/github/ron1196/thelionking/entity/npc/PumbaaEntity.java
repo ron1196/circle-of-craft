@@ -88,26 +88,7 @@ public class PumbaaEntity extends PathfinderMob {
         switch (stageKey) {
             case TALK_TO_PUMBAA -> {
                 talkCooldown = TALK_COOLDOWN_TICKS;
-                ChatHelper.sendNpcMessage(player, "Pumbaa", "Hi there, kid.");
-                ChatHelper.sendNpcMessage(player, "Timon", "You look down. Can we help?");
-                ChatHelper.sendNpcMessage(
-                        player, "Pumbaa", "What's that you say? Outlanders have taken over Rafiki's tree?");
-                ChatHelper.sendNpcMessage(
-                        player,
-                        "Timon",
-                        "Outlanders? Man, I hate Outlanders. Almost as much as I hate hyenas, " + "and I HATE hyenas.");
-                ChatHelper.sendNpcMessage(
-                        player,
-                        "Timon",
-                        "Hold on! Pumbaa here could - er, pass gas, and those Outlanders would "
-                                + "move out of that tree faster than a wildebeest stampede!");
-                ChatHelper.sendNpcMessage(
-                        player,
-                        "Timon",
-                        "Bring Pumbaa some planks, sixteen bugs, a jar of lava and a "
-                                + "thrown termite, and we'll cook up some weapons of gas "
-                                + "destruction.");
-                qm.tryAdvance("outlands", serverPlayer, QuestTrigger.PUMBAA_TALK);
+                handleIntroDialogue(player, serverPlayer, qm);
             }
             case GATHER_PUMBAA_INGREDIENTS -> {
                 talkCooldown = TALK_COOLDOWN_TICKS;
@@ -124,6 +105,36 @@ public class PumbaaEntity extends PathfinderMob {
             }
         }
         return InteractionResult.SUCCESS;
+    }
+
+    private static final String[][] INTRO_DIALOGUE = {
+        {"Pumbaa", "Hi there, kid."},
+        {"Timon", "You look down. Can we help?"},
+        {"Pumbaa", "What's that you say? Outlanders have taken over Rafiki's tree?"},
+        {"Timon", "Outlanders? Man, I hate Outlanders. Almost as much as I hate hyenas, and I HATE hyenas."},
+        {
+            "Timon",
+            "Hold on! Pumbaa here could - er, pass gas, and those Outlanders would move out of that tree faster than a wildebeest stampede!"
+        },
+        {
+            "Timon",
+            "Bring Pumbaa some planks, sixteen bugs, a jar of lava and a thrown termite, and we'll cook up some weapons of gas destruction."
+        }
+    };
+
+    private void handleIntroDialogue(Player player, ServerPlayer serverPlayer, QuestlineManager qm) {
+        WorldData data = WorldData.get(serverPlayer.serverLevel());
+        int talkIndex = data.getPumbaaTalkCount();
+
+        if (talkIndex < INTRO_DIALOGUE.length) {
+            ChatHelper.sendNpcMessage(player, INTRO_DIALOGUE[talkIndex][0], INTRO_DIALOGUE[talkIndex][1]);
+            data.incrementPumbaaTalkCount();
+        }
+
+        if (talkIndex >= INTRO_DIALOGUE.length - 1) {
+            qm.tryAdvance("outlands", serverPlayer, QuestTrigger.PUMBAA_TALK);
+            data.resetPumbaaTalkCount();
+        }
     }
 
     private void spawnPumbaaBox() {

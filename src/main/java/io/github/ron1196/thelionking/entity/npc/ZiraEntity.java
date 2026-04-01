@@ -14,6 +14,7 @@ import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.util.ChatHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -52,7 +53,12 @@ public class ZiraEntity extends Monster {
     private static final int OUTLANDER_SPAWN_COUNT = 4;
 
     private int talkCooldown = 0;
+    private static final int MAX_WANDER_DISTANCE = 15;
+    private static final int LEASH_CHECK_INTERVAL = 100;
+
     private boolean lowHpRage = false;
+    private BlockPos homePos = null;
+    private int leashCheckTimer = 0;
 
     public ZiraEntity(EntityType<? extends ZiraEntity> type, Level level) {
         super(type, level);
@@ -95,8 +101,8 @@ public class ZiraEntity extends Monster {
 
     public void setHostile(boolean hostile) {
         this.entityData.set(DATA_HOSTILE, hostile);
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         if (hostile) {
-            this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
             this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         }
     }
@@ -125,7 +131,10 @@ public class ZiraEntity extends Monster {
         if (talkCooldown > 0) talkCooldown--;
 
         if (level().isClientSide) return;
-        if (!isHostile()) return;
+        if (!isHostile()) {
+            teleportHomeIfTooFar();
+            return;
+        }
         if (!lowHpRage && getHealth() <= 120F) {
             lowHpRage = true;
             ChatHelper.broadcastNpcMessage(level(), "Zira", "Outlanders! Finish this!");
@@ -263,6 +272,41 @@ public class ZiraEntity extends Monster {
     @Override
     public int getExperienceReward() {
         return 100;
+    }
+
+    private void teleportHomeIfTooFar() {
+        if (homePos == null) {
+            homePos = blockPosition();
+            return;
+        }
+        if (++leashCheckTimer < LEASH_CHECK_INTERVAL) return;
+        leashCheckTimer = 0;
+
+        if (blockPosition().distSqr(homePos) > MAX_WANDER_DISTANCE * MAX_WANDER_DISTANCE) {
+            this.moveTo(homePos.getX() + 0.5, homePos.getY(), homePos.getZ() + 0.5, getYRot(), getXRot());
+        }
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("Hostile", isHostile());
+        if (homePos != null) {
+            tag.putInt("HomeX", homePos.getX());
+            tag.putInt("HomeY", homePos.getY());
+            tag.putInt("HomeZ", homePos.getZ());
+        }
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.getBoolean("Hostile")) {
+            setHostile(true);
+        }
+        if (tag.contains("HomeX")) {
+            homePos = new BlockPos(tag.getInt("HomeX"), tag.getInt("HomeY"), tag.getInt("HomeZ"));
+        }
     }
 
     private void syncPlayerData(ServerPlayer player, PlayerData data) {

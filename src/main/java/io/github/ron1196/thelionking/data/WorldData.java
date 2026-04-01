@@ -16,6 +16,7 @@ public class WorldData extends SavedData {
     private boolean scarDefeated = false;
     private boolean ziraOccupiesTree = false;
     private int ziraTreeTalkCount = 0;
+    private int pumbaaTalkCount = 0;
 
     public WorldData() {}
 
@@ -64,6 +65,20 @@ public class WorldData extends SavedData {
         setDirty();
     }
 
+    public int getPumbaaTalkCount() {
+        return pumbaaTalkCount;
+    }
+
+    public void incrementPumbaaTalkCount() {
+        this.pumbaaTalkCount++;
+        setDirty();
+    }
+
+    public void resetPumbaaTalkCount() {
+        this.pumbaaTalkCount = 0;
+        setDirty();
+    }
+
     @SuppressWarnings("resource") // ServerLevel is managed by the server, never closed manually
     public static WorldData get(ServerLevel level) {
         // Always use overworld data storage so quest state is shared across all dimensions
@@ -78,6 +93,7 @@ public class WorldData extends SavedData {
         data.scarDefeated = tag.getBoolean("ScarDefeated");
         data.ziraOccupiesTree = tag.getBoolean("ZiraOccupiesTree");
         data.ziraTreeTalkCount = tag.getInt("ZiraTreeTalkCount");
+        data.pumbaaTalkCount = tag.getInt("PumbaaTalkCount");
         return data;
     }
 
@@ -88,6 +104,7 @@ public class WorldData extends SavedData {
         tag.putBoolean("ScarDefeated", scarDefeated);
         tag.putBoolean("ZiraOccupiesTree", ziraOccupiesTree);
         tag.putInt("ZiraTreeTalkCount", ziraTreeTalkCount);
+        tag.putInt("PumbaaTalkCount", pumbaaTalkCount);
         return tag;
     }
 }

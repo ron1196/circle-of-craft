@@ -3,6 +3,7 @@ package io.github.ron1196.thelionking.entity.npc;
 import io.github.ron1196.thelionking.data.PlayerData;
 import io.github.ron1196.thelionking.data.PlayerDataProvider;
 import io.github.ron1196.thelionking.data.WorldData;
+import io.github.ron1196.thelionking.entity.hostile.OutlanderEntity;
 import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
@@ -38,6 +39,7 @@ public class RafikiEntity extends PathfinderMob {
 
     private static final int MAX_WANDER_DISTANCE = 10;
     private static final int LEASH_CHECK_INTERVAL = 100;
+    private static final int OUTLANDER_ESCORT_COUNT = 6;
 
     private int talkCooldown = 0;
     private BlockPos homePos = null;
@@ -103,6 +105,20 @@ public class RafikiEntity extends PathfinderMob {
             zira.setHostile(false);
             zira.setPersistenceRequired();
             serverLevel.addFreshEntity(zira);
+        }
+        spawnOutlanderEscort(serverLevel);
+    }
+
+    private void spawnOutlanderEscort(ServerLevel level) {
+        for (int i = 0; i < OUTLANDER_ESCORT_COUNT; i++) {
+            OutlanderEntity outlander = EntityTypes.OUTLANDER.get().create(level);
+            if (outlander != null) {
+                double x = getX() + level.random.nextGaussian() * 2;
+                double z = getZ() + level.random.nextGaussian() * 2;
+                outlander.moveTo(x, getY(), z, level.random.nextFloat() * 360F, 0F);
+                outlander.setPersistenceRequired();
+                level.addFreshEntity(outlander);
+            }
         }
     }
 

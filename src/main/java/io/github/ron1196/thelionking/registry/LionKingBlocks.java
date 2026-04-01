@@ -210,7 +210,9 @@ public class LionKingBlocks {
             "passion_leaves", () -> new LionKingLeavesBlock(leavesProps().lightLevel(s -> 11)));
     public static final RegistryObject<LeavesBlock> BANANA_LEAVES = leaves("banana_leaves");
     public static final RegistryObject<LeavesBlock> RAFIKI_LEAVES = BLOCKS.register(
-            "rafiki_leaves", () -> new LionKingLeavesBlock(leavesProps().strength(-1.0F, 3600000.0F)));
+            "rafiki_leaves",
+            () -> new RafikiLeavesBlock(
+                    leavesProps().strength(-1.0F, 3600000.0F).randomTicks()));
 
     // ========== Saplings ==========
     public static final RegistryObject<Block> ACACIA_SAPLING = sapling("pride_acacia_sapling", TreeGrowers.ACACIA);
@@ -225,10 +227,11 @@ public class LionKingBlocks {
     // ========== Rafiki Wood ==========
     public static final RegistryObject<Block> RAFIKI_WOOD = BLOCKS.register(
             "rafiki_wood",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
+            () -> new RafikiWoodBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.WOOD)
                     .strength(-1.0F, 3600000.0F)
-                    .sound(SoundType.WOOD)));
+                    .sound(SoundType.WOOD)
+                    .randomTicks()));
 
     // ========== Flowers ==========
     public static final RegistryObject<Block> WHITE_FLOWER =
