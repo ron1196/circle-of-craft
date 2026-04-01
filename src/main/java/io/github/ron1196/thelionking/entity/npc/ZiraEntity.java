@@ -12,6 +12,7 @@ import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline.Stage;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.EntityTypes;
+import io.github.ron1196.thelionking.util.ChatHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -127,7 +128,7 @@ public class ZiraEntity extends Monster {
         if (!isHostile()) return;
         if (!lowHpRage && getHealth() <= 120F) {
             lowHpRage = true;
-            broadcastMessage("Outlanders! Finish this!");
+            ChatHelper.broadcastNpcMessage(level(), "Zira", "Outlanders! Finish this!");
             spawnOutlandersWithLightning();
         }
     }
@@ -171,6 +172,12 @@ public class ZiraEntity extends Monster {
         PlayerData playerData = PlayerDataProvider.get(serverPlayer);
         Stage stage = quests.getStage("outlands", Stage.class);
 
+        // Tree occupation — special 3-part dialogue
+        if (stage == Stage.ZIRA_OCCUPIES_TREE) {
+            handleTreeOccupationDialogue(player, serverPlayer, data, quests);
+            return InteractionResult.SUCCESS;
+        }
+
         // Try to claim the next unclaimed reward (earliest stage first)
         int claimedIndex = quests.tryClaimNextReward("outlands", serverPlayer);
         if (claimedIndex >= 0) {
@@ -188,11 +195,11 @@ public class ZiraEntity extends Monster {
 
         // Quest didn't advance — give contextual speech
         switch (stage) {
-            case COLLECT_INGOTS -> sendSpeech(player, CharacterSpeech.ZIRA_INGOTS);
-            case COLLECT_FEATHERS -> sendSpeech(player, CharacterSpeech.ZIRA_FEATHERS);
+            case COLLECT_INGOTS -> CharacterSpeech.sendSpeech(player, CharacterSpeech.ZIRA_INGOTS);
+            case COLLECT_FEATHERS -> CharacterSpeech.sendSpeech(player, CharacterSpeech.ZIRA_FEATHERS);
             default -> {
                 if (quests.isStageAtOrPast("outlands", Stage.FOLLOW_OUTLANDERS) && !isHostile()) {
-                    sendSpeech(player, CharacterSpeech.ZIRA_CONQUEST);
+                    CharacterSpeech.sendSpeech(player, CharacterSpeech.ZIRA_CONQUEST);
                 }
             }
         }
@@ -209,7 +216,25 @@ public class ZiraEntity extends Monster {
                     case FOLLOW_OUTLANDERS -> "Excellent. You have served me well. Now... follow my Outlanders.";
                     default -> null;
                 };
-        if (message != null) sendMessage(player, message);
+        if (message != null) ChatHelper.sendNpcMessage(player, "Zira", message);
+    }
+
+    private void handleTreeOccupationDialogue(
+            Player player, ServerPlayer serverPlayer, WorldData data, QuestlineManager quests) {
+        int talkCount = data.getZiraTreeTalkCount();
+        String message =
+                switch (talkCount) {
+                    case 0 -> "Ah, de Pride Lands! Just as I remember dem. Dis tree will serve well as de starting point for our conquest.";
+                    case 1 -> "And don't worry, I disposed of dat idiotic Rafiki who lived here. Would you like to hear de old fool's last words before we removed him?";
+                    default -> "'Find Timon and Pumbaa! Dey'll know what to do!' Ha! As if you would even consider betraying de Outlanders.";
+                };
+        ChatHelper.sendNpcMessage(player, "Zira", message);
+
+        if (talkCount >= 2) {
+            quests.tryAdvance("outlands", serverPlayer, QuestTrigger.ZIRA_TALK);
+        } else {
+            data.incrementZiraTreeTalkCount();
+        }
     }
 
     @Override
@@ -220,7 +245,7 @@ public class ZiraEntity extends Monster {
         if (source.getEntity() instanceof ServerPlayer serverPlayer) {
             WorldData data = WorldData.get(serverLevel);
             data.getQuestManager().tryAdvance("outlands", serverPlayer, QuestTrigger.ZIRA_KILLED);
-            broadcastMessage("This is not over... Scar's legacy will live on...");
+            ChatHelper.broadcastNpcMessage(level(), "Zira", "This is not over... Scar's legacy will live on...");
         }
 
         level().explode(this, getX(), getY(), getZ(), 0F, Level.ExplosionInteraction.NONE);
@@ -238,20 +263,6 @@ public class ZiraEntity extends Monster {
     @Override
     public int getExperienceReward() {
         return 100;
-    }
-
-    private void sendMessage(Player player, String message) {
-        player.sendSystemMessage(Component.literal("§e<Zira> §f" + message));
-    }
-
-    private void broadcastMessage(String message) {
-        for (Player p : level().players()) {
-            sendMessage(p, message);
-        }
-    }
-
-    private void sendSpeech(Player player, CharacterSpeech speech) {
-        player.sendSystemMessage(Component.literal(CharacterSpeech.giveSpeech(speech)));
     }
 
     private void syncPlayerData(ServerPlayer player, PlayerData data) {

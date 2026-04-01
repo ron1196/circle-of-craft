@@ -58,17 +58,29 @@ import net.minecraftforge.network.PacketDistributor;
 public class LionKingForgeEvents {
 
     // ── Outsand Lightning Constants ──────────────────────────────────────────
-    /** Average ticks between dry lightning strikes (~6 seconds at 20 tps). 120*/
+    /**
+     * Average ticks between dry lightning strikes (~6 seconds at 20 tps). 120
+     */
     private static final int DRY_LIGHTNING_CHANCE = 120;
-    /** How far from a player the lightning can strike (blocks in each axis). */
+    /**
+     * How far from a player the lightning can strike (blocks in each axis).
+     */
     private static final int DRY_LIGHTNING_RANGE = 100;
-    /** Min radius of the outsand patch (inclusive). */
+    /**
+     * Min radius of the outsand patch (inclusive).
+     */
     private static final int OUTSAND_MIN_RADIUS = 2;
-    /** Max radius of the outsand patch (inclusive). */
+    /**
+     * Max radius of the outsand patch (inclusive).
+     */
     private static final int OUTSAND_MAX_RADIUS = 5;
-    /** Vertical range above/below strike point to convert sand. */
+    /**
+     * Vertical range above/below strike point to convert sand.
+     */
     private static final int OUTSAND_VERTICAL_RANGE = 3;
-    /** 1-in-N chance for fire on air blocks above outsand. */
+    /**
+     * 1-in-N chance for fire on air blocks above outsand.
+     */
     private static final int OUTSAND_FIRE_CHANCE = 8;
 
     // ── Commands ──────────────────────────────────────────────────────────────
@@ -205,7 +217,9 @@ public class LionKingForgeEvents {
 
     // ── Respawn redirect — dying in Outlands/Upendi respawns in Pride Lands ────
 
-    /** Tracks which players died in a mod dimension so we can redirect after respawn. */
+    /**
+     * Tracks which players died in a mod dimension so we can redirect after respawn.
+     */
     private static final java.util.Set<java.util.UUID> DIED_IN_MOD_DIMENSION = new java.util.HashSet<>();
 
     @SubscribeEvent
@@ -265,6 +279,13 @@ public class LionKingForgeEvents {
         } else if (serverPlayer.level().dimension() == Dimensions.UPENDI_LEVEL && !playerData.hasEnteredUpendi()) {
             playerData.setEnteredUpendi(true);
             LionKingCriteriaTriggers.ENTER_UPENDI.trigger(serverPlayer);
+        }
+
+        // FOLLOW_OUTLANDERS → ZIRA_OCCUPIES_TREE on entering Pride Lands
+        if (serverPlayer.level().dimension() == Dimensions.PRIDE_LANDS_LEVEL) {
+            WorldData.get(serverPlayer.serverLevel())
+                    .getQuestManager()
+                    .tryAdvance("outlands", serverPlayer, QuestTrigger.ENTER_PRIDE_LANDS);
         }
     }
 

@@ -569,7 +569,7 @@ public class LionKingItems {
 
     public static final RegistryObject<Item> RAFIKI_COIN = simpleItem("rafiki_coin");
     public static final RegistryObject<Item> ZIRA_COIN = simpleItem("zira_coin");
-    public static final RegistryObject<Item> WAYWARD_FEATHER = simpleItem("wayward_feather");
+    public static final RegistryObject<Item> WAYWARD_FEATHER = registerItem("wayward_feather", WaywardFeatherItem::new);
 
     public static final RegistryObject<Item> RAFIKI_STICK = registerItem("rafiki_stick", RafikiStickItem::new);
 

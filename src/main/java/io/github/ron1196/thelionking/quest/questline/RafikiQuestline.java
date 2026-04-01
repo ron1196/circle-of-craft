@@ -16,7 +16,6 @@ import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import java.util.List;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -110,11 +109,6 @@ public class RafikiQuestline {
                     new LightningBoltEntity(level, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 0, player));
 
             data.setScarSpawned(true);
-
-            String direction = getCompassDirection(player.blockPosition(), spawnPos);
-            player.sendSystemMessage(Component.literal("§e<Rafiki> §fI hear Scar has returned to de Pride Lands! "
-                    + "He was seen lurking in de caves "
-                    + direction + ". Find him and defeat him — my stick is de only weapon dat can harm him!"));
         }
     }
 
@@ -132,21 +126,6 @@ public class RafikiQuestline {
             }
         }
         return null;
-    }
-
-    private static String getCompassDirection(BlockPos from, BlockPos to) {
-        int dx = to.getX() - from.getX();
-        int dz = to.getZ() - from.getZ();
-        double angle = Math.toDegrees(Math.atan2(-dx, dz));
-        if (angle < 0) angle += 360;
-        if (angle < 22.5 || angle >= 337.5) return "to the south";
-        if (angle < 67.5) return "to the southwest";
-        if (angle < 112.5) return "to the west";
-        if (angle < 157.5) return "to the northwest";
-        if (angle < 202.5) return "to the north";
-        if (angle < 247.5) return "to the northeast";
-        if (angle < 292.5) return "to the east";
-        return "to the southeast";
     }
 
     /**

@@ -14,6 +14,8 @@ public class WorldData extends SavedData {
     private final QuestlineManager questManager = new QuestlineManager(this);
     private boolean scarSpawned = false;
     private boolean scarDefeated = false;
+    private boolean ziraOccupiesTree = false;
+    private int ziraTreeTalkCount = 0;
 
     public WorldData() {}
 
@@ -39,6 +41,30 @@ public class WorldData extends SavedData {
         setDirty();
     }
 
+    public boolean isZiraOccupiesTree() {
+        return ziraOccupiesTree;
+    }
+
+    public void setZiraOccupiesTree(boolean occupies) {
+        this.ziraOccupiesTree = occupies;
+        setDirty();
+    }
+
+    public int getZiraTreeTalkCount() {
+        return ziraTreeTalkCount;
+    }
+
+    public void incrementZiraTreeTalkCount() {
+        this.ziraTreeTalkCount++;
+        setDirty();
+    }
+
+    public void resetZiraTreeTalkCount() {
+        this.ziraTreeTalkCount = 0;
+        setDirty();
+    }
+
+    @SuppressWarnings("resource") // ServerLevel is managed by the server, never closed manually
     public static WorldData get(ServerLevel level) {
         // Always use overworld data storage so quest state is shared across all dimensions
         ServerLevel overworld = level.getServer().overworld();
@@ -50,6 +76,8 @@ public class WorldData extends SavedData {
         data.questManager.readFromNBT(tag);
         data.scarSpawned = tag.getBoolean("ScarSpawned");
         data.scarDefeated = tag.getBoolean("ScarDefeated");
+        data.ziraOccupiesTree = tag.getBoolean("ZiraOccupiesTree");
+        data.ziraTreeTalkCount = tag.getInt("ZiraTreeTalkCount");
         return data;
     }
 
@@ -58,6 +86,8 @@ public class WorldData extends SavedData {
         questManager.writeToNBT(tag);
         tag.putBoolean("ScarSpawned", scarSpawned);
         tag.putBoolean("ScarDefeated", scarDefeated);
+        tag.putBoolean("ZiraOccupiesTree", ziraOccupiesTree);
+        tag.putInt("ZiraTreeTalkCount", ziraTreeTalkCount);
         return tag;
     }
 }

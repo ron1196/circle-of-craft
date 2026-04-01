@@ -1,6 +1,8 @@
 package io.github.ron1196.thelionking.quest;
 
+import io.github.ron1196.thelionking.util.ChatHelper;
 import java.util.Random;
+import net.minecraft.world.entity.player.Player;
 
 public enum CharacterSpeech {
     MORNING_REPORT("Zazu", Speech.MORNING_REPORT),
@@ -41,7 +43,13 @@ public enum CharacterSpeech {
     }
 
     public static String giveSpeech(CharacterSpeech speech) {
-        return "§e<" + speech.characterName + "> §f" + speech.speeches[random.nextInt(speech.speeches.length)];
+        return ChatHelper.formatNpcMessage(
+                speech.characterName, speech.speeches[random.nextInt(speech.speeches.length)]);
+    }
+
+    public static void sendSpeech(Player player, CharacterSpeech speech) {
+        ChatHelper.sendNpcMessage(
+                player, speech.characterName, speech.speeches[random.nextInt(speech.speeches.length)]);
     }
 
     private static final class Speech {

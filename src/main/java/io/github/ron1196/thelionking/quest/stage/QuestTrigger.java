@@ -8,5 +8,6 @@ public enum QuestTrigger {
     ZIRA_KILLED,
     PUMBAA_TALK,
     PUMBAA_BOX_USED,
-    ZIRA_SPAWN_EVENT
+    ZIRA_SPAWN_EVENT,
+    ENTER_PRIDE_LANDS
 }

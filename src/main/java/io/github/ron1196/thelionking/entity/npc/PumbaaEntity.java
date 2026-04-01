@@ -6,6 +6,7 @@ import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
+import io.github.ron1196.thelionking.util.ChatHelper;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -87,19 +88,20 @@ public class PumbaaEntity extends PathfinderMob {
         switch (stageKey) {
             case TALK_TO_PUMBAA -> {
                 talkCooldown = TALK_COOLDOWN_TICKS;
-                sendChat(player, "Pumbaa", "Hi there, kid.");
-                sendChat(player, "Timon", "You look down. Can we help?");
-                sendChat(player, "Pumbaa", "What's that you say? Outlanders have taken over Rafiki's tree?");
-                sendChat(
+                ChatHelper.sendNpcMessage(player, "Pumbaa", "Hi there, kid.");
+                ChatHelper.sendNpcMessage(player, "Timon", "You look down. Can we help?");
+                ChatHelper.sendNpcMessage(
+                        player, "Pumbaa", "What's that you say? Outlanders have taken over Rafiki's tree?");
+                ChatHelper.sendNpcMessage(
                         player,
                         "Timon",
                         "Outlanders? Man, I hate Outlanders. Almost as much as I hate hyenas, " + "and I HATE hyenas.");
-                sendChat(
+                ChatHelper.sendNpcMessage(
                         player,
                         "Timon",
                         "Hold on! Pumbaa here could - er, pass gas, and those Outlanders would "
                                 + "move out of that tree faster than a wildebeest stampede!");
-                sendChat(
+                ChatHelper.sendNpcMessage(
                         player,
                         "Timon",
                         "Bring Pumbaa some planks, sixteen bugs, a jar of lava and a "
@@ -110,7 +112,7 @@ public class PumbaaEntity extends PathfinderMob {
             case GATHER_PUMBAA_INGREDIENTS -> {
                 talkCooldown = TALK_COOLDOWN_TICKS;
                 if (qm.tryAdvance("outlands", serverPlayer, QuestTrigger.PUMBAA_TALK)) {
-                    sendChat(player, "Pumbaa", "Stand back!");
+                    ChatHelper.sendNpcMessage(player, "Pumbaa", "Stand back!");
                     spawnPumbaaBox();
                 } else {
                     sendMissingIngredientsDialogue(player);
@@ -145,7 +147,7 @@ public class PumbaaEntity extends PathfinderMob {
         };
         int index = random.nextInt(speeches.length);
         String speaker = index % 2 == 0 ? "Pumbaa" : "Timon";
-        sendChat(player, speaker, speeches[index]);
+        ChatHelper.sendNpcMessage(player, speaker, speeches[index]);
     }
 
     private void sendRandomQuote(@NotNull Player player) {
@@ -158,11 +160,7 @@ public class PumbaaEntity extends PathfinderMob {
             "When I was a young warthog...",
             "It's our problem-free philosophy!"
         };
-        sendChat(player, "Pumbaa", speeches[random.nextInt(speeches.length)]);
-    }
-
-    private void sendChat(@NotNull Player player, String name, String message) {
-        player.sendSystemMessage(Component.literal("§e<" + name + "> §f" + message));
+        ChatHelper.sendNpcMessage(player, "Pumbaa", speeches[random.nextInt(speeches.length)]);
     }
 
     private void spawnFartParticles() {

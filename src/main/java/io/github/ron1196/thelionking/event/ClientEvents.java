@@ -257,7 +257,7 @@ public class ClientEvents {
                 ctx -> new NpcRenderer(ctx, new SimbaModel(ctx.bakeLayer(SIMBA_LAYER)), "simba", 0.5F));
         event.registerEntityRenderer(
                 EntityTypes.TIMON.get(),
-                ctx -> new NpcRenderer(ctx, new TimonModel(ctx.bakeLayer(TIMON_LAYER)), "timon", 0.2F));
+                ctx -> new NpcRenderer(ctx, new TimonModel(ctx.bakeLayer(TIMON_LAYER)), "timon", 0.2F, 0.5F));
         event.registerEntityRenderer(
                 EntityTypes.PUMBAA.get(),
                 ctx -> new NpcRenderer(ctx, new PumbaaModel(ctx.bakeLayer(PUMBAA_LAYER)), "pumbaa", 0.6F));
@@ -266,7 +266,7 @@ public class ClientEvents {
                 ctx -> new NpcRenderer(ctx, new NpcLionModel(ctx.bakeLayer(SCAR_LAYER)), "scar", 0.7F));
         event.registerEntityRenderer(
                 EntityTypes.ZIRA.get(),
-                ctx -> new NpcRenderer(ctx, new NpcLionModel(ctx.bakeLayer(ZIRA_LAYER)), "zira", 0.5F, 0.5F));
+                ctx -> new NpcRenderer(ctx, new NpcLionModel(ctx.bakeLayer(ZIRA_LAYER)), "zira", 0.5F));
 
         // Ticket Lion
         event.registerEntityRenderer(

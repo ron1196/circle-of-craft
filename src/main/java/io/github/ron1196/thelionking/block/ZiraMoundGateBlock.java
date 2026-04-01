@@ -2,9 +2,9 @@ package io.github.ron1196.thelionking.block;
 
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.registry.LionKingItems;
+import io.github.ron1196.thelionking.util.ChatHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -44,8 +44,8 @@ public class ZiraMoundGateBlock extends Block {
         if (!level.isClientSide) {
             ServerLevel serverLevel = (ServerLevel) level;
             if (!WorldData.get(serverLevel).getQuestManager().isComplete("rafiki")) {
-                player.sendSystemMessage(
-                        Component.literal("§e<Rafiki's Stick> §fThe gate resists... the quest is not yet complete."));
+                ChatHelper.sendNpcMessage(
+                        player, "Rafiki's Stick", "The gate resists... the quest is not yet complete.");
                 return InteractionResult.SUCCESS;
             }
             breakGateChain(level, pos);

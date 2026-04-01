@@ -6,10 +6,15 @@ import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
+import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.questline.RafikiQuestline.Stage;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingItems;
+import io.github.ron1196.thelionking.util.ChatHelper;
+import io.github.ron1196.thelionking.util.DirectionHelper;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -76,7 +81,28 @@ public class RafikiEntity extends PathfinderMob {
             this.setHealth(this.getMaxHealth());
         }
         if (!level().isClientSide()) {
+            if (level() instanceof ServerLevel serverLevel
+                    && WorldData.get(serverLevel).isZiraOccupiesTree()) {
+                spawnZiraAtPosition(serverLevel);
+                this.discard();
+                return;
+            }
             teleportHomeIfTooFar();
+        }
+    }
+
+    private void spawnZiraAtPosition(ServerLevel serverLevel) {
+        if (!serverLevel
+                .getEntitiesOfClass(ZiraEntity.class, getBoundingBox().inflate(30))
+                .isEmpty()) {
+            return;
+        }
+        ZiraEntity zira = EntityTypes.ZIRA.get().create(serverLevel);
+        if (zira != null) {
+            zira.moveTo(getX(), getY(), getZ(), getYRot(), 0F);
+            zira.setHostile(false);
+            zira.setPersistenceRequired();
+            serverLevel.addFreshEntity(zira);
         }
     }
 
@@ -131,6 +157,20 @@ public class RafikiEntity extends PathfinderMob {
             syncPlayerData(serverPlayer, playerData);
         }
 
+        // Handle Outlands quest — RAFIKI_RETURNS stage
+        OutlandsQuestline.Stage outlandsStage = quests.getStage("outlands", OutlandsQuestline.Stage.class);
+        if (outlandsStage == OutlandsQuestline.Stage.RAFIKI_RETURNS) {
+            if (quests.tryAdvance("outlands", serverPlayer, QuestTrigger.RAFIKI_TALK)) {
+                ChatHelper.sendNpcMessage(
+                        player,
+                        "Rafiki",
+                        "Now's your chance to put tings right. Go through dat portal and put an end to Zira's outlandish scheme!");
+            } else {
+                ChatHelper.sendNpcMessage(player, "Rafiki", "Go! De Outlands await you. Put an end to Zira's madness!");
+            }
+            return InteractionResult.SUCCESS;
+        }
+
         // Try to claim the next unclaimed reward (earliest stage first)
         int claimedIndex = quests.tryClaimNextReward("rafiki", serverPlayer);
         if (claimedIndex >= 0) {
@@ -175,21 +215,32 @@ public class RafikiEntity extends PathfinderMob {
         String message =
                 switch (newStage) {
                     case COLLECT_BONES -> "Ahh, welcome to de Pride Lands! I am Rafiki. Bring me sixty-four hyena bones and I will give you my stick, eh?";
-                    case DEFEAT_SCAR -> "Excellent! Here is my stick — it is de only weapon dat can harm Scar! Watch de hyenas... dey know where deir master hides. Follow dem, and you will find him!";
+                    case DEFEAT_SCAR -> getScarHint(player);
                     case COLLECT_TERMITES -> "Hah! You did it! Scar is no more! Now, dis portal will take you to de Outlands. Go dere and bring old Rafiki four termite dust, yes?";
                     case COLLECT_MANGOES -> "Very good! Now bring me four mango dust. De spirits are pleased wit your progress!";
                     case USE_STAR_ALTAR -> "Ahh, perfect! Now craft a Star Altar and use de Rafiki Dust on it. De ancestors are waiting!";
                     case COMPLETE -> "It is done! De spirits of de great kings smile upon you! Rafiki is very proud, hehe!";
                     default -> null;
                 };
-        if (message != null) sendMessage(player, message);
+        if (message != null) ChatHelper.sendNpcMessage(player, "Rafiki", message);
     }
 
-    private void sendMessage(Player player, String message) {
-        player.sendSystemMessage(Component.literal("§e<Rafiki> §f" + message));
+    private String getScarHint(Player player) {
+        String base = "Excellent! Here is my stick — it is de only weapon dat can harm Scar! "
+                + "Watch de hyenas... dey know where deir master hides. Follow dem, and you will find him!";
+        if (level() instanceof ServerLevel serverLevel) {
+            List<ScarEntity> scars = serverLevel.getEntitiesOfClass(
+                    ScarEntity.class, player.getBoundingBox().inflate(250));
+            if (!scars.isEmpty()) {
+                String direction = DirectionHelper.getCompassDirection(
+                        player.blockPosition(), scars.get(0).blockPosition());
+                base += " I hear he was seen lurking in de caves " + direction + ".";
+            }
+        }
+        return base;
     }
 
     private void sendSpeech(Player player, CharacterSpeech speech) {
-        player.sendSystemMessage(Component.literal(CharacterSpeech.giveSpeech(speech)));
+        CharacterSpeech.sendSpeech(player, speech);
     }
 }

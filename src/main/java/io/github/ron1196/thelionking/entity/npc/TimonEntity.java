@@ -3,6 +3,7 @@ package io.github.ron1196.thelionking.entity.npc;
 import io.github.ron1196.thelionking.menu.TimonMerchantMenu;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.registry.LionKingItems;
+import io.github.ron1196.thelionking.util.ChatHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -86,20 +87,11 @@ public class TimonEntity extends PathfinderMob {
                 case 2 -> player.giveExperiencePoints(50);
             }
             hasGivenFirstBugs = true;
-            sendMessage(player);
+            ChatHelper.sendNpcMessage(player, "Timon", "Slimy, yet satisfying! Here's a little something for you.");
             return InteractionResult.SUCCESS;
         }
 
-        sendSpeech(player, hasGivenFirstBugs ? CharacterSpeech.MORE_BUGS : CharacterSpeech.BUGS);
+        CharacterSpeech.sendSpeech(player, hasGivenFirstBugs ? CharacterSpeech.MORE_BUGS : CharacterSpeech.BUGS);
         return InteractionResult.SUCCESS;
-    }
-
-    private void sendMessage(Player player) {
-        player.sendSystemMessage(
-                Component.literal("§e<Timon> §fSlimy, yet satisfying! Here's a little something for you."));
-    }
-
-    private void sendSpeech(Player player, CharacterSpeech speech) {
-        player.sendSystemMessage(Component.literal(CharacterSpeech.giveSpeech(speech)));
     }
 }

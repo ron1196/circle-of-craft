@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.entity.npc;
 
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.registry.SoundEvents;
+import io.github.ron1196.thelionking.util.ChatHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -31,8 +32,8 @@ public class ScarEntity extends Monster {
     private final ServerBossEvent bossEvent = new ServerBossEvent(
             Component.literal("Scar"), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
 
-    private static final String SCAR_GREETING_SPEECH =
-            "§e<Scar> §fSo, you've come to challenge me? " + "How delightfully brave... and foolish.";
+    private static final String SCAR_GREETING =
+            "So, you've come to challenge me? How delightfully brave... and foolish.";
 
     private boolean hasSpoken = false;
 
@@ -130,7 +131,7 @@ public class ScarEntity extends Monster {
         if (nearest == null) {
             return;
         }
-        nearest.sendSystemMessage(Component.literal(SCAR_GREETING_SPEECH));
+        ChatHelper.sendNpcMessage(nearest, "Scar", SCAR_GREETING);
         hasSpoken = true;
     }
 
@@ -148,7 +149,7 @@ public class ScarEntity extends Monster {
         // Message nearby players
         for (Player player :
                 level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(DEATH_MESSAGE_RANGE))) {
-            player.sendSystemMessage(Component.literal("§e<Scar> §fThis... is not... the end..."));
+            ChatHelper.sendNpcMessage(player, "Scar", "This... is not... the end...");
         }
     }
 

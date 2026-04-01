@@ -8,7 +8,7 @@ import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
-import net.minecraft.network.chat.Component;
+import io.github.ron1196.thelionking.util.ChatHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -72,16 +72,10 @@ public class RafikiDustItem extends Item {
         if (player instanceof ServerPlayer serverPlayer) {
             WorldData data = WorldData.get((ServerLevel) level);
             if (data.getQuestManager().tryAdvance("rafiki", serverPlayer, QuestTrigger.STAR_ALTAR_USED)) {
-                broadcastMessage(level, "§e<Rafiki> §fYou see? He lives in you! Ohohoho!");
+                ChatHelper.broadcastNpcMessage(level, "Rafiki", "You see? He lives in you! Ohohoho!");
             }
         }
 
         return InteractionResult.SUCCESS;
-    }
-
-    private void broadcastMessage(Level level, String message) {
-        for (Player p : level.players()) {
-            p.sendSystemMessage(Component.literal(message));
-        }
     }
 }
