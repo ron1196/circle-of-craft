@@ -8,27 +8,22 @@ import io.github.ron1196.thelionking.data.PlayerDataProvider;
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.RugEntity;
 import io.github.ron1196.thelionking.entity.hostile.HyenaEntity;
-import io.github.ron1196.thelionking.entity.hostile.OutlanderEntity;
 import io.github.ron1196.thelionking.entity.hostile.SkeletalHyenaEntity;
 import io.github.ron1196.thelionking.entity.npc.ScarEntity;
 import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.item.GroundRhinoHornItem;
-import io.github.ron1196.thelionking.network.FlatulencePacket;
 import io.github.ron1196.thelionking.network.LoginSyncPacket;
 import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.*;
-import io.github.ron1196.thelionking.util.ChatHelper;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -86,15 +81,12 @@ public class LionKingForgeEvents {
      */
     private static final int OUTSAND_FIRE_CHANCE = 8;
 
-    // ── Flatulence Explosion Constants ──────────────────────────────────────
+    // ── Pumbaa Box Recovery ─────────────────────────────────────────────────
     /**
-     * 1-in-N chance per tick to spawn the next flatulence explosion (~25 ticks average).
+     * Ticks between recovery checks for a stuck PUMBAA_BOX_EXPLODING stage (~0.5 seconds).
+     * Gives the PumbaaExplosionEntity time to register before we assume it's missing.
      */
-    private static final int FLATULENCE_TICK_CHANCE = 16;
-    /**
-     * Spread radius for scattered flatulence explosion particles around the player.
-     */
-    private static final double FLATULENCE_SPREAD = 5.0;
+    private static final int EXPLODING_RECOVERY_INTERVAL = 10;
 
     // ── Commands ──────────────────────────────────────────────────────────────
 
@@ -321,12 +313,11 @@ public class LionKingForgeEvents {
             }
         }
 
-        // Pride Lands-specific tick events
-        if (serverLevel.dimension() == Dimensions.PRIDE_LANDS_LEVEL) {
-            WorldData prideData = WorldData.get(serverLevel);
-            if (prideData.getFlatulenceExplosionsRemaining() > 0) {
-                handleFlatulenceExplosions(serverLevel);
-            }
+        // Pride Lands-specific tick events — recovery check every 5 seconds to avoid
+        // racing with a just-spawned PumbaaExplosionEntity that hasn't registered yet
+        if (serverLevel.dimension() == Dimensions.PRIDE_LANDS_LEVEL
+                && serverLevel.getGameTime() % EXPLODING_RECOVERY_INTERVAL == 0) {
+            recoverExplodingStageIfNeeded(serverLevel);
         }
 
         // Outlands-specific tick events
@@ -382,73 +373,27 @@ public class LionKingForgeEvents {
     }
 
     /**
-     * Handles the timed flatulence explosion effect from the Pumbaa Box.
-     * Each tick has a random chance to spawn one explosion particle near a player,
-     * creating a scattered explosion effect over several seconds.
+     * If the quest is stuck at PUMBAA_BOX_EXPLODING (e.g., server restarted mid-effect),
+     * recover by advancing to RAFIKI_RETURNS immediately. The PumbaaExplosionEntity is
+     * transient and doesn't persist, so its absence means the effect was interrupted.
      */
-    private static void handleFlatulenceExplosions(ServerLevel level) {
-        WorldData data = WorldData.get(level);
-        if (data.getFlatulenceExplosionsRemaining() <= 0) return;
+    private static void recoverExplodingStageIfNeeded(ServerLevel level) {
         if (level.players().isEmpty()) return;
-        if (level.random.nextInt(FLATULENCE_TICK_CHANCE) != 0) return;
 
-        Player player = level.players().get(level.random.nextInt(level.players().size()));
-        double x = player.getX() + level.random.nextGaussian() * FLATULENCE_SPREAD;
-        double y = player.getY() + 2.0 + level.random.nextFloat() * 4;
-        double z = player.getZ() + level.random.nextGaussian() * FLATULENCE_SPREAD;
+        WorldData data = WorldData.get(level);
+        QuestlineManager qm = data.getQuestManager();
+        OutlandsQuestline.Stage stage = qm.getStage("outlands", OutlandsQuestline.Stage.class);
+        if (stage != OutlandsQuestline.Stage.PUMBAA_BOX_EXPLODING) return;
 
-        level.sendParticles(ParticleTypes.EXPLOSION, x, y, z, 1, 0, 0, 0, 0);
-
-        // Re-send green overlay to all nearby players
-        for (ServerPlayer sp : level.players()) {
-            Networking.CHANNEL.send(PacketDistributor.PLAYER.with(() -> sp), new FlatulencePacket());
+        // If a PumbaaExplosionEntity is still alive, the effect is in progress — no recovery needed
+        if (!level.getEntities(EntityTypes.PUMBAA_EXPLOSION.get(), Entity::isAlive)
+                .isEmpty()) {
+            return;
         }
 
-        // Green gas cloud with each explosion
-        for (int i = 0; i < 8; i++) {
-            level.sendParticles(
-                    ParticleTypes.CAMPFIRE_COSY_SMOKE,
-                    x + level.random.nextGaussian() * 2,
-                    y + level.random.nextFloat() * 2,
-                    z + level.random.nextGaussian() * 2,
-                    1,
-                    0,
-                    0.05,
-                    0,
-                    0.02);
-        }
-
-        // Fart sound
-        level.playSound(
-                null,
-                BlockPos.containing(x, y, z),
-                LionKingSoundEvents.FLATULENCE.get(),
-                SoundSource.BLOCKS,
-                4.0F,
-                (1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F);
-
-        data.decrementFlatulenceExplosions();
-
-        // After the last explosion, replace Zira with Rafiki
-        if (data.getFlatulenceExplosionsRemaining() <= 0) {
-            finishFlatulenceExplosions(level, data);
-        }
-    }
-
-    private static void finishFlatulenceExplosions(ServerLevel level, WorldData data) {
-        // Flip the flag — Zira and Outlanders will react on their next tick
-        // Kill Outlanders in Pride Lands
-        for (OutlanderEntity outlander : level.getEntities(EntityTypes.OUTLANDER.get(), Entity::isAlive)) {
-            outlander.discard();
-        }
-
-        // Rafiki's return dialogue
-        for (ServerPlayer sp : level.players()) {
-            ChatHelper.sendNpcMessage(
-                    sp,
-                    "Rafiki",
-                    "Ohoho! Old Rafiki was never gone for good! But you've kicked up quite a stink here, haven't you?");
-        }
+        // No explosion entity found — server restarted mid-effect, skip to RAFIKI_RETURNS
+        ServerPlayer player = level.players().get(0);
+        qm.tryAdvance("outlands", player, QuestTrigger.EXPLOSIONS_DONE);
     }
 
     /**

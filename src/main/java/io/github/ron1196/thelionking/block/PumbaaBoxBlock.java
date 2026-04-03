@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.block;
 
 import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
 import io.github.ron1196.thelionking.data.WorldData;
+import io.github.ron1196.thelionking.entity.PumbaaExplosionEntity;
 import io.github.ron1196.thelionking.network.FlatulencePacket;
 import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
@@ -58,9 +59,6 @@ public class PumbaaBoxBlock extends Block {
         return InteractionResult.SUCCESS;
     }
 
-    private static final int TIMED_EXPLOSION_COUNT = 10;
-    private static final double EXPLOSION_SPREAD = 5.0;
-
     private void explode(
             @NotNull Level level, @NotNull BlockPos pos, @NotNull ServerPlayer player, @NotNull QuestlineManager qm) {
         level.removeBlock(pos, false);
@@ -109,10 +107,11 @@ public class PumbaaBoxBlock extends Block {
             }
         }
 
-        // Schedule remaining explosions via WorldData tick counter
+        // Spawn transient explosion entity for the timed effect sequence
         if (level instanceof ServerLevel serverLevel) {
-            WorldData data = WorldData.get(serverLevel);
-            data.setFlatulenceExplosionsRemaining(TIMED_EXPLOSION_COUNT);
+            PumbaaExplosionEntity explosion =
+                    new PumbaaExplosionEntity(serverLevel, pos.getX() + 0.5, pos.getY() + 2.0, pos.getZ() + 0.5);
+            serverLevel.addFreshEntity(explosion);
         }
 
         qm.tryAdvance("outlands", player, QuestTrigger.PUMBAA_BOX_USED);

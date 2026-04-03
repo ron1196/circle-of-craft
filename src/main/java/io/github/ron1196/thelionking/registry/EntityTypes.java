@@ -1,6 +1,7 @@
 package io.github.ron1196.thelionking.registry;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
+import io.github.ron1196.thelionking.entity.PumbaaExplosionEntity;
 import io.github.ron1196.thelionking.entity.RugEntity;
 import io.github.ron1196.thelionking.entity.animal.*;
 import io.github.ron1196.thelionking.entity.hostile.*;
@@ -154,6 +155,19 @@ public class EntityTypes {
                     .sized(1.2F, 0.2F)
                     .clientTrackingRange(10)
                     .build("rug"));
+
+    // ── Transient Effects ────────────────────────────────────────────────────
+
+    public static final RegistryObject<EntityType<PumbaaExplosionEntity>> PUMBAA_EXPLOSION =
+            ENTITY_TYPES.register("pumbaa_explosion", () -> EntityType.Builder.<PumbaaExplosionEntity>of(
+                            PumbaaExplosionEntity::new, MobCategory.MISC)
+                    .sized(0.0F, 0.0F)
+                    .clientTrackingRange(0)
+                    .updateInterval(Integer.MAX_VALUE)
+                    .noSave()
+                    .noSummon()
+                    .fireImmune()
+                    .build("pumbaa_explosion"));
 
     // ── Weather Effects ──────────────────────────────────────────────────────
 

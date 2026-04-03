@@ -11,6 +11,7 @@ import io.github.ron1196.thelionking.client.gui.TimonMerchantScreen;
 import io.github.ron1196.thelionking.client.model.*;
 import io.github.ron1196.thelionking.client.particle.ColoredPortalParticle;
 import io.github.ron1196.thelionking.client.renderer.*;
+import io.github.ron1196.thelionking.entity.PumbaaExplosionEntity;
 import io.github.ron1196.thelionking.entity.animal.*;
 import io.github.ron1196.thelionking.entity.projectile.DartEntity;
 import io.github.ron1196.thelionking.entity.projectile.SpearEntity;
@@ -23,6 +24,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.ArrowRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LightningBoltRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -323,6 +325,15 @@ public class ClientEvents {
         event.registerEntityRenderer(EntityTypes.TERMITE_THROWN.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(EntityTypes.COIN.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(EntityTypes.ZAZU_EGG.get(), ThrownItemRenderer::new);
+
+        // Transient effects — invisible, no rendering needed
+        event.registerEntityRenderer(
+                EntityTypes.PUMBAA_EXPLOSION.get(), ctx -> new EntityRenderer<PumbaaExplosionEntity>(ctx) {
+                    @Override
+                    public @NotNull ResourceLocation getTextureLocation(@NotNull PumbaaExplosionEntity entity) {
+                        return new ResourceLocation("missingno");
+                    }
+                });
 
         // Weather effects — uses vanilla lightning renderer since LightningBoltEntity extends
         // LightningBolt

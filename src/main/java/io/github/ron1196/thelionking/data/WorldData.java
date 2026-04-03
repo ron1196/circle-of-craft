@@ -17,7 +17,6 @@ public class WorldData extends SavedData {
     private final QuestlineManager questManager = new QuestlineManager(this);
     private int ziraTreeTalkCount = 0;
     private int pumbaaTalkCount = 0;
-    private int flatulenceExplosionsRemaining = 0;
 
     public WorldData() {}
 
@@ -29,7 +28,8 @@ public class WorldData extends SavedData {
             OutlandsQuestline.Stage.ZIRA_OCCUPIES_TREE,
             OutlandsQuestline.Stage.TALK_TO_PUMBAA,
             OutlandsQuestline.Stage.GATHER_PUMBAA_INGREDIENTS,
-            OutlandsQuestline.Stage.USE_PUMBAA_BOX);
+            OutlandsQuestline.Stage.USE_PUMBAA_BOX,
+            OutlandsQuestline.Stage.PUMBAA_BOX_EXPLODING);
 
     public boolean isZiraOccupiesTree() {
         return TREE_OCCUPATION_STAGES.contains(questManager.getStage("outlands", OutlandsQuestline.Stage.class));
@@ -63,22 +63,6 @@ public class WorldData extends SavedData {
         setDirty();
     }
 
-    public int getFlatulenceExplosionsRemaining() {
-        return flatulenceExplosionsRemaining;
-    }
-
-    public void setFlatulenceExplosionsRemaining(int count) {
-        this.flatulenceExplosionsRemaining = count;
-        setDirty();
-    }
-
-    public void decrementFlatulenceExplosions() {
-        if (this.flatulenceExplosionsRemaining > 0) {
-            this.flatulenceExplosionsRemaining--;
-            setDirty();
-        }
-    }
-
     @SuppressWarnings("resource") // ServerLevel is managed by the server, never closed manually
     public static WorldData get(ServerLevel level) {
         // Always use overworld data storage so quest state is shared across all dimensions
@@ -91,7 +75,6 @@ public class WorldData extends SavedData {
         data.questManager.readFromNBT(tag);
         data.ziraTreeTalkCount = tag.getInt("ZiraTreeTalkCount");
         data.pumbaaTalkCount = tag.getInt("PumbaaTalkCount");
-        data.flatulenceExplosionsRemaining = tag.getInt("FlatulenceExplosionsRemaining");
         return data;
     }
 
@@ -100,7 +83,6 @@ public class WorldData extends SavedData {
         questManager.writeToNBT(tag);
         tag.putInt("ZiraTreeTalkCount", ziraTreeTalkCount);
         tag.putInt("PumbaaTalkCount", pumbaaTalkCount);
-        tag.putInt("FlatulenceExplosionsRemaining", flatulenceExplosionsRemaining);
         return tag;
     }
 }

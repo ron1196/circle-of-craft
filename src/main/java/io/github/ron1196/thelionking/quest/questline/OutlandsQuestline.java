@@ -14,6 +14,7 @@ import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
 import io.github.ron1196.thelionking.quest.stage.QuestObjective;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.quest.stage.StageId;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.util.ChatHelper;
 import java.util.List;
@@ -23,6 +24,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -42,6 +44,7 @@ public class OutlandsQuestline {
         TALK_TO_PUMBAA,
         GATHER_PUMBAA_INGREDIENTS,
         USE_PUMBAA_BOX,
+        PUMBAA_BOX_EXPLODING,
         RAFIKI_RETURNS,
         ZIRA_RETURNS,
         DEFEAT_ZIRA,
@@ -86,6 +89,7 @@ public class OutlandsQuestline {
                                         new ItemRequirement(LionKingItems.JAR_LAVA, 1, Source.INVENTORY),
                                         new ItemRequirement(LionKingItems.TERMITE_THROWN, 1, Source.INVENTORY))))
                 .stage(USE_PUMBAA_BOX, new QuestObjective("Expel the Outlanders from Rafiki's tree"))
+                .stage(PUMBAA_BOX_EXPLODING, new QuestObjective("The Pumbaa Box is wreaking havoc!"))
                 .stage(RAFIKI_RETURNS, new QuestObjective("Rafiki returns"))
                 .stage(ZIRA_RETURNS, new QuestObjective("Return to the Outlands to confront Zira"))
                 .stage(DEFEAT_ZIRA, new QuestObjective("Defeat Zira"))
@@ -100,11 +104,13 @@ public class OutlandsQuestline {
                 .trigger(TALK_TO_PUMBAA, PUMBAA_TALK)
                 .trigger(GATHER_PUMBAA_INGREDIENTS, PUMBAA_TALK)
                 .trigger(USE_PUMBAA_BOX, PUMBAA_BOX_USED)
+                .trigger(PUMBAA_BOX_EXPLODING, EXPLOSIONS_DONE)
                 .trigger(RAFIKI_RETURNS, RAFIKI_TALK)
                 .trigger(ZIRA_RETURNS, ZIRA_SPAWN_EVENT)
                 .trigger(DEFEAT_ZIRA, ZIRA_KILLED)
                 .customTransition(COLLECT_INGOTS, OutlandsQuestline::openPoolCover)
                 .customTransition(COLLECT_FEATHERS, OutlandsQuestline::startMarch)
+                .customTransition(PUMBAA_BOX_EXPLODING, OutlandsQuestline::finishExplosions)
                 .build();
     }
 
@@ -175,6 +181,23 @@ public class OutlandsQuestline {
     }
 
     // ── Pumbaa Box explosion → Rafiki returns ───────────────────────────
+
+    private static void finishExplosions(ServerPlayer player, QuestlineManager manager) {
+        ServerLevel level = player.serverLevel();
+
+        // Kill all Outlanders in Pride Lands
+        for (OutlanderEntity outlander : level.getEntities(EntityTypes.OUTLANDER.get(), Entity::isAlive)) {
+            outlander.discard();
+        }
+
+        // Rafiki's return dialogue
+        for (ServerPlayer sp : level.players()) {
+            ChatHelper.sendNpcMessage(
+                    sp,
+                    "Rafiki",
+                    "Ohoho! Old Rafiki was never gone for good! But you've kicked up quite a stink here, haven't you?");
+        }
+    }
 
     // ── Helpers ──────────────────────────────────────────────────────────
 

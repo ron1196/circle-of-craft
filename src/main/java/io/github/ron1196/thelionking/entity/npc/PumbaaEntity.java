@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class PumbaaEntity extends PathfinderMob {
 
-    private static final int TALK_COOLDOWN_TICKS = 140;
+    private static final int TALK_COOLDOWN_TICKS = 40;
     private static final int COOKING_EAT_START = 20;
     private static final int COOKING_EAT_END = 48;
     private static final int COOKING_EAT_INTERVAL = 4;
