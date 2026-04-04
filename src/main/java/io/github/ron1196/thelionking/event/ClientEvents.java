@@ -63,7 +63,6 @@ public class ClientEvents {
     public static final ModelLayerLocation VULTURE_LAYER = layer("vulture");
     public static final ModelLayerLocation CROCODILE_LAYER = layer("crocodile");
     public static final ModelLayerLocation TERMITE_LAYER = layer("termite");
-    public static final ModelLayerLocation TERMITE_QUEEN_LAYER = layer("termite_queen");
 
     // NPC layers (reuse animal mesh definitions)
     public static final ModelLayerLocation RAFIKI_LAYER = layer("rafiki");
@@ -121,7 +120,6 @@ public class ClientEvents {
         event.registerLayerDefinition(VULTURE_LAYER, VultureModel::createBodyLayer);
         event.registerLayerDefinition(CROCODILE_LAYER, CrocodileModel::createBodyLayer);
         event.registerLayerDefinition(TERMITE_LAYER, TermiteModel::createBodyLayer);
-        event.registerLayerDefinition(TERMITE_QUEEN_LAYER, TermiteModel::createBodyLayer);
 
         // NPC layers (proper models ported from original mod)
         event.registerLayerDefinition(RAFIKI_LAYER, RafikiModel::createBodyLayer);
@@ -245,10 +243,7 @@ public class ClientEvents {
                 EntityTypes.TERMITE.get(),
                 ctx -> new ScaledMobRenderer<>(
                         ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_LAYER)), "termite", 0.15F, 0.4F));
-        event.registerEntityRenderer(
-                EntityTypes.TERMITE_QUEEN.get(),
-                ctx -> new ScaledMobRenderer<>(
-                        ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_QUEEN_LAYER)), "termite", 0.7F, 1.7F));
+        event.registerEntityRenderer(EntityTypes.TERMITE_QUEEN.get(), TermiteQueenRenderer::new);
 
         // NPCs — proper models ported from original mod (shadow, scale from old code)
         event.registerEntityRenderer(

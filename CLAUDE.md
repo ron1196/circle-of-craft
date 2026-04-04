@@ -16,6 +16,7 @@ export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
 ./gradlew runClient      # Launch Minecraft with the mod
 ./gradlew runServer      # Launch dedicated server
 ./gradlew runData        # Run data generators
+./gradlew compileJava --offline  # Compile with cached deps (no network)
 ```
 
 ## Code Conventions
@@ -80,6 +81,9 @@ Called from three places (zero duplication):
 
 Use `/quest-skip-check` to verify all stages follow this pattern.
 
+### Adding Quest Stages
+When inserting new stages into `OutlandsQuestline.Stage`, check if `TREE_OCCUPATION_STAGES` in `WorldData.java` needs updating. Missing a stage causes Rafiki to spawn prematurely or Zira's tree corruption to toggle incorrectly.
+
 ### NPC Chat
 Use `ChatHelper.sendNpcMessage(player, name, message)` for all NPC dialogue — never inline `§e<Name> §f` formatting. For broadcasts use `ChatHelper.broadcastNpcMessage(level, name, message)`. Direction utilities are in `DirectionHelper`.
 
@@ -109,6 +113,7 @@ src/main/java/io/github/ron1196/thelionking/
   entity/hostile/            — Hostile mobs
   entity/npc/                — Named NPCs (Rafiki, Simba, etc.)
   entity/projectile/         — Darts, spears, bombs
+  entity/                    — Transient entities (RugEntity, PumbaaExplosionEntity)
   entity/ai/                 — Custom AI goals
   world/dimension/           — Teleporter
   world/feature/             — Custom worldgen features
@@ -158,7 +163,7 @@ src/main/resources/
 | `registry/LionKingBlocks.java` | All block registrations                |
 | `registry/LionKingItems.java`  | All item registrations + block items   |
 | `registry/EntityTypes.java`    | All entity type registrations          |
-| `registry/SoundEvents.java`  | Sound event registrations                |
+| `registry/LionKingSoundEvents.java` | Sound event registrations         |
 | `registry/Features.java`     | Custom worldgen feature registrations    |
 | `event/CommonEvents.java`    | Entity attributes + spawn placement rules |
 | `event/ClientEvents.java`    | Renderers, models, GUI screens           |

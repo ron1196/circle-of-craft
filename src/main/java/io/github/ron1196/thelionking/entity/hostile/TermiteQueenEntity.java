@@ -1,13 +1,19 @@
 package io.github.ron1196.thelionking.entity.hostile;
 
+import io.github.ron1196.thelionking.data.WorldData;
+import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
+import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingItems;
+import io.github.ron1196.thelionking.util.ChatHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -20,8 +26,19 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class TermiteQueenEntity extends Monster {
+public class TermiteQueenEntity extends Monster implements GeoEntity {
+
+    private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.termite_queen.idle");
+    private static final RawAnimation WALK_ANIM = RawAnimation.begin().thenLoop("animation.termite_queen.walk");
+    private static final RawAnimation ATTACK_ANIM = RawAnimation.begin().thenPlay("animation.termite_queen.attack");
+
+    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
     private static final int SPAWN_INTERVAL = 100;
     private static final int MAX_NEARBY_TERMITES = 8;
@@ -42,6 +59,7 @@ public class TermiteQueenEntity extends Monster {
     private static final int EXTRA_NUKA_SHARDS = 6;
     private static final int MIN_CRYSTALS = 1;
     private static final int EXTRA_CRYSTALS = 3;
+    private static final float ZIRA_DISMOUNT_DAMAGE = 100.0F;
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(
             Component.translatable("entity.thelionking.termite_queen"),
@@ -106,6 +124,42 @@ public class TermiteQueenEntity extends Monster {
         }
     }
 
+    @Override
+    protected void positionRider(@NotNull Entity passenger, @NotNull MoveFunction callback) {
+        super.positionRider(passenger, callback);
+        if (passenger instanceof ZiraEntity) {
+            passenger.setYRot(getYRot());
+            passenger.setXRot(getXRot());
+            passenger.setYBodyRot(yBodyRot);
+            passenger.setYHeadRot(getYHeadRot());
+        }
+    }
+
+    @Override
+    public void die(@NotNull DamageSource source) {
+        if (!level().isClientSide() && level() instanceof ServerLevel serverLevel) {
+            // Dismount and damage Zira
+            for (Entity passenger : getPassengers()) {
+                if (passenger instanceof ZiraEntity zira) {
+                    zira.stopRiding();
+                    zira.hurt(damageSources().magic(), ZIRA_DISMOUNT_DAMAGE);
+                    ChatHelper.broadcastNpcMessage(
+                            level(), "Zira", "I don't need that overgrown bug! I'll tear you apart myself!");
+                }
+            }
+
+            // Explosion at queen's death location
+            level().explode(this, getX(), getY() + 3.0, getZ(), 3.0F, Level.ExplosionInteraction.NONE);
+
+            // Advance quest from DEFEAT_TERMITE_QUEEN to DEFEAT_ZIRA
+            if (source.getEntity() instanceof ServerPlayer player) {
+                WorldData data = WorldData.get(serverLevel);
+                data.getQuestManager().tryAdvance("outlands", player, QuestTrigger.TERMITE_QUEEN_KILLED);
+            }
+        }
+        super.die(source);
+    }
+
     private void spawnTermite(boolean exploding) {
         int nearbyCount = this.level()
                 .getEntitiesOfClass(TermiteEntity.class, this.getBoundingBox().inflate(TERMITE_SEARCH_RADIUS))
@@ -165,5 +219,29 @@ public class TermiteQueenEntity extends Monster {
                 .add(Attributes.ARMOR, ARMOR)
                 .add(Attributes.FOLLOW_RANGE, FOLLOW_RANGE)
                 .add(Attributes.KNOCKBACK_RESISTANCE, KNOCKBACK_RESISTANCE);
+    }
+
+    @Override
+    public void registerControllers(@NotNull AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "main", 5, this::mainController)
+                .triggerableAnim("animation.termite_queen.attack", ATTACK_ANIM));
+    }
+
+    private PlayState mainController(@NotNull AnimationState<TermiteQueenEntity> state) {
+        if (state.isMoving()) {
+            return state.setAndContinue(WALK_ANIM);
+        }
+        return state.setAndContinue(IDLE_ANIM);
+    }
+
+    @Override
+    public boolean doHurtTarget(@NotNull Entity target) {
+        triggerAnim("main", "animation.termite_queen.attack");
+        return super.doHurtTarget(target);
+    }
+
+    @Override
+    public @NotNull AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.geoCache;
     }
 }

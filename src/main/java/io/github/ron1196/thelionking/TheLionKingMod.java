@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
+import software.bernie.geckolib.GeckoLib;
 
 @Mod(TheLionKingMod.MOD_ID)
 public class TheLionKingMod {
@@ -20,6 +21,8 @@ public class TheLionKingMod {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public TheLionKingMod() {
+        GeckoLib.initialize();
+
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         LionKingBlocks.BLOCKS.register(modEventBus);
