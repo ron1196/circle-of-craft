@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  * (so this code path never runs) and the overworld's deep lava is handled
  * separately by computeFluidType().
  */
-@Mixin(Aquifer.NoiseBasedAquifer.class)
+@Mixin(value = Aquifer.NoiseBasedAquifer.class, remap = false)
 public class OutlandsFluidMixin {
 
     /**

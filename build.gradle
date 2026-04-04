@@ -3,7 +3,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.97'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'com.diffplug.spotless' version '6.25.0'
 }
 
@@ -16,53 +16,95 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-runs {
-    configureEach {
-        systemProperty 'forge.logging.markers', 'REGISTRIES'
-        systemProperty 'forge.logging.console.level', 'debug'
-        modSource project.sourceSets.main
-    }
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+    copyIdeResources = true
 
-    client {
-        systemProperty 'forge.enabledGameTestNamespaces', 'thelionking'
-    }
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            mods {
+                thelionking {
+                    source sourceSets.main
+                }
+            }
+        }
 
-    client2 {
-        configure 'client'
-        workingDirectory file('runs/client2')
-        programArgument '--username'
-        programArgument 'Dev2'
-    }
+        client {
+            property 'forge.enabledGameTestNamespaces', 'thelionking'
+        }
 
-    server {
-        systemProperty 'forge.enabledGameTestNamespaces', 'thelionking'
-        programArgument '--nogui'
-    }
+        client2 {
+            parent runs.client
+            workingDirectory project.file('runs/client2')
+            args '--username', 'Dev2'
+        }
 
-    data {
-        programArguments.addAll '--mod', 'thelionking', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        server {
+            property 'forge.enabledGameTestNamespaces', 'thelionking'
+            args '--nogui'
+        }
+
+        data {
+            workingDirectory project.file('run-data')
+            args '--mod', 'thelionking', '--all',
+                 '--output', file('src/generated/resources/').getAbsolutePath(),
+                 '--existing', file('src/main/resources/').getAbsolutePath()
+        }
     }
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+repositories {
+    maven {
+        name = 'GeckoLib'
+        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroupByRegex("software\\.bernie.*")
+            includeGroup("com.eliotlash.mclib")
+        }
+    }
+}
+
 dependencies {
-    implementation 'net.neoforged:forge:1.20.1-47.1.106'
+    minecraft 'net.minecraftforge:forge:1.20.1-47.4.18'
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.20.1:4.8.3')
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+
+jar {
+    manifest {
+        attributes([
+            'Specification-Title'     : 'thelionking',
+            'Specification-Vendor'    : 'ron1196',
+            'Specification-Version'   : '1',
+            'Implementation-Title'    : project.name,
+            'Implementation-Version'  : project.jar.archiveVersion,
+            'Implementation-Vendor'   : 'ron1196',
+            'MixinConfigs'            : 'thelionking.mixins.json'
+        ])
+    }
+    finalizedBy 'reobfJar'
 }
 
 tasks.withType(ProcessResources).configureEach {
-    var replaceProperties = [
-            minecraft_version   : '1.20.1',
-            minecraft_version_range: '[1.20.1,1.21)',
-            neo_version         : '47.1.106',
-            neo_version_range   : '[47.1,)',
-            loader_version_range: '[47,)',
-            mod_id              : 'thelionking',
-            mod_name            : 'The Lion King Mod',
-            mod_license         : 'GPL-3.0-or-later',
-            mod_version         : project.version,
-            mod_authors         : 'Mevans',
-            mod_description     : 'A massive total-conversion mod inspired by The Lion King, adding dimensions, mobs, quests, and more.'
+    def replaceProperties = [
+            "minecraft_version"      : "1.20.1",
+            "minecraft_version_range": "[1.20.1,1.21)",
+            "forge_version"          : "47.4.18",
+            "forge_version_range"    : "[47,)",
+            "loader_version_range"   : "[47,)",
+            "mod_id"                 : "thelionking",
+            "mod_name"               : "The Lion King Mod",
+            "mod_license"            : "GPL-3.0-or-later",
+            "mod_version"            : project.version,
+            "mod_authors"            : "Mevans",
+            "mod_description"        : "A massive total-conversion mod inspired by The Lion King, adding dimensions, mobs, quests, and more."
     ]
     inputs.properties(replaceProperties)
 
@@ -73,6 +115,12 @@ tasks.withType(ProcessResources).configureEach {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+
+tasks.named('compileJava').configure {
+    options.compilerArgs += [
+        "-AoutRefMapFile=${layout.buildDirectory.file('resources/main/thelionking.refmap.json').get().asFile.absolutePath}"
+    ]
 }
 
 spotless {

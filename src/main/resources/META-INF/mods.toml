@@ -15,7 +15,7 @@ config = "thelionking.mixins.json"
 [[dependencies.thelionking]]
 modId = "forge"
 mandatory = true
-versionRange = "${neo_version_range}"
+versionRange = "${forge_version_range}"
 ordering = "NONE"
 side = "BOTH"
 
