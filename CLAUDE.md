@@ -69,7 +69,16 @@ public void onRemove(
 **Always call `WorldData.get(anyServerLevel)`** — the method internally routes to the overworld's data storage. Never bypass this by accessing `level.getDataStorage()` directly. Quest state and world flags must be shared across all dimensions.
 
 ### Quest State
-**Never store boolean flags for quest state that can be derived from the quest stage.** Use `QuestlineManager.getStage()` as the single source of truth. Entities should check the stage in their `tick()` and react accordingly (e.g., Rafiki despawns when stage is in tree-occupation range). Use `EnumSet` for stage range checks — never compare `ordinal()`.
+**Never store boolean flags for quest state that can be derived from the quest stage.** Use `QuestlineManager.getStage()` as the single source of truth. Use `EnumSet` for stage range checks — never compare `ordinal()`.
+
+**Quest action helpers** (`quest/actions/`): Each questline has one helper class with an idempotent `ensureWorldState(level, stage)` method — a switch that maps stage → world state (entity spawn/despawn, block mutation). Each sub-method checks before acting (idempotent). This is the **single source of truth** for stage → world state.
+
+Called from three places (zero duplication):
+1. **`customTransition`** — calls `ensureWorldState()` + adds presentation (particles, sounds, chat). Immediate.
+2. **`/lk quest set` command** — calls `ensureWorldState()` directly. Instant.
+3. **Entity tick fallback** — calls `ensureWorldState()` every ~100 ticks. Handles chunk reload edge cases only.
+
+Use `/quest-skip-check` to verify all stages follow this pattern.
 
 ### NPC Chat
 Use `ChatHelper.sendNpcMessage(player, name, message)` for all NPC dialogue — never inline `§e<Name> §f` formatting. For broadcasts use `ChatHelper.broadcastNpcMessage(level, name, message)`. Direction utilities are in `DirectionHelper`.
