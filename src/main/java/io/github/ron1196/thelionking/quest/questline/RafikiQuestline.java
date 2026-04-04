@@ -4,14 +4,13 @@ import static io.github.ron1196.thelionking.quest.questline.RafikiQuestline.Stag
 import static io.github.ron1196.thelionking.quest.stage.QuestObjective.ItemRequirement;
 import static io.github.ron1196.thelionking.quest.stage.QuestTrigger.*;
 
-import io.github.ron1196.thelionking.block.PortalBlock;
 import io.github.ron1196.thelionking.entity.npc.ScarEntity;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
+import io.github.ron1196.thelionking.quest.actions.RafikiQuestActions;
 import io.github.ron1196.thelionking.quest.stage.ClaimableReward;
 import io.github.ron1196.thelionking.quest.stage.QuestObjective;
 import io.github.ron1196.thelionking.quest.stage.StageId;
 import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -21,8 +20,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 public class RafikiQuestline {
@@ -122,61 +119,9 @@ public class RafikiQuestline {
         return null;
     }
 
-    /**
-     * When the player returns to Rafiki after defeating Scar, Rafiki opens the gate
-     * sealing the Outlands portal in his tree and activates the portal.
-     */
     private static void openOutlandsPortal(ServerPlayer player, QuestlineManager manager) {
         ServerLevel level = player.serverLevel();
-        BlockPos playerPos = player.blockPosition();
-        Block gateBlock = LionKingBlocks.ZIRA_MOUND_GATE.get();
-
-        // Find the first gate block near the player (inside Rafiki's tree)
-        BlockPos gatePos = findNearbyBlock(level, playerPos, gateBlock, GATE_SEARCH_RADIUS);
-        if (gatePos == null) return;
-
-        // Chain-break all connected gate blocks
-        breakGateChain(level, gatePos, gateBlock);
-
-        // Play explosion sound effect
-        level.playSound(null, gatePos, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
-
-        // Try to activate the outlands portal by testing every air block near the gate
-        activateNearbyPortal(level, gatePos);
-    }
-
-    private static BlockPos findNearbyBlock(Level level, BlockPos center, Block target, int radius) {
-        for (BlockPos pos : BlockPos.betweenClosed(
-                center.offset(-radius, -radius, -radius), center.offset(radius, radius, radius))) {
-            if (level.getBlockState(pos).is(target)) {
-                return pos.immutable();
-            }
-        }
-        return null;
-    }
-
-    private static void breakGateChain(Level level, BlockPos pos, Block gateBlock) {
-        if (!level.getBlockState(pos).is(gateBlock)) return;
-
-        level.destroyBlock(pos, false);
-
-        for (net.minecraft.core.Direction dir : net.minecraft.core.Direction.values()) {
-            breakGateChain(level, pos.relative(dir), gateBlock);
-        }
-    }
-
-    private static void activateNearbyPortal(ServerLevel level, BlockPos center) {
-        PortalBlock portalBlock = (PortalBlock) LionKingBlocks.OUTLANDS_PORTAL.get();
-        int radius = 10;
-
-        for (BlockPos pos : BlockPos.betweenClosed(
-                center.offset(-radius, -radius, -radius), center.offset(radius, radius, radius))) {
-            if (level.getBlockState(pos).isAir()) {
-                if (portalBlock.trySpawnPortal(level, pos)) {
-                    level.playSound(null, pos, SoundEvents.PORTAL_TRIGGER, SoundSource.BLOCKS, 1.0F, 1.0F);
-                    return;
-                }
-            }
-        }
+        RafikiQuestActions.ensureWorldState(level, Stage.COLLECT_TERMITES);
+        level.playSound(null, player.blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
     }
 }

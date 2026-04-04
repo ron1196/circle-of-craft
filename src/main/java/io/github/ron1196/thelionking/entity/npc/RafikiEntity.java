@@ -3,15 +3,14 @@ package io.github.ron1196.thelionking.entity.npc;
 import io.github.ron1196.thelionking.data.PlayerData;
 import io.github.ron1196.thelionking.data.PlayerDataProvider;
 import io.github.ron1196.thelionking.data.WorldData;
-import io.github.ron1196.thelionking.entity.hostile.OutlanderEntity;
 import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
+import io.github.ron1196.thelionking.quest.actions.OutlandsQuestActions;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.questline.RafikiQuestline.Stage;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
-import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.util.ChatHelper;
 import io.github.ron1196.thelionking.util.DirectionHelper;
@@ -39,11 +38,12 @@ public class RafikiEntity extends PathfinderMob {
 
     private static final int MAX_WANDER_DISTANCE = 10;
     private static final int LEASH_CHECK_INTERVAL = 100;
-    private static final int OUTLANDER_ESCORT_COUNT = 6;
+    private static final int QUEST_CHECK_INTERVAL = 100;
 
     private int talkCooldown = 0;
     private BlockPos homePos = null;
     private int leashCheckTimer = 0;
+    private int questCheckTimer = 0;
 
     public RafikiEntity(EntityType<? extends RafikiEntity> type, Level level) {
         super(type, level);
@@ -78,49 +78,24 @@ public class RafikiEntity extends PathfinderMob {
     @Override
     public void tick() {
         super.tick();
+
         if (talkCooldown > 0) talkCooldown--;
-        if (this.getHealth() < this.getMaxHealth()) {
-            this.setHealth(this.getMaxHealth());
-        }
-        if (!level().isClientSide()) {
-            if (level() instanceof ServerLevel serverLevel
-                    && WorldData.get(serverLevel).isZiraOccupiesTree()) {
-                spawnZiraAtPosition(serverLevel);
-                this.discard();
-                return;
-            }
-            teleportHomeIfTooFar();
-        }
-    }
 
-    private void spawnZiraAtPosition(ServerLevel serverLevel) {
-        if (!serverLevel
-                .getEntitiesOfClass(ZiraEntity.class, getBoundingBox().inflate(30))
-                .isEmpty()) {
-            return;
-        }
-        ZiraEntity zira = EntityTypes.ZIRA.get().create(serverLevel);
-        if (zira != null) {
-            zira.moveTo(getX(), getY(), getZ(), getYRot(), 0F);
-            zira.setHostile(false);
-            zira.setPersistenceRequired();
-            serverLevel.addFreshEntity(zira);
-        }
-        OutlandsQuestline.setTreeCorruption(serverLevel, blockPosition(), true);
-        spawnOutlanderEscort(serverLevel);
-    }
+        Level level = level();
+        if (level.isClientSide) return;
+        if (!(level instanceof ServerLevel serverLevel)) return;
 
-    private void spawnOutlanderEscort(ServerLevel level) {
-        for (int i = 0; i < OUTLANDER_ESCORT_COUNT; i++) {
-            OutlanderEntity outlander = EntityTypes.OUTLANDER.get().create(level);
-            if (outlander != null) {
-                double x = getX() + level.random.nextGaussian() * 2;
-                double z = getZ() + level.random.nextGaussian() * 2;
-                outlander.moveTo(x, getY(), z, level.random.nextFloat() * 360F, 0F);
-                outlander.setPersistenceRequired();
-                level.addFreshEntity(outlander);
+        if (++questCheckTimer >= QUEST_CHECK_INTERVAL) {
+            questCheckTimer = 0;
+            QuestlineManager questManager = WorldData.get(serverLevel).getQuestManager();
+            OutlandsQuestline.Stage stage = questManager.getStage("outlands", OutlandsQuestline.Stage.class);
+            if (OutlandsQuestActions.isTreeOccupationStage(stage)) {
+                OutlandsQuestActions.ensureWorldState(serverLevel, stage);
+                return; // We may have been discarded
             }
         }
+
+        teleportHomeIfTooFar();
     }
 
     private void teleportHomeIfTooFar() {
@@ -128,6 +103,7 @@ public class RafikiEntity extends PathfinderMob {
             homePos = blockPosition();
             return;
         }
+
         if (++leashCheckTimer < LEASH_CHECK_INTERVAL) return;
         leashCheckTimer = 0;
 

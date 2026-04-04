@@ -14,5 +14,6 @@ public enum QuestTrigger {
     PUMBAA_BOX_USED,
     EXPLOSIONS_DONE,
     ZIRA_SPAWN_EVENT,
+    TERMITE_QUEEN_KILLED,
     ZIRA_KILLED
 }

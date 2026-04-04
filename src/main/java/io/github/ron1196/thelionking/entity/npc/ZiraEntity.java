@@ -4,16 +4,19 @@ import io.github.ron1196.thelionking.data.PlayerData;
 import io.github.ron1196.thelionking.data.PlayerDataProvider;
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.hostile.OutlanderEntity;
+import io.github.ron1196.thelionking.entity.hostile.TermiteQueenEntity;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
+import io.github.ron1196.thelionking.quest.actions.OutlandsQuestActions;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline.Stage;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.util.ChatHelper;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -39,6 +42,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
@@ -52,14 +56,19 @@ public class ZiraEntity extends Monster {
             Component.literal("Zira"), BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.PROGRESS);
 
     private static final int OUTLANDER_SPAWN_COUNT = 4;
+    private static final double QUEEN_SEARCH_RADIUS = 64.0;
+    private static final int REMOUNT_CHECK_INTERVAL = 20;
 
     private int talkCooldown = 0;
     private static final int MAX_WANDER_DISTANCE = 15;
     private static final int LEASH_CHECK_INTERVAL = 100;
+    private static final int QUEST_CHECK_INTERVAL = 100;
 
     private boolean lowHpRage = false;
     private BlockPos homePos = null;
     private int leashCheckTimer = 0;
+    private int questCheckTimer = 0;
+    private int remountTimer = 0;
 
     public ZiraEntity(EntityType<? extends ZiraEntity> type, Level level) {
         super(type, level);
@@ -131,21 +140,39 @@ public class ZiraEntity extends Monster {
 
         if (talkCooldown > 0) talkCooldown--;
 
-        if (level().isClientSide) return;
+        Level level = level();
+        if (level.isClientSide) return;
+        if (!(level instanceof ServerLevel serverLevel)) return;
+
         if (!isHostile()) {
-            // If occupation ended, replace self with Rafiki
-            if (level() instanceof ServerLevel serverLevel
-                    && !WorldData.get(serverLevel).isZiraOccupiesTree()) {
-                spawnRafikiAndDiscard(serverLevel);
-                return;
-            }
-            teleportHomeIfTooFar();
+            handleZiraQuest(serverLevel);
             return;
         }
-        if (!lowHpRage && getHealth() <= 120F) {
+
+        // Remount Termite Queen if dismounted during the queen fight
+        tryRemountQueen();
+        if (!lowHpRage && getHealth() <= 120F && !isPassenger()) {
             lowHpRage = true;
             ChatHelper.broadcastNpcMessage(level(), "Zira", "Outlanders! Finish this!");
             spawnOutlandersWithLightning();
+        }
+    }
+
+    private void handleZiraQuest(ServerLevel serverLevel) {
+        teleportHomeIfTooFar();
+
+        if (++questCheckTimer < QUEST_CHECK_INTERVAL) return;
+
+        questCheckTimer = 0;
+        QuestlineManager questManager = WorldData.get(serverLevel).getQuestManager();
+        Stage stage = questManager.getStage("outlands", Stage.class);
+        if (!OutlandsQuestActions.isTreeOccupationStage(stage)) {
+            OutlandsQuestActions.ensureWorldState(serverLevel, stage);
+            return;
+        }
+
+        if (stage == Stage.PUMBAA_BOX_EXPLODING) {
+            OutlandsQuestActions.ensureWorldState(serverLevel, stage);
         }
     }
 
@@ -165,6 +192,25 @@ public class ZiraEntity extends Monster {
 
             level.addFreshEntity(new LightningBoltEntity(level, nearbySurface, 0, null));
         }
+    }
+
+    private void tryRemountQueen() {
+        if (isPassenger()) return;
+        if (++remountTimer < REMOUNT_CHECK_INTERVAL) return;
+        remountTimer = 0;
+
+        AABB searchBox = getBoundingBox().inflate(QUEEN_SEARCH_RADIUS);
+        List<TermiteQueenEntity> queens =
+                level().getEntitiesOfClass(TermiteQueenEntity.class, searchBox, e -> e.isAlive() && !e.isVehicle());
+        if (queens.isEmpty()) return;
+
+        startRiding(queens.get(0));
+    }
+
+    @Override
+    public boolean hurt(@NotNull DamageSource source, float amount) {
+        if (isPassenger() && getVehicle() instanceof TermiteQueenEntity) return false;
+        return super.hurt(source, amount);
     }
 
     private Vec3 randomNearbySurface(Level level, int radius) {
@@ -281,22 +327,12 @@ public class ZiraEntity extends Monster {
         return 100;
     }
 
-    private void spawnRafikiAndDiscard(ServerLevel serverLevel) {
-        OutlandsQuestline.setTreeCorruption(serverLevel, blockPosition(), false);
-        RafikiEntity rafiki = EntityTypes.RAFIKI.get().create(serverLevel);
-        if (rafiki != null) {
-            rafiki.moveTo(getX(), getY(), getZ(), getYRot(), 0F);
-            rafiki.setPersistenceRequired();
-            serverLevel.addFreshEntity(rafiki);
-        }
-        this.discard();
-    }
-
     private void teleportHomeIfTooFar() {
         if (homePos == null) {
             homePos = blockPosition();
             return;
         }
+
         if (++leashCheckTimer < LEASH_CHECK_INTERVAL) return;
         leashCheckTimer = 0;
 

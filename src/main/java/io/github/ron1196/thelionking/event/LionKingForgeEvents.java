@@ -11,17 +11,16 @@ import io.github.ron1196.thelionking.entity.hostile.HyenaEntity;
 import io.github.ron1196.thelionking.entity.hostile.SkeletalHyenaEntity;
 import io.github.ron1196.thelionking.entity.npc.ScarEntity;
 import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
-import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.item.GroundRhinoHornItem;
 import io.github.ron1196.thelionking.network.LoginSyncPacket;
 import io.github.ron1196.thelionking.network.Networking;
+import io.github.ron1196.thelionking.quest.actions.OutlandsQuestActions;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.*;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -313,20 +312,13 @@ public class LionKingForgeEvents {
             }
         }
 
-        // Pride Lands-specific tick events — recovery check every 5 seconds to avoid
-        // racing with a just-spawned PumbaaExplosionEntity that hasn't registered yet
-        if (serverLevel.dimension() == Dimensions.PRIDE_LANDS_LEVEL
-                && serverLevel.getGameTime() % EXPLODING_RECOVERY_INTERVAL == 0) {
-            recoverExplodingStageIfNeeded(serverLevel);
-        }
-
         // Outlands-specific tick events
         if (serverLevel.dimension() == Dimensions.OUTLANDS_LEVEL) {
             WorldData outlandsData = WorldData.get(serverLevel);
-            OutlandsQuestline.Stage stage =
-                    outlandsData.getQuestManager().getStage("outlands", OutlandsQuestline.Stage.class);
+            QuestlineManager questManager = outlandsData.getQuestManager();
+            OutlandsQuestline.Stage stage = questManager.getStage("outlands", OutlandsQuestline.Stage.class);
             if (stage == OutlandsQuestline.Stage.ZIRA_RETURNS) {
-                handleZiraSpawnEvent(serverLevel);
+                OutlandsQuestActions.ensureHostileZira(serverLevel);
             }
             handleDryLightning(serverLevel);
         }
@@ -373,30 +365,6 @@ public class LionKingForgeEvents {
     }
 
     /**
-     * If the quest is stuck at PUMBAA_BOX_EXPLODING (e.g., server restarted mid-effect),
-     * recover by advancing to RAFIKI_RETURNS immediately. The PumbaaExplosionEntity is
-     * transient and doesn't persist, so its absence means the effect was interrupted.
-     */
-    private static void recoverExplodingStageIfNeeded(ServerLevel level) {
-        if (level.players().isEmpty()) return;
-
-        WorldData data = WorldData.get(level);
-        QuestlineManager qm = data.getQuestManager();
-        OutlandsQuestline.Stage stage = qm.getStage("outlands", OutlandsQuestline.Stage.class);
-        if (stage != OutlandsQuestline.Stage.PUMBAA_BOX_EXPLODING) return;
-
-        // If a PumbaaExplosionEntity is still alive, the effect is in progress — no recovery needed
-        if (!level.getEntities(EntityTypes.PUMBAA_EXPLOSION.get(), Entity::isAlive)
-                .isEmpty()) {
-            return;
-        }
-
-        // No explosion entity found — server restarted mid-effect, skip to RAFIKI_RETURNS
-        ServerPlayer player = level.players().get(0);
-        qm.tryAdvance("outlands", player, QuestTrigger.EXPLOSIONS_DONE);
-    }
-
-    /**
      * Periodically spawns "dry lightning" in the Outlands near a random player.
      * The lightning is visual-only (no vanilla fire/damage) — the outsand it creates
      * is the hazard. Conversion is handled by {@link #onEntityJoinLevel}.
@@ -438,49 +406,6 @@ public class LionKingForgeEvents {
             }
         }
         return false;
-    }
-
-    /**
-     * When the Outlands quest is at the ZIRA_RETURNS stage and a player is on the surface,
-     * spawn Zira nearby with a visual lightning bolt and advance the quest.
-     */
-    private static void handleZiraSpawnEvent(ServerLevel level) {
-        WorldData data = WorldData.get(level);
-        QuestlineManager qm = data.getQuestManager();
-        OutlandsQuestline.Stage stageKey = qm.getStage("outlands", OutlandsQuestline.Stage.class);
-        if (stageKey != OutlandsQuestline.Stage.ZIRA_RETURNS) return;
-        if (level.players().isEmpty()) return;
-
-        Player player = level.players().get(0);
-        int px = Mth.floor(player.getX());
-        int py = Mth.floor(player.getBoundingBox().minY);
-        int pz = Mth.floor(player.getZ());
-
-        // Player must be on the surface (can see sky and at heightmap level, matching old mod)
-        int surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING, px, pz);
-        if (!level.canSeeSky(new BlockPos(px, py, pz)) || py != surfaceY) return;
-
-        // Spawn Zira in front of the player, 10-12 blocks away
-        float yawRad = (float) Math.toRadians(player.getYRot());
-        int distance = 10 + level.random.nextInt(3);
-        int spawnX = px - Mth.floor(Math.sin(yawRad) * distance);
-        int spawnZ = pz + Mth.floor(Math.cos(yawRad) * distance);
-        int spawnY = level.getHeight(Heightmap.Types.MOTION_BLOCKING, spawnX, spawnZ);
-
-        ZiraEntity zira = EntityTypes.ZIRA.get().create(level);
-        if (zira != null) {
-            zira.moveTo(spawnX + 0.5, spawnY, spawnZ + 0.5, player.getYRot() + 180, 0.0F);
-            zira.setHostile(true);
-            level.addFreshEntity(zira);
-
-            // Visual lightning bolt at Zira's spawn position
-            level.addFreshEntity(new LightningBoltEntity(level, spawnX, spawnY, spawnZ, 0, player));
-
-            if (player instanceof ServerPlayer sp) {
-                sp.sendSystemMessage(Component.literal("§c§lZira has returned!"));
-                qm.tryAdvance("outlands", sp, QuestTrigger.ZIRA_SPAWN_EVENT);
-            }
-        }
     }
 
     // ── Outlands Water → Lava Replacement ──────────────────────────────────

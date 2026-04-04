@@ -6,10 +6,14 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.datafixers.util.Pair;
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.data.WorldData;
+import io.github.ron1196.thelionking.quest.actions.OutlandsQuestActions;
+import io.github.ron1196.thelionking.quest.actions.RafikiQuestActions;
+import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.Questline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.questline.QuestlineRegistry;
 import io.github.ron1196.thelionking.quest.questline.QuestlineState;
+import io.github.ron1196.thelionking.quest.questline.RafikiQuestline;
 import io.github.ron1196.thelionking.quest.stage.StageId;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import java.util.List;
@@ -29,7 +33,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
-/** Debug/testing commands for The Lion King mod. Usage: /lk <subcommand> */
+/**
+ * Debug/testing commands for The Lion King mod. Usage: /lk <subcommand>
+ */
 public class LionKingCommands {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -182,6 +188,13 @@ public class LionKingCommands {
         WorldData.get(level).setDirty();
         manager.syncToAllPlayers(player.server);
 
+        // Ensure world state matches the new stage
+        if ("rafiki".equals(questId) && nextStage instanceof RafikiQuestline.Stage rafikiStage) {
+            RafikiQuestActions.ensureWorldState(level, rafikiStage);
+        } else if ("outlands".equals(questId) && nextStage instanceof OutlandsQuestline.Stage outlandsStage) {
+            OutlandsQuestActions.ensureWorldState(level, outlandsStage);
+        }
+
         String newStage = nextStage.name();
         source.sendSuccess(() -> Component.literal("§aAdvanced '" + questId + "' to stage: " + newStage), true);
         return 1;
@@ -212,6 +225,13 @@ public class LionKingCommands {
         state.setChecked(false);
         WorldData.get(level).setDirty();
         manager.syncToAllPlayers(player.server);
+
+        // Ensure world state matches the new stage
+        if ("rafiki".equals(questId) && target instanceof RafikiQuestline.Stage rafikiStage) {
+            RafikiQuestActions.ensureWorldState(level, rafikiStage);
+        } else if ("outlands".equals(questId) && target instanceof OutlandsQuestline.Stage outlandsStage) {
+            OutlandsQuestActions.ensureWorldState(level, outlandsStage);
+        }
 
         source.sendSuccess(() -> Component.literal("§aSet '" + questId + "' to stage: " + stageName), true);
         return 1;
@@ -312,8 +332,7 @@ public class LionKingCommands {
         int z = structurePos.getZ();
         int y = 200; // Aerial view
         player.teleportTo(targetLevel, x + 0.5, y, z + 0.5, 0, 90); // Look down
-        source.sendSuccess(
-                () -> Component.literal("Teleported above " + displayName + " at " + x + ", " + y + ", " + z), true);
+
         return 1;
     }
 }

@@ -81,7 +81,6 @@ public class PumbaaEntity extends PathfinderMob {
     public void tick() {
         super.tick();
         if (talkCooldown > 0) talkCooldown--;
-        if (this.getHealth() < this.getMaxHealth()) this.setHealth(this.getMaxHealth());
 
         if (!level().isClientSide() && random.nextInt(1200) == 0) {
             fart();

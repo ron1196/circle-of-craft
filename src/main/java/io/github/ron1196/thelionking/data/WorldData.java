@@ -1,10 +1,7 @@
 package io.github.ron1196.thelionking.data;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
-import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
-import java.util.EnumSet;
-import java.util.Set;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -22,17 +19,6 @@ public class WorldData extends SavedData {
 
     public QuestlineManager getQuestManager() {
         return questManager;
-    }
-
-    private static final Set<OutlandsQuestline.Stage> TREE_OCCUPATION_STAGES = EnumSet.of(
-            OutlandsQuestline.Stage.ZIRA_OCCUPIES_TREE,
-            OutlandsQuestline.Stage.TALK_TO_PUMBAA,
-            OutlandsQuestline.Stage.GATHER_PUMBAA_INGREDIENTS,
-            OutlandsQuestline.Stage.USE_PUMBAA_BOX,
-            OutlandsQuestline.Stage.PUMBAA_BOX_EXPLODING);
-
-    public boolean isZiraOccupiesTree() {
-        return TREE_OCCUPATION_STAGES.contains(questManager.getStage("outlands", OutlandsQuestline.Stage.class));
     }
 
     public int getZiraTreeTalkCount() {

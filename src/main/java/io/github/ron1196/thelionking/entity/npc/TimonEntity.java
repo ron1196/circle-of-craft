@@ -59,7 +59,6 @@ public class TimonEntity extends PathfinderMob {
     public void tick() {
         super.tick();
         if (talkCooldown > 0) talkCooldown--;
-        if (this.getHealth() < this.getMaxHealth()) this.setHealth(this.getMaxHealth());
     }
 
     @Override

@@ -5,16 +5,15 @@ import static io.github.ron1196.thelionking.quest.stage.QuestObjective.ItemRequi
 import static io.github.ron1196.thelionking.quest.stage.QuestObjective.Source;
 import static io.github.ron1196.thelionking.quest.stage.QuestTrigger.*;
 
-import io.github.ron1196.thelionking.block.PoolCoverBlock;
 import io.github.ron1196.thelionking.block.RafikiLeavesBlock;
 import io.github.ron1196.thelionking.block.RafikiWoodBlock;
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.hostile.OutlanderEntity;
 import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
+import io.github.ron1196.thelionking.quest.actions.OutlandsQuestActions;
 import io.github.ron1196.thelionking.quest.stage.QuestObjective;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.quest.stage.StageId;
-import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.util.ChatHelper;
 import java.util.List;
@@ -24,7 +23,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -47,6 +45,7 @@ public class OutlandsQuestline {
         PUMBAA_BOX_EXPLODING,
         RAFIKI_RETURNS,
         ZIRA_RETURNS,
+        DEFEAT_TERMITE_QUEEN,
         DEFEAT_ZIRA,
         COMPLETE
     }
@@ -92,6 +91,7 @@ public class OutlandsQuestline {
                 .stage(PUMBAA_BOX_EXPLODING, new QuestObjective("The Pumbaa Box is wreaking havoc!"))
                 .stage(RAFIKI_RETURNS, new QuestObjective("Rafiki returns"))
                 .stage(ZIRA_RETURNS, new QuestObjective("Return to the Outlands to confront Zira"))
+                .stage(DEFEAT_TERMITE_QUEEN, new QuestObjective("Defeat the Termite Queen"))
                 .stage(DEFEAT_ZIRA, new QuestObjective("Defeat Zira"))
                 .stage(COMPLETE, new QuestObjective("Quest complete"))
                 .trigger(Stage.ENTER_OUTLANDS, QuestTrigger.ENTER_OUTLANDS)
@@ -107,6 +107,7 @@ public class OutlandsQuestline {
                 .trigger(PUMBAA_BOX_EXPLODING, EXPLOSIONS_DONE)
                 .trigger(RAFIKI_RETURNS, RAFIKI_TALK)
                 .trigger(ZIRA_RETURNS, ZIRA_SPAWN_EVENT)
+                .trigger(DEFEAT_TERMITE_QUEEN, TERMITE_QUEEN_KILLED)
                 .trigger(DEFEAT_ZIRA, ZIRA_KILLED)
                 .customTransition(COLLECT_INGOTS, OutlandsQuestline::openPoolCover)
                 .customTransition(COLLECT_FEATHERS, OutlandsQuestline::startMarch)
@@ -114,56 +115,38 @@ public class OutlandsQuestline {
                 .build();
     }
 
-    private static final int POOL_SEARCH_RADIUS = 30;
     private static final int MARCH_KILL_RADIUS = 64;
     private static final int FLAME_PARTICLE_COUNT = 24;
-    private static final int TREE_KILL_RADIUS = 40;
+
+    // ── Transition effects (presentation only — world state handled by helpers) ──
 
     private static void openPoolCover(ServerPlayer player, QuestlineManager manager) {
         ServerLevel level = player.serverLevel();
-        BlockPos playerPos = player.blockPosition();
-
-        boolean cleared = false;
-        for (BlockPos pos : BlockPos.betweenClosed(
-                playerPos.offset(-POOL_SEARCH_RADIUS, -POOL_SEARCH_RADIUS, -POOL_SEARCH_RADIUS),
-                playerPos.offset(POOL_SEARCH_RADIUS, POOL_SEARCH_RADIUS, POOL_SEARCH_RADIUS))) {
-            if (level.getBlockState(pos).getBlock() instanceof PoolCoverBlock) {
-                level.destroyBlock(pos, false);
-                cleared = true;
-            }
-        }
-
-        if (cleared) {
-            level.playSound(null, playerPos, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
-        }
+        OutlandsQuestActions.ensureWorldState(level, THROW_IN_OUTWATER);
+        level.playSound(null, player.blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
     }
-
-    // ── March cutscene: Outlanders "teleport" to Pride Lands ────────────
 
     private static void startMarch(ServerPlayer player, QuestlineManager manager) {
         ServerLevel level = player.serverLevel();
-        WorldData data = WorldData.get(level);
+        WorldData.get(level).resetZiraTreeTalkCount();
 
-        // Zira's announcement
+        // Presentation: flame particles at entity positions before helper removes them
+        AABB searchBox = player.getBoundingBox().inflate(MARCH_KILL_RADIUS);
+        for (OutlanderEntity outlander : level.getEntitiesOfClass(OutlanderEntity.class, searchBox)) {
+            spawnFlameParticles(level, outlander);
+        }
+        for (ZiraEntity zira : level.getEntitiesOfClass(ZiraEntity.class, searchBox)) {
+            spawnFlameParticles(level, zira);
+        }
+
+        // World state: remove entities
+        OutlandsQuestActions.ensureWorldState(level, FOLLOW_OUTLANDERS);
+
+        // Presentation: sounds + chat
         sendNpcMessage(
                 player,
                 "Zira",
                 "Well, you've done better than I expected. Now I can finally leave this accursed wasteland! Come, Outlanders, and let us reclaim what was once ours!");
-
-        // Kill all Outlanders nearby with flame particles
-        AABB searchBox = player.getBoundingBox().inflate(MARCH_KILL_RADIUS);
-        for (OutlanderEntity outlander : level.getEntitiesOfClass(OutlanderEntity.class, searchBox)) {
-            spawnFlameParticles(level, outlander);
-            outlander.discard();
-        }
-
-        // Kill Zira with flame particles
-        for (ZiraEntity zira : level.getEntitiesOfClass(ZiraEntity.class, searchBox)) {
-            spawnFlameParticles(level, zira);
-            zira.discard();
-        }
-
-        // Portal travel sound
         level.playSound(
                 null,
                 player.blockPosition(),
@@ -171,26 +154,16 @@ public class OutlandsQuestline {
                 SoundSource.HOSTILE,
                 1.0F,
                 level.random.nextFloat() * 0.4F + 0.8F);
-
-        // Set world flags — Zira now occupies Rafiki's tree
-        data.resetZiraTreeTalkCount();
-
-        // Quest stays at FOLLOW_OUTLANDERS — advances to ZIRA_OCCUPIES_TREE when player enters Pride Lands
-
         sendNpcMessage(player, "Rafiki", "No! De Outlanders have marched to de Pride Lands! You must follow dem!");
     }
-
-    // ── Pumbaa Box explosion → Rafiki returns ───────────────────────────
 
     private static void finishExplosions(ServerPlayer player, QuestlineManager manager) {
         ServerLevel level = player.serverLevel();
 
-        // Kill all Outlanders in Pride Lands
-        for (OutlanderEntity outlander : level.getEntities(EntityTypes.OUTLANDER.get(), Entity::isAlive)) {
-            outlander.discard();
-        }
+        // World state: kill Outlanders, swap Zira→Rafiki, un-corrupt tree
+        OutlandsQuestActions.ensureWorldState(level, RAFIKI_RETURNS);
 
-        // Rafiki's return dialogue
+        // Presentation: dialogue
         for (ServerPlayer sp : level.players()) {
             ChatHelper.sendNpcMessage(
                     sp,
