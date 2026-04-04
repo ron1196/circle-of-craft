@@ -37,6 +37,8 @@ public class TermiteQueenEntity extends Monster implements GeoEntity {
     private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.termite_queen.idle");
     private static final RawAnimation WALK_ANIM = RawAnimation.begin().thenLoop("animation.termite_queen.walk");
     private static final RawAnimation ATTACK_ANIM = RawAnimation.begin().thenPlay("animation.termite_queen.attack");
+    private static final RawAnimation DEATH_ANIM =
+            RawAnimation.begin().thenPlayAndHold("animation.termite_queen.death");
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
@@ -228,6 +230,9 @@ public class TermiteQueenEntity extends Monster implements GeoEntity {
     }
 
     private PlayState mainController(@NotNull AnimationState<TermiteQueenEntity> state) {
+        if (this.dead) {
+            return state.setAndContinue(DEATH_ANIM);
+        }
         if (state.isMoving()) {
             return state.setAndContinue(WALK_ANIM);
         }
