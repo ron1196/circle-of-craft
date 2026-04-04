@@ -241,8 +241,8 @@ public class ClientEvents {
                 ctx -> new MobRenderer<>(ctx, new CrocodileModel<>(ctx.bakeLayer(CROCODILE_LAYER)), "crocodile", 0.7F));
         event.registerEntityRenderer(
                 EntityTypes.TERMITE.get(),
-                ctx -> new ScaledMobRenderer<>(
-                        ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_LAYER)), "termite", 0.15F, 0.4F));
+                ctx -> new TermiteRenderer<>(
+                        ctx, new TermiteModel<>(ctx.bakeLayer(TERMITE_LAYER)), 0.15F));
         event.registerEntityRenderer(EntityTypes.TERMITE_QUEEN.get(), TermiteQueenRenderer::new);
 
         // NPCs — proper models ported from original mod (shadow, scale from old code)

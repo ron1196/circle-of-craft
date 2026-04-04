@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 public class TermiteMoundBlock extends Block {
 
     private static final int MAX_TERMITES_ON_DESTROY = 2;
-    private static final float SPAWN_CHANCE = 0.33F;
+    private static final float SPAWN_CHANCE = 0.5F;
 
     public TermiteMoundBlock(Properties properties) {
         super(properties);

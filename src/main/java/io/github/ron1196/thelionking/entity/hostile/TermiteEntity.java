@@ -30,7 +30,8 @@ public class TermiteEntity extends Monster implements SwellGoal.Swellable {
     private static final double MELEE_SPEED = 1.0;
     private static final double WANDER_SPEED = 0.8;
     private static final float LOOK_DISTANCE = 8.0F;
-    private static final double MAX_HEALTH = 9.0;
+    private static final float MAX_HEALTH = 9.0f;
+    private static final float EXPLODING_MAX_HEALTH = 6.0f;
     private static final double MOVEMENT_SPEED = 0.25;
     private static final int EXPERIENCE_REWARD = 3;
     private static final float FUSE_SOUND_VOLUME = 1.0F;
@@ -66,6 +67,12 @@ public class TermiteEntity extends Monster implements SwellGoal.Swellable {
 
     public void setExploding(boolean exploding) {
         this.entityData.set(DATA_EXPLODING, exploding);
+        var healthAttr = this.getAttribute(Attributes.MAX_HEALTH);
+        if (healthAttr != null) {
+            float hp = exploding ? EXPLODING_MAX_HEALTH : MAX_HEALTH;
+            healthAttr.setBaseValue(hp);
+            this.setHealth(hp);
+        }
     }
 
     @Override
@@ -143,7 +150,7 @@ public class TermiteEntity extends Monster implements SwellGoal.Swellable {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, MAX_HEALTH)
+                .add(Attributes.MAX_HEALTH, EXPLODING_MAX_HEALTH)
                 .add(Attributes.MOVEMENT_SPEED, MOVEMENT_SPEED);
     }
 }
