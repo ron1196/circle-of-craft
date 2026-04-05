@@ -9,6 +9,7 @@ import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
+import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.quest.actions.OutlandsQuestActions;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline.Stage;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
@@ -319,6 +320,16 @@ public class ZiraEntity extends Monster {
                 level().addFreshEntity(bolt);
             }
         }
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(
+            @NotNull DamageSource source,
+            int looting,
+            boolean recentlyHit
+    ) {
+        super.dropCustomDeathLoot(source, looting, recentlyHit);
+        spawnAtLocation(LionKingItems.ZIRA_RUG.get());
     }
 
     @Override

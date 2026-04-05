@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.entity.npc;
 
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
+import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.registry.LionKingSoundEvents;
 import io.github.ron1196.thelionking.util.ChatHelper;
 import net.minecraft.network.chat.Component;
@@ -152,6 +153,16 @@ public class ScarEntity extends Monster {
                 data.getQuestManager().tryAdvance("rafiki", sp, QuestTrigger.SCAR_KILLED);
             }
         }
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(
+            @NotNull DamageSource source,
+            int looting,
+            boolean recentlyHit
+    ) {
+        super.dropCustomDeathLoot(source, looting, recentlyHit);
+        spawnAtLocation(LionKingItems.SCAR_RUG.get());
     }
 
     @Override

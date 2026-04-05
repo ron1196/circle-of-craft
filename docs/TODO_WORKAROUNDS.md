@@ -45,6 +45,7 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 - [ ] **Star Altar 3D model is bad** — Needs proper model/textures
 - [ ] **Simba in water** — Simba behavior/animation when in water needs fixing
 - [ ] **Astral Charm active/inactive visuals** — Glint-only distinction is not clear enough, need better visual differentiation (separate textures or name color)
+- [ ] **Timon store GUI** — Old mod had a 5-slot merchant GUI for Timon. Currently uses direct bug-for-reward trade with no GUI.
 
 ## Advancement Triggers
 
