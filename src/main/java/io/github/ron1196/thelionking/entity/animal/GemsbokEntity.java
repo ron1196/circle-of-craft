@@ -1,6 +1,7 @@
 package io.github.ron1196.thelionking.entity.animal;
 
 import io.github.ron1196.thelionking.entity.ai.AmbientPanicGoal;
+import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import javax.annotation.Nullable;
@@ -45,6 +46,11 @@ public class GemsbokEntity extends LionKingAnimal {
         return LionKingAnimal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 14.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.23);
+    }
+
+    @Override
+    protected CharacterSpeech getCharacterSpeech() {
+        return CharacterSpeech.GEMSBOK;
     }
 
     @Override

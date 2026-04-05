@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.entity.animal;
 
+import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.registry.LionKingSoundEvents;
@@ -57,6 +58,11 @@ public class RhinoEntity extends LionKingAnimal {
     @Override
     protected @NotNull SoundEvent getDeathSound() {
         return LionKingSoundEvents.RHINO_DEATH.get();
+    }
+
+    @Override
+    protected CharacterSpeech getCharacterSpeech() {
+        return CharacterSpeech.RHINO;
     }
 
     @Override

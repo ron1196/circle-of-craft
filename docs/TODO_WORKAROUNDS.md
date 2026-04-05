@@ -43,5 +43,5 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 ## Advancement Triggers
 
 - [x] ~~**`USE_GRINDING_BOWL` trigger is orphaned**~~ — RESOLVED: Added "...Squash Banana!" advancement (use_grinding_bowl.json).
-- [ ] **`feed_animal` trigger never fires** — Registered for "The Animal Whisperer" advancement (feed animal with Animalspeak Amulet). Needs Animalspeak Amulet feature implemented.
+- [x] ~~**`feed_animal` trigger never fires**~~ — RESOLVED: Amulet is now a chestplate armor item. Animals require amulet to interact. `FEED_ANIMAL` trigger fires on quest completion.
 - [ ] **`teleport_simba` trigger never fires** — Registered for "Nants Ingonyama" advancement (take Simba through a portal). Needs Simba portal teleport feature implemented.

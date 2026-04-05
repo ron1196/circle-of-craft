@@ -1,9 +1,13 @@
 package io.github.ron1196.thelionking.entity.animal;
 
+import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
+import io.github.ron1196.thelionking.quest.CharacterSpeech;
+import io.github.ron1196.thelionking.util.ChatHelper;
 import io.github.ron1196.thelionking.entity.ai.CrossTypeBreedGoal;
 import io.github.ron1196.thelionking.entity.animal.favor.AnimalFavor;
 import io.github.ron1196.thelionking.entity.animal.favor.AnimalFavorEntry;
 import io.github.ron1196.thelionking.registry.LionKingItems;
+import net.minecraft.world.entity.EquipmentSlot;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -71,52 +75,53 @@ public abstract class LionKingAnimal extends Animal {
     public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack held = player.getItemInHand(hand);
 
-        // Let Animal.mobInteract() handle breeding food first (sets love mode, grows babies)
-        if (isFood(held)) {
-            return super.mobInteract(player, hand);
-        }
+        // Amulet quest interactions take priority over breeding/taming
+        if (isWearingAmulet(player)) {
+            if (level().isClientSide()) return InteractionResult.SUCCESS;
+            if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
 
-        if (level().isClientSide()) return InteractionResult.SUCCESS;
-        if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
+            UUID playerId = player.getUUID();
+            AnimalFavorEntry entry = animalQuests.get(playerId);
 
-        UUID playerId = player.getUUID();
-        AnimalFavorEntry entry = animalQuests.get(playerId);
-
-        if (entry != null) {
-            if (held.is(entry.requiredItem()) && held.getCount() >= entry.requiredAmount()) {
-                held.shrink(entry.requiredAmount());
-                giveQuestReward(serverPlayer);
-                String questEndMessage = AnimalFavor.getQuestEndMessage(getAnimalDisplayName());
-                player.sendSystemMessage(Component.literal(questEndMessage));
-                animalQuests.remove(playerId);
-            } else {
-                String questStartMessage = AnimalFavor.getQuestStartMessage(
-                        getAnimalDisplayName(),
-                        entry.requiredItem().getDescription().getString(),
-                        entry.requiredAmount());
-                player.sendSystemMessage(Component.literal(questStartMessage));
+            // Active quest — check if player has the requested item
+            if (entry != null) {
+                if (held.is(entry.requiredItem()) && held.getCount() >= entry.requiredAmount()) {
+                    held.shrink(entry.requiredAmount());
+                    giveQuestReward(serverPlayer);
+                    String questEndMessage = AnimalFavor.getQuestEndMessage(getAnimalDisplayName());
+                    player.sendSystemMessage(Component.literal(questEndMessage));
+                    animalQuests.remove(playerId);
+                } else {
+                    String questStartMessage = AnimalFavor.getQuestStartMessage(
+                            getAnimalDisplayName(),
+                            entry.requiredItem().getDescription().getString(),
+                            entry.requiredAmount());
+                    player.sendSystemMessage(Component.literal(questStartMessage));
+                }
+                return InteractionResult.SUCCESS;
             }
+
+            // No active quest — chance to start one, otherwise speech
+            if (QUEST_RANDOM.nextInt(3) == 0) {
+                Item[] requestItems = getQuestRequestItems();
+                if (requestItems != null && requestItems.length > 0) {
+                    Item item = requestItems[QUEST_RANDOM.nextInt(requestItems.length)];
+                    int amount = 1 + QUEST_RANDOM.nextInt(5);
+
+                    String questStartMessage = AnimalFavor.getQuestStartMessage(
+                            getAnimalDisplayName(), item.getDescription().getString(), amount);
+                    player.sendSystemMessage(Component.literal(questStartMessage));
+
+                    animalQuests.put(playerId, new AnimalFavorEntry(item, amount));
+                    return InteractionResult.SUCCESS;
+                }
+            }
+
+            sendAnimalSpeech(serverPlayer);
             return InteractionResult.SUCCESS;
         }
 
-        if (QUEST_RANDOM.nextInt(3) == 0) {
-            Item[] requestItems = getQuestRequestItems();
-            if (requestItems == null || requestItems.length == 0) {
-                return super.mobInteract(player, hand);
-            }
-
-            Item item = requestItems[QUEST_RANDOM.nextInt(requestItems.length)];
-            int amount = 1 + QUEST_RANDOM.nextInt(5);
-
-            String questStartMessage = AnimalFavor.getQuestStartMessage(
-                    getAnimalDisplayName(), item.getDescription().getString(), amount);
-            player.sendSystemMessage(Component.literal(questStartMessage));
-
-            animalQuests.put(playerId, new AnimalFavorEntry(item, amount));
-
-            return InteractionResult.SUCCESS;
-        }
-
+        // No amulet — let vanilla handle breeding/taming
         return super.mobInteract(player, hand);
     }
 
@@ -131,6 +136,28 @@ public abstract class LionKingAnimal extends Animal {
         player.getInventory().placeItemBackInInventory(reward);
         String rewardMsg = String.format("§aYou received %dx %s as a reward!", count, name);
         player.displayClientMessage(Component.literal(rewardMsg), false);
+        LionKingCriteriaTriggers.FEED_ANIMAL.trigger(player);
+    }
+
+    private static boolean isWearingAmulet(Player player) {
+        return player.getItemBySlot(EquipmentSlot.CHEST).getItem() == LionKingItems.AMULET.get();
+    }
+
+    /**
+     * Override to provide per-animal CharacterSpeech for amulet interaction.
+     * Returns null if no speech is defined (falls back to generic).
+     */
+    protected @Nullable CharacterSpeech getCharacterSpeech() {
+        return null;
+    }
+
+    private void sendAnimalSpeech(ServerPlayer player) {
+        CharacterSpeech speech = isBaby() ? null : getCharacterSpeech();
+        if (speech != null) {
+            CharacterSpeech.sendSpeech(player, speech);
+        } else {
+            ChatHelper.sendNpcMessage(player, getAnimalDisplayName(), "...");
+        }
     }
 
     protected Item[] getQuestRequestItems() {

@@ -80,11 +80,12 @@ public class TimonEntity extends PathfinderMob {
         ItemStack held = player.getItemInHand(hand);
         if (held.is(LionKingItems.BUG.get()) && held.getCount() >= 5) {
             held.shrink(5);
-            int reward = random.nextInt(3);
+            int reward = random.nextInt(4);
             switch (reward) {
                 case 0 -> player.addItem(new ItemStack(LionKingItems.PUMBAA_BOMB.get(), 3));
                 case 1 -> player.addItem(new ItemStack(LionKingItems.CRYSTAL.get(), 1));
-                case 2 -> player.giveExperiencePoints(50);
+                case 2 -> player.addItem(new ItemStack(LionKingItems.AMULET.get(), 1));
+                case 3 -> player.giveExperiencePoints(50);
             }
             hasGivenFirstBugs = true;
             ChatHelper.sendNpcMessage(player, "Timon", "Slimy, yet satisfying! Here's a little something for you.");
