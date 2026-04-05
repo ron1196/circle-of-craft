@@ -541,8 +541,11 @@ public class LionKingItems {
             "tunnah_diggah", () -> new TunnahDiggahItem(Tiers.IRON, 1, -2.8F, new Item.Properties().durability(690)));
 
     // ========== Quest & Special Items ==========
-    public static final RegistryObject<Item> AMULET = ITEMS.register("amulet",
-            () -> new ArmorItem(LionKingArmorMaterials.GEMSBOK, ArmorItem.Type.CHESTPLATE,
+    public static final RegistryObject<Item> AMULET = ITEMS.register(
+            "amulet",
+            () -> new ArmorItem(
+                    LionKingArmorMaterials.GEMSBOK,
+                    ArmorItem.Type.CHESTPLATE,
                     new Item.Properties().stacksTo(1).durability(0)));
     public static final RegistryObject<Item> SIMBA_CHARM = registerItem("simba_charm", SimbaCharmItem::new);
     public static final RegistryObject<Item> GIRAFFE_SADDLE = simpleItem("giraffe_saddle", 1);

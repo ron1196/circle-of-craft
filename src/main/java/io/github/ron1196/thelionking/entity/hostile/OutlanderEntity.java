@@ -1,13 +1,12 @@
 package io.github.ron1196.thelionking.entity.hostile;
 
+import io.github.ron1196.thelionking.registry.LionKingItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.DifficultyInstance;
-import io.github.ron1196.thelionking.registry.LionKingItems;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
@@ -18,6 +17,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
@@ -58,8 +58,9 @@ public class OutlanderEntity extends Monster {
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
 
         this.targetSelector.addGoal(
-                1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false,
-                        target -> !isWearingOutlandishHelm(target)));
+                1,
+                new NearestAttackableTargetGoal<>(
+                        this, Player.class, 10, true, false, target -> !isWearingOutlandishHelm(target)));
     }
 
     private static boolean isWearingOutlandishHelm(LivingEntity entity) {

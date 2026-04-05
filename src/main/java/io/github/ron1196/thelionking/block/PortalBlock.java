@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.block;
 
+import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
 import io.github.ron1196.thelionking.network.Networking;
 import io.github.ron1196.thelionking.network.PortalOverlayPacket;
 import io.github.ron1196.thelionking.world.dimension.Teleporter;
@@ -192,6 +193,8 @@ public class PortalBlock extends Block {
         return new PortalCountdown(existing.ticks + 1, currentTick);
     }
 
+    private static final int SIMBA_TELEPORT_RANGE = 20;
+
     private void teleportPlayer(ServerPlayer player) {
         if (inInvalidDimension(player.level())) {
             player.sendSystemMessage(Component.literal("Hakuna Matata! This portal doesn't work here, cheater!"));
@@ -199,7 +202,21 @@ public class PortalBlock extends Block {
         }
         ServerLevel destLevel = resolveDestination(player.level());
         if (destLevel == null) return;
+
+        // Find charmed Simbas nearby and teleport them with the player
+        teleportNearbySimba(player, destLevel);
+
         player.changeDimension(destLevel, new Teleporter(this));
+    }
+
+    private void teleportNearbySimba(ServerPlayer player, ServerLevel destLevel) {
+        for (Entity entity : player.level().getEntities(
+                (Entity) null,
+                player.getBoundingBox().inflate(SIMBA_TELEPORT_RANGE),
+                e -> e instanceof SimbaEntity simba && simba.isOwnedBy(player) && simba.hasCharm())) {
+            entity.setPortalCooldown();
+            entity.changeDimension(destLevel, new Teleporter(this));
+        }
     }
 
     private void teleportEntity(Entity entity, Level level) {

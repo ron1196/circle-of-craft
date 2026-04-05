@@ -1,8 +1,12 @@
 package io.github.ron1196.thelionking.entity.npc;
 
+import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
 import io.github.ron1196.thelionking.entity.ai.SimbaAttackGoal;
 import io.github.ron1196.thelionking.entity.ai.SimbaWanderGoal;
+import io.github.ron1196.thelionking.item.SimbaCharmItem;
 import io.github.ron1196.thelionking.menu.SimbaInventoryMenu;
+import io.github.ron1196.thelionking.registry.LionKingItems;
+import io.github.ron1196.thelionking.util.ChatHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -15,6 +19,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -37,6 +42,8 @@ public class SimbaEntity extends TamableAnimal {
 
     private static final EntityDataAccessor<Boolean> DATA_BABY =
             SynchedEntityData.defineId(SimbaEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_HAS_CHARM =
+            SynchedEntityData.defineId(SimbaEntity.class, EntityDataSerializers.BOOLEAN);
 
     public final ItemStackHandler inventory = new ItemStackHandler(9);
 
@@ -57,6 +64,20 @@ public class SimbaEntity extends TamableAnimal {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_BABY, false);
+        this.entityData.define(DATA_HAS_CHARM, false);
+    }
+
+    public boolean hasCharm() {
+        return this.entityData.get(DATA_HAS_CHARM);
+    }
+
+    public void setHasCharm(boolean hasCharm) {
+        this.entityData.set(DATA_HAS_CHARM, hasCharm);
+    }
+
+    @Override
+    public boolean canChangeDimensions() {
+        return hasCharm();
     }
 
     @Override
@@ -106,30 +127,47 @@ public class SimbaEntity extends TamableAnimal {
             return InteractionResult.SUCCESS;
         }
 
-        if (isOwnedBy(player)) {
-            // Sneak+interact opens Simba's inventory
-            if (player.isShiftKeyDown() && player instanceof ServerPlayer serverPlayer) {
-                NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
-                    @Override
-                    public @NotNull Component getDisplayName() {
-                        return Component.translatable("container.thelionking.simba_inventory");
-                    }
+        if (!isOwnedBy(player)) return InteractionResult.PASS;
 
-                    @Override
-                    public @NotNull AbstractContainerMenu createMenu(
-                            int containerId, @NotNull Inventory inv, @NotNull Player p) {
-                        return new SimbaInventoryMenu(containerId, inv, inventory);
-                    }
-                });
-                return InteractionResult.SUCCESS;
+        ItemStack held = player.getItemInHand(hand);
+        if (held.is(LionKingItems.SIMBA_CHARM.get()) && SimbaCharmItem.isActive(held) && !hasCharm()) {
+            if (!level().isClientSide()) {
+                held.shrink(1);
+                setHasCharm(true);
+                ChatHelper.sendNpcMessage(player, "Simba", "*accepts the charm and roars proudly*");
             }
-
-            // Toggle sitting
-            toggleSitting(player);
             return InteractionResult.SUCCESS;
         }
 
-        return InteractionResult.PASS;
+        // Sneak+interact opens Simba's inventory
+        if (player.isShiftKeyDown() && player instanceof ServerPlayer serverPlayer) {
+            NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
+                @Override
+                public @NotNull Component getDisplayName() {
+                    return Component.translatable("container.thelionking.simba_inventory");
+                }
+
+                @Override
+                public @NotNull AbstractContainerMenu createMenu(
+                        int containerId, @NotNull Inventory inv, @NotNull Player p) {
+                    return new SimbaInventoryMenu(containerId, inv, inventory);
+                }
+            });
+            return InteractionResult.SUCCESS;
+        }
+
+        // Toggle sitting
+        toggleSitting(player);
+        return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public @Nullable Entity changeDimension(@NotNull ServerLevel destination) {
+        Entity result = super.changeDimension(destination);
+        if (result != null && getOwner() instanceof ServerPlayer owner) {
+            LionKingCriteriaTriggers.TELEPORT_SIMBA.trigger(owner);
+        }
+        return result;
     }
 
     @Override
@@ -148,6 +186,7 @@ public class SimbaEntity extends TamableAnimal {
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("Baby", isBaby());
+        tag.putBoolean("HasCharm", hasCharm());
         tag.put("Inventory", inventory.serializeNBT());
     }
 
@@ -155,6 +194,7 @@ public class SimbaEntity extends TamableAnimal {
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         setBaby(tag.getBoolean("Baby"));
+        setHasCharm(tag.getBoolean("HasCharm"));
         if (tag.contains("Inventory")) inventory.deserializeNBT(tag.getCompound("Inventory"));
     }
 }

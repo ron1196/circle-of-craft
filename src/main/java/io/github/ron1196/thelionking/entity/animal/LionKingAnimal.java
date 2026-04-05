@@ -1,13 +1,12 @@
 package io.github.ron1196.thelionking.entity.animal;
 
 import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
-import io.github.ron1196.thelionking.quest.CharacterSpeech;
-import io.github.ron1196.thelionking.util.ChatHelper;
 import io.github.ron1196.thelionking.entity.ai.CrossTypeBreedGoal;
 import io.github.ron1196.thelionking.entity.animal.favor.AnimalFavor;
 import io.github.ron1196.thelionking.entity.animal.favor.AnimalFavorEntry;
+import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.registry.LionKingItems;
-import net.minecraft.world.entity.EquipmentSlot;
+import io.github.ron1196.thelionking.util.ChatHelper;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -22,6 +21,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;

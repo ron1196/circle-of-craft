@@ -40,8 +40,14 @@ This file tracks all "for now" substitutions and temporary workarounds that need
 - [ ] **Pride Compass — points to last-used portal** — Custom compass item reading `PlayerData.homePortalX/Y/Z`. Replace
   vanilla compass in dungeon loot.
 
+## Visual / Model Issues
+
+- [ ] **Star Altar 3D model is bad** — Needs proper model/textures
+- [ ] **Simba in water** — Simba behavior/animation when in water needs fixing
+- [ ] **Astral Charm active/inactive visuals** — Glint-only distinction is not clear enough, need better visual differentiation (separate textures or name color)
+
 ## Advancement Triggers
 
 - [x] ~~**`USE_GRINDING_BOWL` trigger is orphaned**~~ — RESOLVED: Added "...Squash Banana!" advancement (use_grinding_bowl.json).
 - [x] ~~**`feed_animal` trigger never fires**~~ — RESOLVED: Amulet is now a chestplate armor item. Animals require amulet to interact. `FEED_ANIMAL` trigger fires on quest completion.
-- [ ] **`teleport_simba` trigger never fires** — Registered for "Nants Ingonyama" advancement (take Simba through a portal). Needs Simba portal teleport feature implemented.
+- [x] ~~**`teleport_simba` trigger never fires**~~ — RESOLVED: Simba requires active Astral Charm to use portals. Right-click with charm to give it. `TELEPORT_SIMBA` fires when Simba changes dimension.
