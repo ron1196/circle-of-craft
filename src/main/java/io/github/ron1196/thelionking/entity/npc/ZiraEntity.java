@@ -1,20 +1,17 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.data.PlayerData;
-import io.github.ron1196.thelionking.data.PlayerDataProvider;
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.hostile.OutlanderEntity;
 import io.github.ron1196.thelionking.entity.hostile.TermiteQueenEntity;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
-import io.github.ron1196.thelionking.network.Networking;
-import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
-import io.github.ron1196.thelionking.registry.LionKingItems;
+import io.github.ron1196.thelionking.quest.NpcInteraction;
 import io.github.ron1196.thelionking.quest.actions.OutlandsQuestActions;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline.Stage;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.EntityTypes;
+import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.util.ChatHelper;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -44,7 +41,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 public class ZiraEntity extends Monster {
@@ -59,15 +55,9 @@ public class ZiraEntity extends Monster {
     private static final double QUEEN_SEARCH_RADIUS = 64.0;
     private static final int REMOUNT_CHECK_INTERVAL = 20;
 
-    private int talkCooldown = 0;
-    private static final int MAX_WANDER_DISTANCE = 15;
-    private static final int LEASH_CHECK_INTERVAL = 100;
-    private static final int QUEST_CHECK_INTERVAL = 100;
+    private final QuestNpcBehavior questBehavior = new QuestNpcBehavior(this, 15, this::onQuestCheck);
 
     private boolean lowHpRage = false;
-    private BlockPos homePos = null;
-    private int leashCheckTimer = 0;
-    private int questCheckTimer = 0;
     private int remountTimer = 0;
 
     public ZiraEntity(EntityType<? extends ZiraEntity> type, Level level) {
@@ -138,42 +128,34 @@ public class ZiraEntity extends Monster {
             bossEvent.setProgress(getHealth() / getMaxHealth());
         }
 
-        if (talkCooldown > 0) talkCooldown--;
+        if (isHostile()) {
+            // Hostile mode: skip quest behavior, handle combat mechanics
+            Level level = level();
+            if (level.isClientSide) return;
 
-        Level level = level();
-        if (level.isClientSide) return;
-        if (!(level instanceof ServerLevel serverLevel)) return;
-
-        if (!isHostile()) {
-            handleZiraQuest(serverLevel);
+            tryRemountQueen();
+            if (!lowHpRage && getHealth() <= 120F && !isPassenger()) {
+                lowHpRage = true;
+                ChatHelper.broadcastNpcMessage(level(), "Zira", "Outlanders! Finish this!");
+                spawnOutlandersWithLightning();
+            }
             return;
         }
 
-        // Remount Termite Queen if dismounted during the queen fight
-        tryRemountQueen();
-        if (!lowHpRage && getHealth() <= 120F && !isPassenger()) {
-            lowHpRage = true;
-            ChatHelper.broadcastNpcMessage(level(), "Zira", "Outlanders! Finish this!");
-            spawnOutlandersWithLightning();
-        }
+        if (questBehavior.tick()) return;
     }
 
-    private void handleZiraQuest(ServerLevel serverLevel) {
-        teleportHomeIfTooFar();
-
-        if (++questCheckTimer < QUEST_CHECK_INTERVAL) return;
-
-        questCheckTimer = 0;
-        QuestlineManager questManager = WorldData.get(serverLevel).getQuestManager();
-        Stage stage = questManager.getStage("outlands", Stage.class);
+    private boolean onQuestCheck(@NotNull ServerLevel serverLevel, @NotNull QuestlineManager quests) {
+        Stage stage = quests.getStage("outlands", Stage.class);
         if (!OutlandsQuestActions.isTreeOccupationStage(stage)) {
             OutlandsQuestActions.ensureWorldState(serverLevel, stage);
-            return;
+            return true; // May have been discarded
         }
 
         if (stage == Stage.PUMBAA_BOX_EXPLODING) {
             OutlandsQuestActions.ensureWorldState(serverLevel, stage);
         }
+        return false;
     }
 
     private void spawnOutlandersWithLightning() {
@@ -222,36 +204,23 @@ public class ZiraEntity extends Monster {
 
     @Override
     protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
-        if (level().isClientSide()) return InteractionResult.SUCCESS;
+        NpcInteraction ctx = NpcInteraction.tryCreate(player);
+        if (ctx == null) return InteractionResult.SUCCESS;
         if (isHostile()) return InteractionResult.PASS;
-        if (talkCooldown > 0) return InteractionResult.SUCCESS;
-        if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
-        if (!(level() instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
+        if (questBehavior.isOnCooldown()) return InteractionResult.SUCCESS;
 
-        talkCooldown = 40;
-        WorldData data = WorldData.get(serverLevel);
-        QuestlineManager quests = data.getQuestManager();
-        PlayerData playerData = PlayerDataProvider.get(serverPlayer);
-        Stage stage = quests.getStage("outlands", Stage.class);
+        questBehavior.startCooldown(40);
+        Stage stage = ctx.stage("outlands", Stage.class);
 
         // Tree occupation — special 3-part dialogue
         if (stage == Stage.ZIRA_OCCUPIES_TREE) {
-            handleTreeOccupationDialogue(player, serverPlayer, data, quests);
+            handleTreeOccupationDialogue(player, ctx);
             return InteractionResult.SUCCESS;
         }
 
-        // Try to claim the next unclaimed reward (earliest stage first)
-        int claimedIndex = quests.tryClaimNextReward("outlands", serverPlayer);
-        if (claimedIndex >= 0) {
-            sendStageDialogue(player, quests.getStage("outlands", Stage.class));
-            syncPlayerData(serverPlayer, playerData);
-            return InteractionResult.SUCCESS;
-        }
-
-        // Try to advance the quest (rewards are given automatically in tryAdvance)
-        if (quests.tryAdvance("outlands", serverPlayer, QuestTrigger.ZIRA_TALK)) {
-            syncPlayerData(serverPlayer, playerData);
-            sendStageDialogue(player, quests.getStage("outlands", Stage.class));
+        // Standard path: try claim reward, then try advance
+        if (ctx.tryClaimOrAdvance("outlands", Stage.class, QuestTrigger.ZIRA_TALK,
+                s -> sendStageDialogue(player, s))) {
             return InteractionResult.SUCCESS;
         }
 
@@ -260,7 +229,7 @@ public class ZiraEntity extends Monster {
             case COLLECT_INGOTS -> CharacterSpeech.sendSpeech(player, CharacterSpeech.ZIRA_INGOTS);
             case COLLECT_FEATHERS -> CharacterSpeech.sendSpeech(player, CharacterSpeech.ZIRA_FEATHERS);
             default -> {
-                if (quests.isStageAtOrPast("outlands", Stage.FOLLOW_OUTLANDERS) && !isHostile()) {
+                if (ctx.quests().isStageAtOrPast("outlands", Stage.FOLLOW_OUTLANDERS) && !isHostile()) {
                     CharacterSpeech.sendSpeech(player, CharacterSpeech.ZIRA_CONQUEST);
                 }
             }
@@ -281,9 +250,8 @@ public class ZiraEntity extends Monster {
         if (message != null) ChatHelper.sendNpcMessage(player, "Zira", message);
     }
 
-    private void handleTreeOccupationDialogue(
-            Player player, ServerPlayer serverPlayer, WorldData data, QuestlineManager quests) {
-        int talkCount = data.getZiraTreeTalkCount();
+    private void handleTreeOccupationDialogue(@NotNull Player player, @NotNull NpcInteraction ctx) {
+        int talkCount = ctx.worldData().getZiraTreeTalkCount();
         String message =
                 switch (talkCount) {
                     case 0 -> "Ah, the Pride Lands! Just as I remember them. This tree will serve well as the starting point for our conquest.";
@@ -293,9 +261,9 @@ public class ZiraEntity extends Monster {
         ChatHelper.sendNpcMessage(player, "Zira", message);
 
         if (talkCount >= 2) {
-            quests.tryAdvance("outlands", serverPlayer, QuestTrigger.ZIRA_TALK);
+            ctx.quests().tryAdvance("outlands", ctx.serverPlayer(), QuestTrigger.ZIRA_TALK);
         } else {
-            data.incrementZiraTreeTalkCount();
+            ctx.worldData().incrementZiraTreeTalkCount();
         }
     }
 
@@ -337,29 +305,11 @@ public class ZiraEntity extends Monster {
         return 100;
     }
 
-    private void teleportHomeIfTooFar() {
-        if (homePos == null) {
-            homePos = blockPosition();
-            return;
-        }
-
-        if (++leashCheckTimer < LEASH_CHECK_INTERVAL) return;
-        leashCheckTimer = 0;
-
-        if (blockPosition().distSqr(homePos) > MAX_WANDER_DISTANCE * MAX_WANDER_DISTANCE) {
-            this.moveTo(homePos.getX() + 0.5, homePos.getY(), homePos.getZ() + 0.5, getYRot(), getXRot());
-        }
-    }
-
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("Hostile", isHostile());
-        if (homePos != null) {
-            tag.putInt("HomeX", homePos.getX());
-            tag.putInt("HomeY", homePos.getY());
-            tag.putInt("HomeZ", homePos.getZ());
-        }
+        questBehavior.saveToNbt(tag);
     }
 
     @Override
@@ -368,12 +318,6 @@ public class ZiraEntity extends Monster {
         if (tag.getBoolean("Hostile")) {
             setHostile(true);
         }
-        if (tag.contains("HomeX")) {
-            homePos = new BlockPos(tag.getInt("HomeX"), tag.getInt("HomeY"), tag.getInt("HomeZ"));
-        }
-    }
-
-    private void syncPlayerData(ServerPlayer player, PlayerData data) {
-        Networking.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new PlayerDataSyncPacket(data));
+        questBehavior.loadFromNbt(tag);
     }
 }
