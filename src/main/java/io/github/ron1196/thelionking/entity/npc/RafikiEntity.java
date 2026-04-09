@@ -1,6 +1,5 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.quest.NpcInteraction;
 import io.github.ron1196.thelionking.quest.actions.OutlandsQuestActions;
@@ -12,7 +11,6 @@ import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.util.ChatHelper;
 import io.github.ron1196.thelionking.util.DirectionHelper;
 import java.util.List;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -31,14 +29,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class RafikiEntity extends PathfinderMob {
 
-    private static final int MAX_WANDER_DISTANCE = 10;
-    private static final int LEASH_CHECK_INTERVAL = 100;
-    private static final int QUEST_CHECK_INTERVAL = 100;
-
-    private int talkCooldown = 0;
-    private BlockPos homePos = null;
-    private int leashCheckTimer = 0;
-    private int questCheckTimer = 0;
+    private final QuestNpcBehavior questBehavior = new QuestNpcBehavior(this, 10, this::onQuestCheck);
 
     public RafikiEntity(EntityType<? extends RafikiEntity> type, Level level) {
         super(type, level);
@@ -73,65 +64,37 @@ public class RafikiEntity extends PathfinderMob {
     @Override
     public void tick() {
         super.tick();
-
-        if (talkCooldown > 0) talkCooldown--;
-
-        Level level = level();
-        if (level.isClientSide) return;
-        if (!(level instanceof ServerLevel serverLevel)) return;
-
-        if (++questCheckTimer >= QUEST_CHECK_INTERVAL) {
-            questCheckTimer = 0;
-            QuestlineManager questManager = WorldData.get(serverLevel).getQuestManager();
-            OutlandsQuestline.Stage stage = questManager.getStage("outlands", OutlandsQuestline.Stage.class);
-            if (OutlandsQuestActions.isTreeOccupationStage(stage)) {
-                OutlandsQuestActions.ensureWorldState(serverLevel, stage);
-                return; // We may have been discarded
-            }
-        }
-
-        teleportHomeIfTooFar();
+        if (questBehavior.tick()) return;
     }
 
-    private void teleportHomeIfTooFar() {
-        if (homePos == null) {
-            homePos = blockPosition();
-            return;
+    private boolean onQuestCheck(@NotNull ServerLevel serverLevel, @NotNull QuestlineManager quests) {
+        OutlandsQuestline.Stage stage = quests.getStage("outlands", OutlandsQuestline.Stage.class);
+        if (OutlandsQuestActions.isTreeOccupationStage(stage)) {
+            OutlandsQuestActions.ensureWorldState(serverLevel, stage);
+            return true; // We may have been discarded
         }
-
-        if (++leashCheckTimer < LEASH_CHECK_INTERVAL) return;
-        leashCheckTimer = 0;
-
-        if (blockPosition().distSqr(homePos) > MAX_WANDER_DISTANCE * MAX_WANDER_DISTANCE) {
-            this.moveTo(homePos.getX() + 0.5, homePos.getY(), homePos.getZ() + 0.5, getYRot(), getXRot());
-        }
+        return false;
     }
 
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        if (homePos != null) {
-            tag.putInt("HomeX", homePos.getX());
-            tag.putInt("HomeY", homePos.getY());
-            tag.putInt("HomeZ", homePos.getZ());
-        }
+        questBehavior.saveToNbt(tag);
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if (tag.contains("HomeX")) {
-            homePos = new BlockPos(tag.getInt("HomeX"), tag.getInt("HomeY"), tag.getInt("HomeZ"));
-        }
+        questBehavior.loadFromNbt(tag);
     }
 
     @Override
     protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         NpcInteraction ctx = NpcInteraction.tryCreate(player);
         if (ctx == null) return InteractionResult.SUCCESS;
-        if (talkCooldown > 0) return InteractionResult.SUCCESS;
+        if (questBehavior.isOnCooldown()) return InteractionResult.SUCCESS;
 
-        talkCooldown = 40;
+        questBehavior.startCooldown(40);
 
         // Give quest book on first meeting
         if (!ctx.playerData().hasReceivedQuestBook()) {
