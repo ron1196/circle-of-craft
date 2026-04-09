@@ -61,7 +61,7 @@ Use `/lk quest` for quest testing:
 Quest IDs: `rafiki`, `outlands`. Stage names match the enum values (e.g., `FIND_RAFIKI`, `COLLECT_BONES`).
 
 ### Workaround Policy
-**Never use temporary workarounds without tracking them.** Every "for now" substitution must be recorded in `docs/TODO_WORKAROUNDS.md`.
+**Never use temporary workarounds without tracking them.** Every "for now" substitution must be filed as a GitHub issue.
 
 ## Key Files
 
@@ -75,4 +75,4 @@ Quest IDs: `rafiki`, `outlands`. Stage names match the enum values (e.g., `FIND_
 ## Related Docs
 
 - `docs/MIGRATION_AUDIT.md` — Full audit of what's ported vs missing, with priority roadmap
-- `docs/TODO_WORKAROUNDS.md` — Tracked temporary substitutions and placeholder items
+- [GitHub Issues](https://github.com/ron1196/TheLionKing/issues) — TODOs, workarounds, and feature requests
