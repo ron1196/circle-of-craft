@@ -1,11 +1,8 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.data.PlayerData;
-import io.github.ron1196.thelionking.data.PlayerDataProvider;
 import io.github.ron1196.thelionking.data.WorldData;
-import io.github.ron1196.thelionking.network.Networking;
-import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
+import io.github.ron1196.thelionking.quest.NpcInteraction;
 import io.github.ron1196.thelionking.quest.actions.OutlandsQuestActions;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
@@ -19,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -31,7 +27,6 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 public class RafikiEntity extends PathfinderMob {
@@ -132,28 +127,23 @@ public class RafikiEntity extends PathfinderMob {
 
     @Override
     protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
-        if (level().isClientSide()) return InteractionResult.SUCCESS;
+        NpcInteraction ctx = NpcInteraction.tryCreate(player);
+        if (ctx == null) return InteractionResult.SUCCESS;
         if (talkCooldown > 0) return InteractionResult.SUCCESS;
-        if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
-        if (!(level() instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
 
         talkCooldown = 40;
-        WorldData data = WorldData.get(serverLevel);
-        QuestlineManager quests = data.getQuestManager();
-        PlayerData playerData = PlayerDataProvider.get(serverPlayer);
-        Stage stage = quests.getStage("rafiki", Stage.class);
 
         // Give quest book on first meeting
-        if (!playerData.hasReceivedQuestBook()) {
-            playerData.setReceivedQuestBook(true);
+        if (!ctx.playerData().hasReceivedQuestBook()) {
+            ctx.playerData().setReceivedQuestBook(true);
             player.addItem(new ItemStack(LionKingItems.QUEST_BOOK.get()));
-            syncPlayerData(serverPlayer, playerData);
+            ctx.syncPlayerData();
         }
 
         // Handle Outlands quest — RAFIKI_RETURNS stage
-        OutlandsQuestline.Stage outlandsStage = quests.getStage("outlands", OutlandsQuestline.Stage.class);
+        OutlandsQuestline.Stage outlandsStage = ctx.stage("outlands", OutlandsQuestline.Stage.class);
         if (outlandsStage == OutlandsQuestline.Stage.RAFIKI_RETURNS) {
-            if (quests.tryAdvance("outlands", serverPlayer, QuestTrigger.RAFIKI_TALK)) {
+            if (ctx.quests().tryAdvance("outlands", ctx.serverPlayer(), QuestTrigger.RAFIKI_TALK)) {
                 ChatHelper.sendNpcMessage(
                         player,
                         "Rafiki",
@@ -164,25 +154,17 @@ public class RafikiEntity extends PathfinderMob {
             return InteractionResult.SUCCESS;
         }
 
-        // Try to claim the next unclaimed reward (earliest stage first)
-        int claimedIndex = quests.tryClaimNextReward("rafiki", serverPlayer);
-        if (claimedIndex >= 0) {
-            // Re-fetch stage after claim
-            sendStageDialogue(player, quests.getStage("rafiki", Stage.class));
-            syncPlayerData(serverPlayer, playerData);
+        // Standard path: try claim reward, then try advance
+        // (Must run before DEFEAT_SCAR pre-empt so unclaimed rewards are still claimed)
+        if (ctx.tryClaimOrAdvance("rafiki", Stage.class, QuestTrigger.RAFIKI_TALK,
+                s -> sendStageDialogue(player, s))) {
             return InteractionResult.SUCCESS;
         }
 
         // DEFEAT_SCAR — Scar must be killed (SCAR_KILLED trigger), just give hints
+        Stage stage = ctx.stage("rafiki", Stage.class);
         if (stage == Stage.DEFEAT_SCAR) {
             sendSpeech(player, CharacterSpeech.MENTION_SCAR);
-            return InteractionResult.SUCCESS;
-        }
-
-        if (quests.tryAdvance("rafiki", serverPlayer, QuestTrigger.RAFIKI_TALK)) {
-            Stage newStage = quests.getStage("rafiki", Stage.class);
-            sendStageDialogue(player, newStage);
-            syncPlayerData(serverPlayer, playerData);
             return InteractionResult.SUCCESS;
         }
 
@@ -197,10 +179,6 @@ public class RafikiEntity extends PathfinderMob {
         }
 
         return InteractionResult.SUCCESS;
-    }
-
-    private void syncPlayerData(ServerPlayer player, PlayerData data) {
-        Networking.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new PlayerDataSyncPacket(data));
     }
 
     private void sendStageDialogue(Player player, Stage newStage) {
