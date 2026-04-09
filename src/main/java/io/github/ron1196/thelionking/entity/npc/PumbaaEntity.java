@@ -1,9 +1,8 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.ai.PumbaaFollowTimonGoal;
+import io.github.ron1196.thelionking.quest.NpcInteraction;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
-import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.registry.LionKingItems;
@@ -12,7 +11,6 @@ import io.github.ron1196.thelionking.util.ChatHelper;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -132,22 +130,20 @@ public class PumbaaEntity extends PathfinderMob {
 
     @Override
     protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
-        if (level().isClientSide()) return InteractionResult.SUCCESS;
+        NpcInteraction ctx = NpcInteraction.tryCreate(player);
+        if (ctx == null) return InteractionResult.SUCCESS;
         if (talkCooldown > 0) return InteractionResult.SUCCESS;
-        if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
 
-        ServerLevel serverLevel = (ServerLevel) level();
-        QuestlineManager qm = WorldData.get(serverLevel.getServer().overworld()).getQuestManager();
-        OutlandsQuestline.Stage stageKey = qm.getStage("outlands", OutlandsQuestline.Stage.class);
+        OutlandsQuestline.Stage stageKey = ctx.stage("outlands", OutlandsQuestline.Stage.class);
 
         switch (stageKey) {
             case TALK_TO_PUMBAA -> {
                 talkCooldown = TALK_COOLDOWN_TICKS;
-                handleIntroDialogue(player, serverPlayer, qm);
+                handleIntroDialogue(player, ctx);
             }
             case GATHER_PUMBAA_INGREDIENTS -> {
                 talkCooldown = TALK_COOLDOWN_TICKS;
-                if (qm.tryAdvance("outlands", serverPlayer, QuestTrigger.PUMBAA_TALK)) {
+                if (ctx.quests().tryAdvance("outlands", ctx.serverPlayer(), QuestTrigger.PUMBAA_TALK)) {
                     ChatHelper.sendNpcMessage(player, "Pumbaa", "Stand back!");
                     cookingBox = true;
                     cookingTimer = 0;
@@ -195,18 +191,17 @@ public class PumbaaEntity extends PathfinderMob {
         }
     };
 
-    private void handleIntroDialogue(Player player, ServerPlayer serverPlayer, QuestlineManager qm) {
-        WorldData data = WorldData.get(serverPlayer.serverLevel());
-        int talkIndex = data.getPumbaaTalkCount();
+    private void handleIntroDialogue(@NotNull Player player, @NotNull NpcInteraction ctx) {
+        int talkIndex = ctx.worldData().getPumbaaTalkCount();
 
         if (talkIndex < INTRO_DIALOGUE.length) {
             ChatHelper.sendNpcMessage(player, INTRO_DIALOGUE[talkIndex][0], INTRO_DIALOGUE[talkIndex][1]);
-            data.incrementPumbaaTalkCount();
+            ctx.worldData().incrementPumbaaTalkCount();
         }
 
         if (talkIndex >= INTRO_DIALOGUE.length - 1) {
-            qm.tryAdvance("outlands", serverPlayer, QuestTrigger.PUMBAA_TALK);
-            data.resetPumbaaTalkCount();
+            ctx.quests().tryAdvance("outlands", ctx.serverPlayer(), QuestTrigger.PUMBAA_TALK);
+            ctx.worldData().resetPumbaaTalkCount();
         }
     }
 
