@@ -1,7 +1,7 @@
 JAVA_HOME := /opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
 export JAVA_HOME
 
-.PHONY: build run format check debug scan
+.PHONY: build run format check debug scan ralph
 
 build:
 	./gradlew build
@@ -14,3 +14,6 @@ format:
 
 check:
 	./gradlew spotlessCheck
+
+ralph:
+	npx tsx .sandcastle/main.mts
