@@ -1,8 +1,10 @@
 package io.github.ron1196.thelionking.entity.npc;
 
+import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.ai.PumbaaFollowTimonGoal;
 import io.github.ron1196.thelionking.quest.NpcInteraction;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
+import io.github.ron1196.thelionking.quest.questline.RafikiQuestline;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.registry.LionKingItems;
@@ -128,11 +130,21 @@ public class PumbaaEntity extends PathfinderMob {
         }
     }
 
+    private static final int RALLY_BUG_COUNT = 4;
+
     @Override
     protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         NpcInteraction ctx = NpcInteraction.tryCreate(player);
         if (ctx == null) return InteractionResult.SUCCESS;
         if (talkCooldown > 0) return InteractionResult.SUCCESS;
+
+        // RALLY_PUMBAA — accept bugs after Timon intro
+        RafikiQuestline.Stage rafikiStage = ctx.stage("rafiki", RafikiQuestline.Stage.class);
+        if (rafikiStage == RafikiQuestline.Stage.RALLY_PUMBAA) {
+            talkCooldown = TALK_COOLDOWN_TICKS;
+            handleRallyPumbaa(player, ctx);
+            return InteractionResult.SUCCESS;
+        }
 
         OutlandsQuestline.Stage stageKey = ctx.stage("outlands", OutlandsQuestline.Stage.class);
 
@@ -269,6 +281,50 @@ public class PumbaaEntity extends PathfinderMob {
             "It's our problem-free philosophy!"
         };
         ChatHelper.sendNpcMessage(player, "Pumbaa", speeches[random.nextInt(speeches.length)]);
+    }
+
+    // ── Rafiki quest: RALLY_PUMBAA ────────────────────────────────────────
+
+    private void handleRallyPumbaa(@NotNull Player player, @NotNull NpcInteraction ctx) {
+        WorldData worldData = ctx.worldData();
+
+        // Before Timon intro is done, fall through to random quotes
+        if (!worldData.isTimonRafikiIntroDone()) {
+            sendRandomQuote(player);
+            return;
+        }
+
+        // Check player has enough bugs
+        int bugCount = countInInventory(player, LionKingItems.BUG.get());
+        if (bugCount < RALLY_BUG_COUNT) {
+            ChatHelper.sendNpcMessage(
+                    player, "Pumbaa", "I'm gonna need at least four bugs if you want me fighting fit!");
+            return;
+        }
+
+        // Consume bugs
+        shrinkFromInventory(player, LionKingItems.BUG.get(), RALLY_BUG_COUNT);
+
+        // Eating sounds
+        for (int i = 0; i < 3; i++) {
+            level().playSound(
+                    null,
+                    blockPosition(),
+                    SoundEvents.GENERIC_EAT,
+                    SoundSource.NEUTRAL,
+                    0.8F + 0.5F * random.nextInt(2),
+                    (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+        }
+
+        // Fart effect
+        fart();
+
+        // Advance quest and reset talk count
+        ctx.quests().tryAdvance("rafiki", ctx.serverPlayer(), QuestTrigger.PUMBAA_TALK);
+        worldData.resetTimonRafikiTalkCount();
+
+        ChatHelper.sendNpcMessage(
+                player, "Pumbaa", "Ahh, slimy yet satisfying! I'm ready to fight! Hakuna Matata!");
     }
 
     // ── Pumbaa Box ingredient helpers ───────────────────────────────────────
