@@ -136,7 +136,7 @@ public class ZiraEntity extends Monster {
             tryRemountQueen();
             if (!lowHpRage && getHealth() <= 120F && !isPassenger()) {
                 lowHpRage = true;
-                ChatHelper.broadcastNpcMessage(level(), "Zira", "Outlanders! Finish this!");
+                ChatHelper.broadcastNpcMessage(level(), "Zira", "Outlanders! FINISH THIS WRETCHED FOOL!");
                 spawnOutlandersWithLightning();
             }
             return;
@@ -241,10 +241,10 @@ public class ZiraEntity extends Monster {
     private void sendStageDialogue(Player player, Stage newStage) {
         String message =
                 switch (newStage) {
-                    case COLLECT_INGOTS -> "So... a human dares to enter my domain. Perhaps you can be of use to me.";
-                    case THROW_IN_OUTWATER -> "Good. I've opened up a lower cavern in this mound. There's a pool of Outwater in there - throw the ingots in and come back.";
-                    case COLLECT_FEATHERS -> "Ah, the Outlandish Helm! That has some very useful tricks. Now I need Wayward Feathers - throw colored feathers into the Outwater.";
-                    case FOLLOW_OUTLANDERS -> "Excellent. You have served me well. Now... follow my Outlanders.";
+                    case COLLECT_INGOTS -> "So... a human dares enter my domain. How amusing. Perhaps you can be of use to me after all.";
+                    case THROW_IN_OUTWATER -> "Good. I've opened a lower cavern in this mound. There's a pool of Outwater down there — throw the ingots in and come back. Do NOT keep me waiting.";
+                    case COLLECT_FEATHERS -> "The Outlandish Helm! That has some very useful properties. Now I need Wayward Feathers — throw colored feathers into the Outwater. Scar's plan demands it.";
+                    case FOLLOW_OUTLANDERS -> "Excellent. You have served me well. Now... follow my Outlanders. And don't fall behind.";
                     default -> null;
                 };
         if (message != null) ChatHelper.sendNpcMessage(player, "Zira", message);
@@ -254,9 +254,9 @@ public class ZiraEntity extends Monster {
         int talkCount = ctx.worldData().getZiraTreeTalkCount();
         String message =
                 switch (talkCount) {
-                    case 0 -> "Ah, the Pride Lands! Just as I remember them. This tree will serve well as the starting point for our conquest.";
-                    case 1 -> "And don't worry, I disposed of that idiotic Rafiki who lived here. Would you like to hear the old fool's last words before we removed him?";
-                    default -> "'Find Timon and Pumbaa! They'll know what to do!' Ha! As if you would even consider betraying the Outlanders.";
+                    case 0 -> "Ah, the Pride Lands! Just as I remember them. This tree will serve nicely as the beginning of our glorious conquest!";
+                    case 1 -> "And don't worry about that idiotic Rafiki. I disposed of him personally. Would you like to hear the old fool's last words?";
+                    default -> "'Find Timon and Pumbaa! They'll know what to do!' HA! As if a meerkat and a warthog could challenge ME.";
                 };
         ChatHelper.sendNpcMessage(player, "Zira", message);
 
@@ -275,7 +275,7 @@ public class ZiraEntity extends Monster {
         if (source.getEntity() instanceof ServerPlayer serverPlayer) {
             WorldData data = WorldData.get(serverLevel);
             data.getQuestManager().tryAdvance("outlands", serverPlayer, QuestTrigger.ZIRA_KILLED);
-            ChatHelper.broadcastNpcMessage(level(), "Zira", "This is not over... Scar's legacy will live on...");
+            ChatHelper.broadcastNpcMessage(level(), "Zira", "This is not over... Scar's legacy... will NEVER die...");
         }
 
         level().explode(this, getX(), getY(), getZ(), 0F, Level.ExplosionInteraction.NONE);

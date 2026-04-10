@@ -168,7 +168,7 @@ public class OutlandsQuestline {
             ChatHelper.sendNpcMessage(
                     sp,
                     "Rafiki",
-                    "Ohoho! Old Rafiki was never gone for good! But you've kicked up quite a stink here, haven't you?");
+                    "Ohohoho! You didn't tink old Rafiki was gone for good, did you? But you have kicked up quite a stink here! Hahaha!");
         }
     }
 

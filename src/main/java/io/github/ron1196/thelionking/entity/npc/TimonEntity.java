@@ -68,11 +68,11 @@ public class TimonEntity extends PathfinderMob {
     private static final int RALLY_COOLDOWN_TICKS = 40;
 
     private static final String[][] RALLY_INTRO_DIALOGUE = {
-        {"Timon", "What? You want us to fight Scar? That guy's got claws the size of my whole body!"},
-        {"Pumbaa", "Timon, we have to help! The Pride Lands need us!"},
+        {"Timon", "Whoa whoa WHOA! You want US to fight Scar?! That guy's got claws the size of my whole body! Are you NUTS?!"},
+        {"Pumbaa", "Timon, we HAVE to help! Remember what Rafiki said? The Pride Lands need us! It's the right thing to do!"},
         {
             "Timon",
-            "Fine, fine... but Pumbaa here's gonna need some fuel. Bring him four bugs and he'll be ready to rumble!"
+            "Ugh, fine, FINE! But Pumbaa here's gonna need some fuel first. Bring him four bugs and he'll be ready to rumble. Hakuna Matata, am I right?"
         }
     };
 
@@ -120,7 +120,7 @@ public class TimonEntity extends PathfinderMob {
                 case 3 -> player.giveExperiencePoints(50);
             }
             hasGivenFirstBugs = true;
-            ChatHelper.sendNpcMessage(player, "Timon", "Slimy, yet satisfying! Here's a little something for you.");
+            ChatHelper.sendNpcMessage(player, "Timon", "Slimy yet satisfying, am I right? Here's a little somethin' for ya, kid!");
             return InteractionResult.SUCCESS;
         }
 

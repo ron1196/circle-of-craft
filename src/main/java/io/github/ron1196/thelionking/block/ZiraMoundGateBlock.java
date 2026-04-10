@@ -45,7 +45,7 @@ public class ZiraMoundGateBlock extends Block {
             ServerLevel serverLevel = (ServerLevel) level;
             if (!WorldData.get(serverLevel).getQuestManager().isComplete("rafiki")) {
                 ChatHelper.sendNpcMessage(
-                        player, "Rafiki's Stick", "The gate resists... the quest is not yet complete.");
+                        player, "Rafiki's Stick", "De gate resists your touch... de quest is not yet complete. De spirits say you are not ready.");
                 return InteractionResult.SUCCESS;
             }
             breakGateChain(level, pos);

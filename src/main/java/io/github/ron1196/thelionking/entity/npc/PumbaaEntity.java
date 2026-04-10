@@ -160,7 +160,7 @@ public class PumbaaEntity extends PathfinderMob {
             case GATHER_PUMBAA_INGREDIENTS -> {
                 talkCooldown = TALK_COOLDOWN_TICKS;
                 if (ctx.quests().tryAdvance("outlands", ctx.serverPlayer(), QuestTrigger.PUMBAA_TALK)) {
-                    ChatHelper.sendNpcMessage(player, "Pumbaa", "Stand back!");
+                    ChatHelper.sendNpcMessage(player, "Pumbaa", "Stand back! This is gonna be a big one!");
                     cookingBox = true;
                     cookingTimer = 0;
                 } else {
@@ -173,7 +173,7 @@ public class PumbaaEntity extends PathfinderMob {
                 if (!playerHasPumbaaBox(player)) {
                     if (hasBoxIngredients(player)) {
                         consumeBoxIngredients(player);
-                        ChatHelper.sendNpcMessage(player, "Pumbaa", "Stand back! Here's another one.");
+                        ChatHelper.sendNpcMessage(player, "Pumbaa", "Stand back! Here comes another one! I've been savin' this!");
                         cookingBox = true;
                         cookingTimer = 0;
                     } else {
@@ -181,7 +181,7 @@ public class PumbaaEntity extends PathfinderMob {
                     }
                 } else {
                     ChatHelper.sendNpcMessage(
-                            player, "Timon", "You already have the box! Go place it near Rafiki's tree.");
+                            player, "Timon", "You already GOT the box, pal! Go place it near Rafiki's tree! What are you waitin' for?");
                 }
             }
             default -> {
@@ -193,17 +193,17 @@ public class PumbaaEntity extends PathfinderMob {
     }
 
     private static final String[][] INTRO_DIALOGUE = {
-        {"Pumbaa", "Hi there, kid."},
-        {"Timon", "You look down. Can we help?"},
-        {"Pumbaa", "What's that you say? Outlanders have taken over Rafiki's tree?"},
-        {"Timon", "Outlanders? Man, I hate Outlanders. Almost as much as I hate hyenas, and I HATE hyenas."},
+        {"Pumbaa", "Well, hi there, kid! You don't look so good. Somethin' eatin' ya? Besides the bugs, I mean."},
+        {"Timon", "Pumbaa, that's not how you — never mind. So what's the problem, pal?"},
+        {"Pumbaa", "Wait — what's that you say? Outlanders have taken over Rafiki's tree?! Oh, that's terrible!"},
+        {"Timon", "Outlanders?! Man, I HATE Outlanders. Almost as much as I hate hyenas, and I REALLY hate hyenas."},
         {
             "Timon",
-            "Hold on! Pumbaa here could - er, pass gas, and those Outlanders would move out of that tree faster than a wildebeest stampede!"
+            "Hold on! I got an idea! Pumbaa here could, uh... pass gas, and those Outlanders would evacuate that tree faster than a wildebeest stampede!"
         },
         {
             "Timon",
-            "Bring Pumbaa some planks, sixteen bugs, a jar of lava and a thrown termite, and we'll cook up some weapons of gas destruction."
+            "Bring Pumbaa some planks, sixteen bugs, a jar of lava and a thrown termite, and we'll cook up some weapons of gas destruction. Literally."
         }
     };
 
@@ -262,12 +262,12 @@ public class PumbaaEntity extends PathfinderMob {
 
     private void sendMissingIngredientsDialogue(@NotNull Player player) {
         String[] speeches = {
-            "I'll need sixteen bugs to get myself going, a jar of lava and a thrown termite "
-                    + "to heat things up, and some planks to put it all in.",
-            "The flatulence needs to be extremely powerful for there to be even a hope of "
-                    + "this working. Get us those ingredients!",
-            "Bring Pumbaa planks, sixteen bugs, a termite and a jar of lava and " + "he'll give you the flatulence.",
-            "Kid, we want to help, but I just don't have those ingredients yet!"
+            "I'm gonna need sixteen bugs to get myself goin', a jar of lava and a thrown termite "
+                    + "to heat things up, and some planks to put it all in! It's a recipe!",
+            "Listen, pal, the flatulence needs to be EXTREMELY powerful for there to be even a hope of "
+                    + "this workin'. Get us those ingredients, pronto!",
+            "Bring Pumbaa planks, sixteen bugs, a termite and a jar of lava and " + "he'll give you the flatulence. Trust me, he's got PLENTY.",
+            "Hey kid, we wanna help, we really do! But I just ain't got those ingredients yet! Hakuna Matata ain't gonna cut it here!"
         };
         int index = random.nextInt(speeches.length);
         String speaker = index % 2 == 0 ? "Pumbaa" : "Timon";
@@ -276,13 +276,14 @@ public class PumbaaEntity extends PathfinderMob {
 
     private void sendRandomQuote(@NotNull Player player) {
         String[] speeches = {
-            "They call me... Mr. Pig!",
-            "Hakuna Matata! What a wonderful phrase!",
-            "Are you talking to me?",
-            "Timon! There's a human looking at me!",
-            "I'm a sensitive soul, though I seem thick-skinned.",
-            "When I was a young warthog...",
-            "It's our problem-free philosophy!"
+            "They call me... MISTER PIG! Ahhh!",
+            "Hakuna Matata! What a wonderful phrase! It means no worries!",
+            "Are you talkin' to me? ARE you talkin' to me?!",
+            "Timon! Timon! There's a human lookin' at me! What do I do?!",
+            "I'm a sensitive soul, though I seem thick-skinned. And it hurt, that my friends never stood downwind!",
+            "When I was a young warthooooog...",
+            "Hakuna Matata! It's our problem-free philosophy!",
+            "You know, kid, in times of danger, you just gotta look beyond what you see."
         };
         ChatHelper.sendNpcMessage(player, "Pumbaa", speeches[random.nextInt(speeches.length)]);
     }
@@ -312,7 +313,7 @@ public class PumbaaEntity extends PathfinderMob {
 
         ctx.worldData().resetTimonRafikiTalkCount();
 
-        ChatHelper.sendNpcMessage(player, "Pumbaa", "Ahh, slimy yet satisfying! I'm ready to fight! Hakuna Matata!");
+        ChatHelper.sendNpcMessage(player, "Pumbaa", "Ahh, slimy yet satisfying! Now THAT hit the spot! I'm ready to fight! HAKUNA MATATA!");
     }
 
     // ── Pumbaa Box ingredient helpers ───────────────────────────────────────

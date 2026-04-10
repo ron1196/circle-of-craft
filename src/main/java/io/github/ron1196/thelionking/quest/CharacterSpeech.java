@@ -58,13 +58,13 @@ public enum CharacterSpeech {
 
     private static final class Speech {
         static final String[] ZAZU_SLEEPING = {
-            "Shoo! The Morning Report isn't until sunrise, you nuisance!",
-            "Preposterous hour! A royal majordomo needs his rest. Come back at dawn.",
-            "Good heavens! My report is scheduled for sunrise. Come back then.",
-            "I am off-duty! Return at first light.",
-            "Protocol demands I sleep! Updates in the morning.",
-            "I'm a hornbill, not an owl! Begone — and come back at sunrise.",
-            "Unacceptable! Come back when the sun rises."
+            "Do you have ANY idea what time it is?! The Morning Report isn't until sunrise! Shoo!",
+            "I beg your pardon! A royal majordomo requires his beauty rest. Come back at dawn, if you please!",
+            "Good heavens! This is most irregular! My report is scheduled for sunrise — not a moment before!",
+            "I am OFF duty! Even I deserve a few hours of peace from your insufferable pestering!",
+            "Checking in at THIS hour? Mufasa never kept such uncivilized hours! Come back at first light!",
+            "I'm a hornbill, not an owl! Now begone — and if you wake me again before sunrise, there'll be a very STERN memo!",
+            "The audacity! Even when I was stuck in that bone cage, at least Scar let me SLEEP!"
         };
 
         static final String[] MORNING_REPORT = {
@@ -87,288 +87,287 @@ public enum CharacterSpeech {
         };
 
         static final String[] FIND_PUMBAA = {
-            "Go and find Pumbaa! You can't face Scar alone!",
-            "Timon and Pumbaa are out dere somewhere. Go talk to dem!",
-            "You need allies for de fight ahead. Find Pumbaa!",
-            "Pumbaa is a mighty warrior... in his own way. Go find him!",
-            "Have you found Timon and Pumbaa yet? Dey can help you!",
-            "Timon and Pumbaa are usually not far from each other. Look around!"
+            "Go and find Pumbaa! You cannot face Scar alone, oh no no no!",
+            "Timon and Pumbaa are out dere somewhere. Find dem! Dey are de friends you need!",
+            "You need allies for de fight ahead. Find Pumbaa! He is... formidable in his own special way! Hahaha!",
+            "Pumbaa is a mighty warrior... well, mighty in spirit! And smell! Go find him!",
+            "Have you found Timon and Pumbaa yet? Dey can help you! Trust old Rafiki on dis!",
+            "Look around! Timon and Pumbaa are never far from each other. Where dere is a bad smell, dere is Pumbaa!"
         };
 
         static final String[] CRAFT_STICK = {
-            "I need a stick, a mango, and a bug to craft my special stick!",
-            "You can find mangoes by breaking mango leaves. Dey drop sometimes!",
-            "Bugs hide under fallen logs. Go flip some over!",
-            "Have you tried making a Bug Trap? You can catch bugs dat way too!",
-            "A stick, a mango, and a bug — dat's all I need!",
-            "Look for mango trees — dey have de tastiest fruit!",
-            "Bring me dose crafting materials and I will make you something special, hehe!"
+            "Bring old Rafiki a stick, a mango, and a bug! Hehe, den I make you something very special!",
+            "Mangoes! Dey fall from de mango leaves — just give de tree a good shake!",
+            "Bugs hide under fallen logs. Flip dem over! Dey don't bite... much! Hahaha!",
+            "Have you tried making a Bug Trap? De bugs walk right in! Dey are not de brightest creatures!",
+            "A stick, a mango, and a bug — dat is all old Rafiki needs!",
+            "Look for mango trees! De fruit is sweet, and de dust is powerful!",
+            "Bring me dose materials and I will craft you a stick of great power! Ohohoho!"
         };
 
         static final String[] HYENA_BONES = {
-            "I need sixty-four hyena bones to help rid de Pride Lands of evil!",
-            "You don't have dose hyena bones yet? A cub could do better!",
-            "Bring me a stack of hyena bones. De Pride Lands need you!",
-            "No progress until I get my hyena bones! Hehe!",
-            "Help rid de Pride Lands of hyenas first.",
-            "I need sixty-four hyena bones from you.",
-            "What happened to dat stack of hyena bones you promised me?",
-            "Come back when you have de hyena bones."
+            "Sixty-four hyena bones! Dat is what old Rafiki needs to cleanse de Pride Lands!",
+            "You don't have dose hyena bones yet? Even a baboon could do better! Hahaha!",
+            "Bring me a full stack of hyena bones. De Pride Lands need you to be strong!",
+            "No bones, no progress! Dat is how it works! Now chop chop!",
+            "Rid de Pride Lands of dose slobbering, mangy creatures and bring me deir bones!",
+            "I need sixty-four hyena bones. Not sixty-three! Not sixty-two! Sixty-four! Hehe!",
+            "What happened to dat stack of hyena bones you promised old Rafiki, hmm?",
+            "Come back when you have de bones. De spirits are waiting... and so am I!"
         };
 
         static final String[] MENTION_SCAR = {
-            "You must find Scar! He is a danger to us all!",
-            "While Scar lives, de Pride Lands are in danger!",
-            "May de great kings of de past watch over you.",
-            "I tink Scar is hiding in a cave somewhere nearby... follow de hyenas, dey will lead you to him!",
-            "You should try looking underground for Scar. Hold my stick — it will guide you!",
-            "My stick is de only weapon dat can harm Scar. Remember dat!"
+            "You must find Scar! While he lives, de Pride Lands wither and die!",
+            "Scar is out dere, hiding like de coward he is. De hyenas know where!",
+            "May de great kings of de past watch over you in dis battle!",
+            "I tink Scar is hiding underground somewhere... follow de hyenas! Dey always lead back to deir master!",
+            "Hold my stick — it will guide you to Scar! Can you feel it pulling? Dat is de ancestors showing de way!",
+            "My stick is de ONLY weapon dat can harm Scar. Remember dat! De spirits of de past made it so!"
         };
 
         static final String[] TERMITES = {
-            "I know de Outlands are dangerous, but we can't continue until you bring me four termite dust.",
-            "I need four termite dust! Chop chop!",
-            "Once I have four termite dust, we can carry on, yes?",
-            "You'll need to put de termites in a Grinding Bowl.",
-            "I need termite dust for a reason, you know...",
-            "Do you have dose termite dust yet?",
-            "Find some termites, put dem in a Grinding Bowl, and bring dem to old Rafiki."
+            "De Outlands are dangerous, yes yes, but we cannot continue until you bring me four termite dust!",
+            "Four termite dust! Chop chop! De spirits grow impatient, and so does old Rafiki!",
+            "Once I have four termite dust, we carry on. De ancestors have spoken!",
+            "You must grind de termites in a Grinding Bowl. De dust has great power!",
+            "I need dat termite dust for a VERY important reason, you know! Trust old Rafiki!",
+            "Do you have de termite dust yet? Time is wasting!",
+            "Find some termites, put dem in a Grinding Bowl, and bring de dust to old Rafiki. It is not so hard, yes?"
         };
 
         static final String[] MANGOES = {
-            "Bring me four mango dust!",
-            "I only need four mango dust, den we can carry on!",
-            "Hurry up wit de mango dust!",
-            "I want my mango dust, hehe.",
-            "Have you been eating all de mangoes?",
-            "You need to find four mangoes and put dem all in de Grinding Bowl.",
-            "You don't have de mangoes yet? It's not as if dey grow on trees... oh wait, dey do! Hahaha!"
+            "Bring old Rafiki four mango dust! De recipe demands it!",
+            "I only need four mango dust, den we can carry on! De spirits are almost ready!",
+            "Hurry up wit de mango dust! Even de baboons are getting impatient!",
+            "I want my mango dust! Old Rafiki has big plans, hehe!",
+            "Have you been eating all de mangoes instead of grinding dem? I know dat look!",
+            "Four mangoes — put dem all in de Grinding Bowl and bring me de dust!",
+            "You don't have de mangoes yet? Dey grow on TREES, you know! Right above your head! Hahaha!"
         };
 
         static final String[] STAR_ALTAR = {
-            "You need to craft a Star Altar wit three Rafiki Dust and three silver ingots.",
-            "Use some Rafiki Dust on de Star Altar!",
-            "De Star Altar must be placed in view of de sky. De ancestors must see it!",
-            "Go and use de Star Altar. De spirits are waiting!"
+            "Now craft a Star Altar wit three Rafiki Dust and three silver ingots! De ancestors await!",
+            "Use de Rafiki Dust on de Star Altar! Can you hear dem? De spirits are calling!",
+            "De Star Altar must be placed under de open sky! De great kings must be able to see it!",
+            "Go and use de Star Altar! De spirits of de past are watching! Ohohoho!"
         };
 
         static final String[] HINT = {
-            "Don't listen to me, I'm just a crazy old monkey! Hahaha!",
-            "Why not go and kill some more hyenas? Pesky, slobbering, mangy creatures...",
-            "You are a baboon, and I am not. Ha!",
-            "I hear you can find chocolate treats in dungeons round here.",
-            "Zebras are black, wit white stripes.",
-            "Did you know dat my stick can harvest leaves?",
-            "I wish dere were some bananas nearby.",
-            "I wasn't always dis old, you know.",
-            "Where have all de flowers gone?",
-            "If a Rafiki Tree falls in de Pride Lands and no one is around, does it make a sound?",
-            "Roses are red, Zazus are blue. Some poems rhyme... and dis one does too.",
-            "I haven't seen Ticket Lion in a while. He's an old friend of mine, you know.",
-            "Don't even tink about stealing any torches from my tree!",
-            "Giraffes have come to de Pride Lands! I love giraffes!",
-            "What time does de narwhal bacon? Hahaha!",
+            "Don't listen to me! I'm just a crazy old monkey! Hahaha!",
+            "Why not go and smack some more hyenas? Pesky, slobbering, mangy creatures...",
+            "You are a baboon, and I am not! Haha! Or... wait... maybe it is de other way around?",
+            "I hear you can find chocolate treats in de dungeons round here. Even Rafiki likes chocolate!",
+            "Zebras are black wit white stripes. Or is it white wit black stripes? Hmm... dis is de great mystery!",
+            "Did you know dat my stick can harvest leaves? It can do many tings! Ohohoho!",
+            "I wish dere were some bananas nearby. A baboon cannot live on mangoes alone!",
+            "I wasn't always dis old, you know. Once I was young and foolish! Now I am old and foolish! Hahaha!",
+            "Where have all de flowers gone? De Pride Lands need more beauty!",
+            "If a Rafiki Tree falls in de Pride Lands and no one is around... does it land on a hyena? One can only hope!",
+            "Roses are red, Zazus are blue. Some poems rhyme... and dis one does too! Hehe!",
+            "I haven't seen Ticket Lion in a while. He is an old friend of mine, you know!",
+            "Don't even TINK about stealing any torches from my tree! I know where you live!",
+            "Giraffes have come to de Pride Lands! Dey make old Rafiki feel very short! Hahaha!",
+            "What time does de narwhal bacon? Ohohoho! I don't even know what dat means!",
             "Asante sana, squash banana, wewe nugu, mimi hapana!",
             "Ah yes, de past can hurt. But de way I see it, you can either run from it... or learn from it!",
             "It does not matter! It is in de past! Hahaha!",
             "De question is... who are YOU?",
-            "Change is good. But it is not easy.",
-            "Oh ho ho ho! You follow old Rafiki, he knows de way!",
-            "De circle of life moves us all.",
-            "Peacock Gems are useful for making very powerful tools."
+            "Change is good. But it is not easy. Hehe, dat is what makes it interesting!",
+            "Oh ho ho ho! You follow old Rafiki — he knows de way!",
+            "De circle of life moves us all, through despair and hope, through faith and love!",
+            "Peacock Gems are useful for making very powerful tools. Even old Rafiki is impressed!"
         };
 
         static final String[] COMPLETE_HINT = {
-            "Are you taking good care of Simba?",
-            "How is Simba doing? Is he dead yet? Hehe!",
-            "I hope you've been feeding Simba.",
-            "When Simba grows up, he can carry tings for you!",
-            "Go and play wit Simba.",
-            "You had better be replanting all dose mango trees!",
-            "Have you found Timon and Pumbaa yet?",
-            "Try taking Simba into some water. It can be a rewarding experience, hehe!",
-            "If you've lost your Pride Lands portal, you can look in de Book of Quests to find its location.",
-            "I hear dat angry lions will calm down again when fed Zebra Milk.",
-            "You can take Simba through portals to other realms! Just craft an Astral Charm and give it to him.",
-            "Lightning strikes in de Outlands form Outsand.",
-            "You can recharge Voided Charms at de Star Altar.",
-            "In Upendi... where de passion fruit grows sweet!",
-            "I hear dere are minerals in de Outlands wit dark and dangerous powers.",
-            "You smell of Pumbaa Flatulence... phew!",
-            "Corrupt Pridestone makes some of de strongest tools, but dey weaken very quickly.",
-            "You should try enchanting my stick. De results can be thunderously good!",
-            "Some of de termite mounds in de Outlands have treasure inside dem!",
-            "Mango! Milk! A bug and a bowl! Stewing insects is my goal!",
-            "Beware of speaking to Zira. You can't trust her!",
-            "Be careful in de Outlands. Dere are dangerous and evil creatures dere.",
-            "Do you still have Scar's rug?",
-            "Have you tried crafting some Peacock Wings yet?",
-            "Remember who you are! You are more dan what you have become.",
+            "Are you taking good care of little Simba? He needs a strong guardian!",
+            "How is Simba doing? Is he dead yet? Hehe! I am only joking, of course!",
+            "I hope you have been feeding Simba. A hungry lion is a cranky lion!",
+            "When Simba grows up, he can carry tings for you! Patience, patience!",
+            "Go and play wit Simba! He is still young, but he has de heart of a king!",
+            "You had better be replanting all dose mango trees! De circle of life demands it!",
+            "Have you found Timon and Pumbaa yet? Dey are... entertaining, to say de least!",
+            "Try taking Simba into some water. It can be a... rewarding experience! Hehe!",
+            "If you have lost your Pride Lands portal, look in de Book of Quests to find its location!",
+            "I hear dat angry lions will calm down again when fed Zebra Milk. Who knew?",
+            "You can take Simba through portals to other realms! Just craft an Astral Charm and give it to him!",
+            "Lightning strikes in de Outlands form Outsand. De Outlands are full of surprises!",
+            "You can recharge Voided Charms at de Star Altar. De ancestors are generous!",
+            "In Upendi... where de passion fruit grows sweet! Hahaha!",
+            "I hear dere are minerals in de Outlands wit dark and dangerous powers. Be careful!",
+            "You smell of Pumbaa Flatulence... phew! Even old Rafiki's eyes are watering!",
+            "Corrupt Pridestone makes some of de strongest tools, but dey weaken quickly. Like a hyena's resolve!",
+            "You should try enchanting my stick! De results can be thunderously good! Ohohoho!",
+            "Some of de termite mounds in de Outlands have treasure inside dem! Just watch out for de queen!",
+            "Mango! Milk! A bug and a bowl! Stewing insects is old Rafiki's goal! Hehe!",
+            "Beware of speaking to Zira. You cannot trust her! Not one bit!",
+            "Be careful in de Outlands. Dere are dangerous and evil creatures lurking everywhere!",
+            "Do you still have Scar's rug? Hehe! He makes a very handsome floor decoration!",
+            "Have you tried crafting some Peacock Wings yet? De view from up dere is magnificent!",
+            "Remember who you are! You are more dan what you have become!",
             "Look harder... he lives in you!",
-            "De king has returned."
+            "De king... has returned."
         };
 
         static final String[] FLOWERS = {
-            "What beautiful flowers!",
-            "Those flowers are simply divine.",
-            "Oh, I do like those flowers.",
-            "The flowers are just wonderful.",
-            "The flowers of the Pride Lands bring tears to my eyes!",
-            "Such marvellous flowers you have there."
+            "Ohohoho! De flowers of de Pride Lands! Dey make old Rafiki's heart sing!",
+            "Such beautiful flowers! De circle of life is in full bloom today!",
+            "Ahh, dose flowers! Dey remind me of when de Pride Lands were young and green!",
+            "Look at dose flowers! Even de baboons stop to admire dem! Hahaha!",
+            "De flowers! Dey bring tears to dis old monkey's eyes! So beautiful!",
+            "What marvellous flowers you have dere! De spirits of de ancestors smile upon dem!"
         };
 
         static final String[] TIMON_WAITING_BUGS = {
-            "Did you get those bugs for Pumbaa yet?",
-            "Pumbaa's still waiting on those bugs, pal.",
-            "Four bugs. That's all we need. How hard can it be?",
-            "Come on, kid! Pumbaa's stomach is growling louder than a lion!",
-            "You know where to find bugs, right? Under logs! Now get going!",
-            "Pumbaa can't fight on an empty stomach. Chop chop!"
+            "Hey, you got those bugs for Pumbaa yet? We're dyin' over here!",
+            "Pumbaa's still waitin' on those bugs, pal. And trust me, you do NOT want to hear his stomach growl.",
+            "Four bugs! That's it! I've seen ants carry more than that!",
+            "Come on, kid! Pumbaa's stomach is growling louder than Mufasa on a bad day!",
+            "You know where to find bugs, right? Under logs! It ain't exactly rocket science!",
+            "Pumbaa can't fight on an empty stomach. Believe me, I've tried makin' him. It ain't pretty."
         };
 
         static final String[] PUMBAA_NEED_BUGS = {
-            "I'm gonna need at least four bugs if you want me fighting fit!",
-            "Four bugs! That's all I'm asking for. Is that too much?",
-            "A warthog's gotta eat! Bring me four bugs and I'll be ready!",
-            "You call that enough bugs? I need four of 'em!",
-            "Hakuna Matata doesn't work on an empty stomach. Four bugs, please!",
-            "I can't fight Scar on an empty belly! Four bugs!"
+            "I'm gonna need at least four bugs before I can fight! A warthog's gotta eat, you know!",
+            "Four bugs! That's all I'm askin' for. Hakuna Matata doesn't work on an empty tummy!",
+            "If you want me fightin' fit, I need four nice, juicy bugs! Slimy yet satisfying!",
+            "You call that enough bugs? I need four of 'em! I'm a growing warthog!",
+            "I know it's gross to some folks, but I really do need those four bugs. It's a... dietary thing.",
+            "I can't fight Scar on an empty belly! Four bugs, please! Even Timon agrees, and he NEVER agrees with me!"
         };
 
         static final String[] BUGS = {
-            "Do you have those bugs yet?",
-            "We're really hungry! Please, bring us some bugs.",
-            "If you bring us some nice juicy bugs, I might have some rewards for you.",
-            "Stop staring at me. Bring me some bugs!",
-            "There must be a fallen log somewhere around here!",
-            "You can find bugs under fallen logs.",
-            "Hurry up with those bugs. Pumbaa and I are starving!"
+            "Hey, you got those bugs yet? Pumbaa and me, we're wastin' away here!",
+            "Listen, pal, bring us some nice juicy bugs and maybe — MAYBE — I'll have a reward for ya.",
+            "Bugs! Grubs! Anything slimy and crunchy! We ain't picky!",
+            "What are you starin' at? Go flip over some logs and bring me some bugs already!",
+            "There's gotta be a fallen log around here somewhere. Bugs love those things!",
+            "You can find bugs under fallen logs. It's the circle of life, kid — they eat the wood, we eat them!",
+            "Hurry up with those bugs! Pumbaa's stomach sounds like a thunderstorm and I can't take it anymore!"
         };
 
         static final String[] MORE_BUGS = {
-            "Those bugs were delicious. But there's always room for more!",
-            "You want something else from me? Bring us some more bugs.",
-            "We're still hungry, you know.",
-            "Stop staring at me. Bring me more bugs!",
-            "There's plenty of bugs left in the Pride Lands. Take the hint?",
-            "Do you have any more bugs?",
-            "I'm not full yet. Come back when you have some more bugs.",
-            "Have you tried using a Bug Trap? You can get even more bugs that way!",
-            "If you can't find any logs, try making a Bug Trap!",
-            "Bugs don't just hide under logs. You can lure them out into the open with a trap and the right bait."
+            "Those bugs were delicious! But let me tell ya, there's ALWAYS room for more.",
+            "You want somethin' else from me? That'll cost ya. Bring us more bugs!",
+            "We're still hungry, pal. Hakuna Matata means no worries, but no bugs? THAT I worry about.",
+            "Quit starin' and start huntin'! More bugs, chop chop!",
+            "There's plenty of bugs left in the Pride Lands. Take the hint, kid!",
+            "Got any more of those crunchy critters? I'm askin' for a friend. The friend is Pumbaa. And also me.",
+            "I ain't full yet. Come back when you got more bugs. And make 'em juicy!",
+            "Hey, you tried using a Bug Trap? You can get WAY more bugs that way! Work smarter, not harder!",
+            "If you can't find any logs, try makin' a Bug Trap! Even I could figure that one out.",
+            "Bugs don't just hide under logs, ya know. Lure 'em out with a trap and the right bait. Get creative!"
         };
 
         static final String[] RUG_SCAR = {
-            "How dare you treat me like this?",
-            "Life's just not fair.",
-            "Now I shall never be king.",
-            "No! Stop treading on me!",
-            "If I admit to killing Mufasa, will you let me go?",
-            "Minions! Obliterate this scum!",
-            "Where are my minions?",
-            "Who did this to me? My minions shall tear their flesh apart!",
-            "I should have snapped that Rafiki Stick while I had the chance.",
-            "You will pay for this mockery!",
-            "Where am I? Who are you? I despise guessing games.",
-            "It's the hyenas who are the real enemy. It was their fault. It was their idea!",
-            "Why did I rely on those idiotic hyenas?",
-            "As far as brains go, I got the lion's share. You seem to be at the shallow end of the gene pool.",
-            "I've got a lovely bunch of coconuts. There they are, all standing in a row...",
-            "I strongly dislike being a rug.",
-            "Alas, it seems I shall be occupying pride of place in someone's living room for the rest of my days.",
-            "I feel quite rugged right now.",
-            "Zazu always did say I'd make a very handsome throw rug."
+            "Life's not fair, is it? You see, I shall never be king. And YOU shall never stop walking on me.",
+            "How DARE you treat me — the rightful king — like some common doormat!",
+            "I'm surrounded by idiots... and now I'm lying beneath one.",
+            "I should have been king! Instead I'm a floor furnishing. The IRONY is not lost on me.",
+            "I admit I killed Mufasa. Happy? Now kindly remove your feet from my face.",
+            "Oh, SHENZI! BANZAI! ED! ...Where ARE my minions when I need them?",
+            "That Rafiki Stick... I should have snapped it in two when I had the chance.",
+            "Long live the king, they said. Well. Here I am. Very much alive. Very much... flat.",
+            "Who did this to me? When I get out of here — and I WILL — there shall be a reckoning.",
+            "It was the hyenas who are the real enemy! It was their fault! It was their idea!",
+            "Why did I ever rely on those idiotic hyenas? At least I have a brain. Had. HAVE.",
+            "As far as brains go, I got the lion's share. But as far as bodies go... I seem to have lost mine.",
+            "I've got a lovely bunch of coconuts... deedle-dee-dee... there they are, all standing in a row...",
+            "I am not a rug. I am a KING. A king who happens to be... temporarily horizontal.",
+            "Zazu always said I'd make a very handsome throw rug. I suppose he got the last laugh after all.",
+            "Be prepared! For the day I rise from this floor, your world will tremble!",
+            "I feel quite... rugged. Is that what passes for humor around here?",
+            "You will pay for this. Oh yes. Scar ALWAYS gets his revenge. Eventually. When he's not a rug."
         };
 
         static final String[] ZIRA_INGOTS = {
-            "Bring me five kivulite and two silver ingots.",
-            "I tire of waiting for the ingots.",
-            "Need I remind you how hungry these Outlanders are?",
-            "What? You don't have the silver and kivulite yet?",
-            "You are most incompetent. Perhaps we should have attacked you after all.",
-            "Surely it doesn't take this long to collect a few ingots?",
-            "Haven't you found any kivulite yet? There's probably some in the caves nearby."
+            "Five kivulite and two silver ingots. Bring them to me. NOW.",
+            "I tire of waiting! Do you think Scar would have tolerated such incompetence?",
+            "Need I remind you how hungry my Outlanders are? They haven't eaten in DAYS. Don't make me unleash them.",
+            "You don't have the silver and kivulite yet? Perhaps I chose the wrong ally.",
+            "You test my patience. Scar was right — you can never trust anyone but family.",
+            "Surely it doesn't take this long to collect a few ingots? Even Nuka could do better!",
+            "There's kivulite in the caves nearby. Find it, or find yourself at the mercy of my claws."
         };
 
         static final String[] ZIRA_FEATHERS = {
-            "You don't have the feathers yet? I thought better of you.",
-            "I need three Wayward Feathers!",
-            "To get a Wayward Feather, you have to give the Outwater blue, yellow, red and black feathers.",
-            "Go and kill some vultures. I never liked those birds.",
-            "No, of course I'm not going to tell you what I need the feathers for.",
-            "You get black feathers from vultures, and the other types from those infuriating Zazus in the Pride Lands.",
-            "The Wayward Feathers aren't going to collect themselves, are they?"
+            "You don't have the feathers yet? I thought better of you. Don't make me reconsider.",
+            "I need three Wayward Feathers! Scar's plan demands it!",
+            "Throw colored feathers into the Outwater — blue, yellow, red, and black. The pool does the rest.",
+            "Go and slaughter some vultures. I never liked those wretched birds.",
+            "What I need the feathers for is NONE of your concern. Just bring them!",
+            "Black feathers from vultures. The rest from those infuriating Zazus in the Pride Lands. Is that so difficult?",
+            "The Wayward Feathers aren't going to collect themselves! Must I do EVERYTHING?"
         };
 
         static final String[] ZIRA_CONQUEST = {
-            "This tree looks much nicer now it's under our control.",
-            "The Pride Lands will be mine soon!",
-            "We couldn't have got here without your help. Scar would have been proud of you.",
-            "I'll never see a single vulture again!",
-            "Have you tried throwing some more things into the Outwater? Of course, I wouldn't go back there, but it's worth experimenting with that strange pool.",
-            "I wonder what Rafiki thought Timon and Pumbaa could possibly do against me?",
-            "We will take this entire kingdom... by force!"
+            "This tree is MINE now! It looks much better under Outlander rule, don't you think?",
+            "The Pride Lands will be mine! It is what Scar would have wanted! His vision... REALIZED!",
+            "We couldn't have conquered this without you. Scar would have been proud. I, however, am merely satisfied.",
+            "I shall never see another wretched vulture again! The skies belong to US now!",
+            "Try throwing more things into the Outwater. I wouldn't go back there myself... but you might find it illuminating.",
+            "Rafiki thought Timon and Pumbaa could stop ME? A meerkat and a warthog against the Outsiders? Laughable!",
+            "We will take this ENTIRE kingdom... by FORCE if necessary! Scar's dream lives on!"
         };
 
         static final String[] RUG_ZIRA = {
-            "Well, I never thought I'd end up like this.",
-            "This is very uncomfortable.",
-            "My Outlanders will exact a terrible revenge on you.",
-            "I now see the path to our glorious return to power!",
-            "Scar is gone, but Zira's still around...",
-            "Outlanders! Annihilate this fool!",
-            "Keep poking me like that and I shall bring a swift end to your pitiful existence!",
-            "You have turned me into an ornament? How dare you!",
-            "A plague of vultures shall avenge my death!"
+            "I never thought I'd end up like this. Scar... I have failed you.",
+            "This is most... uncomfortable. But a true warrior endures!",
+            "My Outlanders will avenge me! You have NOT seen the last of Zira!",
+            "Even from this floor, I can see the path to our glorious return to power!",
+            "Scar is gone, but his legacy lives on through ME! Even as... this.",
+            "Outlanders! RISE UP! Annihilate this fool who dares to walk upon me!",
+            "Keep poking me like that and I shall find a way to bring a swift end to your pitiful existence!",
+            "You have turned ME — the chosen one of Scar — into an ORNAMENT?!",
+            "A plague of vultures shall descend upon you! Mark my words! MARK THEM!"
         };
 
         static final String[] LION = {
-            "By Mufasa's mane! You can understand me!",
-            "I like to chew on hyena bones before I breed.",
-            "Hyenas. Filthy, slobbering, mangy creatures...",
-            "It's a wonderful day in the Pride Lands today.",
-            "I haven't seen any hyenas recently. Have you?",
-            "I've applied to be a Ticket Lion. They haven't responded yet.",
-            "And how are you today, human?",
-            "What do you call a lion running a copying machine? A copycat!",
-            "Simba was moving too slowly, so I told him to Mufasa."
+            "By Mufasa's mane! You... you can understand me?",
+            "The Pride Lands are at peace today. As they should be.",
+            "Hyenas... filthy, slobbering, mangy, stupid creatures.",
+            "It is a fine day in the Pride Lands. The Circle of Life turns on.",
+            "I haven't seen any hyenas recently. Good riddance, I say.",
+            "I've put in my application to be a Ticket Lion. Still waiting to hear back. The bureaucracy is terrible.",
+            "Greetings, human. The Pride Lands welcome you.",
+            "What do you call a lion running a copying machine? A copycat! ...Simba told me that one.",
+            "Simba was moving too slowly, so I told him to Mufasa! Hah!"
         };
 
         static final String[] LION_CUB = {"Roar!", "Grrr!", "Rrr!"};
 
         static final String[] ZEBRA = {
-            "Stay away from the rainforests at night. That's when the crocodiles come out.",
-            "I nearly got eaten by a crocodile! Good thing I can run faster than them.",
-            "You can collect Zebra Milk in a jar and use it to calm down angry lions!",
-            "Am I white with black stripes, or black with white stripes?",
-            "My hide looks simply fabulous, don't you think?",
-            "Aren't you the one that made my friends into boots?",
-            "Zebra meat tastes disgusting, I'll have you know."
+            "Stay away from the rainforests at night! That's when the crocodiles come out! Trust me, I KNOW!",
+            "I nearly got eaten by a crocodile once! Good thing we zebras can run like the wind!",
+            "You can collect Zebra Milk in a jar and use it to calm down angry lions! It's our... contribution.",
+            "Am I white with black stripes, or black with white stripes? Even I don't know!",
+            "My hide looks simply fabulous, don't you think? Don't answer that. I know it does.",
+            "Aren't you the one who made my friends into boots? I've got my eye on you...",
+            "Zebra meat tastes disgusting! I'm told. By other zebras. Who would know."
         };
 
         static final String[] ZEBRA_FOAL = {"Hmmph!", "Hssh!", "Hmm!"};
 
         static final String[] RHINO = {
-            "Have I seen you before?",
-            "Zebra Chops are much nicer than rhino meat.",
-            "I didn't know you creatures could talk.",
-            "Do you have any wheat?",
-            "How do you stop a rhino charging? I wouldn't know, I don't seem to be able to charge.",
-            "My full name is Rhinoceros.",
-            "I've got one tail, four feet and twelve toes."
+            "Hmm. Have I seen you before? All you humans look the same to me.",
+            "Zebra Chops taste way better than rhino meat. Not that I'd know. Just... spread the word.",
+            "I didn't know you creatures could talk. Fascinating. Now leave me alone.",
+            "Do you have any wheat? I'm asking nicely. I won't ask nicely twice.",
+            "How do you stop a rhino from charging? I don't know either. Never tried stopping.",
+            "My full name is Rhinoceros. But my friends call me Rhino. You can call me Rhinoceros.",
+            "One tail, four feet, twelve toes, and one very sharp horn. Don't forget the horn."
         };
 
         static final String[] RHINO_CALF = {"Rrr!", "Hmm!", "Hrrh!"};
 
         static final String[] GEMSBOK = {
-            "I bet you've never even heard of a Gemsbok before.",
-            "Don't you wish you had horns like mine?",
-            "Gemsbok? How do you pronounce that?",
-            "The grass around here is very nice. You should try some.",
-            "I find the idea of a Gemsbok Spear very disturbing.",
-            "What do you mean, I sound exactly like a zebra?",
-            "Hello! I like wheat and corn!",
-            "Stay away from the crocodiles!"
+            "I bet you've never even HEARD of a gemsbok before, have you? We're rare!",
+            "Don't you wish you had horns like mine? Of course you do. Everyone does.",
+            "Gemsbok. G-E-M-S-B-O-K. Even I have trouble spelling it sometimes.",
+            "The grass around here is superb. You should try some. No? Your loss.",
+            "A Gemsbok Spear? Made from MY horns? I find that DEEPLY offensive.",
+            "What do you mean, I sound exactly like a zebra? How DARE you! We sound nothing alike!",
+            "Hello there! I enjoy wheat and corn! Simple pleasures for a sophisticated creature!",
+            "Stay away from the crocodiles! I may be fast, but I'd rather not test it!"
         };
 
         static final String[] GEMSBOK_CALF = {"Hmmph!", "Hssh!", "Hmm!"};

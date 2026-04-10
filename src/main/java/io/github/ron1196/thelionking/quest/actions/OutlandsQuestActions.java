@@ -152,7 +152,7 @@ public final class OutlandsQuestActions {
         ChatHelper.broadcastNpcMessage(
                 outlandsLevel,
                 "Zira",
-                "You are a traitor, and I shall dispose of you. Now face the wrath of the Termite Queen!");
+                "TRAITOR! You dare betray the Outsiders?! Now you will face the wrath of the Termite Queen! Scar, give me strength!");
 
         if (player instanceof ServerPlayer sp) {
             sp.sendSystemMessage(Component.literal("\u00a7c\u00a7lZira has returned!"));

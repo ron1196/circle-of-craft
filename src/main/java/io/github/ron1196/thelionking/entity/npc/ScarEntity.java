@@ -35,7 +35,7 @@ public class ScarEntity extends Monster {
             Component.literal("Scar"), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
 
     private static final String SCAR_GREETING =
-            "So, you've come to challenge me? How delightfully brave... and foolish.";
+            "Well, well, well... look what we have here. A little visitor. How delightfully... brave. And foolish.";
 
     private boolean hasSpoken = false;
 
@@ -148,7 +148,7 @@ public class ScarEntity extends Monster {
         WorldData data = WorldData.get(serverLevel);
         for (Player player :
                 level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(DEATH_MESSAGE_RANGE))) {
-            ChatHelper.sendNpcMessage(player, "Scar", "This... is not... the end...");
+            ChatHelper.sendNpcMessage(player, "Scar", "This is... not... the end. I will... always... be king...");
             if (player instanceof ServerPlayer sp) {
                 data.getQuestManager().tryAdvance("rafiki", sp, QuestTrigger.SCAR_KILLED);
             }

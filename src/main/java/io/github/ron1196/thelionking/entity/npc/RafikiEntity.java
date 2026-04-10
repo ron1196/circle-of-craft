@@ -110,9 +110,9 @@ public class RafikiEntity extends PathfinderMob {
                 ChatHelper.sendNpcMessage(
                         player,
                         "Rafiki",
-                        "Now's your chance to put tings right. Go through dat portal and put an end to Zira's outlandish scheme!");
+                        "Now is your chance to put tings right! Go through dat portal and put an end to Zira's outlandish scheme! De ancestors believe in you!");
             } else {
-                ChatHelper.sendNpcMessage(player, "Rafiki", "Go! De Outlands await you. Put an end to Zira's madness!");
+                ChatHelper.sendNpcMessage(player, "Rafiki", "Go! De Outlands await you! Put an end to Zira's madness! Hehe!");
             }
             return InteractionResult.SUCCESS;
         }
@@ -153,7 +153,7 @@ public class RafikiEntity extends PathfinderMob {
     private void sendClaimDialogue(Player player, Stage stage) {
         String message =
                 switch (stage) {
-                    case RALLY_PUMBAA -> "Here you go! Old Rafiki's finest work, hehe!";
+                    case RALLY_PUMBAA -> "Here you go! Old Rafiki's finest work! Ohohoho!";
                     default -> null;
                 };
         if (message != null) ChatHelper.sendNpcMessage(player, "Rafiki", message);
@@ -162,14 +162,14 @@ public class RafikiEntity extends PathfinderMob {
     private void sendStageDialogue(Player player, Stage newStage) {
         String message =
                 switch (newStage) {
-                    case CRAFT_RAFIKI_STICK -> "Ahh, welcome to de Pride Lands! I am Rafiki. Bring me a stick, a mango, and a bug, and I will craft you a stick of great power!";
-                    case RALLY_PUMBAA -> "Excellent work! Now take dis stick — you will need it. But you cannot face Scar alone! Go find Pumbaa and convince him to help you!";
-                    case COLLECT_BONES -> "Pumbaa is on your side now! Bring me sixty-four hyena bones and we can take de fight to Scar!";
+                    case CRAFT_RAFIKI_STICK -> "Ahh, welcome to de Pride Lands! I am Rafiki! Bring old Rafiki a stick, a mango, and a bug, and I will craft you a stick of great power! Ohohoho!";
+                    case RALLY_PUMBAA -> "Excellent work! Now take dis stick — you will need it! But you cannot face Scar alone, oh no! Go find Pumbaa and convince him to help you!";
+                    case COLLECT_BONES -> "Pumbaa is on your side now! Hehe! Bring me sixty-four hyena bones and we can take de fight to dat coward Scar!";
                     case DEFEAT_SCAR -> getScarHint(player);
-                    case COLLECT_TERMITES -> "Hah! You did it! Scar is no more! Now, dis portal will take you to de Outlands. Go dere and bring old Rafiki four termite dust, yes?";
-                    case COLLECT_MANGOES -> "Very good! Now bring me four mango dust. De spirits are pleased wit your progress!";
-                    case USE_STAR_ALTAR -> "Ahh, perfect! Now craft a Star Altar and use de Rafiki Dust on it. De ancestors are waiting!";
-                    case COMPLETE -> "It is done! De spirits of de great kings smile upon you! Rafiki is very proud, hehe!";
+                    case COLLECT_TERMITES -> "Hah! You did it! Scar is no more! De ancestors are rejoicing! Now, dis portal will take you to de Outlands. Bring old Rafiki four termite dust, yes?";
+                    case COLLECT_MANGOES -> "Very good! De spirits are pleased wit your progress! Now bring me four mango dust!";
+                    case USE_STAR_ALTAR -> "Ahh, perfect! Now craft a Star Altar and use de Rafiki Dust on it. De great kings of de past are waiting!";
+                    case COMPLETE -> "It is done! De spirits of de great kings smile upon you! Old Rafiki is very, VERY proud! Ohohoho!";
                     default -> null;
                 };
         // COLLECT_BUGS and RETURN_TO_RAFIKI transitions happen at Timon/Pumbaa, not Rafiki
@@ -177,15 +177,15 @@ public class RafikiEntity extends PathfinderMob {
     }
 
     private String getScarHint(Player player) {
-        String base = "Excellent! Here is my stick — it is de only weapon dat can harm Scar! "
-                + "Watch de hyenas... dey know where deir master hides. Follow dem, and you will find him!";
+        String base = "Excellent! Here is old Rafiki's stick — it is de ONLY weapon dat can harm Scar! "
+                + "Watch de hyenas... dey always know where deir master hides. Follow dem, and you will find dat coward!";
         if (level() instanceof ServerLevel serverLevel) {
             List<ScarEntity> scars = serverLevel.getEntitiesOfClass(
                     ScarEntity.class, player.getBoundingBox().inflate(250));
             if (!scars.isEmpty()) {
                 String direction = DirectionHelper.getCompassDirection(
                         player.blockPosition(), scars.get(0).blockPosition());
-                base += " I hear he was seen lurking in de caves " + direction + ".";
+                base += " Oho! I hear he was seen lurking in de caves " + direction + "!";
             }
         }
         return base;
