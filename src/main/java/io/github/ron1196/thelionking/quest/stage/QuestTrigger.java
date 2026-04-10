@@ -3,6 +3,7 @@ package io.github.ron1196.thelionking.quest.stage;
 public enum QuestTrigger {
     // Rafiki questline (in stage order)
     RAFIKI_TALK,
+    TIMON_TALK,
     SCAR_KILLED,
     STAR_ALTAR_USED,
 

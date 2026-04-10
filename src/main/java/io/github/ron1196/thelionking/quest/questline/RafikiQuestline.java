@@ -26,12 +26,12 @@ import net.minecraft.world.level.levelgen.Heightmap;
 
 public class RafikiQuestline {
 
-    private static final int GATE_SEARCH_RADIUS = 20;
-
     public enum Stage implements StageId {
         FIND_RAFIKI,
         CRAFT_RAFIKI_STICK,
         RALLY_PUMBAA,
+        COLLECT_BUGS,
+        RETURN_TO_RAFIKI,
         COLLECT_BONES,
         DEFEAT_SCAR,
         COLLECT_TERMITES,
@@ -55,6 +55,12 @@ public class RafikiQuestline {
                                         new ItemRequirement(LionKingItems.BUG, 1, Source.INVENTORY))))
                 .stage(RALLY_PUMBAA, new QuestObjective("Find Timon and Pumbaa"))
                 .stage(
+                        COLLECT_BUGS,
+                        new QuestObjective(
+                                "Bring Pumbaa 4 bugs",
+                                List.of(new ItemRequirement(LionKingItems.BUG, 4, Source.INVENTORY))))
+                .stage(RETURN_TO_RAFIKI, new QuestObjective("Return to Rafiki"))
+                .stage(
                         COLLECT_BONES,
                         new QuestObjective(
                                 "Bring Rafiki 64 hyena bones",
@@ -74,7 +80,9 @@ public class RafikiQuestline {
                 .claimableReward(CRAFT_RAFIKI_STICK, new ClaimableReward(LionKingItems.RAFIKI_STICK, 1))
                 .trigger(FIND_RAFIKI, RAFIKI_TALK)
                 .trigger(CRAFT_RAFIKI_STICK, RAFIKI_TALK)
-                .trigger(RALLY_PUMBAA, PUMBAA_TALK)
+                .trigger(RALLY_PUMBAA, TIMON_TALK)
+                .trigger(COLLECT_BUGS, PUMBAA_TALK)
+                .trigger(RETURN_TO_RAFIKI, RAFIKI_TALK)
                 .trigger(COLLECT_BONES, RAFIKI_TALK)
                 .trigger(DEFEAT_SCAR, SCAR_KILLED)
                 .trigger(COLLECT_TERMITES, RAFIKI_TALK)

@@ -5,6 +5,7 @@ import io.github.ron1196.thelionking.menu.TimonMerchantMenu;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.quest.NpcInteraction;
 import io.github.ron1196.thelionking.quest.questline.RafikiQuestline;
+import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.util.ChatHelper;
 import net.minecraft.network.chat.Component;
@@ -95,7 +96,12 @@ public class TimonEntity extends PathfinderMob {
             RafikiQuestline.Stage rafikiStage = ctx.stage("rafiki", RafikiQuestline.Stage.class);
             if (rafikiStage == RafikiQuestline.Stage.RALLY_PUMBAA) {
                 talkCooldown = RALLY_COOLDOWN_TICKS;
-                handleRallyPumbaaIntro(player, ctx.worldData());
+                handleRallyPumbaaIntro(player, ctx);
+                return InteractionResult.SUCCESS;
+            }
+            if (rafikiStage == RafikiQuestline.Stage.COLLECT_BUGS) {
+                talkCooldown = RALLY_COOLDOWN_TICKS;
+                CharacterSpeech.sendSpeech(player, CharacterSpeech.TIMON_WAITING_BUGS);
                 return InteractionResult.SUCCESS;
             }
         }
@@ -122,16 +128,18 @@ public class TimonEntity extends PathfinderMob {
         return InteractionResult.SUCCESS;
     }
 
-    private void handleRallyPumbaaIntro(@NotNull Player player, @NotNull WorldData worldData) {
-        if (worldData.isTimonRafikiIntroDone()) {
-            ChatHelper.sendNpcMessage(player, "Timon", "Did you get those bugs for Pumbaa yet?");
-            return;
-        }
-
+    private void handleRallyPumbaaIntro(@NotNull Player player, @NotNull NpcInteraction ctx) {
+        WorldData worldData = ctx.worldData();
         int talkIndex = worldData.getTimonRafikiTalkCount();
+
         if (talkIndex < RALLY_INTRO_DIALOGUE.length) {
             ChatHelper.sendNpcMessage(player, RALLY_INTRO_DIALOGUE[talkIndex][0], RALLY_INTRO_DIALOGUE[talkIndex][1]);
             worldData.incrementTimonRafikiTalkCount();
+        }
+
+        // After the last line, advance RALLY_PUMBAA → COLLECT_BUGS
+        if (talkIndex >= RALLY_INTRO_DIALOGUE.length - 1) {
+            ctx.quests().tryAdvance("rafiki", ctx.serverPlayer(), QuestTrigger.TIMON_TALK);
         }
     }
 }

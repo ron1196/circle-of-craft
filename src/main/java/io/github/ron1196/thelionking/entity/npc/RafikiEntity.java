@@ -138,7 +138,7 @@ public class RafikiEntity extends PathfinderMob {
         // Quest didn't advance — give contextual speech
         switch (stage) {
             case CRAFT_RAFIKI_STICK -> sendSpeech(player, CharacterSpeech.CRAFT_STICK);
-            case RALLY_PUMBAA -> sendSpeech(player, CharacterSpeech.FIND_PUMBAA);
+            case RALLY_PUMBAA, COLLECT_BUGS -> sendSpeech(player, CharacterSpeech.FIND_PUMBAA);
             case COLLECT_BONES -> sendSpeech(player, CharacterSpeech.HYENA_BONES);
             case COLLECT_TERMITES -> sendSpeech(player, CharacterSpeech.TERMITES);
             case COLLECT_MANGOES -> sendSpeech(player, CharacterSpeech.MANGOES);
@@ -172,6 +172,7 @@ public class RafikiEntity extends PathfinderMob {
                     case COMPLETE -> "It is done! De spirits of de great kings smile upon you! Rafiki is very proud, hehe!";
                     default -> null;
                 };
+        // COLLECT_BUGS and RETURN_TO_RAFIKI transitions happen at Timon/Pumbaa, not Rafiki
         if (message != null) ChatHelper.sendNpcMessage(player, "Rafiki", message);
     }
 

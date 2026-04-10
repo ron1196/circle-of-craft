@@ -42,8 +42,13 @@ public final class RafikiQuestActions {
     // ── Stage groups ────────────────────────────────────────────────────────
 
     /** Stages where Rafiki should exist but Scar should not. Early quest. */
-    private static final Set<Stage> EARLY_STAGES =
-            EnumSet.of(Stage.FIND_RAFIKI, Stage.CRAFT_RAFIKI_STICK, Stage.RALLY_PUMBAA, Stage.COLLECT_BONES);
+    private static final Set<Stage> EARLY_STAGES = EnumSet.of(
+            Stage.FIND_RAFIKI,
+            Stage.CRAFT_RAFIKI_STICK,
+            Stage.RALLY_PUMBAA,
+            Stage.COLLECT_BUGS,
+            Stage.RETURN_TO_RAFIKI,
+            Stage.COLLECT_BONES);
 
     /** Stages after Scar is defeated: no Scar, gate broken, portal active. */
     private static final Set<Stage> POST_SCAR_STAGES =

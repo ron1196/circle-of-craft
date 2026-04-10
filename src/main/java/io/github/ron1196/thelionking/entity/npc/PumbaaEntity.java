@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.ai.PumbaaFollowTimonGoal;
+import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.quest.NpcInteraction;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.RafikiQuestline;
@@ -129,19 +129,24 @@ public class PumbaaEntity extends PathfinderMob {
         }
     }
 
-    private static final int RALLY_BUG_COUNT = 4;
-
     @Override
     protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         NpcInteraction ctx = NpcInteraction.tryCreate(player);
         if (ctx == null) return InteractionResult.SUCCESS;
         if (talkCooldown > 0) return InteractionResult.SUCCESS;
 
-        // RALLY_PUMBAA — accept bugs after Timon intro
+        // RALLY_PUMBAA — haven't talked to Timon yet
         RafikiQuestline.Stage rafikiStage = ctx.stage("rafiki", RafikiQuestline.Stage.class);
         if (rafikiStage == RafikiQuestline.Stage.RALLY_PUMBAA) {
             talkCooldown = TALK_COOLDOWN_TICKS;
-            handleRallyPumbaa(player, ctx);
+            sendRandomQuote(player);
+            return InteractionResult.SUCCESS;
+        }
+
+        // COLLECT_BUGS — accept bugs after Timon intro
+        if (rafikiStage == RafikiQuestline.Stage.COLLECT_BUGS) {
+            talkCooldown = TALK_COOLDOWN_TICKS;
+            handleCollectBugs(player, ctx);
             return InteractionResult.SUCCESS;
         }
 
@@ -284,25 +289,12 @@ public class PumbaaEntity extends PathfinderMob {
 
     // ── Rafiki quest: RALLY_PUMBAA ────────────────────────────────────────
 
-    private void handleRallyPumbaa(@NotNull Player player, @NotNull NpcInteraction ctx) {
-        WorldData worldData = ctx.worldData();
-
-        // Before Timon intro is done, fall through to random quotes
-        if (!worldData.isTimonRafikiIntroDone()) {
-            sendRandomQuote(player);
+    private void handleCollectBugs(@NotNull Player player, @NotNull NpcInteraction ctx) {
+        // tryAdvance checks for 4 bugs in inventory and consumes them
+        if (!ctx.quests().tryAdvance("rafiki", ctx.serverPlayer(), QuestTrigger.PUMBAA_TALK)) {
+            CharacterSpeech.sendSpeech(player, CharacterSpeech.PUMBAA_NEED_BUGS);
             return;
         }
-
-        // Check player has enough bugs
-        int bugCount = countInInventory(player, LionKingItems.BUG.get());
-        if (bugCount < RALLY_BUG_COUNT) {
-            ChatHelper.sendNpcMessage(
-                    player, "Pumbaa", "I'm gonna need at least four bugs if you want me fighting fit!");
-            return;
-        }
-
-        // Consume bugs
-        shrinkFromInventory(player, LionKingItems.BUG.get(), RALLY_BUG_COUNT);
 
         // Eating sounds
         for (int i = 0; i < 3; i++) {
@@ -318,9 +310,7 @@ public class PumbaaEntity extends PathfinderMob {
         // Fart effect
         fart();
 
-        // Advance quest and reset talk count
-        ctx.quests().tryAdvance("rafiki", ctx.serverPlayer(), QuestTrigger.PUMBAA_TALK);
-        worldData.resetTimonRafikiTalkCount();
+        ctx.worldData().resetTimonRafikiTalkCount();
 
         ChatHelper.sendNpcMessage(player, "Pumbaa", "Ahh, slimy yet satisfying! I'm ready to fight! Hakuna Matata!");
     }

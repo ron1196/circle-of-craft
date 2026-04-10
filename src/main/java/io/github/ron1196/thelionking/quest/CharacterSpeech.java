@@ -17,6 +17,8 @@ public enum CharacterSpeech {
     HINT("Rafiki", Speech.HINT),
     COMPLETE_HINT("Rafiki", Speech.COMPLETE_HINT),
     FLOWERS("Rafiki", Speech.FLOWERS),
+    PUMBAA_NEED_BUGS("Pumbaa", Speech.PUMBAA_NEED_BUGS),
+    TIMON_WAITING_BUGS("Timon", Speech.TIMON_WAITING_BUGS),
     BUGS("Timon", Speech.BUGS),
     MORE_BUGS("Timon", Speech.MORE_BUGS),
     RUG_SCAR("Scar", Speech.RUG_SCAR),
@@ -213,6 +215,24 @@ public enum CharacterSpeech {
             "The flowers are just wonderful.",
             "The flowers of the Pride Lands bring tears to my eyes!",
             "Such marvellous flowers you have there."
+        };
+
+        static final String[] TIMON_WAITING_BUGS = {
+            "Did you get those bugs for Pumbaa yet?",
+            "Pumbaa's still waiting on those bugs, pal.",
+            "Four bugs. That's all we need. How hard can it be?",
+            "Come on, kid! Pumbaa's stomach is growling louder than a lion!",
+            "You know where to find bugs, right? Under logs! Now get going!",
+            "Pumbaa can't fight on an empty stomach. Chop chop!"
+        };
+
+        static final String[] PUMBAA_NEED_BUGS = {
+            "I'm gonna need at least four bugs if you want me fighting fit!",
+            "Four bugs! That's all I'm asking for. Is that too much?",
+            "A warthog's gotta eat! Bring me four bugs and I'll be ready!",
+            "You call that enough bugs? I need four of 'em!",
+            "Hakuna Matata doesn't work on an empty stomach. Four bugs, please!",
+            "I can't fight Scar on an empty belly! Four bugs!"
         };
 
         static final String[] BUGS = {
