@@ -1,7 +1,10 @@
 package io.github.ron1196.thelionking.entity.npc;
 
+import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.menu.TimonMerchantMenu;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
+import io.github.ron1196.thelionking.quest.NpcInteraction;
+import io.github.ron1196.thelionking.quest.questline.RafikiQuestline;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.util.ChatHelper;
 import net.minecraft.network.chat.Component;
@@ -61,6 +64,17 @@ public class TimonEntity extends PathfinderMob {
         if (talkCooldown > 0) talkCooldown--;
     }
 
+    private static final int RALLY_COOLDOWN_TICKS = 40;
+
+    private static final String[][] RALLY_INTRO_DIALOGUE = {
+        {"Timon", "What? You want us to fight Scar? That guy's got claws the size of my whole body!"},
+        {"Pumbaa", "Timon, we have to help! The Pride Lands need us!"},
+        {
+            "Timon",
+            "Fine, fine... but Pumbaa here's gonna need some fuel. Bring him four bugs and he'll be ready to rumble!"
+        }
+    };
+
     @Override
     protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         if (level().isClientSide()) return InteractionResult.SUCCESS;
@@ -74,6 +88,18 @@ public class TimonEntity extends PathfinderMob {
         }
 
         if (talkCooldown > 0) return InteractionResult.SUCCESS;
+
+        // RALLY_PUMBAA — scripted intro dialogue
+        NpcInteraction ctx = NpcInteraction.tryCreate(player);
+        if (ctx != null) {
+            RafikiQuestline.Stage rafikiStage = ctx.stage("rafiki", RafikiQuestline.Stage.class);
+            if (rafikiStage == RafikiQuestline.Stage.RALLY_PUMBAA) {
+                talkCooldown = RALLY_COOLDOWN_TICKS;
+                handleRallyPumbaaIntro(player, ctx.worldData());
+                return InteractionResult.SUCCESS;
+            }
+        }
+
         talkCooldown = 120;
 
         // Accept bugs for a quick trade
@@ -94,5 +120,18 @@ public class TimonEntity extends PathfinderMob {
 
         CharacterSpeech.sendSpeech(player, hasGivenFirstBugs ? CharacterSpeech.MORE_BUGS : CharacterSpeech.BUGS);
         return InteractionResult.SUCCESS;
+    }
+
+    private void handleRallyPumbaaIntro(@NotNull Player player, @NotNull WorldData worldData) {
+        if (worldData.isTimonRafikiIntroDone()) {
+            ChatHelper.sendNpcMessage(player, "Timon", "Did you get those bugs for Pumbaa yet?");
+            return;
+        }
+
+        int talkIndex = worldData.getTimonRafikiTalkCount();
+        if (talkIndex < RALLY_INTRO_DIALOGUE.length) {
+            ChatHelper.sendNpcMessage(player, RALLY_INTRO_DIALOGUE[talkIndex][0], RALLY_INTRO_DIALOGUE[talkIndex][1]);
+            worldData.incrementTimonRafikiTalkCount();
+        }
     }
 }

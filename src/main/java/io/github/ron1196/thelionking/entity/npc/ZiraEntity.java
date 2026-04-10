@@ -142,7 +142,7 @@ public class ZiraEntity extends Monster {
             return;
         }
 
-        if (questBehavior.tick()) return;
+        questBehavior.tick();
     }
 
     private boolean onQuestCheck(@NotNull ServerLevel serverLevel, @NotNull QuestlineManager quests) {
@@ -219,8 +219,8 @@ public class ZiraEntity extends Monster {
         }
 
         // Standard path: try claim reward, then try advance
-        if (ctx.tryClaimOrAdvance("outlands", Stage.class, QuestTrigger.ZIRA_TALK,
-                s -> sendStageDialogue(player, s))) {
+        if (ctx.tryClaimOrAdvance(
+                "outlands", Stage.class, QuestTrigger.ZIRA_TALK, null, s -> sendStageDialogue(player, s))) {
             return InteractionResult.SUCCESS;
         }
 
@@ -291,11 +291,7 @@ public class ZiraEntity extends Monster {
     }
 
     @Override
-    protected void dropCustomDeathLoot(
-            @NotNull DamageSource source,
-            int looting,
-            boolean recentlyHit
-    ) {
+    protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
         super.dropCustomDeathLoot(source, looting, recentlyHit);
         spawnAtLocation(LionKingItems.ZIRA_RUG.get());
     }

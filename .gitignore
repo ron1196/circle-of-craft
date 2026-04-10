@@ -27,6 +27,5 @@ Thumbs.db
 # Secrets
 *.env
 
-# Worktrees
 .worktrees/
-
+.sandcastle/

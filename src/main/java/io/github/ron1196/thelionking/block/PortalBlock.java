@@ -210,10 +210,11 @@ public class PortalBlock extends Block {
     }
 
     private void teleportNearbySimba(ServerPlayer player, ServerLevel destLevel) {
-        for (Entity entity : player.level().getEntities(
-                (Entity) null,
-                player.getBoundingBox().inflate(SIMBA_TELEPORT_RANGE),
-                e -> e instanceof SimbaEntity simba && simba.isOwnedBy(player) && simba.hasCharm())) {
+        for (Entity entity : player.level()
+                .getEntities(
+                        (Entity) null,
+                        player.getBoundingBox().inflate(SIMBA_TELEPORT_RANGE),
+                        e -> e instanceof SimbaEntity simba && simba.isOwnedBy(player) && simba.hasCharm())) {
             entity.setPortalCooldown();
             entity.changeDimension(destLevel, new Teleporter(this));
         }

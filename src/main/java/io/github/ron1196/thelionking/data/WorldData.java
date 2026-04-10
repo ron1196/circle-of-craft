@@ -12,8 +12,11 @@ public class WorldData extends SavedData {
     private static final String DATA_NAME = TheLionKingMod.MOD_ID + "_data";
 
     private final QuestlineManager questManager = new QuestlineManager(this);
+    public static final int TIMON_RALLY_INTRO_LINE_COUNT = 3;
+
     private int ziraTreeTalkCount = 0;
     private int pumbaaTalkCount = 0;
+    private int timonRafikiTalkCount = 0;
 
     public WorldData() {}
 
@@ -49,6 +52,24 @@ public class WorldData extends SavedData {
         setDirty();
     }
 
+    public int getTimonRafikiTalkCount() {
+        return timonRafikiTalkCount;
+    }
+
+    public void incrementTimonRafikiTalkCount() {
+        this.timonRafikiTalkCount++;
+        setDirty();
+    }
+
+    public void resetTimonRafikiTalkCount() {
+        this.timonRafikiTalkCount = 0;
+        setDirty();
+    }
+
+    public boolean isTimonRafikiIntroDone() {
+        return timonRafikiTalkCount >= TIMON_RALLY_INTRO_LINE_COUNT;
+    }
+
     @SuppressWarnings("resource") // ServerLevel is managed by the server, never closed manually
     public static WorldData get(ServerLevel level) {
         // Always use overworld data storage so quest state is shared across all dimensions
@@ -61,6 +82,7 @@ public class WorldData extends SavedData {
         data.questManager.readFromNBT(tag);
         data.ziraTreeTalkCount = tag.getInt("ZiraTreeTalkCount");
         data.pumbaaTalkCount = tag.getInt("PumbaaTalkCount");
+        data.timonRafikiTalkCount = tag.getInt("TimonRafikiTalkCount");
         return data;
     }
 
@@ -69,6 +91,7 @@ public class WorldData extends SavedData {
         questManager.writeToNBT(tag);
         tag.putInt("ZiraTreeTalkCount", ziraTreeTalkCount);
         tag.putInt("PumbaaTalkCount", pumbaaTalkCount);
+        tag.putInt("TimonRafikiTalkCount", timonRafikiTalkCount);
         return tag;
     }
 }
