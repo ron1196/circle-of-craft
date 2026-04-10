@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.quest.questline;
 
 import static io.github.ron1196.thelionking.quest.questline.RafikiQuestline.Stage.*;
 import static io.github.ron1196.thelionking.quest.stage.QuestObjective.ItemRequirement;
+import static io.github.ron1196.thelionking.quest.stage.QuestObjective.Source;
 import static io.github.ron1196.thelionking.quest.stage.QuestTrigger.*;
 
 import io.github.ron1196.thelionking.entity.npc.ScarEntity;
@@ -20,6 +21,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 public class RafikiQuestline {
@@ -28,6 +30,8 @@ public class RafikiQuestline {
 
     public enum Stage implements StageId {
         FIND_RAFIKI,
+        CRAFT_RAFIKI_STICK,
+        RALLY_PUMBAA,
         COLLECT_BONES,
         DEFEAT_SCAR,
         COLLECT_TERMITES,
@@ -41,6 +45,15 @@ public class RafikiQuestline {
                 .displayName("Rafiki's Quest")
                 .icon(() -> new ItemStack(LionKingItems.RAFIKI_STICK.get()))
                 .stage(FIND_RAFIKI, new QuestObjective("Find Rafiki and speak to him"))
+                .stage(
+                        CRAFT_RAFIKI_STICK,
+                        new QuestObjective(
+                                "Bring Rafiki a stick, a mango, and a bug",
+                                List.of(
+                                        new ItemRequirement(() -> Items.STICK, 1, Source.INVENTORY),
+                                        new ItemRequirement(LionKingItems.MANGO, 1, Source.INVENTORY),
+                                        new ItemRequirement(LionKingItems.BUG, 1, Source.INVENTORY))))
+                .stage(RALLY_PUMBAA, new QuestObjective("Find Timon and Pumbaa"))
                 .stage(
                         COLLECT_BONES,
                         new QuestObjective(
@@ -58,8 +71,10 @@ public class RafikiQuestline {
                                 "Bring Rafiki 4 mango dust", List.of(new ItemRequirement(LionKingItems.MANGO_DUST, 4))))
                 .stage(USE_STAR_ALTAR, new QuestObjective("Craft a Star Altar and use Rafiki Dust on it"))
                 .stage(RafikiQuestline.Stage.COMPLETE, new QuestObjective("Quest complete"))
-                .claimableReward(COLLECT_BONES, new ClaimableReward(LionKingItems.RAFIKI_STICK, 1))
+                .claimableReward(CRAFT_RAFIKI_STICK, new ClaimableReward(LionKingItems.RAFIKI_STICK, 1))
                 .trigger(FIND_RAFIKI, RAFIKI_TALK)
+                .trigger(CRAFT_RAFIKI_STICK, RAFIKI_TALK)
+                .trigger(RALLY_PUMBAA, PUMBAA_TALK)
                 .trigger(COLLECT_BONES, RAFIKI_TALK)
                 .trigger(DEFEAT_SCAR, SCAR_KILLED)
                 .trigger(COLLECT_TERMITES, RAFIKI_TALK)

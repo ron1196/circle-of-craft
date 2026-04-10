@@ -7,6 +7,8 @@ import net.minecraft.world.entity.player.Player;
 public enum CharacterSpeech {
     MORNING_REPORT("Zazu", Speech.MORNING_REPORT),
     ZAZU_SLEEPING("Zazu", Speech.ZAZU_SLEEPING),
+    CRAFT_STICK("Rafiki", Speech.CRAFT_STICK),
+    FIND_PUMBAA("Rafiki", Speech.FIND_PUMBAA),
     HYENA_BONES("Rafiki", Speech.HYENA_BONES),
     MENTION_SCAR("Rafiki", Speech.MENTION_SCAR),
     TERMITES("Rafiki", Speech.TERMITES),
@@ -82,13 +84,32 @@ public enum CharacterSpeech {
             "You can't trust a tiger. You never know when he could be lion...",
         };
 
+        static final String[] FIND_PUMBAA = {
+            "Go and find Pumbaa! You can't face Scar alone!",
+            "Timon and Pumbaa are out dere somewhere. Go talk to dem!",
+            "You need allies for de fight ahead. Find Pumbaa!",
+            "Pumbaa is a mighty warrior... in his own way. Go find him!",
+            "Have you found Timon and Pumbaa yet? Dey can help you!",
+            "Timon and Pumbaa are usually not far from each other. Look around!"
+        };
+
+        static final String[] CRAFT_STICK = {
+            "I need a stick, a mango, and a bug to craft my special stick!",
+            "You can find mangoes by breaking mango leaves. Dey drop sometimes!",
+            "Bugs hide under fallen logs. Go flip some over!",
+            "Have you tried making a Bug Trap? You can catch bugs dat way too!",
+            "A stick, a mango, and a bug — dat's all I need!",
+            "Look for mango trees — dey have de tastiest fruit!",
+            "Bring me dose crafting materials and I will make you something special, hehe!"
+        };
+
         static final String[] HYENA_BONES = {
-            "I need sixty-four hyena bones if you want one of my sticks, eh?",
+            "I need sixty-four hyena bones to help rid de Pride Lands of evil!",
             "You don't have dose hyena bones yet? A cub could do better!",
-            "Bring me a stack of hyena bones if you want me to give you a stick.",
-            "No stick for you until I get my hyena bones! Hehe!",
-            "Help rid de Pride Lands of hyenas first. Den you'll get your stick.",
-            "If you want my stick, I need sixty-four hyena bones.",
+            "Bring me a stack of hyena bones. De Pride Lands need you!",
+            "No progress until I get my hyena bones! Hehe!",
+            "Help rid de Pride Lands of hyenas first.",
+            "I need sixty-four hyena bones from you.",
             "What happened to dat stack of hyena bones you promised me?",
             "Come back when you have de hyena bones."
         };

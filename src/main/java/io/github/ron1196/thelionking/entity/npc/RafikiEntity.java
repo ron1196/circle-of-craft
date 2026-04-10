@@ -134,6 +134,8 @@ public class RafikiEntity extends PathfinderMob {
 
         // Quest didn't advance — give contextual speech
         switch (stage) {
+            case CRAFT_RAFIKI_STICK -> sendSpeech(player, CharacterSpeech.CRAFT_STICK);
+            case RALLY_PUMBAA -> sendSpeech(player, CharacterSpeech.FIND_PUMBAA);
             case COLLECT_BONES -> sendSpeech(player, CharacterSpeech.HYENA_BONES);
             case COLLECT_TERMITES -> sendSpeech(player, CharacterSpeech.TERMITES);
             case COLLECT_MANGOES -> sendSpeech(player, CharacterSpeech.MANGOES);
@@ -148,7 +150,7 @@ public class RafikiEntity extends PathfinderMob {
     private void sendClaimDialogue(Player player, Stage stage) {
         String message =
                 switch (stage) {
-                    case DEFEAT_SCAR -> "Here you go! Old Rafiki's finest work, hehe!";
+                    case RALLY_PUMBAA -> "Here you go! Old Rafiki's finest work, hehe!";
                     default -> null;
                 };
         if (message != null) ChatHelper.sendNpcMessage(player, "Rafiki", message);
@@ -157,7 +159,9 @@ public class RafikiEntity extends PathfinderMob {
     private void sendStageDialogue(Player player, Stage newStage) {
         String message =
                 switch (newStage) {
-                    case COLLECT_BONES -> "Ahh, welcome to de Pride Lands! I am Rafiki. Bring me sixty-four hyena bones and I will give you my stick, eh?";
+                    case CRAFT_RAFIKI_STICK -> "Ahh, welcome to de Pride Lands! I am Rafiki. Bring me a stick, a mango, and a bug, and I will craft you a stick of great power!";
+                    case RALLY_PUMBAA -> "Excellent work! Now take dis stick — you will need it. But you cannot face Scar alone! Go find Pumbaa and convince him to help you!";
+                    case COLLECT_BONES -> "Pumbaa is on your side now! Bring me sixty-four hyena bones and we can take de fight to Scar!";
                     case DEFEAT_SCAR -> getScarHint(player);
                     case COLLECT_TERMITES -> "Hah! You did it! Scar is no more! Now, dis portal will take you to de Outlands. Go dere and bring old Rafiki four termite dust, yes?";
                     case COLLECT_MANGOES -> "Very good! Now bring me four mango dust. De spirits are pleased wit your progress!";
