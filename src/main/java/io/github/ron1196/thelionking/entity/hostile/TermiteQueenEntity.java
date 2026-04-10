@@ -146,7 +146,9 @@ public class TermiteQueenEntity extends Monster implements GeoEntity {
                     zira.stopRiding();
                     zira.hurt(damageSources().magic(), ZIRA_DISMOUNT_DAMAGE);
                     ChatHelper.broadcastNpcMessage(
-                            level(), "Zira", "I don't NEED that overgrown insect! I'll tear you apart with my OWN claws!");
+                            level(),
+                            "Zira",
+                            "I don't NEED that overgrown insect! I'll tear you apart with my OWN claws!");
                 }
             }
 

@@ -173,7 +173,8 @@ public class PumbaaEntity extends PathfinderMob {
                 if (!playerHasPumbaaBox(player)) {
                     if (hasBoxIngredients(player)) {
                         consumeBoxIngredients(player);
-                        ChatHelper.sendNpcMessage(player, "Pumbaa", "Stand back! Here comes another one! I've been savin' this!");
+                        ChatHelper.sendNpcMessage(
+                                player, "Pumbaa", "Stand back! Here comes another one! I've been savin' this!");
                         cookingBox = true;
                         cookingTimer = 0;
                     } else {
@@ -181,7 +182,9 @@ public class PumbaaEntity extends PathfinderMob {
                     }
                 } else {
                     ChatHelper.sendNpcMessage(
-                            player, "Timon", "You already GOT the box, pal! Go place it near Rafiki's tree! What are you waitin' for?");
+                            player,
+                            "Timon",
+                            "You already GOT the box, pal! Go place it near Rafiki's tree! What are you waitin' for?");
                 }
             }
             default -> {
@@ -266,7 +269,8 @@ public class PumbaaEntity extends PathfinderMob {
                     + "to heat things up, and some planks to put it all in! It's a recipe!",
             "Listen, pal, the flatulence needs to be EXTREMELY powerful for there to be even a hope of "
                     + "this workin'. Get us those ingredients, pronto!",
-            "Bring Pumbaa planks, sixteen bugs, a termite and a jar of lava and " + "he'll give you the flatulence. Trust me, he's got PLENTY.",
+            "Bring Pumbaa planks, sixteen bugs, a termite and a jar of lava and "
+                    + "he'll give you the flatulence. Trust me, he's got PLENTY.",
             "Hey kid, we wanna help, we really do! But I just ain't got those ingredients yet! Hakuna Matata ain't gonna cut it here!"
         };
         int index = random.nextInt(speeches.length);
@@ -313,7 +317,10 @@ public class PumbaaEntity extends PathfinderMob {
 
         ctx.worldData().resetTimonRafikiTalkCount();
 
-        ChatHelper.sendNpcMessage(player, "Pumbaa", "Ahh, slimy yet satisfying! Now THAT hit the spot! I'm ready to fight! HAKUNA MATATA!");
+        ChatHelper.sendNpcMessage(
+                player,
+                "Pumbaa",
+                "Ahh, slimy yet satisfying! Now THAT hit the spot! I'm ready to fight! HAKUNA MATATA!");
     }
 
     // ── Pumbaa Box ingredient helpers ───────────────────────────────────────

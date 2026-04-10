@@ -112,7 +112,8 @@ public class RafikiEntity extends PathfinderMob {
                         "Rafiki",
                         "Now is your chance to put tings right! Go through dat portal and put an end to Zira's outlandish scheme! De ancestors believe in you!");
             } else {
-                ChatHelper.sendNpcMessage(player, "Rafiki", "Go! De Outlands await you! Put an end to Zira's madness! Hehe!");
+                ChatHelper.sendNpcMessage(
+                        player, "Rafiki", "Go! De Outlands await you! Put an end to Zira's madness! Hehe!");
             }
             return InteractionResult.SUCCESS;
         }
