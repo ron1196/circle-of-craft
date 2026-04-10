@@ -64,7 +64,7 @@ public class RafikiEntity extends PathfinderMob {
     @Override
     public void tick() {
         super.tick();
-        if (questBehavior.tick()) return;
+        questBehavior.tick();
     }
 
     private boolean onQuestCheck(@NotNull ServerLevel serverLevel, @NotNull QuestlineManager quests) {
@@ -119,7 +119,10 @@ public class RafikiEntity extends PathfinderMob {
 
         // Standard path: try claim reward, then try advance
         // (Must run before DEFEAT_SCAR pre-empt so unclaimed rewards are still claimed)
-        if (ctx.tryClaimOrAdvance("rafiki", Stage.class, QuestTrigger.RAFIKI_TALK,
+        if (ctx.tryClaimOrAdvance(
+                "rafiki",
+                Stage.class,
+                QuestTrigger.RAFIKI_TALK,
                 s -> sendClaimDialogue(player, s),
                 s -> sendStageDialogue(player, s))) {
             return InteractionResult.SUCCESS;

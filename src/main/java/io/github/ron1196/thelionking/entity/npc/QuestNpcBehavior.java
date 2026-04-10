@@ -1,17 +1,12 @@
 package io.github.ron1196.thelionking.entity.npc;
 
-import io.github.ron1196.thelionking.data.PlayerData;
 import io.github.ron1196.thelionking.data.WorldData;
-import io.github.ron1196.thelionking.network.Networking;
-import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,6 +33,7 @@ public final class QuestNpcBehavior {
 
     private final Mob owner;
     private final int maxWanderDistance;
+
     @Nullable
     private final QuestTickCallback questTickCallback;
 
@@ -46,11 +42,7 @@ public final class QuestNpcBehavior {
     private int leashCheckTimer = 0;
     private int questCheckTimer = 0;
 
-    public QuestNpcBehavior(
-            @NotNull Mob owner,
-            int maxWanderDistance,
-            @Nullable QuestTickCallback questTickCallback
-    ) {
+    public QuestNpcBehavior(@NotNull Mob owner, int maxWanderDistance, @Nullable QuestTickCallback questTickCallback) {
         this.owner = owner;
         this.maxWanderDistance = maxWanderDistance;
         this.questTickCallback = questTickCallback;
@@ -90,8 +82,7 @@ public final class QuestNpcBehavior {
             leashCheckTimer = 0;
             if (owner.blockPosition().distSqr(homePos) > (long) maxWanderDistance * maxWanderDistance) {
                 owner.moveTo(
-                        homePos.getX() + 0.5, homePos.getY(), homePos.getZ() + 0.5,
-                        owner.getYRot(), owner.getXRot());
+                        homePos.getX() + 0.5, homePos.getY(), homePos.getZ() + 0.5, owner.getYRot(), owner.getXRot());
             }
         }
 
@@ -123,14 +114,5 @@ public final class QuestNpcBehavior {
         if (tag.contains("HomeX")) {
             homePos = new BlockPos(tag.getInt("HomeX"), tag.getInt("HomeY"), tag.getInt("HomeZ"));
         }
-    }
-
-    /**
-     * Syncs player data to the client via network packet.
-     */
-    public static void syncPlayerData(@NotNull ServerPlayer player, @NotNull PlayerData data) {
-        Networking.CHANNEL.send(
-                PacketDistributor.PLAYER.with(() -> player),
-                new PlayerDataSyncPacket(data));
     }
 }

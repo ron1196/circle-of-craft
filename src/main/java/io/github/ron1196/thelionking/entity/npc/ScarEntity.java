@@ -156,11 +156,7 @@ public class ScarEntity extends Monster {
     }
 
     @Override
-    protected void dropCustomDeathLoot(
-            @NotNull DamageSource source,
-            int looting,
-            boolean recentlyHit
-    ) {
+    protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
         super.dropCustomDeathLoot(source, looting, recentlyHit);
         spawnAtLocation(LionKingItems.SCAR_RUG.get());
     }

@@ -69,7 +69,10 @@ public class TimonEntity extends PathfinderMob {
     private static final String[][] RALLY_INTRO_DIALOGUE = {
         {"Timon", "What? You want us to fight Scar? That guy's got claws the size of my whole body!"},
         {"Pumbaa", "Timon, we have to help! The Pride Lands need us!"},
-        {"Timon", "Fine, fine... but Pumbaa here's gonna need some fuel. Bring him four bugs and he'll be ready to rumble!"}
+        {
+            "Timon",
+            "Fine, fine... but Pumbaa here's gonna need some fuel. Bring him four bugs and he'll be ready to rumble!"
+        }
     };
 
     @Override
@@ -127,8 +130,7 @@ public class TimonEntity extends PathfinderMob {
 
         int talkIndex = worldData.getTimonRafikiTalkCount();
         if (talkIndex < RALLY_INTRO_DIALOGUE.length) {
-            ChatHelper.sendNpcMessage(
-                    player, RALLY_INTRO_DIALOGUE[talkIndex][0], RALLY_INTRO_DIALOGUE[talkIndex][1]);
+            ChatHelper.sendNpcMessage(player, RALLY_INTRO_DIALOGUE[talkIndex][0], RALLY_INTRO_DIALOGUE[talkIndex][1]);
             worldData.incrementTimonRafikiTalkCount();
         }
     }

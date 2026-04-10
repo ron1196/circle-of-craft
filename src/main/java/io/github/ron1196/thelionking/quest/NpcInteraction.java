@@ -26,8 +26,7 @@ public record NpcInteraction(
         @NotNull ServerLevel serverLevel,
         @NotNull WorldData worldData,
         @NotNull QuestlineManager quests,
-        @NotNull PlayerData playerData
-) {
+        @NotNull PlayerData playerData) {
 
     /**
      * Creates an NpcInteraction context from a player. Returns null if the interaction is
@@ -48,10 +47,7 @@ public record NpcInteraction(
     /**
      * Returns the typed enum stage for the given quest.
      */
-    public <T extends Enum<T> & StageId> @NotNull T stage(
-            @NotNull String questId,
-            @NotNull Class<T> stageClass
-    ) {
+    public <T extends Enum<T> & StageId> @NotNull T stage(@NotNull String questId, @NotNull Class<T> stageClass) {
         return quests.getStage(questId, stageClass);
     }
 
@@ -75,8 +71,7 @@ public record NpcInteraction(
             @NotNull Class<T> stageClass,
             @NotNull QuestTrigger trigger,
             @Nullable Consumer<T> onClaim,
-            @Nullable Consumer<T> onAdvance
-    ) {
+            @Nullable Consumer<T> onAdvance) {
         // Try claiming unclaimed rewards first
         int claimedIndex = quests.tryClaimNextReward(questId, serverPlayer);
         if (claimedIndex >= 0) {
@@ -102,7 +97,6 @@ public record NpcInteraction(
      */
     public void syncPlayerData() {
         Networking.CHANNEL.send(
-                PacketDistributor.PLAYER.with(() -> serverPlayer),
-                new PlayerDataSyncPacket(playerData));
+                PacketDistributor.PLAYER.with(() -> serverPlayer), new PlayerDataSyncPacket(playerData));
     }
 }

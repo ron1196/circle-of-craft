@@ -39,7 +39,6 @@ public class PumbaaEntity extends PathfinderMob {
     private static final int COOKING_EAT_END = 48;
     private static final int COOKING_EAT_INTERVAL = 4;
     private static final int COOKING_SPAWN_TICK = 100;
-    private static final int COOKING_DONE_TICK = 140;
     private static final int FART_PARTICLE_COUNT = 14;
 
     private int talkCooldown = 0;
@@ -308,12 +307,12 @@ public class PumbaaEntity extends PathfinderMob {
         // Eating sounds
         for (int i = 0; i < 3; i++) {
             level().playSound(
-                    null,
-                    blockPosition(),
-                    SoundEvents.GENERIC_EAT,
-                    SoundSource.NEUTRAL,
-                    0.8F + 0.5F * random.nextInt(2),
-                    (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                            null,
+                            blockPosition(),
+                            SoundEvents.GENERIC_EAT,
+                            SoundSource.NEUTRAL,
+                            0.8F + 0.5F * random.nextInt(2),
+                            (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         }
 
         // Fart effect
@@ -323,8 +322,7 @@ public class PumbaaEntity extends PathfinderMob {
         ctx.quests().tryAdvance("rafiki", ctx.serverPlayer(), QuestTrigger.PUMBAA_TALK);
         worldData.resetTimonRafikiTalkCount();
 
-        ChatHelper.sendNpcMessage(
-                player, "Pumbaa", "Ahh, slimy yet satisfying! I'm ready to fight! Hakuna Matata!");
+        ChatHelper.sendNpcMessage(player, "Pumbaa", "Ahh, slimy yet satisfying! I'm ready to fight! Hakuna Matata!");
     }
 
     // ── Pumbaa Box ingredient helpers ───────────────────────────────────────
