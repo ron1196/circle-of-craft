@@ -65,21 +65,23 @@ public record NpcInteraction(
      * @param questId    the quest identifier (e.g., "rafiki", "outlands")
      * @param stageClass the stage enum class for typed stage lookup
      * @param trigger    the quest trigger to attempt advancement with
-     * @param onAdvance  optional callback invoked with the new stage after claim or advance succeeds;
-     *                   receives the re-fetched stage so the caller sees the post-mutation value
+     * @param onClaim    optional callback invoked with the current stage after a reward is claimed;
+     *                   use this to show claim-specific dialogue distinct from stage advancement
+     * @param onAdvance  optional callback invoked with the new stage after the quest advances
      * @return true if the quest progressed (reward claimed or stage advanced)
      */
     public <T extends Enum<T> & StageId> boolean tryClaimOrAdvance(
             @NotNull String questId,
             @NotNull Class<T> stageClass,
             @NotNull QuestTrigger trigger,
+            @Nullable Consumer<T> onClaim,
             @Nullable Consumer<T> onAdvance
     ) {
         // Try claiming unclaimed rewards first
         int claimedIndex = quests.tryClaimNextReward(questId, serverPlayer);
         if (claimedIndex >= 0) {
             T newStage = quests.getStage(questId, stageClass);
-            if (onAdvance != null) onAdvance.accept(newStage);
+            if (onClaim != null) onClaim.accept(newStage);
             syncPlayerData();
             return true;
         }

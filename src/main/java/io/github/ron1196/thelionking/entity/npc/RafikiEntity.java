@@ -120,6 +120,7 @@ public class RafikiEntity extends PathfinderMob {
         // Standard path: try claim reward, then try advance
         // (Must run before DEFEAT_SCAR pre-empt so unclaimed rewards are still claimed)
         if (ctx.tryClaimOrAdvance("rafiki", Stage.class, QuestTrigger.RAFIKI_TALK,
+                s -> sendClaimDialogue(player, s),
                 s -> sendStageDialogue(player, s))) {
             return InteractionResult.SUCCESS;
         }
@@ -142,6 +143,15 @@ public class RafikiEntity extends PathfinderMob {
         }
 
         return InteractionResult.SUCCESS;
+    }
+
+    private void sendClaimDialogue(Player player, Stage stage) {
+        String message =
+                switch (stage) {
+                    case DEFEAT_SCAR -> "Here you go! Old Rafiki's finest work, hehe!";
+                    default -> null;
+                };
+        if (message != null) ChatHelper.sendNpcMessage(player, "Rafiki", message);
     }
 
     private void sendStageDialogue(Player player, Stage newStage) {

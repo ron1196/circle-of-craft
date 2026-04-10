@@ -220,6 +220,7 @@ public class ZiraEntity extends Monster {
 
         // Standard path: try claim reward, then try advance
         if (ctx.tryClaimOrAdvance("outlands", Stage.class, QuestTrigger.ZIRA_TALK,
+                null,
                 s -> sendStageDialogue(player, s))) {
             return InteractionResult.SUCCESS;
         }
