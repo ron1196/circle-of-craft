@@ -69,7 +69,6 @@ public class ClientEvents {
 
     // NPC layers (reuse animal mesh definitions)
     public static final ModelLayerLocation RAFIKI_LAYER = layer("rafiki");
-    public static final ModelLayerLocation SIMBA_LAYER = layer("simba");
     public static final ModelLayerLocation TIMON_LAYER = layer("timon");
     public static final ModelLayerLocation PUMBAA_LAYER = layer("pumbaa");
     public static final ModelLayerLocation SCAR_LAYER = layer("scar");
@@ -126,7 +125,6 @@ public class ClientEvents {
 
         // NPC layers (proper models ported from original mod)
         event.registerLayerDefinition(RAFIKI_LAYER, RafikiModel::createBodyLayer);
-        event.registerLayerDefinition(SIMBA_LAYER, SimbaModel::createBodyLayer);
         event.registerLayerDefinition(TIMON_LAYER, TimonModel::createBodyLayer);
         event.registerLayerDefinition(PUMBAA_LAYER, PumbaaModel::createBodyLayer);
         event.registerLayerDefinition(SCAR_LAYER, LionModel::createBodyLayer);
@@ -251,9 +249,7 @@ public class ClientEvents {
         event.registerEntityRenderer(
                 EntityTypes.RAFIKI.get(),
                 ctx -> new NpcRenderer(ctx, new RafikiModel(ctx.bakeLayer(RAFIKI_LAYER)), "rafiki", 0.35F));
-        event.registerEntityRenderer(
-                EntityTypes.SIMBA.get(),
-                ctx -> new NpcRenderer(ctx, new SimbaModel(ctx.bakeLayer(SIMBA_LAYER)), "simba", 0.5F));
+        event.registerEntityRenderer(EntityTypes.SIMBA.get(), SimbaRenderer::new);
         event.registerEntityRenderer(
                 EntityTypes.TIMON.get(),
                 ctx -> new NpcRenderer(ctx, new TimonModel(ctx.bakeLayer(TIMON_LAYER)), "timon", 0.2F, 0.5F));
@@ -386,14 +382,11 @@ public class ClientEvents {
 
             // Pride Compass needle angle — points to last-used portal in Pride Lands
             ItemProperties.register(
-                    LionKingItems.PRIDE_COMPASS.get(),
-                    new ResourceLocation("angle"),
-                    (stack, level, entity, seed) -> {
+                    LionKingItems.PRIDE_COMPASS.get(), new ResourceLocation("angle"), (stack, level, entity, seed) -> {
                         if (entity == null || level == null) {
                             return 0.0F;
                         }
-                        boolean inPrideLands =
-                                level.dimension() == Dimensions.PRIDE_LANDS_LEVEL;
+                        boolean inPrideLands = level.dimension() == Dimensions.PRIDE_LANDS_LEVEL;
                         if (!inPrideLands) {
                             // Spin smoothly in non-Pride-Lands dimensions
                             long time = level.getGameTime();
@@ -404,8 +397,7 @@ public class ClientEvents {
                         double dx = targetX - entity.getX();
                         double dz = targetZ - entity.getZ();
                         double targetAngle = Math.atan2(dz, dx) / (Math.PI * 2);
-                        double playerAngle = Mth.positiveModulo(
-                                entity.getYRot() / 360.0, 1.0);
+                        double playerAngle = Mth.positiveModulo(entity.getYRot() / 360.0, 1.0);
                         double compassAngle = 0.5 - (playerAngle - 0.25 - targetAngle);
                         return Mth.positiveModulo((float) compassAngle, 1.0F);
                     });

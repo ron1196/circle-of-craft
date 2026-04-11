@@ -1,0 +1,17 @@
+{
+  "parent": "thelionking:simba_quest",
+  "display": {
+    "icon": { "item": "minecraft:cod" },
+    "title": { "translate": "advancement.thelionking.simba_in_water.title" },
+    "description": { "translate": "advancement.thelionking.simba_in_water.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "thelionking:simba_in_water",
+      "conditions": {}
+    }
+  }
+}
