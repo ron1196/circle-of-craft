@@ -8,6 +8,7 @@ import io.github.ron1196.thelionking.quest.questline.RafikiQuestline;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.util.ChatHelper;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -26,7 +27,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class TimonEntity extends PathfinderMob {
 
-    private int talkCooldown = 0;
+    private static final int DEFAULT_COOLDOWN_TICKS = 120;
+
+    private final NpcBehavior questBehavior = new NpcBehavior(this, 30, null);
     private boolean hasGivenFirstBugs = false;
 
     public TimonEntity(EntityType<? extends TimonEntity> type, Level level) {
@@ -62,7 +65,19 @@ public class TimonEntity extends PathfinderMob {
     @Override
     public void tick() {
         super.tick();
-        if (talkCooldown > 0) talkCooldown--;
+        questBehavior.tick();
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        questBehavior.saveToNbt(tag);
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        questBehavior.loadFromNbt(tag);
     }
 
     private static final int RALLY_COOLDOWN_TICKS = 40;
@@ -94,25 +109,25 @@ public class TimonEntity extends PathfinderMob {
             return InteractionResult.SUCCESS;
         }
 
-        if (talkCooldown > 0) return InteractionResult.SUCCESS;
+        if (questBehavior.isOnCooldown()) return InteractionResult.SUCCESS;
 
         // RALLY_PUMBAA — scripted intro dialogue
         NpcInteraction ctx = NpcInteraction.tryCreate(player);
         if (ctx != null) {
             RafikiQuestline.Stage rafikiStage = ctx.stage("rafiki", RafikiQuestline.Stage.class);
             if (rafikiStage == RafikiQuestline.Stage.RALLY_PUMBAA) {
-                talkCooldown = RALLY_COOLDOWN_TICKS;
+                questBehavior.startCooldown(RALLY_COOLDOWN_TICKS);
                 handleRallyPumbaaIntro(player, ctx);
                 return InteractionResult.SUCCESS;
             }
             if (rafikiStage == RafikiQuestline.Stage.COLLECT_BUGS) {
-                talkCooldown = RALLY_COOLDOWN_TICKS;
+                questBehavior.startCooldown(RALLY_COOLDOWN_TICKS);
                 CharacterSpeech.sendSpeech(player, CharacterSpeech.TIMON_WAITING_BUGS);
                 return InteractionResult.SUCCESS;
             }
         }
 
-        talkCooldown = 120;
+        questBehavior.startCooldown(DEFAULT_COOLDOWN_TICKS);
 
         // Accept bugs for a quick trade
         ItemStack held = player.getItemInHand(hand);

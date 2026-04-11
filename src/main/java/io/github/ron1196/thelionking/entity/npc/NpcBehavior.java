@@ -11,11 +11,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Composition component for quest NPC tick mechanics: home position leash with teleport, periodic
- * quest state fallback, talk cooldown, and homePos NBT serialization. Shared by NPCs with different
- * superclasses (PathfinderMob, Monster) that cannot share a base class.
+ * Composition component for NPC tick mechanics: talk cooldown, home position leash with teleport,
+ * homePos NBT serialization, and an optional periodic quest state callback. Shared by NPCs with
+ * different superclasses (PathfinderMob, Monster) that cannot share a base class.
  */
-public final class QuestNpcBehavior {
+public final class NpcBehavior {
 
     @FunctionalInterface
     public interface QuestTickCallback {
@@ -42,7 +42,7 @@ public final class QuestNpcBehavior {
     private int leashCheckTimer = 0;
     private int questCheckTimer = 0;
 
-    public QuestNpcBehavior(@NotNull Mob owner, int maxWanderDistance, @Nullable QuestTickCallback questTickCallback) {
+    public NpcBehavior(@NotNull Mob owner, int maxWanderDistance, @Nullable QuestTickCallback questTickCallback) {
         this.owner = owner;
         this.maxWanderDistance = maxWanderDistance;
         this.questTickCallback = questTickCallback;
@@ -75,10 +75,11 @@ public final class QuestNpcBehavior {
         if (level.isClientSide) return false;
         if (!(level instanceof ServerLevel serverLevel)) return false;
 
-        // Initialize home position on first server tick
         if (homePos == null) {
             homePos = owner.blockPosition();
-        } else if (++leashCheckTimer >= LEASH_CHECK_INTERVAL) {
+        }
+
+        if (++leashCheckTimer >= LEASH_CHECK_INTERVAL) {
             leashCheckTimer = 0;
             if (owner.blockPosition().distSqr(homePos) > (long) maxWanderDistance * maxWanderDistance) {
                 owner.moveTo(
@@ -86,7 +87,6 @@ public final class QuestNpcBehavior {
             }
         }
 
-        // Periodic quest state check
         if (questTickCallback != null && ++questCheckTimer >= QUEST_CHECK_INTERVAL) {
             questCheckTimer = 0;
             QuestlineManager quests = WorldData.get(serverLevel).getQuestManager();

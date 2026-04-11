@@ -11,6 +11,7 @@ import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.registry.LionKingSoundEvents;
 import io.github.ron1196.thelionking.util.ChatHelper;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -41,7 +42,7 @@ public class PumbaaEntity extends PathfinderMob {
     private static final int COOKING_SPAWN_TICK = 100;
     private static final int FART_PARTICLE_COUNT = 14;
 
-    private int talkCooldown = 0;
+    private final NpcBehavior questBehavior = new NpcBehavior(this, 30, null);
     private boolean cookingBox = false;
     private int cookingTimer = 0;
 
@@ -79,7 +80,7 @@ public class PumbaaEntity extends PathfinderMob {
     @Override
     public void tick() {
         super.tick();
-        if (talkCooldown > 0) talkCooldown--;
+        questBehavior.tick();
 
         if (!level().isClientSide() && random.nextInt(1200) == 0) {
             fart();
@@ -88,6 +89,18 @@ public class PumbaaEntity extends PathfinderMob {
         if (cookingBox) {
             tickCookingAnimation();
         }
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        questBehavior.saveToNbt(tag);
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        questBehavior.loadFromNbt(tag);
     }
 
     @Override
@@ -133,19 +146,19 @@ public class PumbaaEntity extends PathfinderMob {
     protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         NpcInteraction ctx = NpcInteraction.tryCreate(player);
         if (ctx == null) return InteractionResult.SUCCESS;
-        if (talkCooldown > 0) return InteractionResult.SUCCESS;
+        if (questBehavior.isOnCooldown()) return InteractionResult.SUCCESS;
 
         // RALLY_PUMBAA — haven't talked to Timon yet
         RafikiQuestline.Stage rafikiStage = ctx.stage("rafiki", RafikiQuestline.Stage.class);
         if (rafikiStage == RafikiQuestline.Stage.RALLY_PUMBAA) {
-            talkCooldown = TALK_COOLDOWN_TICKS;
+            questBehavior.startCooldown(TALK_COOLDOWN_TICKS);
             sendRandomQuote(player);
             return InteractionResult.SUCCESS;
         }
 
         // COLLECT_BUGS — accept bugs after Timon intro
         if (rafikiStage == RafikiQuestline.Stage.COLLECT_BUGS) {
-            talkCooldown = TALK_COOLDOWN_TICKS;
+            questBehavior.startCooldown(TALK_COOLDOWN_TICKS);
             handleCollectBugs(player, ctx);
             return InteractionResult.SUCCESS;
         }
@@ -154,11 +167,11 @@ public class PumbaaEntity extends PathfinderMob {
 
         switch (stageKey) {
             case TALK_TO_PUMBAA -> {
-                talkCooldown = TALK_COOLDOWN_TICKS;
+                questBehavior.startCooldown(TALK_COOLDOWN_TICKS);
                 handleIntroDialogue(player, ctx);
             }
             case GATHER_PUMBAA_INGREDIENTS -> {
-                talkCooldown = TALK_COOLDOWN_TICKS;
+                questBehavior.startCooldown(TALK_COOLDOWN_TICKS);
                 if (ctx.quests().tryAdvance("outlands", ctx.serverPlayer(), QuestTrigger.PUMBAA_TALK)) {
                     ChatHelper.sendNpcMessage(player, "Pumbaa", "Stand back! This is gonna be a big one!");
                     cookingBox = true;
@@ -168,7 +181,7 @@ public class PumbaaEntity extends PathfinderMob {
                 }
             }
             case USE_PUMBAA_BOX -> {
-                talkCooldown = TALK_COOLDOWN_TICKS;
+                questBehavior.startCooldown(TALK_COOLDOWN_TICKS);
                 // If the player lost their Pumbaa Box, let them re-craft with ingredients
                 if (!playerHasPumbaaBox(player)) {
                     if (hasBoxIngredients(player)) {
@@ -188,7 +201,7 @@ public class PumbaaEntity extends PathfinderMob {
                 }
             }
             default -> {
-                talkCooldown = TALK_COOLDOWN_TICKS;
+                questBehavior.startCooldown(TALK_COOLDOWN_TICKS);
                 sendRandomQuote(player);
             }
         }

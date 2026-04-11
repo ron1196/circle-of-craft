@@ -180,7 +180,6 @@ public class ScarEntity extends Monster {
         super.die(source);
         if (level().isClientSide() || !(level() instanceof ServerLevel serverLevel)) return;
 
-        // Advance quest for nearby players and send death message
         WorldData data = WorldData.get(serverLevel);
         for (Player player :
                 level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(DEATH_MESSAGE_RANGE))) {
