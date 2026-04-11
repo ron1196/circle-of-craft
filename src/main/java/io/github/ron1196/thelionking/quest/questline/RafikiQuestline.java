@@ -13,6 +13,7 @@ import io.github.ron1196.thelionking.quest.stage.QuestObjective;
 import io.github.ron1196.thelionking.quest.stage.StageId;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingItems;
+import io.github.ron1196.thelionking.util.ChatHelper;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -34,8 +35,10 @@ public class RafikiQuestline {
         RETURN_TO_RAFIKI,
         COLLECT_BONES,
         DEFEAT_SCAR,
+        RETURN_AFTER_SCAR,
         COLLECT_TERMITES,
         COLLECT_MANGOES,
+        LION_DUST_CEREMONY,
         USE_STAR_ALTAR,
         COMPLETE
     }
@@ -65,7 +68,8 @@ public class RafikiQuestline {
                         new QuestObjective(
                                 "Bring Rafiki 64 hyena bones",
                                 List.of(new ItemRequirement(LionKingItems.HYENA_BONE, 64))))
-                .stage(DEFEAT_SCAR, new QuestObjective("Defeat Scar and return to Rafiki"))
+                .stage(DEFEAT_SCAR, new QuestObjective("Defeat Scar using the Rafiki Stick"))
+                .stage(RETURN_AFTER_SCAR, new QuestObjective("Return to Rafiki"))
                 .stage(
                         COLLECT_TERMITES,
                         new QuestObjective(
@@ -75,6 +79,7 @@ public class RafikiQuestline {
                         COLLECT_MANGOES,
                         new QuestObjective(
                                 "Bring Rafiki 4 mango dust", List.of(new ItemRequirement(LionKingItems.MANGO_DUST, 4))))
+                .stage(LION_DUST_CEREMONY, new QuestObjective("Watch Rafiki perform the Lion Dust ceremony"))
                 .stage(USE_STAR_ALTAR, new QuestObjective("Craft a Star Altar and use Rafiki Dust on it"))
                 .stage(RafikiQuestline.Stage.COMPLETE, new QuestObjective("Quest complete"))
                 .claimableReward(CRAFT_RAFIKI_STICK, new ClaimableReward(LionKingItems.RAFIKI_STICK, 1))
@@ -85,11 +90,13 @@ public class RafikiQuestline {
                 .trigger(RETURN_TO_RAFIKI, RAFIKI_TALK)
                 .trigger(COLLECT_BONES, RAFIKI_TALK)
                 .trigger(DEFEAT_SCAR, SCAR_KILLED)
+                .trigger(RETURN_AFTER_SCAR, RAFIKI_TALK)
                 .trigger(COLLECT_TERMITES, RAFIKI_TALK)
                 .trigger(COLLECT_MANGOES, RAFIKI_TALK)
+                // LION_DUST_CEREMONY has no trigger — intercepted in RafikiEntity for timed dialogue
                 .trigger(USE_STAR_ALTAR, STAR_ALTAR_USED)
                 .customTransition(COLLECT_BONES, RafikiQuestline::spawnScar)
-                .customTransition(DEFEAT_SCAR, RafikiQuestline::openOutlandsPortal)
+                .customTransition(RETURN_AFTER_SCAR, RafikiQuestline::openOutlandsPortal)
                 .build();
     }
 
@@ -144,7 +151,16 @@ public class RafikiQuestline {
 
     private static void openOutlandsPortal(ServerPlayer player, QuestlineManager manager) {
         ServerLevel level = player.serverLevel();
+
+        ChatHelper.broadcastNpcMessage(level, "Rafiki", "Asante sana, squash banana, wewe nugu, mimi hapana...");
+
+        // Cosmetic explosion at the portal location + break gates + light portal
         RafikiQuestActions.ensureWorldState(level, Stage.COLLECT_TERMITES);
         level.playSound(null, player.blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
+
+        ChatHelper.broadcastNpcMessage(
+                level,
+                "Rafiki",
+                "Dis portal will take you to de Outlands. I want you to go dere, collect four termites, and grind dem up!");
     }
 }

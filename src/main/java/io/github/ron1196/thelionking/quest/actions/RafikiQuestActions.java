@@ -41,18 +41,23 @@ public final class RafikiQuestActions {
 
     // ── Stage groups ────────────────────────────────────────────────────────
 
-    /** Stages where Rafiki should exist but Scar should not. Early quest. */
-    private static final Set<Stage> EARLY_STAGES = EnumSet.of(
+    /** Stages where Scar should not exist and portal is not yet open. */
+    private static final Set<Stage> NO_SCAR_NO_PORTAL_STAGES = EnumSet.of(
             Stage.FIND_RAFIKI,
             Stage.CRAFT_RAFIKI_STICK,
             Stage.RALLY_PUMBAA,
             Stage.COLLECT_BUGS,
             Stage.RETURN_TO_RAFIKI,
-            Stage.COLLECT_BONES);
+            Stage.COLLECT_BONES,
+            Stage.RETURN_AFTER_SCAR);
 
-    /** Stages after Scar is defeated: no Scar, gate broken, portal active. */
-    private static final Set<Stage> POST_SCAR_STAGES =
-            EnumSet.of(Stage.COLLECT_TERMITES, Stage.COLLECT_MANGOES, Stage.USE_STAR_ALTAR, Stage.COMPLETE);
+    /** Stages after Scar is defeated and portal is open. */
+    private static final Set<Stage> PORTAL_OPEN_STAGES = EnumSet.of(
+            Stage.COLLECT_TERMITES,
+            Stage.COLLECT_MANGOES,
+            Stage.LION_DUST_CEREMONY,
+            Stage.USE_STAR_ALTAR,
+            Stage.COMPLETE);
 
     // ── Public entry point ──────────────────────────────────────────────────
 
@@ -60,7 +65,7 @@ public final class RafikiQuestActions {
      * Ensures the world state matches the given Rafiki quest stage. Each branch is idempotent.
      */
     public static void ensureWorldState(ServerLevel level, Stage stage) {
-        if (EARLY_STAGES.contains(stage)) {
+        if (NO_SCAR_NO_PORTAL_STAGES.contains(stage)) {
             ensureNoScar(level);
             return;
         }
@@ -70,7 +75,7 @@ public final class RafikiQuestActions {
             return;
         }
 
-        if (POST_SCAR_STAGES.contains(stage)) {
+        if (PORTAL_OPEN_STAGES.contains(stage)) {
             ensureNoScar(level);
             ensureOutlandsPortalOpen(level);
             return;

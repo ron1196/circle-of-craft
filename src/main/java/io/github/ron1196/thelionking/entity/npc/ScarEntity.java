@@ -1,10 +1,15 @@
 package io.github.ron1196.thelionking.entity.npc;
 
 import io.github.ron1196.thelionking.data.WorldData;
+import io.github.ron1196.thelionking.item.RafikiStickItem;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.registry.LionKingSoundEvents;
 import io.github.ron1196.thelionking.util.ChatHelper;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -12,10 +17,13 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -38,6 +46,9 @@ public class ScarEntity extends Monster {
             "Well, well, well... look what we have here. A little visitor. How delightfully... brave. And foolish.";
 
     private boolean hasSpoken = false;
+
+    /** Players who have already been told that only the Rafiki Stick can harm Scar (once per encounter). */
+    private final Set<UUID> hintedPlayers = new HashSet<>();
 
     /**
      * Ticks between distant roars (audible from far away to help player find Scar).
@@ -83,6 +94,31 @@ public class ScarEntity extends Monster {
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
+
+    /**
+     * Scar is invulnerable to all damage except from the Rafiki Stick. When hit with a
+     * non-Rafiki-Stick weapon, plays a metallic clang sound, spawns smoke particles, and
+     * gives the player a one-time hint.
+     */
+    @Override
+    public boolean hurt(@NotNull DamageSource source, float amount) {
+        Entity attacker = source.getEntity();
+        if (attacker instanceof LivingEntity living && living.getMainHandItem().getItem() instanceof RafikiStickItem) {
+            return super.hurt(source, amount);
+        }
+
+        // Reject all non-Rafiki-Stick damage with feedback
+        if (attacker instanceof Player player) {
+            level().playSound(null, blockPosition(), SoundEvents.ANVIL_LAND, SoundSource.HOSTILE, 1.0F, 1.0F);
+            if (level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.SMOKE, getX(), getY() + 0.5, getZ(), 10, 0.3, 0.5, 0.3, 0.02);
+            }
+            if (hintedPlayers.add(player.getUUID())) {
+                ChatHelper.sendNpcMessage(player, "Rafiki", "De Rafiki Stick is de ONLY weapon dat can harm Scar!");
+            }
+        }
+        return false;
     }
 
     public boolean isHostile() {

@@ -18,6 +18,9 @@ public class WorldData extends SavedData {
     private int pumbaaTalkCount = 0;
     private int timonRafikiTalkCount = 0;
 
+    /** Ticks since Lion Dust ceremony started. 0 = not active, >0 = active. */
+    private int rafikiCeremonyTick = 0;
+
     public WorldData() {}
 
     public QuestlineManager getQuestManager() {
@@ -70,6 +73,19 @@ public class WorldData extends SavedData {
         return timonRafikiTalkCount >= TIMON_RALLY_INTRO_LINE_COUNT;
     }
 
+    public int getRafikiCeremonyTick() {
+        return rafikiCeremonyTick;
+    }
+
+    public void setRafikiCeremonyTick(int tick) {
+        this.rafikiCeremonyTick = tick;
+        setDirty();
+    }
+
+    public boolean isCeremonyActive() {
+        return rafikiCeremonyTick > 0;
+    }
+
     @SuppressWarnings("resource") // ServerLevel is managed by the server, never closed manually
     public static WorldData get(ServerLevel level) {
         // Always use overworld data storage so quest state is shared across all dimensions
@@ -83,6 +99,7 @@ public class WorldData extends SavedData {
         data.ziraTreeTalkCount = tag.getInt("ZiraTreeTalkCount");
         data.pumbaaTalkCount = tag.getInt("PumbaaTalkCount");
         data.timonRafikiTalkCount = tag.getInt("TimonRafikiTalkCount");
+        data.rafikiCeremonyTick = tag.getInt("RafikiCeremonyTick");
         return data;
     }
 
@@ -92,6 +109,7 @@ public class WorldData extends SavedData {
         tag.putInt("ZiraTreeTalkCount", ziraTreeTalkCount);
         tag.putInt("PumbaaTalkCount", pumbaaTalkCount);
         tag.putInt("TimonRafikiTalkCount", timonRafikiTalkCount);
+        tag.putInt("RafikiCeremonyTick", rafikiCeremonyTick);
         return tag;
     }
 }
