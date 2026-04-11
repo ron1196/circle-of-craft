@@ -15,11 +15,13 @@ import io.github.ron1196.thelionking.entity.PumbaaExplosionEntity;
 import io.github.ron1196.thelionking.entity.animal.*;
 import io.github.ron1196.thelionking.entity.projectile.DartEntity;
 import io.github.ron1196.thelionking.entity.projectile.SpearEntity;
+import io.github.ron1196.thelionking.network.ClientWorldState;
 import io.github.ron1196.thelionking.registry.BlockEntityTypes;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.registry.MenuTypes;
 import io.github.ron1196.thelionking.registry.ParticleTypes;
+import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -30,6 +32,7 @@ import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -379,6 +382,32 @@ public class ClientEvents {
                             return tag.getCompound("BlockEntityTag").getInt("HyenaType");
                         }
                         return 0.0F;
+                    });
+
+            // Pride Compass needle angle — points to last-used portal in Pride Lands
+            ItemProperties.register(
+                    LionKingItems.PRIDE_COMPASS.get(),
+                    new ResourceLocation("angle"),
+                    (stack, level, entity, seed) -> {
+                        if (entity == null || level == null) {
+                            return 0.0F;
+                        }
+                        boolean inPrideLands =
+                                level.dimension() == Dimensions.PRIDE_LANDS_LEVEL;
+                        if (!inPrideLands) {
+                            // Spin smoothly in non-Pride-Lands dimensions
+                            long time = level.getGameTime();
+                            return Mth.positiveModulo(time / 80.0F, 1.0F);
+                        }
+                        double targetX = ClientWorldState.playerHomePortalX;
+                        double targetZ = ClientWorldState.playerHomePortalZ;
+                        double dx = targetX - entity.getX();
+                        double dz = targetZ - entity.getZ();
+                        double targetAngle = Math.atan2(dz, dx) / (Math.PI * 2);
+                        double playerAngle = Mth.positiveModulo(
+                                entity.getYRot() / 360.0, 1.0);
+                        double compassAngle = 0.5 - (playerAngle - 0.25 - targetAngle);
+                        return Mth.positiveModulo((float) compassAngle, 1.0F);
                     });
         });
     }

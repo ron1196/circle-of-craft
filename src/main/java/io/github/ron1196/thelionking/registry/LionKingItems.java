@@ -579,6 +579,7 @@ public class LionKingItems {
     public static final RegistryObject<Item> RAFIKI_STICK = registerItem("rafiki_stick", RafikiStickItem::new);
 
     public static final RegistryObject<Item> RAFIKI_DUST = registerItem("rafiki_dust", RafikiDustItem::new);
+    public static final RegistryObject<Item> PRIDE_COMPASS = registerItem("pride_compass", PrideCompassItem::new);
 
     // ========== Phase 12: Missing Block Items ==========
     public static final RegistryObject<BlockItem> BANANA_CAKE_ITEM =

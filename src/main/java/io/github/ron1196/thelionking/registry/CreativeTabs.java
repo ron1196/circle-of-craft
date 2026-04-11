@@ -388,6 +388,7 @@ public class CreativeTabs {
                         output.accept(LionKingItems.ZIRA_RUG.get());
                         output.accept(LionKingItems.RAFIKI_STICK.get());
                         output.accept(LionKingItems.RAFIKI_DUST.get());
+                        output.accept(LionKingItems.PRIDE_COMPASS.get());
                     })
                     .build());
 }

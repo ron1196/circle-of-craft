@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " D ",
+    "DCD",
+    " D "
+  ],
+  "key": {
+    "D": { "item": "thelionking:rafiki_dust" },
+    "C": { "item": "minecraft:compass" }
+  },
+  "result": {
+    "item": "thelionking:pride_compass",
+    "count": 1
+  }
+}
