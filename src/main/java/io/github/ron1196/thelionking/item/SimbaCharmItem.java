@@ -32,11 +32,6 @@ public class SimbaCharmItem extends Item {
         return !stack.getOrCreateTag().getBoolean("Inactive");
     }
 
-    @Override
-    public boolean isFoil(@NotNull ItemStack stack) {
-        return isActive(stack) || super.isFoil(stack);
-    }
-
     public static ItemStack createActive() {
         return new ItemStack(LionKingItems.SIMBA_CHARM.get());
     }

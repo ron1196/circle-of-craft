@@ -12,6 +12,7 @@ import io.github.ron1196.thelionking.client.model.*;
 import io.github.ron1196.thelionking.client.particle.ColoredPortalParticle;
 import io.github.ron1196.thelionking.client.renderer.*;
 import io.github.ron1196.thelionking.entity.PumbaaExplosionEntity;
+import io.github.ron1196.thelionking.item.SimbaCharmItem;
 import io.github.ron1196.thelionking.entity.animal.*;
 import io.github.ron1196.thelionking.entity.projectile.DartEntity;
 import io.github.ron1196.thelionking.entity.projectile.SpearEntity;
@@ -379,6 +380,13 @@ public class ClientEvents {
                         }
                         return 0.0F;
                     });
+
+            // Simba Charm active/inactive texture switch
+            ItemProperties.register(
+                    LionKingItems.SIMBA_CHARM.get(),
+                    new ResourceLocation(TheLionKingMod.MOD_ID, "inactive"),
+                    (stack, level, entity, seed) ->
+                            SimbaCharmItem.isActive(stack) ? 0.0F : 1.0F);
 
             // Pride Compass needle angle — points to last-used portal in Pride Lands
             ItemProperties.register(
