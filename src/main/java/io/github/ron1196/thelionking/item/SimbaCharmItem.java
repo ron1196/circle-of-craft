@@ -24,6 +24,18 @@ import org.jetbrains.annotations.NotNull;
  */
 public class SimbaCharmItem extends Item {
 
+    private static final int PICKUP_DELAY_TICKS = 10;
+    private static final double ITEM_UPWARD_SPEED = 0.4D;
+    private static final double ITEM_UPWARD_JITTER_DIVISOR = 10.0D;
+    private static final double ITEM_HORIZONTAL_OFFSET = 0.25D;
+    private static final double ITEM_HORIZONTAL_JITTER_DIVISOR = 2.0D;
+    private static final int STAR_PARTICLE_COUNT = 64;
+    private static final double PARTICLE_SPREAD = 2.0D;
+    private static final double PARTICLE_OFFSET = 0.5D;
+    private static final double PARTICLE_VELOCITY_SPREAD = 0.5D;
+    private static final double PARTICLE_SPEED = 0.1D;
+    private static final int LIGHTNING_POWER = 0;
+
     public SimbaCharmItem(Properties properties) {
         super(properties.stacksTo(1));
     }
@@ -71,27 +83,27 @@ public class SimbaCharmItem extends Item {
         ItemStack activeCharm = createActive();
         ItemEntity item = new ItemEntity(
                 level,
-                x + 0.25D + (level.random.nextFloat() / 2.0F),
+                x + ITEM_HORIZONTAL_OFFSET + (level.random.nextFloat() / ITEM_HORIZONTAL_JITTER_DIVISOR),
                 y,
-                z + 0.25D + (level.random.nextFloat() / 2.0F),
+                z + ITEM_HORIZONTAL_OFFSET + (level.random.nextFloat() / ITEM_HORIZONTAL_JITTER_DIVISOR),
                 activeCharm);
-        item.setPickUpDelay(10);
-        item.setDeltaMovement(0.0D, 0.4D + (level.random.nextFloat() / 10.0F), 0.0D);
+        item.setPickUpDelay(PICKUP_DELAY_TICKS);
+        item.setDeltaMovement(0.0D, ITEM_UPWARD_SPEED + (level.random.nextFloat() / ITEM_UPWARD_JITTER_DIVISOR), 0.0D);
         level.addFreshEntity(item);
 
-        // Visual lightning bolt (power 0 = no damage)
-        level.addFreshEntity(new LightningBoltEntity(level, x, y, z, 0, player));
+        // Visual lightning bolt (no damage)
+        level.addFreshEntity(new LightningBoltEntity(level, x, y, z, LIGHTNING_POWER, player));
 
         // Spawn star particles
         if (level instanceof ServerLevel serverLevel) {
-            for (int i = 0; i < 64; i++) {
-                double px = x - 0.5F + level.random.nextFloat() * 2.0F;
-                double py = y - 0.5F + level.random.nextFloat() * 2.0F;
-                double pz = z - 0.5F + level.random.nextFloat() * 2.0F;
-                double dx = (level.random.nextFloat() - 0.5D) * 0.5D;
-                double dy = (level.random.nextFloat() - 0.5D) * 0.5D;
-                double dz = (level.random.nextFloat() - 0.5D) * 0.5D;
-                serverLevel.sendParticles(ParticleTypes.END_ROD, px, py, pz, 1, dx, dy, dz, 0.1D);
+            for (int i = 0; i < STAR_PARTICLE_COUNT; i++) {
+                double px = x - PARTICLE_OFFSET + level.random.nextFloat() * PARTICLE_SPREAD;
+                double py = y - PARTICLE_OFFSET + level.random.nextFloat() * PARTICLE_SPREAD;
+                double pz = z - PARTICLE_OFFSET + level.random.nextFloat() * PARTICLE_SPREAD;
+                double dx = (level.random.nextFloat() - PARTICLE_OFFSET) * PARTICLE_VELOCITY_SPREAD;
+                double dy = (level.random.nextFloat() - PARTICLE_OFFSET) * PARTICLE_VELOCITY_SPREAD;
+                double dz = (level.random.nextFloat() - PARTICLE_OFFSET) * PARTICLE_VELOCITY_SPREAD;
+                serverLevel.sendParticles(ParticleTypes.END_ROD, px, py, pz, 1, dx, dy, dz, PARTICLE_SPEED);
             }
         }
 
