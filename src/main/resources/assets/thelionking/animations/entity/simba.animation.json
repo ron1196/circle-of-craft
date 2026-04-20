@@ -21,14 +21,14 @@
 						"3.0": [0, 0, 0]
 					}
 				},
-				"back_leg_right": {
+				"right_back_leg": {
 					"rotation": {
 						"0.0": [0, 0, 0],
 						"1.5": [-1, 0, 0],
 						"3.0": [0, 0, 0]
 					}
 				},
-				"back_leg_left": {
+				"left_back_leg": {
 					"rotation": {
 						"0.0": [0, 0, 0],
 						"1.5": [1, 0, 0],
@@ -41,7 +41,7 @@
 			"loop": true,
 			"animation_length": 0.8,
 			"bones": {
-				"back_leg_right": {
+				"right_back_leg": {
 					"rotation": {
 						"0.0": [-25, 0, 0],
 						"0.2": [0, 0, 0],
@@ -50,7 +50,7 @@
 						"0.8": [-25, 0, 0]
 					}
 				},
-				"back_leg_left": {
+				"left_back_leg": {
 					"rotation": {
 						"0.0": [25, 0, 0],
 						"0.2": [0, 0, 0],
@@ -59,7 +59,7 @@
 						"0.8": [25, 0, 0]
 					}
 				},
-				"front_leg_right": {
+				"right_front_leg": {
 					"rotation": {
 						"0.0": [25, 0, 0],
 						"0.2": [0, 0, 0],
@@ -68,7 +68,7 @@
 						"0.8": [25, 0, 0]
 					}
 				},
-				"front_leg_left": {
+				"left_front_leg": {
 					"rotation": {
 						"0.0": [-25, 0, 0],
 						"0.2": [0, 0, 0],
@@ -133,7 +133,7 @@
 						"2.0": [0, 1, 0]
 					}
 				},
-				"back_leg_right": {
+				"right_back_leg": {
 					"rotation": {
 						"0.0": [73, 0, 0],
 						"2.0": [73, 0, 0]
@@ -143,7 +143,7 @@
 						"2.0": [0, -7, 2]
 					}
 				},
-				"back_leg_left": {
+				"left_back_leg": {
 					"rotation": {
 						"0.0": [73, 0, 0],
 						"2.0": [73, 0, 0]
@@ -153,13 +153,13 @@
 						"2.0": [0, -7, 2]
 					}
 				},
-				"front_leg_right": {
+				"right_front_leg": {
 					"rotation": {
 						"0.0": [9, 0, 0],
 						"2.0": [9, 0, 0]
 					}
 				},
-				"front_leg_left": {
+				"left_front_leg": {
 					"rotation": {
 						"0.0": [9, 0, 0],
 						"2.0": [9, 0, 0]
@@ -201,7 +201,7 @@
 						"2.5": [0, 0, 0]
 					}
 				},
-				"front_leg_right": {
+				"right_front_leg": {
 					"rotation": {
 						"0.0": [0, 0, 0],
 						"0.6": [8, 0, 0],
@@ -211,7 +211,7 @@
 						"2.5": [0, 0, 0]
 					}
 				},
-				"front_leg_left": {
+				"left_front_leg": {
 					"rotation": {
 						"0.0": [0, 0, 0],
 						"0.6": [8, 0, 0],
