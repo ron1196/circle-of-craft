@@ -53,10 +53,16 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         BlockState cobble = net.minecraft.world.level.block.Blocks.COBBLESTONE.defaultBlockState();
         BlockState stoneBrick = net.minecraft.world.level.block.Blocks.STONE_BRICKS.defaultBlockState();
         BlockState glowstone = net.minecraft.world.level.block.Blocks.GLOWSTONE.defaultBlockState();
-        BlockState fence = net.minecraft.world.level.block.Blocks.OAK_FENCE.defaultBlockState();
-        BlockState glassPane = net.minecraft.world.level.block.Blocks.GLASS_PANE.defaultBlockState();
+        BlockState fence = net.minecraft.world.level.block.Blocks.OAK_FENCE
+                .defaultBlockState()
+                .setValue(net.minecraft.world.level.block.FenceBlock.NORTH, true)
+                .setValue(net.minecraft.world.level.block.FenceBlock.SOUTH, true);
+        BlockState glassPane = net.minecraft.world.level.block.Blocks.GLASS_PANE
+                .defaultBlockState()
+                .setValue(net.minecraft.world.level.block.IronBarsBlock.NORTH, true)
+                .setValue(net.minecraft.world.level.block.IronBarsBlock.SOUTH, true);
         BlockState portalFrame = LionKingBlocks.PRIDE_PORTAL_FRAME.get().defaultBlockState();
-        BlockState torch = net.minecraft.world.level.block.Blocks.TORCH.defaultBlockState();
+        BlockState wallTorch = net.minecraft.world.level.block.Blocks.WALL_TORCH.defaultBlockState();
         BlockState air = net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
         BlockState dirt = net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState();
 
@@ -149,15 +155,18 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
                     if (i1 == -1 && j1 == 2) {
                         FeatureHelper.placeBlock(level, i + i1 - 1, j + j1, k + k1, air);
                     }
-                    // Torches on counter
                     if (i1 == 0 && j1 == 2 && k1 != 0) {
-                        FeatureHelper.placeBlock(level, i + i1, j + j1, k + k1, torch);
+                        Direction torchFacing = k1 == -1 ? Direction.SOUTH : Direction.WEST;
+                        FeatureHelper.placeBlock(
+                                level,
+                                i + i1,
+                                j + j1,
+                                k + k1,
+                                wallTorch.setValue(WallTorchBlock.FACING, torchFacing));
                     }
-                    // Fence at counter window
                     if (i1 == -1 && j1 == 1 && k1 == 0) {
                         FeatureHelper.placeBlock(level, i + i1 - 1, j + j1, k + k1, fence);
                     }
-                    // Glass panes at counter
                     if (i1 == -1 && j1 == 2 && k1 != 0) {
                         FeatureHelper.placeBlock(level, i + i1 - 1, j + j1, k + k1, glassPane);
                     }
@@ -303,26 +312,28 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
         // ============================================================
         // TORCHES
         // ============================================================
-        // Theater interior walls
         for (int i1 = 5; i1 < 13; i1++) {
             if (i1 % 3 != 1) {
-                FeatureHelper.placeBlock(level, i + i1, j + 2, k - 1, torch);
-                FeatureHelper.placeBlock(level, i + i1, j + 2, k + 8, torch);
+                FeatureHelper.placeBlock(
+                        level, i + i1, j + 2, k - 1, wallTorch.setValue(WallTorchBlock.FACING, Direction.SOUTH));
+                FeatureHelper.placeBlock(
+                        level, i + i1, j + 2, k + 8, wallTorch.setValue(WallTorchBlock.FACING, Direction.NORTH));
             }
         }
-        // Right wall (near screen)
         for (int k1 = 1; k1 < 7; k1++) {
             if (k1 < 2 || k1 > 5) {
-                FeatureHelper.placeBlock(level, i + 14, j + 2, k + k1, torch);
+                FeatureHelper.placeBlock(
+                        level, i + 14, j + 2, k + k1, wallTorch.setValue(WallTorchBlock.FACING, Direction.WEST));
             }
             if (k1 < 3 || k1 > 4) {
-                FeatureHelper.placeBlock(level, i + 3, j + 2, k + k1, torch);
+                FeatureHelper.placeBlock(
+                        level, i + 3, j + 2, k + k1, wallTorch.setValue(WallTorchBlock.FACING, Direction.EAST));
             }
         }
-        // Ticket counter torches
-        FeatureHelper.placeBlock(level, i - 3, j + 2, k - 2, torch);
-        FeatureHelper.placeBlock(level, i - 3, j + 2, k + 2, torch);
-        FeatureHelper.placeBlock(level, i - 3, j + 2, k + 4, torch);
+        BlockState exteriorTorch = wallTorch.setValue(WallTorchBlock.FACING, Direction.WEST);
+        FeatureHelper.placeBlock(level, i - 3, j + 2, k - 2, exteriorTorch);
+        FeatureHelper.placeBlock(level, i - 3, j + 2, k + 2, exteriorTorch);
+        FeatureHelper.placeBlock(level, i - 3, j + 2, k + 4, exteriorTorch);
 
         // ============================================================
         // SIGN on exterior
