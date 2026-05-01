@@ -195,7 +195,6 @@
   "item.thelionking.maize_stalks": "Maize Stalks",
 
   "entity.thelionking.lion": "Lion",
-  "entity.thelionking.lioness": "Lioness",
   "entity.thelionking.zebra": "Zebra",
   "entity.thelionking.giraffe": "Giraffe",
   "entity.thelionking.rhino": "Rhino",
@@ -205,7 +204,6 @@
   "entity.thelionking.zazu": "Zazu",
   "entity.thelionking.bug": "Bug",
   "item.thelionking.lion_spawn_egg": "Lion Spawn Egg",
-  "item.thelionking.lioness_spawn_egg": "Lioness Spawn Egg",
   "item.thelionking.zebra_spawn_egg": "Zebra Spawn Egg",
   "item.thelionking.giraffe_spawn_egg": "Giraffe Spawn Egg",
   "item.thelionking.rhino_spawn_egg": "Rhino Spawn Egg",

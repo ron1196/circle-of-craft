@@ -71,10 +71,19 @@ repositories {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     minecraft 'net.minecraftforge:forge:1.20.1-47.4.18'
     implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.20.1:4.8.3')
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 jar {

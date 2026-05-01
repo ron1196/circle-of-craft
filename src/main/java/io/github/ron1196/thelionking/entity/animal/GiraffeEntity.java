@@ -92,14 +92,7 @@ public class GiraffeEntity extends LionKingAnimal {
         super.registerGoals();
         this.goalSelector.addGoal(1, new AmbientPanicGoal(this));
         this.goalSelector.addGoal(
-                2,
-                new AvoidEntityGoal<>(
-                        this,
-                        LivingEntity.class,
-                        12.0F,
-                        1.0D,
-                        1.5D,
-                        e -> e instanceof LionEntity || e instanceof LionessEntity));
+                2, new AvoidEntityGoal<>(this, LivingEntity.class, 12.0F, 1.0D, 1.5D, e -> e instanceof LionEntity));
         addTemptGoal(2, 1.0, LionKingBlocks.ACACIA_LEAVES.get().asItem());
     }
 

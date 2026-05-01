@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.entity.ai;
 
+import io.github.ron1196.thelionking.entity.animal.GenderedAnimal;
 import io.github.ron1196.thelionking.item.GroundRhinoHornItem;
 import java.util.List;
 import net.minecraft.world.entity.EntityType;
@@ -8,7 +9,7 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 
 /**
- * Breed goal that supports cross-type breeding pairs (e.g., lion + lioness).
+ * Breed goal that supports cross-type breeding pairs defined in GroundRhinoHornItem.
  * Falls back to vanilla same-class matching for animals not in the breeding partners map.
  */
 public class CrossTypeBreedGoal extends BreedGoal {
@@ -48,6 +49,9 @@ public class CrossTypeBreedGoal extends BreedGoal {
         Animal closest = null;
         for (Animal candidate : nearby) {
             if (candidate.getType() == mateType && candidate.isInLove() && !candidate.isBaby()) {
+                if (this.animal instanceof GenderedAnimal a && candidate instanceof GenderedAnimal b && !a.canBreedWith(b)) {
+                    continue;
+                }
                 double dist = this.animal.distanceToSqr(candidate);
                 if (dist < closestDist) {
                     closestDist = dist;

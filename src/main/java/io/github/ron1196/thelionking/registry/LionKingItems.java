@@ -478,7 +478,6 @@ public class LionKingItems {
 
     // ========== Spawn Eggs - Passive ==========
     public static final RegistryObject<Item> LION_SPAWN_EGG = spawnEgg(EntityTypes.LION, 0xD4A030, 0x8B6914);
-    public static final RegistryObject<Item> LIONESS_SPAWN_EGG = spawnEgg(EntityTypes.LIONESS, 0xD4A030, 0xC8A848);
     public static final RegistryObject<Item> ZEBRA_SPAWN_EGG = spawnEgg(EntityTypes.ZEBRA, 0xFFFFFF, 0x222222);
     public static final RegistryObject<Item> GIRAFFE_SPAWN_EGG = spawnEgg(EntityTypes.GIRAFFE, 0xE8B84B, 0x8B5E3C);
     public static final RegistryObject<Item> RHINO_SPAWN_EGG = spawnEgg(EntityTypes.RHINO, 0x808080, 0x505050);

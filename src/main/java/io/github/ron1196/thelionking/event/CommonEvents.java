@@ -36,7 +36,6 @@ public class CommonEvents {
 
     private static void registerAnimalAttributes(EntityAttributeCreationEvent event) {
         event.put(EntityTypes.LION.get(), LionEntity.createAttributes().build());
-        event.put(EntityTypes.LIONESS.get(), LionessEntity.createAttributes().build());
         event.put(EntityTypes.ZEBRA.get(), ZebraEntity.createAttributes().build());
         event.put(EntityTypes.GIRAFFE.get(), GiraffeEntity.createAttributes().build());
         event.put(EntityTypes.RHINO.get(), RhinoEntity.createAttributes().build());
@@ -88,7 +87,6 @@ public class CommonEvents {
         // Standard ground animals
         var groundAnimals = List.of(
                 EntityTypes.LION,
-                EntityTypes.LIONESS,
                 EntityTypes.ZEBRA,
                 EntityTypes.GIRAFFE,
                 EntityTypes.RHINO,

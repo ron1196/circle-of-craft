@@ -1,7 +1,7 @@
 package io.github.ron1196.thelionking.item;
 
 import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
-import io.github.ron1196.thelionking.registry.EntityTypes;
+import io.github.ron1196.thelionking.entity.animal.GenderedAnimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -30,7 +30,7 @@ public class GroundRhinoHornItem extends Item {
     private static final double MATE_SEARCH_RADIUS = 8.0;
 
     private enum PairDirection {
-        /** Both types can initiate breeding with each other (e.g., lion ↔ lioness). */
+        /** Both types can initiate breeding with each other. */
         BIDIRECTIONAL,
         /** Only the first type can breed with the second, not the reverse. */
         ONE_WAY
@@ -39,9 +39,7 @@ public class GroundRhinoHornItem extends Item {
     private record BreedingPair(
             Supplier<EntityType<?>> first, Supplier<EntityType<?>> second, PairDirection direction) {}
 
-    private static final BreedingPair[] BREEDING_PAIR_DEFS = {
-        new BreedingPair(EntityTypes.LION::get, EntityTypes.LIONESS::get, PairDirection.BIDIRECTIONAL)
-    };
+    private static final BreedingPair[] BREEDING_PAIR_DEFS = {};
 
     /** Maps each type to its required mate type — built lazily on first use. */
     private static Map<EntityType<?>, EntityType<?>> breedingPartners;
@@ -111,7 +109,13 @@ public class GroundRhinoHornItem extends Item {
 
     private static boolean isValidMate(Animal animal, Animal candidate) {
         EntityType<?> mateType = getBreedingPartners().getOrDefault(animal.getType(), animal.getType());
-        return candidate != animal && candidate.getType() == mateType && !candidate.isBaby();
+        if (candidate == animal || candidate.getType() != mateType || candidate.isBaby()) {
+            return false;
+        }
+        if (animal instanceof GenderedAnimal a && candidate instanceof GenderedAnimal b) {
+            return a.canBreedWith(b);
+        }
+        return true;
     }
 
     private static void spawnParticles(ServerLevel level, Animal animal, SimpleParticleType type) {

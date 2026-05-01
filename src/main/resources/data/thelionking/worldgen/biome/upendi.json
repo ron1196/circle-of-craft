@@ -15,15 +15,9 @@
     "creature": [
       {
         "type": "thelionking:lion",
-        "weight": 10,
-        "minCount": 1,
-        "maxCount": 3
-      },
-      {
-        "type": "thelionking:lioness",
-        "weight": 12,
-        "minCount": 2,
-        "maxCount": 4
+        "weight": 8,
+        "minCount": 3,
+        "maxCount": 6
       },
       {
         "type": "thelionking:flamingo",

@@ -336,7 +336,6 @@ public class CreativeTabs {
             .icon(() -> new ItemStack(LionKingItems.BUG.get()))
             .displayItems((params, output) -> {
                 output.accept(LionKingItems.LION_SPAWN_EGG.get());
-                output.accept(LionKingItems.LIONESS_SPAWN_EGG.get());
                 output.accept(LionKingItems.ZEBRA_SPAWN_EGG.get());
                 output.accept(LionKingItems.GIRAFFE_SPAWN_EGG.get());
                 output.accept(LionKingItems.RHINO_SPAWN_EGG.get());

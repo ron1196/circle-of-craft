@@ -74,8 +74,6 @@ public class EntityTypes {
 
     public static final RegistryObject<EntityType<LionEntity>> LION =
             registerCreature("lion", LionEntity::new, 1.3F, 1.6F);
-    public static final RegistryObject<EntityType<LionessEntity>> LIONESS =
-            registerCreature("lioness", LionessEntity::new, 1.2F, 1.3F);
     public static final RegistryObject<EntityType<ZebraEntity>> ZEBRA =
             registerCreature("zebra", ZebraEntity::new, 1.1F, 1.4F);
     public static final RegistryObject<EntityType<GiraffeEntity>> GIRAFFE =

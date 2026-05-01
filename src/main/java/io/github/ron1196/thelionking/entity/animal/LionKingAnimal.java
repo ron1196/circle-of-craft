@@ -46,7 +46,7 @@ public abstract class LionKingAnimal extends Animal {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(3, new CrossTypeBreedGoal(this, 1.0));
+        this.goalSelector.addGoal(2, new CrossTypeBreedGoal(this, 1.0));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));

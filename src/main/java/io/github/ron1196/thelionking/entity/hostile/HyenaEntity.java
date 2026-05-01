@@ -86,7 +86,7 @@ public class HyenaEntity extends Monster {
                         12.0F,
                         1.0D,
                         1.5D,
-                        e -> (e instanceof LionEntity || e instanceof LionessEntity)
+                        e -> e instanceof LionEntity
                                 && this.level()
                                                 .getEntitiesOfClass(
                                                         HyenaEntity.class,
@@ -111,7 +111,7 @@ public class HyenaEntity extends Monster {
                         2,
                         true,
                         false,
-                        e -> (e instanceof LionEntity || e instanceof LionessEntity)
+                        e -> e instanceof LionEntity
                                 && this.level()
                                                 .getEntitiesOfClass(
                                                         HyenaEntity.class,

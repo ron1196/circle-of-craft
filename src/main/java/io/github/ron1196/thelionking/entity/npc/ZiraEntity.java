@@ -55,7 +55,7 @@ public class ZiraEntity extends Monster {
     private static final double QUEEN_SEARCH_RADIUS = 64.0;
     private static final int REMOUNT_CHECK_INTERVAL = 20;
 
-    private final NpcBehavior questBehavior = new NpcBehavior(this, 15, this::onQuestCheck);
+    private final NpcBehavior questBehavior = new NpcBehavior(this, 16, this::onQuestCheck);
 
     private boolean lowHpRage = false;
     private int remountTimer = 0;

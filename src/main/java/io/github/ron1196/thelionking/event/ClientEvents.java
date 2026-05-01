@@ -50,7 +50,6 @@ public class ClientEvents {
 
     // Passive animal layers
     public static final ModelLayerLocation LION_LAYER = layer("lion");
-    public static final ModelLayerLocation LIONESS_LAYER = layer("lioness");
     public static final ModelLayerLocation ZEBRA_LAYER = layer("zebra");
     public static final ModelLayerLocation GIRAFFE_LAYER = layer("giraffe");
     public static final ModelLayerLocation RHINO_LAYER = layer("rhino");
@@ -106,7 +105,6 @@ public class ClientEvents {
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         // Passive
         event.registerLayerDefinition(LION_LAYER, LionModel::createBodyLayer);
-        event.registerLayerDefinition(LIONESS_LAYER, LionModel::createBodyLayer);
         event.registerLayerDefinition(ZEBRA_LAYER, ZebraModel::createBodyLayer);
         event.registerLayerDefinition(GIRAFFE_LAYER, GiraffeModel::createBodyLayer);
         event.registerLayerDefinition(RHINO_LAYER, RhinoModel::createBodyLayer);
@@ -150,20 +148,11 @@ public class ClientEvents {
         // Passive
         event.registerEntityRenderer(
                 EntityTypes.LION.get(),
-                ctx -> new AnimalRenderer<>(
+                ctx -> new LionRenderer(
                         ctx,
                         new LionModel<>(ctx.bakeLayer(LION_LAYER)),
-                        "lion",
                         LionEntity.SHADOW_RADIUS,
                         LionEntity.BABY_SCALE));
-        event.registerEntityRenderer(
-                EntityTypes.LIONESS.get(),
-                ctx -> new AnimalRenderer<>(
-                        ctx,
-                        new LionModel<>(ctx.bakeLayer(LIONESS_LAYER)),
-                        "lioness",
-                        LionessEntity.SHADOW_RADIUS,
-                        LionessEntity.BABY_SCALE));
         event.registerEntityRenderer(
                 EntityTypes.ZEBRA.get(),
                 ctx -> new AnimalRenderer<>(

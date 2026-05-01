@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import io.github.ron1196.thelionking.entity.animal.LionEntity;
 import io.github.ron1196.thelionking.entity.animal.LionKingAnimal;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -84,6 +85,7 @@ public class LionModel<T extends LionKingAnimal> extends EntityModel<T> {
     @Override
     public void setupAnim(
             T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.mane.visible = !(entity instanceof LionEntity lion) || lion.shouldShowMane();
         this.head.xRot = headPitch * ((float) Math.PI / 180F);
         this.head.yRot = netHeadYaw * ((float) Math.PI / 180F);
         this.headwear.xRot = this.head.xRot;

@@ -53,7 +53,7 @@ public class RafikiEntity extends PathfinderMob {
     private static final int RAFIKI_COIN_COST = 3;
     private static final int EXTRA_STICK_BONE_COST = 64;
 
-    private final NpcBehavior questBehavior = new NpcBehavior(this, 10, this::onQuestCheck);
+    private final NpcBehavior questBehavior = new NpcBehavior(this, 16, this::onQuestCheck);
 
     public RafikiEntity(EntityType<? extends RafikiEntity> type, Level level) {
         super(type, level);
