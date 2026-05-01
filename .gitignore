@@ -18,6 +18,7 @@ bin/
 # Minecraft
 run/
 runs/
+run-gametest/
 logs/
 
 # OS

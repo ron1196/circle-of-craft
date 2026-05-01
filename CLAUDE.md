@@ -1,11 +1,12 @@
-# The Lion King Mod — NeoForge 1.20.1
+# The Lion King Mod — Forge 1.20.1
 
 ## Quick Reference
 
 - **Mod ID:** `thelionking`
 - **Package:** `io.github.ron1196.thelionking`
-- **Minecraft:** 1.20.1 | **NeoForge:** 47.1.x | **Java:** 17
+- **Minecraft:** 1.20.1 | **Forge:** 47.4.18 | **Java:** 17
 - **Mappings:** Official (Mojang)
+- **Future:** plan is to migrate to NeoForge when upgrading to 1.21.x
 
 ## Build & Run
 
@@ -18,6 +19,10 @@ export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
 ./gradlew runData        # Run data generators
 ./gradlew compileJava --offline  # Compile with cached deps (no network)
 ```
+
+## Formatting
+
+Java is auto-formatted by Spotless (Palantir). Run `./gradlew spotlessApply` after Java edits.
 
 ## Code Conventions
 
@@ -72,7 +77,11 @@ Quest IDs: `rafiki`, `outlands`. Stage names match the enum values (e.g., `FIND_
 | `data/WorldData.java`        | World-level saved data (overworld storage), quest-derived state |
 | `data/LionKingCriteriaTriggers.java` | Custom advancement triggers       |
 
+## Testing
+
+**Before writing or running tests, read [`docs/AUTOMATED_TESTING.md`](docs/AUTOMATED_TESTING.md).** It covers both frameworks (JUnit for pure-Java logic, Mojang Game Tests for in-world behavior), how to run each, when to use which, and the gotchas we already hit (`@PrefixGameTestTemplate(false)`, structure NBT path, `assertTrue` vs `fail` inside `succeedWhen`).
+
 ## Related Docs
 
-- `docs/MIGRATION_AUDIT.md` — Full audit of what's ported vs missing, with priority roadmap
+- `docs/AUTOMATED_TESTING.md` — JUnit + Mojang Game Tests reference (start here when adding test coverage)
 - [GitHub Issues](https://github.com/ron1196/TheLionKing/issues) — TODOs, workarounds, and feature requests
