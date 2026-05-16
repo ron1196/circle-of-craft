@@ -11,7 +11,9 @@ import io.github.ron1196.thelionking.quest.questline.Questline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineRegistry;
 import io.github.ron1196.thelionking.quest.questline.QuestlineState;
 import io.github.ron1196.thelionking.quest.stage.StageId;
+
 import java.util.List;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -70,6 +72,11 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
 
     private int selectedQuest = -1;
 
+    /**
+     * Cycles 0..19 while the book is open. Drives tab-button flashing for unviewed quests.
+     */
+    static int flashTimer = 0;
+
     public QuestBookScreen(QuestBookMenu menu, Inventory playerInv, Component title) {
         super(menu, playerInv, title);
         this.imageWidth = X_SIZE;
@@ -93,17 +100,18 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
             Questline quest = quests.get(i);
             final int questIdx = i;
             int rowY = topPos + BUTTON_FIRST_Y + ((i + 1) * BUTTON_VERTICAL_SPACING);
-            addRenderableWidget(
-                    new QuestBookMenuButton(buttonX, rowY, Component.literal(quest.getDisplayName()), btn -> {
-                        selectedQuest = questIdx;
-                        Networking.CHANNEL.sendToServer(new QuestCheckPacket(quest.getId()));
-                    }));
+            addRenderableWidget(new QuestBookMenuButton(
+                    buttonX, rowY, Component.literal(quest.getDisplayName()), quest.getId(), btn -> {
+                selectedQuest = questIdx;
+                Networking.CHANNEL.sendToServer(new QuestCheckPacket(quest.getId()));
+            }));
         }
     }
 
     @Override
     protected void containerTick() {
         super.containerTick();
+        flashTimer = (flashTimer + 1) % 20;
         menu.slotsVisible = selectedQuest < 0;
     }
 
@@ -360,6 +368,6 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
 
     @Override
     public boolean isPauseScreen() {
-        return false;
+        return super.isPauseScreen();
     }
 }
