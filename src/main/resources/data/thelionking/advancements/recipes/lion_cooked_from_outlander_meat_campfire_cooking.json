@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_outlander_meat": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "thelionking:outlander_meat"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "thelionking:lion_cooked_from_outlander_meat_campfire_cooking"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_outlander_meat",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thelionking:lion_cooked_from_outlander_meat_campfire_cooking"
+    ]
+  },
+  "sends_telemetry_event": false
+}
