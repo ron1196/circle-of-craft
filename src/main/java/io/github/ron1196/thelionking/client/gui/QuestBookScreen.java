@@ -359,13 +359,4 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
                 TEXTURE_SIZE,
                 TEXTURE_SIZE);
     }
-
-    public int getSelectedQuest() {
-        return selectedQuest;
-    }
-
-    @Override
-    public boolean isPauseScreen() {
-        return super.isPauseScreen();
-    }
 }

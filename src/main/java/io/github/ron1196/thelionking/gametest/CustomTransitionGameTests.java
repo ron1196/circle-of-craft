@@ -1,21 +1,26 @@
 package io.github.ron1196.thelionking.gametest;
 
+import io.github.ron1196.thelionking.data.WorldData;
+import io.github.ron1196.thelionking.entity.npc.ScarEntity;
 import io.github.ron1196.thelionking.quest.questline.Questline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.questline.QuestlineRegistry;
 import io.github.ron1196.thelionking.quest.questline.RafikiQuestline.Stage;
 import io.github.ron1196.thelionking.quest.stage.StageId;
+import java.util.List;
 import java.util.function.BiConsumer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 /**
  * Verifies that {@link Questline.Builder#customTransition} handlers fire and produce their
  * expected side effects. Without these tests, removing or renaming a stage in a questline silently
- * detaches its world-mutation logic. Tracked in issue #66.
+ * detaches its world-mutation logic. Tracked in issue #63.
  */
 @GameTestHolder("thelionking")
 @PrefixGameTestTemplate(false)
@@ -69,9 +74,42 @@ public class CustomTransitionGameTests {
         helper.succeed();
     }
 
-    // NOTE: A test that actually invokes the handler and asserts the side effect (e.g. Scar entity
-    // spawned) would need a real (non-mock) ServerPlayer with a network connection, since
-    // RafikiQuestline::openOutlandsPortal and ::spawnScar call ChatHelper which writes packets to
-    // the player's channel. Mock players from GameTestHelper have null channels. Leaving this as
-    // a registration-existence test only — wiring up a full player is out of scope for #66.
+    /**
+     * Behavioural check: invoking the COLLECT_BONES customTransition actually spawns a ScarEntity
+     * in the level. The handler spawns Scar within a 60-block radius of the player (or 30 blocks
+     * away as a fallback), so we sweep a generous AABB around the test origin. Skipped for
+     * RETURN_AFTER_SCAR's openOutlandsPortal — that handler calls ChatHelper which routes through
+     * the mock player's null network channel and NPEs.
+     */
+    @GameTest(template = EMPTY, timeoutTicks = 100)
+    public void rafikiCustomTransitionSpawnsScar(GameTestHelper helper) {
+        ServerPlayer player = helper.makeMockServerPlayerInLevel();
+        BlockPos origin = helper.absolutePos(BlockPos.ZERO);
+        player.moveTo(origin.getX() + 0.5, origin.getY() + 1.0, origin.getZ() + 0.5);
+
+        QuestlineManager manager = WorldData.get(helper.getLevel()).getQuestManager();
+        manager.getState("rafiki").setCurrentStageId(Stage.COLLECT_BONES.name());
+
+        BiConsumer<ServerPlayer, QuestlineManager> handler =
+                QuestlineRegistry.RAFIKI.getCustomTransition(Stage.COLLECT_BONES);
+        if (handler == null) {
+            helper.fail("COLLECT_BONES customTransition missing — Scar will never spawn");
+            return;
+        }
+        handler.accept(player, manager);
+
+        AABB sweep = new AABB(
+                origin.getX() - 80,
+                helper.getLevel().getMinBuildHeight(),
+                origin.getZ() - 80,
+                origin.getX() + 80,
+                helper.getLevel().getMaxBuildHeight(),
+                origin.getZ() + 80);
+        List<ScarEntity> scars = helper.getLevel().getEntitiesOfClass(ScarEntity.class, sweep);
+        if (scars.isEmpty()) {
+            helper.fail("ScarEntity did not spawn after COLLECT_BONES customTransition fired");
+            return;
+        }
+        helper.succeed();
+    }
 }
