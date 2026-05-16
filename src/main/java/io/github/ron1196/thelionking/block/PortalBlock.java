@@ -1,7 +1,10 @@
 package io.github.ron1196.thelionking.block;
 
+import io.github.ron1196.thelionking.data.PlayerData;
+import io.github.ron1196.thelionking.data.PlayerDataProvider;
 import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
 import io.github.ron1196.thelionking.network.Networking;
+import io.github.ron1196.thelionking.network.PlayerDataSyncPacket;
 import io.github.ron1196.thelionking.network.PortalOverlayPacket;
 import io.github.ron1196.thelionking.world.dimension.Teleporter;
 import java.util.Map;
@@ -203,10 +206,23 @@ public class PortalBlock extends Block {
         ServerLevel destLevel = resolveDestination(player.level());
         if (destLevel == null) return;
 
-        // Find charmed Simbas nearby and teleport them with the player
+        if (player.level().dimension() == homeDimension) {
+            saveHomePortalLocation(player);
+        }
+
         teleportNearbySimba(player, destLevel);
 
         player.changeDimension(destLevel, new Teleporter(this));
+    }
+
+    private void saveHomePortalLocation(ServerPlayer player) {
+        PlayerData data = PlayerDataProvider.get(player);
+        BlockPos pos = player.blockPosition();
+        data.setHomePortalX(pos.getX());
+        data.setHomePortalY(pos.getY());
+        data.setHomePortalZ(pos.getZ());
+        Networking.CHANNEL.send(
+                net.minecraftforge.network.PacketDistributor.PLAYER.with(() -> player), new PlayerDataSyncPacket(data));
     }
 
     private void teleportNearbySimba(ServerPlayer player, ServerLevel destLevel) {

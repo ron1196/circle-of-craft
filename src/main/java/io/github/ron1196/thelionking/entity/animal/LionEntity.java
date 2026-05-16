@@ -3,7 +3,6 @@ package io.github.ron1196.thelionking.entity.animal;
 import io.github.ron1196.thelionking.entity.ai.LionAttackGoal;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.registry.LionKingSoundEvents;
 import java.util.UUID;
 import javax.annotation.Nullable;

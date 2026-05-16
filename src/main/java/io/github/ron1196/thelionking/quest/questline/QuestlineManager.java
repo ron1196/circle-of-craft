@@ -21,7 +21,7 @@ import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
-public class QuestlineManager {
+public class QuestlineManager implements QuestStateLookup {
 
     private final Map<String, QuestlineState> states = new HashMap<>();
     private final SavedData owner;
@@ -77,6 +77,13 @@ public class QuestlineManager {
         if (quest == null) return false;
         String stageId = getStageId(questId);
         return quest.isComplete(stageId);
+    }
+
+    @Override
+    public boolean isStarted(String questId) {
+        Questline quest = QuestlineRegistry.get(questId);
+        if (quest == null) return false;
+        return quest.isStarted(getStageId(questId));
     }
 
     /**
@@ -261,7 +268,8 @@ public class QuestlineManager {
             QuestlineState state = getState(quest.getId());
             Networking.CHANNEL.send(
                     PacketDistributor.PLAYER.with(() -> player),
-                    new QuestSyncPacket(quest.getId(), state.getCurrentStageId(), state.isChecked()));
+                    new QuestSyncPacket(
+                            quest.getId(), state.getCurrentStageId(), state.isChecked(), state.isDelayed()));
         }
     }
 

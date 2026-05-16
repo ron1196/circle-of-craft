@@ -4,6 +4,7 @@ import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.menu.BongoDrumMenu;
 import io.github.ron1196.thelionking.menu.BugTrapMenu;
 import io.github.ron1196.thelionking.menu.GrindingBowlMenu;
+import io.github.ron1196.thelionking.menu.QuestBookMenu;
 import io.github.ron1196.thelionking.menu.QuiverMenu;
 import io.github.ron1196.thelionking.menu.SimbaInventoryMenu;
 import io.github.ron1196.thelionking.menu.TimonMerchantMenu;
@@ -43,4 +44,8 @@ public class MenuTypes {
             "simba_inventory",
             () -> IForgeMenuType.create(
                     (containerId, playerInv, buf) -> new SimbaInventoryMenu(containerId, playerInv)));
+
+    public static final RegistryObject<MenuType<QuestBookMenu>> QUEST_BOOK_MENU = MENU_TYPES.register(
+            "quest_book",
+            () -> IForgeMenuType.create((containerId, playerInv, buf) -> new QuestBookMenu(containerId, playerInv)));
 }

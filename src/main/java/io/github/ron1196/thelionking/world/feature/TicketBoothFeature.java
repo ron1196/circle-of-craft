@@ -158,11 +158,7 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
                     if (i1 == 0 && j1 == 2 && k1 != 0) {
                         Direction torchFacing = k1 == -1 ? Direction.SOUTH : Direction.WEST;
                         FeatureHelper.placeBlock(
-                                level,
-                                i + i1,
-                                j + j1,
-                                k + k1,
-                                wallTorch.setValue(WallTorchBlock.FACING, torchFacing));
+                                level, i + i1, j + j1, k + k1, wallTorch.setValue(WallTorchBlock.FACING, torchFacing));
                     }
                     if (i1 == -1 && j1 == 1 && k1 == 0) {
                         FeatureHelper.placeBlock(level, i + i1 - 1, j + j1, k + k1, fence);

@@ -24,7 +24,7 @@ public class Questline {
     private final Supplier<ItemStack> icon;
     private final List<StageId> stageOrder;
     private final Map<StageId, QuestObjective> stageData;
-    private final Predicate<QuestlineManager> canStart;
+    private final Predicate<QuestStateLookup> canStart;
     private final String[] prerequisites;
     private final Map<StageId, QuestTrigger> triggerByStage;
     private final Map<StageId, BiConsumer<ServerPlayer, QuestlineManager>> customTransitions;
@@ -87,8 +87,8 @@ public class Questline {
         return stage != null ? getObjectiveByStage(stage) : "";
     }
 
-    public boolean canStart(QuestlineManager manager) {
-        return canStart.test(manager);
+    public boolean canStart(QuestStateLookup lookup) {
+        return canStart.test(lookup);
     }
 
     public String[] getPrerequisites() {
@@ -200,7 +200,7 @@ public class Questline {
         private Supplier<ItemStack> icon = () -> ItemStack.EMPTY;
         private final List<StageId> stageOrder = new ArrayList<>();
         private final Map<StageId, QuestObjective> stageData = new LinkedHashMap<>();
-        private Predicate<QuestlineManager> canStart = m -> true;
+        private Predicate<QuestStateLookup> canStart = lookup -> true;
         private String[] prerequisites = null;
         private final Map<StageId, QuestTrigger> triggerByStage = new HashMap<>();
         private final Map<StageId, BiConsumer<ServerPlayer, QuestlineManager>> customTransitions = new HashMap<>();
@@ -226,7 +226,7 @@ public class Questline {
             return this;
         }
 
-        public Builder canStart(Predicate<QuestlineManager> predicate) {
+        public Builder canStart(Predicate<QuestStateLookup> predicate) {
             this.canStart = predicate;
             return this;
         }

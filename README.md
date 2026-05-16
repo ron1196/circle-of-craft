@@ -96,6 +96,14 @@ To run the mod in a development environment:
 ./gradlew runServer   # Launch a dedicated server
 ```
 
+### Running tests
+
+```bash
+./gradlew runGameTestServer --no-build-cache
+```
+
+`--no-build-cache` avoids a known Gradle issue on macOS where the build-cache packer fails on class files carrying extended attributes (`Could not get file mode for ...`). See [`docs/AUTOMATED_TESTING.md`](docs/AUTOMATED_TESTING.md) for the full testing guide (JUnit + Mojang Game Tests).
+
 ## Screenshots
 
 *Coming soon — contributions welcome!*

@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class QuestBookMenuButton extends Button {
 
-    public static final int WIDTH = 80;
-    public static final int HEIGHT = 16;
+    public static final int WIDTH = 135;
+    public static final int HEIGHT = 20;
 
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(TheLionKingMod.MOD_ID, "textures/gui/book_menu.png");
@@ -28,9 +28,21 @@ public class QuestBookMenuButton extends Button {
 
     @Override
     protected void renderWidget(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        graphics.blit(TEXTURE, getX(), getY(), STATE_U, STATE_V_NORMAL, WIDTH, HEIGHT, TEXTURE_SIZE, TEXTURE_SIZE);
+        int half = WIDTH / 2;
+        graphics.blit(TEXTURE, getX(), getY(), STATE_U, STATE_V_NORMAL, half, HEIGHT, TEXTURE_SIZE, TEXTURE_SIZE);
+        graphics.blit(
+                TEXTURE,
+                getX() + half,
+                getY(),
+                TEXTURE_SIZE - half,
+                STATE_V_NORMAL,
+                half,
+                HEIGHT,
+                TEXTURE_SIZE,
+                TEXTURE_SIZE);
+
         Minecraft mc = Minecraft.getInstance();
-        String label = fitText(mc.font, getMessage().getString(), WIDTH - 6);
+        String label = fitText(mc.font, getMessage().getString(), WIDTH - 8);
         int labelX = getX() + (WIDTH - mc.font.width(label)) / 2;
         int labelY = getY() + (HEIGHT - 8) / 2;
         graphics.drawString(mc.font, label, labelX, labelY, LABEL_COLOR, false);
@@ -40,6 +52,7 @@ public class QuestBookMenuButton extends Button {
         if (font.width(text) <= maxWidth) return text;
         String ellipsis = "...";
         int budget = maxWidth - font.width(ellipsis);
+        if (budget <= 0) return ellipsis;
         return font.plainSubstrByWidth(text, budget) + ellipsis;
     }
 }

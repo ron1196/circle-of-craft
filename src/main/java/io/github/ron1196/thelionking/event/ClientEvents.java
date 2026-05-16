@@ -5,6 +5,7 @@ import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.client.gui.BongoDrumScreen;
 import io.github.ron1196.thelionking.client.gui.BugTrapScreen;
 import io.github.ron1196.thelionking.client.gui.GrindingBowlScreen;
+import io.github.ron1196.thelionking.client.gui.QuestBookScreen;
 import io.github.ron1196.thelionking.client.gui.QuiverScreen;
 import io.github.ron1196.thelionking.client.gui.SimbaInventoryScreen;
 import io.github.ron1196.thelionking.client.gui.TimonMerchantScreen;
@@ -357,6 +358,7 @@ public class ClientEvents {
             MenuScreens.register(MenuTypes.QUIVER_MENU.get(), QuiverScreen::new);
             MenuScreens.register(MenuTypes.TIMON_MERCHANT_MENU.get(), TimonMerchantScreen::new);
             MenuScreens.register(MenuTypes.SIMBA_INVENTORY_MENU.get(), SimbaInventoryScreen::new);
+            MenuScreens.register(MenuTypes.QUEST_BOOK_MENU.get(), QuestBookScreen::new);
 
             // Hyena head item variant property
             ItemProperties.register(

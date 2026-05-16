@@ -49,7 +49,9 @@ public class CrossTypeBreedGoal extends BreedGoal {
         Animal closest = null;
         for (Animal candidate : nearby) {
             if (candidate.getType() == mateType && candidate.isInLove() && !candidate.isBaby()) {
-                if (this.animal instanceof GenderedAnimal a && candidate instanceof GenderedAnimal b && !a.canBreedWith(b)) {
+                if (this.animal instanceof GenderedAnimal a
+                        && candidate instanceof GenderedAnimal b
+                        && !a.canBreedWith(b)) {
                     continue;
                 }
                 double dist = this.animal.distanceToSqr(candidate);

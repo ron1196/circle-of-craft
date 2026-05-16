@@ -26,14 +26,14 @@ public class LoginSyncPacket {
     private final boolean hasSimba;
     private final Set<String> claimedRewards;
 
-    private record QuestEntry(String questId, String stageId, boolean checked) {}
+    private record QuestEntry(String questId, String stageId, boolean checked, boolean delayed) {}
 
     public LoginSyncPacket(WorldData worldData, PlayerData playerData) {
-        // Quests
         this.questEntries = new ArrayList<>();
         for (Questline quest : QuestlineRegistry.getOrdered()) {
             QuestlineState state = worldData.getQuestManager().getState(quest.getId());
-            questEntries.add(new QuestEntry(quest.getId(), state.getCurrentStageId(), state.isChecked()));
+            questEntries.add(
+                    new QuestEntry(quest.getId(), state.getCurrentStageId(), state.isChecked(), state.isDelayed()));
         }
 
         // Player
@@ -46,14 +46,14 @@ public class LoginSyncPacket {
     }
 
     public LoginSyncPacket(FriendlyByteBuf buf) {
-        // Quests
         int questCount = buf.readVarInt();
         this.questEntries = new ArrayList<>(questCount);
         for (int i = 0; i < questCount; i++) {
             String questId = buf.readUtf();
             String stageId = buf.readUtf();
             boolean checked = buf.readBoolean();
-            questEntries.add(new QuestEntry(questId, stageId, checked));
+            boolean delayed = buf.readBoolean();
+            questEntries.add(new QuestEntry(questId, stageId, checked, delayed));
         }
 
         // Player
@@ -71,12 +71,12 @@ public class LoginSyncPacket {
     }
 
     public void encode(FriendlyByteBuf buf) {
-        // Quests
         buf.writeVarInt(questEntries.size());
         for (QuestEntry entry : questEntries) {
             buf.writeUtf(entry.questId());
             buf.writeUtf(entry.stageId());
             buf.writeBoolean(entry.checked());
+            buf.writeBoolean(entry.delayed());
         }
 
         // Player
@@ -95,10 +95,10 @@ public class LoginSyncPacket {
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         NetworkEvent.Context context = ctx.get();
         context.enqueueWork(() -> {
-            // Quest state
             ClientWorldState.questStates.clear();
             for (QuestEntry entry : questEntries) {
-                ClientWorldState.questStates.put(entry.questId(), new QuestlineState(entry.stageId(), entry.checked()));
+                ClientWorldState.questStates.put(
+                        entry.questId(), new QuestlineState(entry.stageId(), entry.checked(), entry.delayed()));
             }
 
             // Player data

@@ -429,6 +429,7 @@
   "entity.thelionking.lightning_bolt": "Lightning Bolt",
   "item.thelionking.skeletal_hyena_head_spawn_egg": "Skeletal Hyena Head Spawn Egg",
   "container.thelionking.simba_inventory": "Simba",
+  "container.thelionking.quest_book": "Quest Book",
   "key.categories.thelionking": "The Lion King",
   "key.thelionking.simba_sit": "Toggle Simba Sit"
 }
