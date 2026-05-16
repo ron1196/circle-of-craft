@@ -31,8 +31,10 @@ public class QuestCheckPacket {
 
             WorldData data = WorldData.get(sender.serverLevel());
             QuestlineState state = data.getQuestManager().getState(questId);
+            if (state.isChecked()) return;
             state.setChecked(true);
             data.setDirty();
+            data.getQuestManager().syncToPlayer(sender);
         });
         context.setPacketHandled(true);
     }

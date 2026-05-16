@@ -54,7 +54,6 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
 
     private static final int PAGE_TEXT_PRIMARY = 0xFF120C01;
     private static final int PAGE_TEXT_SECONDARY = 0xFF4B3A21;
-    private static final int PAGE_TEXT_FLASH = 0xFF6A4E10;
 
     private static final int INV_GRID_X = 174 + CONTENT_X_SHIFT;
     private static final int INV_GRID_Y = 131;
@@ -70,7 +69,11 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
     private static final int INFO_FRAME_V = 92;
 
     private int selectedQuest = -1;
-    private int flashTimer = 0;
+
+    /**
+     * Cycles 0..19 while the book is open. Drives tab-button flashing for unviewed quests.
+     */
+    static int flashTimer = 0;
 
     public QuestBookScreen(QuestBookMenu menu, Inventory playerInv, Component title) {
         super(menu, playerInv, title);
@@ -95,8 +98,8 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
             Questline quest = quests.get(i);
             final int questIdx = i;
             int rowY = topPos + BUTTON_FIRST_Y + ((i + 1) * BUTTON_VERTICAL_SPACING);
-            addRenderableWidget(
-                    new QuestBookMenuButton(buttonX, rowY, Component.literal(quest.getDisplayName()), btn -> {
+            addRenderableWidget(new QuestBookMenuButton(
+                    buttonX, rowY, Component.literal(quest.getDisplayName()), quest.getId(), btn -> {
                         selectedQuest = questIdx;
                         Networking.CHANNEL.sendToServer(new QuestCheckPacket(quest.getId()));
                     }));
@@ -291,9 +294,8 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
         }
 
         drawCentered(graphics, Component.literal("Current objective:"), SPINE_X, 37, PAGE_TEXT_SECONDARY);
-        int currentColor = state.isDelayed() && flashTimer > 14 ? PAGE_TEXT_FLASH : PAGE_TEXT_PRIMARY;
         String objective = stage != null ? quest.getObjectiveByStage(stage) : "";
-        drawCentered(graphics, Component.literal(objective), SPINE_X, 51, currentColor);
+        drawCentered(graphics, Component.literal(objective), SPINE_X, 51, PAGE_TEXT_PRIMARY);
 
         for (int j = currentIdx - 1; j >= 0; j--) {
             StageId prev = quest.getStageOrder().get(j);
@@ -364,6 +366,6 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
 
     @Override
     public boolean isPauseScreen() {
-        return false;
+        return super.isPauseScreen();
     }
 }

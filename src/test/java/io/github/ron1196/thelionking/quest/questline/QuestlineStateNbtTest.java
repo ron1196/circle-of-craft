@@ -13,35 +13,32 @@ class QuestlineStateNbtTest {
 
     @Test
     void emptyStateRoundTrips() {
-        assertRoundTrip("", false, false);
+        assertRoundTrip("", false);
     }
 
     @Test
     void allFieldsTrueRoundTrips() {
-        assertRoundTrip("FIND_RAFIKI", true, true);
+        assertRoundTrip("FIND_RAFIKI", true);
     }
 
     @Test
     void onlyCheckedRoundTrips() {
-        assertRoundTrip("COLLECT_BONES", true, false);
+        assertRoundTrip("COLLECT_BONES", true);
     }
 
     @Test
-    void onlyDelayedRoundTrips() {
-        assertRoundTrip("RETURN_AFTER_SCAR", false, true);
-    }
-
-    @Test
-    void missingDelayedTagDefaultsToFalse() {
+    void legacyDelayedTagIsIgnored() {
+        // Old saves wrote a "Delayed" boolean (issue #59 removed the field). Loading must still
+        // succeed and preserve the other fields.
         CompoundTag tag = new CompoundTag();
         tag.putString("Stage", "FIND_RAFIKI");
         tag.putBoolean("Checked", true);
+        tag.putBoolean("Delayed", true);
 
         QuestlineState loaded = QuestlineState.readFromNBT(tag);
 
         assertEquals("FIND_RAFIKI", loaded.getCurrentStageId());
         assertEquals(true, loaded.isChecked());
-        assertEquals(false, loaded.isDelayed());
     }
 
     @Test
@@ -54,8 +51,8 @@ class QuestlineStateNbtTest {
         assertEquals("", loaded.getCurrentStageId());
     }
 
-    private static void assertRoundTrip(String stageId, boolean checked, boolean delayed) {
-        QuestlineState original = new QuestlineState(stageId, checked, delayed);
+    private static void assertRoundTrip(String stageId, boolean checked) {
+        QuestlineState original = new QuestlineState(stageId, checked);
 
         CompoundTag tag = new CompoundTag();
         original.writeToNBT(tag);
@@ -63,6 +60,5 @@ class QuestlineStateNbtTest {
 
         assertEquals(stageId, reloaded.getCurrentStageId());
         assertEquals(checked, reloaded.isChecked());
-        assertEquals(delayed, reloaded.isDelayed());
     }
 }

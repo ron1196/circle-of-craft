@@ -14,27 +14,27 @@ class QuestSyncPacketRoundTripTest {
 
     @Test
     void allFieldsTrueRoundTrips() {
-        assertRoundTrip("rafiki", "FIND_RAFIKI", true, true);
+        assertRoundTrip("rafiki", "FIND_RAFIKI", true);
     }
 
     @Test
     void allFieldsFalseRoundTrips() {
-        assertRoundTrip("outlands", "COLLECT_INGOTS", false, false);
+        assertRoundTrip("outlands", "COLLECT_INGOTS", false);
     }
 
     @Test
     void emptyStringsRoundTrip() {
-        assertRoundTrip("", "", false, false);
+        assertRoundTrip("", "", false);
     }
 
     @Test
     void longIdentifiersRoundTrip() {
         String longId = "a".repeat(200);
-        assertRoundTrip(longId, longId, true, false);
+        assertRoundTrip(longId, longId, true);
     }
 
-    private static void assertRoundTrip(String questId, String stageId, boolean checked, boolean delayed) {
-        QuestSyncPacket original = new QuestSyncPacket(questId, stageId, checked, delayed);
+    private static void assertRoundTrip(String questId, String stageId, boolean checked) {
+        QuestSyncPacket original = new QuestSyncPacket(questId, stageId, checked);
 
         FriendlyByteBuf buf1 = new FriendlyByteBuf(Unpooled.buffer());
         original.encode(buf1);

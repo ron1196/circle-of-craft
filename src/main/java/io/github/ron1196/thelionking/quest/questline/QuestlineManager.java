@@ -268,8 +268,7 @@ public class QuestlineManager implements QuestStateLookup {
             QuestlineState state = getState(quest.getId());
             Networking.CHANNEL.send(
                     PacketDistributor.PLAYER.with(() -> player),
-                    new QuestSyncPacket(
-                            quest.getId(), state.getCurrentStageId(), state.isChecked(), state.isDelayed()));
+                    new QuestSyncPacket(quest.getId(), state.getCurrentStageId(), state.isChecked()));
         }
     }
 
