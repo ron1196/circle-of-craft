@@ -6,20 +6,14 @@ public class QuestlineState {
 
     private String currentStageId;
     private boolean checked;
-    private boolean delayed;
 
     public QuestlineState() {
-        this("", false, false);
+        this("", false);
     }
 
     public QuestlineState(String stageId, boolean checked) {
-        this(stageId, checked, false);
-    }
-
-    public QuestlineState(String stageId, boolean checked, boolean delayed) {
         this.currentStageId = stageId;
         this.checked = checked;
-        this.delayed = delayed;
     }
 
     public String getCurrentStageId() {
@@ -38,31 +32,14 @@ public class QuestlineState {
         this.checked = checked;
     }
 
-    public boolean isDelayed() {
-        return delayed;
-    }
-
-    public void setDelayed(boolean delayed) {
-        this.delayed = delayed;
-    }
-
     public void writeToNBT(CompoundTag tag) {
         tag.putString("Stage", currentStageId);
         tag.putBoolean("Checked", checked);
-        tag.putBoolean("Delayed", delayed);
     }
 
     public static QuestlineState readFromNBT(CompoundTag tag) {
-        String stageId;
-        if (tag.contains("Stage", 8)) {
-            stageId = tag.getString("Stage");
-        } else if (tag.contains("Stage", 3)) {
-            stageId = "";
-        } else {
-            stageId = "";
-        }
+        String stageId = tag.contains("Stage", 8) ? tag.getString("Stage") : "";
         boolean checked = tag.getBoolean("Checked");
-        boolean delayed = tag.getBoolean("Delayed");
-        return new QuestlineState(stageId, checked, delayed);
+        return new QuestlineState(stageId, checked);
     }
 }

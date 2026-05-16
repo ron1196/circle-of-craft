@@ -26,14 +26,13 @@ public class LoginSyncPacket {
     private final boolean hasSimba;
     private final Set<String> claimedRewards;
 
-    private record QuestEntry(String questId, String stageId, boolean checked, boolean delayed) {}
+    private record QuestEntry(String questId, String stageId, boolean checked) {}
 
     public LoginSyncPacket(WorldData worldData, PlayerData playerData) {
         this.questEntries = new ArrayList<>();
         for (Questline quest : QuestlineRegistry.getOrdered()) {
             QuestlineState state = worldData.getQuestManager().getState(quest.getId());
-            questEntries.add(
-                    new QuestEntry(quest.getId(), state.getCurrentStageId(), state.isChecked(), state.isDelayed()));
+            questEntries.add(new QuestEntry(quest.getId(), state.getCurrentStageId(), state.isChecked()));
         }
 
         // Player
@@ -52,8 +51,7 @@ public class LoginSyncPacket {
             String questId = buf.readUtf();
             String stageId = buf.readUtf();
             boolean checked = buf.readBoolean();
-            boolean delayed = buf.readBoolean();
-            questEntries.add(new QuestEntry(questId, stageId, checked, delayed));
+            questEntries.add(new QuestEntry(questId, stageId, checked));
         }
 
         // Player
@@ -76,7 +74,6 @@ public class LoginSyncPacket {
             buf.writeUtf(entry.questId());
             buf.writeUtf(entry.stageId());
             buf.writeBoolean(entry.checked());
-            buf.writeBoolean(entry.delayed());
         }
 
         // Player
@@ -97,8 +94,7 @@ public class LoginSyncPacket {
         context.enqueueWork(() -> {
             ClientWorldState.questStates.clear();
             for (QuestEntry entry : questEntries) {
-                ClientWorldState.questStates.put(
-                        entry.questId(), new QuestlineState(entry.stageId(), entry.checked(), entry.delayed()));
+                ClientWorldState.questStates.put(entry.questId(), new QuestlineState(entry.stageId(), entry.checked()));
             }
 
             // Player data

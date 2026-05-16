@@ -14,7 +14,7 @@ class LoginSyncPacketRoundTripTest {
 
     @Test
     void emptyQuestsAndRewardsRoundTrips() {
-        byte[] wire = wireFor(new String[0], new boolean[0], new boolean[0], false, 0, 0, 0, false, new String[0]);
+        byte[] wire = wireFor(new String[0], new boolean[0], false, 0, 0, 0, false, new String[0]);
         assertRoundTrip(wire);
     }
 
@@ -23,7 +23,6 @@ class LoginSyncPacketRoundTripTest {
         byte[] wire = wireFor(
                 new String[] {"rafiki"},
                 new boolean[] {true},
-                new boolean[] {false},
                 true,
                 -160,
                 67,
@@ -38,7 +37,6 @@ class LoginSyncPacketRoundTripTest {
         byte[] wire = wireFor(
                 new String[] {"rafiki", "outlands", "zira"},
                 new boolean[] {true, false, true},
-                new boolean[] {false, true, false},
                 false,
                 1,
                 2,
@@ -51,7 +49,6 @@ class LoginSyncPacketRoundTripTest {
     private static byte[] wireFor(
             String[] questIds,
             boolean[] checked,
-            boolean[] delayed,
             boolean receivedBook,
             int homeX,
             int homeY,
@@ -65,7 +62,6 @@ class LoginSyncPacketRoundTripTest {
             buf.writeUtf(questIds[i]);
             buf.writeUtf("STAGE_" + i);
             buf.writeBoolean(checked[i]);
-            buf.writeBoolean(delayed[i]);
         }
         buf.writeBoolean(receivedBook);
         buf.writeInt(homeX);
