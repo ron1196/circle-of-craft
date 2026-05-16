@@ -11,16 +11,13 @@ import io.github.ron1196.thelionking.quest.questline.Questline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineRegistry;
 import io.github.ron1196.thelionking.quest.questline.QuestlineState;
 import io.github.ron1196.thelionking.quest.stage.StageId;
-import java.util.Collections;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
 import org.jetbrains.annotations.NotNull;
 
 public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
@@ -53,8 +50,7 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
     private static final int BUTTON_VERTICAL_SPACING = 28;
 
     private static final int SPINE_X = 352 + CONTENT_X_SHIFT;
-    private static final int LEFT_PAGE_CENTER_X = 250 + CONTENT_X_SHIFT;
-    private static final int RIGHT_PAGE_CENTER_X = 454 + CONTENT_X_SHIFT;
+    private static final int RIGHT_PAGE_CENTER_X = 443 + CONTENT_X_SHIFT;
 
     private static final int PAGE_TEXT_PRIMARY = 0xFF120C01;
     private static final int PAGE_TEXT_SECONDARY = 0xFF4B3A21;
@@ -67,28 +63,14 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
     private static final int INV_GRID_U = 80;
     private static final int INV_GRID_V = 0;
 
-    private static final int RECIPE_PANEL_X = 287 + CONTENT_X_SHIFT;
-    private static final int RECIPE_PANEL_Y = 88;
-    private static final int RECIPE_PANEL_W = 130;
-    private static final int RECIPE_PANEL_H = 90;
-    private static final int RECIPE_PANEL_U = 126;
-    private static final int RECIPE_PANEL_V = 92;
-
-    private static final int MAGNIFIER_X = 181 + CONTENT_X_SHIFT;
-    private static final int MAGNIFIER_Y = 79;
-    private static final int MAGNIFIER_W = 18;
-    private static final int MAGNIFIER_H = 18;
+    private static final int INFO_FRAME_X = QuestBookMenu.INFO_SLOT_X - 4;
+    private static final int INFO_FRAME_Y = QuestBookMenu.INFO_SLOT_Y - 4;
+    private static final int INFO_FRAME_SIZE = 24;
+    private static final int INFO_FRAME_U = 80;
+    private static final int INFO_FRAME_V = 92;
 
     private int selectedQuest = -1;
     private int flashTimer = 0;
-
-    private boolean recipeViewOpen = false;
-    private int recipeIndex = 0;
-    private List<Recipe<?>> matchingRecipes = Collections.emptyList();
-    private ItemStack lastInspected = ItemStack.EMPTY;
-    private Button magnifierButton;
-    private Button recipePrevButton;
-    private Button recipeNextButton;
 
     public QuestBookScreen(QuestBookMenu menu, Inventory playerInv, Component title) {
         super(menu, playerInv, title);
@@ -105,11 +87,8 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
         super.init();
 
         int buttonX = leftPos + BUTTON_COLUMN_X_OFFSET;
-        addRenderableWidget(
-                new QuestBookMenuButton(buttonX, topPos + BUTTON_FIRST_Y, Component.literal("Main Page"), btn -> {
-                    selectedQuest = -1;
-                    closeRecipeView();
-                }));
+        addRenderableWidget(new QuestBookMenuButton(
+                buttonX, topPos + BUTTON_FIRST_Y, Component.literal("Main Page"), btn -> selectedQuest = -1));
 
         List<Questline> quests = QuestlineRegistry.getOrdered();
         for (int i = 0; i < quests.size(); i++) {
@@ -119,82 +98,16 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
             addRenderableWidget(
                     new QuestBookMenuButton(buttonX, rowY, Component.literal(quest.getDisplayName()), btn -> {
                         selectedQuest = questIdx;
-                        closeRecipeView();
                         Networking.CHANNEL.sendToServer(new QuestCheckPacket(quest.getId()));
                     }));
         }
-
-        magnifierButton = Button.builder(Component.literal("?"), btn -> toggleRecipeView())
-                .bounds(leftPos + MAGNIFIER_X, topPos + MAGNIFIER_Y, MAGNIFIER_W, MAGNIFIER_H)
-                .build();
-        addRenderableWidget(magnifierButton);
-
-        int arrowsY = topPos + 93;
-        recipePrevButton = Button.builder(Component.literal("<"), btn -> cycleRecipe(-1))
-                .bounds(leftPos + 396 + CONTENT_X_SHIFT, arrowsY, 6, 11)
-                .build();
-        recipeNextButton = Button.builder(Component.literal(">"), btn -> cycleRecipe(1))
-                .bounds(leftPos + 406 + CONTENT_X_SHIFT, arrowsY, 6, 11)
-                .build();
-        recipePrevButton.visible = false;
-        recipeNextButton.visible = false;
-        addRenderableWidget(recipePrevButton);
-        addRenderableWidget(recipeNextButton);
-    }
-
-    private void toggleRecipeView() {
-        if (selectedQuest >= 0) return;
-        ItemStack stack = menu.getInspectedStack();
-        if (stack.isEmpty()) {
-            closeRecipeView();
-            return;
-        }
-        if (recipeViewOpen) {
-            closeRecipeView();
-        } else {
-            matchingRecipes = QuestBookRecipeRenderer.findMatching(stack);
-            if (matchingRecipes.isEmpty()) {
-                closeRecipeView();
-                return;
-            }
-            recipeIndex = 0;
-            lastInspected = stack.copy();
-            recipeViewOpen = true;
-            updateRecipeArrowVisibility();
-        }
-    }
-
-    private void closeRecipeView() {
-        recipeViewOpen = false;
-        recipeIndex = 0;
-        matchingRecipes = Collections.emptyList();
-        lastInspected = ItemStack.EMPTY;
-        updateRecipeArrowVisibility();
-    }
-
-    private void cycleRecipe(int delta) {
-        if (matchingRecipes.isEmpty()) return;
-        recipeIndex = Math.floorMod(recipeIndex + delta, matchingRecipes.size());
-    }
-
-    private void updateRecipeArrowVisibility() {
-        boolean show = recipeViewOpen && matchingRecipes.size() > 1;
-        if (recipePrevButton != null) recipePrevButton.visible = show;
-        if (recipeNextButton != null) recipeNextButton.visible = show;
     }
 
     @Override
     protected void containerTick() {
         super.containerTick();
         flashTimer = (flashTimer + 1) % 20;
-        ItemStack current = menu.getInspectedStack();
-        if (current.isEmpty() || !ItemStack.isSameItem(current, lastInspected)) {
-            if (recipeViewOpen) closeRecipeView();
-        }
-        if (magnifierButton != null) {
-            magnifierButton.visible = selectedQuest < 0 && !current.isEmpty();
-        }
-        updateRecipeArrowVisibility();
+        menu.slotsVisible = selectedQuest < 0;
     }
 
     private static final float RENDER_SCALE = 0.65f;
@@ -211,6 +124,7 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
 
     @Override
     public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        menu.slotsVisible = selectedQuest < 0;
         renderBackground(graphics);
 
         double cx = leftPos + imageWidth / 2.0;
@@ -257,6 +171,17 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
         if (selectedQuest < 0) {
             graphics.blit(
                     BOOK_MENU,
+                    leftPos + INFO_FRAME_X,
+                    topPos + INFO_FRAME_Y,
+                    INFO_FRAME_U,
+                    INFO_FRAME_V,
+                    INFO_FRAME_SIZE,
+                    INFO_FRAME_SIZE,
+                    TEXTURE_SIZE,
+                    TEXTURE_SIZE);
+
+            graphics.blit(
+                    BOOK_MENU,
                     leftPos + INV_GRID_X,
                     topPos + INV_GRID_Y,
                     INV_GRID_U,
@@ -265,19 +190,6 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
                     INV_GRID_H,
                     TEXTURE_SIZE,
                     TEXTURE_SIZE);
-
-            if (recipeViewOpen && !matchingRecipes.isEmpty()) {
-                graphics.blit(
-                        BOOK_MENU,
-                        leftPos + RECIPE_PANEL_X,
-                        topPos + RECIPE_PANEL_Y,
-                        RECIPE_PANEL_U,
-                        RECIPE_PANEL_V,
-                        RECIPE_PANEL_W,
-                        RECIPE_PANEL_H,
-                        TEXTURE_SIZE,
-                        TEXTURE_SIZE);
-            }
         }
 
         renderForeground(graphics);

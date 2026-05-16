@@ -20,6 +20,8 @@ public class QuestBookMenu extends AbstractContainerMenu {
 
     private final SimpleContainer infoSlot;
 
+    public boolean slotsVisible = true;
+
     public QuestBookMenu(int containerId, Inventory playerInv) {
         this(containerId, playerInv, new SimpleContainer(1));
     }
@@ -28,16 +30,31 @@ public class QuestBookMenu extends AbstractContainerMenu {
         super(MenuTypes.QUEST_BOOK_MENU.get(), containerId);
         this.infoSlot = infoSlot;
 
-        addSlot(new Slot(infoSlot, 0, INFO_SLOT_X, INFO_SLOT_Y));
+        addSlot(new Slot(infoSlot, 0, INFO_SLOT_X, INFO_SLOT_Y) {
+            @Override
+            public boolean isActive() {
+                return slotsVisible;
+            }
+        });
 
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 int slotIdx = 9 + row * 9 + col;
-                addSlot(new Slot(playerInv, slotIdx, INV_X + col * 18, INV_Y + row * 18));
+                addSlot(new Slot(playerInv, slotIdx, INV_X + col * 18, INV_Y + row * 18) {
+                    @Override
+                    public boolean isActive() {
+                        return slotsVisible;
+                    }
+                });
             }
         }
         for (int col = 0; col < 9; col++) {
-            addSlot(new Slot(playerInv, col, INV_X + col * 18, HOTBAR_Y));
+            addSlot(new Slot(playerInv, col, INV_X + col * 18, HOTBAR_Y) {
+                @Override
+                public boolean isActive() {
+                    return slotsVisible;
+                }
+            });
         }
     }
 
