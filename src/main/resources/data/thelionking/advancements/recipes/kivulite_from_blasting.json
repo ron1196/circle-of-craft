@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_kivulite_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "thelionking:kivulite_ore"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "thelionking:kivulite_from_blasting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_kivulite_ore",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thelionking:kivulite_from_blasting"
+    ]
+  },
+  "sends_telemetry_event": false
+}

@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_peacock_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "thelionking:peacock_ore"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "thelionking:peacock_gem_from_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_peacock_ore",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thelionking:peacock_gem_from_smelting"
+    ]
+  },
+  "sends_telemetry_event": false
+}

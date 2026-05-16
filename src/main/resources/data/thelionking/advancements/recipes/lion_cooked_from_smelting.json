@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_lion_raw": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "thelionking:lion_raw"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "thelionking:lion_cooked_from_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lion_raw",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thelionking:lion_cooked_from_smelting"
+    ]
+  },
+  "sends_telemetry_event": false
+}

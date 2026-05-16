@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_pride_acacia_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "thelionking:pride_acacia_log"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "thelionking:charcoal_from_pride_acacia_log_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_pride_acacia_log",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thelionking:charcoal_from_pride_acacia_log_smelting"
+    ]
+  },
+  "sends_telemetry_event": false
+}
