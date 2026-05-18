@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "facing=north": {"model": "thelionking:block/fur_rug", "y": 0},
-    "facing=south": {"model": "thelionking:block/fur_rug", "y": 180},
-    "facing=west": {"model": "thelionking:block/fur_rug", "y": 270},
-    "facing=east": {"model": "thelionking:block/fur_rug", "y": 90}
-  }
-}

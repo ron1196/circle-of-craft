@@ -437,7 +437,38 @@ public class LionKingItems {
     // Decorative block entities
     public static final RegistryObject<BlockItem> HYENA_HEAD_ITEM = ITEMS.register(
             "hyena_head", () -> new HyenaHeadBlockItem(LionKingBlocks.HYENA_HEAD.get(), new Item.Properties()));
-    public static final RegistryObject<BlockItem> FUR_RUG_ITEM = registerBlockItem("fur_rug", LionKingBlocks.FUR_RUG);
+    // Dyeable rugs (carpet-style)
+    public static final RegistryObject<BlockItem> RUG_LION_ITEM =
+            registerBlockItem("rug_lion", LionKingBlocks.RUG_LION);
+    public static final RegistryObject<BlockItem> RUG_BLACK_ITEM =
+            registerBlockItem("rug_black", LionKingBlocks.RUG_BLACK);
+    public static final RegistryObject<BlockItem> RUG_BLUE_ITEM =
+            registerBlockItem("rug_blue", LionKingBlocks.RUG_BLUE);
+    public static final RegistryObject<BlockItem> RUG_GREEN_ITEM =
+            registerBlockItem("rug_green", LionKingBlocks.RUG_GREEN);
+    public static final RegistryObject<BlockItem> RUG_GRAY_ITEM =
+            registerBlockItem("rug_gray", LionKingBlocks.RUG_GRAY);
+    public static final RegistryObject<BlockItem> RUG_LIGHT_BLUE_ITEM =
+            registerBlockItem("rug_light_blue", LionKingBlocks.RUG_LIGHT_BLUE);
+    public static final RegistryObject<BlockItem> RUG_LIGHT_GREEN_ITEM =
+            registerBlockItem("rug_light_green", LionKingBlocks.RUG_LIGHT_GREEN);
+    public static final RegistryObject<BlockItem> RUG_LIGHT_GRAY_ITEM =
+            registerBlockItem("rug_light_gray", LionKingBlocks.RUG_LIGHT_GRAY);
+    public static final RegistryObject<BlockItem> RUG_ORANGE_ITEM =
+            registerBlockItem("rug_orange", LionKingBlocks.RUG_ORANGE);
+    public static final RegistryObject<BlockItem> RUG_OUTLANDER_ITEM =
+            registerBlockItem("rug_outlander", LionKingBlocks.RUG_OUTLANDER);
+    public static final RegistryObject<BlockItem> RUG_PINK_ITEM =
+            registerBlockItem("rug_pink", LionKingBlocks.RUG_PINK);
+    public static final RegistryObject<BlockItem> RUG_PURPLE_ITEM =
+            registerBlockItem("rug_purple", LionKingBlocks.RUG_PURPLE);
+    public static final RegistryObject<BlockItem> RUG_RED_ITEM = registerBlockItem("rug_red", LionKingBlocks.RUG_RED);
+    public static final RegistryObject<BlockItem> RUG_VIOLET_ITEM =
+            registerBlockItem("rug_violet", LionKingBlocks.RUG_VIOLET);
+    public static final RegistryObject<BlockItem> RUG_WHITE_ITEM =
+            registerBlockItem("rug_white", LionKingBlocks.RUG_WHITE);
+    public static final RegistryObject<BlockItem> RUG_YELLOW_ITEM =
+            registerBlockItem("rug_yellow", LionKingBlocks.RUG_YELLOW);
 
     // ========== Outlands Armor ==========
     public static final RegistryObject<ArmorItem> OUTLANDS_HELMET =

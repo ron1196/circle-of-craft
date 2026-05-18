@@ -316,13 +316,23 @@ public class LionKingBlocks {
             () -> new HyenaHeadBlock(
                     BlockBehaviour.Properties.of().strength(1.0F).noCollission().noOcclusion()));
 
-    public static final RegistryObject<Block> FUR_RUG = BLOCKS.register(
-            "fur_rug",
-            () -> new FurRugBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.WOOL)
-                    .strength(0.5F)
-                    .sound(SoundType.WOOL)
-                    .noOcclusion()));
+    // ========== Dyeable Rugs (carpet-style) ==========
+    public static final RegistryObject<Block> RUG_LION = carpet("rug_lion", MapColor.COLOR_YELLOW);
+    public static final RegistryObject<Block> RUG_BLACK = carpet("rug_black", MapColor.COLOR_BLACK);
+    public static final RegistryObject<Block> RUG_BLUE = carpet("rug_blue", MapColor.COLOR_BLUE);
+    public static final RegistryObject<Block> RUG_GREEN = carpet("rug_green", MapColor.COLOR_GREEN);
+    public static final RegistryObject<Block> RUG_GRAY = carpet("rug_gray", MapColor.COLOR_GRAY);
+    public static final RegistryObject<Block> RUG_LIGHT_BLUE = carpet("rug_light_blue", MapColor.COLOR_LIGHT_BLUE);
+    public static final RegistryObject<Block> RUG_LIGHT_GREEN = carpet("rug_light_green", MapColor.COLOR_LIGHT_GREEN);
+    public static final RegistryObject<Block> RUG_LIGHT_GRAY = carpet("rug_light_gray", MapColor.COLOR_LIGHT_GRAY);
+    public static final RegistryObject<Block> RUG_ORANGE = carpet("rug_orange", MapColor.COLOR_ORANGE);
+    public static final RegistryObject<Block> RUG_OUTLANDER = carpet("rug_outlander", MapColor.COLOR_BROWN);
+    public static final RegistryObject<Block> RUG_PINK = carpet("rug_pink", MapColor.COLOR_PINK);
+    public static final RegistryObject<Block> RUG_PURPLE = carpet("rug_purple", MapColor.COLOR_PURPLE);
+    public static final RegistryObject<Block> RUG_RED = carpet("rug_red", MapColor.COLOR_RED);
+    public static final RegistryObject<Block> RUG_VIOLET = carpet("rug_violet", MapColor.COLOR_MAGENTA);
+    public static final RegistryObject<Block> RUG_WHITE = carpet("rug_white", MapColor.SNOW);
+    public static final RegistryObject<Block> RUG_YELLOW = carpet("rug_yellow", MapColor.COLOR_YELLOW);
 
     // ========== Grinding Bowl ==========
     public static final RegistryObject<Block> GRINDING_BOWL = BLOCKS.register(

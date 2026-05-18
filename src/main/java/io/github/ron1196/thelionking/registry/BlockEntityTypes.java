@@ -21,10 +21,6 @@ public class BlockEntityTypes {
             "hyena_head", () -> BlockEntityType.Builder.of(HyenaHeadBlockEntity::new, LionKingBlocks.HYENA_HEAD.get())
                     .build(null));
 
-    public static final RegistryObject<BlockEntityType<FurRugBlockEntity>> FUR_RUG = BLOCK_ENTITY_TYPES.register(
-            "fur_rug", () -> BlockEntityType.Builder.of(FurRugBlockEntity::new, LionKingBlocks.FUR_RUG.get())
-                    .build(null));
-
     public static final RegistryObject<BlockEntityType<BugTrapBlockEntity>> BUG_TRAP = BLOCK_ENTITY_TYPES.register(
             "bug_trap", () -> BlockEntityType.Builder.of(BugTrapBlockEntity::new, LionKingBlocks.BUG_TRAP.get())
                     .build(null));

@@ -1,0 +1,19 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": { "recipes": ["thelionking:rug_purple"] },
+  "criteria": {
+    "has_fur": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": { "items": [{"tag": "thelionking:furs"}] }
+    },
+    "has_dye": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": { "items": [{"items": ["minecraft:purple_dye"]}] }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": { "recipe": "thelionking:rug_purple" }
+    }
+  },
+  "requirements": [["has_fur", "has_dye", "has_the_recipe"]]
+}

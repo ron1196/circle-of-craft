@@ -614,14 +614,6 @@ public final class ItemInfo {
                 "nicely as a pleasant decoration",
                 "in the home.");
         put(LionKingItems.HYENA_HEAD_ITEM, "A rare decorative block sometimes", "dropped by Hyenas.");
-        put(
-                LionKingItems.FUR_RUG_ITEM,
-                "A decorative rug made from",
-                "lion fur.",
-                "",
-                "After being whitened, it can",
-                "be dyed with a range of",
-                "different materials.");
         put(LionKingItems.VASE_ITEM, "A decorative vase block.");
         put(LionKingItems.PRIDE_BED_ITEM, "Can be slept in to skip the night", "and set the respawn point.");
 

@@ -146,7 +146,23 @@ public class CreativeTabs {
                         output.accept(LionKingItems.MAIZE_STALKS.get());
                         // Decorative block entities
                         output.accept(LionKingItems.HYENA_HEAD_ITEM.get());
-                        output.accept(LionKingItems.FUR_RUG_ITEM.get());
+                        // Dyeable rugs
+                        output.accept(LionKingItems.RUG_WHITE_ITEM.get());
+                        output.accept(LionKingItems.RUG_LIGHT_GRAY_ITEM.get());
+                        output.accept(LionKingItems.RUG_GRAY_ITEM.get());
+                        output.accept(LionKingItems.RUG_BLACK_ITEM.get());
+                        output.accept(LionKingItems.RUG_RED_ITEM.get());
+                        output.accept(LionKingItems.RUG_ORANGE_ITEM.get());
+                        output.accept(LionKingItems.RUG_LION_ITEM.get());
+                        output.accept(LionKingItems.RUG_YELLOW_ITEM.get());
+                        output.accept(LionKingItems.RUG_LIGHT_GREEN_ITEM.get());
+                        output.accept(LionKingItems.RUG_GREEN_ITEM.get());
+                        output.accept(LionKingItems.RUG_LIGHT_BLUE_ITEM.get());
+                        output.accept(LionKingItems.RUG_BLUE_ITEM.get());
+                        output.accept(LionKingItems.RUG_VIOLET_ITEM.get());
+                        output.accept(LionKingItems.RUG_PURPLE_ITEM.get());
+                        output.accept(LionKingItems.RUG_PINK_ITEM.get());
+                        output.accept(LionKingItems.RUG_OUTLANDER_ITEM.get());
                         // Bed
                         output.accept(LionKingItems.PRIDE_BED_ITEM.get());
                     })

@@ -169,4 +169,12 @@ final class LionKingBlocksRegistryHelper {
     static RegistryObject<Block> lily(String name) {
         return LionKingBlocks.BLOCKS.register(name, () -> new WaterlilyBlock(lilyProps()));
     }
+
+    static BlockBehaviour.Properties carpetProps(MapColor color) {
+        return BlockBehaviour.Properties.of().mapColor(color).strength(0.1F).sound(SoundType.WOOL);
+    }
+
+    static RegistryObject<Block> carpet(String name, MapColor color) {
+        return LionKingBlocks.BLOCKS.register(name, () -> new CarpetBlock(carpetProps(color)));
+    }
 }
