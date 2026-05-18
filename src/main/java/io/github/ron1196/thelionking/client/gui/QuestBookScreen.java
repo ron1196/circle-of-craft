@@ -141,9 +141,9 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
         int adjMouseY = (int) toLogicalY(mouseY);
         super.render(graphics, adjMouseX, adjMouseY, partialTick);
 
-        graphics.pose().popPose();
+        renderTooltip(graphics, adjMouseX, adjMouseY);
 
-        renderTooltip(graphics, mouseX, mouseY);
+        graphics.pose().popPose();
     }
 
     @Override
