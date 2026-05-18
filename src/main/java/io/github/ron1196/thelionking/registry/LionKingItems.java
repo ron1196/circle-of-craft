@@ -37,7 +37,7 @@ public class LionKingItems {
     public static final RegistryObject<Item> FEATHER_YELLOW = simpleItem("feather_yellow");
     public static final RegistryObject<Item> FEATHER_RED = simpleItem("feather_red");
     public static final RegistryObject<Item> FEATHER_BLACK = simpleItem("feather_black");
-    public static final RegistryObject<Item> FEATHER_PINK = simpleItem("feather_pink");
+    public static final RegistryObject<Item> FEATHER_FLAMINGO = simpleItem("feather_flamingo");
     public static final RegistryObject<Item> POISON = simpleItem("poison");
     public static final RegistryObject<Item> NUKA_SHARD = simpleItem("nuka_shard");
     public static final RegistryObject<Item> OUTLANDER_FUR = simpleItem("outlander_fur");

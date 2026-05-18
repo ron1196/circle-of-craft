@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "thelionking:feather_pink",
+          "name": "thelionking:feather_flamingo",
           "functions": [
             {
               "function": "minecraft:set_count",

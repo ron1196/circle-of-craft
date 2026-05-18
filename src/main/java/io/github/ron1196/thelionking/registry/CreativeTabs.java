@@ -61,9 +61,6 @@ public class CreativeTabs {
                         output.accept(LionKingItems.BONGO_DRUM_ITEM.get());
                         output.accept(LionKingItems.OUTLANDS_POOL_ITEM.get());
                         output.accept(LionKingItems.LK_SPAWNER_ITEM.get());
-                        // Portal frames
-                        output.accept(LionKingItems.PRIDE_PORTAL_FRAME_ITEM.get());
-                        output.accept(LionKingItems.OUTLANDS_PORTAL_FRAME_ITEM.get());
                         // Phase 12 blocks
                         output.accept(LionKingItems.BANANA_CAKE_ITEM.get());
                         output.accept(LionKingItems.MOUNTED_SHOOTER_ITEM.get());
@@ -193,6 +190,10 @@ public class CreativeTabs {
                 output.accept(LionKingItems.CHOCOLATE_MUFASA.get());
                 output.accept(LionKingItems.BUG_STEW.get());
                 output.accept(LionKingItems.EXPERIENCE_GRUB.get());
+                output.accept(LionKingItems.BANANA_CAKE_ITEM.get());
+                output.accept(LionKingItems.MANGO_JUICE.get());
+                output.accept(LionKingItems.PASSION_FRUIT.get());
+                output.accept(LionKingItems.JAR_MILK.get());
             })
             .build());
 
@@ -214,7 +215,7 @@ public class CreativeTabs {
                         output.accept(LionKingItems.FEATHER_YELLOW.get());
                         output.accept(LionKingItems.FEATHER_RED.get());
                         output.accept(LionKingItems.FEATHER_BLACK.get());
-                        output.accept(LionKingItems.FEATHER_PINK.get());
+                        output.accept(LionKingItems.FEATHER_FLAMINGO.get());
                         output.accept(LionKingItems.POISON.get());
                         output.accept(LionKingItems.NUKA_SHARD.get());
                         output.accept(LionKingItems.OUTLANDER_FUR.get());
@@ -310,6 +311,12 @@ public class CreativeTabs {
                     .title(Component.translatable("itemGroup.thelionking.combat"))
                     .icon(() -> new ItemStack(LionKingItems.SILVER_SWORD.get()))
                     .displayItems((params, output) -> {
+                        // Swords
+                        output.accept(LionKingItems.PRIDESTONE_SWORD.get());
+                        output.accept(LionKingItems.SILVER_SWORD.get());
+                        output.accept(LionKingItems.PEACOCK_SWORD.get());
+                        output.accept(LionKingItems.KIVULITE_SWORD.get());
+                        output.accept(LionKingItems.CORRUPT_SWORD.get());
                         // Silver Armor
                         output.accept(LionKingItems.SILVER_HELMET.get());
                         output.accept(LionKingItems.SILVER_CHESTPLATE.get());

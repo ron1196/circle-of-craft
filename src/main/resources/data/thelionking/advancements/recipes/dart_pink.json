@@ -1,13 +1,13 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_feather_pink": {
+    "has_feather_flamingo": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "thelionking:feather_pink"
+              "thelionking:feather_flamingo"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_feather_pink",
+      "has_feather_flamingo",
       "has_the_recipe"
     ]
   ],

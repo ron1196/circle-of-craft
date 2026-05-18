@@ -180,7 +180,7 @@ public final class ItemInfo {
                 "Can be crafted into Outlandish",
                 "Darts, or ground into Rug Dye.");
         put(
-                LionKingItems.FEATHER_PINK,
+                LionKingItems.FEATHER_FLAMINGO,
                 "Dropped by Flamingos.",
                 "",
                 "Can be crafted into Flamingo",
