@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "thelionking:kivulite_block" }
+  ],
+  "result": {
+    "item": "thelionking:kivulite",
+    "count": 9
+  }
+}

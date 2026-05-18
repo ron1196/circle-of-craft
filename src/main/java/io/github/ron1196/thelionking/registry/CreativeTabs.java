@@ -35,6 +35,8 @@ public class CreativeTabs {
                         output.accept(LionKingItems.CORRUPT_PRIDESTONE_SLAB_ITEM.get());
                         output.accept(LionKingItems.CORRUPT_PRIDE_BRICK_STAIRS_ITEM.get());
                         output.accept(LionKingItems.CORRUPT_PRIDE_BRICK_SLAB_ITEM.get());
+                        output.accept(LionKingItems.PRIDE_PILLAR_SLAB_ITEM.get());
+                        output.accept(LionKingItems.CORRUPT_PRIDE_PILLAR_SLAB_ITEM.get());
                         output.accept(LionKingItems.PRIDESTONE_WALL_ITEM.get());
                         output.accept(LionKingItems.PRIDE_BRICK_WALL_ITEM.get());
                         output.accept(LionKingItems.CORRUPT_PRIDESTONE_WALL_ITEM.get());
@@ -48,6 +50,7 @@ public class CreativeTabs {
                         output.accept(LionKingItems.NUKA_ORE_ITEM.get());
                         output.accept(LionKingItems.SILVER_BLOCK_ITEM.get());
                         output.accept(LionKingItems.PEACOCK_BLOCK_ITEM.get());
+                        output.accept(LionKingItems.KIVULITE_BLOCK_ITEM.get());
                         output.accept(LionKingItems.OUTSAND_ITEM.get());
                         output.accept(LionKingItems.OUTGLASS_ITEM.get());
                         output.accept(LionKingItems.OUTGLASS_PANE_ITEM.get());

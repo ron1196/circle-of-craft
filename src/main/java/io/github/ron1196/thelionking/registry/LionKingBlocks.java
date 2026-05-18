@@ -69,6 +69,9 @@ public class LionKingBlocks {
     public static final RegistryObject<Block> PEACOCK_BLOCK =
             BLOCKS.register("peacock_block", () -> new Block(metalProps()));
 
+    public static final RegistryObject<Block> KIVULITE_BLOCK =
+            BLOCKS.register("kivulite_block", () -> new Block(metalProps()));
+
     // ========== Wood - Acacia ==========
     public static final RegistryObject<Block> ACACIA_LOG = log("pride_acacia_log");
     public static final RegistryObject<Block> ACACIA_PLANKS = planks("pride_acacia_planks");
@@ -118,6 +121,9 @@ public class LionKingBlocks {
             stairs("corrupt_pride_brick_stairs", CORRUPT_PRIDE_BRICK);
     public static final RegistryObject<SlabBlock> CORRUPT_PRIDE_BRICK_SLAB =
             slab("corrupt_pride_brick_slab", CORRUPT_PRIDE_BRICK);
+    public static final RegistryObject<SlabBlock> PRIDE_PILLAR_SLAB = slab("pride_pillar_slab", PRIDE_PILLAR);
+    public static final RegistryObject<SlabBlock> CORRUPT_PRIDE_PILLAR_SLAB =
+            slab("corrupt_pride_pillar_slab", CORRUPT_PRIDE_PILLAR);
 
     // ========== Walls ==========
     public static final RegistryObject<WallBlock> PRIDESTONE_WALL = wall("pridestone_wall", PRIDESTONE);

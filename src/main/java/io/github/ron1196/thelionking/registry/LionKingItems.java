@@ -243,6 +243,8 @@ public class LionKingItems {
             registerBlockItem("silver_block", LionKingBlocks.SILVER_BLOCK);
     public static final RegistryObject<BlockItem> PEACOCK_BLOCK_ITEM =
             registerBlockItem("peacock_block", LionKingBlocks.PEACOCK_BLOCK);
+    public static final RegistryObject<BlockItem> KIVULITE_BLOCK_ITEM =
+            registerBlockItem("kivulite_block", LionKingBlocks.KIVULITE_BLOCK);
 
     // Wood - Acacia
     public static final RegistryObject<BlockItem> ACACIA_LOG_ITEM =
@@ -321,6 +323,10 @@ public class LionKingItems {
             registerBlockItem("corrupt_pride_brick_stairs", LionKingBlocks.CORRUPT_PRIDE_BRICK_STAIRS);
     public static final RegistryObject<BlockItem> CORRUPT_PRIDE_BRICK_SLAB_ITEM =
             registerBlockItem("corrupt_pride_brick_slab", LionKingBlocks.CORRUPT_PRIDE_BRICK_SLAB);
+    public static final RegistryObject<BlockItem> PRIDE_PILLAR_SLAB_ITEM =
+            registerBlockItem("pride_pillar_slab", LionKingBlocks.PRIDE_PILLAR_SLAB);
+    public static final RegistryObject<BlockItem> CORRUPT_PRIDE_PILLAR_SLAB_ITEM =
+            registerBlockItem("corrupt_pride_pillar_slab", LionKingBlocks.CORRUPT_PRIDE_PILLAR_SLAB);
 
     // Walls
     public static final RegistryObject<BlockItem> PRIDESTONE_WALL_ITEM =

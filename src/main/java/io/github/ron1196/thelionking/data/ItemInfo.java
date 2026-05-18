@@ -641,6 +641,7 @@ public final class ItemInfo {
                 "sizes with the Grinding Bowl.");
         put(LionKingItems.SILVER_BLOCK_ITEM, "Made from silver ingots.", "", "Used for storage and", "decoration.");
         put(LionKingItems.PEACOCK_BLOCK_ITEM, "Made from Peacock Gems.", "", "Used for storage and", "decoration.");
+        put(LionKingItems.KIVULITE_BLOCK_ITEM, "Made from Kivulite.", "", "Used for storage and", "decoration.");
         put(
                 LionKingItems.PRIDE_COAL_ORE_ITEM,
                 "An ore often found underground",
