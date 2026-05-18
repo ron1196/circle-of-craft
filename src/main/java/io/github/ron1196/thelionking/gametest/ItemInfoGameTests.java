@@ -2,6 +2,11 @@ package io.github.ron1196.thelionking.gametest;
 
 import io.github.ron1196.thelionking.data.ItemInfo;
 import io.github.ron1196.thelionking.registry.LionKingItems;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -16,8 +21,9 @@ import net.minecraftforge.registries.RegistryObject;
 
 /**
  * Regression net for {@link ItemInfo} before #57 (lang-file refactor). Verifies the count of items
- * with lore and exact content for a handful of canonical entries — any drift after the refactor
- * triggers a failure. Tracked in issue #63.
+ * with lore, exact content for a handful of canonical entries, and a full golden snapshot of every
+ * registered item's lore. Any drift after the refactor triggers a failure. Tracked in issues #57
+ * (refactor target) and #65 (golden snapshot).
  *
  * <p>Why this is a Game Test, not JUnit: {@link ItemInfo#get} resolves {@link RegistryObject}s,
  * which requires the Forge registry to be populated.
@@ -78,6 +84,53 @@ public class ItemInfoGameTests {
                 "Astral Charm.");
     }
 
+    /**
+     * Golden-file snapshot: serialize every registered item's lore as
+     * {@code <registry_name>\t<line1><line2>...}, sorted by registry name, and compare
+     * against {@code golden/thelionking-iteminfo.txt} on the classpath. Drift fails the test and
+     * dumps the actual output to {@code run/thelionking-iteminfo-actual.txt} for inspection.
+     *
+     * <p>Set system property {@code -Dthelionking.golden.regenerate=true} to write the actual
+     * snapshot to that file and fail the test with a copy-into-src message. The dev then promotes
+     * the dumped file to {@code src/main/resources/golden/thelionking-iteminfo.txt} and commits.
+     */
+    @GameTest(template = EMPTY, timeoutTicks = 60)
+    public void goldenSnapshotMatchesAllItems(GameTestHelper helper) {
+        String actual = serializeAllLore();
+        boolean regenerate = Boolean.getBoolean("thelionking.golden.regenerate");
+
+        String expected = readGoldenResource();
+        if (regenerate || expected == null) {
+            Path dump = Path.of("run", "thelionking-iteminfo-actual.txt");
+            try {
+                Files.createDirectories(dump.getParent());
+                Files.writeString(dump, actual, StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                helper.fail("could not write regenerated golden to " + dump + ": " + e.getMessage());
+                return;
+            }
+            helper.fail((expected == null ? "golden missing" : "regenerate requested") + " — wrote actual to "
+                    + dump.toAbsolutePath()
+                    + ". Move to src/main/resources/golden/thelionking-iteminfo.txt and commit.");
+            return;
+        }
+
+        if (!actual.equals(expected)) {
+            Path dump = Path.of("run", "thelionking-iteminfo-actual.txt");
+            try {
+                Files.createDirectories(dump.getParent());
+                Files.writeString(dump, actual, StandardCharsets.UTF_8);
+            } catch (IOException ignored) {
+                // best effort
+            }
+            helper.fail("ItemInfo golden snapshot drifted. " + firstDiffSummary(expected, actual)
+                    + " Actual dumped to " + dump.toAbsolutePath()
+                    + " — if intentional, run with -Dthelionking.golden.regenerate=true.");
+            return;
+        }
+        helper.succeed();
+    }
+
     @GameTest(template = EMPTY, timeoutTicks = 40)
     public void everyLoreLookupReturnsConsistentResult(GameTestHelper helper) {
         // Call twice — ensures lazy init isn't returning different arrays.
@@ -96,6 +149,42 @@ public class ItemInfoGameTests {
             if (lore != null) count++;
         }
         return count;
+    }
+
+    private static String serializeAllLore() {
+        List<String> lines = new ArrayList<>();
+        for (RegistryObject<? extends Item> reg : LionKingItems.ITEMS.getEntries()) {
+            String key = ForgeRegistries.ITEMS.getKey(reg.get()).toString();
+            String[] lore = ItemInfo.get(new ItemStack(reg.get()));
+            String payload = lore == null ? "" : String.join("", lore);
+            lines.add(key + "\t" + payload);
+        }
+        lines.sort(Comparator.naturalOrder());
+        return String.join("\n", lines) + "\n";
+    }
+
+    private static String readGoldenResource() {
+        try (InputStream in = ItemInfoGameTests.class.getResourceAsStream("/golden/thelionking-iteminfo.txt")) {
+            if (in == null) return null;
+            return new String(in.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private static String firstDiffSummary(String expected, String actual) {
+        String[] e = expected.split("\n");
+        String[] a = actual.split("\n");
+        int len = Math.min(e.length, a.length);
+        for (int i = 0; i < len; i++) {
+            if (!e[i].equals(a[i])) {
+                return "First diff at line " + (i + 1) + ": expected='" + e[i] + "' actual='" + a[i] + "'.";
+            }
+        }
+        if (a.length != e.length) {
+            return "Line count differs: expected " + e.length + ", got " + a.length + ".";
+        }
+        return "(trailing whitespace?)";
     }
 
     private static List<String> collectAllLore() {
