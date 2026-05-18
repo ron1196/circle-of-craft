@@ -1,0 +1,6 @@
+{
+  "parent": "thelionking:block/vase_filled",
+  "textures": {
+    "plant": "thelionking:block/red_flower_top"
+  }
+}

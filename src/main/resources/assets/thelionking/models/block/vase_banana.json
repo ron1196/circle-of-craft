@@ -1,0 +1,6 @@
+{
+  "parent": "thelionking:block/vase_filled",
+  "textures": {
+    "plant": "thelionking:block/banana_sapling"
+  }
+}

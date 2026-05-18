@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "J"
+  ],
+  "key": {
+    "X": {
+      "item": "thelionking:outshroom_glowing"
+    },
+    "J": {
+      "item": "thelionking:jar_water"
+    }
+  },
+  "result": {
+    "item": "thelionking:vase_outshroom_glowing",
+    "count": 1
+  }
+}

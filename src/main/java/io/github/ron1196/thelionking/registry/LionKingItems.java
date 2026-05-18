@@ -629,6 +629,28 @@ public class LionKingItems {
     public static final RegistryObject<BlockItem> TILLED_SAND_ITEM =
             registerBlockItem("tilled_sand", LionKingBlocks.TILLED_SAND);
     public static final RegistryObject<BlockItem> VASE_ITEM = registerBlockItem("vase", LionKingBlocks.VASE);
+    public static final RegistryObject<BlockItem> VASE_ACACIA_ITEM =
+            registerBlockItem("vase_acacia", LionKingBlocks.VASE_ACACIA);
+    public static final RegistryObject<BlockItem> VASE_RAINFOREST_ITEM =
+            registerBlockItem("vase_rainforest", LionKingBlocks.VASE_RAINFOREST);
+    public static final RegistryObject<BlockItem> VASE_MANGO_ITEM =
+            registerBlockItem("vase_mango", LionKingBlocks.VASE_MANGO);
+    public static final RegistryObject<BlockItem> VASE_PASSION_ITEM =
+            registerBlockItem("vase_passion", LionKingBlocks.VASE_PASSION);
+    public static final RegistryObject<BlockItem> VASE_BANANA_ITEM =
+            registerBlockItem("vase_banana", LionKingBlocks.VASE_BANANA);
+    public static final RegistryObject<BlockItem> VASE_WHITE_FLOWER_ITEM =
+            registerBlockItem("vase_white_flower", LionKingBlocks.VASE_WHITE_FLOWER);
+    public static final RegistryObject<BlockItem> VASE_BLUE_FLOWER_ITEM =
+            registerBlockItem("vase_blue_flower", LionKingBlocks.VASE_BLUE_FLOWER);
+    public static final RegistryObject<BlockItem> VASE_RED_FLOWER_ITEM =
+            registerBlockItem("vase_red_flower", LionKingBlocks.VASE_RED_FLOWER);
+    public static final RegistryObject<BlockItem> VASE_PURPLE_FLOWER_ITEM =
+            registerBlockItem("vase_purple_flower", LionKingBlocks.VASE_PURPLE_FLOWER);
+    public static final RegistryObject<BlockItem> VASE_OUTSHROOM_ITEM =
+            registerBlockItem("vase_outshroom", LionKingBlocks.VASE_OUTSHROOM);
+    public static final RegistryObject<BlockItem> VASE_OUTSHROOM_GLOWING_ITEM =
+            registerBlockItem("vase_outshroom_glowing", LionKingBlocks.VASE_OUTSHROOM_GLOWING);
 
     // ========== Bed & Lever ==========
     public static final RegistryObject<BlockItem> PRIDE_BED_ITEM =

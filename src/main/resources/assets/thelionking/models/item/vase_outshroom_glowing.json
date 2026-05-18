@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "thelionking:item/vase"
+    "layer0": "thelionking:item/vase_outshroom_glowing"
   }
 }

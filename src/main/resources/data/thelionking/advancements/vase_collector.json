@@ -1,0 +1,37 @@
+{
+  "parent": "thelionking:enter_pride_lands",
+  "display": {
+    "icon": { "item": "thelionking:vase_red_flower" },
+    "title": { "translate": "advancement.thelionking.vase_collector.title" },
+    "description": { "translate": "advancement.thelionking.vase_collector.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "vase_acacia":           {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"items": ["thelionking:vase_acacia"]}]}},
+    "vase_rainforest":       {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"items": ["thelionking:vase_rainforest"]}]}},
+    "vase_mango":            {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"items": ["thelionking:vase_mango"]}]}},
+    "vase_passion":          {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"items": ["thelionking:vase_passion"]}]}},
+    "vase_banana":           {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"items": ["thelionking:vase_banana"]}]}},
+    "vase_white_flower":     {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"items": ["thelionking:vase_white_flower"]}]}},
+    "vase_blue_flower":      {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"items": ["thelionking:vase_blue_flower"]}]}},
+    "vase_red_flower":       {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"items": ["thelionking:vase_red_flower"]}]}},
+    "vase_purple_flower":    {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"items": ["thelionking:vase_purple_flower"]}]}},
+    "vase_outshroom":        {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"items": ["thelionking:vase_outshroom"]}]}},
+    "vase_outshroom_glowing":{"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"items": ["thelionking:vase_outshroom_glowing"]}]}}
+  },
+  "requirements": [
+    ["vase_acacia"],
+    ["vase_rainforest"],
+    ["vase_mango"],
+    ["vase_passion"],
+    ["vase_banana"],
+    ["vase_white_flower"],
+    ["vase_blue_flower"],
+    ["vase_red_flower"],
+    ["vase_purple_flower"],
+    ["vase_outshroom"],
+    ["vase_outshroom_glowing"]
+  ]
+}

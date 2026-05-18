@@ -436,6 +436,37 @@ public class LionKingBlocks {
                     .sound(SoundType.STONE)
                     .noOcclusion()));
 
+    public static final RegistryObject<Block> VASE_ACACIA = filledVase("vase_acacia", "pride_acacia_sapling");
+    public static final RegistryObject<Block> VASE_RAINFOREST = filledVase("vase_rainforest", "rainforest_sapling");
+    public static final RegistryObject<Block> VASE_MANGO = filledVase("vase_mango", "mango_sapling");
+    public static final RegistryObject<Block> VASE_PASSION = filledVase("vase_passion", "passion_sapling", 11);
+    public static final RegistryObject<Block> VASE_BANANA = filledVase("vase_banana", "banana_sapling");
+    public static final RegistryObject<Block> VASE_WHITE_FLOWER = filledVase("vase_white_flower", "white_flower");
+    public static final RegistryObject<Block> VASE_BLUE_FLOWER = filledVase("vase_blue_flower", "blue_flower");
+    public static final RegistryObject<Block> VASE_RED_FLOWER = filledVase("vase_red_flower", "red_flower");
+    public static final RegistryObject<Block> VASE_PURPLE_FLOWER = filledVase("vase_purple_flower", "purple_flower");
+    public static final RegistryObject<Block> VASE_OUTSHROOM = filledVase("vase_outshroom", "outshroom");
+    public static final RegistryObject<Block> VASE_OUTSHROOM_GLOWING =
+            filledVase("vase_outshroom_glowing", "outshroom_glowing", 13);
+
+    private static RegistryObject<Block> filledVase(String name, String contentItemId) {
+        return filledVase(name, contentItemId, -1);
+    }
+
+    private static RegistryObject<Block> filledVase(String name, String contentItemId, int lightLevel) {
+        return BLOCKS.register(name, () -> {
+            BlockBehaviour.Properties props = BlockBehaviour.Properties.copy(VASE.get());
+            if (lightLevel >= 0) {
+                final int level = lightLevel;
+                props = props.lightLevel(s -> level);
+            }
+            java.util.function.Supplier<net.minecraft.world.item.Item> contentSupplier = () ->
+                    net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(
+                            new net.minecraft.resources.ResourceLocation(TheLionKingMod.MOD_ID, contentItemId));
+            return new io.github.ron1196.thelionking.block.FilledVaseBlock(contentSupplier, props);
+        });
+    }
+
     // ========== Bed & Lever ==========
     public static final RegistryObject<BedBlock> PRIDE_BED = BLOCKS.register(
             "pride_bed",

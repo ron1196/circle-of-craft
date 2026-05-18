@@ -165,6 +165,18 @@ public class CreativeTabs {
                         output.accept(LionKingItems.RUG_OUTLANDER_ITEM.get());
                         // Bed
                         output.accept(LionKingItems.PRIDE_BED_ITEM.get());
+                        // Vases
+                        output.accept(LionKingItems.VASE_ACACIA_ITEM.get());
+                        output.accept(LionKingItems.VASE_RAINFOREST_ITEM.get());
+                        output.accept(LionKingItems.VASE_MANGO_ITEM.get());
+                        output.accept(LionKingItems.VASE_PASSION_ITEM.get());
+                        output.accept(LionKingItems.VASE_BANANA_ITEM.get());
+                        output.accept(LionKingItems.VASE_WHITE_FLOWER_ITEM.get());
+                        output.accept(LionKingItems.VASE_BLUE_FLOWER_ITEM.get());
+                        output.accept(LionKingItems.VASE_RED_FLOWER_ITEM.get());
+                        output.accept(LionKingItems.VASE_PURPLE_FLOWER_ITEM.get());
+                        output.accept(LionKingItems.VASE_OUTSHROOM_ITEM.get());
+                        output.accept(LionKingItems.VASE_OUTSHROOM_GLOWING_ITEM.get());
                     })
                     .build());
 

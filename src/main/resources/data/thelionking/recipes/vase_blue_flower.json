@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "J"
+  ],
+  "key": {
+    "X": {
+      "item": "thelionking:blue_flower"
+    },
+    "J": {
+      "item": "thelionking:jar_water"
+    }
+  },
+  "result": {
+    "item": "thelionking:vase_blue_flower",
+    "count": 1
+  }
+}
