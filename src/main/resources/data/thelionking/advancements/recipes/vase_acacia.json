@@ -1,6 +1,18 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
+    "has_vase": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "thelionking:vase"
+            ]
+          }
+        ]
+      }
+    },
     "has_pride_acacia_sapling": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -22,6 +34,7 @@
   },
   "requirements": [
     [
+      "has_vase",
       "has_pride_acacia_sapling",
       "has_the_recipe"
     ]

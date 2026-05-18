@@ -1,17 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "X",
-    "J"
-  ],
-  "key": {
-    "X": {
-      "item": "thelionking:outshroom_glowing"
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "thelionking:vase"
     },
-    "J": {
-      "item": "thelionking:jar_water"
+    {
+      "item": "thelionking:outshroom_glowing"
     }
-  },
+  ],
   "result": {
     "item": "thelionking:vase_outshroom_glowing",
     "count": 1

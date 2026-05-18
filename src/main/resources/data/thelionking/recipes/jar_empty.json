@@ -1,11 +1,11 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "G G",
-    " G "
+    "C C",
+    " C "
   ],
   "key": {
-    "G": { "item": "minecraft:glass" }
+    "C": { "item": "minecraft:clay_ball" }
   },
   "result": {
     "item": "thelionking:jar_empty",

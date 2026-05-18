@@ -1,17 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "X",
-    "J"
-  ],
-  "key": {
-    "X": {
-      "item": "thelionking:white_flower"
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "thelionking:vase"
     },
-    "J": {
-      "item": "thelionking:jar_water"
+    {
+      "item": "thelionking:white_flower"
     }
-  },
+  ],
   "result": {
     "item": "thelionking:vase_white_flower",
     "count": 1
