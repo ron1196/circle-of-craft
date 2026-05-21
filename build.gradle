@@ -101,6 +101,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.20.1-47.4.18'
     implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.20.1:4.8.3')
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    compileOnly fg.deobf('mezz.jei:jei-1.20.1-common-api:15.20.0.105')
     compileOnly fg.deobf('mezz.jei:jei-1.20.1-forge-api:15.20.0.105')
     runtimeOnly fg.deobf('mezz.jei:jei-1.20.1-forge:15.20.0.105')
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
