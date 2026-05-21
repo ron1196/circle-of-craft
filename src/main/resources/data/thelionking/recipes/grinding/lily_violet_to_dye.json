@@ -1,0 +1,5 @@
+{
+  "type": "thelionking:grinding",
+  "ingredient": { "item": "thelionking:lily_violet" },
+  "result": { "item": "minecraft:purple_dye" }
+}
