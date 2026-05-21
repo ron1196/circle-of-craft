@@ -70,6 +70,7 @@ public class ClientEvents {
 
     // NPC layers (reuse animal mesh definitions)
     public static final ModelLayerLocation RAFIKI_LAYER = layer("rafiki");
+    public static final ModelLayerLocation SIMBA_LAYER = layer("simba");
     public static final ModelLayerLocation TIMON_LAYER = layer("timon");
     public static final ModelLayerLocation PUMBAA_LAYER = layer("pumbaa");
     public static final ModelLayerLocation SCAR_LAYER = layer("scar");
@@ -125,6 +126,7 @@ public class ClientEvents {
 
         // NPC layers (proper models ported from original mod)
         event.registerLayerDefinition(RAFIKI_LAYER, RafikiModel::createBodyLayer);
+        event.registerLayerDefinition(SIMBA_LAYER, SimbaModel::createBodyLayer);
         event.registerLayerDefinition(TIMON_LAYER, TimonModel::createBodyLayer);
         event.registerLayerDefinition(PUMBAA_LAYER, PumbaaModel::createBodyLayer);
         event.registerLayerDefinition(SCAR_LAYER, LionModel::createBodyLayer);
@@ -240,7 +242,9 @@ public class ClientEvents {
         event.registerEntityRenderer(
                 EntityTypes.RAFIKI.get(),
                 ctx -> new NpcRenderer(ctx, new RafikiModel(ctx.bakeLayer(RAFIKI_LAYER)), "rafiki", 0.35F));
-        event.registerEntityRenderer(EntityTypes.SIMBA.get(), SimbaRenderer::new);
+        event.registerEntityRenderer(
+                EntityTypes.SIMBA.get(),
+                ctx -> new NpcRenderer(ctx, new SimbaModel(ctx.bakeLayer(SIMBA_LAYER)), "simba", 0.5F));
         event.registerEntityRenderer(
                 EntityTypes.TIMON.get(),
                 ctx -> new NpcRenderer(ctx, new TimonModel(ctx.bakeLayer(TIMON_LAYER)), "timon", 0.2F, 0.5F));

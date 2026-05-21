@@ -34,37 +34,27 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class SimbaEntity extends TamableAnimal implements GeoEntity {
-
-    private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.simba.idle");
-    private static final RawAnimation WALK_ANIM = RawAnimation.begin().thenLoop("animation.simba.walk");
-    private static final RawAnimation SIT_ANIM = RawAnimation.begin().thenLoop("animation.simba.sit");
-    private static final RawAnimation FISHING_ANIM = RawAnimation.begin().thenPlay("animation.simba.fishing");
+public class SimbaEntity extends TamableAnimal {
 
     private static final EntityDataAccessor<Boolean> DATA_BABY =
             SynchedEntityData.defineId(SimbaEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_HAS_CHARM =
             SynchedEntityData.defineId(SimbaEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> DATA_FISHING =
-            SynchedEntityData.defineId(SimbaEntity.class, EntityDataSerializers.BOOLEAN);
 
-    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
     public final ItemStackHandler inventory = new ItemStackHandler(9);
 
     public SimbaEntity(EntityType<? extends SimbaEntity> type, Level level) {
         super(type, level);
         this.setCustomName(net.minecraft.network.chat.Component.literal("Simba"));
         this.setCustomNameVisible(true);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -79,7 +69,6 @@ public class SimbaEntity extends TamableAnimal implements GeoEntity {
         super.defineSynchedData();
         this.entityData.define(DATA_BABY, false);
         this.entityData.define(DATA_HAS_CHARM, false);
-        this.entityData.define(DATA_FISHING, false);
     }
 
     public boolean hasCharm() {
@@ -95,42 +84,13 @@ public class SimbaEntity extends TamableAnimal implements GeoEntity {
         return hasCharm();
     }
 
-    public boolean isFishing() {
-        return this.entityData.get(DATA_FISHING);
-    }
-
-    public void setFishing(boolean fishing) {
-        this.entityData.set(DATA_FISHING, fishing);
-    }
-
-    @Override
-    public void registerControllers(@NotNull AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "main", 5, this::mainController)
-                .triggerableAnim("animation.simba.fishing", FISHING_ANIM));
-    }
-
-    private PlayState mainController(@NotNull AnimationState<SimbaEntity> state) {
-        if (this.isInSittingPose()) {
-            return state.setAndContinue(SIT_ANIM);
-        }
-        if (state.isMoving()) {
-            return state.setAndContinue(WALK_ANIM);
-        }
-        return state.setAndContinue(IDLE_ANIM);
-    }
-
-    @Override
-    public @NotNull AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.geoCache;
-    }
-
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new SimbaAttackGoal(this));
-        this.goalSelector.addGoal(3, new SimbaFishingGoal(this));
-        this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.3D, 4.0F, 2.0F, false));
+        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.3D, 4.0F, 2.0F, false));
+        this.goalSelector.addGoal(4, new SimbaFishingGoal(this));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(7, new SimbaWanderGoal(this));
