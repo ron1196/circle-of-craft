@@ -460,8 +460,8 @@ public class LionKingBlocks {
                 final int level = lightLevel;
                 props = props.lightLevel(s -> level);
             }
-            java.util.function.Supplier<net.minecraft.world.item.Item> contentSupplier = () ->
-                    net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(
+            java.util.function.Supplier<net.minecraft.world.item.Item> contentSupplier =
+                    () -> net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(
                             new net.minecraft.resources.ResourceLocation(TheLionKingMod.MOD_ID, contentItemId));
             return new io.github.ron1196.thelionking.block.FilledVaseBlock(contentSupplier, props);
         });

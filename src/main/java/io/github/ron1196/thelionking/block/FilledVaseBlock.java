@@ -48,8 +48,7 @@ public class FilledVaseBlock extends VaseBlock {
             }
             level.setBlock(pos, LionKingBlocks.VASE.get().defaultBlockState(), 3);
             level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
-            level.playSound(
-                    null, pos, SoundEvents.GRASS_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
+            level.playSound(null, pos, SoundEvents.GRASS_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

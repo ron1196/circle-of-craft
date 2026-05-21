@@ -216,8 +216,8 @@ public class VaseGameTests {
                     .use(helper.getLevel(), player, InteractionHand.MAIN_HAND, hitAt(helper, VASE_POS));
             BlockState after = helper.getLevel().getBlockState(abs);
             if (!after.is(p.filledVase().get())) {
-                helper.fail("variant " + p.name() + ": expected "
-                        + p.filledVase().getId() + ", got " + after.getBlock());
+                helper.fail(
+                        "variant " + p.name() + ": expected " + p.filledVase().getId() + ", got " + after.getBlock());
                 return;
             }
         }

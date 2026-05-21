@@ -66,8 +66,7 @@ public class VaseBlock extends Block {
             level.setBlock(pos, filled.defaultBlockState(), 3);
             if (!player.getAbilities().instabuild) stack.shrink(1);
             level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
-            level.playSound(
-                    null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+            level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
