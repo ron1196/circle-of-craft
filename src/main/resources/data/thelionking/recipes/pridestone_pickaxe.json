@@ -6,7 +6,7 @@
     " S "
   ],
   "key": {
-    "X": { "item": "thelionking:pridestone_item" },
+    "X": { "item": "thelionking:pridestone" },
     "S": { "item": "minecraft:stick" }
   },
   "result": {

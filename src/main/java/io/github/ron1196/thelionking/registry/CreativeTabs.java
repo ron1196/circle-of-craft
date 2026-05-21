@@ -214,8 +214,6 @@ public class CreativeTabs {
                     .title(Component.translatable("itemGroup.thelionking.materials"))
                     .icon(() -> new ItemStack(LionKingItems.HYENA_BONE.get()))
                     .displayItems((params, output) -> {
-                        output.accept(LionKingItems.PRIDESTONE_ITEM.get());
-                        output.accept(LionKingItems.CORRUPT_PRIDESTONE_ITEM.get());
                         output.accept(LionKingItems.SILVER_INGOT.get());
                         output.accept(LionKingItems.PEACOCK_GEM.get());
                         output.accept(LionKingItems.KIVULITE.get());

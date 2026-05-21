@@ -1,13 +1,13 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_pridestone_item": {
+    "has_pridestone": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "thelionking:pridestone_item"
+              "thelionking:pridestone"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_pridestone_item",
+      "has_pridestone",
       "has_the_recipe"
     ]
   ],

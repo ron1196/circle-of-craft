@@ -14,7 +14,7 @@ public class LionKingToolTiers {
             1.0F,
             5,
             BlockTags.NEEDS_STONE_TOOL,
-            () -> Ingredient.of(LionKingItems.PRIDESTONE_ITEM.get()));
+            () -> Ingredient.of(LionKingItems.PRIDESTONE_BLOCK_ITEM.get()));
 
     public static final ForgeTier SILVER = new ForgeTier(
             2, 490, 6.0F, 2.0F, 16, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(LionKingItems.SILVER_INGOT.get()));
@@ -32,5 +32,5 @@ public class LionKingToolTiers {
             0.0F,
             7,
             BlockTags.NEEDS_STONE_TOOL,
-            () -> Ingredient.of(LionKingItems.CORRUPT_PRIDESTONE_ITEM.get()));
+            () -> Ingredient.of(LionKingItems.CORRUPT_PRIDESTONE_BLOCK_ITEM.get()));
 }
