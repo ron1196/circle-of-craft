@@ -32,3 +32,10 @@ mandatory = true
 versionRange = "[4.4,)"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.thelionking]]
+modId = "jei"
+mandatory = false
+versionRange = "[15,)"
+ordering = "AFTER"
+side = "BOTH"
