@@ -44,6 +44,7 @@ public class FallenLogBlock extends RotatedPillarBlock {
         if (bug == null) return;
         bug.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, level.random.nextFloat() * 360.0F, 0.0F);
         bug.finalizeSpawn(serverLevel, level.getCurrentDifficultyAt(pos), MobSpawnType.NATURAL, null, null);
+        bug.startPanic();
         serverLevel.addFreshEntity(bug);
     }
 }

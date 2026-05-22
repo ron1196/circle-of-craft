@@ -19,6 +19,7 @@ bin/
 run/
 runs/
 run-gametest/
+run-data/
 logs/
 
 # OS
