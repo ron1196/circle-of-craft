@@ -77,8 +77,6 @@
   "block.thelionking.pool_cover": "Pool Cover",
   "block.thelionking.pumbaa_box": "Pumbaa Box",
 
-  "item.thelionking.pridestone_item": "Pridestone",
-  "item.thelionking.corrupt_pridestone_item": "Corrupt Pridestone",
   "item.thelionking.silver_ingot": "Silver Ingot",
   "item.thelionking.peacock_gem": "Peacock Gem",
   "item.thelionking.kivulite": "Kivulite",
@@ -462,5 +460,6 @@
   "container.thelionking.simba_inventory": "Simba",
   "container.thelionking.quest_book": "Quest Book",
   "key.categories.thelionking": "The Lion King",
-  "key.thelionking.simba_sit": "Toggle Simba Sit"
+  "key.thelionking.simba_sit": "Toggle Simba Sit",
+  "jei.thelionking.category.grinding_bowl": "Grinding Bowl"
 }

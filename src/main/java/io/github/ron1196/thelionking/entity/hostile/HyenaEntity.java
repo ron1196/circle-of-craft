@@ -146,7 +146,7 @@ public class HyenaEntity extends Monster {
     @Override
     protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
         super.dropCustomDeathLoot(source, looting, recentlyHit);
-        if (this.random.nextInt(4) == 0) {
+        if (this.random.nextInt(20) <= looting) {
             ItemStack head = new ItemStack(LionKingBlocks.HYENA_HEAD.get());
             CompoundTag blockEntityTag = new CompoundTag();
             blockEntityTag.putInt("HyenaType", getVariant());

@@ -1,5 +1,5 @@
 {
   "type": "thelionking:grinding",
-  "ingredient": { "item": "thelionking:pridestone_item" },
+  "ingredient": { "item": "thelionking:pridestone" },
   "result": { "item": "minecraft:sand" }
 }

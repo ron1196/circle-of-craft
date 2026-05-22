@@ -23,8 +23,6 @@ public class LionKingItems {
             DeferredRegister.create(ForgeRegistries.ITEMS, TheLionKingMod.MOD_ID);
 
     // ========== Material Items ==========
-    public static final RegistryObject<Item> PRIDESTONE_ITEM = simpleItem("pridestone_item");
-    public static final RegistryObject<Item> CORRUPT_PRIDESTONE_ITEM = simpleItem("corrupt_pridestone_item");
     public static final RegistryObject<Item> SILVER_INGOT = simpleItem("silver_ingot");
     public static final RegistryObject<Item> PEACOCK_GEM = simpleItem("peacock_gem");
     public static final RegistryObject<Item> KIVULITE = simpleItem("kivulite");

@@ -1,13 +1,13 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_corrupt_pridestone_item": {
+    "has_corrupt_pridestone": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "thelionking:corrupt_pridestone_item"
+              "thelionking:corrupt_pridestone"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_corrupt_pridestone_item",
+      "has_corrupt_pridestone",
       "has_the_recipe"
     ]
   ],
