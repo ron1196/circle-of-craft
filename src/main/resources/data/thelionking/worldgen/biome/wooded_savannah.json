@@ -88,7 +88,8 @@
     [
       "thelionking:pride_acacia_tree_placed",
       "thelionking:mango_tree_placed",
-      "minecraft:patch_tall_grass"
+      "minecraft:patch_tall_grass",
+      "thelionking:fallen_pride_acacia_log_placed"
     ],
     [],
     [],

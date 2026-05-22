@@ -71,7 +71,7 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
         if (!hasBait) return;
 
         trapTimer++;
-        if (trapTimer >= 5) {
+        if (trapTimer >= TRAP_INTERVAL) {
             trapTimer = 0;
 
             ItemStack output = items.getStackInSlot(4);
