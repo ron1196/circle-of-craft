@@ -37,7 +37,6 @@ import org.jetbrains.annotations.NotNull;
 public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
 
     public static final int TRAP_INTERVAL = 600; // 30 seconds — bait→bug attract roll cadence
-    private static final int PLAYER_AVOID_RANGE = 16;
 
     public static final TagKey<Item> BAIT_PREFERRED = bait("preferred");
     public static final TagKey<Item> BAIT_DECENT = bait("decent");
@@ -52,17 +51,21 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
         return TagKey.create(Registries.ITEM, new ResourceLocation(TheLionKingMod.MOD_ID, "bait/" + tier));
     }
 
-    private static final int SPAWN_RADIUS_XZ = 8;
+    private static final int SPAWN_RADIUS_XZ = 2; //8
     private static final int SPAWN_RADIUS_Y = 2;
     private static final int SPAWN_ATTEMPTS = 16;
-    private static final double CONSUME_RANGE = 2.0;
+    private static final double CONSUME_RANGE = 3.0;
     private static final double CONSUME_RANGE_SQR = CONSUME_RANGE * CONSUME_RANGE;
     private static final int CONSUME_SOUND_STRIDE = 8;
+    private static final double JITTER_STRENGTH = 0.18;
 
     private final ItemStackHandler items = new ItemStackHandler(5) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            if (level != null && !level.isClientSide()) {
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            }
         }
 
         @Override
@@ -98,15 +101,14 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
     public void serverTick() {
         if (!(level instanceof ServerLevel serverLevel)) return;
 
-        if (!hasBait()) {
+        if (hasBait()) {
+            trapTimer++;
+            if (trapTimer >= TRAP_INTERVAL) {
+                trapTimer = 0;
+                tryAttractBug(serverLevel);
+            }
+        } else {
             trapTimer = 0;
-            return;
-        }
-
-        trapTimer++;
-        if (trapTimer >= TRAP_INTERVAL) {
-            trapTimer = 0;
-            tryAttractBug(serverLevel);
         }
 
         consumeNearbyBugs(serverLevel);
@@ -136,9 +138,6 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     private void tryAttractBug(@NotNull ServerLevel serverLevel) {
-        AABB playerRange = new AABB(worldPosition).inflate(PLAYER_AVOID_RANGE);
-        if (!serverLevel.getEntitiesOfClass(Player.class, playerRange).isEmpty()) return;
-
         float chance = ATTRACT_PER_WEIGHT * totalBaitWeight();
         if (serverLevel.random.nextFloat() >= chance) return;
 
@@ -182,6 +181,7 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
                 if (slot < 0) continue;
                 items.getStackInSlot(slot).shrink(1);
                 bug.trapTick = 0;
+                syncToClient();
             }
 
             bug.trapTick++;
@@ -194,6 +194,13 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
                         SoundSource.BLOCKS,
                         0.4F,
                         0.8F + serverLevel.random.nextFloat() * 0.4F);
+            }
+
+            if (bug.trapTick > 0 && bug.trapTick < 30) {
+                double jx = (serverLevel.random.nextDouble() - 0.5) * JITTER_STRENGTH;
+                double jz = (serverLevel.random.nextDouble() - 0.5) * JITTER_STRENGTH;
+                bug.setDeltaMovement(bug.getDeltaMovement().add(jx, 0.0, jz));
+                bug.hurtMarked = true;
             }
 
             if (bug.trapTick >= 34) {
@@ -211,6 +218,7 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
             if (bug.trapTick >= BugEntity.CONSUME_DURATION_TICKS) {
                 addBugToOutput();
                 bug.discard();
+                syncToClient();
             }
         }
     }
@@ -263,6 +271,35 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
         super.load(tag);
         items.deserializeNBT(tag.getCompound("Items"));
         trapTimer = tag.getInt("TrapTimer");
+    }
+
+    @Override
+    public @NotNull CompoundTag getUpdateTag() {
+        CompoundTag tag = super.getUpdateTag();
+        tag.put("Items", items.serializeNBT());
+        return tag;
+    }
+
+    @Override
+    public net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void onDataPacket(
+            @NotNull net.minecraft.network.Connection net,
+            net.minecraft.network.protocol.game.@NotNull ClientboundBlockEntityDataPacket pkt) {
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) {
+            load(tag);
+        }
+    }
+
+    private void syncToClient() {
+        if (level != null && !level.isClientSide()) {
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
     }
 
     @Override

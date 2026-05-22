@@ -26,7 +26,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class BugTrapBlock extends BaseEntityBlock {
 
-    private static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
+    private static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+    private static final VoxelShape COLLISION = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
     public BugTrapBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -39,6 +40,15 @@ public class BugTrapBlock extends BaseEntityBlock {
             @NotNull BlockPos pos,
             @NotNull CollisionContext ctx) {
         return SHAPE;
+    }
+
+    @Override
+    public @NotNull VoxelShape getCollisionShape(
+            @NotNull BlockState state,
+            @NotNull BlockGetter level,
+            @NotNull BlockPos pos,
+            @NotNull CollisionContext ctx) {
+        return COLLISION;
     }
 
     @Override

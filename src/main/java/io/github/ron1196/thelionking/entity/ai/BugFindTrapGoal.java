@@ -10,7 +10,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class BugFindTrapGoal extends Goal {
 
-    private static final int SEARCH_RANGE = 16;
+    private static final int SEARCH_RANGE = 32;
+    private static final int SEARCH_VERTICAL = 8;
     private static final double WALK_SPEED = 1.0;
 
     private final BugEntity bug;
@@ -24,12 +25,12 @@ public class BugFindTrapGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (bug.trapTick >= 0) return false;
         if (bug.targetTrap != null && isValidBaitedTrap(bug.targetTrap)) {
             trapPos = bug.targetTrap;
             return true;
         }
-        if (bug.getRandom().nextInt(60) != 0) return false;
+        if (bug.trapTick >= 0) return false;
+        if (bug.getRandom().nextInt(20) != 0) return false;
         trapPos = findNearestBaitedTrap();
         if (trapPos != null) {
             bug.targetTrap = trapPos;
@@ -40,8 +41,9 @@ public class BugFindTrapGoal extends Goal {
     @Override
     public boolean canContinueToUse() {
         if (trapPos == null) return false;
-        if (bug.blockPosition().closerThan(trapPos, 2.0)) return false;
-        return isValidBaitedTrap(trapPos);
+        if (bug.trapTick >= 0) return true;
+        if (!isValidBaitedTrap(trapPos)) return false;
+        return !bug.getNavigation().isDone();
     }
 
     @Override
@@ -52,6 +54,10 @@ public class BugFindTrapGoal extends Goal {
     @Override
     public void tick() {
         if (trapPos == null) return;
+        if (bug.trapTick >= 0) {
+            bug.getNavigation().stop();
+            return;
+        }
         if (--recheckTimer <= 0) {
             recheckTimer = 20;
             bug.getNavigation().moveTo(trapPos.getX() + 0.5, trapPos.getY(), trapPos.getZ() + 0.5, WALK_SPEED);
@@ -80,7 +86,8 @@ public class BugFindTrapGoal extends Goal {
         double nearestDist = Double.MAX_VALUE;
 
         for (BlockPos pos : BlockPos.betweenClosed(
-                bugPos.offset(-SEARCH_RANGE, -4, -SEARCH_RANGE), bugPos.offset(SEARCH_RANGE, 4, SEARCH_RANGE))) {
+                bugPos.offset(-SEARCH_RANGE, -SEARCH_VERTICAL, -SEARCH_RANGE),
+                bugPos.offset(SEARCH_RANGE, SEARCH_VERTICAL, SEARCH_RANGE))) {
             if (!isValidBaitedTrap(pos)) continue;
             double dist = bugPos.distSqr(pos);
             if (dist < nearestDist) {

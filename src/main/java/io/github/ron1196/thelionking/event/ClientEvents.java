@@ -334,6 +334,9 @@ public class ClientEvents {
                 BlockEntityTypes.GRINDING_BOWL.get(),
                 io.github.ron1196.thelionking.client.renderer.GrindingBowlRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityTypes.MOUNTED_SHOOTER.get(), MountedShooterRenderer::new);
+        event.registerBlockEntityRenderer(
+                BlockEntityTypes.BUG_TRAP.get(),
+                io.github.ron1196.thelionking.client.renderer.BugTrapBlockEntityRenderer::new);
     }
 
     @SubscribeEvent
