@@ -1,6 +1,7 @@
 package io.github.ron1196.thelionking.block.entity;
 
 import io.github.ron1196.thelionking.TheLionKingMod;
+import io.github.ron1196.thelionking.block.BugTrapBlock;
 import io.github.ron1196.thelionking.entity.animal.BugEntity;
 import io.github.ron1196.thelionking.menu.BugTrapMenu;
 import io.github.ron1196.thelionking.registry.BlockEntityTypes;
@@ -9,6 +10,7 @@ import io.github.ron1196.thelionking.registry.LionKingItems;
 import java.util.List;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -51,13 +53,16 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
         return TagKey.create(Registries.ITEM, new ResourceLocation(TheLionKingMod.MOD_ID, "bait/" + tier));
     }
 
-    private static final int SPAWN_RADIUS_XZ = 2; //8
+    private static final int SPAWN_RADIUS_XZ = 8;
     private static final int SPAWN_RADIUS_Y = 2;
     private static final int SPAWN_ATTEMPTS = 16;
-    private static final double CONSUME_RANGE = 3.0;
-    private static final double CONSUME_RANGE_SQR = CONSUME_RANGE * CONSUME_RANGE;
+    private static final double SCAN_RANGE = 2.0;
+    private static final double FACE_CONSUME_DISTANCE = 1.0;
+    private static final double FACE_CONSUME_DISTANCE_SQR = FACE_CONSUME_DISTANCE * FACE_CONSUME_DISTANCE;
     private static final int CONSUME_SOUND_STRIDE = 8;
-    private static final double JITTER_STRENGTH = 0.18;
+    private static final int CLOSURE_HOLD_TICKS = 20;
+    private static final int CLOSURE_TRIGGER_TICK = 4;
+    private static final double CLOSURE_TRIGGER_DISTANCE_SQR = 0.6 * 0.6;
 
     private final ItemStackHandler items = new ItemStackHandler(5) {
         @Override
@@ -76,6 +81,7 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
     };
 
     private int trapTimer = 0;
+    private int closureTimer = 0;
 
     private final ContainerData data = new ContainerData() {
         @Override
@@ -112,6 +118,56 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
         }
 
         consumeNearbyBugs(serverLevel);
+        tickClosureTimer(serverLevel);
+    }
+
+    private void tickClosureTimer(@NotNull ServerLevel serverLevel) {
+        if (closureTimer <= 0) return;
+        closureTimer--;
+        int newLevel = levelForTimer(closureTimer);
+        if (closureTimer == 0) {
+            setClosedFaceAndLevel(serverLevel, BugTrapBlock.ClosedFace.NONE, 0);
+        } else {
+            setClosureLevel(serverLevel, newLevel);
+        }
+    }
+
+    private static int levelForTimer(int timer) {
+        if (timer <= 0) return 0;
+        if (timer <= OPEN_ANIM_TICKS) return 1;
+        if (timer >= CLOSURE_HOLD_TICKS - CLOSE_ANIM_TICKS) return 1;
+        return 2;
+    }
+
+    private static final int CLOSE_ANIM_TICKS = 2;
+    private static final int OPEN_ANIM_TICKS = 2;
+
+    private static BugTrapBlock.ClosedFace closedFaceFor(@NotNull Direction face) {
+        return switch (face) {
+            case NORTH -> BugTrapBlock.ClosedFace.NORTH;
+            case EAST -> BugTrapBlock.ClosedFace.EAST;
+            case SOUTH -> BugTrapBlock.ClosedFace.SOUTH;
+            case WEST -> BugTrapBlock.ClosedFace.WEST;
+            default -> BugTrapBlock.ClosedFace.NONE;
+        };
+    }
+
+    private void setClosedFaceAndLevel(
+            @NotNull ServerLevel serverLevel, BugTrapBlock.@NotNull ClosedFace face, int level) {
+        BlockState current = getBlockState();
+        if (current.getValue(BugTrapBlock.CLOSED_FACE) == face && current.getValue(BugTrapBlock.CLOSURE_LEVEL) == level) {
+            return;
+        }
+        serverLevel.setBlock(
+                worldPosition,
+                current.setValue(BugTrapBlock.CLOSED_FACE, face).setValue(BugTrapBlock.CLOSURE_LEVEL, level),
+                3);
+    }
+
+    private void setClosureLevel(@NotNull ServerLevel serverLevel, int level) {
+        BlockState current = getBlockState();
+        if (current.getValue(BugTrapBlock.CLOSURE_LEVEL) == level) return;
+        serverLevel.setBlock(worldPosition, current.setValue(BugTrapBlock.CLOSURE_LEVEL, level), 3);
     }
 
     private boolean hasBait() {
@@ -160,25 +216,48 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
                     0.0F);
             bug.finalizeSpawn(
                     serverLevel, serverLevel.getCurrentDifficultyAt(spawnPos), MobSpawnType.NATURAL, null, null);
+            Direction face = chooseNearestBaitedFace(bug.position());
+            if (face == null) return;
             bug.targetTrap = worldPosition.immutable();
+            bug.targetFace = face;
             serverLevel.addFreshEntity(bug);
             return;
         }
     }
 
+    @Nullable
+    private Direction chooseNearestBaitedFace(@NotNull Vec3 from) {
+        Direction best = null;
+        double bestDistSqr = Double.MAX_VALUE;
+        for (Direction face : Direction.Plane.HORIZONTAL) {
+            int slot = BugEntity.slotForFace(face);
+            if (slot < 0 || items.getStackInSlot(slot).isEmpty()) continue;
+            BlockPos approach = worldPosition.relative(face);
+            double d = from.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5);
+            if (d < bestDistSqr) {
+                bestDistSqr = d;
+                best = face;
+            }
+        }
+        return best;
+    }
+
     private void consumeNearbyBugs(@NotNull ServerLevel serverLevel) {
-        AABB area = new AABB(worldPosition).inflate(CONSUME_RANGE);
+        AABB area = new AABB(worldPosition).inflate(SCAN_RANGE);
         List<BugEntity> nearby = serverLevel.getEntitiesOfClass(BugEntity.class, area);
         if (nearby.isEmpty()) return;
 
         Vec3 trapCenter = Vec3.atCenterOf(worldPosition);
+        Vec3 trapBottomCenter = Vec3.atBottomCenterOf(worldPosition);
         for (BugEntity bug : nearby) {
             if (bug.targetTrap == null || !bug.targetTrap.equals(worldPosition)) continue;
-            if (bug.distanceToSqr(trapCenter) > CONSUME_RANGE_SQR) continue;
+            if (bug.targetFace == null) continue;
+            int slot = BugEntity.slotForFace(bug.targetFace);
+            if (slot < 0) continue;
+            if (bug.position().distanceToSqr(trapBottomCenter) > FACE_CONSUME_DISTANCE_SQR) continue;
 
             if (bug.trapTick < 0) {
-                int slot = firstBaitSlot();
-                if (slot < 0) continue;
+                if (items.getStackInSlot(slot).isEmpty()) continue;
                 items.getStackInSlot(slot).shrink(1);
                 bug.trapTick = 0;
                 syncToClient();
@@ -196,13 +275,6 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
                         0.8F + serverLevel.random.nextFloat() * 0.4F);
             }
 
-            if (bug.trapTick > 0 && bug.trapTick < 30) {
-                double jx = (serverLevel.random.nextDouble() - 0.5) * JITTER_STRENGTH;
-                double jz = (serverLevel.random.nextDouble() - 0.5) * JITTER_STRENGTH;
-                bug.setDeltaMovement(bug.getDeltaMovement().add(jx, 0.0, jz));
-                bug.hurtMarked = true;
-            }
-
             if (bug.trapTick >= 34) {
                 Vec3 toward = trapCenter.subtract(bug.position());
                 double dist = toward.length();
@@ -215,25 +287,27 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
                 }
             }
 
-            if (bug.trapTick >= BugEntity.CONSUME_DURATION_TICKS) {
+            boolean atFace =
+                    bug.position().distanceToSqr(trapBottomCenter) <= CLOSURE_TRIGGER_DISTANCE_SQR;
+            BlockState state = getBlockState();
+            int curLevel = state.getValue(BugTrapBlock.CLOSURE_LEVEL);
+
+            if (bug.trapTick >= CLOSURE_TRIGGER_TICK && atFace) {
+                if (state.getValue(BugTrapBlock.CLOSED_FACE) == BugTrapBlock.ClosedFace.NONE) {
+                    setClosedFaceAndLevel(serverLevel, closedFaceFor(bug.targetFace), 1);
+                    closureTimer = CLOSURE_HOLD_TICKS;
+                }
+                if (curLevel >= 2) {
+                    addBugToOutput();
+                    bug.discard();
+                    syncToClient();
+                }
+            } else if (bug.trapTick >= BugEntity.CONSUME_DURATION_TICKS) {
                 addBugToOutput();
                 bug.discard();
                 syncToClient();
             }
         }
-    }
-
-    private int firstBaitSlot() {
-        int worstSlot = -1;
-        float worstWeight = Float.MAX_VALUE;
-        for (int i = 0; i < 4; i++) {
-            float w = baitWeight(items.getStackInSlot(i));
-            if (w > 0.0F && w < worstWeight) {
-                worstWeight = w;
-                worstSlot = i;
-            }
-        }
-        return worstSlot;
     }
 
     private void addBugToOutput() {
@@ -264,6 +338,7 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
         super.saveAdditional(tag);
         tag.put("Items", items.serializeNBT());
         tag.putInt("TrapTimer", trapTimer);
+        tag.putInt("ClosureTimer", closureTimer);
     }
 
     @Override
@@ -271,6 +346,7 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
         super.load(tag);
         items.deserializeNBT(tag.getCompound("Items"));
         trapTimer = tag.getInt("TrapTimer");
+        closureTimer = tag.getInt("ClosureTimer");
     }
 
     @Override

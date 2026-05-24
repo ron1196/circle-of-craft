@@ -114,7 +114,7 @@ public class ClientEvents {
         event.registerLayerDefinition(DIKDIK_LAYER, DikDikModel::createBodyLayer);
         event.registerLayerDefinition(FLAMINGO_LAYER, FlamingoModel::createBodyLayer);
         event.registerLayerDefinition(ZAZU_LAYER, ZazuModel::createBodyLayer);
-        event.registerLayerDefinition(BUG_LAYER, BugModel::createBodyLayer);
+        event.registerLayerDefinition(BUG_LAYER, TermiteModel::createBodyLayer);
 
         // Hostile
         event.registerLayerDefinition(HYENA_LAYER, HyenaModel::createBodyLayer);
@@ -209,9 +209,9 @@ public class ClientEvents {
                         ZazuEntity.BABY_SCALE));
         event.registerEntityRenderer(
                 EntityTypes.BUG.get(),
-                ctx -> new AnimalRenderer<>(
+                ctx -> new BugRenderer<>(
                         ctx,
-                        new BugModel<>(ctx.bakeLayer(BUG_LAYER)),
+                        new TermiteModel<>(ctx.bakeLayer(BUG_LAYER)),
                         "bug",
                         BugEntity.SHADOW_RADIUS,
                         BugEntity.BABY_SCALE));

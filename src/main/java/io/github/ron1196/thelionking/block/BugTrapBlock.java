@@ -4,6 +4,7 @@ import io.github.ron1196.thelionking.block.entity.BugTrapBlockEntity;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,6 +19,9 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -26,11 +30,42 @@ import org.jetbrains.annotations.NotNull;
 
 public class BugTrapBlock extends BaseEntityBlock {
 
+    public enum ClosedFace implements StringRepresentable {
+        NONE("none"),
+        NORTH("north"),
+        EAST("east"),
+        SOUTH("south"),
+        WEST("west");
+
+        private final String name;
+
+        ClosedFace(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public @NotNull String getSerializedName() {
+            return name;
+        }
+    }
+
+    public static final EnumProperty<ClosedFace> CLOSED_FACE = EnumProperty.create("closed_face", ClosedFace.class);
+    public static final IntegerProperty CLOSURE_LEVEL = IntegerProperty.create("closure_level", 0, 2);
+
     private static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
     private static final VoxelShape COLLISION = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
     public BugTrapBlock(BlockBehaviour.Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition
+                .any()
+                .setValue(CLOSED_FACE, ClosedFace.NONE)
+                .setValue(CLOSURE_LEVEL, 0));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder) {
+        builder.add(CLOSED_FACE, CLOSURE_LEVEL);
     }
 
     @Override

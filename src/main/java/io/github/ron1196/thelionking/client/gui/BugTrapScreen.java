@@ -38,7 +38,8 @@ public class BugTrapScreen extends AbstractContainerScreen<BugTrapMenu> {
         int progress = this.menu.getTrapProgress();
         int filled = Math.min(PROGRESS_HEIGHT, progress * PROGRESS_HEIGHT / BugTrapBlockEntity.TRAP_INTERVAL);
         if (filled > 0) {
-            graphics.fill(x, y + PROGRESS_HEIGHT - filled, x + PROGRESS_WIDTH, y + PROGRESS_HEIGHT, PROGRESS_FILL_COLOR);
+            graphics.fill(
+                    x, y + PROGRESS_HEIGHT - filled, x + PROGRESS_WIDTH, y + PROGRESS_HEIGHT, PROGRESS_FILL_COLOR);
         }
     }
 
