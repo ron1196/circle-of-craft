@@ -1,96 +1,89 @@
 package io.github.ron1196.thelionking.entity.ai;
 
 import io.github.ron1196.thelionking.block.entity.BugTrapBlockEntity;
+import io.github.ron1196.thelionking.entity.animal.BugEntity;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.Vec3;
 
-/**
- * Bugs pathfind to nearby baited BugTrap blocks within 16 blocks. The bug will walk towards the
- * trap if it contains bait (any non-empty input slot).
- */
 public class BugFindTrapGoal extends Goal {
 
-    private final PathfinderMob bug;
+    private static final double WALK_SPEED = 1.6;
+    private static final double CLOSE_SWITCH_DIST_SQR = 3.0 * 3.0;
+    private static final double INSIDE_OFFSET = 0.4;
+
+    private final BugEntity bug;
     private BlockPos trapPos;
-    private static final int SEARCH_RANGE = 16;
+    private Direction face;
+    private BlockPos approachPos;
     private int recheckTimer;
 
-    public BugFindTrapGoal(PathfinderMob bug) {
+    public BugFindTrapGoal(BugEntity bug) {
         this.bug = bug;
         this.setFlags(EnumSet.of(Flag.MOVE));
     }
 
     @Override
     public boolean canUse() {
-        if (bug.getRandom().nextInt(60) != 0) return false; // Don't search every tick
-        trapPos = findNearestBaitedTrap();
-        return trapPos != null;
-    }
-
-    @Override
-    public boolean canContinueToUse() {
-        if (trapPos == null) return false;
-        // Stop if we've reached the trap (within 2 blocks)
-        if (bug.blockPosition().closerThan(trapPos, 2.0)) return false;
-        // Verify trap still exists and has bait
-        if (!bug.level().getBlockState(trapPos).is(LionKingBlocks.BUG_TRAP.get())) return false;
+        if (bug.targetTrap == null || bug.targetFace == null) return false;
+        if (!isFaceBaited(bug.targetTrap, bug.targetFace)) return false;
+        trapPos = bug.targetTrap;
+        face = bug.targetFace;
+        approachPos = trapPos.relative(face);
         return true;
     }
 
     @Override
-    public void start() {
-        recheckTimer = 0;
+    public boolean canContinueToUse() {
+        if (trapPos == null || face == null) return false;
+        if (bug.trapTick >= 0) return true;
+        return isFaceBaited(trapPos, face);
     }
 
     @Override
     public void tick() {
-        if (trapPos == null) return;
-        if (--recheckTimer <= 0) {
+        if (approachPos == null || trapPos == null || face == null) return;
+
+        Vec3 trapCenter = new Vec3(trapPos.getX() + 0.5, trapPos.getY(), trapPos.getZ() + 0.5);
+        double distToTrapSqr = bug.position().distanceToSqr(trapCenter);
+
+        if (distToTrapSqr <= CLOSE_SWITCH_DIST_SQR || bug.trapTick >= 0) {
+            bug.getNavigation().stop();
+            Vec3 inside = new Vec3(
+                    trapPos.getX() + 0.5 + face.getStepX() * INSIDE_OFFSET,
+                    trapPos.getY(),
+                    trapPos.getZ() + 0.5 + face.getStepZ() * INSIDE_OFFSET);
+            bug.getMoveControl().setWantedPosition(inside.x, inside.y, inside.z, WALK_SPEED);
+        } else if (bug.getNavigation().isDone() || --recheckTimer <= 0) {
             recheckTimer = 20;
-            bug.getNavigation().moveTo(trapPos.getX() + 0.5, trapPos.getY(), trapPos.getZ() + 0.5, 1.0D);
+            Vec3 approachCenter =
+                    new Vec3(approachPos.getX() + 0.5, approachPos.getY(), approachPos.getZ() + 0.5);
+            bug.getNavigation().moveTo(approachCenter.x, approachCenter.y, approachCenter.z, WALK_SPEED);
         }
     }
 
     @Override
     public void stop() {
+        if (bug.trapTick < 0) {
+            bug.targetTrap = null;
+            bug.targetFace = null;
+        }
         trapPos = null;
+        face = null;
+        approachPos = null;
         bug.getNavigation().stop();
     }
 
-    private BlockPos findNearestBaitedTrap() {
-        BlockPos bugPos = bug.blockPosition();
-        BlockPos nearest = null;
-        double nearestDist = Double.MAX_VALUE;
-
-        for (BlockPos pos : BlockPos.betweenClosed(
-                bugPos.offset(-SEARCH_RANGE, -4, -SEARCH_RANGE), bugPos.offset(SEARCH_RANGE, 4, SEARCH_RANGE))) {
-            if (!bug.level().getBlockState(pos).is(LionKingBlocks.BUG_TRAP.get())) continue;
-
-            // Check if trap has bait
-            BlockEntity be = bug.level().getBlockEntity(pos);
-            if (be instanceof BugTrapBlockEntity trapEntity) {
-                boolean hasBait = false;
-                for (int i = 0; i < 4; i++) {
-                    if (!trapEntity.getInventory().getStackInSlot(i).isEmpty()) {
-                        hasBait = true;
-                        break;
-                    }
-                }
-                if (!hasBait) continue;
-            } else {
-                continue;
-            }
-
-            double dist = bugPos.distSqr(pos);
-            if (dist < nearestDist) {
-                nearestDist = dist;
-                nearest = pos.immutable();
-            }
-        }
-        return nearest;
+    private boolean isFaceBaited(BlockPos pos, Direction face) {
+        if (!bug.level().getBlockState(pos).is(LionKingBlocks.BUG_TRAP.get())) return false;
+        BlockEntity be = bug.level().getBlockEntity(pos);
+        if (!(be instanceof BugTrapBlockEntity trapEntity)) return false;
+        int slot = BugEntity.slotForFace(face);
+        if (slot < 0) return false;
+        return !trapEntity.getInventory().getStackInSlot(slot).isEmpty();
     }
 }

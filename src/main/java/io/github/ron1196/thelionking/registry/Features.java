@@ -5,6 +5,7 @@ import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.world.feature.BananaTreeFeature;
 import io.github.ron1196.thelionking.world.feature.DeadTreeFeature;
 import io.github.ron1196.thelionking.world.feature.DungeonFeature;
+import io.github.ron1196.thelionking.world.feature.FallenLogFeature;
 import io.github.ron1196.thelionking.world.feature.LilyPadFeature;
 import io.github.ron1196.thelionking.world.feature.MangoTreeFeature;
 import io.github.ron1196.thelionking.world.feature.PassionTreeFeature;
@@ -73,6 +74,15 @@ public class Features {
             register("lily_pad", LilyPadFeature::new);
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> DUNGEON =
             register("dungeon", DungeonFeature::new);
+
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> FALLEN_PRIDE_ACACIA_LOG =
+            register("fallen_pride_acacia_log", c -> new FallenLogFeature(c, LionKingBlocks.FALLEN_PRIDE_ACACIA_LOG));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> FALLEN_RAINFOREST_LOG =
+            register("fallen_rainforest_log", c -> new FallenLogFeature(c, LionKingBlocks.FALLEN_RAINFOREST_LOG));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> FALLEN_MANGO_LOG =
+            register("fallen_mango_log", c -> new FallenLogFeature(c, LionKingBlocks.FALLEN_MANGO_LOG));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> FALLEN_BANANA_LOG =
+            register("fallen_banana_log", c -> new FallenLogFeature(c, LionKingBlocks.FALLEN_BANANA_LOG));
 
     // ── Configured Feature Keys (referenced by tree growers and placed features) ──
 

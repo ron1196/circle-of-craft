@@ -78,6 +78,16 @@ public class LionKingBlocks {
     public static final RegistryObject<StairBlock> ACACIA_STAIRS = stairs("pride_acacia_stairs", ACACIA_PLANKS);
     public static final RegistryObject<SlabBlock> ACACIA_SLAB = slab("pride_acacia_slab", ACACIA_PLANKS);
 
+    // World-gen-only fallen logs that have a chance to spawn a bug when broken.
+    public static final RegistryObject<Block> FALLEN_PRIDE_ACACIA_LOG =
+            BLOCKS.register("fallen_pride_acacia_log", () -> new FallenLogBlock(logProps()));
+    public static final RegistryObject<Block> FALLEN_RAINFOREST_LOG =
+            BLOCKS.register("fallen_rainforest_log", () -> new FallenLogBlock(logProps()));
+    public static final RegistryObject<Block> FALLEN_MANGO_LOG =
+            BLOCKS.register("fallen_mango_log", () -> new FallenLogBlock(logProps()));
+    public static final RegistryObject<Block> FALLEN_BANANA_LOG =
+            BLOCKS.register("fallen_banana_log", () -> new FallenLogBlock(logProps()));
+
     // ========== Wood - Rainforest ==========
     public static final RegistryObject<Block> RAINFOREST_LOG = log("rainforest_log");
     public static final RegistryObject<Block> RAINFOREST_PLANKS = planks("rainforest_planks");
