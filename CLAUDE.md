@@ -77,11 +77,12 @@ Quest IDs: `rafiki`, `outlands`. Stage names match the enum values (e.g., `FIND_
 | `data/WorldData.java`        | World-level saved data (overworld storage), quest-derived state |
 | `data/LionKingCriteriaTriggers.java` | Custom advancement triggers       |
 
-## Testing
+## References
 
-**Before writing or running tests, read [`docs/AUTOMATED_TESTING.md`](docs/AUTOMATED_TESTING.md).** It covers both frameworks (JUnit for pure-Java logic, Mojang Game Tests for in-world behavior), how to run each, when to use which, and the gotchas we already hit (`@PrefixGameTestTemplate(false)`, structure NBT path, `assertTrue` vs `fail` inside `succeedWhen`).
+Long-form context lives in `docs/*.md` and is listed below as **summary + "read before X" trigger** — only the linked file is loaded when the trigger fires.
 
-## Related Docs
+**Bar:** architecturally significant subsystems, frameworks, or cross-cutting flows. Not feature TODOs, per-block scaffolding, or single-content checklists — those live in `docs/` but don't surface here.
 
-- `docs/AUTOMATED_TESTING.md` — JUnit + Mojang Game Tests reference (start here when adding test coverage)
-- [GitHub Issues](https://github.com/ron1196/TheLionKing/issues) — TODOs, workarounds, and feature requests
+- **Automated testing** (JUnit for pure-Java, Mojang Game Tests for in-world behaviour, runners, markers, the `@PrefixGameTestTemplate(false)` / structure NBT / `assertTrue` vs `fail` gotchas): [`docs/AUTOMATED_TESTING.md`](docs/AUTOMATED_TESTING.md). Read before writing or moving a test, or changing CI test jobs.
+- **Releases, branches, and tags** (branch-per-MC-version model `mc/<mcver>`, loose SemVer per branch, tag scheme `v<modver>-mc<mcver>`, JAR filename, GitHub/CurseForge/Modrinth publishing flow, cross-branch cherry-picks): [`docs/RELEASES.md`](docs/RELEASES.md). Read before cutting a release, starting a new MC version port, or changing the release workflow.
+- **Workaround / TODO backlog**: [GitHub Issues](https://github.com/ron1196/TheLionKing/issues). Read before adding a "for now" substitution — every workaround must be filed here.

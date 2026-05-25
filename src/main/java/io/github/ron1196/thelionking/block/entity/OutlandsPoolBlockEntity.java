@@ -37,9 +37,15 @@ public class OutlandsPoolBlockEntity extends BlockEntity {
     private static final int PROCESS_DELAY_WAITING = 75;
     private static final int SEARCH_RADIUS = 15;
     private static final int SEARCH_HEIGHT = 10;
+    private static final int ALTAR_CACHE_TTL = 200;
 
     private final List<ItemStack> items = new ArrayList<>();
     private int timer = -1;
+
+    @Nullable
+    private BlockPos cachedAltarPos = null;
+
+    private long altarCacheExpiresAt = Long.MIN_VALUE;
 
     public OutlandsPoolBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityTypes.OUTLANDS_POOL.get(), pos, state);
@@ -143,6 +149,24 @@ public class OutlandsPoolBlockEntity extends BlockEntity {
     private BlockPos findAltar() {
         if (level == null) return null;
 
+        long now = level.getGameTime();
+        if (now < altarCacheExpiresAt) {
+            if (cachedAltarPos == null) return null;
+            if (level.getBlockState(cachedAltarPos).is(LionKingBlocks.OUTLANDS_ALTAR.get())) {
+                return cachedAltarPos;
+            }
+            // Altar block was removed since the last scan — fall through to a fresh search.
+        }
+
+        BlockPos found = scanForAltar();
+        cachedAltarPos = found;
+        altarCacheExpiresAt = now + ALTAR_CACHE_TTL;
+        return found;
+    }
+
+    @Nullable
+    private BlockPos scanForAltar() {
+        if (level == null) return null;
         for (int dy = 0; dy < SEARCH_HEIGHT; dy++) {
             for (int dx = -SEARCH_RADIUS; dx <= SEARCH_RADIUS; dx++) {
                 for (int dz = -SEARCH_RADIUS; dz <= SEARCH_RADIUS; dz++) {
@@ -153,7 +177,6 @@ public class OutlandsPoolBlockEntity extends BlockEntity {
                 }
             }
         }
-
         return null;
     }
 

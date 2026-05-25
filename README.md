@@ -1,121 +1,142 @@
-<p align="center">
-  <img src="banner.jpg" alt="The Lion King Mod" />
-</p>
-
-<h1 align="center">The Lion King Mod</h1>
-
-<p align="center">
-  <b>The Lion King meets Minecraft.</b><br/>
-  Explore the Pride Lands, journey through the Outlands, and complete quests in an entirely new Lion King-themed adventure.
-</p>
+<h1 align="center">The Lion King Mod — Developer Guide</h1>
 
 <p align="center">
   <a href="https://github.com/ron1196/TheLionKing/releases"><img src="https://img.shields.io/github/v/release/ron1196/TheLionKing?style=flat-square&color=orange&label=latest%20release" alt="Latest Release" /></a>
   <img src="https://img.shields.io/badge/minecraft-1.20.1-green?style=flat-square" alt="Minecraft 1.20.1" />
-  <img src="https://img.shields.io/badge/mod%20loader-Forge-blue?style=flat-square" alt="Forge" />
+  <img src="https://img.shields.io/badge/mod%20loader-Forge%2047.4.18-blue?style=flat-square" alt="Forge 47.4.18" />
   <img src="https://img.shields.io/badge/java-17-red?style=flat-square" alt="Java 17" />
   <a href="https://github.com/ron1196/TheLionKing/blob/main/LICENSE"><img src="https://img.shields.io/github/license/ron1196/TheLionKing?style=flat-square" alt="License" /></a>
 </p>
 
+> Looking for the user-facing mod description (CurseForge / Modrinth listing copy)? See **[MOD_PAGE.md](MOD_PAGE.md)**.
+
 ---
 
-## About
+## Stack
 
-The Lion King Mod brings the world of Disney's The Lion King into Minecraft. It adds **three new dimensions**, dozens of animals and NPCs, unique ores, tools, armor, a full quest line, custom music, and much more.
+- **Minecraft:** 1.20.1
+- **Mod loader:** Forge 47.4.18 (NeoForge migration planned for the 1.21.x jump)
+- **Java:** 17
+- **Mappings:** Official (Mojang)
+- **Mod ID / package:** `thelionking` / `io.github.ron1196.thelionking`
 
-This is a **ground-up port** of the classic Lion King Mod (originally for Minecraft 1.4–1.6) to Forge 1.20.1.
+## Repository layout
 
-## Features
-
-### Dimensions
-- **Pride Lands** — A vast savannah realm with unique biomes, trees, flowers, ores, and wildlife. Fully survivable — everything you need can be found within.
-- **Outlands** — A dark and dangerous dimension, home to hyenas and other threats. Unlocked through Rafiki's quest.
-- **Upendi** — A magical twilight realm.
-
-### Mobs & NPCs
-- **Animals** — Lions, lionesses, zebras, giraffes, crocodiles, bugs, and more — all breedable.
-- **Hostile mobs** — Hyenas, vultures, the Termite Queen boss, and more.
-- **NPCs** — Rafiki, Simba, Scar, Zira, and the Ticket Lion, each with unique interactions.
-
-### Quest System
-- **Rafiki's Quest** — A multi-stageKey adventure. Collect hyena bones, earn Rafiki's Stick, hunt down Scar in his cave, and ultimately summon your own companion Simba who fights for you and carries your items.
-- **Outlands Quest** — A 10-stageKey quest line in the dangerous Outlands.
-- **Book of Quests** — Tracks your progress, describes items, and shows crafting recipes.
-
-### Blocks, Items & Crafting
-- **106 new blocks** — Pridestone, kingswood, mango wood, rainforest wood, passion fruit, and more.
-- **147+ new items** — Tools, armor, food, quest items, and decorative items across 5 tool tiers and 5 armor materials.
-- **Grinding Bowl** — A custom crafting station for grinding items into powders.
-- **8 creative tabs** to browse everything.
-
-### World Generation
-- **14 biomes** across the three dimensions.
-- **5 landmark structures** including the Ticket Booth and Rafiki's Tree.
-- **Custom ores and trees** with full worldgen integration.
-
-### Audio
-- Custom **music tracks** for each dimension.
-- Unique **mob sounds** for all entities.
-
-### Advancements
-- **33 custom advancements** to track your journey through the Pride Lands and beyond.
-
-## Getting Started
-
-1. **Find a Ticket Booth** — They spawn naturally in your Overworld, most commonly in plains, deserts, and swamps.
-2. **Buy a ticket** — Give the Ticket Lion a gold ingot to receive a Lion King Ticket.
-3. **Enter the portal** — Use the ticket on the portal inside the booth to activate it and step through.
-4. **Find Rafiki** — Head to the center of the Pride Lands (coordinates 0, 0) and speak with Rafiki to begin your quest.
-
-> **Tip:** Stepping into an activated Lion Portal sets your spawn to the portal. If you die in the Pride Lands or Outlands, you'll respawn there. Beds also work in the Pride Lands — craft one with lion fur in place of wool.
-
-## Installation
-
-1. Install [Forge 47.4.18 for Minecraft 1.20.1](https://files.minecraftforge.net/net/minecraftforge/forge/index_1.20.1.html).
-2. Download the latest mod JAR from [Releases](https://github.com/ron1196/TheLionKing/releases).
-3. Place the JAR in your `.minecraft/mods/` folder.
-4. Launch Minecraft with the Forge profile.
-
-## Building from Source
-
-Requires **Java 17**.
-
-```bash
-git clone https://github.com/ron1196/TheLionKing.git
-cd TheLionKing
-export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home  # macOS
-./gradlew build
+```
+src/main/java/io/github/ron1196/thelionking/
+  block/        block classes (+ block/entity/ block entities)
+  client/       renderers, models, particles, GUIs (Dist.CLIENT)
+  command/      /lk command tree
+  compat/       JEI + Jade integrations
+  data/         WorldData, PlayerData, criteria triggers
+  entity/       animals, hostiles, NPCs, projectiles, AI goals
+  event/        Forge + mod-bus event handlers
+  gametest/     Mojang Game Tests (in-world integration coverage)
+  item/         items, armor, tools, projectile items
+  mixin/        Mixin-based vanilla patches
+  network/      packets
+  quest/        questlines, stages, action helpers
+  registry/     deferred-register holders (LionKingItems, LionKingBlocks, …)
+  world/        biomes, dimensions, features, structures
+src/main/resources/
+  META-INF/mods.toml
+  assets/thelionking/  textures, models, blockstates, lang, sounds, geo, animations
+  data/thelionking/    advancements, recipes, loot_tables, worldgen, tags
+src/test/java/         JUnit 5 unit tests (pure-Java logic)
+old/                   read-only reference: the original MC 1.4–1.6 mod
 ```
 
-The built JAR will be in `build/libs/`.
+`CLAUDE.md` is the canonical reference for code conventions and architectural rules (quest action helpers, `WorldData.get` routing, NBT contracts, NPC chat helpers, etc.). Read it before touching new areas.
 
-To run the mod in a development environment:
+## Build & run
+
+Always export Java 17 first:
 
 ```bash
-./gradlew runClient   # Launch the game client
-./gradlew runServer   # Launch a dedicated server
+export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home   # macOS
 ```
 
-### Running tests
+| Command | What it does |
+| --- | --- |
+| `./gradlew compileJava` | Fast compile-only check |
+| `./gradlew build` | Full build + JUnit tests (artifact lands in `build/libs/`) |
+| `./gradlew test` | JUnit only (pure-Java logic) |
+| `./gradlew runGameTestServer` | Run Mojang Game Tests (in-world coverage) |
+| `./gradlew runClient` | Launch Minecraft with the mod loaded |
+| `./gradlew runServer` | Launch a dedicated server with the mod loaded |
+| `./gradlew runData` | Run data generators |
+| `./gradlew spotlessApply` | Auto-format Java with the Palantir style |
+
+On macOS, `runGameTestServer` may need `--no-build-cache` to avoid a Gradle build-cache packer failure on class files carrying extended attributes (`Could not get file mode for ...`):
 
 ```bash
 ./gradlew runGameTestServer --no-build-cache
 ```
 
-`--no-build-cache` avoids a known Gradle issue on macOS where the build-cache packer fails on class files carrying extended attributes (`Could not get file mode for ...`). See [`docs/AUTOMATED_TESTING.md`](docs/AUTOMATED_TESTING.md) for the full testing guide (JUnit + Mojang Game Tests).
+## Testing
 
-## Screenshots
+The project ships **two complementary test frameworks** — see [`docs/AUTOMATED_TESTING.md`](docs/AUTOMATED_TESTING.md) for the full guide.
 
-*Coming soon — contributions welcome!*
+- **JUnit 5** (`src/test/java/`) — pure-Java logic. No Minecraft runtime. ~2 s.
+- **Mojang Game Tests** (`src/main/java/.../gametest/`) — anything touching `Level`, `Entity`, `BlockState`, NBT, or Forge registries. ~30 s.
 
-## Credits
+Quick picker: if the code under test touches Minecraft types or any class transitively loading `ForgeRegistries`, use a Game Test. Otherwise prefer JUnit.
 
-- **Original mod** by [redrosewarrior1](https://www.curseforge.com/minecraft/mc-mods/the-lion-king-mod) — the classic Lion King Mod for Minecraft 1.4–1.6.
-- **Forge 1.20.1 port** by [ron1196](https://github.com/ron1196).
+CI runs format-check, build (incl. JUnit), and Game Tests on every push/PR (`.github/workflows/ci.yml`).
+
+## Formatting
+
+Java is auto-formatted by Spotless (Palantir). CI rejects unformatted code. Run `./gradlew spotlessApply` after Java edits.
+
+## Conventions (the short list)
+
+These are summaries — `CLAUDE.md` has the full rationale.
+
+- **`@Override` methods** carry `@NotNull` / `@Nullable` (`org.jetbrains.annotations`) on every parameter and the return type.
+- **Long method signatures** wrap one parameter per line at 8-space indent, with `) {` on its own line.
+- **`WorldData.get(anyServerLevel)`** routes to the overworld; never call `level.getDataStorage()` directly. Quest state must be shared across dimensions.
+- **Quest state is derived from `QuestlineManager.getStage()`** — never store boolean flags that duplicate it. Use `EnumSet` for stage ranges; never compare `ordinal()`.
+- **Quest stage → world-state mapping** lives in `quest/actions/*QuestActions.ensureWorldState(level, stage)` — idempotent, called from `customTransition`, `/lk quest set`, and the ~100-tick entity fallback.
+- **When inserting a new stage into `OutlandsQuestline.Stage`**, audit `TREE_OCCUPATION_STAGES` in `OutlandsQuestActions.java` — missing it causes Rafiki to spawn prematurely or Zira's tree corruption to toggle incorrectly.
+- **NPC chat** goes through `ChatHelper.sendNpcMessage` / `broadcastNpcMessage` — never inline `§e<Name> §f` formatting.
+- **Workaround policy:** every "for now" substitution must be filed as a GitHub issue. No silent TODOs.
+
+## Quest testing commands
+
+`/lk quest` bypasses triggers/items for fast iteration:
+
+```
+/lk quest info <questId>
+/lk quest advance <questId>
+/lk quest set <questId> <stageKey>
+/lk quest reset <questId>
+```
+
+Quest IDs: `rafiki`, `outlands`. Stage names match the enum values (e.g., `FIND_RAFIKI`, `COLLECT_BONES`).
+
+Use the `/quest-skip-check` Claude skill (see `.claude/`) to verify every stage follows the `ensureWorldState` idempotency pattern.
+
+## Key files
+
+| File | Purpose |
+| --- | --- |
+| `event/CommonEvents.java` | Entity attributes + spawn placement rules (mod bus) |
+| `event/LionKingForgeEvents.java` | Forge bus events: combat, NPC interaction, breeding, chunk/world ticks |
+| `data/WorldData.java` | World-level saved data (overworld-backed), quest-derived state |
+| `data/LionKingCriteriaTriggers.java` | Custom advancement triggers |
+| `quest/questline/QuestlineManager.java` | Single source of truth for quest stage transitions |
+| `quest/actions/*QuestActions.java` | Stage → world-state side effects (one per questline) |
 
 ## Contributing
 
-Contributions are welcome! Feel free to open issues or submit pull requests. See the project structure in [CLAUDE.md](CLAUDE.md) for an overview of the codebase.
+Issues and pull requests are welcome. Before opening a PR:
+
+1. `./gradlew spotlessApply` — format
+2. `./gradlew build` — compile + JUnit
+3. `./gradlew runGameTestServer` — in-world coverage
+4. Read `CLAUDE.md` if you're touching a new subsystem
+
+See [GitHub Issues](https://github.com/ron1196/TheLionKing/issues) for the active workaround / feature backlog.
 
 ## License
 

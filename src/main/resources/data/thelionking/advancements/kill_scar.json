@@ -10,12 +10,7 @@
   },
   "criteria": {
     "requirement": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": {
-          "type": "thelionking:scar"
-        }
-      }
+      "trigger": "thelionking:kill_scar"
     }
   }
 }
