@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.entity.hostile;
 
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
+import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingItems;
@@ -42,9 +43,9 @@ public class TermiteQueenEntity extends Monster implements GeoEntity {
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-    private static final int SPAWN_INTERVAL = 100;
-    private static final int MAX_NEARBY_TERMITES = 8;
-    private static final double TERMITE_SEARCH_RADIUS = 24.0;
+    public static final int SPAWN_INTERVAL = 100;
+    public static final int MAX_NEARBY_TERMITES = 8;
+    public static final double TERMITE_SEARCH_RADIUS = 24.0;
     private static final double SPAWN_OFFSET_SPREAD = 2.0;
     private static final float DAMAGE_PER_HIT = 1.0F;
     private static final int EXPERIENCE_REWARD = 500;
@@ -69,6 +70,10 @@ public class TermiteQueenEntity extends Monster implements GeoEntity {
             BossEvent.BossBarOverlay.PROGRESS);
 
     private int spawnCooldown;
+
+    public int getSpawnCooldown() {
+        return spawnCooldown;
+    }
 
     public TermiteQueenEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -158,7 +163,8 @@ public class TermiteQueenEntity extends Monster implements GeoEntity {
             // Advance quest from DEFEAT_TERMITE_QUEEN to DEFEAT_ZIRA
             if (source.getEntity() instanceof ServerPlayer player) {
                 WorldData data = WorldData.get(serverLevel);
-                data.getQuestManager().tryAdvance("outlands", player, QuestTrigger.TERMITE_QUEEN_KILLED);
+                data.getQuestManager()
+                        .tryAdvance(OutlandsQuestline.QUEST_ID, player, QuestTrigger.TERMITE_QUEEN_KILLED);
             }
         }
         super.die(source);

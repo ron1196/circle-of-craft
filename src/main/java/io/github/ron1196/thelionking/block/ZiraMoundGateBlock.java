@@ -1,6 +1,7 @@
 package io.github.ron1196.thelionking.block;
 
 import io.github.ron1196.thelionking.data.WorldData;
+import io.github.ron1196.thelionking.quest.questline.RafikiQuestline;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.util.ChatHelper;
 import net.minecraft.core.BlockPos;
@@ -43,7 +44,7 @@ public class ZiraMoundGateBlock extends Block {
 
         if (!level.isClientSide) {
             ServerLevel serverLevel = (ServerLevel) level;
-            if (!WorldData.get(serverLevel).getQuestManager().isComplete("rafiki")) {
+            if (!WorldData.get(serverLevel).getQuestManager().isComplete(RafikiQuestline.QUEST_ID)) {
                 ChatHelper.sendNpcMessage(
                         player,
                         "Rafiki's Stick",

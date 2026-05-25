@@ -83,6 +83,11 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
     private int trapTimer = 0;
     private int closureTimer = 0;
 
+    public int getTicksUntilNextAttract() {
+        if (!hasBait()) return -1;
+        return Math.max(0, TRAP_INTERVAL - trapTimer);
+    }
+
     private final ContainerData data = new ContainerData() {
         @Override
         public int get(int index) {
@@ -155,7 +160,8 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
     private void setClosedFaceAndLevel(
             @NotNull ServerLevel serverLevel, BugTrapBlock.@NotNull ClosedFace face, int level) {
         BlockState current = getBlockState();
-        if (current.getValue(BugTrapBlock.CLOSED_FACE) == face && current.getValue(BugTrapBlock.CLOSURE_LEVEL) == level) {
+        if (current.getValue(BugTrapBlock.CLOSED_FACE) == face
+                && current.getValue(BugTrapBlock.CLOSURE_LEVEL) == level) {
             return;
         }
         serverLevel.setBlock(
@@ -287,8 +293,7 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
                 }
             }
 
-            boolean atFace =
-                    bug.position().distanceToSqr(trapBottomCenter) <= CLOSURE_TRIGGER_DISTANCE_SQR;
+            boolean atFace = bug.position().distanceToSqr(trapBottomCenter) <= CLOSURE_TRIGGER_DISTANCE_SQR;
             BlockState state = getBlockState();
             int curLevel = state.getValue(BugTrapBlock.CLOSURE_LEVEL);
 

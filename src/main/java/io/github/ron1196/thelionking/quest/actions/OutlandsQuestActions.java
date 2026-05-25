@@ -116,7 +116,7 @@ public final class OutlandsQuestActions {
     public static void ensureHostileZira(ServerLevel outlandsLevel) {
         WorldData data = WorldData.get(outlandsLevel);
         QuestlineManager qm = data.getQuestManager();
-        Stage stage = qm.getStage("outlands", Stage.class);
+        Stage stage = qm.getStage(OutlandsQuestline.QUEST_ID, Stage.class);
         if (stage != Stage.ZIRA_RETURNS) return;
         if (outlandsLevel.players().isEmpty()) return;
 
@@ -156,7 +156,7 @@ public final class OutlandsQuestActions {
 
         if (player instanceof ServerPlayer sp) {
             sp.sendSystemMessage(Component.literal("\u00a7c\u00a7lZira has returned!"));
-            qm.tryAdvance("outlands", sp, QuestTrigger.ZIRA_SPAWN_EVENT);
+            qm.tryAdvance(OutlandsQuestline.QUEST_ID, sp, QuestTrigger.ZIRA_SPAWN_EVENT);
         }
     }
 
@@ -315,7 +315,7 @@ public final class OutlandsQuestActions {
         for (ServerPlayer player : level.players()) {
             WorldData data = WorldData.get(level);
             QuestlineManager qm = data.getQuestManager();
-            if (qm.tryAdvance("outlands", player, QuestTrigger.EXPLOSIONS_DONE)) {
+            if (qm.tryAdvance(OutlandsQuestline.QUEST_ID, player, QuestTrigger.EXPLOSIONS_DONE)) {
                 break; // Only need to advance once
             }
         }

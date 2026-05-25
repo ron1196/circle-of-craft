@@ -110,13 +110,13 @@ public class PumbaaExplosionEntity extends Entity {
     private void tryAdvanceQuest(ServerLevel level) {
         WorldData data = WorldData.get(level);
         QuestlineManager qm = data.getQuestManager();
-        OutlandsQuestline.Stage stage = qm.getStage("outlands", OutlandsQuestline.Stage.class);
+        OutlandsQuestline.Stage stage = qm.getStage(OutlandsQuestline.QUEST_ID, OutlandsQuestline.Stage.class);
 
         if (stage != OutlandsQuestline.Stage.PUMBAA_BOX_EXPLODING) return;
         if (level.players().isEmpty()) return;
 
         ServerPlayer player = level.players().get(0);
-        qm.tryAdvance("outlands", player, QuestTrigger.EXPLOSIONS_DONE);
+        qm.tryAdvance(OutlandsQuestline.QUEST_ID, player, QuestTrigger.EXPLOSIONS_DONE);
         questAdvanced = true;
     }
 

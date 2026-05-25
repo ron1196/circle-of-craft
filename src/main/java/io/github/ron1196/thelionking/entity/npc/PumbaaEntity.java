@@ -35,6 +35,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class PumbaaEntity extends PathfinderMob {
 
+    public static final String REGISTRY_NAME = "pumbaa";
+
     private static final int TALK_COOLDOWN_TICKS = 40;
     private static final int COOKING_EAT_START = 20;
     private static final int COOKING_EAT_END = 48;
@@ -149,7 +151,7 @@ public class PumbaaEntity extends PathfinderMob {
         if (questBehavior.isOnCooldown()) return InteractionResult.SUCCESS;
 
         // RALLY_PUMBAA — haven't talked to Timon yet
-        RafikiQuestline.Stage rafikiStage = ctx.stage("rafiki", RafikiQuestline.Stage.class);
+        RafikiQuestline.Stage rafikiStage = ctx.stage(RafikiQuestline.QUEST_ID, RafikiQuestline.Stage.class);
         if (rafikiStage == RafikiQuestline.Stage.RALLY_PUMBAA) {
             questBehavior.startCooldown(TALK_COOLDOWN_TICKS);
             sendRandomQuote(player);
@@ -163,7 +165,7 @@ public class PumbaaEntity extends PathfinderMob {
             return InteractionResult.SUCCESS;
         }
 
-        OutlandsQuestline.Stage stageKey = ctx.stage("outlands", OutlandsQuestline.Stage.class);
+        OutlandsQuestline.Stage stageKey = ctx.stage(OutlandsQuestline.QUEST_ID, OutlandsQuestline.Stage.class);
 
         switch (stageKey) {
             case TALK_TO_PUMBAA -> {
@@ -172,7 +174,7 @@ public class PumbaaEntity extends PathfinderMob {
             }
             case GATHER_PUMBAA_INGREDIENTS -> {
                 questBehavior.startCooldown(TALK_COOLDOWN_TICKS);
-                if (ctx.quests().tryAdvance("outlands", ctx.serverPlayer(), QuestTrigger.PUMBAA_TALK)) {
+                if (ctx.quests().tryAdvance(OutlandsQuestline.QUEST_ID, ctx.serverPlayer(), QuestTrigger.PUMBAA_TALK)) {
                     ChatHelper.sendNpcMessage(player, "Pumbaa", "Stand back! This is gonna be a big one!");
                     cookingBox = true;
                     cookingTimer = 0;
@@ -232,7 +234,7 @@ public class PumbaaEntity extends PathfinderMob {
         }
 
         if (talkIndex >= INTRO_DIALOGUE.length - 1) {
-            ctx.quests().tryAdvance("outlands", ctx.serverPlayer(), QuestTrigger.PUMBAA_TALK);
+            ctx.quests().tryAdvance(OutlandsQuestline.QUEST_ID, ctx.serverPlayer(), QuestTrigger.PUMBAA_TALK);
             ctx.worldData().resetPumbaaTalkCount();
         }
     }
@@ -309,7 +311,7 @@ public class PumbaaEntity extends PathfinderMob {
 
     private void handleCollectBugs(@NotNull Player player, @NotNull NpcInteraction ctx) {
         // tryAdvance checks for 4 bugs in inventory and consumes them
-        if (!ctx.quests().tryAdvance("rafiki", ctx.serverPlayer(), QuestTrigger.PUMBAA_TALK)) {
+        if (!ctx.quests().tryAdvance(RafikiQuestline.QUEST_ID, ctx.serverPlayer(), QuestTrigger.PUMBAA_TALK)) {
             CharacterSpeech.sendSpeech(player, CharacterSpeech.PUMBAA_NEED_BUGS);
             return;
         }

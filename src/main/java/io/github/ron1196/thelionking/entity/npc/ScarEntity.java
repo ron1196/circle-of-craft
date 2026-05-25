@@ -2,6 +2,7 @@ package io.github.ron1196.thelionking.entity.npc;
 
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.item.RafikiStickItem;
+import io.github.ron1196.thelionking.quest.questline.RafikiQuestline;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.registry.LionKingSoundEvents;
@@ -35,6 +36,8 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class ScarEntity extends Monster {
+
+    public static final String REGISTRY_NAME = "scar";
 
     private static final EntityDataAccessor<Boolean> DATA_HOSTILE =
             SynchedEntityData.defineId(ScarEntity.class, EntityDataSerializers.BOOLEAN);
@@ -185,7 +188,7 @@ public class ScarEntity extends Monster {
                 level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(DEATH_MESSAGE_RANGE))) {
             ChatHelper.sendNpcMessage(player, "Scar", "This is... not... the end. I will... always... be king...");
             if (player instanceof ServerPlayer sp) {
-                data.getQuestManager().tryAdvance("rafiki", sp, QuestTrigger.SCAR_KILLED);
+                data.getQuestManager().tryAdvance(RafikiQuestline.QUEST_ID, sp, QuestTrigger.SCAR_KILLED);
             }
         }
     }

@@ -130,21 +130,21 @@ public class EntityTypes {
     public static final RegistryObject<EntityType<TicketLionEntity>> TICKET_LION =
             registerCreature("ticket_lion", TicketLionEntity::new, 1.3F, 1.6F);
     public static final RegistryObject<EntityType<RafikiEntity>> RAFIKI =
-            registerCreature("rafiki", RafikiEntity::new, 0.7F, 1.6F);
+            registerCreature(RafikiEntity.REGISTRY_NAME, RafikiEntity::new, 0.7F, 1.6F);
     public static final RegistryObject<EntityType<SimbaEntity>> SIMBA =
-            registerCreature("simba", SimbaEntity::new, 1.3F, 1.6F);
+            registerCreature(SimbaEntity.REGISTRY_NAME, SimbaEntity::new, 1.3F, 1.6F);
     public static final RegistryObject<EntityType<TimonEntity>> TIMON =
-            registerCreature("timon", TimonEntity::new, 0.4F, 0.9F);
+            registerCreature(TimonEntity.REGISTRY_NAME, TimonEntity::new, 0.4F, 0.9F);
     public static final RegistryObject<EntityType<PumbaaEntity>> PUMBAA =
-            registerCreature("pumbaa", PumbaaEntity::new, 1.2F, 1.3F);
+            registerCreature(PumbaaEntity.REGISTRY_NAME, PumbaaEntity::new, 1.2F, 1.3F);
     public static final RegistryObject<EntityType<ScarEntity>> SCAR =
-            registerMonster("scar", ScarEntity::new, 1.3F, 1.6F);
-    public static final RegistryObject<EntityType<ZiraEntity>> ZIRA =
-            ENTITY_TYPES.register("zira", () -> EntityType.Builder.of(ZiraEntity::new, MobCategory.MONSTER)
+            registerMonster(ScarEntity.REGISTRY_NAME, ScarEntity::new, 1.3F, 1.6F);
+    public static final RegistryObject<EntityType<ZiraEntity>> ZIRA = ENTITY_TYPES.register(
+            ZiraEntity.REGISTRY_NAME, () -> EntityType.Builder.of(ZiraEntity::new, MobCategory.MONSTER)
                     .sized(1.2F, 1.3F)
                     .clientTrackingRange(10)
                     .fireImmune()
-                    .build("zira"));
+                    .build(ZiraEntity.REGISTRY_NAME));
 
     // ── Interactive Entities ─────────────────────────────────────────────────
 

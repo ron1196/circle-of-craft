@@ -60,8 +60,7 @@ public class BugFindTrapGoal extends Goal {
             bug.getMoveControl().setWantedPosition(inside.x, inside.y, inside.z, WALK_SPEED);
         } else if (bug.getNavigation().isDone() || --recheckTimer <= 0) {
             recheckTimer = 20;
-            Vec3 approachCenter =
-                    new Vec3(approachPos.getX() + 0.5, approachPos.getY(), approachPos.getZ() + 0.5);
+            Vec3 approachCenter = new Vec3(approachPos.getX() + 0.5, approachPos.getY(), approachPos.getZ() + 0.5);
             bug.getNavigation().moveTo(approachCenter.x, approachCenter.y, approachCenter.z, WALK_SPEED);
         }
     }

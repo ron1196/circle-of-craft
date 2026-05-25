@@ -3,16 +3,21 @@ package io.github.ron1196.thelionking.item;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.registry.LionKingItems;
+import java.util.List;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Simba's Charm — reactivated by placing an inactive charm on a Star Altar. Spawns a visual
@@ -40,18 +45,34 @@ public class SimbaCharmItem extends Item {
         super(properties.stacksTo(1));
     }
 
+    @Override
+    public void appendHoverText(
+            @NotNull ItemStack stack,
+            @Nullable Level level,
+            @NotNull List<Component> tooltip,
+            @NotNull TooltipFlag flag) {
+        super.appendHoverText(stack, level, tooltip, flag);
+        if (isActive(stack)) {
+            tooltip.add(Component.translatable("item.thelionking.simba_charm.active.hint")
+                    .withStyle(ChatFormatting.GRAY));
+        } else {
+            tooltip.add(Component.translatable("item.thelionking.simba_charm.inactive.hint")
+                    .withStyle(ChatFormatting.GRAY));
+        }
+    }
+
     public static boolean isActive(ItemStack stack) {
-        return !stack.getOrCreateTag().getBoolean("Inactive");
+        return stack.getOrCreateTag().getBoolean("Active");
     }
 
     public static ItemStack createActive() {
-        return new ItemStack(LionKingItems.SIMBA_CHARM.get());
+        ItemStack stack = new ItemStack(LionKingItems.SIMBA_CHARM.get());
+        stack.getOrCreateTag().putBoolean("Active", true);
+        return stack;
     }
 
     public static ItemStack createInactive() {
-        ItemStack stack = new ItemStack(LionKingItems.SIMBA_CHARM.get());
-        stack.getOrCreateTag().putBoolean("Inactive", true);
-        return stack;
+        return new ItemStack(LionKingItems.SIMBA_CHARM.get());
     }
 
     @Override

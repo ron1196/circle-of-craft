@@ -5,6 +5,7 @@ import io.github.ron1196.thelionking.data.PlayerDataProvider;
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
 import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
+import io.github.ron1196.thelionking.quest.questline.RafikiQuestline;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
@@ -66,12 +67,18 @@ public class RafikiDustItem extends Item {
             simba.setHealth(15.0F);
             level.addFreshEntity(simba);
             playerData.setHasSimba(true);
+            if (player instanceof ServerPlayer sp) {
+                io.github.ron1196.thelionking.network.Networking.CHANNEL.send(
+                        net.minecraftforge.network.PacketDistributor.PLAYER.with(() -> sp),
+                        new io.github.ron1196.thelionking.network.PlayerDataSyncPacket(playerData));
+            }
         }
 
         // Progress Rafiki quest via star altar usage
         if (player instanceof ServerPlayer serverPlayer) {
             WorldData data = WorldData.get((ServerLevel) level);
-            if (data.getQuestManager().tryAdvance("rafiki", serverPlayer, QuestTrigger.STAR_ALTAR_USED)) {
+            if (data.getQuestManager()
+                    .tryAdvance(RafikiQuestline.QUEST_ID, serverPlayer, QuestTrigger.STAR_ALTAR_USED)) {
                 ChatHelper.broadcastNpcMessage(level, "Rafiki", "You see? He lives in you! Ohohoho!");
             }
         }

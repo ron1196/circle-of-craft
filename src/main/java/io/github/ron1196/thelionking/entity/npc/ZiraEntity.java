@@ -7,6 +7,7 @@ import io.github.ron1196.thelionking.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
 import io.github.ron1196.thelionking.quest.NpcInteraction;
 import io.github.ron1196.thelionking.quest.actions.OutlandsQuestActions;
+import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline.Stage;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
@@ -44,6 +45,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class ZiraEntity extends Monster {
+
+    public static final String REGISTRY_NAME = "zira";
 
     private static final EntityDataAccessor<Boolean> DATA_HOSTILE =
             SynchedEntityData.defineId(ZiraEntity.class, EntityDataSerializers.BOOLEAN);
@@ -146,7 +149,7 @@ public class ZiraEntity extends Monster {
     }
 
     private boolean onQuestCheck(@NotNull ServerLevel serverLevel, @NotNull QuestlineManager quests) {
-        Stage stage = quests.getStage("outlands", Stage.class);
+        Stage stage = quests.getStage(OutlandsQuestline.QUEST_ID, Stage.class);
         if (!OutlandsQuestActions.isTreeOccupationStage(stage)) {
             OutlandsQuestActions.ensureWorldState(serverLevel, stage);
             return true; // May have been discarded
@@ -210,7 +213,7 @@ public class ZiraEntity extends Monster {
         if (questBehavior.isOnCooldown()) return InteractionResult.SUCCESS;
 
         questBehavior.startCooldown(40);
-        Stage stage = ctx.stage("outlands", Stage.class);
+        Stage stage = ctx.stage(OutlandsQuestline.QUEST_ID, Stage.class);
 
         // Tree occupation — special 3-part dialogue
         if (stage == Stage.ZIRA_OCCUPIES_TREE) {
@@ -220,7 +223,11 @@ public class ZiraEntity extends Monster {
 
         // Standard path: try claim reward, then try advance
         if (ctx.tryClaimOrAdvance(
-                "outlands", Stage.class, QuestTrigger.ZIRA_TALK, null, s -> sendStageDialogue(player, s))) {
+                OutlandsQuestline.QUEST_ID,
+                Stage.class,
+                QuestTrigger.ZIRA_TALK,
+                null,
+                s -> sendStageDialogue(player, s))) {
             return InteractionResult.SUCCESS;
         }
 
@@ -229,7 +236,7 @@ public class ZiraEntity extends Monster {
             case COLLECT_INGOTS -> CharacterSpeech.sendSpeech(player, CharacterSpeech.ZIRA_INGOTS);
             case COLLECT_FEATHERS -> CharacterSpeech.sendSpeech(player, CharacterSpeech.ZIRA_FEATHERS);
             default -> {
-                if (ctx.quests().isStageAtOrPast("outlands", Stage.FOLLOW_OUTLANDERS) && !isHostile()) {
+                if (ctx.quests().isStageAtOrPast(OutlandsQuestline.QUEST_ID, Stage.FOLLOW_OUTLANDERS) && !isHostile()) {
                     CharacterSpeech.sendSpeech(player, CharacterSpeech.ZIRA_CONQUEST);
                 }
             }
@@ -261,7 +268,7 @@ public class ZiraEntity extends Monster {
         ChatHelper.sendNpcMessage(player, "Zira", message);
 
         if (talkCount >= 2) {
-            ctx.quests().tryAdvance("outlands", ctx.serverPlayer(), QuestTrigger.ZIRA_TALK);
+            ctx.quests().tryAdvance(OutlandsQuestline.QUEST_ID, ctx.serverPlayer(), QuestTrigger.ZIRA_TALK);
         } else {
             ctx.worldData().incrementZiraTreeTalkCount();
         }
@@ -274,7 +281,7 @@ public class ZiraEntity extends Monster {
 
         if (source.getEntity() instanceof ServerPlayer serverPlayer) {
             WorldData data = WorldData.get(serverLevel);
-            data.getQuestManager().tryAdvance("outlands", serverPlayer, QuestTrigger.ZIRA_KILLED);
+            data.getQuestManager().tryAdvance(OutlandsQuestline.QUEST_ID, serverPlayer, QuestTrigger.ZIRA_KILLED);
             ChatHelper.broadcastNpcMessage(level(), "Zira", "This is not over... Scar's legacy... will NEVER die...");
         }
 

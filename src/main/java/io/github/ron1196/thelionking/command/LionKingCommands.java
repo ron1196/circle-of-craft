@@ -44,7 +44,7 @@ public class LionKingCommands {
                 .then(Commands.literal("pridelands")
                         .executes(ctx ->
                                 teleportToDimension(ctx.getSource(), Dimensions.PRIDE_LANDS_LEVEL, "Pride Lands")))
-                .then(Commands.literal("outlands")
+                .then(Commands.literal(Dimensions.OUTLANDS_PATH)
                         .executes(ctx -> teleportToDimension(ctx.getSource(), Dimensions.OUTLANDS_LEVEL, "Outlands")))
                 .then(Commands.literal("upendi")
                         .executes(ctx -> teleportToDimension(ctx.getSource(), Dimensions.UPENDI_LEVEL, "Upendi")))
@@ -189,9 +189,10 @@ public class LionKingCommands {
         manager.syncToAllPlayers(player.server);
 
         // Ensure world state matches the new stage
-        if ("rafiki".equals(questId) && nextStage instanceof RafikiQuestline.Stage rafikiStage) {
+        if (RafikiQuestline.QUEST_ID.equals(questId) && nextStage instanceof RafikiQuestline.Stage rafikiStage) {
             RafikiQuestActions.ensureWorldState(level, rafikiStage);
-        } else if ("outlands".equals(questId) && nextStage instanceof OutlandsQuestline.Stage outlandsStage) {
+        } else if (OutlandsQuestline.QUEST_ID.equals(questId)
+                && nextStage instanceof OutlandsQuestline.Stage outlandsStage) {
             OutlandsQuestActions.ensureWorldState(level, outlandsStage);
         }
 
@@ -227,9 +228,10 @@ public class LionKingCommands {
         manager.syncToAllPlayers(player.server);
 
         // Ensure world state matches the new stage
-        if ("rafiki".equals(questId) && target instanceof RafikiQuestline.Stage rafikiStage) {
+        if (RafikiQuestline.QUEST_ID.equals(questId) && target instanceof RafikiQuestline.Stage rafikiStage) {
             RafikiQuestActions.ensureWorldState(level, rafikiStage);
-        } else if ("outlands".equals(questId) && target instanceof OutlandsQuestline.Stage outlandsStage) {
+        } else if (OutlandsQuestline.QUEST_ID.equals(questId)
+                && target instanceof OutlandsQuestline.Stage outlandsStage) {
             OutlandsQuestActions.ensureWorldState(level, outlandsStage);
         }
 
