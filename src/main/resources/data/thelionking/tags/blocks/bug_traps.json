@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "thelionking:bug_trap",
+    "thelionking:oak_bug_trap",
+    "thelionking:spruce_bug_trap",
+    "thelionking:birch_bug_trap",
+    "thelionking:jungle_bug_trap",
+    "thelionking:acacia_bug_trap",
+    "thelionking:dark_oak_bug_trap",
+    "thelionking:mangrove_bug_trap",
+    "thelionking:cherry_bug_trap",
+    "thelionking:bamboo_bug_trap",
+    "thelionking:crimson_bug_trap",
+    "thelionking:warped_bug_trap",
+    "thelionking:banana_bug_trap",
+    "thelionking:rainforest_bug_trap",
+    "thelionking:mango_bug_trap",
+    "thelionking:passion_bug_trap",
+    "thelionking:deadwood_bug_trap"
+  ]
+}

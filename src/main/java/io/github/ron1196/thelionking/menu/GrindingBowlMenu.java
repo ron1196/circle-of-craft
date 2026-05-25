@@ -30,8 +30,14 @@ public class GrindingBowlMenu extends AbstractContainerMenu {
         this.handler = handler;
         this.data = data;
 
-        // Input slot
-        addSlot(new SlotItemHandler(handler, 0, 40, 35));
+        // Input slot. mayPickup overridden to always return true so JEI's recipe transfer
+        // validation (which checks pickup-ability on empty slots) doesn't reject the slot.
+        addSlot(new SlotItemHandler(handler, 0, 40, 35) {
+            @Override
+            public boolean mayPickup(@NotNull Player player) {
+                return true;
+            }
+        });
 
         // Output slot - no manual insertion, triggers advancement on extract
         addSlot(new SlotItemHandler(handler, 1, 116, 35) {
