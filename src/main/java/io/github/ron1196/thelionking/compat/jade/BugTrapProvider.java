@@ -25,7 +25,8 @@ public enum BugTrapProvider implements IBlockComponentProvider, IServerDataProvi
             @NotNull ITooltip tooltip, @NotNull BlockAccessor accessor, @NotNull IPluginConfig config) {
         CompoundTag data = accessor.getServerData();
         if (!data.contains(NBT_NEXT_ATTRACT)) {
-            tooltip.add(Component.translatable("jade.thelionking.bug_trap.no_bait").withStyle(ChatFormatting.GRAY));
+            tooltip.add(
+                    Component.translatable("jade.thelionking.bug_trap.no_bait").withStyle(ChatFormatting.GRAY));
             return;
         }
         int ticks = data.getInt(NBT_NEXT_ATTRACT);
