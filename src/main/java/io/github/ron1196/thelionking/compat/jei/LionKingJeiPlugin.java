@@ -5,7 +5,6 @@ import io.github.ron1196.thelionking.client.gui.GrindingBowlScreen;
 import io.github.ron1196.thelionking.menu.GrindingBowlMenu;
 import io.github.ron1196.thelionking.recipe.GrindingBowlRecipe;
 import io.github.ron1196.thelionking.registry.LionKingItems;
-import io.github.ron1196.thelionking.registry.MenuTypes;
 import io.github.ron1196.thelionking.registry.RecipeTypes;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -80,9 +79,16 @@ public class LionKingJeiPlugin implements IModPlugin {
 
         @Override
         public Optional<MenuType<GrindingBowlMenu>> getMenuType() {
-            MenuType<GrindingBowlMenu> mt = MenuTypes.GRINDING_BOWL_MENU.get();
-            TheLionKingMod.LOGGER.info("[JEI-DBG] getMenuType called, MenuType={}", mt);
-            return Optional.of(mt);
+            TheLionKingMod.LOGGER.info("[JEI-DBG] getMenuType called (returning empty)");
+            return Optional.empty();
+        }
+
+        @Override
+        public mezz.jei.api.recipe.transfer.IRecipeTransferError getHandlingError(
+                GrindingBowlMenu container, GrindingBowlRecipe recipe) {
+            TheLionKingMod.LOGGER.info(
+                    "[JEI-DBG] getHandlingError called, container={}, recipe={}", container.getClass(), recipe.getId());
+            return null;
         }
 
         @Override
