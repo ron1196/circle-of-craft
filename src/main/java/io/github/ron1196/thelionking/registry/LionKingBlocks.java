@@ -389,10 +389,23 @@ public class LionKingBlocks {
     public static final RegistryObject<Block> DEADWOOD_BUG_TRAP = bugTrap("deadwood_bug_trap");
 
     public static final java.util.List<RegistryObject<Block>> ALL_BUG_TRAPS = java.util.List.of(
-            BUG_TRAP, OAK_BUG_TRAP, SPRUCE_BUG_TRAP, BIRCH_BUG_TRAP, JUNGLE_BUG_TRAP,
-            ACACIA_BUG_TRAP, DARK_OAK_BUG_TRAP, MANGROVE_BUG_TRAP, CHERRY_BUG_TRAP,
-            BAMBOO_BUG_TRAP, CRIMSON_BUG_TRAP, WARPED_BUG_TRAP,
-            BANANA_BUG_TRAP, RAINFOREST_BUG_TRAP, MANGO_BUG_TRAP, PASSION_BUG_TRAP, DEADWOOD_BUG_TRAP);
+            BUG_TRAP,
+            OAK_BUG_TRAP,
+            SPRUCE_BUG_TRAP,
+            BIRCH_BUG_TRAP,
+            JUNGLE_BUG_TRAP,
+            ACACIA_BUG_TRAP,
+            DARK_OAK_BUG_TRAP,
+            MANGROVE_BUG_TRAP,
+            CHERRY_BUG_TRAP,
+            BAMBOO_BUG_TRAP,
+            CRIMSON_BUG_TRAP,
+            WARPED_BUG_TRAP,
+            BANANA_BUG_TRAP,
+            RAINFOREST_BUG_TRAP,
+            MANGO_BUG_TRAP,
+            PASSION_BUG_TRAP,
+            DEADWOOD_BUG_TRAP);
 
     // ========== Bongo Drum ==========
     public static final RegistryObject<Block> BONGO_DRUM = BLOCKS.register(

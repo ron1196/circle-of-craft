@@ -56,8 +56,7 @@ public class BugFindTrapGoal extends Goal {
                 int slot = BugEntity.slotForFace(f);
                 if (slot < 0 || trap.getInventory().getStackInSlot(slot).isEmpty()) continue;
                 BlockPos approach = pos.relative(f);
-                double d = bug.position()
-                        .distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5);
+                double d = bug.position().distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5);
                 if (d < bestDistSqr) {
                     bestDistSqr = d;
                     bestTrap = pos.immutable();
@@ -92,8 +91,7 @@ public class BugFindTrapGoal extends Goal {
             bug.getMoveControl().setWantedPosition(inside.x, inside.y, inside.z, WALK_SPEED);
         } else if (bug.getNavigation().isDone() || --recheckTimer <= 0) {
             recheckTimer = 20;
-            Vec3 approachCenter =
-                    new Vec3(approachPos.getX() + 0.5, approachPos.getY(), approachPos.getZ() + 0.5);
+            Vec3 approachCenter = new Vec3(approachPos.getX() + 0.5, approachPos.getY(), approachPos.getZ() + 0.5);
             bug.getNavigation().moveTo(approachCenter.x, approachCenter.y, approachCenter.z, WALK_SPEED);
         }
     }
