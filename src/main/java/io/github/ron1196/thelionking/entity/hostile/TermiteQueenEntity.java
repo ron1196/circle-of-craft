@@ -13,7 +13,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobType;
@@ -47,12 +46,12 @@ public class TermiteQueenEntity extends Monster implements GeoEntity {
     public static final int MAX_NEARBY_TERMITES = 8;
     public static final double TERMITE_SEARCH_RADIUS = 24.0;
     private static final double SPAWN_OFFSET_SPREAD = 2.0;
-    private static final float DAMAGE_PER_HIT = 1.0F;
+    private static final float DAMAGE_PER_TERMITE = 6.0F;
     private static final int EXPERIENCE_REWARD = 500;
     private static final double MELEE_SPEED = 1.0;
     private static final double WANDER_SPEED = 0.8;
     private static final float LOOK_DISTANCE = 8.0F;
-    private static final double MAX_HEALTH = 25.0;
+    private static final double MAX_HEALTH = 150.0;
     private static final double MOVEMENT_SPEED = 0.25;
     private static final double ATTACK_DAMAGE = 3.0;
     private static final double ARMOR = 4.0;
@@ -70,6 +69,7 @@ public class TermiteQueenEntity extends Monster implements GeoEntity {
             BossEvent.BossBarOverlay.PROGRESS);
 
     private int spawnCooldown;
+    private float termiteDamageAccumulator;
 
     public int getSpawnCooldown() {
         return spawnCooldown;
@@ -99,16 +99,17 @@ public class TermiteQueenEntity extends Monster implements GeoEntity {
 
     @Override
     public boolean hurt(@NotNull DamageSource source, float amount) {
-        if (source.is(DamageTypes.FELL_OUT_OF_WORLD)) {
-            return super.hurt(source, amount);
-        }
-        if (!(source.getEntity() instanceof Player)) {
+        if (source.getEntity() instanceof TermiteEntity) {
             return false;
         }
         float healthBefore = this.getHealth();
-        boolean result = super.hurt(source, DAMAGE_PER_HIT);
+        boolean result = super.hurt(source, amount);
         if (result && this.getHealth() < healthBefore && !this.level().isClientSide) {
-            spawnTermite(true);
+            termiteDamageAccumulator += healthBefore - this.getHealth();
+            while (termiteDamageAccumulator >= DAMAGE_PER_TERMITE) {
+                spawnTermite(true);
+                termiteDamageAccumulator -= DAMAGE_PER_TERMITE;
+            }
         }
         return result;
     }
