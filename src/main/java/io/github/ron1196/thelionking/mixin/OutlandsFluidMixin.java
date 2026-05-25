@@ -1,11 +1,12 @@
 package io.github.ron1196.thelionking.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Aquifer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 /**
  * Fixes lava-based dimensions so that caves behave like the overworld.
@@ -25,12 +26,18 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class OutlandsFluidMixin {
 
     /**
-     * Redirects the first {@code BlockState.is(Block)} call in
-     * {@code computeSubstance} — the lava short-circuit check — to always
-     * return false. This forces lava through the full aquifer calculations,
-     * creating dry caves just like water does in the overworld.
+     * Wraps the first {@code BlockState.is(Block)} call in
+     * {@code computeSubstance} — the lava short-circuit check — and forces
+     * it to return {@code false}. The {@link Operation} is intentionally not
+     * invoked: bypassing the original call sends lava through the full
+     * aquifer dry/wet calculations, creating dry caves like water does in
+     * the overworld.
+     *
+     * Implemented with MixinExtras' {@code @WrapOperation} (instead of the
+     * older {@code @Redirect}) for better compatibility with other mods
+     * that target the same call site.
      */
-    @Redirect(
+    @WrapOperation(
             method = "computeSubstance",
             at =
                     @At(
@@ -38,7 +45,7 @@ public class OutlandsFluidMixin {
                             target =
                                     "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z",
                             ordinal = 0))
-    private boolean thelionking$skipLavaShortCircuit(BlockState state, Block block) {
+    private boolean thelionking$skipLavaShortCircuit(BlockState state, Block block, Operation<Boolean> original) {
         return false;
     }
 }
