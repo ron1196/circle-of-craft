@@ -41,7 +41,8 @@ public class GrindingBowlScreen extends AbstractContainerScreen<GrindingBowlMenu
 
     @Override
     protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-        graphics.drawString(font, title, titleLabelX, titleLabelY, 0x140C02, false);
+        int centeredTitleX = (imageWidth - font.width(title)) / 2;
+        graphics.drawString(font, title, centeredTitleX, titleLabelY, 0x140C02, false);
         graphics.drawString(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0x140C02, false);
     }
 }
