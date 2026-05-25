@@ -64,7 +64,12 @@ public class LionKingJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeTransferHandlers(@NotNull IRecipeTransferRegistration reg) {
-        TheLionKingMod.LOGGER.info("[JEI] Registering Grinding Bowl recipe transfer handler");
+        TheLionKingMod.LOGGER.info(
+                "[JEI] Registering transfer: containerClass={}, classLoader={}, recipeType={}, recipeTypeHash={}",
+                GrindingBowlMenu.class,
+                GrindingBowlMenu.class.getClassLoader(),
+                GrindingBowlRecipeCategory.RECIPE_TYPE,
+                GrindingBowlRecipeCategory.RECIPE_TYPE.hashCode());
         reg.addRecipeTransferHandler(new GrindingBowlTransferInfo());
     }
 

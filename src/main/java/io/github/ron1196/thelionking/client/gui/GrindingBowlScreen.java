@@ -17,6 +17,10 @@ public class GrindingBowlScreen extends AbstractContainerScreen<GrindingBowlMenu
         super(menu, playerInv, title);
         this.imageWidth = 176;
         this.imageHeight = 166;
+        io.github.ron1196.thelionking.TheLionKingMod.LOGGER.info(
+                "[JEI-DBG] GrindingBowlScreen opened with menu class={}, classLoader={}",
+                menu.getClass(),
+                menu.getClass().getClassLoader());
     }
 
     @Override
