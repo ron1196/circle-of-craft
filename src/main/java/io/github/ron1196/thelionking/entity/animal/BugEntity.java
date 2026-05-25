@@ -1,9 +1,7 @@
 package io.github.ron1196.thelionking.entity.animal;
 
-import io.github.ron1196.thelionking.block.entity.BugTrapBlockEntity;
 import io.github.ron1196.thelionking.entity.ai.BugFindTrapGoal;
 import io.github.ron1196.thelionking.entity.ai.BugFleePlayerGoal;
-import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,10 +21,6 @@ public class BugEntity extends LionKingAnimal {
 
     public static final int PANIC_DURATION_TICKS = 200;
     public static final int CONSUME_DURATION_TICKS = 40;
-
-    private static final int TRAP_SCAN_INTERVAL = 5;
-    private static final int TRAP_SCAN_RADIUS = 32;
-    private static final int TRAP_SCAN_VERTICAL = 8;
 
     public int panicTicks = 0;
 
@@ -75,37 +69,6 @@ public class BugEntity extends LionKingAnimal {
         super.tick();
         if (this.level().isClientSide()) return;
         if (this.panicTicks > 0) this.panicTicks--;
-        if (this.targetTrap == null && this.trapTick < 0 && this.tickCount % TRAP_SCAN_INTERVAL == 0) {
-            scanForBaitedTrap();
-        }
-    }
-
-    private void scanForBaitedTrap() {
-        BlockPos here = this.blockPosition();
-        BlockPos bestTrap = null;
-        Direction bestFace = null;
-        double bestDistSqr = Double.MAX_VALUE;
-        for (BlockPos pos : BlockPos.betweenClosed(
-                here.offset(-TRAP_SCAN_RADIUS, -TRAP_SCAN_VERTICAL, -TRAP_SCAN_RADIUS),
-                here.offset(TRAP_SCAN_RADIUS, TRAP_SCAN_VERTICAL, TRAP_SCAN_RADIUS))) {
-            if (!this.level().getBlockState(pos).is(LionKingBlocks.BUG_TRAP.get())) continue;
-            if (!(this.level().getBlockEntity(pos) instanceof BugTrapBlockEntity trap)) continue;
-            for (Direction face : Direction.Plane.HORIZONTAL) {
-                int slot = slotForFace(face);
-                if (slot < 0 || trap.getInventory().getStackInSlot(slot).isEmpty()) continue;
-                BlockPos approach = pos.relative(face);
-                double d = this.position().distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5);
-                if (d < bestDistSqr) {
-                    bestDistSqr = d;
-                    bestTrap = pos.immutable();
-                    bestFace = face;
-                }
-            }
-        }
-        if (bestTrap != null) {
-            this.targetTrap = bestTrap;
-            this.targetFace = bestFace;
-        }
     }
 
     @Override
