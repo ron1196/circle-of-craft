@@ -3,9 +3,7 @@ package io.github.ron1196.thelionking.world.feature;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import io.github.ron1196.thelionking.registry.EntityTypes;
-import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.registry.LionKingItems;
-import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import io.github.ron1196.thelionking.world.feature.FeatureHelper.LootEntry;
 import java.util.List;
 import java.util.function.Predicate;
@@ -160,7 +158,7 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
             LootEntry.of(LionKingItems.ZIRA_COIN),
             LootEntry.of(LionKingItems.JAR_EMPTY));
 
-    private enum DungeonVariant {
+    enum DungeonVariant {
         HYENA(EntityTypes.HYENA, HYENA_CHEST_COUNT, false),
         CROCODILE(EntityTypes.CROCODILE, CROC_CHEST_COUNT, true);
 
@@ -172,44 +170,6 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
             this.entityType = entityType;
             this.chestCount = chestCount;
             this.aquatic = aquatic;
-        }
-    }
-
-    /**
-     * Brick palette per dimension. Outlands has no corrupt-cracked block, so wall accent
-     * falls back to the wall primary (cracked-chance becomes a no-op there).
-     */
-    private enum DungeonPalette {
-        PRIDE(
-                LionKingBlocks.MOSSY_PRIDE_BRICK,
-                LionKingBlocks.PRIDE_BRICK,
-                LionKingBlocks.PRIDE_BRICK,
-                LionKingBlocks.CRACKED_PRIDE_BRICK,
-                LionKingBlocks.PRIDE_PILLAR),
-        OUTLANDS(
-                LionKingBlocks.MOSSY_CORRUPT_PRIDE_BRICK,
-                LionKingBlocks.CORRUPT_PRIDE_BRICK,
-                LionKingBlocks.CORRUPT_PRIDE_BRICK,
-                LionKingBlocks.CORRUPT_PRIDE_BRICK,
-                LionKingBlocks.CORRUPT_PRIDE_PILLAR);
-
-        final Supplier<? extends Block> floorPrimary;
-        final Supplier<? extends Block> floorAccent;
-        final Supplier<? extends Block> wallPrimary;
-        final Supplier<? extends Block> wallAccent;
-        final Supplier<? extends Block> pillar;
-
-        DungeonPalette(
-                Supplier<? extends Block> floorPrimary,
-                Supplier<? extends Block> floorAccent,
-                Supplier<? extends Block> wallPrimary,
-                Supplier<? extends Block> wallAccent,
-                Supplier<? extends Block> pillar) {
-            this.floorPrimary = floorPrimary;
-            this.floorAccent = floorAccent;
-            this.wallPrimary = wallPrimary;
-            this.wallAccent = wallAccent;
-            this.pillar = pillar;
         }
     }
 
@@ -245,8 +205,9 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
             halfD += random.nextInt(CROC_EXPANSION_RANGE) + CROC_EXPANSION_MIN;
         }
 
-        boolean isOutlands = level.getLevel().dimension() == Dimensions.OUTLANDS_LEVEL;
-        DungeonPalette palette = isOutlands ? DungeonPalette.OUTLANDS : DungeonPalette.PRIDE;
+        DungeonPalette palette =
+                DungeonPalette.forDimension(level.getLevel().dimension().location());
+        boolean isOutlands = palette == DungeonPalette.OUTLANDS;
 
         LOGGER.debug(
                 "[Dungeon] Placed {} dungeon at ({}, {}, {}), halfW={}, halfD={}", variant, cx, cy, cz, halfW, halfD);
