@@ -1,0 +1,23 @@
+{
+  "variants": {
+    "closed_face=none,closure_level=0":  { "model": "thelionking:block/deadwood_bug_trap" },
+    "closed_face=none,closure_level=1":  { "model": "thelionking:block/deadwood_bug_trap" },
+    "closed_face=none,closure_level=2":  { "model": "thelionking:block/deadwood_bug_trap" },
+
+    "closed_face=north,closure_level=0": { "model": "thelionking:block/deadwood_bug_trap" },
+    "closed_face=north,closure_level=1": { "model": "thelionking:block/deadwood_bug_trap_closing_face" },
+    "closed_face=north,closure_level=2": { "model": "thelionking:block/deadwood_bug_trap_closed_face" },
+
+    "closed_face=east,closure_level=0":  { "model": "thelionking:block/deadwood_bug_trap" },
+    "closed_face=east,closure_level=1":  { "model": "thelionking:block/deadwood_bug_trap_closing_face", "y": 90, "uvlock": true },
+    "closed_face=east,closure_level=2":  { "model": "thelionking:block/deadwood_bug_trap_closed_face", "y": 90, "uvlock": true },
+
+    "closed_face=south,closure_level=0": { "model": "thelionking:block/deadwood_bug_trap" },
+    "closed_face=south,closure_level=1": { "model": "thelionking:block/deadwood_bug_trap_closing_face", "y": 180, "uvlock": true },
+    "closed_face=south,closure_level=2": { "model": "thelionking:block/deadwood_bug_trap_closed_face", "y": 180, "uvlock": true },
+
+    "closed_face=west,closure_level=0":  { "model": "thelionking:block/deadwood_bug_trap" },
+    "closed_face=west,closure_level=1":  { "model": "thelionking:block/deadwood_bug_trap_closing_face", "y": 270, "uvlock": true },
+    "closed_face=west,closure_level=2":  { "model": "thelionking:block/deadwood_bug_trap_closed_face", "y": 270, "uvlock": true }
+  }
+}

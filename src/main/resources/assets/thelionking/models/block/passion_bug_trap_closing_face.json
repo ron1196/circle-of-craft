@@ -1,0 +1,4 @@
+{
+  "parent": "thelionking:block/bug_trap_closing_face",
+  "textures": { "planks": "thelionking:block/passion_planks" }
+}

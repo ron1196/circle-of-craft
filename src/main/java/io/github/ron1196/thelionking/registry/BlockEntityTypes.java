@@ -21,8 +21,12 @@ public class BlockEntityTypes {
             "hyena_head", () -> BlockEntityType.Builder.of(HyenaHeadBlockEntity::new, LionKingBlocks.HYENA_HEAD.get())
                     .build(null));
 
-    public static final RegistryObject<BlockEntityType<BugTrapBlockEntity>> BUG_TRAP = BLOCK_ENTITY_TYPES.register(
-            "bug_trap", () -> BlockEntityType.Builder.of(BugTrapBlockEntity::new, LionKingBlocks.BUG_TRAP.get())
+    public static final RegistryObject<BlockEntityType<BugTrapBlockEntity>> BUG_TRAP =
+            BLOCK_ENTITY_TYPES.register("bug_trap", () -> BlockEntityType.Builder.of(
+                            BugTrapBlockEntity::new,
+                            LionKingBlocks.ALL_BUG_TRAPS.stream()
+                                    .map(net.minecraftforge.registries.RegistryObject::get)
+                                    .toArray(net.minecraft.world.level.block.Block[]::new))
                     .build(null));
 
     public static final RegistryObject<BlockEntityType<BongoDrumBlockEntity>> BONGO_DRUM = BLOCK_ENTITY_TYPES.register(

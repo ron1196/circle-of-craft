@@ -1,0 +1,4 @@
+{
+  "parent": "thelionking:block/bug_trap_closed_face",
+  "textures": { "planks": "minecraft:block/jungle_planks" }
+}

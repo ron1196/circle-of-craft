@@ -592,6 +592,38 @@ public class LionKingItems {
             registerBlockItem("grinding_bowl", LionKingBlocks.GRINDING_BOWL);
     public static final RegistryObject<BlockItem> BUG_TRAP_ITEM =
             registerBlockItem("bug_trap", LionKingBlocks.BUG_TRAP);
+    public static final RegistryObject<BlockItem> OAK_BUG_TRAP_ITEM =
+            registerBlockItem("oak_bug_trap", LionKingBlocks.OAK_BUG_TRAP);
+    public static final RegistryObject<BlockItem> SPRUCE_BUG_TRAP_ITEM =
+            registerBlockItem("spruce_bug_trap", LionKingBlocks.SPRUCE_BUG_TRAP);
+    public static final RegistryObject<BlockItem> BIRCH_BUG_TRAP_ITEM =
+            registerBlockItem("birch_bug_trap", LionKingBlocks.BIRCH_BUG_TRAP);
+    public static final RegistryObject<BlockItem> JUNGLE_BUG_TRAP_ITEM =
+            registerBlockItem("jungle_bug_trap", LionKingBlocks.JUNGLE_BUG_TRAP);
+    public static final RegistryObject<BlockItem> ACACIA_BUG_TRAP_ITEM =
+            registerBlockItem("acacia_bug_trap", LionKingBlocks.ACACIA_BUG_TRAP);
+    public static final RegistryObject<BlockItem> DARK_OAK_BUG_TRAP_ITEM =
+            registerBlockItem("dark_oak_bug_trap", LionKingBlocks.DARK_OAK_BUG_TRAP);
+    public static final RegistryObject<BlockItem> MANGROVE_BUG_TRAP_ITEM =
+            registerBlockItem("mangrove_bug_trap", LionKingBlocks.MANGROVE_BUG_TRAP);
+    public static final RegistryObject<BlockItem> CHERRY_BUG_TRAP_ITEM =
+            registerBlockItem("cherry_bug_trap", LionKingBlocks.CHERRY_BUG_TRAP);
+    public static final RegistryObject<BlockItem> BAMBOO_BUG_TRAP_ITEM =
+            registerBlockItem("bamboo_bug_trap", LionKingBlocks.BAMBOO_BUG_TRAP);
+    public static final RegistryObject<BlockItem> CRIMSON_BUG_TRAP_ITEM =
+            registerBlockItem("crimson_bug_trap", LionKingBlocks.CRIMSON_BUG_TRAP);
+    public static final RegistryObject<BlockItem> WARPED_BUG_TRAP_ITEM =
+            registerBlockItem("warped_bug_trap", LionKingBlocks.WARPED_BUG_TRAP);
+    public static final RegistryObject<BlockItem> BANANA_BUG_TRAP_ITEM =
+            registerBlockItem("banana_bug_trap", LionKingBlocks.BANANA_BUG_TRAP);
+    public static final RegistryObject<BlockItem> RAINFOREST_BUG_TRAP_ITEM =
+            registerBlockItem("rainforest_bug_trap", LionKingBlocks.RAINFOREST_BUG_TRAP);
+    public static final RegistryObject<BlockItem> MANGO_BUG_TRAP_ITEM =
+            registerBlockItem("mango_bug_trap", LionKingBlocks.MANGO_BUG_TRAP);
+    public static final RegistryObject<BlockItem> PASSION_BUG_TRAP_ITEM =
+            registerBlockItem("passion_bug_trap", LionKingBlocks.PASSION_BUG_TRAP);
+    public static final RegistryObject<BlockItem> DEADWOOD_BUG_TRAP_ITEM =
+            registerBlockItem("deadwood_bug_trap", LionKingBlocks.DEADWOOD_BUG_TRAP);
     public static final RegistryObject<BlockItem> BONGO_DRUM_ITEM =
             registerBlockItem("bongo_drum", LionKingBlocks.BONGO_DRUM);
     public static final RegistryObject<BlockItem> OUTLANDS_POOL_ITEM =

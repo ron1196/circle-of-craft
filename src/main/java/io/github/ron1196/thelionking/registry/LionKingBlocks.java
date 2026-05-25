@@ -360,13 +360,39 @@ public class LionKingBlocks {
                     .noOcclusion()));
 
     // ========== Bug Trap ==========
-    public static final RegistryObject<Block> BUG_TRAP = BLOCKS.register(
-            "bug_trap",
-            () -> new BugTrapBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.WOOD)
-                    .strength(1.0F)
-                    .sound(SoundType.WOOD)
-                    .noOcclusion()));
+    private static RegistryObject<Block> bugTrap(String id) {
+        return BLOCKS.register(
+                id,
+                () -> new BugTrapBlock(BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.WOOD)
+                        .strength(1.0F)
+                        .sound(SoundType.WOOD)
+                        .noOcclusion()));
+    }
+
+    public static final RegistryObject<Block> BUG_TRAP = bugTrap("bug_trap");
+    public static final RegistryObject<Block> OAK_BUG_TRAP = bugTrap("oak_bug_trap");
+    public static final RegistryObject<Block> SPRUCE_BUG_TRAP = bugTrap("spruce_bug_trap");
+    public static final RegistryObject<Block> BIRCH_BUG_TRAP = bugTrap("birch_bug_trap");
+    public static final RegistryObject<Block> JUNGLE_BUG_TRAP = bugTrap("jungle_bug_trap");
+    public static final RegistryObject<Block> ACACIA_BUG_TRAP = bugTrap("acacia_bug_trap");
+    public static final RegistryObject<Block> DARK_OAK_BUG_TRAP = bugTrap("dark_oak_bug_trap");
+    public static final RegistryObject<Block> MANGROVE_BUG_TRAP = bugTrap("mangrove_bug_trap");
+    public static final RegistryObject<Block> CHERRY_BUG_TRAP = bugTrap("cherry_bug_trap");
+    public static final RegistryObject<Block> BAMBOO_BUG_TRAP = bugTrap("bamboo_bug_trap");
+    public static final RegistryObject<Block> CRIMSON_BUG_TRAP = bugTrap("crimson_bug_trap");
+    public static final RegistryObject<Block> WARPED_BUG_TRAP = bugTrap("warped_bug_trap");
+    public static final RegistryObject<Block> BANANA_BUG_TRAP = bugTrap("banana_bug_trap");
+    public static final RegistryObject<Block> RAINFOREST_BUG_TRAP = bugTrap("rainforest_bug_trap");
+    public static final RegistryObject<Block> MANGO_BUG_TRAP = bugTrap("mango_bug_trap");
+    public static final RegistryObject<Block> PASSION_BUG_TRAP = bugTrap("passion_bug_trap");
+    public static final RegistryObject<Block> DEADWOOD_BUG_TRAP = bugTrap("deadwood_bug_trap");
+
+    public static final java.util.List<RegistryObject<Block>> ALL_BUG_TRAPS = java.util.List.of(
+            BUG_TRAP, OAK_BUG_TRAP, SPRUCE_BUG_TRAP, BIRCH_BUG_TRAP, JUNGLE_BUG_TRAP,
+            ACACIA_BUG_TRAP, DARK_OAK_BUG_TRAP, MANGROVE_BUG_TRAP, CHERRY_BUG_TRAP,
+            BAMBOO_BUG_TRAP, CRIMSON_BUG_TRAP, WARPED_BUG_TRAP,
+            BANANA_BUG_TRAP, RAINFOREST_BUG_TRAP, MANGO_BUG_TRAP, PASSION_BUG_TRAP, DEADWOOD_BUG_TRAP);
 
     // ========== Bongo Drum ==========
     public static final RegistryObject<Block> BONGO_DRUM = BLOCKS.register(

@@ -6,8 +6,8 @@
     "PPP"
   ],
   "key": {
-    "P": { "item": "thelionking:pride_acacia_planks" },
+    "P": { "item": "minecraft:birch_planks" },
     "S": { "item": "minecraft:string" }
   },
-  "result": { "item": "thelionking:bug_trap", "count": 1 }
+  "result": { "item": "thelionking:birch_bug_trap", "count": 1 }
 }
