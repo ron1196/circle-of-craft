@@ -5,7 +5,6 @@ import static io.github.ron1196.thelionking.registry.LionKingBlocksRegistryHelpe
 import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.block.*;
 import io.github.ron1196.thelionking.block.MushroomBlock;
-import io.github.ron1196.thelionking.block.SpawnerBlock;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.Level;
@@ -423,15 +422,6 @@ public class LionKingBlocks {
                     .mapColor(MapColor.COLOR_PURPLE)
                     .strength(50.0F, 1200.0F)
                     .lightLevel(s -> 14)
-                    .noOcclusion()));
-
-    // ========== LK Spawner ==========
-    public static final RegistryObject<Block> LK_SPAWNER = BLOCKS.register(
-            "lk_spawner",
-            () -> new SpawnerBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.STONE)
-                    .strength(5.0F)
-                    .requiresCorrectToolForDrops()
                     .noOcclusion()));
 
     // ========== Phase 12: Missing Blocks ==========

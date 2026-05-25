@@ -1,1 +1,6 @@
-{"parent":"thelionking:block/grinding_bowl"}
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "thelionking:item/grinding_bowl"
+  }
+}
