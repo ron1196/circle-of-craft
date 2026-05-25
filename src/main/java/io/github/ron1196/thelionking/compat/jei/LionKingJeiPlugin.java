@@ -1,10 +1,10 @@
 package io.github.ron1196.thelionking.compat.jei;
 
-import io.github.ron1196.thelionking.TheLionKingMod;
 import io.github.ron1196.thelionking.client.gui.GrindingBowlScreen;
 import io.github.ron1196.thelionking.menu.GrindingBowlMenu;
 import io.github.ron1196.thelionking.recipe.GrindingBowlRecipe;
 import io.github.ron1196.thelionking.registry.LionKingItems;
+import io.github.ron1196.thelionking.registry.MenuTypes;
 import io.github.ron1196.thelionking.registry.RecipeTypes;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,12 +64,6 @@ public class LionKingJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeTransferHandlers(@NotNull IRecipeTransferRegistration reg) {
-        TheLionKingMod.LOGGER.info(
-                "[JEI] Registering transfer: containerClass={}, classLoader={}, recipeType={}, recipeTypeHash={}",
-                GrindingBowlMenu.class,
-                GrindingBowlMenu.class.getClassLoader(),
-                GrindingBowlRecipeCategory.RECIPE_TYPE,
-                GrindingBowlRecipeCategory.RECIPE_TYPE.hashCode());
         reg.addRecipeTransferHandler(new GrindingBowlTransferInfo());
     }
 
@@ -78,46 +72,31 @@ public class LionKingJeiPlugin implements IModPlugin {
 
         @Override
         public Class<? extends GrindingBowlMenu> getContainerClass() {
-            TheLionKingMod.LOGGER.info("[JEI-DBG] getContainerClass called");
             return GrindingBowlMenu.class;
         }
 
         @Override
         public Optional<MenuType<GrindingBowlMenu>> getMenuType() {
-            TheLionKingMod.LOGGER.info("[JEI-DBG] getMenuType called (returning empty)");
-            return Optional.empty();
-        }
-
-        @Override
-        public mezz.jei.api.recipe.transfer.IRecipeTransferError getHandlingError(
-                GrindingBowlMenu container, GrindingBowlRecipe recipe) {
-            TheLionKingMod.LOGGER.info(
-                    "[JEI-DBG] getHandlingError called, container={}, recipe={}", container.getClass(), recipe.getId());
-            return null;
+            return Optional.of(MenuTypes.GRINDING_BOWL_MENU.get());
         }
 
         @Override
         public mezz.jei.api.recipe.RecipeType<GrindingBowlRecipe> getRecipeType() {
-            TheLionKingMod.LOGGER.info("[JEI-DBG] getRecipeType called");
             return GrindingBowlRecipeCategory.RECIPE_TYPE;
         }
 
         @Override
         public boolean canHandle(GrindingBowlMenu container, GrindingBowlRecipe recipe) {
-            TheLionKingMod.LOGGER.info(
-                    "[JEI-DBG] canHandle called, container={}, recipe={}", container.getClass(), recipe.getId());
             return true;
         }
 
         @Override
         public List<Slot> getRecipeSlots(GrindingBowlMenu container, GrindingBowlRecipe recipe) {
-            TheLionKingMod.LOGGER.info("[JEI-DBG] getRecipeSlots called");
             return List.of(container.getSlot(0));
         }
 
         @Override
         public List<Slot> getInventorySlots(GrindingBowlMenu container, GrindingBowlRecipe recipe) {
-            TheLionKingMod.LOGGER.info("[JEI-DBG] getInventorySlots called");
             List<Slot> slots = new ArrayList<>(36);
             for (int i = 2; i < 38; i++) {
                 slots.add(container.getSlot(i));
