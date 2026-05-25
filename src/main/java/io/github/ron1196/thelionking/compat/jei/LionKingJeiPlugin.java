@@ -74,31 +74,39 @@ public class LionKingJeiPlugin implements IModPlugin {
 
         @Override
         public Class<? extends GrindingBowlMenu> getContainerClass() {
+            TheLionKingMod.LOGGER.info("[JEI-DBG] getContainerClass called");
             return GrindingBowlMenu.class;
         }
 
         @Override
         public Optional<MenuType<GrindingBowlMenu>> getMenuType() {
-            return Optional.of(MenuTypes.GRINDING_BOWL_MENU.get());
+            MenuType<GrindingBowlMenu> mt = MenuTypes.GRINDING_BOWL_MENU.get();
+            TheLionKingMod.LOGGER.info("[JEI-DBG] getMenuType called, MenuType={}", mt);
+            return Optional.of(mt);
         }
 
         @Override
         public mezz.jei.api.recipe.RecipeType<GrindingBowlRecipe> getRecipeType() {
+            TheLionKingMod.LOGGER.info("[JEI-DBG] getRecipeType called");
             return GrindingBowlRecipeCategory.RECIPE_TYPE;
         }
 
         @Override
         public boolean canHandle(GrindingBowlMenu container, GrindingBowlRecipe recipe) {
+            TheLionKingMod.LOGGER.info(
+                    "[JEI-DBG] canHandle called, container={}, recipe={}", container.getClass(), recipe.getId());
             return true;
         }
 
         @Override
         public List<Slot> getRecipeSlots(GrindingBowlMenu container, GrindingBowlRecipe recipe) {
+            TheLionKingMod.LOGGER.info("[JEI-DBG] getRecipeSlots called");
             return List.of(container.getSlot(0));
         }
 
         @Override
         public List<Slot> getInventorySlots(GrindingBowlMenu container, GrindingBowlRecipe recipe) {
+            TheLionKingMod.LOGGER.info("[JEI-DBG] getInventorySlots called");
             List<Slot> slots = new ArrayList<>(36);
             for (int i = 2; i < 38; i++) {
                 slots.add(container.getSlot(i));
