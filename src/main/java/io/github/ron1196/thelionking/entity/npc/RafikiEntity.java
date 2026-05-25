@@ -1,5 +1,6 @@
 package io.github.ron1196.thelionking.entity.npc;
 
+import io.github.ron1196.thelionking.block.FilledVaseBlock;
 import io.github.ron1196.thelionking.data.LionKingCriteriaTriggers;
 import io.github.ron1196.thelionking.data.WorldData;
 import io.github.ron1196.thelionking.quest.CharacterSpeech;
@@ -16,10 +17,14 @@ import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.util.ChatHelper;
 import io.github.ron1196.thelionking.util.DirectionHelper;
 import java.util.List;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -55,6 +60,18 @@ public class RafikiEntity extends PathfinderMob {
     // ── Side interaction constants ────────────────────────────────────────────
     private static final int RAFIKI_COIN_COST = 3;
     private static final int EXTRA_STICK_BONE_COST = 64;
+
+    // ── Vase heart-particle constants ─────────────────────────────────────────
+    // Old mod scanned a 33×11×33 box (-16..16 X/Z, -5..5 Y) every tick and rolled 1-in-150.
+    // We scan every 20 ticks and use a 1-in-8 dice roll → ~1 heart per 160 ticks (~8s), close to the old 7.5s cadence.
+    private static final int HEART_VASE_SCAN_INTERVAL = 20;
+    private static final int HEART_VASE_RADIUS_HORIZONTAL = 16;
+    private static final int HEART_VASE_RADIUS_VERTICAL = 5;
+    private static final int HEART_VASE_CHANCE_DENOMINATOR = 8;
+    private static final int HEART_BASE_COUNT = 5;
+    private static final int HEART_PER_EXTRA_VASE = 2;
+    // Caps the vase count we bother tallying — more vases past this don't grow the heart burst further.
+    private static final int HEART_VASE_TALLY_CAP = 8;
 
     private final NpcBehavior questBehavior = new NpcBehavior(this, 16, this::onQuestCheck);
 
@@ -98,7 +115,56 @@ public class RafikiEntity extends PathfinderMob {
             if (worldData.isCeremonyActive()) {
                 processCeremonyTick(serverLevel, worldData);
             }
+            tickVaseHearts(serverLevel);
         }
+    }
+
+    /**
+     * Periodically emits heart particles when at least one filled vase block sits within a
+     * 33×11×33 box around Rafiki — ambient flavor ported from the old mod. Heart count and chime
+     * loudness scale with the number of nearby vases, capped at {@link #HEART_VASE_TALLY_CAP}.
+     */
+    private void tickVaseHearts(@NotNull ServerLevel serverLevel) {
+        if (serverLevel.getGameTime() % HEART_VASE_SCAN_INTERVAL != 0) return;
+        if (random.nextInt(HEART_VASE_CHANCE_DENOMINATOR) != 0) return;
+        int vaseCount = countFilledVasesNearby(serverLevel, HEART_VASE_TALLY_CAP);
+        if (vaseCount == 0) return;
+        int heartCount = HEART_BASE_COUNT + (vaseCount - 1) * HEART_PER_EXTRA_VASE;
+        for (int i = 0; i < heartCount; i++) {
+            double dx = random.nextGaussian() * 0.02D;
+            double dy = random.nextGaussian() * 0.02D;
+            double dz = random.nextGaussian() * 0.02D;
+            serverLevel.sendParticles(
+                    ParticleTypes.HEART, getRandomX(1.0D), getRandomY() + 0.5D, getRandomZ(1.0D), 1, dx, dy, dz, 0.0D);
+        }
+        float volume = 0.5F + (vaseCount - 1) * 0.05F;
+        serverLevel.playSound(
+                null,
+                blockPosition(),
+                SoundEvents.NOTE_BLOCK_CHIME.value(),
+                SoundSource.NEUTRAL,
+                volume,
+                1.0F + (random.nextFloat() - 0.5F) * 0.2F);
+    }
+
+    private boolean hasFilledVaseNearby(@NotNull ServerLevel serverLevel) {
+        return countFilledVasesNearby(serverLevel, 1) > 0;
+    }
+
+    /** Counts filled vases inside the heart-scan box, early-exiting once {@code cap} are found. */
+    private int countFilledVasesNearby(@NotNull ServerLevel serverLevel, int cap) {
+        BlockPos center = blockPosition();
+        Iterable<BlockPos> box = BlockPos.betweenClosed(
+                center.offset(
+                        -HEART_VASE_RADIUS_HORIZONTAL, -HEART_VASE_RADIUS_VERTICAL, -HEART_VASE_RADIUS_HORIZONTAL),
+                center.offset(HEART_VASE_RADIUS_HORIZONTAL, HEART_VASE_RADIUS_VERTICAL, HEART_VASE_RADIUS_HORIZONTAL));
+        int count = 0;
+        for (BlockPos pos : box) {
+            if (serverLevel.getBlockState(pos).getBlock() instanceof FilledVaseBlock) {
+                if (++count >= cap) return count;
+            }
+        }
+        return count;
     }
 
     private boolean onQuestCheck(@NotNull ServerLevel serverLevel, @NotNull QuestlineManager quests) {
@@ -187,6 +253,12 @@ public class RafikiEntity extends PathfinderMob {
             return InteractionResult.SUCCESS;
         }
 
+        // Occasional flower chit-chat overrides the stage-specific speech
+        // (rare during questing, common post-completion).
+        if (tryFlowerChitChat(player, stage)) {
+            return InteractionResult.SUCCESS;
+        }
+
         // Quest didn't advance — give contextual speech
         switch (stage) {
             case CRAFT_RAFIKI_STICK -> sendSpeech(player, CharacterSpeech.CRAFT_STICK);
@@ -249,6 +321,21 @@ public class RafikiEntity extends PathfinderMob {
 
     private void sendSpeech(Player player, CharacterSpeech speech) {
         CharacterSpeech.sendSpeech(player, speech);
+    }
+
+    /**
+     * Occasionally veers Rafiki off-topic into flower chit-chat — praises nearby vases or wishes
+     * for some when none are around. Rare during questing (1-in-5), frequent post-completion (1-in-2).
+     * Returns true if a speech was sent.
+     */
+    private boolean tryFlowerChitChat(Player player, Stage stage) {
+        int chanceDenominator = stage == Stage.COMPLETE ? 2 : 5;
+        if (random.nextInt(chanceDenominator) != 0) return false;
+        if (!(level() instanceof ServerLevel serverLevel)) return false;
+        CharacterSpeech speech =
+                hasFilledVaseNearby(serverLevel) ? CharacterSpeech.FLOWERS : CharacterSpeech.ASK_FOR_FLOWERS;
+        sendSpeech(player, speech);
+        return true;
     }
 
     // ── Lion Dust ceremony ───────────────────────────────────────────────────

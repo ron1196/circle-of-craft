@@ -17,6 +17,7 @@ public enum CharacterSpeech {
     HINT("Rafiki", Speech.HINT),
     COMPLETE_HINT("Rafiki", Speech.COMPLETE_HINT),
     FLOWERS("Rafiki", Speech.FLOWERS),
+    ASK_FOR_FLOWERS("Rafiki", Speech.ASK_FOR_FLOWERS),
     PUMBAA_NEED_BUGS("Pumbaa", Speech.PUMBAA_NEED_BUGS),
     TIMON_WAITING_BUGS("Timon", Speech.TIMON_WAITING_BUGS),
     BUGS("Timon", Speech.BUGS),
@@ -214,7 +215,18 @@ public enum CharacterSpeech {
             "Ahh, dose flowers! Dey remind me of when de Pride Lands were young and green!",
             "Look at dose flowers! Even de baboons stop to admire dem! Hahaha!",
             "De flowers! Dey bring tears to dis old monkey's eyes! So beautiful!",
-            "What marvellous flowers you have dere! De spirits of de ancestors smile upon dem!"
+            "What marvellous flowers you have dere! De spirits of de ancestors smile upon dem!",
+            "Dose vases! So full of color! Old Rafiki is most pleased! Hehe!",
+            "You have brought flowers to old Rafiki's tree! De ancestors are dancing! Ohohoho!"
+        };
+
+        static final String[] ASK_FOR_FLOWERS = {
+            "Where have all de flowers gone? De Pride Lands need more beauty!",
+            "Bring old Rafiki some flowers in a vase, hmm? It would make dis old monkey very happy!",
+            "Dis place could use some color! Pick some flowers and put dem in a vase nearby — old Rafiki loves de pretty tings!",
+            "Have you seen any flowers in your travels? Old Rafiki misses dem! A vase full of blooms would be wonderful!",
+            "De Pride Lands have many flowers — white, blue, red, purple! Bring some to old Rafiki's tree in a vase, yes?",
+            "No flowers nearby? Tsk tsk! Even de baboons appreciate a nice bouquet! Hehe!"
         };
 
         static final String[] TIMON_WAITING_BUGS = {
