@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://github.com/ron1196/TheLionKing/releases"><img src="https://img.shields.io/github/v/release/ron1196/TheLionKing?style=flat-square&color=orange&label=latest%20release" alt="Latest Release" /></a>
   <img src="https://img.shields.io/badge/minecraft-1.20.1-green?style=flat-square" alt="Minecraft 1.20.1" />
-  <img src="https://img.shields.io/badge/mod%20loader-NeoForge-blue?style=flat-square" alt="NeoForge" />
+  <img src="https://img.shields.io/badge/mod%20loader-Forge-blue?style=flat-square" alt="Forge" />
   <img src="https://img.shields.io/badge/java-17-red?style=flat-square" alt="Java 17" />
   <a href="https://github.com/ron1196/TheLionKing/blob/main/LICENSE"><img src="https://img.shields.io/github/license/ron1196/TheLionKing?style=flat-square" alt="License" /></a>
 </p>
@@ -23,7 +23,7 @@
 
 The Lion King Mod brings the world of Disney's The Lion King into Minecraft. It adds **three new dimensions**, dozens of animals and NPCs, unique ores, tools, armor, a full quest line, custom music, and much more.
 
-This is a **ground-up port** of the classic Lion King Mod (originally for Minecraft 1.4–1.6) to modern NeoForge 1.20.1.
+This is a **ground-up port** of the classic Lion King Mod (originally for Minecraft 1.4–1.6) to Forge 1.20.1.
 
 ## Features
 
@@ -71,10 +71,10 @@ This is a **ground-up port** of the classic Lion King Mod (originally for Minecr
 
 ## Installation
 
-1. Install [NeoForge for Minecraft 1.20.1](https://neoforged.net/).
+1. Install [Forge 47.4.18 for Minecraft 1.20.1](https://files.minecraftforge.net/net/minecraftforge/forge/index_1.20.1.html).
 2. Download the latest mod JAR from [Releases](https://github.com/ron1196/TheLionKing/releases).
 3. Place the JAR in your `.minecraft/mods/` folder.
-4. Launch Minecraft with the NeoForge profile.
+4. Launch Minecraft with the Forge profile.
 
 ## Building from Source
 
@@ -111,7 +111,7 @@ To run the mod in a development environment:
 ## Credits
 
 - **Original mod** by [redrosewarrior1](https://www.curseforge.com/minecraft/mc-mods/the-lion-king-mod) — the classic Lion King Mod for Minecraft 1.4–1.6.
-- **NeoForge port** by [ron1196](https://github.com/ron1196).
+- **Forge 1.20.1 port** by [ron1196](https://github.com/ron1196).
 
 ## Contributing
 

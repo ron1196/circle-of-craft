@@ -253,10 +253,18 @@ public class LionKingCommands {
         ServerLevel level = player.serverLevel();
         QuestlineManager manager = WorldData.get(level).getQuestManager();
         QuestlineState state = manager.getState(questId);
-        state.setCurrentStageId(quest.getFirstStage().name());
+        StageId firstStage = quest.getFirstStage();
+        state.setCurrentStageId(firstStage.name());
         state.setChecked(false);
         WorldData.get(level).setDirty();
         manager.syncToAllPlayers(player.server);
+
+        if (RafikiQuestline.QUEST_ID.equals(questId) && firstStage instanceof RafikiQuestline.Stage rafikiStage) {
+            RafikiQuestActions.ensureWorldState(level, rafikiStage);
+        } else if (OutlandsQuestline.QUEST_ID.equals(questId)
+                && firstStage instanceof OutlandsQuestline.Stage outlandsStage) {
+            OutlandsQuestActions.ensureWorldState(level, outlandsStage);
+        }
 
         source.sendSuccess(() -> Component.literal("§aReset '" + questId + "' to first stage."), true);
         return 1;
