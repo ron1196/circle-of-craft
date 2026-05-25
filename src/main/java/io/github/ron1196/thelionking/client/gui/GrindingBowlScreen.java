@@ -7,11 +7,14 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import org.jetbrains.annotations.NotNull;
 
 public class GrindingBowlScreen extends AbstractContainerScreen<GrindingBowlMenu> {
 
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(TheLionKingMod.MOD_ID, "textures/gui/grind.png");
+
+    private static final int TITLE_BAR_CENTER_X = 81;
 
     public GrindingBowlScreen(GrindingBowlMenu menu, Inventory playerInv, Component title) {
         super(menu, playerInv, title);
@@ -33,13 +36,11 @@ public class GrindingBowlScreen extends AbstractContainerScreen<GrindingBowlMenu
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+    public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         renderBackground(graphics);
         super.render(graphics, mouseX, mouseY, partialTick);
         renderTooltip(graphics, mouseX, mouseY);
     }
-
-    private static final int TITLE_BAR_CENTER_X = 70;
 
     @Override
     protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
