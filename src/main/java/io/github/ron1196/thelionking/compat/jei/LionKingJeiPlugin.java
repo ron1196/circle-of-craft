@@ -81,7 +81,7 @@ public class LionKingJeiPlugin implements IModPlugin {
         @Override
         public @NotNull Collection<IGuiClickableArea> getGuiClickableAreas(
                 @NotNull GrindingBowlScreen screen, double mouseX, double mouseY) {
-            return List.of(IGuiClickableArea.createBasic(62, 35, 24, 17, GrindingBowlRecipeCategory.RECIPE_TYPE));
+            return List.of(IGuiClickableArea.createBasic(60, 33, 49, 19, GrindingBowlRecipeCategory.RECIPE_TYPE));
         }
     }
 }
