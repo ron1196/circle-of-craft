@@ -78,7 +78,7 @@ public class WaywardFeatherItem extends Item {
     private static boolean isDuringMarch(ServerPlayer player) {
         OutlandsQuestline.Stage stage = WorldData.get(player.serverLevel())
                 .getQuestManager()
-                .getStage("outlands", OutlandsQuestline.Stage.class);
+                .getStage(OutlandsQuestline.QUEST_ID, OutlandsQuestline.Stage.class);
         return MARCH_STAGES.contains(stage);
     }
 }

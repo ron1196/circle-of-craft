@@ -58,7 +58,7 @@ public record NpcInteraction(
      * <p>The ordering is load-bearing: rewards must be claimed before advancing, because advancing
      * may generate new rewards that should not be immediately claimed in the same interaction.
      *
-     * @param questId    the quest identifier (e.g., "rafiki", "outlands")
+     * @param questId    the quest identifier (e.g., RafikiQuestline.QUEST_ID, OutlandsQuestline.QUEST_ID)
      * @param stageClass the stage enum class for typed stage lookup
      * @param trigger    the quest trigger to attempt advancement with
      * @param onClaim    optional callback invoked with the current stage after a reward is claimed;

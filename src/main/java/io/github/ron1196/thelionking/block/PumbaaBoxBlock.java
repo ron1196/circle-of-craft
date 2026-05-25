@@ -48,7 +48,7 @@ public class PumbaaBoxBlock extends Block {
 
         ServerLevel serverLevel = (ServerLevel) level;
         QuestlineManager qm = WorldData.get(serverLevel.getServer().overworld()).getQuestManager();
-        OutlandsQuestline.Stage stageKey = qm.getStage("outlands", OutlandsQuestline.Stage.class);
+        OutlandsQuestline.Stage stageKey = qm.getStage(OutlandsQuestline.QUEST_ID, OutlandsQuestline.Stage.class);
 
         if (stageKey == OutlandsQuestline.Stage.USE_PUMBAA_BOX) {
             explode(level, pos, serverPlayer, qm);
@@ -114,7 +114,7 @@ public class PumbaaBoxBlock extends Block {
             serverLevel.addFreshEntity(explosion);
         }
 
-        qm.tryAdvance("outlands", player, QuestTrigger.PUMBAA_BOX_USED);
+        qm.tryAdvance(OutlandsQuestline.QUEST_ID, player, QuestTrigger.PUMBAA_BOX_USED);
         LionKingCriteriaTriggers.TRADE_PUMBAA.trigger(player);
     }
 

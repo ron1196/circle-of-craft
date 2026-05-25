@@ -5,6 +5,7 @@ import io.github.ron1196.thelionking.entity.npc.ScarEntity;
 import io.github.ron1196.thelionking.quest.questline.Questline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.questline.QuestlineRegistry;
+import io.github.ron1196.thelionking.quest.questline.RafikiQuestline;
 import io.github.ron1196.thelionking.quest.questline.RafikiQuestline.Stage;
 import io.github.ron1196.thelionking.quest.stage.StageId;
 import java.util.List;
@@ -88,7 +89,7 @@ public class CustomTransitionGameTests {
         player.moveTo(origin.getX() + 0.5, origin.getY() + 1.0, origin.getZ() + 0.5);
 
         QuestlineManager manager = WorldData.get(helper.getLevel()).getQuestManager();
-        manager.getState("rafiki").setCurrentStageId(Stage.COLLECT_BONES.name());
+        manager.getState(RafikiQuestline.QUEST_ID).setCurrentStageId(Stage.COLLECT_BONES.name());
 
         BiConsumer<ServerPlayer, QuestlineManager> handler =
                 QuestlineRegistry.RAFIKI.getCustomTransition(Stage.COLLECT_BONES);

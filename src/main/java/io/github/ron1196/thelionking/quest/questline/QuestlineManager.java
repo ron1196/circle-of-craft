@@ -150,7 +150,7 @@ public class QuestlineManager implements QuestStateLookup {
 
         // Fire quest-specific completion trigger
         if (nextStage != null && nextStage.name().equals("COMPLETE")) {
-            if ("rafiki".equals(questId)) {
+            if (RafikiQuestline.QUEST_ID.equals(questId)) {
                 LionKingCriteriaTriggers.COMPLETE_RAFIKI_QUEST.trigger(player);
             }
         }
@@ -258,7 +258,8 @@ public class QuestlineManager implements QuestStateLookup {
      * Outlands questline stage: hostile from USE_PUMBAA_BOX until the quest is complete.
      */
     public boolean areOutlandersHostile() {
-        return isStageAtOrPast("outlands", OutlandsQuestline.Stage.USE_PUMBAA_BOX) && !isComplete("outlands");
+        return isStageAtOrPast(OutlandsQuestline.QUEST_ID, OutlandsQuestline.Stage.USE_PUMBAA_BOX)
+                && !isComplete(OutlandsQuestline.QUEST_ID);
     }
 
     // -- Sync ---------------------------------------------------------------

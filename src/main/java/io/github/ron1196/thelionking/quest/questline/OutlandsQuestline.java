@@ -31,6 +31,8 @@ import net.minecraft.world.phys.AABB;
 
 public class OutlandsQuestline {
 
+    public static final String QUEST_ID = "outlands";
+
     public enum Stage implements StageId {
         ENTER_OUTLANDS,
         FIND_ZIRA,
@@ -51,10 +53,10 @@ public class OutlandsQuestline {
     }
 
     public static Questline build() {
-        return Questline.builder("outlands")
+        return Questline.builder(QUEST_ID)
                 .displayName("An Outlandish Scheme")
                 .icon(() -> new ItemStack(LionKingItems.WAYWARD_FEATHER.get()))
-                .canStart(manager -> manager.isComplete("rafiki"))
+                .canStart(manager -> manager.isComplete(RafikiQuestline.QUEST_ID))
                 .prerequisites("Complete Rafiki's Quest")
                 .stage(Stage.ENTER_OUTLANDS, new QuestObjective("Enter the Outlands"))
                 .stage(FIND_ZIRA, new QuestObjective("Find Zira in the Outlands"))

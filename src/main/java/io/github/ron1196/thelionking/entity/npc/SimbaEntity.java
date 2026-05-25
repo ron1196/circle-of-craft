@@ -42,6 +42,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class SimbaEntity extends TamableAnimal {
 
+    public static final String REGISTRY_NAME = "simba";
+
     private static final EntityDataAccessor<Boolean> DATA_BABY =
             SynchedEntityData.defineId(SimbaEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_HAS_CHARM =

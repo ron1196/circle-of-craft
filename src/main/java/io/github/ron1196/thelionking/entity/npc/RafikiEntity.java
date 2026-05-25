@@ -9,6 +9,7 @@ import io.github.ron1196.thelionking.quest.actions.RafikiQuestActions;
 import io.github.ron1196.thelionking.quest.questline.OutlandsQuestline;
 import io.github.ron1196.thelionking.quest.questline.QuestlineManager;
 import io.github.ron1196.thelionking.quest.questline.QuestlineState;
+import io.github.ron1196.thelionking.quest.questline.RafikiQuestline;
 import io.github.ron1196.thelionking.quest.questline.RafikiQuestline.Stage;
 import io.github.ron1196.thelionking.quest.stage.QuestTrigger;
 import io.github.ron1196.thelionking.registry.LionKingItems;
@@ -35,6 +36,8 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class RafikiEntity extends PathfinderMob {
+
+    public static final String REGISTRY_NAME = "rafiki";
 
     // ── Lion Dust ceremony constants ─────────────────────────────────────────
     private static final int CEREMONY_LINE_INTERVAL = 120;
@@ -100,11 +103,12 @@ public class RafikiEntity extends PathfinderMob {
 
     private boolean onQuestCheck(@NotNull ServerLevel serverLevel, @NotNull QuestlineManager quests) {
         // Validate Rafiki quest world state (Scar spawning, portal, etc.)
-        Stage rafikiStage = quests.getStage("rafiki", Stage.class);
+        Stage rafikiStage = quests.getStage(RafikiQuestline.QUEST_ID, Stage.class);
         RafikiQuestActions.ensureWorldState(serverLevel, rafikiStage);
 
         // Validate Outlands quest world state (tree occupation, etc.)
-        OutlandsQuestline.Stage outlandsStage = quests.getStage("outlands", OutlandsQuestline.Stage.class);
+        OutlandsQuestline.Stage outlandsStage =
+                quests.getStage(OutlandsQuestline.QUEST_ID, OutlandsQuestline.Stage.class);
         if (OutlandsQuestActions.isTreeOccupationStage(outlandsStage)) {
             OutlandsQuestActions.ensureWorldState(serverLevel, outlandsStage);
             return true; // We may have been discarded
@@ -140,9 +144,9 @@ public class RafikiEntity extends PathfinderMob {
         }
 
         // Handle Outlands quest — RAFIKI_RETURNS stage
-        OutlandsQuestline.Stage outlandsStage = ctx.stage("outlands", OutlandsQuestline.Stage.class);
+        OutlandsQuestline.Stage outlandsStage = ctx.stage(OutlandsQuestline.QUEST_ID, OutlandsQuestline.Stage.class);
         if (outlandsStage == OutlandsQuestline.Stage.RAFIKI_RETURNS) {
-            if (ctx.quests().tryAdvance("outlands", ctx.serverPlayer(), QuestTrigger.RAFIKI_TALK)) {
+            if (ctx.quests().tryAdvance(OutlandsQuestline.QUEST_ID, ctx.serverPlayer(), QuestTrigger.RAFIKI_TALK)) {
                 ChatHelper.sendNpcMessage(
                         player,
                         "Rafiki",
@@ -155,7 +159,7 @@ public class RafikiEntity extends PathfinderMob {
         }
 
         // Intercept LION_DUST_CEREMONY — timed dialogue, not standard advancement
-        Stage stage = ctx.stage("rafiki", Stage.class);
+        Stage stage = ctx.stage(RafikiQuestline.QUEST_ID, Stage.class);
         if (stage == Stage.LION_DUST_CEREMONY) {
             handleCeremonyInteraction(player, ctx);
             return InteractionResult.SUCCESS;
@@ -164,7 +168,7 @@ public class RafikiEntity extends PathfinderMob {
         // Standard path: try claim reward, then try advance
         // (Must run before DEFEAT_SCAR pre-empt so unclaimed rewards are still claimed)
         if (ctx.tryClaimOrAdvance(
-                "rafiki",
+                RafikiQuestline.QUEST_ID,
                 Stage.class,
                 QuestTrigger.RAFIKI_TALK,
                 s -> sendClaimDialogue(player, s),
@@ -292,7 +296,7 @@ public class RafikiEntity extends PathfinderMob {
         worldData.setRafikiCeremonyTick(0);
 
         QuestlineManager quests = worldData.getQuestManager();
-        QuestlineState state = quests.getState("rafiki");
+        QuestlineState state = quests.getState(RafikiQuestline.QUEST_ID);
         state.setCurrentStageId(Stage.USE_STAR_ALTAR.name());
         state.setChecked(false);
         worldData.setDirty();
@@ -313,7 +317,7 @@ public class RafikiEntity extends PathfinderMob {
         QuestlineManager quests = ctx.quests();
 
         // Rafiki Coin: 3 silver ingots → 1 Rafiki Coin (available after FIND_RAFIKI)
-        if (quests.isStageAtOrPast("rafiki", Stage.CRAFT_RAFIKI_STICK)
+        if (quests.isStageAtOrPast(RafikiQuestline.QUEST_ID, Stage.CRAFT_RAFIKI_STICK)
                 && held.is(LionKingItems.SILVER_INGOT.get())
                 && held.getCount() >= RAFIKI_COIN_COST) {
             held.shrink(RAFIKI_COIN_COST);
@@ -326,7 +330,7 @@ public class RafikiEntity extends PathfinderMob {
         }
 
         // Quest Book replacement: book + lion fur → Quest Book (available after FIND_RAFIKI)
-        if (quests.isStageAtOrPast("rafiki", Stage.CRAFT_RAFIKI_STICK)
+        if (quests.isStageAtOrPast(RafikiQuestline.QUEST_ID, Stage.CRAFT_RAFIKI_STICK)
                 && held.is(Items.BOOK)
                 && hasInventoryItem(player, LionKingItems.LION_FUR.get())) {
             held.shrink(1);
@@ -338,7 +342,7 @@ public class RafikiEntity extends PathfinderMob {
         }
 
         // Extra Rafiki Stick: 64 hyena bones → Rafiki Stick (available after COLLECT_BONES)
-        if (quests.isStageAtOrPast("rafiki", Stage.DEFEAT_SCAR)
+        if (quests.isStageAtOrPast(RafikiQuestline.QUEST_ID, Stage.DEFEAT_SCAR)
                 && held.is(LionKingItems.HYENA_BONE.get())
                 && held.getCount() >= EXTRA_STICK_BONE_COST) {
             held.shrink(EXTRA_STICK_BONE_COST);
@@ -352,7 +356,7 @@ public class RafikiEntity extends PathfinderMob {
 
         // Repeatable Lion Dust: termite dust + mango dust → Rafiki Dust
         // (available after LION_DUST_CEREMONY)
-        if (quests.isStageAtOrPast("rafiki", Stage.USE_STAR_ALTAR)) {
+        if (quests.isStageAtOrPast(RafikiQuestline.QUEST_ID, Stage.USE_STAR_ALTAR)) {
             if (held.is(LionKingItems.TERMITE_DUST.get()) && hasInventoryItem(player, LionKingItems.MANGO_DUST.get())) {
                 held.shrink(1);
                 consumeInventoryItem(player, LionKingItems.MANGO_DUST.get(), 1);

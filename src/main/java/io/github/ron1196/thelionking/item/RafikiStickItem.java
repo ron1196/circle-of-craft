@@ -244,7 +244,7 @@ public class RafikiStickItem extends Item {
         if (entity.tickCount % SCAR_HINT_INTERVAL != 0) return;
 
         QuestlineManager quests = WorldData.get(serverLevel).getQuestManager();
-        RafikiQuestline.Stage stage = quests.getStage("rafiki", RafikiQuestline.Stage.class);
+        RafikiQuestline.Stage stage = quests.getStage(RafikiQuestline.QUEST_ID, RafikiQuestline.Stage.class);
         if (stage != RafikiQuestline.Stage.DEFEAT_SCAR) return;
 
         List<ScarEntity> scars = level.getEntitiesOfClass(

@@ -27,6 +27,8 @@ import net.minecraft.world.level.levelgen.Heightmap;
 
 public class RafikiQuestline {
 
+    public static final String QUEST_ID = "rafiki";
+
     public enum Stage implements StageId {
         FIND_RAFIKI,
         CRAFT_RAFIKI_STICK,
@@ -44,7 +46,7 @@ public class RafikiQuestline {
     }
 
     public static Questline build() {
-        return Questline.builder("rafiki")
+        return Questline.builder(QUEST_ID)
                 .displayName("Rafiki's Quest")
                 .icon(() -> new ItemStack(LionKingItems.RAFIKI_STICK.get()))
                 .stage(FIND_RAFIKI, new QuestObjective("Find Rafiki and speak to him"))

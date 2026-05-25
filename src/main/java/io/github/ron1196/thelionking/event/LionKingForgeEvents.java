@@ -279,7 +279,7 @@ public class LionKingForgeEvents {
             LionKingCriteriaTriggers.ENTER_OUTLANDS.trigger(serverPlayer);
             WorldData.get(serverPlayer.serverLevel())
                     .getQuestManager()
-                    .tryAdvance("outlands", serverPlayer, QuestTrigger.ENTER_OUTLANDS);
+                    .tryAdvance(OutlandsQuestline.QUEST_ID, serverPlayer, QuestTrigger.ENTER_OUTLANDS);
         } else if (serverPlayer.level().dimension() == Dimensions.UPENDI_LEVEL && !playerData.hasEnteredUpendi()) {
             playerData.setEnteredUpendi(true);
             LionKingCriteriaTriggers.ENTER_UPENDI.trigger(serverPlayer);
@@ -289,7 +289,7 @@ public class LionKingForgeEvents {
         if (serverPlayer.level().dimension() == Dimensions.PRIDE_LANDS_LEVEL) {
             WorldData.get(serverPlayer.serverLevel())
                     .getQuestManager()
-                    .tryAdvance("outlands", serverPlayer, QuestTrigger.ENTER_PRIDE_LANDS);
+                    .tryAdvance(OutlandsQuestline.QUEST_ID, serverPlayer, QuestTrigger.ENTER_PRIDE_LANDS);
         }
     }
 
@@ -316,7 +316,8 @@ public class LionKingForgeEvents {
         if (serverLevel.dimension() == Dimensions.OUTLANDS_LEVEL) {
             WorldData outlandsData = WorldData.get(serverLevel);
             QuestlineManager questManager = outlandsData.getQuestManager();
-            OutlandsQuestline.Stage stage = questManager.getStage("outlands", OutlandsQuestline.Stage.class);
+            OutlandsQuestline.Stage stage =
+                    questManager.getStage(OutlandsQuestline.QUEST_ID, OutlandsQuestline.Stage.class);
             if (stage == OutlandsQuestline.Stage.ZIRA_RETURNS) {
                 OutlandsQuestActions.ensureHostileZira(serverLevel);
             }

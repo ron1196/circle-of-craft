@@ -27,6 +27,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class TimonEntity extends PathfinderMob {
 
+    public static final String REGISTRY_NAME = "timon";
+
     private static final int DEFAULT_COOLDOWN_TICKS = 120;
 
     private final NpcBehavior questBehavior = new NpcBehavior(this, 30, null);
@@ -114,7 +116,7 @@ public class TimonEntity extends PathfinderMob {
         // RALLY_PUMBAA — scripted intro dialogue
         NpcInteraction ctx = NpcInteraction.tryCreate(player);
         if (ctx != null) {
-            RafikiQuestline.Stage rafikiStage = ctx.stage("rafiki", RafikiQuestline.Stage.class);
+            RafikiQuestline.Stage rafikiStage = ctx.stage(RafikiQuestline.QUEST_ID, RafikiQuestline.Stage.class);
             if (rafikiStage == RafikiQuestline.Stage.RALLY_PUMBAA) {
                 questBehavior.startCooldown(RALLY_COOLDOWN_TICKS);
                 handleRallyPumbaaIntro(player, ctx);
@@ -161,7 +163,7 @@ public class TimonEntity extends PathfinderMob {
 
         // After the last line, advance RALLY_PUMBAA → COLLECT_BUGS
         if (talkIndex >= RALLY_INTRO_DIALOGUE.length - 1) {
-            ctx.quests().tryAdvance("rafiki", ctx.serverPlayer(), QuestTrigger.TIMON_TALK);
+            ctx.quests().tryAdvance(RafikiQuestline.QUEST_ID, ctx.serverPlayer(), QuestTrigger.TIMON_TALK);
         }
     }
 }

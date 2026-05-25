@@ -83,6 +83,11 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
     private int trapTimer = 0;
     private int closureTimer = 0;
 
+    public int getTicksUntilNextAttract() {
+        if (!hasBait()) return -1;
+        return Math.max(0, TRAP_INTERVAL - trapTimer);
+    }
+
     private final ContainerData data = new ContainerData() {
         @Override
         public int get(int index) {

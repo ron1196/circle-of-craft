@@ -39,6 +39,10 @@ public abstract class LionKingAnimal extends Animal {
     protected static final Random QUEST_RANDOM = new Random();
     private final Map<UUID, AnimalFavorEntry> animalQuests = new HashMap<>();
 
+    public @org.jetbrains.annotations.Nullable AnimalFavorEntry getFavorEntryFor(UUID playerId) {
+        return animalQuests.get(playerId);
+    }
+
     protected LionKingAnimal(EntityType<? extends Animal> type, Level level) {
         super(type, level);
     }

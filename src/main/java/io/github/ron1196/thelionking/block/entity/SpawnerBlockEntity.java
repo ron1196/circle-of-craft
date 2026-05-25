@@ -35,6 +35,22 @@ public class SpawnerBlockEntity extends BlockEntity {
         super(BlockEntityTypes.LK_SPAWNER.get(), pos, state);
     }
 
+    public @org.jetbrains.annotations.Nullable ResourceLocation getEntityId() {
+        return entityId;
+    }
+
+    public int getDelay() {
+        return delay;
+    }
+
+    public int getMaxNearbyEntities() {
+        return maxNearbyEntities;
+    }
+
+    public int getSpawnRange() {
+        return spawnRange;
+    }
+
     public void serverTick() {
         if (level == null || !(level instanceof ServerLevel serverLevel)) return;
         if (entityId == null) return;

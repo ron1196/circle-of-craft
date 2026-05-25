@@ -14,6 +14,12 @@ import io.github.ron1196.thelionking.client.particle.ColoredPortalParticle;
 import io.github.ron1196.thelionking.client.renderer.*;
 import io.github.ron1196.thelionking.entity.PumbaaExplosionEntity;
 import io.github.ron1196.thelionking.entity.animal.*;
+import io.github.ron1196.thelionking.entity.npc.PumbaaEntity;
+import io.github.ron1196.thelionking.entity.npc.RafikiEntity;
+import io.github.ron1196.thelionking.entity.npc.ScarEntity;
+import io.github.ron1196.thelionking.entity.npc.SimbaEntity;
+import io.github.ron1196.thelionking.entity.npc.TimonEntity;
+import io.github.ron1196.thelionking.entity.npc.ZiraEntity;
 import io.github.ron1196.thelionking.entity.projectile.DartEntity;
 import io.github.ron1196.thelionking.entity.projectile.SpearEntity;
 import io.github.ron1196.thelionking.item.SimbaCharmItem;
@@ -69,12 +75,12 @@ public class ClientEvents {
     public static final ModelLayerLocation TERMITE_LAYER = layer("termite");
 
     // NPC layers (reuse animal mesh definitions)
-    public static final ModelLayerLocation RAFIKI_LAYER = layer("rafiki");
-    public static final ModelLayerLocation SIMBA_LAYER = layer("simba");
-    public static final ModelLayerLocation TIMON_LAYER = layer("timon");
-    public static final ModelLayerLocation PUMBAA_LAYER = layer("pumbaa");
-    public static final ModelLayerLocation SCAR_LAYER = layer("scar");
-    public static final ModelLayerLocation ZIRA_LAYER = layer("zira");
+    public static final ModelLayerLocation RAFIKI_LAYER = layer(RafikiEntity.REGISTRY_NAME);
+    public static final ModelLayerLocation SIMBA_LAYER = layer(SimbaEntity.REGISTRY_NAME);
+    public static final ModelLayerLocation TIMON_LAYER = layer(TimonEntity.REGISTRY_NAME);
+    public static final ModelLayerLocation PUMBAA_LAYER = layer(PumbaaEntity.REGISTRY_NAME);
+    public static final ModelLayerLocation SCAR_LAYER = layer(ScarEntity.REGISTRY_NAME);
+    public static final ModelLayerLocation ZIRA_LAYER = layer(ZiraEntity.REGISTRY_NAME);
 
     // Ticket Lion (uses lion mesh)
     public static final ModelLayerLocation TICKET_LION_LAYER = layer("ticket_lion");
@@ -241,22 +247,28 @@ public class ClientEvents {
         // NPCs — proper models ported from original mod (shadow, scale from old code)
         event.registerEntityRenderer(
                 EntityTypes.RAFIKI.get(),
-                ctx -> new NpcRenderer(ctx, new RafikiModel(ctx.bakeLayer(RAFIKI_LAYER)), "rafiki", 0.35F));
+                ctx -> new NpcRenderer(
+                        ctx, new RafikiModel(ctx.bakeLayer(RAFIKI_LAYER)), RafikiEntity.REGISTRY_NAME, 0.35F));
         event.registerEntityRenderer(
                 EntityTypes.SIMBA.get(),
-                ctx -> new NpcRenderer(ctx, new SimbaModel(ctx.bakeLayer(SIMBA_LAYER)), "simba", 0.5F));
+                ctx -> new NpcRenderer(
+                        ctx, new SimbaModel(ctx.bakeLayer(SIMBA_LAYER)), SimbaEntity.REGISTRY_NAME, 0.5F));
         event.registerEntityRenderer(
                 EntityTypes.TIMON.get(),
-                ctx -> new NpcRenderer(ctx, new TimonModel(ctx.bakeLayer(TIMON_LAYER)), "timon", 0.2F, 0.5F));
+                ctx -> new NpcRenderer(
+                        ctx, new TimonModel(ctx.bakeLayer(TIMON_LAYER)), TimonEntity.REGISTRY_NAME, 0.2F, 0.5F));
         event.registerEntityRenderer(
                 EntityTypes.PUMBAA.get(),
-                ctx -> new NpcRenderer(ctx, new PumbaaModel(ctx.bakeLayer(PUMBAA_LAYER)), "pumbaa", 0.6F));
+                ctx -> new NpcRenderer(
+                        ctx, new PumbaaModel(ctx.bakeLayer(PUMBAA_LAYER)), PumbaaEntity.REGISTRY_NAME, 0.6F));
         event.registerEntityRenderer(
                 EntityTypes.SCAR.get(),
-                ctx -> new NpcRenderer(ctx, new NpcLionModel(ctx.bakeLayer(SCAR_LAYER)), "scar", 0.7F));
+                ctx -> new NpcRenderer(
+                        ctx, new NpcLionModel(ctx.bakeLayer(SCAR_LAYER)), ScarEntity.REGISTRY_NAME, 0.7F));
         event.registerEntityRenderer(
                 EntityTypes.ZIRA.get(),
-                ctx -> new NpcRenderer(ctx, new NpcLionModel(ctx.bakeLayer(ZIRA_LAYER)), "zira", 0.5F));
+                ctx -> new NpcRenderer(
+                        ctx, new NpcLionModel(ctx.bakeLayer(ZIRA_LAYER)), ZiraEntity.REGISTRY_NAME, 0.5F));
 
         // Ticket Lion
         event.registerEntityRenderer(
