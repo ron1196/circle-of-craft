@@ -76,7 +76,6 @@ public class CreativeTabs {
                         output.accept(LionKingItems.DEADWOOD_BUG_TRAP_ITEM.get());
                         output.accept(LionKingItems.BONGO_DRUM_ITEM.get());
                         output.accept(LionKingItems.OUTLANDS_POOL_ITEM.get());
-                        output.accept(LionKingItems.LK_SPAWNER_ITEM.get());
                         // Phase 12 blocks
                         output.accept(LionKingItems.BANANA_CAKE_ITEM.get());
                         output.accept(LionKingItems.MOUNTED_SHOOTER_ITEM.get());
@@ -432,7 +431,7 @@ public class CreativeTabs {
                         output.accept(LionKingItems.AMULET.get());
                         output.accept(LionKingItems.SIMBA_CHARM.get());
                         output.accept(LionKingItems.GIRAFFE_SADDLE.get());
-                        output.accept(LionKingItems.DART_QUIVER.get());
+                        // output.accept(LionKingItems.DART_QUIVER.get()); // disabled, see issue #78
                         output.accept(LionKingItems.PASSION_FRUIT.get());
                         output.accept(LionKingItems.ZAZU_EGG.get());
                         output.accept(LionKingItems.SCAR_RUG.get());

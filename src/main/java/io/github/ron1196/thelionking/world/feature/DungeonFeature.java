@@ -2,27 +2,29 @@ package io.github.ron1196.thelionking.world.feature;
 
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
-import io.github.ron1196.thelionking.TheLionKingMod;
-import io.github.ron1196.thelionking.block.entity.SpawnerBlockEntity;
+import io.github.ron1196.thelionking.registry.EntityTypes;
 import io.github.ron1196.thelionking.registry.LionKingBlocks;
 import io.github.ron1196.thelionking.registry.LionKingItems;
 import io.github.ron1196.thelionking.world.dimension.Dimensions;
 import io.github.ron1196.thelionking.world.feature.FeatureHelper.LootEntry;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -60,7 +62,11 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
 
     // Entrance validation
     private static final int MIN_ENTRANCES = 1;
-    private static final int MAX_ENTRANCES = 5;
+    private static final int MAX_ENTRANCES = 10;
+
+    // Floor/ceiling integrity: tolerate up to this fraction of air gaps in either ring
+    // (build phase converts unsupported shell blocks to air, so partial floors are visually fine).
+    private static final double FLOOR_CEILING_AIR_TOLERANCE = 0.25;
 
     // Block material chances
     private static final double CRACKED_BRICK_CHANCE = 0.1;
@@ -80,9 +86,6 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
     // Vines (crocodile variant only)
     private static final int VINE_MAX_LENGTH = 6;
     private static final int VINE_CHANCE = 4; // 1 in 4 chance per wall face
-
-    private static final ResourceLocation HYENA_ID = new ResourceLocation(TheLionKingMod.MOD_ID, "hyena");
-    private static final ResourceLocation CROCODILE_ID = new ResourceLocation(TheLionKingMod.MOD_ID, "crocodile");
 
     // ── Dungeon loot sub-pools ─────────────────────────────────────────────
 
@@ -123,7 +126,7 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
             LootEntry.of(3, r -> FeatureHelper.pickLoot(DARTS_AND_FEATHERS, r)),
 
             // Equipment
-            LootEntry.of(LionKingItems.DART_QUIVER),
+            // LootEntry.of(LionKingItems.DART_QUIVER), // disabled, see issue #78
             LootEntry.of(2, r -> FeatureHelper.pickLoot(SILVER_EQUIPMENT, r)),
 
             // Rare treasures
@@ -157,6 +160,59 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
             LootEntry.of(LionKingItems.ZIRA_COIN),
             LootEntry.of(LionKingItems.JAR_EMPTY));
 
+    private enum DungeonVariant {
+        HYENA(EntityTypes.HYENA, HYENA_CHEST_COUNT, false),
+        CROCODILE(EntityTypes.CROCODILE, CROC_CHEST_COUNT, true);
+
+        final Supplier<? extends EntityType<?>> entityType;
+        final int chestCount;
+        final boolean aquatic;
+
+        DungeonVariant(Supplier<? extends EntityType<?>> entityType, int chestCount, boolean aquatic) {
+            this.entityType = entityType;
+            this.chestCount = chestCount;
+            this.aquatic = aquatic;
+        }
+    }
+
+    /**
+     * Brick palette per dimension. Outlands has no corrupt-cracked block, so wall accent
+     * falls back to the wall primary (cracked-chance becomes a no-op there).
+     */
+    private enum DungeonPalette {
+        PRIDE(
+                LionKingBlocks.MOSSY_PRIDE_BRICK,
+                LionKingBlocks.PRIDE_BRICK,
+                LionKingBlocks.PRIDE_BRICK,
+                LionKingBlocks.CRACKED_PRIDE_BRICK,
+                LionKingBlocks.PRIDE_PILLAR),
+        OUTLANDS(
+                LionKingBlocks.MOSSY_CORRUPT_PRIDE_BRICK,
+                LionKingBlocks.CORRUPT_PRIDE_BRICK,
+                LionKingBlocks.CORRUPT_PRIDE_BRICK,
+                LionKingBlocks.CORRUPT_PRIDE_BRICK,
+                LionKingBlocks.CORRUPT_PRIDE_PILLAR);
+
+        final Supplier<? extends Block> floorPrimary;
+        final Supplier<? extends Block> floorAccent;
+        final Supplier<? extends Block> wallPrimary;
+        final Supplier<? extends Block> wallAccent;
+        final Supplier<? extends Block> pillar;
+
+        DungeonPalette(
+                Supplier<? extends Block> floorPrimary,
+                Supplier<? extends Block> floorAccent,
+                Supplier<? extends Block> wallPrimary,
+                Supplier<? extends Block> wallAccent,
+                Supplier<? extends Block> pillar) {
+            this.floorPrimary = floorPrimary;
+            this.floorAccent = floorAccent;
+            this.wallPrimary = wallPrimary;
+            this.wallAccent = wallAccent;
+            this.pillar = pillar;
+        }
+    }
+
     public DungeonFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
@@ -182,33 +238,28 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         // Determine variant and expand AFTER validation (old mod expanded post-validation)
-        boolean isCrocodile = random.nextInt(CROCODILE_CHANCE) == 0;
-        if (isCrocodile) {
+        DungeonVariant variant =
+                random.nextInt(CROCODILE_CHANCE) == 0 ? DungeonVariant.CROCODILE : DungeonVariant.HYENA;
+        if (variant.aquatic) {
             halfW += random.nextInt(CROC_EXPANSION_RANGE) + CROC_EXPANSION_MIN;
             halfD += random.nextInt(CROC_EXPANSION_RANGE) + CROC_EXPANSION_MIN;
         }
 
-        ResourceLocation spawnerId = isCrocodile ? CROCODILE_ID : HYENA_ID;
-        LOGGER.debug(
-                "[Dungeon] Placed {} dungeon at ({}, {}, {}), halfW={}, halfD={}",
-                isCrocodile ? "crocodile" : "hyena",
-                cx,
-                cy,
-                cz,
-                halfW,
-                halfD);
-
-        buildRoom(level, random, canReplace, cx, cy, cz, halfW, halfD, isCrocodile);
-        placePillars(level, random, cx, cy, cz, halfW, halfD);
-
         boolean isOutlands = level.getLevel().dimension() == Dimensions.OUTLANDS_LEVEL;
-        int chestAttempts = isCrocodile ? CROC_CHEST_COUNT : HYENA_CHEST_COUNT;
-        placeChests(level, random, cx, cy, cz, halfW, halfD, chestAttempts, isOutlands);
+        DungeonPalette palette = isOutlands ? DungeonPalette.OUTLANDS : DungeonPalette.PRIDE;
 
-        placeSpawner(level, cx, cy, cz, spawnerId);
+        LOGGER.debug(
+                "[Dungeon] Placed {} dungeon at ({}, {}, {}), halfW={}, halfD={}", variant, cx, cy, cz, halfW, halfD);
 
-        if (isCrocodile) {
-            placeVines(level, random, cx, cy, cz, halfW, halfD);
+        buildRoom(level, random, canReplace, cx, cy, cz, halfW, halfD, variant, palette);
+        placePillars(level, random, cx, cy, cz, halfW, halfD, palette);
+
+        placeChests(level, random, cx, cy, cz, halfW, halfD, variant.chestCount, isOutlands);
+
+        placeSpawner(level, random, cx, cy, cz, variant.entityType.get());
+
+        if (variant.aquatic) {
+            placeVines(level, random, cx, cy, cz, halfW, halfD, palette);
         }
 
         return true;
@@ -221,6 +272,10 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
      */
     private boolean isValidPlacement(WorldGenLevel level, int cx, int cy, int cz, int halfW, int halfD) {
         int entrances = 0;
+        int floorAir = 0;
+        int ceilingAir = 0;
+        int ringSize = (2 * halfW + 3) * (2 * halfD + 3);
+        int maxAir = (int) Math.floor(ringSize * FLOOR_CEILING_AIR_TOLERANCE);
 
         for (int bx = cx - halfW - 1; bx <= cx + halfW + 1; bx++) {
             for (int by = cy - 1; by <= cy + ROOM_HEIGHT + 1; by++) {
@@ -228,12 +283,12 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
                     BlockPos pos = new BlockPos(bx, by, bz);
                     boolean isSolid = level.getBlockState(pos).isSolid();
 
-                    // Floor must be solid
-                    if (by == cy - 1 && !isSolid) {
+                    // Floor: tolerate a few air gaps (build phase fills them with air anyway)
+                    if (by == cy - 1 && !isSolid && ++floorAir > maxAir) {
                         return false;
                     }
-                    // Ceiling must be solid (ROOM_HEIGHT + 1 above origin = 1 above interior)
-                    if (by == cy + ROOM_HEIGHT + 1 && !isSolid) {
+                    // Ceiling (ROOM_HEIGHT + 1 above origin = 1 above interior)
+                    if (by == cy + ROOM_HEIGHT + 1 && !isSolid && ++ceilingAir > maxAir) {
                         return false;
                     }
 
@@ -249,8 +304,6 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
             }
         }
 
-        // Require at least 1 cave opening so the room is reachable,
-        // but reject if too exposed (more than 5 openings means near surface or large cave).
         return entrances >= MIN_ENTRANCES && entrances <= MAX_ENTRANCES;
     }
 
@@ -268,10 +321,12 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
             int cz,
             int halfW,
             int halfD,
-            boolean isCrocodile) {
-        BlockState prideBrick = LionKingBlocks.PRIDE_BRICK.get().defaultBlockState();
-        BlockState mossyBrick = LionKingBlocks.MOSSY_PRIDE_BRICK.get().defaultBlockState();
-        BlockState crackedBrick = LionKingBlocks.CRACKED_PRIDE_BRICK.get().defaultBlockState();
+            DungeonVariant variant,
+            DungeonPalette palette) {
+        BlockState floorPrimary = palette.floorPrimary.get().defaultBlockState();
+        BlockState floorAccent = palette.floorAccent.get().defaultBlockState();
+        BlockState wallPrimary = palette.wallPrimary.get().defaultBlockState();
+        BlockState wallAccent = palette.wallAccent.get().defaultBlockState();
         BlockState air = Blocks.CAVE_AIR.defaultBlockState();
 
         // Iterate top-down like vanilla MonsterRoomFeature
@@ -284,7 +339,7 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
 
                     if (isInterior) {
                         // Interior: clear to cave air (preserve chests and spawners)
-                        if (!existing.is(Blocks.CHEST) && !existing.is(LionKingBlocks.LK_SPAWNER.get())) {
+                        if (!existing.is(Blocks.CHEST) && !existing.is(Blocks.SPAWNER)) {
                             this.safeSetBlock(level, pos, air, canReplace);
                         }
                     } else {
@@ -296,18 +351,18 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
                         } else if (existing.isSolid() && !existing.is(Blocks.CHEST)) {
                             // Solid shell: replace with dungeon material
                             if (by == cy - 1) {
-                                // Floor: 75% mossy, 25% regular pride brick
+                                // Floor: 75% primary (mossy), 25% accent (plain brick)
                                 this.safeSetBlock(
                                         level,
                                         pos,
-                                        random.nextInt(MOSSY_FLOOR_DENOMINATOR) != 0 ? mossyBrick : prideBrick,
+                                        random.nextInt(MOSSY_FLOOR_DENOMINATOR) != 0 ? floorPrimary : floorAccent,
                                         canReplace);
                             } else {
-                                // Walls and ceiling: pride brick with occasional cracked
+                                // Walls and ceiling: primary brick with occasional accent (cracked)
                                 this.safeSetBlock(
                                         level,
                                         pos,
-                                        random.nextDouble() < CRACKED_BRICK_CHANCE ? crackedBrick : prideBrick,
+                                        random.nextDouble() < CRACKED_BRICK_CHANCE ? wallAccent : wallPrimary,
                                         canReplace);
                             }
                         }
@@ -316,8 +371,8 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
             }
         }
 
-        // Crocodile variant: water floor with mossy brick beneath
-        if (isCrocodile) {
+        // Aquatic variant: water floor with mossy brick beneath
+        if (variant.aquatic) {
             for (int bx = cx - halfW; bx <= cx + halfW; bx++) {
                 for (int bz = cz - halfD; bz <= cz + halfD; bz++) {
                     // Skip spawner center position
@@ -331,7 +386,7 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
                     this.safeSetBlock(
                             level,
                             belowFloor,
-                            random.nextInt(MOSSY_FLOOR_DENOMINATOR) != 0 ? mossyBrick : prideBrick,
+                            random.nextInt(MOSSY_FLOOR_DENOMINATOR) != 0 ? floorPrimary : floorAccent,
                             canReplace);
                 }
             }
@@ -353,8 +408,16 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
     /**
      * Place pride pillars at 2 random corners, matching old mod's paired corner logic.
      */
-    private void placePillars(WorldGenLevel level, RandomSource random, int cx, int cy, int cz, int halfW, int halfD) {
-        BlockState pillar = LionKingBlocks.PRIDE_PILLAR.get().defaultBlockState();
+    private void placePillars(
+            WorldGenLevel level,
+            RandomSource random,
+            int cx,
+            int cy,
+            int cz,
+            int halfW,
+            int halfD,
+            DungeonPalette palette) {
+        BlockState pillar = palette.pillar.get().defaultBlockState();
         int[][] corners = {
             {cx - halfW, cz - halfD},
             {cx + halfW, cz - halfD},
@@ -377,14 +440,15 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
         }
     }
 
-    private void placeSpawner(WorldGenLevel level, int cx, int cy, int cz, ResourceLocation spawnerId) {
+    private void placeSpawner(
+            WorldGenLevel level, RandomSource random, int cx, int cy, int cz, EntityType<?> spawnerEntity) {
         BlockPos spawnerPos = new BlockPos(cx, cy, cz);
-        level.setBlock(spawnerPos, LionKingBlocks.LK_SPAWNER.get().defaultBlockState(), 2);
+        level.setBlock(spawnerPos, Blocks.SPAWNER.defaultBlockState(), 2);
         BlockEntity be = level.getBlockEntity(spawnerPos);
         if (!(be instanceof SpawnerBlockEntity spawnerBE)) {
             return;
         }
-        spawnerBE.setEntityId(spawnerId);
+        spawnerBE.setEntityId(spawnerEntity, random);
     }
 
     /**
@@ -471,15 +535,28 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
     /**
      * Place vines on interior wall faces of crocodile dungeons.
      */
-    private void placeVines(WorldGenLevel level, RandomSource random, int cx, int cy, int cz, int halfW, int halfD) {
+    private void placeVines(
+            WorldGenLevel level,
+            RandomSource random,
+            int cx,
+            int cy,
+            int cz,
+            int halfW,
+            int halfD,
+            DungeonPalette palette) {
+        Block wallPrimaryBlock = palette.wallPrimary.get();
+        Block wallAccentBlock = palette.wallAccent.get();
+        Block floorPrimaryBlock = palette.floorPrimary.get();
+        Block floorAccentBlock = palette.floorAccent.get();
         for (int bx = cx - halfW - 1; bx <= cx + halfW + 1; bx++) {
             for (int by = cy + ROOM_HEIGHT; by >= cy; by--) {
                 for (int bz = cz - halfD - 1; bz <= cz + halfD + 1; bz++) {
                     BlockState state = level.getBlockState(new BlockPos(bx, by, bz));
 
-                    if (!state.is(LionKingBlocks.PRIDE_BRICK.get())
-                            && !state.is(LionKingBlocks.CRACKED_PRIDE_BRICK.get())
-                            && !state.is(LionKingBlocks.MOSSY_PRIDE_BRICK.get())) {
+                    if (!state.is(wallPrimaryBlock)
+                            && !state.is(wallAccentBlock)
+                            && !state.is(floorPrimaryBlock)
+                            && !state.is(floorAccentBlock)) {
                         continue;
                     }
 

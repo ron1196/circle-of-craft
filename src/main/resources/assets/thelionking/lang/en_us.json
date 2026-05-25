@@ -301,7 +301,6 @@
   "block.thelionking.deadwood_bug_trap": "Deadwood Bug Trap",
   "block.thelionking.bongo_drum": "Bongo Drum",
   "block.thelionking.outlands_pool": "Outlands Pool",
-  "block.thelionking.lk_spawner": "Lion King Spawner",
   "block.thelionking.banana_cake": "Banana Cake",
   "block.thelionking.mounted_shooter": "Mounted Shooter",
   "block.thelionking.star_altar": "Star Altar",
@@ -504,15 +503,10 @@
   "jade.thelionking.mounted_shooter.empty": "No ammo loaded",
   "jade.thelionking.mounted_shooter.ammo": "Ammo: %s x%s",
   "jade.thelionking.mounted_shooter.mode": "Mode: %s",
-  "jade.thelionking.spawner.inactive": "Inactive",
-  "jade.thelionking.spawner.spawns": "Spawns: %s",
-  "jade.thelionking.spawner.nearby": "Nearby: %s/%s",
-  "jade.thelionking.spawner.next_in": "Next in %ss",
   "config.jade.plugin_thelionking.grinding_bowl": "Grinding Bowl",
   "config.jade.plugin_thelionking.star_altar": "Star Altar",
   "config.jade.plugin_thelionking.termite_queen": "Termite Queen",
   "config.jade.plugin_thelionking.animal_favor": "Animal Favor",
   "config.jade.plugin_thelionking.bug_trap": "Bug Trap",
-  "config.jade.plugin_thelionking.mounted_shooter": "Mounted Shooter",
-  "config.jade.plugin_thelionking.lk_spawner": "Lion King Spawner"
+  "config.jade.plugin_thelionking.mounted_shooter": "Mounted Shooter"
 }

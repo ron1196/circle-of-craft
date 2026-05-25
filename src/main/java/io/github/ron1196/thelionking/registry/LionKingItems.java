@@ -583,7 +583,9 @@ public class LionKingItems {
                     new Item.Properties().stacksTo(1).durability(0)));
     public static final RegistryObject<Item> SIMBA_CHARM = registerItem("simba_charm", SimbaCharmItem::new);
     public static final RegistryObject<Item> GIRAFFE_SADDLE = simpleItem("giraffe_saddle", 1);
-    public static final RegistryObject<Item> DART_QUIVER = registerItem("dart_quiver", QuiverItem::new, itemProps(1));
+    // Disabled pending rework — see https://github.com/ron1196/TheLionKing/issues/78
+    // public static final RegistryObject<Item> DART_QUIVER = registerItem("dart_quiver", QuiverItem::new,
+    // itemProps(1));
     public static final RegistryObject<Item> PASSION_FRUIT = foodItem("passion_fruit", 3, 0.3F);
     public static final RegistryObject<Item> ZAZU_EGG = simpleItem("zazu_egg");
 
@@ -628,8 +630,6 @@ public class LionKingItems {
             registerBlockItem("bongo_drum", LionKingBlocks.BONGO_DRUM);
     public static final RegistryObject<BlockItem> OUTLANDS_POOL_ITEM =
             registerBlockItem("outlands_pool", LionKingBlocks.OUTLANDS_POOL);
-    public static final RegistryObject<BlockItem> LK_SPAWNER_ITEM =
-            registerBlockItem("lk_spawner", LionKingBlocks.LK_SPAWNER);
 
     // ========== Quest / NPC Items ==========
     public static final RegistryObject<Item> QUEST_BOOK = registerItem("quest_book", QuestBookItem::new);

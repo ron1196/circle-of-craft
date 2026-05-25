@@ -464,7 +464,8 @@ public final class ItemInfo {
                 "Flamingo Darts have the ability",
                 "to drain health from the",
                 "creature they hit.");
-        put(LionKingItems.DART_QUIVER, "Found in Pride Lands dungeons.", "", "Can hold up to six stacks", "of darts.");
+        // put(LionKingItems.DART_QUIVER, "Found in Pride Lands dungeons.", "", "Can hold up to six stacks", "of
+        // darts.");
         put(
                 LionKingItems.PUMBAA_BOMB,
                 "Obtained from Timon and Pumbaa.",
@@ -1121,8 +1122,5 @@ public final class ItemInfo {
                     "to increase its enchanting power.",
                     "Rarer notes have higher values.");
         }
-
-        // Misc
-        put(LionKingItems.LK_SPAWNER_ITEM, "A creature spawner.");
     }
 }
