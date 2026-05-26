@@ -115,19 +115,12 @@ public class LionKingForgeEvents {
 
         ItemStack held = event.getItemStack();
         if (!(held.getItem() instanceof net.minecraft.world.item.HoeItem)) return;
+        if (!tryTillSand(event.getLevel(), event.getPos())) return;
 
-        BlockPos pos = event.getPos();
-        BlockState state = event.getLevel().getBlockState(pos);
-        if (!state.is(Blocks.SAND)) return;
-
-        // Must have air above (same check as vanilla farmland)
-        if (!event.getLevel().getBlockState(pos.above()).isAir()) return;
-
-        event.getLevel().setBlock(pos, LionKingBlocks.TILLED_SAND.get().defaultBlockState(), 11);
         event.getLevel()
                 .playSound(
                         null,
-                        pos,
+                        event.getPos(),
                         net.minecraft.sounds.SoundEvents.HOE_TILL,
                         net.minecraft.sounds.SoundSource.BLOCKS,
                         1.0F,
@@ -139,6 +132,18 @@ public class LionKingForgeEvents {
 
         event.setCancellationResult(InteractionResult.SUCCESS);
         event.setCanceled(true);
+    }
+
+    /**
+     * Tills a sand block to tilled sand if and only if the block is plain sand and there is air
+     * directly above (mirroring vanilla farmland's air-above check). Returns true on conversion.
+     * Exposed for game tests so they can exercise the mutation without staging a player + event.
+     */
+    public static boolean tryTillSand(net.minecraft.world.level.Level level, BlockPos pos) {
+        if (!level.getBlockState(pos).is(Blocks.SAND)) return false;
+        if (!level.getBlockState(pos.above()).isAir()) return false;
+        level.setBlock(pos, LionKingBlocks.TILLED_SAND.get().defaultBlockState(), 11);
+        return true;
     }
 
     // ── EntityInteract — Ground Rhino Horn intercepts before mobInteract() ──────
@@ -342,8 +347,9 @@ public class LionKingForgeEvents {
     /**
      * Converts sand blocks in a circular patch around the strike point to outsand.
      * Occasionally sets fire on air blocks above. Matches the old mod's LKWorldGenOutsand.
+     * Exposed for game tests so they can call it directly without staging a real Outlands chunk.
      */
-    private static void convertSandToOutsand(ServerLevel level, BlockPos center) {
+    public static void convertSandToOutsand(ServerLevel level, BlockPos center) {
         int radius = level.random.nextInt(OUTSAND_MAX_RADIUS - OUTSAND_MIN_RADIUS + 1) + OUTSAND_MIN_RADIUS;
         int radiusSq = radius * radius;
 
