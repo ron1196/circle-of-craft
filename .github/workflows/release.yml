@@ -104,7 +104,7 @@ jobs:
           echo "notes_path=release_notes.md" >> "$GITHUB_OUTPUT"
 
       - name: Upload to CurseForge
-        if: ${{ vars.CURSEFORGE_PROJECT_ID != '' && secrets.CURSEFORGE_TOKEN != '' }}
+        if: ${{ vars.CURSEFORGE_PROJECT_ID != '' }}
         env:
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
           PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID }}
@@ -143,7 +143,7 @@ jobs:
             "https://minecraft.curseforge.com/api/projects/$PROJECT_ID/upload-file"
 
       - name: Upload to Modrinth
-        if: ${{ vars.MODRINTH_PROJECT_ID != '' && secrets.MODRINTH_TOKEN != '' }}
+        if: ${{ vars.MODRINTH_PROJECT_ID != '' }}
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           PROJECT_ID: ${{ vars.MODRINTH_PROJECT_ID }}
