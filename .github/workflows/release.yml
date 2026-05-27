@@ -99,6 +99,9 @@ jobs:
           if [[ -n "${{ steps.prev.outputs.previous_tag }}" ]]; then
             ARGS+=(--notes-start-tag "${{ steps.prev.outputs.previous_tag }}")
           fi
+          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            gh release delete "${GITHUB_REF_NAME}" --yes
+          fi
           gh release create "${GITHUB_REF_NAME}" "${{ steps.jar.outputs.path }}" "${ARGS[@]}"
           gh release view "${GITHUB_REF_NAME}" --json body --jq .body > release_notes.md
           echo "notes_path=release_notes.md" >> "$GITHUB_OUTPUT"
@@ -136,11 +139,16 @@ jobs:
               gameVersions: [$mc, $loader],
               releaseType: "release"
             }')
-          curl -fsS \
+          HTTP_CODE=$(curl -sS -w '%{http_code}' -o cf_response.json \
             -H "X-Api-Token: $CURSEFORGE_TOKEN" \
             -F "metadata=$METADATA" \
             -F "file=@$JAR" \
-            "https://minecraft.curseforge.com/api/projects/$PROJECT_ID/upload-file"
+            "https://minecraft.curseforge.com/api/projects/$PROJECT_ID/upload-file")
+          echo "CurseForge upload responded HTTP $HTTP_CODE:"
+          cat cf_response.json; echo
+          if [[ "$HTTP_CODE" -ge 400 ]]; then
+            exit 1
+          fi
 
       - name: Upload to Modrinth
         if: ${{ vars.MODRINTH_PROJECT_ID != '' }}
@@ -173,9 +181,14 @@ jobs:
               project_id: $project_id,
               file_parts: [$filename]
             }')
-          curl -fsS \
+          HTTP_CODE=$(curl -sS -w '%{http_code}' -o modrinth_response.json \
             -X POST \
             -H "Authorization: $MODRINTH_TOKEN" \
             -F "data=$METADATA;type=application/json" \
             -F "$(basename "$JAR")=@$JAR" \
-            "https://api.modrinth.com/v2/version"
+            "https://api.modrinth.com/v2/version")
+          echo "Modrinth upload responded HTTP $HTTP_CODE:"
+          cat modrinth_response.json; echo
+          if [[ "$HTTP_CODE" -ge 400 ]]; then
+            exit 1
+          fi
