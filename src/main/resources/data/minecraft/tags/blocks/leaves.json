@@ -1,11 +1,11 @@
 {
   "replace": false,
   "values": [
-    "thelionking:pride_acacia_leaves",
-    "thelionking:rainforest_leaves",
-    "thelionking:mango_leaves",
-    "thelionking:passion_leaves",
-    "thelionking:banana_leaves",
-    "thelionking:rafiki_leaves"
+    "circleofcraft:pride_acacia_leaves",
+    "circleofcraft:rainforest_leaves",
+    "circleofcraft:mango_leaves",
+    "circleofcraft:passion_leaves",
+    "circleofcraft:banana_leaves",
+    "circleofcraft:rafiki_leaves"
   ]
 }

@@ -8,7 +8,7 @@ Verifies that the quest system follows its action helper pattern:
 - **Debug commands**: Call the helper directly
 - **Entity tick fallback**: Call the helper every ~100 ticks for chunk reload edge cases
 
-This means `/lk quest set <questId> <stage>` works for every stage — instant, correct, no side effects needed from skipped stages.
+This means `/coc quest set <questId> <stage>` works for every stage — instant, correct, no side effects needed from skipped stages.
 
 ## Usage
 
@@ -32,7 +32,7 @@ Each `customTransition` should call `ensureWorldState()` for the new stage, then
 **Check:** Grep for `discard()`, `addFreshEntity()`, `setBlock()`, `destroyBlock()` in customTransition methods that don't go through the helper.
 
 ### 4. Debug command calls the helper
-`LionKingCommands.questSet()` should call the appropriate `ensureWorldState()` after setting the stage.
+`ModCommands.questSet()` should call the appropriate `ensureWorldState()` after setting the stage.
 
 ### 5. Entity tick uses helper as fallback
 Quest-relevant entities (Rafiki, Zira) should call `ensureWorldState()` every ~100 ticks as a lightweight fallback for chunk reload. They should NOT have inline quest stage checks that duplicate the helper logic.

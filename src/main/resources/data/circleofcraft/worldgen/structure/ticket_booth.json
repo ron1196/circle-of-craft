@@ -1,0 +1,8 @@
+{
+  "type": "circleofcraft:lk_code_structure",
+  "feature_id": "circleofcraft:ticket_booth",
+  "biomes": "#circleofcraft:has_ticket_booth",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin"
+}

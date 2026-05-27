@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_rhino_raw": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rhino_raw"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "circleofcraft:rhino_cooked_from_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_rhino_raw",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "circleofcraft:rhino_cooked_from_smelting"
+    ]
+  },
+  "sends_telemetry_event": false
+}

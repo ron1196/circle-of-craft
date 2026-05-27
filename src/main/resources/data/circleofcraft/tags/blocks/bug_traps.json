@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "circleofcraft:bug_trap",
+    "circleofcraft:oak_bug_trap",
+    "circleofcraft:spruce_bug_trap",
+    "circleofcraft:birch_bug_trap",
+    "circleofcraft:jungle_bug_trap",
+    "circleofcraft:acacia_bug_trap",
+    "circleofcraft:dark_oak_bug_trap",
+    "circleofcraft:mangrove_bug_trap",
+    "circleofcraft:cherry_bug_trap",
+    "circleofcraft:bamboo_bug_trap",
+    "circleofcraft:crimson_bug_trap",
+    "circleofcraft:warped_bug_trap",
+    "circleofcraft:banana_bug_trap",
+    "circleofcraft:rainforest_bug_trap",
+    "circleofcraft:mango_bug_trap",
+    "circleofcraft:passion_bug_trap",
+    "circleofcraft:deadwood_bug_trap"
+  ]
+}

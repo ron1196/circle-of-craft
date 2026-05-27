@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "axis=x,corrupt=false": { "model": "circleofcraft:block/rafiki_wood_horizontal", "x": 90, "y": 90 },
+    "axis=y,corrupt=false": { "model": "circleofcraft:block/rafiki_wood" },
+    "axis=z,corrupt=false": { "model": "circleofcraft:block/rafiki_wood_horizontal", "x": 90 },
+    "axis=x,corrupt=true": { "model": "circleofcraft:block/rafiki_wood_corrupt_horizontal", "x": 90, "y": 90 },
+    "axis=y,corrupt=true": { "model": "circleofcraft:block/rafiki_wood_corrupt" },
+    "axis=z,corrupt=true": { "model": "circleofcraft:block/rafiki_wood_corrupt_horizontal", "x": 90 }
+  }
+}

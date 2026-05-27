@@ -1,0 +1,17 @@
+{
+  "parent": "circleofcraft:get_staff",
+  "display": {
+    "icon": { "item": "circleofcraft:passion_fruit" },
+    "title": { "translate": "advancement.circleofcraft.enter_upendi.title" },
+    "description": { "translate": "advancement.circleofcraft.enter_upendi.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "enter": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": { "to": "circleofcraft:upendi" }
+    }
+  }
+}

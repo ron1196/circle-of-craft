@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_outlander_meat": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:outlander_meat"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "circleofcraft:lion_cooked_from_outlander_meat_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_outlander_meat",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "circleofcraft:lion_cooked_from_outlander_meat_smelting"
+    ]
+  },
+  "sends_telemetry_event": false
+}

@@ -11,7 +11,7 @@ version = System.getenv('MOD_VERSION') ?: '0.0.0-dev'
 group = 'io.github.ron1196'
 
 base {
-    archivesName = 'thelionking'
+    archivesName = 'circleofcraft'
 }
 
 tasks.named('jarJar').configure {
@@ -32,14 +32,14 @@ minecraft {
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             mods {
-                thelionking {
+                circleofcraft {
                     source sourceSets.main
                 }
             }
         }
 
         client {
-            property 'forge.enabledGameTestNamespaces', 'thelionking'
+            property 'forge.enabledGameTestNamespaces', 'circleofcraft'
         }
 
         client2 {
@@ -49,7 +49,7 @@ minecraft {
         }
 
         server {
-            property 'forge.enabledGameTestNamespaces', 'thelionking'
+            property 'forge.enabledGameTestNamespaces', 'circleofcraft'
             args '--nogui'
         }
 
@@ -57,9 +57,9 @@ minecraft {
             workingDirectory project.file('run-gametest')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'info'
-            property 'forge.enabledGameTestNamespaces', 'thelionking'
+            property 'forge.enabledGameTestNamespaces', 'circleofcraft'
             mods {
-                thelionking {
+                circleofcraft {
                     source sourceSets.main
                 }
             }
@@ -67,7 +67,7 @@ minecraft {
 
         data {
             workingDirectory project.file('run-data')
-            args '--mod', 'thelionking', '--all',
+            args '--mod', 'circleofcraft', '--all',
                  '--output', file('src/generated/resources/').getAbsolutePath(),
                  '--existing', file('src/main/resources/').getAbsolutePath()
         }
@@ -139,13 +139,13 @@ test {
 jar {
     manifest {
         attributes([
-            'Specification-Title'     : 'thelionking',
+            'Specification-Title'     : 'circleofcraft',
             'Specification-Vendor'    : 'ron1196',
             'Specification-Version'   : '1',
             'Implementation-Title'    : project.name,
             'Implementation-Version'  : project.jar.archiveVersion,
             'Implementation-Vendor'   : 'ron1196',
-            'MixinConfigs'            : 'thelionking.mixins.json'
+            'MixinConfigs'            : 'circleofcraft.mixins.json'
         ])
     }
     finalizedBy 'reobfJar'
@@ -158,12 +158,15 @@ tasks.withType(ProcessResources).configureEach {
             "forge_version"          : forge_version,
             "forge_version_range"    : forge_version_range,
             "loader_version_range"   : loader_version_range,
-            "mod_id"                 : "thelionking",
-            "mod_name"               : "The Lion King Mod",
+            "mod_id"                 : "circleofcraft",
+            "mod_name"               : "Circle of Craft",
             "mod_license"            : "GPL-3.0-or-later",
             "mod_version"            : project.version,
-            "mod_authors"            : "Mevans",
-            "mod_description"        : "A massive total-conversion mod inspired by The Lion King, adding dimensions, mobs, quests, and more."
+            "mod_authors"            : "ron1196",
+            "mod_description"        : "Circle of Craft is a massive total conversion inspired by The Lion King: explore new dimensions, befriend and battle savanna wildlife, and follow a story-driven questline to reclaim the Pride Lands.",
+            "mod_credits"            : "Original Lion King Mod by redrosewarrior1.",
+            "mod_display_url"        : "https://github.com/ron1196/circle-of-craft",
+            "mod_issue_url"          : "https://github.com/ron1196/circle-of-craft/issues"
     ]
     inputs.properties(replaceProperties)
 
@@ -178,7 +181,7 @@ tasks.withType(JavaCompile).configureEach {
 
 tasks.named('compileJava').configure {
     options.compilerArgs += [
-        "-AoutRefMapFile=${layout.buildDirectory.file('resources/main/thelionking.refmap.json').get().asFile.absolutePath}"
+        "-AoutRefMapFile=${layout.buildDirectory.file('resources/main/circleofcraft.refmap.json').get().asFile.absolutePath}"
     ]
 }
 

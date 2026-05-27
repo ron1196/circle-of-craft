@@ -1,8 +1,8 @@
 {
   "replace": false,
   "values": [
-    "thelionking:pridestone_wall",
-    "thelionking:pride_brick_wall",
-    "thelionking:corrupt_pridestone_wall"
+    "circleofcraft:pridestone_wall",
+    "circleofcraft:pride_brick_wall",
+    "circleofcraft:corrupt_pridestone_wall"
   ]
 }

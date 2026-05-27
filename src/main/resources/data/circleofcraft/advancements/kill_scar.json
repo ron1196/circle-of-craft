@@ -1,0 +1,16 @@
+{
+  "parent": "circleofcraft:get_staff",
+  "display": {
+    "icon": { "item": "circleofcraft:scar_rug" },
+    "title": { "translate": "advancement.circleofcraft.kill_scar.title" },
+    "description": { "translate": "advancement.circleofcraft.kill_scar.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "circleofcraft:kill_scar"
+    }
+  }
+}

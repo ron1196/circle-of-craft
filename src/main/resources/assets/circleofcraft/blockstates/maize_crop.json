@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "has_corn=false": {"model": "circleofcraft:block/maize_stalk"},
+    "has_corn=true": {"model": "circleofcraft:block/maize_corn"}
+  }
+}

@@ -1,4 +1,0 @@
-{
-  "parent": "thelionking:block/bug_trap_closing_face",
-  "textures": { "planks": "minecraft:block/birch_planks" }
-}

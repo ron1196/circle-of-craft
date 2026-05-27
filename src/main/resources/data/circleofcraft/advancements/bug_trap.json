@@ -1,0 +1,19 @@
+{
+  "parent": "circleofcraft:hakuna_matata",
+  "display": {
+    "icon": { "item": "circleofcraft:bug_trap" },
+    "title": { "translate": "advancement.circleofcraft.bug_trap.title" },
+    "description": { "translate": "advancement.circleofcraft.bug_trap.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["circleofcraft:bug_trap"]}]
+      }
+    }
+  }
+}

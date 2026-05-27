@@ -1,0 +1,1 @@
+{"type":"minecraft:block","pools":[{"rolls":1,"entries":[{"type":"minecraft:item","name":"circleofcraft:rug_light_blue"}],"conditions":[{"condition":"minecraft:survives_explosion"}]}]}

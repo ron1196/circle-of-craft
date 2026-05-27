@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "circleofcraft:block/mounted_shooter" },
+    "facing=south": { "model": "circleofcraft:block/mounted_shooter", "y": 180 },
+    "facing=west": { "model": "circleofcraft:block/mounted_shooter", "y": 270 },
+    "facing=east": { "model": "circleofcraft:block/mounted_shooter", "y": 90 }
+  }
+}

@@ -1,5 +1,0 @@
-{
-  "type": "thelionking:grinding",
-  "ingredient": { "item": "thelionking:hyena_bone" },
-  "result": { "item": "thelionking:hyena_bone_shard" }
-}

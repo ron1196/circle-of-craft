@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      { "model": "circleofcraft:block/lily_violet", "y": 0 },
+      { "model": "circleofcraft:block/lily_violet", "y": 90 },
+      { "model": "circleofcraft:block/lily_violet", "y": 180 },
+      { "model": "circleofcraft:block/lily_violet", "y": 270 }
+    ]
+  }
+}

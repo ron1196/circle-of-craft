@@ -1,5 +1,0 @@
-{
-  "type": "thelionking:grinding",
-  "ingredient": { "item": "thelionking:termite_thrown" },
-  "result": { "item": "thelionking:termite_dust" }
-}

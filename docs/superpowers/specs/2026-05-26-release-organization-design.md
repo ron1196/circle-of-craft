@@ -17,7 +17,7 @@ Key decisions, summarised so this spec is self-contained:
 - **No `main` branch.** Branches are named `mc/<mcver>` (e.g. `mc/1.20.1`). The branch name is the Minecraft version it targets.
 - **Loose SemVer** for mod version (`MAJOR.MINOR.PATCH`), **counted independently on each branch**.
 - **Tag shape** `v<modver>-mc<mcver>` (e.g. `v1.2.0-mc1.20.1`). The `-mc<mcver>` suffix is required because git tags share a single namespace across the repo — without it, the second branch to reach `v1.2.0` would collide with the first.
-- **JAR filename** `thelionking-<modver>-mc<mcver>.jar`. Mod version comes from the tag (via a `MOD_VERSION` env var); Minecraft version comes from the branch's `gradle.properties`.
+- **JAR filename** `circleofcraft-<modver>-mc<mcver>.jar`. Mod version comes from the tag (via a `MOD_VERSION` env var); Minecraft version comes from the branch's `gradle.properties`.
 - **Tag-triggered release.** Pushing a `v*-mc*` tag fires a GitHub Actions workflow that builds, then publishes to GitHub Releases + CurseForge + Modrinth in one run.
 - **Changelog** auto-generated from PR titles merged into the branch since the previous tag on the same branch. No `CHANGELOG.md`.
 - **Cross-branch fixes** propagate by cherry-pick. Branches are not required to stay in sync.
@@ -44,7 +44,7 @@ These are the discrete pieces of work needed to land this. The plan that follows
 
 - `build.gradle` reads `project.version` from a `MOD_VERSION` env var with a sensible local-dev default (e.g. `0.0.0-dev`).
 - Minecraft version stays a single source of truth on the branch. Currently it's inlined in `build.gradle`'s `processResources` block — move it (and `forge_version` / version ranges) into `gradle.properties` so the workflow can read it without parsing Groovy.
-- JAR base name set to `thelionking-<modver>-mc<mcver>.jar`. Verify with a local `./gradlew build` that the produced artifact has the expected filename when `MOD_VERSION` is set.
+- JAR base name set to `circleofcraft-<modver>-mc<mcver>.jar`. Verify with a local `./gradlew build` that the produced artifact has the expected filename when `MOD_VERSION` is set.
 - `mods.toml` keeps reading `mod_version` from the existing token replacement; no functional change for users.
 
 ### 3. Release workflow `.github/workflows/release.yml`
@@ -86,7 +86,7 @@ Prerequisite: the CurseForge and Modrinth projects must exist. If they don't yet
 The spec is fulfilled when **all** of the following hold:
 
 1. `git branch --show-current` on a clean clone returns `mc/1.20.1`. There is no `main` branch on the remote.
-2. `./gradlew build` with `MOD_VERSION=1.0.0` produces a `thelionking-1.0.0-mc1.20.1.jar`.
+2. `./gradlew build` with `MOD_VERSION=1.0.0` produces a `circleofcraft-1.0.0-mc1.20.1.jar`.
 3. Pushing a tag `vX.Y.Z-mc1.20.1` from `mc/1.20.1` triggers the release workflow, which publishes to GitHub Releases + CurseForge + Modrinth, all with matching metadata and identical release notes.
 4. Pushing a tag with a mismatched `-mc<mcver>` suffix (e.g. `vX.Y.Z-mc1.21.1` from `mc/1.20.1`) causes the workflow to fail at the validation step without uploading anything.
 5. `docs/RELEASES.md` and the `CLAUDE.md` References entry are committed.

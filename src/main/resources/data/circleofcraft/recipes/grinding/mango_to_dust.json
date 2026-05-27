@@ -1,0 +1,5 @@
+{
+  "type": "circleofcraft:grinding",
+  "ingredient": { "item": "circleofcraft:mango" },
+  "result": { "item": "circleofcraft:mango_dust" }
+}

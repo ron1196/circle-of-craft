@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:tree",
+  "config": {
+    "trunk_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": { "Name": "circleofcraft:rainforest_log", "Properties": { "axis": "y" } }
+    },
+    "foliage_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": { "Name": "circleofcraft:rainforest_leaves", "Properties": { "distance": "7", "persistent": "false", "waterlogged": "false" } }
+    },
+    "trunk_placer": {
+      "type": "minecraft:mega_jungle_trunk_placer",
+      "base_height": 25,
+      "height_rand_a": 15,
+      "height_rand_b": 10
+    },
+    "foliage_placer": {
+      "type": "minecraft:jungle_foliage_placer",
+      "radius": 2,
+      "offset": 0,
+      "height": 4
+    },
+    "minimum_size": {
+      "type": "minecraft:two_layers_feature_size",
+      "limit": 1,
+      "lower_size": 1,
+      "upper_size": 2
+    },
+    "decorators": [
+      { "type": "minecraft:trunk_vine" },
+      { "type": "minecraft:leave_vine", "probability": 0.25 }
+    ],
+    "ignore_vines": false,
+    "force_dirt": true,
+    "dirt_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": { "Name": "minecraft:dirt" }
+    }
+  }
+}

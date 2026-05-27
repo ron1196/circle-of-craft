@@ -1,0 +1,6 @@
+{
+  "parent": "circleofcraft:block/vase_filled",
+  "textures": {
+    "plant": "circleofcraft:block/white_flower"
+  }
+}

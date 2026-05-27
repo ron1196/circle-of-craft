@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="banner.jpg" alt="The Lion King Mod" />
+  <img src="src/main/resources/banner/banner.jpg" alt="Circle of Craft" />
 </p>
 
-<h1 align="center">The Lion King Mod</h1>
+<h1 align="center">Circle of Craft</h1>
 
 <p align="center">
   <b>The Lion King meets Minecraft.</b><br/>
@@ -59,13 +59,13 @@ A ground-up port of the classic Lion King Mod (originally for Minecraft 1.4–1.
 ## Installation
 
 1. Install [Forge for Minecraft 1.20.1](https://files.minecraftforge.net/net/minecraftforge/forge/index_1.20.1.html).
-2. Download the latest mod JAR from [Releases](https://github.com/ron1196/TheLionKing/releases).
+2. Download the latest mod JAR from [Releases](https://github.com/ron1196/circle-of-craft/releases).
 3. Place the JAR in your `.minecraft/mods/` folder.
 4. Launch Minecraft with the Forge profile.
 
 ## Known Limitations
 
-- **Dart Quiver** — not available in v1; being reworked for a future release. Tracked in [issue #78](https://github.com/ron1196/TheLionKing/issues/78).
+- **Dart Quiver** — not available in v1; being reworked for a future release. Tracked in [issue #78](https://github.com/ron1196/circle-of-craft/issues/78).
 
 ## Screenshots
 
@@ -73,8 +73,8 @@ A ground-up port of the classic Lion King Mod (originally for Minecraft 1.4–1.
 
 ## Credits
 
+- **Circle of Craft** by [ron1196](https://github.com/ron1196).
 - **Original mod** by [redrosewarrior1](https://www.curseforge.com/minecraft/mc-mods/the-lion-king-mod) — the classic Lion King Mod for Minecraft 1.4–1.6.
-- **Forge 1.20.1 port** by [ron1196](https://github.com/ron1196).
 
 ## License
 

@@ -1,11 +1,11 @@
 {
   "replace": false,
   "values": [
-    "thelionking:pride_acacia_planks",
-    "thelionking:rainforest_planks",
-    "thelionking:mango_planks",
-    "thelionking:passion_planks",
-    "thelionking:banana_planks",
-    "thelionking:deadwood_planks"
+    "circleofcraft:pride_acacia_planks",
+    "circleofcraft:rainforest_planks",
+    "circleofcraft:mango_planks",
+    "circleofcraft:passion_planks",
+    "circleofcraft:banana_planks",
+    "circleofcraft:deadwood_planks"
   ]
 }

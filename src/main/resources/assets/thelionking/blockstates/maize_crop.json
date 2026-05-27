@@ -1,6 +1,0 @@
-{
-  "variants": {
-    "has_corn=false": {"model": "thelionking:block/maize_stalk"},
-    "has_corn=true": {"model": "thelionking:block/maize_corn"}
-  }
-}

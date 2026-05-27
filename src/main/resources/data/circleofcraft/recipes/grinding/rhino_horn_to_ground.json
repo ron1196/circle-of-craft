@@ -1,0 +1,5 @@
+{
+  "type": "circleofcraft:grinding",
+  "ingredient": { "item": "circleofcraft:rhino_horn" },
+  "result": { "item": "circleofcraft:ground_rhino_horn" }
+}

@@ -22,17 +22,17 @@
 ## File Structure
 
 **Create:**
-- `src/main/resources/data/thelionking/recipes/grinding/banana_leaves_to_dye.json` — prerequisite recipe.
-- `src/main/resources/data/thelionking/recipes/grinding/lily_white_to_dye.json` — prerequisite recipe.
-- `src/main/resources/data/thelionking/recipes/grinding/lily_violet_to_dye.json` — prerequisite recipe.
-- `src/main/resources/data/thelionking/recipes/grinding/lily_red_to_dye.json` — prerequisite recipe.
-- `src/main/java/io/github/ron1196/thelionking/compat/jei/GrindingBowlRecipeCategory.java` — JEI recipe category, renders one row per recipe.
-- `src/main/java/io/github/ron1196/thelionking/compat/jei/LionKingJeiPlugin.java` — `@JeiPlugin` discovered by JEI; registers the category, the recipes, and the catalyst.
+- `src/main/resources/data/circleofcraft/recipes/grinding/banana_leaves_to_dye.json` — prerequisite recipe.
+- `src/main/resources/data/circleofcraft/recipes/grinding/lily_white_to_dye.json` — prerequisite recipe.
+- `src/main/resources/data/circleofcraft/recipes/grinding/lily_violet_to_dye.json` — prerequisite recipe.
+- `src/main/resources/data/circleofcraft/recipes/grinding/lily_red_to_dye.json` — prerequisite recipe.
+- `src/main/java/io/github/ron1196/circleofcraft/compat/jei/GrindingBowlRecipeCategory.java` — JEI recipe category, renders one row per recipe.
+- `src/main/java/io/github/ron1196/circleofcraft/compat/jei/LionKingJeiPlugin.java` — `@JeiPlugin` discovered by JEI; registers the category, the recipes, and the catalyst.
 
 **Modify:**
 - `build.gradle` — add BlameJared maven repo + JEI `compileOnly`/`runtimeOnly` deps.
-- `src/main/resources/META-INF/mods.toml` — append `[[dependencies.thelionking]]` block for JEI (`mandatory=false`).
-- `src/main/resources/assets/thelionking/lang/en_us.json` — add one JEI category-title key.
+- `src/main/resources/META-INF/mods.toml` — append `[[dependencies.circleofcraft]]` block for JEI (`mandatory=false`).
+- `src/main/resources/assets/circleofcraft/lang/en_us.json` — add one JEI category-title key.
 
 **No other files** are touched. The plugin is hard-isolated; nothing outside `compat/jei/` imports JEI classes.
 
@@ -43,10 +43,10 @@
 Tracked separately in the spec as a prerequisite. Bundled here for ergonomic single-PR delivery; gets its own commit so it can be split out if you prefer.
 
 **Files:**
-- Create: `src/main/resources/data/thelionking/recipes/grinding/banana_leaves_to_dye.json`
-- Create: `src/main/resources/data/thelionking/recipes/grinding/lily_white_to_dye.json`
-- Create: `src/main/resources/data/thelionking/recipes/grinding/lily_violet_to_dye.json`
-- Create: `src/main/resources/data/thelionking/recipes/grinding/lily_red_to_dye.json`
+- Create: `src/main/resources/data/circleofcraft/recipes/grinding/banana_leaves_to_dye.json`
+- Create: `src/main/resources/data/circleofcraft/recipes/grinding/lily_white_to_dye.json`
+- Create: `src/main/resources/data/circleofcraft/recipes/grinding/lily_violet_to_dye.json`
+- Create: `src/main/resources/data/circleofcraft/recipes/grinding/lily_red_to_dye.json`
 
 **Color mapping** (follows the existing convention: leaves → `green_dye`, lily named by its display color):
 
@@ -59,48 +59,48 @@ Tracked separately in the spec as a prerequisite. Bundled here for ergonomic sin
 
 - [ ] **Step 1: Create `banana_leaves_to_dye.json`**
 
-Path: `src/main/resources/data/thelionking/recipes/grinding/banana_leaves_to_dye.json`
+Path: `src/main/resources/data/circleofcraft/recipes/grinding/banana_leaves_to_dye.json`
 
 ```json
 {
-  "type": "thelionking:grinding",
-  "ingredient": { "item": "thelionking:banana_leaves" },
+  "type": "circleofcraft:grinding",
+  "ingredient": { "item": "circleofcraft:banana_leaves" },
   "result": { "item": "minecraft:green_dye" }
 }
 ```
 
 - [ ] **Step 2: Create `lily_white_to_dye.json`**
 
-Path: `src/main/resources/data/thelionking/recipes/grinding/lily_white_to_dye.json`
+Path: `src/main/resources/data/circleofcraft/recipes/grinding/lily_white_to_dye.json`
 
 ```json
 {
-  "type": "thelionking:grinding",
-  "ingredient": { "item": "thelionking:lily_white" },
+  "type": "circleofcraft:grinding",
+  "ingredient": { "item": "circleofcraft:lily_white" },
   "result": { "item": "minecraft:white_dye" }
 }
 ```
 
 - [ ] **Step 3: Create `lily_violet_to_dye.json`**
 
-Path: `src/main/resources/data/thelionking/recipes/grinding/lily_violet_to_dye.json`
+Path: `src/main/resources/data/circleofcraft/recipes/grinding/lily_violet_to_dye.json`
 
 ```json
 {
-  "type": "thelionking:grinding",
-  "ingredient": { "item": "thelionking:lily_violet" },
+  "type": "circleofcraft:grinding",
+  "ingredient": { "item": "circleofcraft:lily_violet" },
   "result": { "item": "minecraft:purple_dye" }
 }
 ```
 
 - [ ] **Step 4: Create `lily_red_to_dye.json`**
 
-Path: `src/main/resources/data/thelionking/recipes/grinding/lily_red_to_dye.json`
+Path: `src/main/resources/data/circleofcraft/recipes/grinding/lily_red_to_dye.json`
 
 ```json
 {
-  "type": "thelionking:grinding",
-  "ingredient": { "item": "thelionking:lily_red" },
+  "type": "circleofcraft:grinding",
+  "ingredient": { "item": "circleofcraft:lily_red" },
   "result": { "item": "minecraft:red_dye" }
 }
 ```
@@ -117,10 +117,10 @@ Expected: `BUILD SUCCESSFUL`. Recipes are loaded at world-load, so a green compi
 - [ ] **Step 6: Commit**
 
 ```bash
-git add src/main/resources/data/thelionking/recipes/grinding/banana_leaves_to_dye.json \
-        src/main/resources/data/thelionking/recipes/grinding/lily_white_to_dye.json \
-        src/main/resources/data/thelionking/recipes/grinding/lily_violet_to_dye.json \
-        src/main/resources/data/thelionking/recipes/grinding/lily_red_to_dye.json
+git add src/main/resources/data/circleofcraft/recipes/grinding/banana_leaves_to_dye.json \
+        src/main/resources/data/circleofcraft/recipes/grinding/lily_white_to_dye.json \
+        src/main/resources/data/circleofcraft/recipes/grinding/lily_violet_to_dye.json \
+        src/main/resources/data/circleofcraft/recipes/grinding/lily_red_to_dye.json
 git commit -m "Port four Grinding Bowl recipes from old mod (banana leaves + lilies)"
 ```
 
@@ -206,7 +206,7 @@ At the end of the file (after the `geckolib` dependency block), append:
 
 ```toml
 
-[[dependencies.thelionking]]
+[[dependencies.circleofcraft]]
 modId = "jei"
 mandatory = false
 versionRange = "[15,)"
@@ -234,14 +234,14 @@ git commit -m "Declare JEI as a soft dependency in mods.toml"
 ## Task 4: Add the JEI category title to `en_us.json`
 
 **Files:**
-- Modify: `src/main/resources/assets/thelionking/lang/en_us.json`
+- Modify: `src/main/resources/assets/circleofcraft/lang/en_us.json`
 
 - [ ] **Step 1: Add the lang key**
 
-Open `src/main/resources/assets/thelionking/lang/en_us.json`. Find an appropriate place — alphabetical insertion under existing `jei.*` keys if any exist, otherwise insert near other UI-text keys (look for keys starting with `gui.` or `screen.`). Insert:
+Open `src/main/resources/assets/circleofcraft/lang/en_us.json`. Find an appropriate place — alphabetical insertion under existing `jei.*` keys if any exist, otherwise insert near other UI-text keys (look for keys starting with `gui.` or `screen.`). Insert:
 
 ```json
-"jei.thelionking.category.grinding_bowl": "Grinding Bowl",
+"jei.circleofcraft.category.grinding_bowl": "Grinding Bowl",
 ```
 
 If the previous line ended without a comma (i.e. you're inserting at end-of-object), make sure to add the comma to the line above and leave your new line without a trailing comma.
@@ -249,7 +249,7 @@ If the previous line ended without a comma (i.e. you're inserting at end-of-obje
 - [ ] **Step 2: Validate JSON**
 
 ```bash
-python3 -c "import json; json.load(open('src/main/resources/assets/thelionking/lang/en_us.json'))" && echo "JSON OK"
+python3 -c "import json; json.load(open('src/main/resources/assets/circleofcraft/lang/en_us.json'))" && echo "JSON OK"
 ```
 
 Expected output: `JSON OK`. If you see a `JSONDecodeError`, fix the trailing-comma situation.
@@ -257,7 +257,7 @@ Expected output: `JSON OK`. If you see a `JSONDecodeError`, fix the trailing-com
 - [ ] **Step 3: Commit**
 
 ```bash
-git add src/main/resources/assets/thelionking/lang/en_us.json
+git add src/main/resources/assets/circleofcraft/lang/en_us.json
 git commit -m "Add lang key for JEI Grinding Bowl category title"
 ```
 
@@ -268,17 +268,17 @@ git commit -m "Add lang key for JEI Grinding Bowl category title"
 The category class is loaded only by JEI's plugin scanner — Forge mod-loading never touches it.
 
 **Files:**
-- Create: `src/main/java/io/github/ron1196/thelionking/compat/jei/GrindingBowlRecipeCategory.java`
+- Create: `src/main/java/io/github/ron1196/circleofcraft/compat/jei/GrindingBowlRecipeCategory.java`
 
 - [ ] **Step 1: Write the category class**
 
-Path: `src/main/java/io/github/ron1196/thelionking/compat/jei/GrindingBowlRecipeCategory.java`
+Path: `src/main/java/io/github/ron1196/circleofcraft/compat/jei/GrindingBowlRecipeCategory.java`
 
 ```java
-package io.github.ron1196.thelionking.compat.jei;
+package io.github.ron1196.circleofcraft.compat.jei;
 
-import io.github.ron1196.thelionking.recipe.GrindingBowlRecipe;
-import io.github.ron1196.thelionking.registry.LionKingItems;
+import io.github.ron1196.circleofcraft.recipe.GrindingBowlRecipe;
+import io.github.ron1196.circleofcraft.registry.LionKingItems;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -297,7 +297,7 @@ import org.jetbrains.annotations.NotNull;
 public class GrindingBowlRecipeCategory implements IRecipeCategory<GrindingBowlRecipe> {
 
     public static final RecipeType<GrindingBowlRecipe> RECIPE_TYPE =
-            RecipeType.create("thelionking", "grinding_bowl", GrindingBowlRecipe.class);
+            RecipeType.create("circleofcraft", "grinding_bowl", GrindingBowlRecipe.class);
 
     private static final ResourceLocation FURNACE_TEXTURE =
             new ResourceLocation("minecraft", "textures/gui/container/furnace.png");
@@ -326,7 +326,7 @@ public class GrindingBowlRecipeCategory implements IRecipeCategory<GrindingBowlR
 
     @Override
     public @NotNull Component getTitle() {
-        return Component.translatable("jei.thelionking.category.grinding_bowl");
+        return Component.translatable("jei.circleofcraft.category.grinding_bowl");
     }
 
     @Override
@@ -387,7 +387,7 @@ Expected: `BUILD SUCCESSFUL`. If you see "cannot find symbol" for `IRecipeSlotsV
 - [ ] **Step 4: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/compat/jei/GrindingBowlRecipeCategory.java
+git add src/main/java/io/github/ron1196/circleofcraft/compat/jei/GrindingBowlRecipeCategory.java
 git commit -m "Add GrindingBowlRecipeCategory for JEI"
 ```
 
@@ -398,18 +398,18 @@ git commit -m "Add GrindingBowlRecipeCategory for JEI"
 The `@JeiPlugin`-annotated class. JEI scans the classpath for this annotation at startup; the class is never loaded when JEI is absent.
 
 **Files:**
-- Create: `src/main/java/io/github/ron1196/thelionking/compat/jei/LionKingJeiPlugin.java`
+- Create: `src/main/java/io/github/ron1196/circleofcraft/compat/jei/LionKingJeiPlugin.java`
 
 - [ ] **Step 1: Write the plugin class**
 
-Path: `src/main/java/io/github/ron1196/thelionking/compat/jei/LionKingJeiPlugin.java`
+Path: `src/main/java/io/github/ron1196/circleofcraft/compat/jei/LionKingJeiPlugin.java`
 
 ```java
-package io.github.ron1196.thelionking.compat.jei;
+package io.github.ron1196.circleofcraft.compat.jei;
 
-import io.github.ron1196.thelionking.recipe.GrindingBowlRecipe;
-import io.github.ron1196.thelionking.registry.LionKingItems;
-import io.github.ron1196.thelionking.registry.RecipeTypes;
+import io.github.ron1196.circleofcraft.recipe.GrindingBowlRecipe;
+import io.github.ron1196.circleofcraft.registry.LionKingItems;
+import io.github.ron1196.circleofcraft.registry.RecipeTypes;
 import java.util.List;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -426,7 +426,7 @@ import org.jetbrains.annotations.NotNull;
 @JeiPlugin
 public class LionKingJeiPlugin implements IModPlugin {
 
-    private static final ResourceLocation ID = new ResourceLocation("thelionking", "jei_plugin");
+    private static final ResourceLocation ID = new ResourceLocation("circleofcraft", "jei_plugin");
 
     @Override
     public @NotNull ResourceLocation getPluginUid() {
@@ -486,7 +486,7 @@ Expected: `BUILD SUCCESSFUL`.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/compat/jei/LionKingJeiPlugin.java
+git add src/main/java/io/github/ron1196/circleofcraft/compat/jei/LionKingJeiPlugin.java
 git commit -m "Add LionKingJeiPlugin registering Grinding Bowl recipes + catalyst"
 ```
 
@@ -518,13 +518,13 @@ Expected: category exists, its icon is the Grinding Bowl block item.
 
 Click the Grinding Bowl category. JEI opens its recipe-list view.
 
-Expected: every recipe under `data/thelionking/recipes/grinding/` renders, one per row, with:
+Expected: every recipe under `data/circleofcraft/recipes/grinding/` renders, one per row, with:
 - Left slot = the ingredient item
 - Static arrow in the middle
 - Right slot = the result item
 - Hover tooltips on both slots work
 
-Count check: `ls src/main/resources/data/thelionking/recipes/grinding/ | wc -l` should match the number of rows shown in JEI (29 after Task 1 lands, or whatever the live count is).
+Count check: `ls src/main/resources/data/circleofcraft/recipes/grinding/ | wc -l` should match the number of rows shown in JEI (29 after Task 1 lands, or whatever the live count is).
 
 If a recipe is missing from JEI but its JSON exists, the JSON probably failed datapack parsing — check the log for `Failed to parse recipe`.
 
@@ -570,7 +570,7 @@ Leave the `compileOnly` line alone — code still has to compile.
 
 Expected:
 - Minecraft reaches the main menu without crashing.
-- In the "Mods" screen, `thelionking` is listed and shows no error icon.
+- In the "Mods" screen, `circleofcraft` is listed and shows no error icon.
 - JEI is not listed.
 - No stack trace mentioning `mezz.jei.*` in the log (because `@JeiPlugin` is never scanned, so `LionKingJeiPlugin` and `GrindingBowlRecipeCategory` are never loaded).
 

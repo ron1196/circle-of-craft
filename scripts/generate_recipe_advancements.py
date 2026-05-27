@@ -15,13 +15,13 @@ import json
 from pathlib import Path
 from typing import Any
 
-MOD_ID = "thelionking"
+MOD_ID = "circleofcraft"
 ROOT = Path(__file__).resolve().parent.parent
 RECIPES_DIR = ROOT / "src/main/resources/data" / MOD_ID / "recipes"
 ADV_DIR = ROOT / "src/main/resources/data" / MOD_ID / "advancements/recipes"
 
 # The vanilla recipe book only displays these recipe types. Custom types
-# (e.g. thelionking:grinding) have their own GUIs and don't need unlock advs.
+# (e.g. circleofcraft:grinding) have their own GUIs and don't need unlock advs.
 VANILLA_RECIPE_BOOK_TYPES = frozenset({
     "minecraft:crafting_shaped",
     "minecraft:crafting_shapeless",

@@ -1,0 +1,17 @@
+{
+  "parent": "circleofcraft:hakuna_matata",
+  "display": {
+    "icon": { "item": "circleofcraft:crystal" },
+    "title": { "translate": "advancement.circleofcraft.hakuna_crystal.title" },
+    "description": { "translate": "advancement.circleofcraft.hakuna_crystal.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "circleofcraft:enter_upendi",
+      "conditions": {}
+    }
+  }
+}

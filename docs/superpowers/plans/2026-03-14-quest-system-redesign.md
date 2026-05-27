@@ -58,12 +58,12 @@
 ### Task 1: Create ClaimableReward record
 
 **Files:**
-- Create: `src/main/java/io/github/ron1196/thelionking/quest/ClaimableReward.java`
+- Create: `src/main/java/io/github/ron1196/circleofcraft/quest/ClaimableReward.java`
 
 - [ ] **Step 1: Create the record**
 
 ```java
-package io.github.ron1196.thelionking.quest;
+package io.github.ron1196.circleofcraft.quest;
 
 import net.minecraft.world.item.Item;
 import java.util.function.Supplier;
@@ -82,21 +82,21 @@ Expected: BUILD SUCCESSFUL
 - [ ] **Step 3: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/quest/ClaimableReward.java
+git add src/main/java/io/github/ron1196/circleofcraft/quest/ClaimableReward.java
 git commit -m "feat(quest): add ClaimableReward record for per-player rewards"
 ```
 
 ### Task 2: Simplify LKQuestStage — remove ItemReward
 
 **Files:**
-- Modify: `src/main/java/io/github/ron1196/thelionking/quest/LKQuestStage.java`
+- Modify: `src/main/java/io/github/ron1196/circleofcraft/quest/LKQuestStage.java`
 
 - [ ] **Step 1: Remove ItemReward and rewards from LKQuestStage**
 
 Replace the entire file content with:
 
 ```java
-package io.github.ron1196.thelionking.quest;
+package io.github.ron1196.circleofcraft.quest;
 
 import net.minecraft.world.item.Item;
 import java.util.List;
@@ -133,14 +133,14 @@ Expected: Compile errors in LKQuestRegistry.java (ItemReward references)
 - [ ] **Step 3: Commit (partial — will fix LKQuestRegistry in next task)**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/quest/LKQuestStage.java
+git add src/main/java/io/github/ron1196/circleofcraft/quest/LKQuestStage.java
 git commit -m "refactor(quest): remove ItemReward from LKQuestStage"
 ```
 
 ### Task 3: Update LKQuest — add claimableRewards
 
 **Files:**
-- Modify: `src/main/java/io/github/ron1196/thelionking/quest/LKQuest.java`
+- Modify: `src/main/java/io/github/ron1196/circleofcraft/quest/LKQuest.java`
 
 - [ ] **Step 1: Add claimableRewards field and builder method**
 
@@ -190,14 +190,14 @@ export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home 
 - [ ] **Step 3: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/quest/LKQuest.java
+git add src/main/java/io/github/ron1196/circleofcraft/quest/LKQuest.java
 git commit -m "feat(quest): add claimableRewards to LKQuest builder"
 ```
 
 ### Task 4: Update LKQuestRegistry — move rewards to claimableReward()
 
 **Files:**
-- Modify: `src/main/java/io/github/ron1196/thelionking/quest/LKQuestRegistry.java`
+- Modify: `src/main/java/io/github/ron1196/circleofcraft/quest/LKQuestRegistry.java`
 
 - [ ] **Step 1: Update buildRafikiQuest() — remove ItemReward from stages, add claimableReward()**
 
@@ -240,14 +240,14 @@ Expected: BUILD SUCCESSFUL
 - [ ] **Step 4: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/quest/LKQuestRegistry.java
+git add src/main/java/io/github/ron1196/circleofcraft/quest/LKQuestRegistry.java
 git commit -m "refactor(quest): move rewards from stages to claimableRewards"
 ```
 
 ### Task 5: Update LKQuestManager — remove reward giving, handle null triggers
 
 **Files:**
-- Modify: `src/main/java/io/github/ron1196/thelionking/quest/LKQuestManager.java`
+- Modify: `src/main/java/io/github/ron1196/circleofcraft/quest/LKQuestManager.java`
 
 - [ ] **Step 1: Update tryAdvance() — handle null triggers, remove reward giving**
 
@@ -277,19 +277,19 @@ Expected: BUILD SUCCESSFUL
 - [ ] **Step 3: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/quest/LKQuestManager.java
+git add src/main/java/io/github/ron1196/circleofcraft/quest/LKQuestManager.java
 git commit -m "refactor(quest): remove reward giving from tryAdvance, handle null triggers"
 ```
 
 ### Task 6: Create AnimalQuestEntry record
 
 **Files:**
-- Create: `src/main/java/io/github/ron1196/thelionking/quest/AnimalQuestEntry.java`
+- Create: `src/main/java/io/github/ron1196/circleofcraft/quest/AnimalQuestEntry.java`
 
 - [ ] **Step 1: Create the record**
 
 ```java
-package io.github.ron1196.thelionking.quest;
+package io.github.ron1196.circleofcraft.quest;
 
 import net.minecraft.world.item.Item;
 
@@ -307,7 +307,7 @@ Expected: BUILD SUCCESSFUL
 - [ ] **Step 3: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/quest/AnimalQuestEntry.java
+git add src/main/java/io/github/ron1196/circleofcraft/quest/AnimalQuestEntry.java
 git commit -m "feat(quest): add AnimalQuestEntry record for per-player animal quests"
 ```
 
@@ -318,12 +318,12 @@ git commit -m "feat(quest): add AnimalQuestEntry record for per-player animal qu
 ### Task 7: Create LKPlayerData capability class
 
 **Files:**
-- Create: `src/main/java/io/github/ron1196/thelionking/data/LKPlayerData.java`
+- Create: `src/main/java/io/github/ron1196/circleofcraft/data/LKPlayerData.java`
 
 - [ ] **Step 1: Create the capability class**
 
 ```java
-package io.github.ron1196.thelionking.data;
+package io.github.ron1196.circleofcraft.data;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -432,21 +432,21 @@ Expected: BUILD SUCCESSFUL
 - [ ] **Step 3: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/data/LKPlayerData.java
+git add src/main/java/io/github/ron1196/circleofcraft/data/LKPlayerData.java
 git commit -m "feat(data): add LKPlayerData capability class"
 ```
 
 ### Task 8: Create LKPlayerDataProvider
 
 **Files:**
-- Create: `src/main/java/io/github/ron1196/thelionking/data/LKPlayerDataProvider.java`
+- Create: `src/main/java/io/github/ron1196/circleofcraft/data/LKPlayerDataProvider.java`
 
 - [ ] **Step 1: Create the capability provider**
 
 ```java
-package io.github.ron1196.thelionking.data;
+package io.github.ron1196.circleofcraft.data;
 
-import io.github.ron1196.thelionking.TheLionKingMod;
+import io.github.ron1196.circleofcraft.TheLionKingMod;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -524,15 +524,15 @@ Expected: BUILD SUCCESSFUL
 - [ ] **Step 3: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/data/LKPlayerDataProvider.java
+git add src/main/java/io/github/ron1196/circleofcraft/data/LKPlayerDataProvider.java
 git commit -m "feat(data): add LKPlayerDataProvider with attach and clone events"
 ```
 
 ### Task 9: Rename LKLevelData → LKWorldData
 
 **Files:**
-- Delete: `src/main/java/io/github/ron1196/thelionking/data/LKLevelData.java`
-- Create: `src/main/java/io/github/ron1196/thelionking/data/LKWorldData.java`
+- Delete: `src/main/java/io/github/ron1196/circleofcraft/data/LKLevelData.java`
+- Create: `src/main/java/io/github/ron1196/circleofcraft/data/LKWorldData.java`
 - Modify: All files that import `LKLevelData`
 
 - [ ] **Step 1: Create LKWorldData.java**
@@ -540,10 +540,10 @@ git commit -m "feat(data): add LKPlayerDataProvider with attach and clone events
 Copy current `LKLevelData.java` content, rename class to `LKWorldData`. Remove `receivedQuestBook`, `homePortalX/Y/Z`, `simbas` map, and `hasSimba()` method. Keep `defeatedScar`, `ziraStage`, `pumbaaStage`, `outlandersHostile`, and `questManager`.
 
 ```java
-package io.github.ron1196.thelionking.data;
+package io.github.ron1196.circleofcraft.data;
 
-import io.github.ron1196.thelionking.TheLionKingMod;
-import io.github.ron1196.thelionking.quest.LKQuestManager;
+import io.github.ron1196.circleofcraft.TheLionKingMod;
+import io.github.ron1196.circleofcraft.quest.LKQuestManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -602,7 +602,7 @@ public class LKWorldData extends SavedData {
 - [ ] **Step 2: Delete LKLevelData.java**
 
 ```bash
-rm src/main/java/io/github/ron1196/thelionking/data/LKLevelData.java
+rm src/main/java/io/github/ron1196/circleofcraft/data/LKLevelData.java
 ```
 
 - [ ] **Step 3: Find and replace all LKLevelData references**
@@ -640,14 +640,14 @@ git commit -m "refactor(data): rename LKLevelData to LKWorldData, remove per-pla
 ### Task 10: Create PlayerDataSyncPacket
 
 **Files:**
-- Create: `src/main/java/io/github/ron1196/thelionking/network/PlayerDataSyncPacket.java`
+- Create: `src/main/java/io/github/ron1196/circleofcraft/network/PlayerDataSyncPacket.java`
 
 - [ ] **Step 1: Create the packet**
 
 ```java
-package io.github.ron1196.thelionking.network;
+package io.github.ron1196.circleofcraft.network;
 
-import io.github.ron1196.thelionking.data.PlayerData;
+import io.github.ron1196.circleofcraft.data.PlayerData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -721,23 +721,23 @@ This is expected. We'll fix ClientWorldState in the next task.
 - [ ] **Step 3: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/network/PlayerDataSyncPacket.java
+git add src/main/java/io/github/ron1196/circleofcraft/network/PlayerDataSyncPacket.java
 git commit -m "feat(network): add PlayerDataSyncPacket for per-player data sync"
 ```
 
 ### Task 11: Update ClientWorldState — add player data fields
 
 **Files:**
-- Modify: `src/main/java/io/github/ron1196/thelionking/network/ClientWorldState.java`
+- Modify: `src/main/java/io/github/ron1196/circleofcraft/network/ClientWorldState.java`
 
 - [ ] **Step 1: Add per-player fields**
 
 Replace entire file with:
 
 ```java
-package io.github.ron1196.thelionking.network;
+package io.github.ron1196.circleofcraft.network;
 
-import io.github.ron1196.thelionking.quest.LKQuestState;
+import io.github.ron1196.circleofcraft.quest.LKQuestState;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -798,27 +798,27 @@ Expected: BUILD SUCCESSFUL (or minor errors from LoginSyncPacket referencing old
 - [ ] **Step 3: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/network/ClientWorldState.java
+git add src/main/java/io/github/ron1196/circleofcraft/network/ClientWorldState.java
 git commit -m "refactor(network): add per-player fields to ClientWorldState"
 ```
 
 ### Task 12: Update LoginSyncPacket — include player data, remove world portal
 
 **Files:**
-- Modify: `src/main/java/io/github/ron1196/thelionking/network/LoginSyncPacket.java`
+- Modify: `src/main/java/io/github/ron1196/circleofcraft/network/LoginSyncPacket.java`
 
 - [ ] **Step 1: Rewrite LoginSyncPacket**
 
 Replace entire file. The packet now takes `LKWorldData` and `LKPlayerData` as constructor arguments. Encoding order: world flags, quest states, player data.
 
 ```java
-package io.github.ron1196.thelionking.network;
+package io.github.ron1196.circleofcraft.network;
 
-import io.github.ron1196.thelionking.data.PlayerData;
-import io.github.ron1196.thelionking.data.WorldData;
-import io.github.ron1196.thelionking.quest.LKQuest;
-import io.github.ron1196.thelionking.quest.LKQuestRegistry;
-import io.github.ron1196.thelionking.quest.LKQuestState;
+import io.github.ron1196.circleofcraft.data.PlayerData;
+import io.github.ron1196.circleofcraft.data.WorldData;
+import io.github.ron1196.circleofcraft.quest.LKQuest;
+import io.github.ron1196.circleofcraft.quest.LKQuestRegistry;
+import io.github.ron1196.circleofcraft.quest.LKQuestState;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -957,14 +957,14 @@ Expected: Error in LKForgeEvents.java — `LoginSyncPacket(LKWorldData)` no long
 - [ ] **Step 3: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/network/LoginSyncPacket.java
+git add src/main/java/io/github/ron1196/circleofcraft/network/LoginSyncPacket.java
 git commit -m "refactor(network): rewrite LoginSyncPacket with player data"
 ```
 
 ### Task 13: Update LKNetworking — register PlayerDataSyncPacket, bump protocol
 
 **Files:**
-- Modify: `src/main/java/io/github/ron1196/thelionking/network/LKNetworking.java`
+- Modify: `src/main/java/io/github/ron1196/circleofcraft/network/LKNetworking.java`
 
 - [ ] **Step 1: Bump protocol version and add PlayerDataSyncPacket**
 
@@ -989,21 +989,21 @@ export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home 
 - [ ] **Step 3: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/network/LKNetworking.java
+git add src/main/java/io/github/ron1196/circleofcraft/network/LKNetworking.java
 git commit -m "feat(network): register PlayerDataSyncPacket, bump protocol to v3"
 ```
 
 ### Task 14: Update QuestCheckPacket — use LKWorldData
 
 **Files:**
-- Modify: `src/main/java/io/github/ron1196/thelionking/network/QuestCheckPacket.java`
+- Modify: `src/main/java/io/github/ron1196/circleofcraft/network/QuestCheckPacket.java`
 
 - [ ] **Step 1: Replace LKLevelData with LKWorldData**
 
 Update the import and the `handle()` method:
 
 ```java
-import io.github.ron1196.thelionking.data.WorldData;
+import io.github.ron1196.circleofcraft.data.WorldData;
 ```
 
 In `handle()`, change:
@@ -1018,7 +1018,7 @@ LKWorldData data = LKWorldData.get(sender.serverLevel());
 - [ ] **Step 2: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/network/QuestCheckPacket.java
+git add src/main/java/io/github/ron1196/circleofcraft/network/QuestCheckPacket.java
 git commit -m "refactor(network): update QuestCheckPacket to use LKWorldData"
 ```
 
@@ -1029,7 +1029,7 @@ git commit -m "refactor(network): update QuestCheckPacket to use LKWorldData"
 ### Task 15: Update LKForgeEvents — use LKWorldData, fix LoginSyncPacket
 
 **Files:**
-- Modify: `src/main/java/io/github/ron1196/thelionking/event/LKForgeEvents.java`
+- Modify: `src/main/java/io/github/ron1196/circleofcraft/event/LKForgeEvents.java`
 
 - [ ] **Step 1: Update imports and onPlayerLoggedIn**
 
@@ -1070,14 +1070,14 @@ Expected: BUILD SUCCESSFUL (or errors in entity files — next tasks)
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/event/LKForgeEvents.java
+git add src/main/java/io/github/ron1196/circleofcraft/event/LKForgeEvents.java
 git commit -m "refactor(events): use LKWorldData and pass player data in login sync"
 ```
 
 ### Task 16: Update RafikiEntity — reward claiming, capability for quest book
 
 **Files:**
-- Modify: `src/main/java/io/github/ron1196/thelionking/entity/npc/RafikiEntity.java`
+- Modify: `src/main/java/io/github/ron1196/circleofcraft/entity/npc/RafikiEntity.java`
 
 - [ ] **Step 1: Rewrite mobInteract with reward claiming flow**
 
@@ -1158,7 +1158,7 @@ private int tryClaimNextReward(ServerPlayer player, LKPlayerData playerData, LKQ
 private void syncPlayerData(ServerPlayer player, LKPlayerData data) {
     LKNetworking.CHANNEL.send(
             net.minecraftforge.network.PacketDistributor.PLAYER.with(() -> player),
-            new io.github.ron1196.thelionking.network.PlayerDataSyncPacket(data)
+            new io.github.ron1196.circleofcraft.network.PlayerDataSyncPacket(data)
     );
 }
 ```
@@ -1172,14 +1172,14 @@ export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home 
 - [ ] **Step 4: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/entity/npc/RafikiEntity.java
+git add src/main/java/io/github/ron1196/circleofcraft/entity/npc/RafikiEntity.java
 git commit -m "feat(npc): add per-player reward claiming to RafikiEntity"
 ```
 
 ### Task 17: Update ScarEntity — use LKWorldData
 
 **Files:**
-- Modify: `src/main/java/io/github/ron1196/thelionking/entity/npc/ScarEntity.java`
+- Modify: `src/main/java/io/github/ron1196/circleofcraft/entity/npc/ScarEntity.java`
 
 - [ ] **Step 1: Replace LKLevelData with LKWorldData**
 
@@ -1201,14 +1201,14 @@ data.getQuestManager().tryAdvance("rafiki", serverPlayer, LKQuestTrigger.SCAR_KI
 
 ```bash
 export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home && ./gradlew compileJava
-git add src/main/java/io/github/ron1196/thelionking/entity/npc/ScarEntity.java
+git add src/main/java/io/github/ron1196/circleofcraft/entity/npc/ScarEntity.java
 git commit -m "refactor(npc): update ScarEntity to use LKWorldData"
 ```
 
 ### Task 18: Update ZiraEntity — reward claiming, use LKWorldData
 
 **Files:**
-- Modify: `src/main/java/io/github/ron1196/thelionking/entity/npc/ZiraEntity.java`
+- Modify: `src/main/java/io/github/ron1196/circleofcraft/entity/npc/ZiraEntity.java`
 
 - [ ] **Step 1: Update imports and mobInteract — same pattern as RafikiEntity**
 
@@ -1224,14 +1224,14 @@ Update `die()` to use `LKWorldData.get()`.
 
 ```bash
 export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home && ./gradlew compileJava
-git add src/main/java/io/github/ron1196/thelionking/entity/npc/ZiraEntity.java
+git add src/main/java/io/github/ron1196/circleofcraft/entity/npc/ZiraEntity.java
 git commit -m "feat(npc): add per-player reward claiming to ZiraEntity"
 ```
 
 ### Task 19: Update RafikiDustItem — use capability for hasSimba
 
 **Files:**
-- Modify: `src/main/java/io/github/ron1196/thelionking/item/RafikiDustItem.java`
+- Modify: `src/main/java/io/github/ron1196/circleofcraft/item/RafikiDustItem.java`
 
 - [ ] **Step 1: Replace LKLevelData with LKWorldData, use capability for hasSimba**
 
@@ -1264,7 +1264,7 @@ if (player instanceof ServerPlayer serverPlayer) {
 
 ```bash
 export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home && ./gradlew compileJava
-git add src/main/java/io/github/ron1196/thelionking/item/RafikiDustItem.java
+git add src/main/java/io/github/ron1196/circleofcraft/item/RafikiDustItem.java
 git commit -m "refactor(item): use LKPlayerData capability for hasSimba check"
 ```
 
@@ -1275,7 +1275,7 @@ git commit -m "refactor(item): use LKPlayerData capability for hasSimba check"
 ### Task 20: Convert LKAnimalQuest to static utility
 
 **Files:**
-- Modify: `src/main/java/io/github/ron1196/thelionking/quest/LKAnimalQuest.java`
+- Modify: `src/main/java/io/github/ron1196/circleofcraft/quest/LKAnimalQuest.java`
 
 - [ ] **Step 1: Remove instance state, keep static utility methods**
 
@@ -1307,14 +1307,14 @@ Remove unused imports (`CompoundTag`, etc.). Keep `ServerPlayer`, `Item`, `ItemS
 - [ ] **Step 3: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/quest/LKAnimalQuest.java
+git add src/main/java/io/github/ron1196/circleofcraft/quest/LKAnimalQuest.java
 git commit -m "refactor(quest): convert LKAnimalQuest to static utility"
 ```
 
 ### Task 21: Update LKAnimal — per-player animal quests
 
 **Files:**
-- Modify: `src/main/java/io/github/ron1196/thelionking/entity/animal/LKAnimal.java`
+- Modify: `src/main/java/io/github/ron1196/circleofcraft/entity/animal/LKAnimal.java`
 
 - [ ] **Step 1: Replace single LKAnimalQuest with Map<UUID, AnimalQuestEntry>**
 
@@ -1435,14 +1435,14 @@ Expected: BUILD SUCCESSFUL
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/main/java/io/github/ron1196/thelionking/entity/animal/LKAnimal.java
+git add src/main/java/io/github/ron1196/circleofcraft/entity/animal/LKAnimal.java
 git commit -m "feat(entity): per-player animal quests with UUID-keyed map"
 ```
 
 ### Task 22: Update QuestBookScreen — adapt to new data sources
 
 **Files:**
-- Modify: `src/main/java/io/github/ron1196/thelionking/client/gui/QuestBookScreen.java`
+- Modify: `src/main/java/io/github/ron1196/circleofcraft/client/gui/QuestBookScreen.java`
 
 - [ ] **Step 1: Update to use ClientWorldState for player data**
 
@@ -1456,7 +1456,7 @@ If the screen references `homePortalX` directly anywhere, update to `playerHomeP
 
 ```bash
 export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home && ./gradlew compileJava
-git add src/main/java/io/github/ron1196/thelionking/client/gui/QuestBookScreen.java
+git add src/main/java/io/github/ron1196/circleofcraft/client/gui/QuestBookScreen.java
 git commit -m "refactor(gui): adapt QuestBookScreen to updated ClientWorldState"
 ```
 
@@ -1486,19 +1486,19 @@ Expected: No matches
 - [ ] **Step 4: Verify all new files exist**
 
 ```bash
-ls -la src/main/java/io/github/ron1196/thelionking/quest/ClaimableReward.java \
-       src/main/java/io/github/ron1196/thelionking/quest/AnimalQuestEntry.java \
-       src/main/java/io/github/ron1196/thelionking/data/LKWorldData.java \
-       src/main/java/io/github/ron1196/thelionking/data/LKPlayerData.java \
-       src/main/java/io/github/ron1196/thelionking/data/LKPlayerDataProvider.java \
-       src/main/java/io/github/ron1196/thelionking/network/PlayerDataSyncPacket.java
+ls -la src/main/java/io/github/ron1196/circleofcraft/quest/ClaimableReward.java \
+       src/main/java/io/github/ron1196/circleofcraft/quest/AnimalQuestEntry.java \
+       src/main/java/io/github/ron1196/circleofcraft/data/LKWorldData.java \
+       src/main/java/io/github/ron1196/circleofcraft/data/LKPlayerData.java \
+       src/main/java/io/github/ron1196/circleofcraft/data/LKPlayerDataProvider.java \
+       src/main/java/io/github/ron1196/circleofcraft/network/PlayerDataSyncPacket.java
 ```
 Expected: All 6 files exist
 
 - [ ] **Step 5: Verify LKLevelData.java is deleted**
 
 ```bash
-ls src/main/java/io/github/ron1196/thelionking/data/LKLevelData.java 2>&1
+ls src/main/java/io/github/ron1196/circleofcraft/data/LKLevelData.java 2>&1
 ```
 Expected: "No such file or directory"
 

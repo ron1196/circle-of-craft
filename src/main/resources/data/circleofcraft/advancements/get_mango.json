@@ -1,0 +1,19 @@
+{
+  "parent": "circleofcraft:enter_pride_lands",
+  "display": {
+    "icon": { "item": "circleofcraft:mango" },
+    "title": { "translate": "advancement.circleofcraft.get_mango.title" },
+    "description": { "translate": "advancement.circleofcraft.get_mango.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "get": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "items": ["circleofcraft:mango"] }]
+      }
+    }
+  }
+}

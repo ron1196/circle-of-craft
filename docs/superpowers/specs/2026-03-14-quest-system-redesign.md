@@ -24,7 +24,7 @@ The old `simbas` map (`Map<String, Integer>`) is removed. Simba ownership is now
 
 NBT keys: same as current `LKLevelData` for backwards compatibility (`DefeatedScar`, `ZiraStage`, etc.). Legacy migration reads old keys on first load.
 
-Rename `LKLevelData` → `LKWorldData` everywhere. The `DATA_NAME` constant stays `"thelionking_data"` (unchanged value).
+Rename `LKLevelData` → `LKWorldData` everywhere. The `DATA_NAME` constant stays `"circleofcraft_data"` (unchanged value).
 
 ### `LKPlayerData` (new Forge Capability on player)
 
@@ -40,7 +40,7 @@ Per-player persistent data attached via `AttachCapabilitiesEvent<Entity>`.
 **Capability registration:**
 - `LKPlayerDataProvider` implements `ICapabilitySerializable<CompoundTag>`
 - Attached in `AttachCapabilitiesEvent<Entity>` for `Player` entities
-- Key: `ResourceLocation("thelionking", "player_data")`
+- Key: `ResourceLocation("circleofcraft", "player_data")`
 
 **Copy-on-death:**
 - Handle `PlayerEvent.Clone` event

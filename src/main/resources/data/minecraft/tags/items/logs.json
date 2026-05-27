@@ -1,11 +1,11 @@
 {
   "replace": false,
   "values": [
-    "thelionking:pride_acacia_log",
-    "thelionking:rainforest_log",
-    "thelionking:mango_log",
-    "thelionking:passion_log",
-    "thelionking:banana_log",
-    "thelionking:deadwood_log"
+    "circleofcraft:pride_acacia_log",
+    "circleofcraft:rainforest_log",
+    "circleofcraft:mango_log",
+    "circleofcraft:passion_log",
+    "circleofcraft:banana_log",
+    "circleofcraft:deadwood_log"
   ]
 }

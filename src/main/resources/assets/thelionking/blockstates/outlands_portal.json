@@ -1,6 +1,0 @@
-{
-  "variants": {
-    "axis=x": { "model": "thelionking:block/outlands_portal_ns" },
-    "axis=z": { "model": "thelionking:block/outlands_portal_ew" }
-  }
-}

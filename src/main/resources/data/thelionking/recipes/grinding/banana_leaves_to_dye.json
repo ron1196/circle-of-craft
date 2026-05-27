@@ -1,5 +1,0 @@
-{
-  "type": "thelionking:grinding",
-  "ingredient": { "item": "thelionking:banana_leaves" },
-  "result": { "item": "minecraft:green_dye" }
-}

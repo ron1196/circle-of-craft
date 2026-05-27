@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "axis=x": { "model": "circleofcraft:block/pride_lands_portal_ns" },
+    "axis=z": { "model": "circleofcraft:block/pride_lands_portal_ew" }
+  }
+}

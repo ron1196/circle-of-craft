@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": { "item": "circleofcraft:deadwood_planks" }
+  },
+  "result": {
+    "item": "circleofcraft:deadwood_stairs",
+    "count": 4
+  }
+}

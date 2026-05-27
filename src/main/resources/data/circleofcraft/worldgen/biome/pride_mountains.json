@@ -1,0 +1,104 @@
+{
+  "temperature": 0.6,
+  "downfall": 0.4,
+  "has_precipitation": true,
+  "effects": {
+    "sky_color": 8233727,
+    "fog_color": 12638463,
+    "water_color": 4159204,
+    "water_fog_color": 329011,
+    "grass_color": 9286496,
+    "foliage_color": 9286496
+  },
+  "spawners": {
+    "monster": [
+      {
+        "type": "circleofcraft:hyena",
+        "weight": 8,
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
+    "creature": [
+      {
+        "type": "circleofcraft:lion",
+        "weight": 8,
+        "minCount": 3,
+        "maxCount": 6
+      },
+      {
+        "type": "circleofcraft:zebra",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 5
+      },
+      {
+        "type": "circleofcraft:rhino",
+        "weight": 6,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "circleofcraft:gemsbok",
+        "weight": 8,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "circleofcraft:giraffe",
+        "weight": 5,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "circleofcraft:dikdik",
+        "weight": 8,
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
+    "ambient": [],
+    "axolotls": [],
+    "underground_water_creature": [],
+    "water_creature": [],
+    "water_ambient": [],
+    "misc": []
+  },
+  "spawn_costs": {},
+  "carvers": {
+    "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon"
+    ]
+  },
+  "features": [
+    [],
+    [
+      "minecraft:lake_lava_underground"
+    ],
+    [],
+    [
+      "circleofcraft:pride_coal_ore_placed",
+      "circleofcraft:pride_coal_ore_upper_placed",
+      "circleofcraft:silver_ore_placed",
+      "circleofcraft:silver_ore_middle_placed",
+      "circleofcraft:silver_ore_small_placed",
+      "circleofcraft:peacock_ore_placed",
+      "circleofcraft:peacock_ore_large_placed",
+      "circleofcraft:peacock_ore_buried_placed",
+      "circleofcraft:dungeon_placed"
+    ],
+    [],
+    [],
+    [
+      "circleofcraft:pride_acacia_tree_placed",
+      "minecraft:patch_grass_savanna"
+    ],
+    [],
+    [],
+    [],
+    [],
+    []
+  ]
+}

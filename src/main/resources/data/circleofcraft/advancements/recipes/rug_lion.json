@@ -1,0 +1,15 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": { "recipes": ["circleofcraft:rug_lion"] },
+  "criteria": {
+    "has_fur": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": { "items": [{"items": ["circleofcraft:lion_fur"]}] }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": { "recipe": "circleofcraft:rug_lion" }
+    }
+  },
+  "requirements": [["has_fur", "has_the_recipe"]]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": { "item": "circleofcraft:pridestone" }
+  },
+  "result": {
+    "item": "circleofcraft:pridestone_slab",
+    "count": 6
+  }
+}

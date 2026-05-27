@@ -1,0 +1,19 @@
+{
+  "parent": "circleofcraft:kill_hyena",
+  "display": {
+    "icon": { "item": "circleofcraft:grinding_bowl" },
+    "title": { "translate": "advancement.circleofcraft.craft_grinding_bowl.title" },
+    "description": { "translate": "advancement.circleofcraft.craft_grinding_bowl.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "get": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "items": ["circleofcraft:grinding_bowl"] }]
+      }
+    }
+  }
+}

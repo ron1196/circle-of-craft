@@ -1,5 +1,0 @@
-{
-  "type": "thelionking:grinding",
-  "ingredient": { "item": "thelionking:red_flower" },
-  "result": { "item": "minecraft:red_dye" }
-}

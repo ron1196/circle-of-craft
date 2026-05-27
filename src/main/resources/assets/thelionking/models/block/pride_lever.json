@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/lever",
-  "textures": {
-    "base": "thelionking:block/pridestone",
-    "lever": "thelionking:block/pride_lever",
-    "particle": "thelionking:block/pridestone"
-  }
-}

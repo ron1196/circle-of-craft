@@ -1,0 +1,17 @@
+{
+  "parent": "circleofcraft:hakuna_matata",
+  "display": {
+    "icon": { "item": "circleofcraft:amulet" },
+    "title": { "translate": "advancement.circleofcraft.animal_quest.title" },
+    "description": { "translate": "advancement.circleofcraft.animal_quest.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "circleofcraft:feed_animal",
+      "conditions": {}
+    }
+  }
+}

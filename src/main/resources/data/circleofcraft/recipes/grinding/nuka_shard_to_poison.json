@@ -1,0 +1,5 @@
+{
+  "type": "circleofcraft:grinding",
+  "ingredient": { "item": "circleofcraft:nuka_shard" },
+  "result": { "item": "circleofcraft:poison" }
+}

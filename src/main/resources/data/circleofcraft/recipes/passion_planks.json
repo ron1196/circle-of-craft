@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "circleofcraft:passion_log" }
+  ],
+  "result": {
+    "item": "circleofcraft:passion_planks",
+    "count": 4
+  }
+}

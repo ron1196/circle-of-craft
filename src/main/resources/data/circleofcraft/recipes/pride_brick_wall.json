@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": { "item": "circleofcraft:pride_brick" }
+  },
+  "result": {
+    "item": "circleofcraft:pride_brick_wall",
+    "count": 6
+  }
+}

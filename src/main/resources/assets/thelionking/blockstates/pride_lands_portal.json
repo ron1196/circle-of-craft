@@ -1,6 +1,0 @@
-{
-  "variants": {
-    "axis=x": { "model": "thelionking:block/pride_lands_portal_ns" },
-    "axis=z": { "model": "thelionking:block/pride_lands_portal_ew" }
-  }
-}

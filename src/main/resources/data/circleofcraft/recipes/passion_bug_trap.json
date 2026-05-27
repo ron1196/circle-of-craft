@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "PSP",
+    "PPP"
+  ],
+  "key": {
+    "P": { "item": "circleofcraft:passion_planks" },
+    "S": { "item": "minecraft:string" }
+  },
+  "result": { "item": "circleofcraft:passion_bug_trap", "count": 1 }
+}

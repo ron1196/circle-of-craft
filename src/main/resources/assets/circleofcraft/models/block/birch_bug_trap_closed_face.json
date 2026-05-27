@@ -1,0 +1,4 @@
+{
+  "parent": "circleofcraft:block/bug_trap_closed_face",
+  "textures": { "planks": "minecraft:block/birch_planks" }
+}

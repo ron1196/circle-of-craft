@@ -28,7 +28,7 @@ Examples:
 Group.all.map(g => ({name: g.name, parent: g.parent ? g.parent.name : null}))
 ```
 
-2. Cross-reference with geo.json at `src/main/resources/assets/thelionking/geo/entity/{entity_name}.geo.json`
+2. Cross-reference with geo.json at `src/main/resources/assets/circleofcraft/geo/entity/{entity_name}.geo.json`
 
 3. List existing animations:
 ```js
@@ -122,7 +122,7 @@ Export all animations to JSON:
         res[anim.name] = ad;
     });
     var json = JSON.stringify({format_version: "1.8.0", animations: res}, null, '\t');
-    var path = "/Users/ronmizrachi/private-dev/TheLionKing/src/main/resources/assets/thelionking/animations/entity/ENTITY_NAME.animation.json";
+    var path = "/Users/ronmizrachi/private-dev/TheLionKing/src/main/resources/assets/circleofcraft/animations/entity/ENTITY_NAME.animation.json";
     require('fs').writeFileSync(path, json);
     return "Saved " + Object.keys(res).length + " animations";
 })()

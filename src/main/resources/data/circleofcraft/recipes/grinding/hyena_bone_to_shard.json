@@ -1,0 +1,5 @@
+{
+  "type": "circleofcraft:grinding",
+  "ingredient": { "item": "circleofcraft:hyena_bone" },
+  "result": { "item": "circleofcraft:hyena_bone_shard" }
+}

@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": { "item": "circleofcraft:yam" },
+  "result": "circleofcraft:roast_yam",
+  "experience": 0.35,
+  "cookingtime": 200
+}

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    "X X"
+  ],
+  "key": {
+    "X": { "item": "circleofcraft:peacock_gem" }
+  },
+  "result": {
+    "item": "circleofcraft:peacock_boots",
+    "count": 1
+  }
+}

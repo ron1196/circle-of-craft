@@ -8,7 +8,7 @@
 
 **Goal:** Migrate the repo from a single `main` branch with hard-coded mod/Minecraft versions to a branch-per-MC-version model with tag-triggered GitHub Actions publishing to GitHub Releases, CurseForge, and Modrinth.
 
-**Architecture:** Gradle reads `mod_version` from a `MOD_VERSION` env var (with a dev fallback); Minecraft/Forge versions live in `gradle.properties` as the per-branch source of truth; the shippable JAR (the JarInJar `jarJar` artifact, which bundles MixinExtras) is named `thelionking-<modver>-mc<mcver>.jar` via Gradle's `archiveClassifier`. A new `release.yml` workflow fires on tag push matching `v*-mc*`, validates the tag's MC suffix against `gradle.properties`, builds, publishes a GitHub Release with auto-generated notes, and conditionally uploads to CurseForge + Modrinth via their HTTP APIs (gated on repository variables so the workflow works before those projects exist). Finally, `main` is renamed to `mc/1.20.1` and the CI filter is updated to `mc/**`.
+**Architecture:** Gradle reads `mod_version` from a `MOD_VERSION` env var (with a dev fallback); Minecraft/Forge versions live in `gradle.properties` as the per-branch source of truth; the shippable JAR (the JarInJar `jarJar` artifact, which bundles MixinExtras) is named `circleofcraft-<modver>-mc<mcver>.jar` via Gradle's `archiveClassifier`. A new `release.yml` workflow fires on tag push matching `v*-mc*`, validates the tag's MC suffix against `gradle.properties`, builds, publishes a GitHub Release with auto-generated notes, and conditionally uploads to CurseForge + Modrinth via their HTTP APIs (gated on repository variables so the workflow works before those projects exist). Finally, `main` is renamed to `mc/1.20.1` and the CI filter is updated to `mc/**`.
 
 **Tech Stack:** Forge 1.20.1 (47.4.18), Java 17, Gradle (Forge plugin 6.0–6.2), GitHub Actions, Palantir Java Format via Spotless. CurseForge upload API + Modrinth `/v2/version` API via `curl`.
 
@@ -55,21 +55,21 @@ Pure refactor — resulting JAR byte-identical.
 
 ## Task 3: Add `-mc<mcver>` classifier to the shippable JAR
 
-**Correction made during execution:** the classifier must go on the **`jarJar`** task, not the plain `jar` task. This mod bundles `mixinextras-forge` into production via Forge JarInJar (it's `compileOnly` otherwise). The bundled dependency lands in the `jarJar` task's output, not the plain `jar`. Naming the plain `jar` with the classifier produced a MixinExtras-less JAR that would crash at runtime on the `@WrapOperation` mixins (e.g. `OutlandsFluidMixin`). The release workflow ships `thelionking-<modver>-mc<mcver>.jar`, so that filename must be the complete `jarJar` artifact.
+**Correction made during execution:** the classifier must go on the **`jarJar`** task, not the plain `jar` task. This mod bundles `mixinextras-forge` into production via Forge JarInJar (it's `compileOnly` otherwise). The bundled dependency lands in the `jarJar` task's output, not the plain `jar`. Naming the plain `jar` with the classifier produced a MixinExtras-less JAR that would crash at runtime on the `@WrapOperation` mixins (e.g. `OutlandsFluidMixin`). The release workflow ships `circleofcraft-<modver>-mc<mcver>.jar`, so that filename must be the complete `jarJar` artifact.
 
-- [x] In `build.gradle`, after the `base { archivesName = 'thelionking' }` block:
+- [x] In `build.gradle`, after the `base { archivesName = 'circleofcraft' }` block:
   ```groovy
   tasks.named('jarJar').configure {
       archiveClassifier = "mc${minecraft_version}"
   }
   ```
-- [x] Verify `MOD_VERSION=1.0.0 ./gradlew clean build` produces `build/libs/thelionking-1.0.0-mc1.20.1.jar` AND that this JAR contains `META-INF/jarjar/mixinextras-forge-0.3.5.jar`, all 408 mod classes, and `META-INF/mods.toml`. The plain `jar` stays `thelionking-1.0.0.jar` (no collision).
-- [x] Verify dev fallback name: `thelionking-0.0.0-dev-mc1.20.1.jar`.
+- [x] Verify `MOD_VERSION=1.0.0 ./gradlew clean build` produces `build/libs/circleofcraft-1.0.0-mc1.20.1.jar` AND that this JAR contains `META-INF/jarjar/mixinextras-forge-0.3.5.jar`, all 408 mod classes, and `META-INF/mods.toml`. The plain `jar` stays `circleofcraft-1.0.0.jar` (no collision).
+- [x] Verify dev fallback name: `circleofcraft-0.0.0-dev-mc1.20.1.jar`.
 - [x] Commit.
 
 ## Task 4: Add the release workflow
 
-Create `.github/workflows/release.yml` (tag-triggered on `v*-mc*`). Injection-safe (`${GITHUB_REF_NAME}` env form, not `${{ github.ref_name }}` template injection). Steps: checkout (fetch-depth 0) → parse tag (regex extracting mod version + MC version, accepting optional `-rc<n>` pre-release segment) → validate MC suffix against `gradle.properties` and infer loader (forge for 1.20, neoforge otherwise) → setup Java 17 + Gradle → build with `MOD_VERSION` → locate `thelionking-<modver>-mc<mcver>.jar` → find previous tag on this MC line → `gh release create --generate-notes` (with `--notes-start-tag` when a previous tag exists) → conditional CurseForge upload (gated on `vars.CURSEFORGE_PROJECT_ID` + `secrets.CURSEFORGE_TOKEN`, resolves gameVersion IDs, multipart upload) → conditional Modrinth upload (gated on `vars.MODRINTH_PROJECT_ID` + `secrets.MODRINTH_TOKEN`, `/v2/version` multipart with matching `file_parts`).
+Create `.github/workflows/release.yml` (tag-triggered on `v*-mc*`). Injection-safe (`${GITHUB_REF_NAME}` env form, not `${{ github.ref_name }}` template injection). Steps: checkout (fetch-depth 0) → parse tag (regex extracting mod version + MC version, accepting optional `-rc<n>` pre-release segment) → validate MC suffix against `gradle.properties` and infer loader (forge for 1.20, neoforge otherwise) → setup Java 17 + Gradle → build with `MOD_VERSION` → locate `circleofcraft-<modver>-mc<mcver>.jar` → find previous tag on this MC line → `gh release create --generate-notes` (with `--notes-start-tag` when a previous tag exists) → conditional CurseForge upload (gated on `vars.CURSEFORGE_PROJECT_ID` + `secrets.CURSEFORGE_TOKEN`, resolves gameVersion IDs, multipart upload) → conditional Modrinth upload (gated on `vars.MODRINTH_PROJECT_ID` + `secrets.MODRINTH_TOKEN`, `/v2/version` multipart with matching `file_parts`).
 
 - [x] Create the workflow file verbatim (the full YAML is in `.github/workflows/release.yml`).
 - [x] Verify YAML parses; tag-parse regex matches `v1.2.0-mc1.20.1` and `v1.2.0-rc1-mc1.20.1`, rejects `v1.2.0`; `grep '^minecraft_version=' gradle.properties` → `1.20.1`.
@@ -94,7 +94,7 @@ Create `.github/workflows/release.yml` (tag-triggered on `v*-mc*`). Injection-sa
 
 The first **real** release is the maintainer's call; this plan stops at "machinery is ready."
 
-- `MOD_VERSION=0.0.1 ./gradlew clean build` → `build/libs/thelionking-0.0.1-mc1.20.1.jar` exists and contains the JarInJar'd MixinExtras.
+- `MOD_VERSION=0.0.1 ./gradlew clean build` → `build/libs/circleofcraft-0.0.1-mc1.20.1.jar` exists and contains the JarInJar'd MixinExtras.
 - `grep -E '^(minecraft_version|forge_version)' gradle.properties` → `1.20.1` / `47.4.18`.
 - Optional: push a throwaway `v0.0.1-mc1.20.1` tag, confirm the GitHub Release is created with the JAR attached (CF/Modrinth steps skip until secrets are configured), then delete the test release + tag.
 

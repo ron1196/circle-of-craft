@@ -1,0 +1,19 @@
+{
+  "parent": "circleofcraft:hakuna_matata",
+  "display": {
+    "icon": { "item": "circleofcraft:tunnah_diggah" },
+    "title": { "translate": "advancement.circleofcraft.enchant_tunnah.title" },
+    "description": { "translate": "advancement.circleofcraft.enchant_tunnah.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["circleofcraft:tunnah_diggah"]}]
+      }
+    }
+  }
+}

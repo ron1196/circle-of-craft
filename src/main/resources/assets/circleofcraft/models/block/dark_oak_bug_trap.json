@@ -1,0 +1,4 @@
+{
+  "parent": "circleofcraft:block/bug_trap",
+  "textures": { "planks": "minecraft:block/dark_oak_planks" }
+}

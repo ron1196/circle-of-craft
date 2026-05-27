@@ -1,0 +1,191 @@
+{
+  "entity.lion.ambient": {
+    "subtitle": "subtitles.circleofcraft.entity.lion.ambient",
+    "sounds": [
+      "circleofcraft:entity/lion/lion"
+    ]
+  },
+  "entity.lion.angry": {
+    "subtitle": "subtitles.circleofcraft.entity.lion.angry",
+    "sounds": [
+      "circleofcraft:entity/lion/lion_angry"
+    ]
+  },
+  "entity.lion.roar": {
+    "subtitle": "subtitles.circleofcraft.entity.lion.roar",
+    "sounds": [
+      "circleofcraft:entity/lion/lion_roar"
+    ]
+  },
+  "entity.lion.death": {
+    "subtitle": "subtitles.circleofcraft.entity.lion.death",
+    "sounds": [
+      "circleofcraft:entity/lion/lion_death"
+    ]
+  },
+  "entity.zebra.ambient": {
+    "subtitle": "subtitles.circleofcraft.entity.zebra.ambient",
+    "sounds": [
+      "circleofcraft:entity/zebra/zebra"
+    ]
+  },
+  "entity.zebra.hurt": {
+    "subtitle": "subtitles.circleofcraft.entity.zebra.hurt",
+    "sounds": [
+      "circleofcraft:entity/zebra/zebra_hurt"
+    ]
+  },
+  "entity.zebra.death": {
+    "subtitle": "subtitles.circleofcraft.entity.zebra.death",
+    "sounds": [
+      "circleofcraft:entity/zebra/zebra_death"
+    ]
+  },
+  "entity.rhino.ambient": {
+    "subtitle": "subtitles.circleofcraft.entity.rhino.ambient",
+    "sounds": [
+      "circleofcraft:entity/rhino/rhino"
+    ]
+  },
+  "entity.rhino.hurt": {
+    "subtitle": "subtitles.circleofcraft.entity.rhino.hurt",
+    "sounds": [
+      "circleofcraft:entity/rhino/rhino_hurt"
+    ]
+  },
+  "entity.rhino.death": {
+    "subtitle": "subtitles.circleofcraft.entity.rhino.death",
+    "sounds": [
+      "circleofcraft:entity/rhino/rhino_death"
+    ]
+  },
+  "entity.zazu.ambient": {
+    "subtitle": "subtitles.circleofcraft.entity.zazu.ambient",
+    "sounds": [
+      "circleofcraft:entity/zazu/zazu_live"
+    ]
+  },
+  "entity.zazu.hurt": {
+    "subtitle": "subtitles.circleofcraft.entity.zazu.hurt",
+    "sounds": [
+      "circleofcraft:entity/zazu/zazu_hurt"
+    ]
+  },
+  "entity.crocodile.ambient": {
+    "subtitle": "subtitles.circleofcraft.entity.crocodile.ambient",
+    "sounds": [
+      "circleofcraft:entity/crocodile/crocodile"
+    ]
+  },
+  "entity.crocodile.snap": {
+    "subtitle": "subtitles.circleofcraft.entity.crocodile.snap",
+    "sounds": [
+      "circleofcraft:entity/crocodile/crocodile_snap"
+    ]
+  },
+  "entity.crocodile.death": {
+    "subtitle": "subtitles.circleofcraft.entity.crocodile.death",
+    "sounds": [
+      "circleofcraft:entity/crocodile/crocodile_death"
+    ]
+  },
+  "entity.vulture.ambient": {
+    "subtitle": "subtitles.circleofcraft.entity.vulture.ambient",
+    "sounds": [
+      "circleofcraft:entity/vulture/vulture"
+    ]
+  },
+  "entity.vulture.hurt": {
+    "subtitle": "subtitles.circleofcraft.entity.vulture.hurt",
+    "sounds": [
+      "circleofcraft:entity/vulture/vulture_hurt"
+    ]
+  },
+  "entity.rafiki_bird.ambient": {
+    "subtitle": "subtitles.circleofcraft.entity.rafiki_bird.ambient",
+    "sounds": [
+      "circleofcraft:entity/rafiki/rafiki",
+      "circleofcraft:entity/rafiki/rafiki1",
+      "circleofcraft:entity/rafiki/rafiki2",
+      "circleofcraft:entity/rafiki/rafiki3"
+    ]
+  },
+  "entity.flamingo.ambient": {
+    "subtitle": "subtitles.circleofcraft.entity.flamingo.ambient",
+    "sounds": [
+      "circleofcraft:entity/flamingo/flamingo",
+      "circleofcraft:entity/flamingo/flamingo1"
+    ]
+  },
+  "entity.flamingo.hurt": {
+    "subtitle": "subtitles.circleofcraft.entity.flamingo.hurt",
+    "sounds": [
+      "circleofcraft:entity/flamingo/flamingo_hurt",
+      "circleofcraft:entity/flamingo/flamingo_hurt1"
+    ]
+  },
+  "entity.flamingo.death": {
+    "subtitle": "subtitles.circleofcraft.entity.flamingo.death",
+    "sounds": [
+      "circleofcraft:entity/flamingo/flamingo_death"
+    ]
+  },
+  "block.bongo_drum.hit": {
+    "subtitle": "subtitles.circleofcraft.block.bongo_drum.hit",
+    "sounds": [
+      "circleofcraft:block/bongo"
+    ]
+  },
+  "item.flatulence": {
+    "subtitle": "subtitles.circleofcraft.item.flatulence",
+    "sounds": [
+      "circleofcraft:item/flatulence"
+    ]
+  },
+  "item.pop": {
+    "subtitle": "subtitles.circleofcraft.item.pop",
+    "sounds": [
+      "circleofcraft:item/pop"
+    ]
+  },
+  "music.circle_of_life": {
+    "sounds": [
+      {
+        "name": "circleofcraft:music/circle_of_life",
+        "stream": true
+      }
+    ]
+  },
+  "music.cant_wait_to_be_king": {
+    "sounds": [
+      {
+        "name": "circleofcraft:music/cant_wait_to_be_king",
+        "stream": true
+      }
+    ]
+  },
+  "music.be_prepared": {
+    "sounds": [
+      {
+        "name": "circleofcraft:music/be_prepared",
+        "stream": true
+      }
+    ]
+  },
+  "music.hakuna_matata": {
+    "sounds": [
+      {
+        "name": "circleofcraft:music/hakuna_matata",
+        "stream": true
+      }
+    ]
+  },
+  "music.can_you_feel_the_love": {
+    "sounds": [
+      {
+        "name": "circleofcraft:music/can_you_feel_the_love",
+        "stream": true
+      }
+    ]
+  }
+}

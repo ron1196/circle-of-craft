@@ -1,6 +1,6 @@
 # Bug Trap Wood Variants — TODO
 
-The bug trap currently exists only as a `pride_acacia`-planks variant (registered as plain `thelionking:bug_trap`). Goal: support every plank type the player can craft with, like vanilla slabs/stairs.
+The bug trap currently exists only as a `pride_acacia`-planks variant (registered as plain `circleofcraft:bug_trap`). Goal: support every plank type the player can craft with, like vanilla slabs/stairs.
 
 ## Approach
 
@@ -10,7 +10,7 @@ The bug trap currently exists only as a `pride_acacia`-planks variant (registere
 
   ```json
   {
-    "parent": "thelionking:block/bug_trap",
+    "parent": "circleofcraft:block/bug_trap",
     "textures": { "planks": "minecraft:block/oak_planks" }
   }
   ```
@@ -54,7 +54,7 @@ The bug trap currently exists only as a `pride_acacia`-planks variant (registere
 
 ## Texture inventory
 
-Mod plank textures present in `assets/thelionking/textures/block/`:
+Mod plank textures present in `assets/circleofcraft/textures/block/`:
 - `pride_acacia_planks.png` ✓
 - `banana_planks.png` ✓
 - `deadwood_planks.png` ✓
@@ -76,5 +76,5 @@ All vanilla plank textures are provided by Minecraft (no new PNGs needed).
 ## Notes
 
 - BlockEntityType needs all variants in its `.validBlocks(...)` chain. Forge's `BlockEntityType.Builder.of(factory, blocks...)` accepts varargs.
-- Recipe inputs must use the appropriate `minecraft:` plank or `thelionking:` plank itemId.
+- Recipe inputs must use the appropriate `minecraft:` plank or `circleofcraft:` plank itemId.
 - For consistency with vanilla, use `<wood>_bug_trap` naming for everything except `pride_acacia` which stays as plain `bug_trap`.

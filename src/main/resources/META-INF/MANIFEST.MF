@@ -1,2 +1,2 @@
 Manifest-Version: 1.0
-MixinConfigs: thelionking.mixins.json
+MixinConfigs: circleofcraft.mixins.json

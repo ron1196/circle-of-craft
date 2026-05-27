@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/lever_on",
+  "textures": {
+    "base": "circleofcraft:block/pridestone",
+    "lever": "circleofcraft:block/pride_lever",
+    "particle": "circleofcraft:block/pridestone"
+  }
+}

@@ -13,7 +13,7 @@ The mod runs on two independent version axes — **Minecraft version** and **mod
 | Branch | `mc/<mcver>` — one per supported Minecraft version | `mc/1.20.1` |
 | Mod version | Loose SemVer, **counted independently on each branch** | `1.2.0` |
 | Git tag | `v<modver>-mc<mcver>` | `v1.2.0-mc1.20.1` |
-| JAR filename | `thelionking-<modver>-mc<mcver>.jar` | `thelionking-1.2.0-mc1.20.1.jar` |
+| JAR filename | `circleofcraft-<modver>-mc<mcver>.jar` | `circleofcraft-1.2.0-mc1.20.1.jar` |
 | Release trigger | Push a tag matching `v*-mc*` | `git push --tags` |
 | Distribution | GitHub Releases + CurseForge + Modrinth (auto from CI) | — |
 | Changelog | GitHub auto-generated from PR titles since the previous tag on the branch | — |
@@ -106,13 +106,13 @@ Bonus: tags are self-describing. `git tag --list` tells you what each release is
 ## JAR filename
 
 ```
-thelionking-<modver>-mc<mcver>.jar
+circleofcraft-<modver>-mc<mcver>.jar
 ```
 
 Examples:
 
-- `thelionking-1.2.0-mc1.20.1.jar`
-- `thelionking-1.5.3-mc1.21.1.jar`
+- `circleofcraft-1.2.0-mc1.20.1.jar`
+- `circleofcraft-1.5.3-mc1.21.1.jar`
 
 Computed by Gradle from `mod_version` (set by CI from the tag via the `MOD_VERSION` env var; falls back to a sensible local-dev default) and the branch's `gradle.properties` Minecraft version. A user who downloads the JAR standalone can still tell what it's for, without re-checking the page they got it from.
 
@@ -143,7 +143,7 @@ That's it. On a tag push matching `v*-mc*`, GitHub Actions:
 
 1. Parses the tag to extract `MOD_VERSION` (`1.2.0`) and the expected MC version (`1.20.1`).
 2. Validates the tag's MC suffix matches the branch's `gradle.properties` Minecraft version; aborts if not.
-3. Runs `./gradlew build` with `MOD_VERSION` set, producing `thelionking-<modver>-mc<mcver>.jar`.
+3. Runs `./gradlew build` with `MOD_VERSION` set, producing `circleofcraft-<modver>-mc<mcver>.jar`.
 4. Generates release notes from PR titles merged into the branch since the previous tag on that branch.
 5. Creates a GitHub Release for the tag and attaches the JAR.
 6. Uploads to CurseForge with MC version + loader + release notes.

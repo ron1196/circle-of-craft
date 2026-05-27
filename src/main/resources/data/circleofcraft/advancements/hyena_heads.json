@@ -1,0 +1,19 @@
+{
+  "parent": "circleofcraft:kill_hyena",
+  "display": {
+    "icon": { "item": "circleofcraft:hyena_head" },
+    "title": { "translate": "advancement.circleofcraft.hyena_heads.title" },
+    "description": { "translate": "advancement.circleofcraft.hyena_heads.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["circleofcraft:hyena_head"]}]
+      }
+    }
+  }
+}

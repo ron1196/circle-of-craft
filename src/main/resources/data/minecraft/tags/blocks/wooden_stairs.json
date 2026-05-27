@@ -1,11 +1,11 @@
 {
   "replace": false,
   "values": [
-    "thelionking:pride_acacia_stairs",
-    "thelionking:rainforest_stairs",
-    "thelionking:mango_stairs",
-    "thelionking:passion_stairs",
-    "thelionking:banana_stairs",
-    "thelionking:deadwood_stairs"
+    "circleofcraft:pride_acacia_stairs",
+    "circleofcraft:rainforest_stairs",
+    "circleofcraft:mango_stairs",
+    "circleofcraft:passion_stairs",
+    "circleofcraft:banana_stairs",
+    "circleofcraft:deadwood_stairs"
   ]
 }

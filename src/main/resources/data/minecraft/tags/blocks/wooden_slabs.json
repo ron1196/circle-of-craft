@@ -1,11 +1,11 @@
 {
   "replace": false,
   "values": [
-    "thelionking:pride_acacia_slab",
-    "thelionking:rainforest_slab",
-    "thelionking:mango_slab",
-    "thelionking:passion_slab",
-    "thelionking:banana_slab",
-    "thelionking:deadwood_slab"
+    "circleofcraft:pride_acacia_slab",
+    "circleofcraft:rainforest_slab",
+    "circleofcraft:mango_slab",
+    "circleofcraft:passion_slab",
+    "circleofcraft:banana_slab",
+    "circleofcraft:deadwood_slab"
   ]
 }

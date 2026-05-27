@@ -1,1 +1,0 @@
-{"variants":{"facing=east":{"model":"thelionking:block/hyena_wall_torch"},"facing=south":{"model":"thelionking:block/hyena_wall_torch","y":90},"facing=west":{"model":"thelionking:block/hyena_wall_torch","y":180},"facing=north":{"model":"thelionking:block/hyena_wall_torch","y":270}}}

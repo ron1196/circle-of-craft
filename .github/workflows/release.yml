@@ -69,7 +69,7 @@ jobs:
       - name: Locate JAR
         id: jar
         run: |
-          JAR=$(ls build/libs/thelionking-${{ steps.parse.outputs.mod_version }}-mc${{ steps.validate.outputs.mc_version }}.jar)
+          JAR=$(ls build/libs/circleofcraft-${{ steps.parse.outputs.mod_version }}-mc${{ steps.validate.outputs.mc_version }}.jar)
           if [[ ! -f "$JAR" ]]; then
             echo "Expected JAR not found." >&2
             ls -1 build/libs/ >&2

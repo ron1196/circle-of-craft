@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "circleofcraft:gemsbok_spear" },
+    { "item": "circleofcraft:poison" }
+  ],
+  "result": {
+    "item": "circleofcraft:poisoned_spear",
+    "count": 1
+  }
+}

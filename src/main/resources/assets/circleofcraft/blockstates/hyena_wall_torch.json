@@ -1,0 +1,1 @@
+{"variants":{"facing=east":{"model":"circleofcraft:block/hyena_wall_torch"},"facing=south":{"model":"circleofcraft:block/hyena_wall_torch","y":90},"facing=west":{"model":"circleofcraft:block/hyena_wall_torch","y":180},"facing=north":{"model":"circleofcraft:block/hyena_wall_torch","y":270}}}

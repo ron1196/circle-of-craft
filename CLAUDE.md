@@ -2,8 +2,8 @@
 
 ## Quick Reference
 
-- **Mod ID:** `thelionking`
-- **Package:** `io.github.ron1196.thelionking`
+- **Mod ID:** `circleofcraft`
+- **Package:** `io.github.ron1196.circleofcraft`
 - **Minecraft:** 1.20.1 | **Forge:** 47.4.18 | **Java:** 17
 - **Mappings:** Official (Mojang)
 - **Future:** plan is to migrate to NeoForge when upgrading to 1.21.x
@@ -27,7 +27,7 @@ Java is auto-formatted by Spotless (Palantir). Run `./gradlew spotlessApply` aft
 ## Code Conventions
 
 ### Data Files Per Block
-Each block needs: blockstate JSON, block model JSON, item model JSON, loot table JSON, lang entry. Recipes go in `data/thelionking/recipes/`.
+Each block needs: blockstate JSON, block model JSON, item model JSON, loot table JSON, lang entry. Recipes go in `data/circleofcraft/recipes/`.
 
 ### Nullability Annotations
 **Always add `@NotNull` to every parameter and return type of an `@Override` method** unless the value can genuinely be null (use `@Nullable` then). Use `org.jetbrains.annotations.NotNull` / `org.jetbrains.annotations.Nullable` exclusively.
@@ -45,7 +45,7 @@ When a method signature is too long for one line, put each parameter on its own 
 
 Called from three places (zero duplication):
 1. **`customTransition`** — calls `ensureWorldState()` + adds presentation (particles, sounds, chat). Immediate.
-2. **`/lk quest set` command** — calls `ensureWorldState()` directly. Instant.
+2. **`/coc quest set` command** — calls `ensureWorldState()` directly. Instant.
 3. **Entity tick fallback** — calls `ensureWorldState()` every ~100 ticks. Handles chunk reload edge cases only.
 
 Use `/quest-skip-check` to verify all stages follow this pattern.
@@ -57,11 +57,11 @@ When inserting new stages into `OutlandsQuestline.Stage`, check if `TREE_OCCUPAT
 Use `ChatHelper.sendNpcMessage(player, name, message)` for all NPC dialogue — never inline `§e<Name> §f` formatting. For broadcasts use `ChatHelper.broadcastNpcMessage(level, name, message)`. Direction utilities are in `DirectionHelper`.
 
 ### Testing Commands
-Use `/lk quest` for quest testing:
-- `/lk quest info <questId>` — show current stageKey
-- `/lk quest advance <questId>` — skip to next stageKey (bypasses triggers/items)
-- `/lk quest set <questId> <stageKey>` — jump to specific stageKey
-- `/lk quest reset <questId>` — reset to first stageKey
+Use `/coc quest` for quest testing:
+- `/coc quest info <questId>` — show current stageKey
+- `/coc quest advance <questId>` — skip to next stageKey (bypasses triggers/items)
+- `/coc quest set <questId> <stageKey>` — jump to specific stageKey
+- `/coc quest reset <questId>` — reset to first stageKey
 
 Quest IDs: `rafiki`, `outlands`. Stage names match the enum values (e.g., `FIND_RAFIKI`, `COLLECT_BONES`).
 
@@ -73,9 +73,9 @@ Quest IDs: `rafiki`, `outlands`. Stage names match the enum values (e.g., `FIND_
 | File                          | Purpose                                  |
 |-------------------------------|------------------------------------------|
 | `event/CommonEvents.java`    | Entity attributes + spawn placement rules |
-| `event/LionKingForgeEvents.java` | Forge bus events (combat, NPC interaction, breeding, ticks) |
+| `event/ModForgeEvents.java` | Forge bus events (combat, NPC interaction, breeding, ticks) |
 | `data/WorldData.java`        | World-level saved data (overworld storage), quest-derived state |
-| `data/LionKingCriteriaTriggers.java` | Custom advancement triggers       |
+| `data/ModCriteriaTriggers.java` | Custom advancement triggers       |
 
 ## References
 
@@ -85,4 +85,4 @@ Long-form context lives in `docs/*.md` and is listed below as **summary + "read 
 
 - **Automated testing** (JUnit for pure-Java, Mojang Game Tests for in-world behaviour, runners, markers, the `@PrefixGameTestTemplate(false)` / structure NBT / `assertTrue` vs `fail` gotchas): [`docs/AUTOMATED_TESTING.md`](docs/AUTOMATED_TESTING.md). Read before writing or moving a test, or changing CI test jobs.
 - **Releases, branches, and tags** (branch-per-MC-version model `mc/<mcver>`, loose SemVer per branch, tag scheme `v<modver>-mc<mcver>`, JAR filename, GitHub/CurseForge/Modrinth publishing flow, cross-branch cherry-picks): [`docs/RELEASES.md`](docs/RELEASES.md). Read before cutting a release, starting a new MC version port, or changing the release workflow.
-- **Workaround / TODO backlog**: [GitHub Issues](https://github.com/ron1196/TheLionKing/issues). Read before adding a "for now" substitution — every workaround must be filed here.
+- **Workaround / TODO backlog**: [GitHub Issues](https://github.com/ron1196/circle-of-craft/issues). Read before adding a "for now" substitution — every workaround must be filed here.

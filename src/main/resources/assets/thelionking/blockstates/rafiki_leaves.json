@@ -1,6 +1,0 @@
-{
-  "multipart": [
-    { "when": { "corrupt": "false" }, "apply": { "model": "thelionking:block/rafiki_leaves" } },
-    { "when": { "corrupt": "true" }, "apply": { "model": "thelionking:block/rafiki_leaves_corrupt" } }
-  ]
-}

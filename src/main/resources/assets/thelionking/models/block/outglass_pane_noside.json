@@ -1,7 +1,0 @@
-{
-  "render_type": "minecraft:translucent",
-  "parent": "minecraft:block/template_glass_pane_noside",
-  "textures": {
-    "pane": "thelionking:block/outglass"
-  }
-}

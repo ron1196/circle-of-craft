@@ -1,11 +1,11 @@
 {
   "replace": false,
   "values": [
-    "thelionking:silver_ore",
-    "thelionking:peacock_ore",
-    "thelionking:kivulite_ore",
-    "thelionking:silver_block",
-    "thelionking:peacock_block",
-    "thelionking:kivulite_block"
+    "circleofcraft:silver_ore",
+    "circleofcraft:peacock_ore",
+    "circleofcraft:kivulite_ore",
+    "circleofcraft:silver_block",
+    "circleofcraft:peacock_block",
+    "circleofcraft:kivulite_block"
   ]
 }

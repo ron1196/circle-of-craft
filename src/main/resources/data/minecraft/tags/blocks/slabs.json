@@ -1,16 +1,16 @@
 {
   "replace": false,
   "values": [
-    "thelionking:pride_acacia_slab",
-    "thelionking:rainforest_slab",
-    "thelionking:mango_slab",
-    "thelionking:passion_slab",
-    "thelionking:banana_slab",
-    "thelionking:deadwood_slab",
-    "thelionking:pridestone_slab",
-    "thelionking:pride_brick_slab",
-    "thelionking:corrupt_pridestone_slab",
-    "thelionking:corrupt_pride_brick_slab",
-    "thelionking:dried_maize_slab"
+    "circleofcraft:pride_acacia_slab",
+    "circleofcraft:rainforest_slab",
+    "circleofcraft:mango_slab",
+    "circleofcraft:passion_slab",
+    "circleofcraft:banana_slab",
+    "circleofcraft:deadwood_slab",
+    "circleofcraft:pridestone_slab",
+    "circleofcraft:pride_brick_slab",
+    "circleofcraft:corrupt_pridestone_slab",
+    "circleofcraft:corrupt_pride_brick_slab",
+    "circleofcraft:dried_maize_slab"
   ]
 }

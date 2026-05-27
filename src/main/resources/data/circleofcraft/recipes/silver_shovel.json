@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "S",
+    "S"
+  ],
+  "key": {
+    "X": { "item": "circleofcraft:silver_ingot" },
+    "S": { "item": "minecraft:stick" }
+  },
+  "result": {
+    "item": "circleofcraft:silver_shovel",
+    "count": 1
+  }
+}

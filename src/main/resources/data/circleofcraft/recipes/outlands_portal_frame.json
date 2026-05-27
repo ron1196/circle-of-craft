@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SPS",
+    "PPP",
+    "SPS"
+  ],
+  "key": {
+    "S": { "item": "circleofcraft:corrupt_pridestone" },
+    "P": { "item": "circleofcraft:nuka_shard" }
+  },
+  "result": {
+    "item": "circleofcraft:outlands_portal_frame",
+    "count": 2
+  }
+}

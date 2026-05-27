@@ -1,5 +1,0 @@
-{
-  "type": "thelionking:grinding",
-  "ingredient": { "item": "thelionking:dried_maize" },
-  "result": { "item": "thelionking:corn_kernels" }
-}

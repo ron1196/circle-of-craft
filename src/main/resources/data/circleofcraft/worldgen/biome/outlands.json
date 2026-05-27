@@ -1,0 +1,83 @@
+{
+  "temperature": 1.6,
+  "downfall": 0.0,
+  "has_precipitation": false,
+  "effects": {
+    "sky_color": 5262148,
+    "fog_color": 4538944,
+    "water_color": 4159204,
+    "water_fog_color": 329011,
+    "grass_color": 8552064,
+    "foliage_color": 7499072
+  },
+  "spawners": {
+    "monster": [
+      {
+        "type": "circleofcraft:outlander",
+        "weight": 80,
+        "minCount": 8,
+        "maxCount": 16
+      },
+      {
+        "type": "circleofcraft:vulture",
+        "weight": 30,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "circleofcraft:skeletal_hyena",
+        "weight": 8,
+        "minCount": 4,
+        "maxCount": 6
+      }
+    ],
+    "creature": [],
+    "ambient": [],
+    "axolotls": [],
+    "underground_water_creature": [],
+    "water_creature": [],
+    "water_ambient": [],
+    "misc": []
+  },
+  "spawn_costs": {},
+  "carvers": {
+    "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon"
+    ]
+  },
+  "features": [
+    [],
+    [
+      "circleofcraft:outlands_lava_lake_surface_placed"
+    ],
+    [],
+    [
+      "circleofcraft:kivulite_ore_placed",
+      "circleofcraft:kivulite_ore_middle_placed",
+      "circleofcraft:kivulite_ore_small_placed",
+      "circleofcraft:nuka_ore_placed",
+      "circleofcraft:nuka_ore_upper_placed",
+      "circleofcraft:termite_ore_placed",
+      "circleofcraft:dungeon_placed"
+    ],
+    [
+      "circleofcraft:termite_mound_placed"
+    ],
+    [
+      "minecraft:spring_lava"
+    ],
+    [
+      "circleofcraft:dead_tree_placed",
+      "minecraft:patch_dead_bush",
+      "minecraft:brown_mushroom_normal",
+      "minecraft:red_mushroom_normal"
+    ],
+    [],
+    [],
+    [],
+    [],
+    []
+  ]
+}

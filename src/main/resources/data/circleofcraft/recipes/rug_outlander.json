@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "rug",
+  "ingredients": [
+    { "item": "circleofcraft:outlander_fur" }
+  ],
+  "result": { "item": "circleofcraft:rug_outlander", "count": 4 }
+}

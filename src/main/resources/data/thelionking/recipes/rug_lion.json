@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:crafting_shapeless",
-  "category": "building",
-  "group": "rug",
-  "ingredients": [
-    { "item": "thelionking:lion_fur" }
-  ],
-  "result": { "item": "thelionking:rug_lion", "count": 4 }
-}

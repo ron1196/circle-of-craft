@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "circleofcraft:block/hanging_banana" },
+    "facing=south": { "model": "circleofcraft:block/hanging_banana", "y": 180 },
+    "facing=west":  { "model": "circleofcraft:block/hanging_banana", "y": 270 },
+    "facing=east":  { "model": "circleofcraft:block/hanging_banana", "y": 90 }
+  }
+}

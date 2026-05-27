@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": { "item": "thelionking:yam" },
-  "result": "thelionking:roast_yam",
-  "experience": 0.35,
-  "cookingtime": 200
-}

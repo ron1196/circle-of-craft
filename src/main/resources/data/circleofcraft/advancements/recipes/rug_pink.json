@@ -1,0 +1,19 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": { "recipes": ["circleofcraft:rug_pink"] },
+  "criteria": {
+    "has_fur": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": { "items": [{"tag": "circleofcraft:furs"}] }
+    },
+    "has_dye": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": { "items": [{"items": ["minecraft:pink_dye"]}] }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": { "recipe": "circleofcraft:rug_pink" }
+    }
+  },
+  "requirements": [["has_fur", "has_dye", "has_the_recipe"]]
+}

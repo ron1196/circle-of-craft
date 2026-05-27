@@ -30,7 +30,7 @@ Four Grinding Bowl recipes from the original 2010-era mod (`old/code/common/LKGr
 | `lily meta 1 → rugDye 8` | `lily_violet_to_dye.json` | light_gray dye (color chosen by maintainer) |
 | `lily meta 2 → rugDye 3` | `lily_red_to_dye.json` | red dye |
 
-Each needs the corresponding `data/thelionking/advancements/recipes/<name>.json`. The old `pridePillar` meta entries do not translate — they were rotational meta states, handled in the new mod by `RotatedPillarBlock` state properties, not separate items. These four recipes ship under a small separate change and are **not blockers for the JEI work**: the JEI plugin reads from `RecipeManager` at runtime, so whatever recipes are registered show up.
+Each needs the corresponding `data/circleofcraft/advancements/recipes/<name>.json`. The old `pridePillar` meta entries do not translate — they were rotational meta states, handled in the new mod by `RotatedPillarBlock` state properties, not separate items. These four recipes ship under a small separate change and are **not blockers for the JEI work**: the JEI plugin reads from `RecipeManager` at runtime, so whatever recipes are registered show up.
 
 ## Solution
 
@@ -39,7 +39,7 @@ A self-contained `compat.jei` package, hard-isolated from the rest of the codeba
 ### Architecture
 
 ```
-src/main/java/io/github/ron1196/thelionking/compat/jei/
+src/main/java/io/github/ron1196/circleofcraft/compat/jei/
 ├── LionKingJeiPlugin.java          # @JeiPlugin: registers category, recipes, catalyst
 └── GrindingBowlRecipeCategory.java # IRecipeCategory<GrindingBowlRecipe>
 ```
@@ -60,8 +60,8 @@ Single-row layout (82 × 26 px), matching the proportions of JEI's vanilla furna
 
 | Method | Behavior |
 |---|---|
-| `getRecipeType()` | Returns `RECIPE_TYPE = RecipeType.create("thelionking", "grinding_bowl", GrindingBowlRecipe.class)` (held as `public static final` for plugin reuse). |
-| `getTitle()` | `Component.translatable("jei.thelionking.category.grinding_bowl")`. |
+| `getRecipeType()` | Returns `RECIPE_TYPE = RecipeType.create("circleofcraft", "grinding_bowl", GrindingBowlRecipe.class)` (held as `public static final` for plugin reuse). |
+| `getTitle()` | `Component.translatable("jei.circleofcraft.category.grinding_bowl")`. |
 | `getBackground()` | `guiHelper.createBlankDrawable(82, 26)` — no custom art (per non-goals). |
 | `getIcon()` | `guiHelper.createDrawableItemStack(new ItemStack(LionKingItems.GRINDING_BOWL_ITEM.get()))` — appears in JEI's left tab list. |
 | `setRecipe(builder, recipe, focuses)` | `builder.addSlot(INPUT, 1, 5).addIngredients(recipe.getIngredient())`; `builder.addSlot(OUTPUT, 61, 5).addItemStack(recipe.getResult())`. |
@@ -74,7 +74,7 @@ Single-row layout (82 × 26 px), matching the proportions of JEI's vanilla furna
 ```java
 @JeiPlugin
 public class LionKingJeiPlugin implements IModPlugin {
-    private static final ResourceLocation ID = new ResourceLocation("thelionking", "jei_plugin");
+    private static final ResourceLocation ID = new ResourceLocation("circleofcraft", "jei_plugin");
 
     @Override public ResourceLocation getPluginUid() { return ID; }
 
@@ -122,10 +122,10 @@ dependencies {
 
 `compileOnly` provides the JEI API (`IModPlugin`, `IRecipeCategory`, `RecipeType`, etc.). `runtimeOnly` installs JEI into the dev launcher so `runClient` actually shows the recipe browser. Neither is shipped in the published jar.
 
-**`src/main/resources/META-INF/mods.toml`** — append a fourth `[[dependencies.thelionking]]` block:
+**`src/main/resources/META-INF/mods.toml`** — append a fourth `[[dependencies.circleofcraft]]` block:
 
 ```toml
-[[dependencies.thelionking]]
+[[dependencies.circleofcraft]]
 modId = "jei"
 mandatory = false
 versionRange = "[15,)"
@@ -135,10 +135,10 @@ side = "BOTH"
 
 `ordering = "AFTER"` makes JEI finish its setup before our plugin runs — relevant for catalyst registration and recipe iteration.
 
-**`src/main/resources/assets/thelionking/lang/en_us.json`** — one new line:
+**`src/main/resources/assets/circleofcraft/lang/en_us.json`** — one new line:
 
 ```json
-"jei.thelionking.category.grinding_bowl": "Grinding Bowl"
+"jei.circleofcraft.category.grinding_bowl": "Grinding Bowl"
 ```
 
 ## Error handling

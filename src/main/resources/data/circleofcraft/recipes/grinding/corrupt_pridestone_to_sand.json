@@ -1,0 +1,5 @@
+{
+  "type": "circleofcraft:grinding",
+  "ingredient": { "item": "circleofcraft:corrupt_pridestone" },
+  "result": { "item": "minecraft:sand" }
+}

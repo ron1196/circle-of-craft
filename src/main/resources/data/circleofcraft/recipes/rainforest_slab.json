@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": { "item": "circleofcraft:rainforest_planks" }
+  },
+  "result": {
+    "item": "circleofcraft:rainforest_slab",
+    "count": 6
+  }
+}

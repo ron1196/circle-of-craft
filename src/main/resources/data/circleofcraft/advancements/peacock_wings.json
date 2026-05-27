@@ -1,0 +1,19 @@
+{
+  "parent": "circleofcraft:peacock_ore",
+  "display": {
+    "icon": { "item": "circleofcraft:peacock_wings" },
+    "title": { "translate": "advancement.circleofcraft.peacock_wings.title" },
+    "description": { "translate": "advancement.circleofcraft.peacock_wings.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["circleofcraft:peacock_boots"]}]
+      }
+    }
+  }
+}

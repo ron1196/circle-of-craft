@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "circleofcraft:vase"
+    },
+    {
+      "item": "circleofcraft:blue_flower"
+    }
+  ],
+  "result": {
+    "item": "circleofcraft:vase_blue_flower",
+    "count": 1
+  }
+}

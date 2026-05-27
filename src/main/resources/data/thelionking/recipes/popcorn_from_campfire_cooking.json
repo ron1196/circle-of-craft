@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:campfire_cooking",
-  "ingredient": { "item": "thelionking:corn" },
-  "result": "thelionking:popcorn",
-  "experience": 0.35,
-  "cookingtime": 600
-}

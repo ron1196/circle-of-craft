@@ -38,7 +38,7 @@ Logic that has zero dependency on Minecraft. Predicates, parsers, mathematical h
 ### Where it lives
 
 ```
-src/test/java/io/github/ron1196/thelionking/entity/animal/BreedingRulesTest.java
+src/test/java/io/github/ron1196/circleofcraft/entity/animal/BreedingRulesTest.java
 ```
 
 Mirror the production package path under `src/test/java/`. JUnit dependency is wired in `build.gradle`:
@@ -56,7 +56,7 @@ test {
 ### Skeleton
 
 ```java
-package io.github.ron1196.thelionking.entity.animal;
+package io.github.ron1196.circleofcraft.entity.animal;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -126,14 +126,14 @@ Multiple tests run in parallel arenas spread across the world. The status string
 | Piece | Path | Notes |
 |---|---|---|
 | Test holder class | `src/main/java/.../gametest/<Feature>Tests.java` | Note: `src/main/java`, not `src/test/java` — Forge needs it on the runtime classpath |
-| Arena structure | `src/main/resources/data/thelionking/structures/<name>.nbt` | **Vanilla `data/<ns>/structures/` path — NOT a `gametest/` subfolder** |
+| Arena structure | `src/main/resources/data/circleofcraft/structures/<name>.nbt` | **Vanilla `data/<ns>/structures/` path — NOT a `gametest/` subfolder** |
 | Run config | `build.gradle` `gameTestServer` block | Generates the `runGameTestServer` task |
 | Namespace enable | `build.gradle` `forge.enabledGameTestNamespaces` property | Already set on `client`, `server`, and `gameTestServer` runs |
 
 ### Required class-level annotations
 
 ```java
-@GameTestHolder("thelionking")
+@GameTestHolder("circleofcraft")
 @PrefixGameTestTemplate(false)
 public class LionGameTests {
     private static final String EMPTY = "empty";    // unqualified — namespace comes from @GameTestHolder
@@ -143,7 +143,7 @@ public class LionGameTests {
 
 | Annotation | Why |
 |---|---|
-| `@GameTestHolder("thelionking")` | Forge auto-discovers this class because the namespace is enabled in `forge.enabledGameTestNamespaces`. No manual registration needed. |
+| `@GameTestHolder("circleofcraft")` | Forge auto-discovers this class because the namespace is enabled in `forge.enabledGameTestNamespaces`. No manual registration needed. |
 | `@PrefixGameTestTemplate(false)` | **Required.** Without it, Forge auto-prepends the lowercased class name to every template path — so `"empty"` becomes `"liongametests.empty"`, which fails to load. |
 
 ### Skeleton — a trivial mane-rule test
@@ -225,7 +225,7 @@ private static long countCubsInArena(GameTestHelper helper) {
 
 ### Generating an empty arena structure NBT
 
-There is no built-in "empty arena" template; you must ship one. The 5×5×5 air arena `data/thelionking/structures/empty.nbt` was generated with this Python (run once, commit the binary):
+There is no built-in "empty arena" template; you must ship one. The 5×5×5 air arena `data/circleofcraft/structures/empty.nbt` was generated with this Python (run once, commit the binary):
 
 ```python
 from nbtlib import Compound, File, Int, List, String
@@ -236,7 +236,7 @@ File({
     "palette": List[Compound]([Compound({"Name": String("minecraft:air")})]),
     "blocks": List[Compound]([]),
     "entities": List[Compound]([]),
-}).save("src/main/resources/data/thelionking/structures/empty.nbt", gzipped=True)
+}).save("src/main/resources/data/circleofcraft/structures/empty.nbt", gzipped=True)
 ```
 
 Future tests can reuse the same `EMPTY` template — no need to ship one per test unless you need actual blocks in the arena.
@@ -295,7 +295,7 @@ If any fail, fix before pushing. Game Tests are slow enough that you'd typically
 These were the bugs we hit while building `LionGameTests`. Each is a one-line gotcha but cost time to diagnose:
 
 1. **Forge auto-prefixes the class name to template paths.** `"empty"` becomes `"liongametests.empty"`. Fix: `@PrefixGameTestTemplate(false)` on the holder class.
-2. **`@GameTestHolder("thelionking")` already provides the namespace.** Don't write `template = "thelionking:empty"` — Forge will produce `thelionking:thelionking:empty`. Use `template = "empty"`.
+2. **`@GameTestHolder("circleofcraft")` already provides the namespace.** Don't write `template = "circleofcraft:empty"` — Forge will produce `circleofcraft:circleofcraft:empty`. Use `template = "empty"`.
 3. **Structure NBTs go at `data/<ns>/structures/<name>.nbt`.** Not `data/<ns>/gametest/structures/`. Vanilla's `StructureManager` only checks the standard path.
 4. **`succeedWhen` retries on `GameTestAssertException`, not on `helper.fail()`.** Use `assertTrue(cond, msg)` inside `succeedWhen`, never `fail(msg)`.
 5. **`GameTestHelper.getBounds()` is `private`.** Use `absolutePos(BlockPos)` to construct an AABB yourself.

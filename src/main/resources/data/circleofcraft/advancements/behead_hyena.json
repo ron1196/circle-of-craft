@@ -1,0 +1,17 @@
+{
+  "parent": "circleofcraft:enter_outlands",
+  "display": {
+    "icon": { "item": "circleofcraft:hyena_head" },
+    "title": { "translate": "advancement.circleofcraft.behead_hyena.title" },
+    "description": { "translate": "advancement.circleofcraft.behead_hyena.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "circleofcraft:behead_hyena",
+      "conditions": {}
+    }
+  }
+}

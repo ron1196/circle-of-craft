@@ -1,5 +1,0 @@
-{
-  "type": "thelionking:grinding",
-  "ingredient": { "item": "thelionking:mango" },
-  "result": { "item": "thelionking:mango_dust" }
-}

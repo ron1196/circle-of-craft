@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "C C",
+    " C "
+  ],
+  "key": {
+    "C": { "item": "minecraft:clay_ball" }
+  },
+  "result": {
+    "item": "circleofcraft:jar_empty",
+    "count": 3
+  }
+}

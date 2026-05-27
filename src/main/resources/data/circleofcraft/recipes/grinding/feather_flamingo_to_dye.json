@@ -1,0 +1,5 @@
+{
+  "type": "circleofcraft:grinding",
+  "ingredient": { "item": "circleofcraft:feather_flamingo" },
+  "result": { "item": "minecraft:pink_dye" }
+}

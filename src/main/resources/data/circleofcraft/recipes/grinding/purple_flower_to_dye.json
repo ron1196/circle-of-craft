@@ -1,0 +1,5 @@
+{
+  "type": "circleofcraft:grinding",
+  "ingredient": { "item": "circleofcraft:purple_flower" },
+  "result": { "item": "minecraft:purple_dye" }
+}
