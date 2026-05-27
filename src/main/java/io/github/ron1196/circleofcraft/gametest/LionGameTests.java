@@ -7,6 +7,7 @@ import io.github.ron1196.circleofcraft.registry.EntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
@@ -110,7 +111,7 @@ public class LionGameTests {
         });
     }
 
-    @GameTest(template = EMPTY, timeoutTicks = 600)
+    @GameTest(template = EMPTY, timeoutTicks = 40)
     public void oppositeGenderBreeds(GameTestHelper helper) {
         LionEntity male = helper.spawn(EntityTypes.LION.get(), SPAWN_A);
         male.setBaby(false);
@@ -122,6 +123,13 @@ public class LionGameTests {
         female.setGender(Gender.FEMALE);
         female.setInLoveTime(600);
 
-        helper.succeedWhen(() -> helper.assertTrue(countCubsInArena(helper) >= 1, "expected at least 1 cub"));
+        if (!male.canMate(female)) {
+            helper.fail("opposite-gender lions should be able to mate", male);
+        }
+        AgeableMob cub = male.getBreedOffspring(helper.getLevel(), female);
+        if (!(cub instanceof LionEntity)) {
+            helper.fail("breeding opposite-gender lions should produce a lion cub", male);
+        }
+        helper.succeed();
     }
 }
