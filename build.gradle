@@ -7,7 +7,7 @@ plugins {
     id 'com.diffplug.spotless' version '6.25.0'
 }
 
-version = '1.0.0'
+version = System.getenv('MOD_VERSION') ?: '0.0.0-dev'
 group = 'io.github.ron1196'
 
 base {
