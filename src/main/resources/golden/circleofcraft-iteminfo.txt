@@ -1,0 +1,311 @@
+circleofcraft:acacia_bug_trap	
+circleofcraft:amulet	Obtained from Timon and Pumbaa.Allows the wearer to speak to theanimals of the Pride Lands.
+circleofcraft:arid_grass	A type of tall grass that growsin arid savannah biomes.
+circleofcraft:bamboo_bug_trap	
+circleofcraft:banana	Grows on Banana Trees.Can be eaten to restore hunger,or used in food recipes.
+circleofcraft:banana_bread	Can be eaten to restore hunger.
+circleofcraft:banana_bug_trap	
+circleofcraft:banana_cake	Can be placed in the world andeaten to restore hunger.
+circleofcraft:banana_leaves	Found on Banana Trees.May drop a sapling when brokenor left to decay.
+circleofcraft:banana_log	The block which makes up thetrunks of Banana Trees.It can be crafted into planks,just like normal wood.
+circleofcraft:banana_planks	Made from the wood of BananaTrees.A readily available buildingmaterial which can also becrafted into a wide rangeof blocks, tools and items.
+circleofcraft:banana_sapling	Can be planted on dirt or grassto grow Banana Trees.
+circleofcraft:banana_slab	Half blocks made from BananaWood Planks.
+circleofcraft:banana_stairs	Stairs made from Banana WoodPlanks.
+circleofcraft:birch_bug_trap	
+circleofcraft:blue_flower	A flower found on mountainsin the Pride Lands.Can be ground into Rug Dye.
+circleofcraft:bongo_drum	Hit it to make music!It can also be activated with aRhythm Staff and used to enchantitems.
+circleofcraft:bug	Found underneath fallen logs inthe Pride Lands. Can also becaught with a Bug Trap.Timon and Pumbaa love toeat these!
+circleofcraft:bug_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:bug_stew	A culinary delight made fromall-natural ingredients.Can be eaten to restorehunger, but may have someunwanted effects.
+circleofcraft:bug_trap	Can be placed and baited tocatch bugs for Timon and Pumbaa.The likelihood of catching a bugcan be increased or decreasedby certain conditions.The trap will not catch bugsif there are any playerswithin sixteen blocks of it.
+circleofcraft:cherry_bug_trap	
+circleofcraft:chocolate_mufasa	Found in Pride Lands dungeons.Can be eaten to restore a lotof hunger.
+circleofcraft:corn	Picked from Maize Stalks.Can be eaten, cooked, and usedas an alternative to wheat forbreeding Pride Lands animals.
+circleofcraft:corn_kernels	Can be used as an alternative toseeds for breeding Zazus.
+circleofcraft:corrupt_axe	Used to harvest wood-typeblocks more quickly.Corrupt Pridestone tools arestrong when first crafted, butweaken with use.
+circleofcraft:corrupt_hoe	Used to till dirt into farmland.
+circleofcraft:corrupt_pickaxe	Used to harvest stone-typeblocks.Corrupt Pridestone tools arestrong when first crafted, butweaken with use.
+circleofcraft:corrupt_pride_brick	A useful building material madefrom Corrupt Pridestone.
+circleofcraft:corrupt_pride_brick_slab	Half blocks made fromCorrupt Pridestone Brick.
+circleofcraft:corrupt_pride_brick_stairs	Stairs made from CorruptPridestone Brick.
+circleofcraft:corrupt_pride_pillar	
+circleofcraft:corrupt_pride_pillar_slab	
+circleofcraft:corrupt_pridestone	A block found in abundancein the Outlands.Can be made into a range oftools and building blocks.
+circleofcraft:corrupt_pridestone_slab	Half blocks made fromCorrupt Pridestone.
+circleofcraft:corrupt_pridestone_stairs	Stairs made from CorruptPridestone.
+circleofcraft:corrupt_pridestone_wall	A decorative block that can beused as an alternative to fences.
+circleofcraft:corrupt_shovel	Used to harvest blocks likedirt and sand more quickly.Corrupt Pridestone tools arestrong when first crafted, butweaken with use.
+circleofcraft:corrupt_sword	Used to deal more damageto mobs.Corrupt Pridestone tools arestrong when first crafted, butweaken with use.
+circleofcraft:cracked_pride_brick	
+circleofcraft:crimson_bug_trap	
+circleofcraft:crocodile_meat	Dropped by Crocodiles.Can be eaten to restore hunger.Has a chance to causefood poisoning.
+circleofcraft:crocodile_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:crystal	Obtained from Timon and Pumbaa.Will completely restore theplayer's health if it dropsbelow two hearts.
+circleofcraft:dark_oak_bug_trap	
+circleofcraft:dart_black	Can be fired from a Dart Shooter.Outlandish Darts create anexplosion wherever they hit!
+circleofcraft:dart_blue	Can be fired from a Dart Shooter.
+circleofcraft:dart_outlandish	Can be fired from a Dart Shooter.Outlandish Darts create anexplosion wherever they hit!
+circleofcraft:dart_pink	Can be fired from a Dart Shooter.Flamingo Darts have the abilityto drain health from thecreature they hit.
+circleofcraft:dart_red	Can be fired from a Dart Shooter.Red darts travel faster thanblue ones, have a knockbackeffect, and set the target on fire.
+circleofcraft:dart_shooter	Used to fire darts.
+circleofcraft:dart_shooter_silver	Used to fire darts.Darts fired from the Silver DartShooter will travel faster and bemore powerful than darts firedfrom the standard Dart Shooter.
+circleofcraft:dart_yellow	Can be fired from a Dart Shooter.Yellow darts travel fasterthan blue ones, and have aknockback effect.
+circleofcraft:deadwood_bug_trap	
+circleofcraft:deadwood_log	The block which makes up deadtrees found in the Outlands.It can be crafted into planks,just like normal wood.
+circleofcraft:deadwood_planks	Made from the wood of deadtrees found in the Outlands.A readily available buildingmaterial which can also becrafted into a wide rangeof blocks, tools and items.
+circleofcraft:deadwood_slab	Half blocks made from DeadwoodPlanks.
+circleofcraft:deadwood_stairs	Stairs made from Deadwood Planks.
+circleofcraft:dikdik_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:dried_maize	Can be crafted into Dried Maizebuilding materials.
+circleofcraft:dried_maize_block	A building block made from driedstalks of maize.Can be crafted into stairs andslabs.
+circleofcraft:dried_maize_slab	Half blocks made from DriedMaize blocks.
+circleofcraft:dried_maize_stairs	Stairs made from Dried Maizeblocks.
+circleofcraft:experience_grub	Obtained from Timon and Pumbaa.Can be eaten to gain a moderateamount of experience.
+circleofcraft:feather_black	Dropped by Vultures.Can be crafted into OutlandishDarts, or ground into Rug Dye.
+circleofcraft:feather_blue	Dropped by Zazus.Can be crafted into darts, orground into Rug Dye.
+circleofcraft:feather_flamingo	Dropped by Flamingos.Can be crafted into FlamingoDarts, or ground into Rug Dye.
+circleofcraft:feather_red	Dropped by Zazus.Can be crafted into darts, orground into Rug Dye.
+circleofcraft:feather_yellow	Dropped by Zazus.Can be crafted into darts, orground into Rug Dye.
+circleofcraft:flamingo_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:gemsbok_boots	Can be equipped to giveprotection against mostforms of damage.
+circleofcraft:gemsbok_chestplate	Can be equipped to giveprotection against mostforms of damage.
+circleofcraft:gemsbok_helmet	Can be equipped to giveprotection against mostforms of damage.
+circleofcraft:gemsbok_hide	Dropped by Gemsboks.Used in crafting Gemsbok armourand Giraffe Saddles.
+circleofcraft:gemsbok_horn	Dropped by Gemsboks.Used in crafting Gemsbok Spearsand the Rhythm Staff.
+circleofcraft:gemsbok_leggings	Can be equipped to giveprotection against mostforms of damage.
+circleofcraft:gemsbok_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:gemsbok_spear	A spear that can be thrown andpicked up again, or used asa melee weapon.It may also catch fish if throwninto water.
+circleofcraft:giraffe_saddle	Can be equipped to an adultGiraffe to allow it tobe ridden.
+circleofcraft:giraffe_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:giraffe_tie	Used to customise your saddledGiraffes.After being whitened with RugWhitener, a tie can be dyed ina variety of different colours.
+circleofcraft:giraffe_tie_black	A dyed Giraffe Tie.
+circleofcraft:giraffe_tie_blue	A dyed Giraffe Tie.
+circleofcraft:giraffe_tie_green	A dyed Giraffe Tie.
+circleofcraft:giraffe_tie_purple	A dyed Giraffe Tie.
+circleofcraft:giraffe_tie_red	A dyed Giraffe Tie.
+circleofcraft:giraffe_tie_white	A whitened Giraffe Tie readyfor dyeing.
+circleofcraft:giraffe_tie_yellow	A dyed Giraffe Tie.
+circleofcraft:grinding_bowl	The Grinding Bowl is used toprocess items into their grounddown forms.Examples include turning HyenaBones into shards, Rhino Hornsand mangoes into powders, andvarious items into Rug Dyes.
+circleofcraft:ground_rhino_horn	Made by placing Rhino Hornin the Grinding Bowl.Can be fed to breeding animalsto make them produce moreoffspring, and can also dye rugs.
+circleofcraft:hanging_banana	Bunches of bananas hangingfrom a Banana Tree.
+circleofcraft:hyena_bone	Dropped by Hyenas.Used in crafting recipes,grinding, and breeding lions.
+circleofcraft:hyena_bone_shard	Made by placing Hyena Bones inthe Grinding Bowl.Used in crafting blue, yellowand red darts.
+circleofcraft:hyena_head	A rare decorative block sometimesdropped by Hyenas.
+circleofcraft:hyena_meal	Used to grow plants and crops inthe Pride Lands.
+circleofcraft:hyena_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:hyena_torch	An alternative torch made withHyena Bones in place of sticks.Gives off a slightly dimmer lightthan wooden torches.
+circleofcraft:jar_empty	Can be used to carry water, lavaand a few other liquids.
+circleofcraft:jar_lava	A Pridestone Jar filled with lava.
+circleofcraft:jar_milk	A Pridestone Jar filled with milk.Can be fed to angry Lions andLionesses to calm them down,and is used in the making ofsome Pride Lands dishes.
+circleofcraft:jar_water	A Pridestone Jar filled with water.Can be crafted with variousplants to make a decorative vase.
+circleofcraft:jungle_bug_trap	
+circleofcraft:kivulite	Made by smelting Kivulite Ore ina furnace.Used to make tools with specialfire-based abilities.
+circleofcraft:kivulite_axe	Used to harvest wood-typeblocks more quickly.Smeltable blocks harvested by aKivulite tool are automaticallysmelted.
+circleofcraft:kivulite_block	Made from Kivulite.Used for storage anddecoration.
+circleofcraft:kivulite_hoe	Used to till dirt into farmland.
+circleofcraft:kivulite_ore	An ore found in the Outlands.Can be smelted into ingots andmade into tools with a usefulspecial ability.
+circleofcraft:kivulite_pickaxe	Used to harvest stone-typeblocks.Smeltable blocks harvested by aKivulite tool are automaticallysmelted.
+circleofcraft:kivulite_shovel	Used to harvest blocks likedirt and sand more quickly.Smeltable blocks harvested by aKivulite tool are automaticallysmelted.
+circleofcraft:kivulite_sword	Used to deal more damageto mobs.Mobs hit by a Kivulite swordare set on fire.
+circleofcraft:kiwano	Dropped by Kiwano fruit.Can be eaten to restore hunger,or crafted into seeds.
+circleofcraft:kiwano_block	Fruit found in the arid savannahbiome. Also known as theAfrican Horned Melon.Can be grown on tilled sandto produce slices of fruit.
+circleofcraft:kiwano_seeds	Can be placed on Tilled Sandto grow a Kiwano.
+circleofcraft:lily_red	Found in the waters of PrideLands rainforests.Can be ground into Rug Dye.
+circleofcraft:lily_violet	Found in the waters of PrideLands rainforests.Can be ground into Rug Dye.
+circleofcraft:lily_white	Found in the waters of PrideLands rainforests.Can be ground into Rug Whitener.
+circleofcraft:lion_cooked	Can be eaten to restore hunger.
+circleofcraft:lion_fur	Dropped by Lions and Lionesses.Used in crafting beds and variousother items.
+circleofcraft:lion_raw	Dropped by Lions and Lionesses.Can be cooked to restoremore hunger.
+circleofcraft:lion_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:maize_stalks	Found in the Pride Lands, oftenby rivers or in rainforests.Can be grown on farmland whichis next to water, or dried in afurnace for use in building.
+circleofcraft:mango	Drops from Mango Trees.Can be eaten to restore hunger,used in food recipes, or grounddown in the Grinding Bowl.
+circleofcraft:mango_bug_trap	
+circleofcraft:mango_dust	Made by placing mangoes inthe Grinding Bowl.Used in crafting Dart Shootersand can also dye rugs.
+circleofcraft:mango_juice	A drink made from mangoes.
+circleofcraft:mango_leaves	Found on Mango Trees.May drop a sapling or a mangowhen broken or left to decay.
+circleofcraft:mango_log	The block which makes up thetrunks of Mango Trees.It can be crafted into planks,just like normal wood.
+circleofcraft:mango_planks	Made from the wood of MangoTrees.A readily available buildingmaterial which can also becrafted into a wide rangeof blocks, tools and items.
+circleofcraft:mango_sapling	Can be planted on dirt or grassto grow Mango Trees.
+circleofcraft:mango_slab	Half blocks made from MangoWood Planks.
+circleofcraft:mango_stairs	Stairs made from Mango WoodPlanks.
+circleofcraft:mangrove_bug_trap	
+circleofcraft:mossy_corrupt_pride_brick	Formed from Pridestone Brick asa result of the destructiveeffects of Pumbaa Flatulence.
+circleofcraft:mossy_pride_brick	A decorative block found indungeons in the Pride Lands.
+circleofcraft:mounted_shooter	A Dart Shooter that can beplaced in the world.It holds up to one stack of dartsand will fire when powered.
+circleofcraft:note_a	Dropped from creatures killedwith a Rhythm Staff.Can be placed in a Bongo Drumto increase its enchanting power.Rarer notes have higher values.
+circleofcraft:note_b	Dropped from creatures killedwith a Rhythm Staff.Can be placed in a Bongo Drumto increase its enchanting power.Rarer notes have higher values.
+circleofcraft:note_c	Dropped from creatures killedwith a Rhythm Staff.Can be placed in a Bongo Drumto increase its enchanting power.Rarer notes have higher values.
+circleofcraft:note_d	Dropped from creatures killedwith a Rhythm Staff.Can be placed in a Bongo Drumto increase its enchanting power.Rarer notes have higher values.
+circleofcraft:note_e	Dropped from creatures killedwith a Rhythm Staff.Can be placed in a Bongo Drumto increase its enchanting power.Rarer notes have higher values.
+circleofcraft:note_f	Dropped from creatures killedwith a Rhythm Staff.Can be placed in a Bongo Drumto increase its enchanting power.Rarer notes have higher values.
+circleofcraft:note_g	Dropped from creatures killedwith a Rhythm Staff.Can be placed in a Bongo Drumto increase its enchanting power.Rarer notes have higher values.
+circleofcraft:nuka_ore	An ore often found undergroundin the Outlands.Will drop Nuka Shards when broken.
+circleofcraft:nuka_shard	Dropped by Nuka Ore.Can be used as furnace fuel,ground down into poison, orcrafted with an Outshroom tomake it glow.
+circleofcraft:oak_bug_trap	
+circleofcraft:outglass	A stronger type of glass madeby smelting Outsand.It drops itself when broken.
+circleofcraft:outglass_pane	A stronger type of glass panemade from Outglass blocks.It drops itself when broken.
+circleofcraft:outlander_fur	Dropped by Outlanders.Can be crafted into Fur Rugs.
+circleofcraft:outlander_meat	Dropped by Outlanders.Can be cooked to restoremore hunger and remove thepossibility of food poisoning.
+circleofcraft:outlander_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:outlands_altar	Releases transformed items fromthe Outwater in Zira's Mound.
+circleofcraft:outlands_helmet	Protects against fire andOutlanders when in the Outlands.
+circleofcraft:outlands_pool	A mysterious liquid found insideZira's Mound.Some items thrown in maybe transformed.
+circleofcraft:outlands_portal_frame	The indestructible frame of anOutlands Portal.
+circleofcraft:outsand	Formed in the Outlands whensand is struck by lightning.It is dangerous to walk on. It canalso be smelted into Outglass.
+circleofcraft:outshroom	Found in caves in the Outlands.Will grow if left in darkness.
+circleofcraft:outshroom_glowing	A light source made from a NukaShard and a normal Outshroom.
+circleofcraft:passion_bug_trap	
+circleofcraft:passion_fruit	Drops from Passion Fruit Trees.Can be eaten when in full healthto travel to the Upendi realm.
+circleofcraft:passion_leaves	Found on Passion Fruit Trees.May drop a sapling or a PassionFruit when broken or left todecay.
+circleofcraft:passion_log	The block which makes up thetrunks of Passion Fruit Trees.It can be crafted into planks,just like normal wood.
+circleofcraft:passion_planks	Made from the wood of PassionFruit Trees.A readily available buildingmaterial which can also becrafted into a wide rangeof blocks, tools and items.
+circleofcraft:passion_sapling	Can be planted on dirt or grassto grow Passion Fruit Trees.These trees will not grownaturally in the Pride Lands,although they can be grown usingthe Rafiki Stick.
+circleofcraft:passion_slab	Half blocks made from PassionWood Planks.
+circleofcraft:passion_stairs	Stairs made from Passion WoodPlanks.
+circleofcraft:peacock_axe	Used to harvest wood-typeblocks more quickly.
+circleofcraft:peacock_block	Made from Peacock Gems.Used for storage anddecoration.
+circleofcraft:peacock_boots	Can be equipped to giveprotection against mostforms of damage.
+circleofcraft:peacock_chestplate	Can be equipped to giveprotection against mostforms of damage.
+circleofcraft:peacock_gem	Made by smelting Peacock Ore ina furnace.Used to make tools, armourand other items.
+circleofcraft:peacock_helmet	Can be equipped to giveprotection against mostforms of damage.
+circleofcraft:peacock_hoe	Used to till dirt into farmland.
+circleofcraft:peacock_leggings	Can be equipped to giveprotection against mostforms of damage.
+circleofcraft:peacock_ore	A rare ore found deepunderground in the Pride Lands.The gems received from smeltingit can be made into very strongtools and armour.
+circleofcraft:peacock_pickaxe	Used to harvest stone-typeblocks.
+circleofcraft:peacock_shovel	Used to harvest blocks likedirt and sand more quickly.
+circleofcraft:peacock_sword	Used to deal more damageto mobs.
+circleofcraft:peacock_wings	When equipped, these givethe wearer the ability oflimited flight, and protectionagainst fall damage.
+circleofcraft:poison	Made by placing Nuka Shards inthe Grinding Bowl.Two Poison Powders can beapplied to a Gemsbok Spear togive it a poison effect.
+circleofcraft:poisoned_spear	A spear that can be thrown andpicked up again, or used asa melee weapon.Mobs hit by this spear have achance of becoming poisoned.
+circleofcraft:popcorn	Can be eaten to restore hunger.
+circleofcraft:pride_acacia_leaves	The block which makes up thecanopy of Acacia Trees.May drop a sapling when brokenor left to decay. Can also beused to breed Giraffes.
+circleofcraft:pride_acacia_log	The block which makes up thetrunks of Acacia Trees.It can be crafted into planks,just like normal wood.
+circleofcraft:pride_acacia_planks	Made from the wood of AcaciaTrees.A readily available buildingmaterial which can also becrafted into a wide rangeof blocks, tools and items.
+circleofcraft:pride_acacia_sapling	Can be planted on dirt or grassto grow Acacia Trees.
+circleofcraft:pride_acacia_slab	Half blocks made from AcaciaWood Planks.
+circleofcraft:pride_acacia_stairs	Stairs made from Acacia WoodPlanks.
+circleofcraft:pride_bed	Can be slept in to skip the nightand set the respawn point.
+circleofcraft:pride_brick	A useful building material madefrom Pridestone.
+circleofcraft:pride_brick_slab	Half blocks made fromPridestone Brick.
+circleofcraft:pride_brick_stairs	Stairs made from Pridestone Brick.
+circleofcraft:pride_brick_wall	A decorative block that can beused as an alternative to fences.
+circleofcraft:pride_coal_ore	An ore often found undergroundin the Pride Lands.Will drop coal when broken.
+circleofcraft:pride_compass	A compass that points the wayback to your home portal.
+circleofcraft:pride_lever	Used to provide a stable charge.
+circleofcraft:pride_pillar	A decorative block which can bemade into a range of differentsizes with the Grinding Bowl.
+circleofcraft:pride_pillar_slab	
+circleofcraft:pride_portal_frame	The indestructible frame of aPride Lands Portal.Found in Lion King Ticket Boothsand can be activated with aLion King Ticket.
+circleofcraft:pridestone	A block found in abundancein the Pride Lands.Can be made into a range oftools and building blocks.
+circleofcraft:pridestone_axe	Used to harvest wood-typeblocks more quickly.
+circleofcraft:pridestone_button	Will release a charge whenpressed.
+circleofcraft:pridestone_hoe	Used to till dirt into farmland.
+circleofcraft:pridestone_pickaxe	Used to harvest stone-typeblocks.
+circleofcraft:pridestone_pressure_plate	Will release a charge whenstepped on.
+circleofcraft:pridestone_shovel	Used to harvest blocks likedirt and sand more quickly.
+circleofcraft:pridestone_slab	Half blocks made from Pridestone.
+circleofcraft:pridestone_stairs	Stairs made from Pridestone.
+circleofcraft:pridestone_sword	Used to deal more damageto mobs.
+circleofcraft:pridestone_wall	A decorative block that can beused as an alternative to fences.
+circleofcraft:pumbaa_bomb	Obtained from Timon and Pumbaa.When thrown, it releases a hugeamount of toxic gas which caninstantly kill most creatures.
+circleofcraft:pumbaa_box	A box containing some extremelypotent natural gas from thePride Lands' resident warthog.Use well, and handle with care!
+circleofcraft:pumbaa_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:purple_flower	A tall flower found in thePride Lands, most commonlyin rainforest biomes.Can be ground into Rug Dye.
+circleofcraft:quest_book	You're reading it now!
+circleofcraft:rafiki_coin	Obtained from Rafiki in exchangefor three silver ingots.When thrown, the player will beinstantly transported toRafiki's Tree.
+circleofcraft:rafiki_dust	Obtained from Rafiki in exchangefor one Ground Mango and oneGround Termite.Can be used on a Star Altar tosummon Simba, or crafted withfour silver ingots into anAstral Charm.
+circleofcraft:rafiki_leaves	The block which makes up thecanopies of Rafiki's Tree.It cannot be destroyed.
+circleofcraft:rafiki_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:rafiki_stick	Obtained from Rafiki in exchangefor a stack of Hyena Bones.Can grow saplings, flowersand grass, harvest leaves andvarious other foliage, and is theonly weapon that can harm Scar.
+circleofcraft:rafiki_wood	The block which makes up thetrunk of Rafiki's Tree.It cannot be destroyed.
+circleofcraft:rainforest_bug_trap	
+circleofcraft:rainforest_leaves	The block which makes up thecanopy of Rainforest Trees.May drop a sapling when brokenor left to decay.
+circleofcraft:rainforest_log	The block which makes up thetrunks of Rainforest Trees.It can be crafted into planks,just like normal wood.
+circleofcraft:rainforest_planks	Made from the wood of RainforestTrees.A readily available buildingmaterial which can also becrafted into a wide rangeof blocks, tools and items.
+circleofcraft:rainforest_sapling	Can be planted on dirt or grassto grow Rainforest Trees.Four in a square will growa huge tree.
+circleofcraft:rainforest_slab	Half blocks made from RainforestWood Planks.
+circleofcraft:rainforest_stairs	Stairs made from RainforestWood Planks.
+circleofcraft:red_flower	A tall, luminous flower foundcommonly in Upendi.Can be ground into Rug Dye.
+circleofcraft:rhino_cooked	Can be eaten to restore hunger.
+circleofcraft:rhino_horn	Dropped by Rhinos.Can be ground down in theGrinding Bowl.
+circleofcraft:rhino_raw	Dropped by Rhinos.Can be cooked to restoremore hunger.
+circleofcraft:rhino_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:rhythm_staff	Used to enchant items on aBongo Drum and collect notesto increase the drum's power.When a creature is killed withthis staff, it may drop some notes.
+circleofcraft:roast_yam	Can be eaten to restore hunger.
+circleofcraft:rug_black	
+circleofcraft:rug_blue	
+circleofcraft:rug_gray	
+circleofcraft:rug_green	
+circleofcraft:rug_light_blue	
+circleofcraft:rug_light_gray	
+circleofcraft:rug_light_green	
+circleofcraft:rug_lion	
+circleofcraft:rug_orange	
+circleofcraft:rug_outlander	
+circleofcraft:rug_pink	
+circleofcraft:rug_purple	
+circleofcraft:rug_red	
+circleofcraft:rug_violet	
+circleofcraft:rug_white	
+circleofcraft:rug_yellow	
+circleofcraft:scar_rug	Dropped by Scar.A unique reward which can beobtained only once.
+circleofcraft:scar_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:silver_axe	Used to harvest wood-typeblocks more quickly.
+circleofcraft:silver_block	Made from silver ingots.Used for storage anddecoration.
+circleofcraft:silver_boots	Can be equipped to giveprotection against mostforms of damage.
+circleofcraft:silver_chestplate	Can be equipped to giveprotection against mostforms of damage.
+circleofcraft:silver_helmet	Can be equipped to giveprotection against mostforms of damage.
+circleofcraft:silver_hoe	Used to till dirt into farmland.
+circleofcraft:silver_ingot	Made by smelting Silver Ore ina furnace.Used to make tools, armourand various other items.Rafiki will exchange three silveringots for a Rafiki Coin.
+circleofcraft:silver_leggings	Can be equipped to giveprotection against mostforms of damage.
+circleofcraft:silver_ore	An ore found in the Pride Lands.Can be smelted into ingots andused to make tools, armour andvarious other items.
+circleofcraft:silver_pickaxe	Used to harvest stone-typeblocks.
+circleofcraft:silver_shovel	Used to harvest blocks likedirt and sand more quickly.
+circleofcraft:silver_sword	Used to deal more damageto mobs.
+circleofcraft:simba_charm	Can be equipped to Simba toallow him to follow the playerthrough portals.
+circleofcraft:simba_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:skeletal_hyena_head_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:skeletal_hyena_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:spruce_bug_trap	
+circleofcraft:star_altar	A magical block which can beused to summon Simba andrecharge Voided Charms.It must be placed in directview of the sky.
+circleofcraft:termite_dust	Made by placing Exploding Termitesin the Grinding Bowl.Can be used to dye rugs or inplace of gunpowder to craft TNT.
+circleofcraft:termite_mound	The block which makes up thetermite mounds found commonlyin the Outlands.If it is naturally generated,it may release Exploding Termiteswhen broken!
+circleofcraft:termite_queen_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:termite_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:termite_thrown	Dropped by termites from termitemounds in the Outlands.Can be thrown, crafted intoOutlandish Darts, or grounddown and used to dye rugs.
+circleofcraft:ticket	Purchased from Ticket Lions inexchange for a gold ingot.Used to activate portals tothe Pride Lands.
+circleofcraft:ticket_lion_feet	A novelty item found inLion King Ticket Booths.Collect the full set!
+circleofcraft:ticket_lion_head	A novelty item found inLion King Ticket Booths.Collect the full set!
+circleofcraft:ticket_lion_legs	A novelty item found inLion King Ticket Booths.Collect the full set!
+circleofcraft:ticket_lion_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:ticket_lion_suit	A novelty item found inLion King Ticket Booths.Collect the full set!
+circleofcraft:tilled_sand	Made by using a hoe on ablock of sand in an aridsavannah biome.
+circleofcraft:timon_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:tunnah_diggah	Obtained from Timon and Pumbaa.Used to dig large tunnels veryquickly through dirt and stone.
+circleofcraft:vase	A decorative vase block.
+circleofcraft:vase_acacia	
+circleofcraft:vase_banana	
+circleofcraft:vase_blue_flower	
+circleofcraft:vase_mango	
+circleofcraft:vase_outshroom	
+circleofcraft:vase_outshroom_glowing	
+circleofcraft:vase_passion	
+circleofcraft:vase_purple_flower	
+circleofcraft:vase_rainforest	
+circleofcraft:vase_red_flower	
+circleofcraft:vase_white_flower	
+circleofcraft:vulture_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:warped_bug_trap	
+circleofcraft:wayward_feather	Can be used to travel quicklybetween the Pride Lands andthe Outlands without the needfor a portal.However, this method oftravel is not as stable as aportal, and the results areunpredictable.
+circleofcraft:white_flower	A common flower foundin the Pride Lands.Can be ground into Rug Whitener.
+circleofcraft:yam	A vegetable found growing insavannah biomes.Can be farmed, and roasted torestore more hunger. If eatenraw, it may cause food poisoning.
+circleofcraft:zazu_egg	Dropped by Zazus whenthey breed.May spawn a baby Zazuwhen thrown.
+circleofcraft:zazu_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:zebra_cooked	Can be eaten to restore hunger.
+circleofcraft:zebra_hide	Dropped by Zebras.Used to craft Zebra Boots anda few other items.
+circleofcraft:zebra_raw	Dropped by Zebras.Can be cooked to restoremore hunger.
+circleofcraft:zebra_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:zira_coin	Created when a Rafiki Coin isdropped into the Outwater.When thrown, the player will beinstantly transported toZira's Mound.
+circleofcraft:zira_mound_gate	
+circleofcraft:zira_rug	Dropped by Zira.It complements the Scar Rugnicely as a pleasant decorationin the home.
+circleofcraft:zira_spawn_egg	Used to spawn a creature fromthe Lion King worlds.

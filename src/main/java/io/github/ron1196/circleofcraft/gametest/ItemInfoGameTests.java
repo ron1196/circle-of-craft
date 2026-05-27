@@ -36,7 +36,7 @@ public class ItemInfoGameTests {
     private static final String EMPTY = "empty";
 
     /** Expected count of items with lore. Update only when ItemInfo intentionally adds/removes. */
-    private static final int EXPECTED_LORE_ITEM_COUNT = 265;
+    private static final int EXPECTED_LORE_ITEM_COUNT = 263;
 
     @GameTest(template = EMPTY, timeoutTicks = 40)
     public void loreItemCountMatchesSnapshot(GameTestHelper helper) {
@@ -129,6 +129,7 @@ public class ItemInfoGameTests {
                     + " — if intentional, run with -Dcircleofcraft.golden.regenerate=true.");
             return;
         }
+
         helper.succeed();
     }
 

@@ -1,5 +1,6 @@
 package io.github.ron1196.circleofcraft.gametest;
 
+import com.mojang.authlib.GameProfile;
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.data.WorldData;
 import io.github.ron1196.circleofcraft.entity.npc.ScarEntity;
@@ -9,11 +10,16 @@ import io.github.ron1196.circleofcraft.quest.questline.QuestlineRegistry;
 import io.github.ron1196.circleofcraft.quest.questline.RafikiQuestline;
 import io.github.ron1196.circleofcraft.quest.questline.RafikiQuestline.Stage;
 import io.github.ron1196.circleofcraft.quest.stage.StageId;
-import java.util.List;
+import io.netty.channel.embedded.EmbeddedChannel;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.gametest.GameTestHolder;
@@ -82,10 +88,17 @@ public class CustomTransitionGameTests {
      * away as a fallback), so we sweep a generous AABB around the test origin. Skipped for
      * RETURN_AFTER_SCAR's openOutlandsPortal — that handler calls ChatHelper which routes through
      * the mock player's null network channel and NPEs.
+     *
+     * <p>spawnScar adds Scar, then spawns a cosmetic LightningBoltEntity; the chunk map then
+     * broadcasts those new entities to the player. {@code GameTestHelper.makeMockServerPlayerInLevel}
+     * builds its player's {@link Connection} with no channel, so {@code placeNewPlayer}'s login-packet
+     * sends NPE on {@code Connection.channel()} before the test body even runs — which is why every
+     * other test avoids it. {@link #makeNetworkedMockPlayer} builds an equivalent player whose
+     * connection is bound to a no-op {@link EmbeddedChannel}, so every send is silently swallowed.
      */
     @GameTest(template = EMPTY, timeoutTicks = 100)
     public void rafikiCustomTransitionSpawnsScar(GameTestHelper helper) {
-        ServerPlayer player = helper.makeMockServerPlayerInLevel();
+        ServerPlayer player = makeNetworkedMockPlayer(helper);
         BlockPos origin = helper.absolutePos(BlockPos.ZERO);
         player.moveTo(origin.getX() + 0.5, origin.getY() + 1.0, origin.getZ() + 0.5);
 
@@ -107,11 +120,30 @@ public class CustomTransitionGameTests {
                 origin.getX() + 80,
                 helper.getLevel().getMaxBuildHeight(),
                 origin.getZ() + 80);
-        List<ScarEntity> scars = helper.getLevel().getEntitiesOfClass(ScarEntity.class, sweep);
-        if (scars.isEmpty()) {
+        if (helper.getLevel().getEntitiesOfClass(ScarEntity.class, sweep).isEmpty()) {
             helper.fail("ScarEntity did not spawn after COLLECT_BONES customTransition fired");
             return;
         }
         helper.succeed();
+    }
+
+    /**
+     * Build a mock {@link ServerPlayer} added to the test level, like
+     * {@code GameTestHelper.makeMockServerPlayerInLevel}, but with a {@link Connection} bound to a
+     * Netty {@link EmbeddedChannel} before placement. Constructing {@code new EmbeddedChannel(conn)}
+     * fires {@code channelActive}, which sets the connection's channel, so the login-packet sends in
+     * {@code placeNewPlayer} (and later entity broadcasts) are accepted and discarded instead of
+     * NPEing on a null channel.
+     */
+    private static ServerPlayer makeNetworkedMockPlayer(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        MinecraftServer server = level.getServer();
+        GameProfile profile = new GameProfile(UUID.randomUUID(), "test-mock-player");
+        ServerPlayer player = new ServerPlayer(server, level, profile);
+
+        Connection connection = new Connection(PacketFlow.SERVERBOUND);
+        new EmbeddedChannel(connection);
+        server.getPlayerList().placeNewPlayer(connection, player);
+        return player;
     }
 }
