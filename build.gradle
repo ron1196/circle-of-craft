@@ -14,6 +14,10 @@ base {
     archivesName = 'thelionking'
 }
 
+tasks.named('jar').configure {
+    archiveClassifier = "mc${minecraft_version}"
+}
+
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
