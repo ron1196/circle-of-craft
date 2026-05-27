@@ -14,7 +14,7 @@ base {
     archivesName = 'thelionking'
 }
 
-tasks.named('jar').configure {
+tasks.named('jarJar').configure {
     archiveClassifier = "mc${minecraft_version}"
 }
 
