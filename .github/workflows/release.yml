@@ -1,0 +1,181 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*-mc*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tag
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Parse tag
+        id: parse
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          if [[ ! "$TAG" =~ ^v([0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9.]+)?)-mc([0-9]+\.[0-9]+(\.[0-9]+)?)$ ]]; then
+            echo "Tag '$TAG' does not match expected pattern v<modver>-mc<mcver>" >&2
+            exit 1
+          fi
+          MOD_VERSION="${BASH_REMATCH[1]}"
+          EXPECTED_MC="${BASH_REMATCH[3]}"
+          echo "mod_version=$MOD_VERSION" >> "$GITHUB_OUTPUT"
+          echo "expected_mc=$EXPECTED_MC" >> "$GITHUB_OUTPUT"
+          echo "Parsed: mod_version=$MOD_VERSION, expected_mc=$EXPECTED_MC"
+
+      - name: Validate MC version matches branch's gradle.properties
+        id: validate
+        run: |
+          BRANCH_MC=$(grep -E '^minecraft_version=' gradle.properties | cut -d= -f2)
+          if [[ "$BRANCH_MC" != "${{ steps.parse.outputs.expected_mc }}" ]]; then
+            echo "Tag MC version (${{ steps.parse.outputs.expected_mc }}) does not match gradle.properties minecraft_version ($BRANCH_MC)." >&2
+            echo "Did you tag from the wrong branch?" >&2
+            exit 1
+          fi
+          MAJOR=$(echo "$BRANCH_MC" | cut -d. -f1)
+          MINOR=$(echo "$BRANCH_MC" | cut -d. -f2)
+          if [[ "$MAJOR.$MINOR" == "1.20" ]]; then
+            LOADER="forge"
+          else
+            LOADER="neoforge"
+          fi
+          echo "mc_version=$BRANCH_MC" >> "$GITHUB_OUTPUT"
+          echo "loader=$LOADER" >> "$GITHUB_OUTPUT"
+          echo "Validated: mc_version=$BRANCH_MC, loader=$LOADER"
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build
+        env:
+          MOD_VERSION: ${{ steps.parse.outputs.mod_version }}
+        run: ./gradlew build
+
+      - name: Locate JAR
+        id: jar
+        run: |
+          JAR=$(ls build/libs/thelionking-${{ steps.parse.outputs.mod_version }}-mc${{ steps.validate.outputs.mc_version }}.jar)
+          if [[ ! -f "$JAR" ]]; then
+            echo "Expected JAR not found." >&2
+            ls -1 build/libs/ >&2
+            exit 1
+          fi
+          echo "path=$JAR" >> "$GITHUB_OUTPUT"
+          echo "name=$(basename "$JAR")" >> "$GITHUB_OUTPUT"
+
+      - name: Find previous tag on this branch
+        id: prev
+        run: |
+          PATTERN="v*-mc${{ steps.validate.outputs.mc_version }}"
+          PREV=$(git tag --list --sort=-version:refname --merged HEAD "$PATTERN" | grep -v "^${GITHUB_REF_NAME}$" | head -n1 || true)
+          echo "previous_tag=$PREV" >> "$GITHUB_OUTPUT"
+          if [[ -n "$PREV" ]]; then
+            echo "Previous tag on this MC line: $PREV"
+          else
+            echo "No previous tag on this MC line — release notes will cover the full history."
+          fi
+
+      - name: Create GitHub Release
+        id: gh_release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ARGS=(--title "${GITHUB_REF_NAME}" --generate-notes)
+          if [[ -n "${{ steps.prev.outputs.previous_tag }}" ]]; then
+            ARGS+=(--notes-start-tag "${{ steps.prev.outputs.previous_tag }}")
+          fi
+          gh release create "${GITHUB_REF_NAME}" "${{ steps.jar.outputs.path }}" "${ARGS[@]}"
+          gh release view "${GITHUB_REF_NAME}" --json body --jq .body > release_notes.md
+          echo "notes_path=release_notes.md" >> "$GITHUB_OUTPUT"
+
+      - name: Upload to CurseForge
+        if: ${{ vars.CURSEFORGE_PROJECT_ID != '' && secrets.CURSEFORGE_TOKEN != '' }}
+        env:
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+          PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID }}
+          MC_VERSION: ${{ steps.validate.outputs.mc_version }}
+          LOADER: ${{ steps.validate.outputs.loader }}
+          JAR: ${{ steps.jar.outputs.path }}
+          NOTES: ${{ steps.gh_release.outputs.notes_path }}
+        run: |
+          GAME_VERSIONS_JSON=$(curl -fsS \
+            -H "X-Api-Token: $CURSEFORGE_TOKEN" \
+            "https://minecraft.curseforge.com/api/game/versions")
+          MC_ID=$(echo "$GAME_VERSIONS_JSON" | jq --arg v "$MC_VERSION" '.[] | select(.name == $v) | .id' | head -n1)
+          LOADER_NAME="Forge"
+          [[ "$LOADER" == "neoforge" ]] && LOADER_NAME="NeoForge"
+          LOADER_ID=$(echo "$GAME_VERSIONS_JSON" | jq --arg v "$LOADER_NAME" '.[] | select(.name == $v) | .id' | head -n1)
+          if [[ -z "$MC_ID" || -z "$LOADER_ID" ]]; then
+            echo "Could not resolve CurseForge gameVersion IDs (mc=$MC_ID, loader=$LOADER_ID)." >&2
+            exit 1
+          fi
+          METADATA=$(jq -n \
+            --arg changelog "$(cat "$NOTES")" \
+            --arg displayName "${GITHUB_REF_NAME}" \
+            --argjson mc "$MC_ID" \
+            --argjson loader "$LOADER_ID" \
+            '{
+              changelog: $changelog,
+              changelogType: "markdown",
+              displayName: $displayName,
+              gameVersions: [$mc, $loader],
+              releaseType: "release"
+            }')
+          curl -fsS \
+            -H "X-Api-Token: $CURSEFORGE_TOKEN" \
+            -F "metadata=$METADATA" \
+            -F "file=@$JAR" \
+            "https://minecraft.curseforge.com/api/projects/$PROJECT_ID/upload-file"
+
+      - name: Upload to Modrinth
+        if: ${{ vars.MODRINTH_PROJECT_ID != '' && secrets.MODRINTH_TOKEN != '' }}
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          PROJECT_ID: ${{ vars.MODRINTH_PROJECT_ID }}
+          MC_VERSION: ${{ steps.validate.outputs.mc_version }}
+          LOADER: ${{ steps.validate.outputs.loader }}
+          JAR: ${{ steps.jar.outputs.path }}
+          NOTES: ${{ steps.gh_release.outputs.notes_path }}
+          MOD_VERSION: ${{ steps.parse.outputs.mod_version }}
+        run: |
+          METADATA=$(jq -n \
+            --arg name "${GITHUB_REF_NAME}" \
+            --arg version_number "$MOD_VERSION" \
+            --arg changelog "$(cat "$NOTES")" \
+            --arg project_id "$PROJECT_ID" \
+            --arg mc "$MC_VERSION" \
+            --arg loader "$LOADER" \
+            --arg filename "$(basename "$JAR")" \
+            '{
+              name: $name,
+              version_number: $version_number,
+              changelog: $changelog,
+              dependencies: [],
+              game_versions: [$mc],
+              version_type: "release",
+              loaders: [$loader],
+              featured: false,
+              project_id: $project_id,
+              file_parts: [$filename]
+            }')
+          curl -fsS \
+            -X POST \
+            -H "Authorization: $MODRINTH_TOKEN" \
+            -F "data=$METADATA;type=application/json" \
+            -F "$(basename "$JAR")=@$JAR" \
+            "https://api.modrinth.com/v2/version"
