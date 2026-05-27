@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ 'mc/**' ]
   pull_request:
-    branches: [ main ]
+    branches: [ 'mc/**' ]
 
 jobs:
   format-check:
