@@ -226,3 +226,31 @@ Identical to the first port. Branch off the version you want to start from (`mc/
 - The release workflow knows nothing project-specific beyond "build a Forge/NeoForge mod and upload the resulting JAR." Branch and tag conventions encode everything else.
 - `gradle.properties` on each branch is the source of truth for that branch's Minecraft version. Never hard-code Minecraft versions into the workflow.
 - If you ever feel the urge to make a "shared common" multi-loader project: re-read the "Why branch-per-version" section. The decision was deliberate and the cost of reversing it later is small (just merge histories), so wait for clear evidence rather than acting on intuition.
+
+---
+
+## First-time publisher setup
+
+The release workflow publishes to GitHub Releases out of the box. Enable CurseForge and Modrinth by completing these one-time steps (in any order). Until they're done, the workflow simply skips the missing channels.
+
+### CurseForge
+
+1. Create the project at https://www.curseforge.com/minecraft/mc-mods (or claim ownership of the existing one).
+2. Note the numeric project ID (visible on the project page under "About Project").
+3. Generate an API token: https://legacy.curseforge.com/account/api-tokens → "Generate New Token". Copy the token immediately.
+4. In the GitHub repo: Settings → Secrets and variables → Actions →
+   - **Variables** tab: add `CURSEFORGE_PROJECT_ID` = the numeric ID.
+   - **Secrets** tab: add `CURSEFORGE_TOKEN` = the API token.
+
+### Modrinth
+
+1. Create the project at https://modrinth.com/dashboard/projects → "Create a project". Choose `Mod` and the supported game versions/loaders.
+2. Note the project's slug or ID (visible in the URL: `https://modrinth.com/mod/<slug>`).
+3. Generate a Personal Access Token at https://modrinth.com/settings/pats with at least the `Create versions` scope.
+4. In the GitHub repo: Settings → Secrets and variables → Actions →
+   - **Variables** tab: add `MODRINTH_PROJECT_ID` = the slug or ID.
+   - **Secrets** tab: add `MODRINTH_TOKEN` = the PAT.
+
+### Verify
+
+After both are configured, push a throwaway pre-release tag (e.g. `v0.0.1-mc1.20.1` if no real release has happened yet) and watch the workflow. All three publish steps should succeed. If you need to retry, delete the tag and the GitHub Release, then retag and repush — CurseForge and Modrinth reject duplicate version uploads, which is the safety net against accidents.
