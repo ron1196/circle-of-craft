@@ -127,7 +127,7 @@ jobs:
             echo "Could not resolve CurseForge gameVersion IDs (mc=$MC_ID, loader=$LOADER_ID)." >&2
             exit 1
           fi
-          METADATA=$(jq -n \
+          jq -n \
             --arg changelog "$(cat "$NOTES")" \
             --arg displayName "${GITHUB_REF_NAME}" \
             --argjson mc "$MC_ID" \
@@ -138,10 +138,10 @@ jobs:
               displayName: $displayName,
               gameVersions: [$mc, $loader],
               releaseType: "release"
-            }')
+            }' > cf_metadata.json
           HTTP_CODE=$(curl -sS -w '%{http_code}' -o cf_response.json \
             -H "X-Api-Token: $CURSEFORGE_TOKEN" \
-            -F "metadata=$METADATA" \
+            -F "metadata=@cf_metadata.json;type=application/json" \
             -F "file=@$JAR" \
             "https://minecraft.curseforge.com/api/projects/$PROJECT_ID/upload-file")
           echo "CurseForge upload responded HTTP $HTTP_CODE:"
@@ -161,7 +161,7 @@ jobs:
           NOTES: ${{ steps.gh_release.outputs.notes_path }}
           MOD_VERSION: ${{ steps.parse.outputs.mod_version }}
         run: |
-          METADATA=$(jq -n \
+          jq -n \
             --arg name "${GITHUB_REF_NAME}" \
             --arg version_number "$MOD_VERSION" \
             --arg changelog "$(cat "$NOTES")" \
@@ -180,11 +180,11 @@ jobs:
               featured: false,
               project_id: $project_id,
               file_parts: [$filename]
-            }')
+            }' > modrinth_data.json
           HTTP_CODE=$(curl -sS -w '%{http_code}' -o modrinth_response.json \
             -X POST \
             -H "Authorization: $MODRINTH_TOKEN" \
-            -F "data=$METADATA;type=application/json" \
+            -F "data=@modrinth_data.json;type=application/json" \
             -F "$(basename "$JAR")=@$JAR" \
             "https://api.modrinth.com/v2/version")
           echo "Modrinth upload responded HTTP $HTTP_CODE:"
