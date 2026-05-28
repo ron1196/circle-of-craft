@@ -36,6 +36,19 @@ public class CustomTransitionGameTests {
 
     private static final String EMPTY = "empty";
 
+    // spawnScar searches a 60-block radius; ceil(60/16) = 4 chunks, +1 margin.
+    private static final int SCAR_SEARCH_CHUNK_RADIUS = 5;
+
+    private static void forceLoadAround(ServerLevel level, BlockPos center, int chunkRadius) {
+        int centerChunkX = center.getX() >> 4;
+        int centerChunkZ = center.getZ() >> 4;
+        for (int cx = centerChunkX - chunkRadius; cx <= centerChunkX + chunkRadius; cx++) {
+            for (int cz = centerChunkZ - chunkRadius; cz <= centerChunkZ + chunkRadius; cz++) {
+                level.getChunk(cx, cz);
+            }
+        }
+    }
+
     @GameTest(template = EMPTY, timeoutTicks = 40)
     public void rafikiHasCustomTransitionForCollectBones(GameTestHelper helper) {
         Questline rafiki = QuestlineRegistry.RAFIKI;
@@ -111,6 +124,12 @@ public class CustomTransitionGameTests {
             helper.fail("COLLECT_BONES customTransition missing — Scar will never spawn");
             return;
         }
+
+        // spawnScar picks a random air-air-solid spot within 60 blocks (level.random, so the exact
+        // spot shifts with how many other parallel arenas have drawn from the shared RNG). Force-load
+        // the whole search radius so Scar's chunk is always loaded when we sweep — otherwise an entity
+        // landing in an unloaded chunk is invisible to getEntitiesOfClass and the test flakes on CI.
+        forceLoadAround(helper.getLevel(), origin, SCAR_SEARCH_CHUNK_RADIUS);
         handler.accept(player, manager);
 
         AABB sweep = new AABB(

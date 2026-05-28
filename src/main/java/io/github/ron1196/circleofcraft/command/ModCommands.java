@@ -3,8 +3,6 @@ package io.github.ron1196.circleofcraft.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-import com.mojang.datafixers.util.Pair;
-import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.data.WorldData;
 import io.github.ron1196.circleofcraft.quest.actions.OutlandsQuestActions;
 import io.github.ron1196.circleofcraft.quest.actions.RafikiQuestActions;
@@ -16,21 +14,19 @@ import io.github.ron1196.circleofcraft.quest.questline.QuestlineState;
 import io.github.ron1196.circleofcraft.quest.questline.RafikiQuestline;
 import io.github.ron1196.circleofcraft.quest.stage.StageId;
 import io.github.ron1196.circleofcraft.world.dimension.Dimensions;
+import io.github.ron1196.circleofcraft.world.structure.ModStructurePiece;
+import io.github.ron1196.circleofcraft.world.structure.StructureSearch;
 import java.util.List;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.structure.Structure;
 
 /**
  * Debug/testing commands for Circle of Craft. Usage: /coc <subcommand>
@@ -51,22 +47,31 @@ public class ModCommands {
                         .executes(ctx -> teleportToDimension(ctx.getSource(), Level.OVERWORLD, "Overworld")))
                 .then(Commands.literal("tpmound")
                         .executes(ctx -> teleportToStructure(
-                                ctx.getSource(), Dimensions.OUTLANDS_LEVEL, "zira_mound", "Zira's Mound")))
+                                ctx.getSource(),
+                                Dimensions.OUTLANDS_LEVEL,
+                                ModStructurePiece.ZIRA_MOUND_ID,
+                                "Zira's Mound")))
                 .then(Commands.literal("tptree")
                         .executes(ctx -> teleportToStructure(
-                                ctx.getSource(), Dimensions.PRIDE_LANDS_LEVEL, "rafiki_tree", "Rafiki Tree")))
+                                ctx.getSource(),
+                                Dimensions.PRIDE_LANDS_LEVEL,
+                                ModStructurePiece.RAFIKI_TREE_ID,
+                                "Rafiki Tree")))
                 .then(Commands.literal("tpbooth")
-                        .executes(ctx ->
-                                teleportToStructure(ctx.getSource(), Level.OVERWORLD, "ticket_booth", "Ticket Booth")))
+                        .executes(ctx -> teleportToStructure(
+                                ctx.getSource(), Level.OVERWORLD, ModStructurePiece.TICKET_BOOTH_ID, "Ticket Booth")))
                 .then(Commands.literal("tplodge")
                         .executes(ctx -> teleportToStructure(
                                 ctx.getSource(),
                                 Dimensions.PRIDE_LANDS_LEVEL,
-                                "timon_pumbaa_lodge",
+                                ModStructurePiece.TIMON_PUMBAA_LODGE_ID,
                                 "Timon & Pumbaa Lodge")))
                 .then(Commands.literal("tptreasure")
                         .executes(ctx -> teleportToStructure(
-                                ctx.getSource(), Dimensions.OUTLANDS_LEVEL, "treasure_mound", "Treasure Mound")))
+                                ctx.getSource(),
+                                Dimensions.OUTLANDS_LEVEL,
+                                ModStructurePiece.TREASURE_MOUND_ID,
+                                "Treasure Mound")))
                 .then(Commands.literal("quest")
                         .then(Commands.literal("info")
                                 .then(Commands.argument("questId", StringArgumentType.word())
@@ -293,23 +298,6 @@ public class ModCommands {
         return 1;
     }
 
-    private static BlockPos findNearestStructure(ServerLevel level, String structureName, BlockPos searchFrom) {
-        ResourceKey<Structure> structureKey =
-                ResourceKey.create(Registries.STRUCTURE, CircleOfCraftMod.id(structureName));
-        Holder.Reference<Structure> holder = level.registryAccess()
-                .registryOrThrow(Registries.STRUCTURE)
-                .getHolder(structureKey)
-                .orElse(null);
-        if (holder == null) return null;
-
-        Pair<BlockPos, Holder<Structure>> result = level.getChunkSource()
-                .getGenerator()
-                .findNearestMapStructure(level, HolderSet.direct(holder), searchFrom, 100, false);
-        if (result == null) return null;
-
-        return result.getFirst();
-    }
-
     private static int teleportToStructure(
             CommandSourceStack source, ResourceKey<Level> dimensionKey, String structureName, String displayName) {
         if (!(source.getEntity() instanceof ServerPlayer player)) {
@@ -331,7 +319,7 @@ public class ModCommands {
                     targetLevel, spawnPos.getX() + 0.5, sy, spawnPos.getZ() + 0.5, player.getYRot(), player.getXRot());
         }
 
-        BlockPos structurePos = findNearestStructure(targetLevel, structureName, player.blockPosition());
+        BlockPos structurePos = StructureSearch.findNearest(targetLevel, structureName, player.blockPosition());
         if (structurePos == null) {
             source.sendFailure(Component.literal("No " + displayName + " found nearby."));
             return 0;

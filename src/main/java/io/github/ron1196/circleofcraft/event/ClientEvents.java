@@ -317,7 +317,6 @@ public class ClientEvents {
         });
         event.registerEntityRenderer(EntityTypes.PUMBAA_BOMB.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(EntityTypes.TERMITE_THROWN.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(EntityTypes.COIN.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(EntityTypes.ZAZU_EGG.get(), ThrownItemRenderer::new);
 
         // Transient effects — invisible, no rendering needed

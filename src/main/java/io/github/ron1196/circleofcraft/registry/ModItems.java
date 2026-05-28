@@ -7,6 +7,8 @@ import io.github.ron1196.circleofcraft.entity.RugEntity;
 import io.github.ron1196.circleofcraft.item.*;
 import io.github.ron1196.circleofcraft.item.tier.ModArmorMaterials;
 import io.github.ron1196.circleofcraft.item.tier.ModToolTiers;
+import io.github.ron1196.circleofcraft.world.dimension.Dimensions;
+import io.github.ron1196.circleofcraft.world.structure.ModStructurePiece;
 import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -621,8 +623,12 @@ public class ModItems {
 
     public static final RegistryObject<Item> RHYTHM_STAFF = simpleItem("rhythm_staff", 1);
 
-    public static final RegistryObject<Item> RAFIKI_COIN = simpleItem("rafiki_coin");
-    public static final RegistryObject<Item> ZIRA_COIN = simpleItem("zira_coin");
+    public static final RegistryObject<Item> RAFIKI_COIN = ITEMS.register(
+            "rafiki_coin",
+            () -> new CoinItem(Dimensions.PRIDE_LANDS_LEVEL, ModStructurePiece.RAFIKI_TREE_ID, new Item.Properties()));
+    public static final RegistryObject<Item> ZIRA_COIN = ITEMS.register(
+            "zira_coin",
+            () -> new CoinItem(Dimensions.OUTLANDS_LEVEL, ModStructurePiece.ZIRA_MOUND_ID, new Item.Properties()));
     public static final RegistryObject<Item> WAYWARD_FEATHER = registerItem("wayward_feather", WaywardFeatherItem::new);
 
     public static final RegistryObject<Item> RAFIKI_STICK = registerItem("rafiki_stick", RafikiStickItem::new);

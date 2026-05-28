@@ -2,6 +2,7 @@ package io.github.ron1196.circleofcraft.compat.jei;
 
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.client.gui.GrindingBowlScreen;
+import io.github.ron1196.circleofcraft.entity.npc.RafikiTrades;
 import io.github.ron1196.circleofcraft.menu.GrindingBowlMenu;
 import io.github.ron1196.circleofcraft.recipe.GrindingBowlRecipe;
 import io.github.ron1196.circleofcraft.registry.MenuTypes;
@@ -43,7 +44,8 @@ public class ModJeiPlugin implements IModPlugin {
     @Override
     public void registerCategories(@NotNull IRecipeCategoryRegistration reg) {
         reg.addRecipeCategories(
-                new GrindingBowlRecipeCategory(reg.getJeiHelpers().getGuiHelper()));
+                new GrindingBowlRecipeCategory(reg.getJeiHelpers().getGuiHelper()),
+                new RafikiTradeRecipeCategory(reg.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -55,11 +57,19 @@ public class ModJeiPlugin implements IModPlugin {
         RecipeManager rm = level.getRecipeManager();
         List<GrindingBowlRecipe> recipes = rm.getAllRecipesFor(RecipeTypes.GRINDING_TYPE.get());
         reg.addRecipes(GrindingBowlRecipeCategory.RECIPE_TYPE, recipes);
+        reg.addRecipes(RafikiTradeRecipeCategory.RECIPE_TYPE, rafikiTrades());
     }
 
     @Override
     public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration reg) {
         reg.addRecipeCatalyst(new ItemStack(ModItems.GRINDING_BOWL_ITEM.get()), GrindingBowlRecipeCategory.RECIPE_TYPE);
+        reg.addRecipeCatalyst(new ItemStack(ModItems.RAFIKI_STICK.get()), RafikiTradeRecipeCategory.RECIPE_TYPE);
+    }
+
+    private static List<NpcTradeRecipe> rafikiTrades() {
+        return RafikiTrades.ALL.stream()
+                .map(t -> new NpcTradeRecipe(t.input1(), t.input2(), t.output()))
+                .toList();
     }
 
     @Override

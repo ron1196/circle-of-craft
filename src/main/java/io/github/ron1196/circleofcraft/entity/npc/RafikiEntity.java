@@ -34,9 +34,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -56,10 +54,6 @@ public class RafikiEntity extends PathfinderMob {
         "You need to use three of de dust and three silver ingots to craft a Star Altar.",
         "Den place it outside, and use de last dust on it. If you need more dust, bring me de two ingredients again."
     };
-
-    // ── Side interaction constants ────────────────────────────────────────────
-    private static final int RAFIKI_COIN_COST = 3;
-    private static final int EXTRA_STICK_BONE_COST = 64;
 
     // ── Vase heart-particle constants ─────────────────────────────────────────
     // Old mod scanned a 33×11×33 box (-16..16 X/Z, -5..5 Y) every tick and rolled 1-in-150.
@@ -400,89 +394,9 @@ public class RafikiEntity extends PathfinderMob {
     // ── Side interactions (NPC trades) ───────────────────────────────────────
 
     private boolean trySideInteraction(Player player, NpcInteraction ctx) {
-        ItemStack held = player.getMainHandItem();
-        QuestlineManager quests = ctx.quests();
-
-        // Rafiki Coin: 3 silver ingots → 1 Rafiki Coin (available after FIND_RAFIKI)
-        if (quests.isStageAtOrPast(RafikiQuestline.QUEST_ID, Stage.CRAFT_RAFIKI_STICK)
-                && held.is(ModItems.SILVER_INGOT.get())
-                && held.getCount() >= RAFIKI_COIN_COST) {
-            held.shrink(RAFIKI_COIN_COST);
-            player.addItem(new ItemStack(ModItems.RAFIKI_COIN.get()));
-            ChatHelper.sendNpcMessage(
-                    player,
-                    "Rafiki",
-                    "Ahh, silver! Here, take dis coin. Throw it on de ground and it will bring you back to old Rafiki! Ohohoho!");
-            return true;
-        }
-
-        // Quest Book replacement: book + lion fur → Quest Book (available after FIND_RAFIKI)
-        if (quests.isStageAtOrPast(RafikiQuestline.QUEST_ID, Stage.CRAFT_RAFIKI_STICK)
-                && held.is(Items.BOOK)
-                && hasInventoryItem(player, ModItems.LION_FUR.get())) {
-            held.shrink(1);
-            consumeInventoryItem(player, ModItems.LION_FUR.get(), 1);
-            player.addItem(new ItemStack(ModItems.QUEST_BOOK.get()));
-            ChatHelper.sendNpcMessage(
-                    player, "Rafiki", "You lost your Quest Book? Hehe! Silly creature! Here, take another one!");
-            return true;
-        }
-
-        // Extra Rafiki Stick: 64 hyena bones → Rafiki Stick (available after COLLECT_BONES)
-        if (quests.isStageAtOrPast(RafikiQuestline.QUEST_ID, Stage.DEFEAT_SCAR)
-                && held.is(ModItems.HYENA_BONE.get())
-                && held.getCount() >= EXTRA_STICK_BONE_COST) {
-            held.shrink(EXTRA_STICK_BONE_COST);
-            player.addItem(new ItemStack(ModItems.RAFIKI_STICK.get()));
-            ChatHelper.sendNpcMessage(
-                    player,
-                    "Rafiki",
-                    "More bones! Old Rafiki can always use more bones! Here is another stick for you!");
-            return true;
-        }
-
-        // Repeatable Lion Dust: termite dust + mango dust → Rafiki Dust
-        // (available after LION_DUST_CEREMONY)
-        if (quests.isStageAtOrPast(RafikiQuestline.QUEST_ID, Stage.USE_STAR_ALTAR)) {
-            if (held.is(ModItems.TERMITE_DUST.get()) && hasInventoryItem(player, ModItems.MANGO_DUST.get())) {
-                held.shrink(1);
-                consumeInventoryItem(player, ModItems.MANGO_DUST.get(), 1);
-                player.addItem(new ItemStack(ModItems.RAFIKI_DUST.get()));
-                ChatHelper.sendNpcMessage(
-                        player, "Rafiki", "More ingredients! Dis old baboon never tires of making dust! Hehe!");
-                return true;
-            }
-            if (held.is(ModItems.MANGO_DUST.get()) && hasInventoryItem(player, ModItems.TERMITE_DUST.get())) {
-                held.shrink(1);
-                consumeInventoryItem(player, ModItems.TERMITE_DUST.get(), 1);
-                player.addItem(new ItemStack(ModItems.RAFIKI_DUST.get()));
-                ChatHelper.sendNpcMessage(
-                        player, "Rafiki", "More ingredients! Dis old baboon never tires of making dust! Hehe!");
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    // ── Inventory helpers ────────────────────────────────────────────────────
-
-    private static boolean hasInventoryItem(Player player, Item item) {
-        for (ItemStack stack : player.getInventory().items) {
-            if (stack.is(item)) return true;
-        }
-        return false;
-    }
-
-    private static void consumeInventoryItem(Player player, Item item, int count) {
-        int remaining = count;
-        for (ItemStack stack : player.getInventory().items) {
-            if (remaining <= 0) break;
-            if (stack.is(item)) {
-                int take = Math.min(remaining, stack.getCount());
-                stack.shrink(take);
-                remaining -= take;
-            }
-        }
+        RafikiTrades.Trade trade = RafikiTrades.tryExecute(player, ctx.quests());
+        if (trade == null) return false;
+        sendSpeech(player, trade.completionSpeech());
+        return true;
     }
 }
