@@ -1,0 +1,5 @@
+# Required reviewer for every PR. Combined with "Require review from Code
+# Owners" in branch protection / rulesets, this enforces that approval has to
+# come from @ron1196 specifically — not just any user with write access.
+
+* @ron1196
