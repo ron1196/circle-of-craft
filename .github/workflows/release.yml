@@ -108,6 +108,7 @@ jobs:
 
       - name: Upload to CurseForge
         if: ${{ vars.CURSEFORGE_PROJECT_ID != '' }}
+        continue-on-error: true
         env:
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
           PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID }}
@@ -152,6 +153,7 @@ jobs:
 
       - name: Upload to Modrinth
         if: ${{ vars.MODRINTH_PROJECT_ID != '' }}
+        continue-on-error: true
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           PROJECT_ID: ${{ vars.MODRINTH_PROJECT_ID }}
