@@ -16,6 +16,10 @@ public enum CharacterSpeech {
     STAR_ALTAR("Rafiki", Speech.STAR_ALTAR),
     HINT("Rafiki", Speech.HINT),
     COMPLETE_HINT("Rafiki", Speech.COMPLETE_HINT),
+    RAFIKI_COIN_SOLD("Rafiki", Speech.RAFIKI_COIN_SOLD),
+    RAFIKI_BOOK_RESOLD("Rafiki", Speech.RAFIKI_BOOK_RESOLD),
+    RAFIKI_EXTRA_STICK("Rafiki", Speech.RAFIKI_EXTRA_STICK),
+    RAFIKI_DUST_MADE("Rafiki", Speech.RAFIKI_DUST_MADE),
     FLOWERS("Rafiki", Speech.FLOWERS),
     ASK_FOR_FLOWERS("Rafiki", Speech.ASK_FOR_FLOWERS),
     PUMBAA_NEED_BUGS("Pumbaa", Speech.PUMBAA_NEED_BUGS),
@@ -114,7 +118,9 @@ public enum CharacterSpeech {
             "Rid de Pride Lands of dose slobbering, mangy creatures and bring me deir bones!",
             "I need sixty-four hyena bones. Not sixty-three! Not sixty-two! Sixty-four! Hehe!",
             "What happened to dat stack of hyena bones you promised old Rafiki, hmm?",
-            "Come back when you have de bones. De spirits are waiting... and so am I!"
+            "Come back when you have de bones. De spirits are waiting... and so am I!",
+            "If de trip back here grows tiresome, bring me tree silver ingots — I will give you a coin to find your way home! Hehe!",
+            "Have you lost your Quest Book? A book and a tuft of lion fur — bring dem to old Rafiki and I make you a new one!"
         };
 
         static final String[] MENTION_SCAR = {
@@ -151,6 +157,35 @@ public enum CharacterSpeech {
             "Use de Rafiki Dust on de Star Altar! Can you hear dem? De spirits are calling!",
             "De Star Altar must be placed under de open sky! De great kings must be able to see it!",
             "Go and use de Star Altar! De spirits of de past are watching! Ohohoho!"
+        };
+
+        static final String[] RAFIKI_COIN_SOLD = {
+            "Ahh, silver! Here, take dis coin. Clutch it close and de coin will whisk you back to old Rafiki! Ohohoho!",
+            "Tree silver pieces, perfect! Here is your coin. Hold it tight in your hand and it will guide you home! Hehe!",
+            "Silver is good, but de spirits prefer dis form. Take dis coin — squeeze it gently and you will return to me!",
+            "Wonderful, wonderful! De coin is yours. Cup it in your palms and de ancestors will carry you back! Ohohoho!",
+            "Tank you for de silver! Now keep dis coin safe — clench it close to your heart and it will bring you home to old Rafiki!"
+        };
+
+        static final String[] RAFIKI_BOOK_RESOLD = {
+            "You lost your Quest Book? Hehe! Silly creature! Here, take another one!",
+            "Lost again?! How does one lose a book de size of a watermelon? Hehe! Here, take dis new one!",
+            "Anudder Quest Book for de forgetful one! Try not to lose dis one too, yes?",
+            "Ohohoho! Old Rafiki keeps spare Quest Books for situations like dis! Here you go!"
+        };
+
+        static final String[] RAFIKI_EXTRA_STICK = {
+            "More bones! Old Rafiki can always use more bones! Here is another stick for you!",
+            "Sixty-four hyena bones! Ohohoho! Dis is a fine offering. Take dis stick!",
+            "You keep bringing me bones and I keep making you sticks. Dis is de circle of trade! Hehe!",
+            "Anudder stick for anudder pile of bones — old Rafiki is always happy to oblige!"
+        };
+
+        static final String[] RAFIKI_DUST_MADE = {
+            "More ingredients! Dis old baboon never tires of making dust! Hehe!",
+            "Termite and mango — two halves of one powerful dust! Take it and use it wisely!",
+            "Ohohoho! Anudder pinch of Rafiki Dust for you. De spirits dance whenever I make dis!",
+            "Dust upon dust upon dust! Old Rafiki is a master craftsman, yes? Hehe!"
         };
 
         static final String[] HINT = {
@@ -206,7 +241,11 @@ public enum CharacterSpeech {
             "Have you tried crafting some Peacock Wings yet? De view from up dere is magnificent!",
             "Remember who you are! You are more dan what you have become!",
             "Look harder... he lives in you!",
-            "De king... has returned."
+            "De king... has returned.",
+            "If you ever need a quick way home, bring me tree silver ingots — old Rafiki will trade you a coin to whisk you back!",
+            "Got too many hyena bones rattling in your pack? Bring sixty-four to old Rafiki and I will make you another stick! Ohohoho!",
+            "Two dusts make one Rafiki Dust — termite plus mango! Just bring dem both to me, easy peasy!",
+            "Lost your Quest Book again? Tsk! Bring me a book and some lion fur and I will make you another one. Try not to lose dis one too! Hehe!"
         };
 
         static final String[] FLOWERS = {

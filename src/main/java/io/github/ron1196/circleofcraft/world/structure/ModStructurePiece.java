@@ -22,7 +22,9 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** A structure piece that delegates building to an existing Feature class. */
+/**
+ * A structure piece that delegates building to an existing Feature class.
+ */
 public class ModStructurePiece extends StructurePiece {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ModStructurePiece.class);
@@ -30,28 +32,36 @@ public class ModStructurePiece extends StructurePiece {
     /**
      * Per-structure configuration: bounding box dimensions and feature supplier.
      *
-     * @param halfXZ horizontal radius of the bounding box
+     * @param halfXZ  horizontal radius of the bounding box
      * @param yOffset offset from surface Y to the feature origin (e.g. -50 for underground mound)
-     * @param aboveY how far above the origin the bounding box extends
+     * @param aboveY  how far above the origin the bounding box extends
      * @param feature supplier for the Feature instance
      */
     private record StructureConfig(
             int halfXZ, int yOffset, int aboveY, Supplier<Feature<NoneFeatureConfiguration>> feature) {}
 
+    public static final String RAFIKI_TREE_ID = "rafiki_tree";
+    public static final String ZIRA_MOUND_ID = "zira_mound";
+    public static final String TICKET_BOOTH_ID = "ticket_booth";
+    public static final String TIMON_PUMBAA_LODGE_ID = "timon_pumbaa_lodge";
+    public static final String TREASURE_MOUND_ID = "treasure_mound";
+
     private static final StructureConfig DEFAULT_CONFIG = new StructureConfig(16, 0, 32, () -> null);
 
     private static final Map<String, StructureConfig> CONFIGS = Map.of(
-            "rafiki_tree", new StructureConfig(40, 0, 95, Features.RAFIKI_TREE),
-            "zira_mound", new StructureConfig(40, -50, 55, Features.ZIRA_MOUND),
-            "ticket_booth", new StructureConfig(16, 0, 32, Features.TICKET_BOOTH),
-            "timon_pumbaa_lodge", new StructureConfig(16, 0, 32, Features.TIMON_PUMBAA_LODGE),
-            "treasure_mound", new StructureConfig(16, 0, 32, Features.TREASURE_MOUND));
+            RAFIKI_TREE_ID, new StructureConfig(40, 0, 95, Features.RAFIKI_TREE),
+            ZIRA_MOUND_ID, new StructureConfig(40, -50, 55, Features.ZIRA_MOUND),
+            TICKET_BOOTH_ID, new StructureConfig(16, 0, 32, Features.TICKET_BOOTH),
+            TIMON_PUMBAA_LODGE_ID, new StructureConfig(16, 0, 32, Features.TIMON_PUMBAA_LODGE),
+            TREASURE_MOUND_ID, new StructureConfig(16, 0, 32, Features.TREASURE_MOUND));
 
     private static StructureConfig configFor(String path) {
         return CONFIGS.getOrDefault(path, DEFAULT_CONFIG);
     }
 
-    /** Current chunk's bounding box — used by features to clip block placement per-chunk. */
+    /**
+     * Current chunk's bounding box — used by features to clip block placement per-chunk.
+     */
     public static final ThreadLocal<BoundingBox> CURRENT_BOX = new ThreadLocal<>();
 
     /**

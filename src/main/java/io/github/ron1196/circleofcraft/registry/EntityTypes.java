@@ -6,7 +6,6 @@ import io.github.ron1196.circleofcraft.entity.RugEntity;
 import io.github.ron1196.circleofcraft.entity.animal.*;
 import io.github.ron1196.circleofcraft.entity.hostile.*;
 import io.github.ron1196.circleofcraft.entity.npc.*;
-import io.github.ron1196.circleofcraft.entity.projectile.CoinEntity;
 import io.github.ron1196.circleofcraft.entity.projectile.DartEntity;
 import io.github.ron1196.circleofcraft.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.circleofcraft.entity.projectile.PumbaaBombEntity;
@@ -101,8 +100,6 @@ public class EntityTypes {
             registerProjectile("pumbaa_bomb", PumbaaBombEntity::new, 0.25F, 10);
     public static final RegistryObject<EntityType<TermiteThrownEntity>> TERMITE_THROWN =
             registerProjectile("termite_thrown", TermiteThrownEntity::new, 0.25F, 10);
-    public static final RegistryObject<EntityType<CoinEntity>> COIN =
-            registerProjectile("coin", CoinEntity::new, 0.25F, 10);
     public static final RegistryObject<EntityType<ZazuEggEntity>> ZAZU_EGG =
             registerProjectile("zazu_egg", ZazuEggEntity::new, 0.25F, 10);
 
