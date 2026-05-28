@@ -56,12 +56,26 @@ A ground-up port of the classic Lion King Mod (originally for Minecraft 1.4–1.
 **Advancements**
 - Custom advancements tracking your journey through the Pride Lands and beyond.
 
+## Requirements
+
+**Required**
+- Minecraft 1.20.1
+- Forge 47.4.18+
+- [GeckoLib](https://www.curseforge.com/minecraft/mc-mods/geckolib) 4.8 or newer — animations for animals, NPCs, and bosses.
+
+**Optional**
+- [JEI](https://www.curseforge.com/minecraft/mc-mods/jei) 15.20 or newer — recipe lookup, including custom Grinding Bowl recipes.
+- [Jade](https://www.curseforge.com/minecraft/mc-mods/jade) 11.6 or newer — HUD tooltips, including breeding-favor info on animals.
+
+CurseForge and Modrinth will prompt for these when you install Circle of Craft through their launchers.
+
 ## Installation
 
 1. Install [Forge for Minecraft 1.20.1](https://files.minecraftforge.net/net/minecraftforge/forge/index_1.20.1.html).
-2. Download the latest mod JAR from [Releases](https://github.com/ron1196/circle-of-craft/releases).
-3. Place the JAR in your `.minecraft/mods/` folder.
-4. Launch Minecraft with the Forge profile.
+2. Install [GeckoLib](https://www.curseforge.com/minecraft/mc-mods/geckolib) (required). Optionally install JEI and/or Jade.
+3. Download the latest mod JAR from [Releases](https://github.com/ron1196/circle-of-craft/releases).
+4. Place the JAR in your `.minecraft/mods/` folder.
+5. Launch Minecraft with the Forge profile.
 
 ## Known Limitations
 

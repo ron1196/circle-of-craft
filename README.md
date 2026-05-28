@@ -20,6 +20,18 @@
 - **Mappings:** Official (Mojang)
 - **Mod ID / package:** `circleofcraft` / `io.github.ron1196.circleofcraft`
 
+## Runtime dependencies
+
+Declared in `src/main/resources/META-INF/mods.toml` (the source of truth — `build.gradle` pins for compile, `mods.toml` enforces at boot, CF/Modrinth metadata declares for the storefront):
+
+| Mod | Required? | Range | Notes |
+|---|---|---|---|
+| GeckoLib | ✅ required | `[4.8,)` | Animation runtime. Compiled against `4.8.3`. |
+| JEI      | ❌ optional | `[15.20,)` | Recipe lookup; Grinding Bowl integration. Compiled against `15.20.0.105`. |
+| Jade     | ❌ optional | `[11.6,)`  | HUD tooltips; AnimalFavorProvider integration. |
+
+When bumping a compile-time version in `build.gradle`, raise the corresponding `mods.toml` `versionRange` lower bound to match, so missing-API surprises surface at boot rather than as a runtime `NoSuchMethodError`.
+
 ## Repository layout
 
 ```

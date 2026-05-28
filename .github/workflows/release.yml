@@ -138,7 +138,14 @@ jobs:
               changelogType: "markdown",
               displayName: $displayName,
               gameVersions: [$mc, $loader],
-              releaseType: "release"
+              releaseType: "release",
+              relations: {
+                projects: [
+                  { slug: "geckolib", type: "requiredDependency" },
+                  { slug: "jei",      type: "optionalDependency" },
+                  { slug: "jade",     type: "optionalDependency" }
+                ]
+              }
             }')
           HTTP_CODE=$(curl -sS -w '%{http_code}' -o cf_response.json \
             -H "X-Api-Token: $CURSEFORGE_TOKEN" \
@@ -163,6 +170,19 @@ jobs:
           NOTES: ${{ steps.gh_release.outputs.notes_path }}
           MOD_VERSION: ${{ steps.parse.outputs.mod_version }}
         run: |
+          fetch_modrinth_id() {
+            local slug="$1"
+            local id
+            id=$(curl -fsS "https://api.modrinth.com/v2/project/${slug}" | jq -r '.id')
+            if [[ -z "$id" || "$id" == "null" ]]; then
+              echo "Could not resolve Modrinth project ID for '${slug}'." >&2
+              return 1
+            fi
+            printf '%s' "$id"
+          }
+          GECKOLIB_ID=$(fetch_modrinth_id geckolib) || exit 1
+          JEI_ID=$(fetch_modrinth_id jei) || exit 1
+          JADE_ID=$(fetch_modrinth_id jade) || exit 1
           METADATA=$(jq -c -n \
             --arg name "${GITHUB_REF_NAME}" \
             --arg version_number "$MOD_VERSION" \
@@ -171,11 +191,18 @@ jobs:
             --arg mc "$MC_VERSION" \
             --arg loader "$LOADER" \
             --arg filename "$(basename "$JAR")" \
+            --arg geckolib_id "$GECKOLIB_ID" \
+            --arg jei_id "$JEI_ID" \
+            --arg jade_id "$JADE_ID" \
             '{
               name: $name,
               version_number: $version_number,
               changelog: $changelog,
-              dependencies: [],
+              dependencies: [
+                { project_id: $geckolib_id, dependency_type: "required" },
+                { project_id: $jei_id,      dependency_type: "optional" },
+                { project_id: $jade_id,     dependency_type: "optional" }
+              ],
               game_versions: [$mc],
               version_type: "release",
               loaders: [$loader],

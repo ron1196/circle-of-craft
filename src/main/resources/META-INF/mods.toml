@@ -33,20 +33,20 @@ side = "BOTH"
 [[dependencies.circleofcraft]]
 modId = "geckolib"
 mandatory = true
-versionRange = "[4.4,)"
+versionRange = "[4.8,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.circleofcraft]]
 modId = "jei"
 mandatory = false
-versionRange = "[15,)"
+versionRange = "[15.20,)"
 ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.circleofcraft]]
 modId = "jade"
 mandatory = false
-versionRange = "[11,)"
+versionRange = "[11.6,)"
 ordering = "AFTER"
 side = "CLIENT"
