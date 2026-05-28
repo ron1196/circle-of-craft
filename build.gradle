@@ -4,6 +4,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
     id 'com.diffplug.spotless' version '6.25.0'
 }
 
@@ -75,6 +76,11 @@ minecraft {
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+mixin {
+    add sourceSets.main, 'circleofcraft.refmap.json'
+    config 'circleofcraft.mixins.json'
+}
 
 repositories {
     maven {
@@ -177,12 +183,6 @@ tasks.withType(ProcessResources).configureEach {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
-}
-
-tasks.named('compileJava').configure {
-    options.compilerArgs += [
-        "-AoutRefMapFile=${layout.buildDirectory.file('resources/main/circleofcraft.refmap.json').get().asFile.absolutePath}"
-    ]
 }
 
 spotless {
