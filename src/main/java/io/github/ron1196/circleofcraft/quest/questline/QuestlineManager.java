@@ -229,6 +229,7 @@ public class QuestlineManager implements QuestStateLookup {
     }
 
     private void consumeRequirement(ServerPlayer player, QuestObjective.ItemRequirement req) {
+        if (!req.consume()) return;
         switch (req.source()) {
             case MAIN_HAND -> player.getMainHandItem().shrink(req.count());
             case INVENTORY -> {

@@ -65,12 +65,12 @@ public class OutlandsQuestline {
                         new QuestObjective(
                                 "Bring Zira 5 kivulite and 2 silver ingots",
                                 List.of(
-                                        new ItemRequirement(ModItems.KIVULITE, 5, Source.MAIN_HAND),
-                                        new ItemRequirement(ModItems.SILVER_INGOT, 2, Source.INVENTORY))))
+                                        new ItemRequirement(ModItems.KIVULITE, 5, Source.MAIN_HAND, false),
+                                        new ItemRequirement(ModItems.SILVER_INGOT, 2, Source.INVENTORY, false))))
                 .stage(
                         THROW_IN_OUTWATER,
                         new QuestObjective(
-                                "Use the Outwater pool and bring Zira the Outlandish Helm",
+                                "Throw 5 kivulite and 2 silver ingots into the Outwater pool below, then bring Zira the Outlandish Helm",
                                 List.of(new ItemRequirement(ModItems.OUTLANDS_HELMET::get, 1, Source.INVENTORY))))
                 .stage(
                         COLLECT_FEATHERS,

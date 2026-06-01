@@ -14,9 +14,13 @@ public record QuestObjective(String objectiveText, List<ItemRequirement> require
         INVENTORY
     }
 
-    public record ItemRequirement(Supplier<Item> item, int count, Source source) {
+    public record ItemRequirement(Supplier<Item> item, int count, Source source, boolean consume) {
         public ItemRequirement(Supplier<Item> item, int count) {
-            this(item, count, Source.MAIN_HAND);
+            this(item, count, Source.MAIN_HAND, true);
+        }
+
+        public ItemRequirement(Supplier<Item> item, int count, Source source) {
+            this(item, count, source, true);
         }
     }
 }
