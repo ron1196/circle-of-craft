@@ -20,14 +20,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Simba's Charm — reactivated by placing an inactive charm on a Star Altar. Spawns a visual
+ * Astral Charm — reactivated by placing an inactive charm on a Star Altar. Spawns a visual
  * lightning bolt and particle effects, returns an active charm.
  *
  * <p>Damage 0 = active, Damage 1 = inactive. In 1.20.1 we don't use damage values for subtypes;
  * instead we check the item tag or register two items. For simplicity, we use a single item and
  * check for a custom NBT tag.
  */
-public class SimbaCharmItem extends Item {
+public class AstralCharmItem extends Item {
 
     private static final int PICKUP_DELAY_TICKS = 10;
     private static final double ITEM_UPWARD_SPEED = 0.4D;
@@ -41,7 +41,7 @@ public class SimbaCharmItem extends Item {
     private static final double PARTICLE_SPEED = 0.1D;
     private static final int LIGHTNING_POWER = 0;
 
-    public SimbaCharmItem(Properties properties) {
+    public AstralCharmItem(Properties properties) {
         super(properties.stacksTo(1));
     }
 
@@ -53,10 +53,10 @@ public class SimbaCharmItem extends Item {
             @NotNull TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         if (isActive(stack)) {
-            tooltip.add(Component.translatable("item.circleofcraft.simba_charm.active.hint")
+            tooltip.add(Component.translatable("item.circleofcraft.astral_charm.active.hint")
                     .withStyle(ChatFormatting.GRAY));
         } else {
-            tooltip.add(Component.translatable("item.circleofcraft.simba_charm.inactive.hint")
+            tooltip.add(Component.translatable("item.circleofcraft.astral_charm.inactive.hint")
                     .withStyle(ChatFormatting.GRAY));
         }
     }
@@ -65,14 +65,19 @@ public class SimbaCharmItem extends Item {
         return stack.getOrCreateTag().getBoolean("Active");
     }
 
+    @Override
+    public boolean isFoil(@NotNull ItemStack stack) {
+        return isActive(stack);
+    }
+
     public static ItemStack createActive() {
-        ItemStack stack = new ItemStack(ModItems.SIMBA_CHARM.get());
+        ItemStack stack = new ItemStack(ModItems.ASTRAL_CHARM.get());
         stack.getOrCreateTag().putBoolean("Active", true);
         return stack;
     }
 
     public static ItemStack createInactive() {
-        return new ItemStack(ModItems.SIMBA_CHARM.get());
+        return new ItemStack(ModItems.ASTRAL_CHARM.get());
     }
 
     @Override

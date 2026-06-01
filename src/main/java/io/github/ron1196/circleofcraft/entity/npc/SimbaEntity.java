@@ -4,7 +4,7 @@ import io.github.ron1196.circleofcraft.data.ModCriteriaTriggers;
 import io.github.ron1196.circleofcraft.entity.ai.SimbaAttackGoal;
 import io.github.ron1196.circleofcraft.entity.ai.SimbaFishingGoal;
 import io.github.ron1196.circleofcraft.entity.ai.SimbaWanderGoal;
-import io.github.ron1196.circleofcraft.item.SimbaCharmItem;
+import io.github.ron1196.circleofcraft.item.AstralCharmItem;
 import io.github.ron1196.circleofcraft.menu.SimbaInventoryMenu;
 import io.github.ron1196.circleofcraft.registry.ModItems;
 import io.github.ron1196.circleofcraft.util.ChatHelper;
@@ -137,7 +137,7 @@ public class SimbaEntity extends TamableAnimal {
         if (!isOwnedBy(player)) return InteractionResult.PASS;
 
         ItemStack held = player.getItemInHand(hand);
-        if (held.is(ModItems.SIMBA_CHARM.get()) && SimbaCharmItem.isActive(held) && !hasCharm()) {
+        if (held.is(ModItems.ASTRAL_CHARM.get()) && AstralCharmItem.isActive(held) && !hasCharm()) {
             if (!level().isClientSide()) {
                 held.shrink(1);
                 setHasCharm(true);

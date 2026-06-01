@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "circleofcraft:item/simba_charm"
+    "layer0": "circleofcraft:item/astral_charm"
   },
   "overrides": [
     {
       "predicate": { "circleofcraft:inactive": 1.0 },
-      "model": "circleofcraft:item/simba_charm_inactive"
+      "model": "circleofcraft:item/astral_charm_inactive"
     }
   ]
 }

@@ -497,7 +497,7 @@ public final class ItemInfo {
                 "travel is not as stable as a",
                 "portal, and the results are",
                 "unpredictable.");
-        put(ModItems.SIMBA_CHARM, "Can be equipped to Simba to", "allow him to follow the player", "through portals.");
+        put(ModItems.ASTRAL_CHARM, "Can be equipped to Simba to", "allow him to follow the player", "through portals.");
         put(
                 ModItems.AMULET,
                 "Obtained from Timon and Pumbaa.",

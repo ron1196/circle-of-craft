@@ -429,7 +429,7 @@ public class CreativeTabs {
                         output.accept(ModItems.CRYSTAL.get());
                         // Quest items (Phase 10)
                         output.accept(ModItems.AMULET.get());
-                        output.accept(ModItems.SIMBA_CHARM.get());
+                        output.accept(ModItems.ASTRAL_CHARM.get());
                         output.accept(ModItems.GIRAFFE_SADDLE.get());
                         // output.accept(ModItems.DART_QUIVER.get()); // disabled, see issue #78
                         output.accept(ModItems.PASSION_FRUIT.get());

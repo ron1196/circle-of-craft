@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "circleofcraft:item/simba_charm_inactive"
+    "layer0": "circleofcraft:item/astral_charm_inactive"
   }
 }

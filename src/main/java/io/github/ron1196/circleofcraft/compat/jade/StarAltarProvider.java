@@ -1,7 +1,7 @@
 package io.github.ron1196.circleofcraft.compat.jade;
 
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
-import io.github.ron1196.circleofcraft.item.SimbaCharmItem;
+import io.github.ron1196.circleofcraft.item.AstralCharmItem;
 import io.github.ron1196.circleofcraft.network.ClientWorldState;
 import io.github.ron1196.circleofcraft.quest.questline.RafikiQuestline;
 import io.github.ron1196.circleofcraft.registry.ModItems;
@@ -59,7 +59,7 @@ public enum StarAltarProvider implements IBlockComponentProvider {
             }
             return;
         }
-        if (relevant != null && relevant.is(ModItems.SIMBA_CHARM.get()) && !SimbaCharmItem.isActive(relevant)) {
+        if (relevant != null && relevant.is(ModItems.ASTRAL_CHARM.get()) && !AstralCharmItem.isActive(relevant)) {
             addGreen(tooltip, "jade.circleofcraft.star_altar.charm_ready");
             return;
         }
@@ -85,7 +85,7 @@ public enum StarAltarProvider implements IBlockComponentProvider {
     }
 
     private static boolean isRelevant(Item item) {
-        return item == ModItems.RAFIKI_DUST.get() || item == ModItems.SIMBA_CHARM.get();
+        return item == ModItems.RAFIKI_DUST.get() || item == ModItems.ASTRAL_CHARM.get();
     }
 
     private static void addGreen(ITooltip tooltip, String key) {

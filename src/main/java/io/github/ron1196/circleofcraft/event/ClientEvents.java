@@ -22,7 +22,7 @@ import io.github.ron1196.circleofcraft.entity.npc.TimonEntity;
 import io.github.ron1196.circleofcraft.entity.npc.ZiraEntity;
 import io.github.ron1196.circleofcraft.entity.projectile.DartEntity;
 import io.github.ron1196.circleofcraft.entity.projectile.SpearEntity;
-import io.github.ron1196.circleofcraft.item.SimbaCharmItem;
+import io.github.ron1196.circleofcraft.item.AstralCharmItem;
 import io.github.ron1196.circleofcraft.network.ClientWorldState;
 import io.github.ron1196.circleofcraft.registry.BlockEntityTypes;
 import io.github.ron1196.circleofcraft.registry.EntityTypes;
@@ -382,11 +382,11 @@ public class ClientEvents {
                         return 0.0F;
                     });
 
-            // Simba Charm active/inactive texture switch
+            // Astral Charm active/inactive texture switch
             ItemProperties.register(
-                    ModItems.SIMBA_CHARM.get(),
+                    ModItems.ASTRAL_CHARM.get(),
                     CircleOfCraftMod.id("inactive"),
-                    (stack, level, entity, seed) -> SimbaCharmItem.isActive(stack) ? 0.0F : 1.0F);
+                    (stack, level, entity, seed) -> AstralCharmItem.isActive(stack) ? 0.0F : 1.0F);
 
             // Pride Compass needle angle — points to last-used portal in Pride Lands
             ItemProperties.register(

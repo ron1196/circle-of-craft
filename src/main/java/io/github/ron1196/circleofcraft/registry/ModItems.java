@@ -567,7 +567,7 @@ public class ModItems {
                     ModArmorMaterials.GEMSBOK,
                     ArmorItem.Type.CHESTPLATE,
                     new Item.Properties().stacksTo(1).durability(0)));
-    public static final RegistryObject<Item> SIMBA_CHARM = registerItem("simba_charm", SimbaCharmItem::new);
+    public static final RegistryObject<Item> ASTRAL_CHARM = registerItem("astral_charm", AstralCharmItem::new);
     public static final RegistryObject<Item> GIRAFFE_SADDLE = simpleItem("giraffe_saddle", 1);
     // Disabled pending rework — see https://github.com/ron1196/circle-of-craft/issues/78
     // public static final RegistryObject<Item> DART_QUIVER = registerItem("dart_quiver", QuiverItem::new,

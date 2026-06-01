@@ -16,7 +16,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "circleofcraft:simba_charm"
+        "recipe": "circleofcraft:astral_charm"
       }
     }
   },
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "circleofcraft:simba_charm"
+      "circleofcraft:astral_charm"
     ]
   },
   "sends_telemetry_event": false

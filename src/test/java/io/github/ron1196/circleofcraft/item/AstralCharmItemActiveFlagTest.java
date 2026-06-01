@@ -7,13 +7,13 @@ import net.minecraft.nbt.CompoundTag;
 import org.junit.jupiter.api.Test;
 
 /**
- * Locks the NBT contract for Simba Charm activation state. The semantics flipped — a freshly
+ * Locks the NBT contract for Astral Charm activation state. The semantics flipped — a freshly
  * crafted charm has no NBT and must read as inactive (the old code treated absent NBT as active,
  * which silently broke the Star Altar activation flow). These tests mirror the logic in
- * {@link SimbaCharmItem#isActive} at the NBT level so we don't have to bootstrap Minecraft
+ * {@link AstralCharmItem#isActive} at the NBT level so we don't have to bootstrap Minecraft
  * registries to assert on the bit that actually changed.
  */
-class SimbaCharmItemActiveFlagTest {
+class AstralCharmItemActiveFlagTest {
 
     private static final String ACTIVE_KEY = "Active";
 

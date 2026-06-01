@@ -1,6 +1,7 @@
 circleofcraft:acacia_bug_trap	
 circleofcraft:amulet	Obtained from Timon and Pumbaa.Allows the wearer to speak to theanimals of the Pride Lands.
 circleofcraft:arid_grass	A type of tall grass that growsin arid savannah biomes.
+circleofcraft:astral_charm	Can be equipped to Simba toallow him to follow the playerthrough portals.
 circleofcraft:bamboo_bug_trap	
 circleofcraft:banana	Grows on Banana Trees.Can be eaten to restore hunger,or used in food recipes.
 circleofcraft:banana_bread	Can be eaten to restore hunger.
@@ -262,7 +263,6 @@ circleofcraft:silver_ore	An ore found in the Pride Lands.Can be smelted into i
 circleofcraft:silver_pickaxe	Used to harvest stone-typeblocks.
 circleofcraft:silver_shovel	Used to harvest blocks likedirt and sand more quickly.
 circleofcraft:silver_sword	Used to deal more damageto mobs.
-circleofcraft:simba_charm	Can be equipped to Simba toallow him to follow the playerthrough portals.
 circleofcraft:simba_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
 circleofcraft:skeletal_hyena_head_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
 circleofcraft:skeletal_hyena_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
