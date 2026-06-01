@@ -292,6 +292,8 @@ public class ModCommands {
         BlockPos spawnPos = targetLevel.getSharedSpawnPos();
         int x = spawnPos.getX();
         int z = spawnPos.getZ();
+        // Force-generate the spawn chunk: getHeight returns the void floor for unloaded chunks.
+        targetLevel.getChunk(x >> 4, z >> 4);
         int y = targetLevel.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z) + 1;
         player.teleportTo(targetLevel, x + 0.5, y, z + 0.5, player.getYRot(), player.getXRot());
         source.sendSuccess(() -> Component.literal("Teleported to " + name + " at " + x + ", " + y + ", " + z), true);
@@ -314,6 +316,8 @@ public class ModCommands {
         // First teleport to the dimension if not already there
         if (player.level().dimension() != dimensionKey) {
             BlockPos spawnPos = targetLevel.getSharedSpawnPos();
+            // Force-generate the spawn chunk: getHeight returns the void floor for unloaded chunks.
+            targetLevel.getChunk(spawnPos.getX() >> 4, spawnPos.getZ() >> 4);
             int sy = targetLevel.getHeight(Heightmap.Types.MOTION_BLOCKING, spawnPos.getX(), spawnPos.getZ()) + 1;
             player.teleportTo(
                     targetLevel, spawnPos.getX() + 0.5, sy, spawnPos.getZ() + 0.5, player.getYRot(), player.getXRot());

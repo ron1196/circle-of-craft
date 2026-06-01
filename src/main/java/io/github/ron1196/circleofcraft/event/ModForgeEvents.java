@@ -255,6 +255,8 @@ public class ModForgeEvents {
         if (prideLands == null) return;
 
         BlockPos spawn = prideLands.getSharedSpawnPos();
+        // Force-generate the spawn chunk: getHeight returns the void floor for unloaded chunks.
+        prideLands.getChunk(spawn.getX() >> 4, spawn.getZ() >> 4);
         int y = prideLands.getHeight(Heightmap.Types.MOTION_BLOCKING, spawn.getX(), spawn.getZ()) + 1;
         player.teleportTo(prideLands, spawn.getX() + 0.5, y, spawn.getZ() + 0.5, player.getYRot(), player.getXRot());
     }
