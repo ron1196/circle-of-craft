@@ -573,7 +573,7 @@ public class ModItems {
     // public static final RegistryObject<Item> DART_QUIVER = registerItem("dart_quiver", QuiverItem::new,
     // itemProps(1));
     public static final RegistryObject<Item> PASSION_FRUIT = foodItem("passion_fruit", 3, 0.3F);
-    public static final RegistryObject<Item> ZAZU_EGG = simpleItem("zazu_egg");
+    public static final RegistryObject<Item> ZAZU_EGG = ITEMS.register("zazu_egg", ZazuEggItem::new);
 
     // ========== Block Entity Items ==========
     public static final RegistryObject<BlockItem> GRINDING_BOWL_ITEM =

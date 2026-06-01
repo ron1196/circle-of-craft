@@ -3,6 +3,8 @@ package io.github.ron1196.circleofcraft.entity.projectile;
 import io.github.ron1196.circleofcraft.entity.animal.ZazuEntity;
 import io.github.ron1196.circleofcraft.registry.EntityTypes;
 import io.github.ron1196.circleofcraft.registry.ModItems;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
@@ -37,7 +39,26 @@ public class ZazuEggEntity extends ThrowableItemProjectile {
                     this.level().addFreshEntity(zazu);
                 }
             }
+            this.level().broadcastEntityEvent(this, (byte) 3);
             this.discard();
+        }
+    }
+
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == 3) {
+            ItemParticleOption particle = new ItemParticleOption(ParticleTypes.ITEM, this.getItem());
+            for (int i = 0; i < 8; i++) {
+                this.level()
+                        .addParticle(
+                                particle,
+                                this.getX(),
+                                this.getY(),
+                                this.getZ(),
+                                (this.random.nextFloat() - 0.5) * 0.08,
+                                (this.random.nextFloat() - 0.5) * 0.08,
+                                (this.random.nextFloat() - 0.5) * 0.08);
+            }
         }
     }
 
