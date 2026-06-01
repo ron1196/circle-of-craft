@@ -75,7 +75,7 @@ public class OutlandsQuestline {
                 .stage(
                         COLLECT_FEATHERS,
                         new QuestObjective(
-                                "Bring Zira 3 wayward feathers",
+                                "Throw blue, yellow, red, and black feathers into the Outwater to forge Wayward Feathers, then bring Zira 3",
                                 List.of(new ItemRequirement(ModItems.WAYWARD_FEATHER, 3))))
                 .stage(FOLLOW_OUTLANDERS, new QuestObjective("Follow the Outlanders to the Pride Lands"))
                 .stage(ZIRA_OCCUPIES_TREE, new QuestObjective("Zira has taken over Rafiki's tree"))
