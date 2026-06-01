@@ -2,6 +2,7 @@ package io.github.ron1196.circleofcraft.item;
 
 import io.github.ron1196.circleofcraft.data.WorldData;
 import io.github.ron1196.circleofcraft.quest.questline.OutlandsQuestline;
+import io.github.ron1196.circleofcraft.util.LevelHelper;
 import io.github.ron1196.circleofcraft.world.dimension.Dimensions;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -15,7 +16,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.Heightmap;
 import org.jetbrains.annotations.NotNull;
 
 public class WaywardFeatherItem extends Item {
@@ -52,9 +52,7 @@ public class WaywardFeatherItem extends Item {
         // Teleport to same X/Z, surface Y
         int x = (int) player.getX();
         int z = (int) player.getZ();
-        // Force-generate the destination chunk: getHeight returns the void floor for unloaded chunks.
-        destLevel.getChunk(x >> 4, z >> 4);
-        int y = destLevel.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
+        int y = LevelHelper.surfaceY(destLevel, x, z);
 
         level.playSound(
                 null,

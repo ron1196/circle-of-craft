@@ -1,6 +1,7 @@
 package io.github.ron1196.circleofcraft.world.dimension;
 
 import io.github.ron1196.circleofcraft.block.PortalBlock;
+import io.github.ron1196.circleofcraft.util.LevelHelper;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
@@ -121,28 +122,19 @@ public class Teleporter implements ITeleporter {
     }
 
     private BlockPos findSuitableSurface(ServerLevel level, BlockPos pos) {
-        forceLoadChunk(level, pos);
-
-        int surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos.getX(), pos.getZ());
+        int surfaceY = LevelHelper.surfaceY(level, pos.getX(), pos.getZ(), Heightmap.Types.MOTION_BLOCKING_NO_LEAVES);
         if (surfaceY > level.getMinBuildHeight() + 1) {
             return new BlockPos(pos.getX(), surfaceY, pos.getZ());
         }
 
         // Heightmap returned bottom — fall back to world spawn
         BlockPos spawn = level.getSharedSpawnPos();
-        forceLoadChunk(level, spawn);
-
-        surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, spawn.getX(), spawn.getZ());
+        surfaceY = LevelHelper.surfaceY(level, spawn.getX(), spawn.getZ(), Heightmap.Types.MOTION_BLOCKING_NO_LEAVES);
         if (surfaceY <= level.getMinBuildHeight() + 1) {
             surfaceY = FALLBACK_SURFACE_Y;
         }
 
         return new BlockPos(spawn.getX(), surfaceY, spawn.getZ());
-    }
-
-    private void forceLoadChunk(ServerLevel level, BlockPos pos) {
-        ChunkPos chunkPos = new ChunkPos(pos);
-        level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.FULL, true);
     }
 
     /**

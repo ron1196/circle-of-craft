@@ -1,5 +1,6 @@
 package io.github.ron1196.circleofcraft.item;
 
+import io.github.ron1196.circleofcraft.util.LevelHelper;
 import io.github.ron1196.circleofcraft.world.structure.StructureSearch;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -16,7 +17,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.Heightmap;
 import org.jetbrains.annotations.NotNull;
 
 public class CoinItem extends Item {
@@ -71,10 +71,7 @@ public class CoinItem extends Item {
 
         int x = target.getX();
         int z = target.getZ();
-        // Force the chunk to fully generate (including the tree/mound structure) before we ask the
-        // heightmap for the surface — otherwise getHeight returns 0 and we drop the player onto bedrock.
-        serverLevel.getChunk(x >> 4, z >> 4);
-        int y = serverLevel.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z) + TELEPORT_AERIAL_Y_OFFSET;
+        int y = LevelHelper.surfaceY(serverLevel, x, z) + TELEPORT_AERIAL_Y_OFFSET;
         player.teleportTo(serverLevel, x + 0.5, y, z + 0.5, player.getYRot(), player.getXRot());
         serverLevel.playSound(null, x, y, z, SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1.0F, 1.0F);
 
