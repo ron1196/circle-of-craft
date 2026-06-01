@@ -282,16 +282,16 @@ public class ModForgeEvents {
         } else if (serverPlayer.level().dimension() == Dimensions.OUTLANDS_LEVEL && !playerData.hasEnteredOutlands()) {
             playerData.setEnteredOutlands(true);
             ModCriteriaTriggers.ENTER_OUTLANDS.trigger(serverPlayer);
-            WorldData.get(serverPlayer.serverLevel())
-                    .getQuestManager()
-                    .tryAdvance(OutlandsQuestline.QUEST_ID, serverPlayer, QuestTrigger.ENTER_OUTLANDS);
         } else if (serverPlayer.level().dimension() == Dimensions.UPENDI_LEVEL && !playerData.hasEnteredUpendi()) {
             playerData.setEnteredUpendi(true);
             ModCriteriaTriggers.ENTER_UPENDI.trigger(serverPlayer);
         }
 
-        // FOLLOW_OUTLANDERS → ZIRA_OCCUPIES_TREE on entering Pride Lands
-        if (serverPlayer.level().dimension() == Dimensions.PRIDE_LANDS_LEVEL) {
+        if (serverPlayer.level().dimension() == Dimensions.OUTLANDS_LEVEL) {
+            WorldData.get(serverPlayer.serverLevel())
+                    .getQuestManager()
+                    .tryAdvance(OutlandsQuestline.QUEST_ID, serverPlayer, QuestTrigger.ENTER_OUTLANDS);
+        } else if (serverPlayer.level().dimension() == Dimensions.PRIDE_LANDS_LEVEL) {
             WorldData.get(serverPlayer.serverLevel())
                     .getQuestManager()
                     .tryAdvance(OutlandsQuestline.QUEST_ID, serverPlayer, QuestTrigger.ENTER_PRIDE_LANDS);
