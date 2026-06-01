@@ -20,9 +20,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class WaywardFeatherItem extends Item {
 
-    private static final java.util.Set<OutlandsQuestline.Stage> MARCH_STAGES =
-            java.util.EnumSet.of(OutlandsQuestline.Stage.FOLLOW_OUTLANDERS, OutlandsQuestline.Stage.ZIRA_OCCUPIES_TREE);
-
     public WaywardFeatherItem(Properties properties) {
         super(properties.stacksTo(16).rarity(Rarity.UNCOMMON));
     }
@@ -41,8 +38,7 @@ public class WaywardFeatherItem extends Item {
             return InteractionResultHolder.pass(stack);
         }
 
-        // Disabled during the march sequence
-        if (isDuringMarch(serverPlayer)) {
+        if (!feathersDelivered(serverPlayer)) {
             return InteractionResultHolder.pass(stack);
         }
 
@@ -56,6 +52,8 @@ public class WaywardFeatherItem extends Item {
         // Teleport to same X/Z, surface Y
         int x = (int) player.getX();
         int z = (int) player.getZ();
+        // Force-generate the destination chunk: getHeight returns the void floor for unloaded chunks.
+        destLevel.getChunk(x >> 4, z >> 4);
         int y = destLevel.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
 
         level.playSound(
@@ -75,10 +73,9 @@ public class WaywardFeatherItem extends Item {
         return InteractionResultHolder.consume(stack);
     }
 
-    private static boolean isDuringMarch(ServerPlayer player) {
-        OutlandsQuestline.Stage stage = WorldData.get(player.serverLevel())
+    private static boolean feathersDelivered(ServerPlayer player) {
+        return WorldData.get(player.serverLevel())
                 .getQuestManager()
-                .getStage(OutlandsQuestline.QUEST_ID, OutlandsQuestline.Stage.class);
-        return MARCH_STAGES.contains(stage);
+                .isStageAtOrPast(OutlandsQuestline.QUEST_ID, OutlandsQuestline.Stage.FOLLOW_OUTLANDERS);
     }
 }
