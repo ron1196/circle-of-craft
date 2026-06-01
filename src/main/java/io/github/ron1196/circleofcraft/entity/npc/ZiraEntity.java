@@ -194,6 +194,7 @@ public class ZiraEntity extends Monster {
 
     @Override
     public boolean hurt(@NotNull DamageSource source, float amount) {
+        if (!isHostile()) return false;
         if (isPassenger() && getVehicle() instanceof TermiteQueenEntity) return false;
         return super.hurt(source, amount);
     }
@@ -234,6 +235,7 @@ public class ZiraEntity extends Monster {
         // Quest didn't advance — give contextual speech
         switch (stage) {
             case COLLECT_INGOTS -> CharacterSpeech.sendSpeech(player, CharacterSpeech.ZIRA_INGOTS);
+            case THROW_IN_OUTWATER -> CharacterSpeech.sendSpeech(player, CharacterSpeech.ZIRA_OUTWATER);
             case COLLECT_FEATHERS -> CharacterSpeech.sendSpeech(player, CharacterSpeech.ZIRA_FEATHERS);
             default -> {
                 if (ctx.quests().isStageAtOrPast(OutlandsQuestline.QUEST_ID, Stage.FOLLOW_OUTLANDERS) && !isHostile()) {

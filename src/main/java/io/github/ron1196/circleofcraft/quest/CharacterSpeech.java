@@ -28,6 +28,7 @@ public enum CharacterSpeech {
     MORE_BUGS("Timon", Speech.MORE_BUGS),
     RUG_SCAR("Scar", Speech.RUG_SCAR),
     ZIRA_INGOTS("Zira", Speech.ZIRA_INGOTS),
+    ZIRA_OUTWATER("Zira", Speech.ZIRA_OUTWATER),
     ZIRA_FEATHERS("Zira", Speech.ZIRA_FEATHERS),
     ZIRA_CONQUEST("Zira", Speech.ZIRA_CONQUEST),
     RUG_ZIRA("Zira", Speech.RUG_ZIRA),
@@ -338,6 +339,15 @@ public enum CharacterSpeech {
             "You test my patience. Scar was right — you can never trust anyone but family.",
             "Surely it doesn't take this long to collect a few ingots? Even Nuka could do better!",
             "There's kivulite in the caves nearby. Find it, or find yourself at the mercy of my claws."
+        };
+
+        static final String[] ZIRA_OUTWATER = {
+            "In the cavern below lies the Outwater — the same dark pool that forged Scar's own armor. Cast the ingots in, and bring me the Helm.",
+            "Where is my Helm, human? Down to the pool. The Outwater does not yield its gifts to the slow.",
+            "Still empty-pawed? Scar would have had the Helm forged twice over by now. Throw the ingots into the Outwater and be quick about it.",
+            "The ingots go IN, the Helm comes OUT. Even Nuka could grasp something so simple.",
+            "Do not test my patience. Into the pool with those ingots — or I shall let my Outlanders decide your worth.",
+            "The Pride Lands will be ours once more, but not without that Helm. To the Outwater. NOW."
         };
 
         static final String[] ZIRA_FEATHERS = {
