@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="src/main/resources/banner/banner.jpg" alt="Circle of Craft" />
+  <img src="assets/images/banner.png" alt="Circle of Craft" />
 </p>
 
 <h1 align="center">Circle of Craft</h1>
@@ -11,6 +11,12 @@
 
 <p align="center">
   <b>Minecraft 1.20.1</b> · <b>Forge</b>
+</p>
+
+<p align="center">
+  <b>Download:</b>
+  <a href="https://www.curseforge.com/minecraft/mc-mods/circle-of-craft">CurseForge</a> ·
+  <a href="https://modrinth.com/mod/circle-of-craft">Modrinth</a>
 </p>
 
 ---
@@ -73,7 +79,7 @@ CurseForge and Modrinth will prompt for these when you install Circle of Craft t
 
 1. Install [Forge for Minecraft 1.20.1](https://files.minecraftforge.net/net/minecraftforge/forge/index_1.20.1.html).
 2. Install [GeckoLib](https://www.curseforge.com/minecraft/mc-mods/geckolib) (required). Optionally install JEI and/or Jade.
-3. Download the latest mod JAR from [Releases](https://github.com/ron1196/circle-of-craft/releases).
+3. Download the latest mod JAR from [CurseForge](https://www.curseforge.com/minecraft/mc-mods/circle-of-craft), [Modrinth](https://modrinth.com/mod/circle-of-craft), or [GitHub Releases](https://github.com/ron1196/circle-of-craft/releases).
 4. Place the JAR in your `.minecraft/mods/` folder.
 5. Launch Minecraft with the Forge profile.
 

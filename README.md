@@ -8,6 +8,11 @@
   <a href="https://github.com/ron1196/circle-of-craft/blob/main/LICENSE"><img src="https://img.shields.io/github/license/ron1196/circle-of-craft?style=flat-square" alt="License" /></a>
 </p>
 
+<p align="center">
+  <a href="https://www.curseforge.com/minecraft/mc-mods/circle-of-craft"><img src="https://img.shields.io/curseforge/dt/circle-of-craft?style=flat-square&logo=curseforge&color=f16436&label=CurseForge" alt="CurseForge" /></a>
+  <a href="https://modrinth.com/mod/circle-of-craft"><img src="https://img.shields.io/modrinth/dt/circle-of-craft?style=flat-square&logo=modrinth&color=00af5c&label=Modrinth" alt="Modrinth" /></a>
+</p>
+
 > Looking for the user-facing mod description (CurseForge / Modrinth listing copy)? See **[MOD_PAGE.md](MOD_PAGE.md)**.
 
 ---
