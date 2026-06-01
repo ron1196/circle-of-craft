@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://www.curseforge.com/minecraft/mc-mods/circle-of-craft"><img src="https://img.shields.io/curseforge/dt/circle-of-craft?style=flat-square&logo=curseforge&color=f16436&label=CurseForge" alt="CurseForge" /></a>
+  <a href="https://www.curseforge.com/minecraft/mc-mods/circle-of-craft"><img src="https://img.shields.io/curseforge/dt/1555977?style=flat-square&logo=curseforge&color=f16436&label=CurseForge" alt="CurseForge" /></a>
   <a href="https://modrinth.com/mod/circle-of-craft"><img src="https://img.shields.io/modrinth/dt/circle-of-craft?style=flat-square&logo=modrinth&color=00af5c&label=Modrinth" alt="Modrinth" /></a>
 </p>
 
