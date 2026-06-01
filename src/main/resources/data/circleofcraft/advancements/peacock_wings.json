@@ -12,7 +12,7 @@
     "requirement": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
-        "items": [{"items": ["circleofcraft:peacock_boots"]}]
+        "items": [{"items": ["circleofcraft:peacock_wings"]}]
       }
     }
   }
