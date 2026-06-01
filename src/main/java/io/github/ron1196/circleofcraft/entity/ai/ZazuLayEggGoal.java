@@ -10,13 +10,13 @@ import net.minecraft.world.item.ItemStack;
  * Zazu periodically lays an egg (drops a zazu_egg item). Approximately every 5 minutes (6000
  * ticks).
  */
-public class ZazuMateGoal extends Goal {
+public class ZazuLayEggGoal extends Goal {
 
     private final ZazuEntity zazu;
     private int layTimer;
     private static final int LAY_INTERVAL = 6000; // ~5 minutes
 
-    public ZazuMateGoal(ZazuEntity zazu) {
+    public ZazuLayEggGoal(ZazuEntity zazu) {
         this.zazu = zazu;
         this.layTimer = zazu.getRandom().nextInt(LAY_INTERVAL); // Randomize initial timer
     }

@@ -1,7 +1,7 @@
 package io.github.ron1196.circleofcraft.entity.animal;
 
 import io.github.ron1196.circleofcraft.data.ModCriteriaTriggers;
-import io.github.ron1196.circleofcraft.entity.ai.ZazuMateGoal;
+import io.github.ron1196.circleofcraft.entity.ai.ZazuLayEggGoal;
 import io.github.ron1196.circleofcraft.quest.CharacterSpeech;
 import io.github.ron1196.circleofcraft.registry.EntityTypes;
 import io.github.ron1196.circleofcraft.registry.ModItems;
@@ -44,7 +44,7 @@ public class ZazuEntity extends ModAnimal {
         super.registerGoals();
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.5));
         addTemptGoal(2, 1.0, Items.WHEAT_SEEDS, ModItems.CORN_KERNELS.get());
-        this.goalSelector.addGoal(3, new ZazuMateGoal(this));
+        this.goalSelector.addGoal(3, new ZazuLayEggGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
