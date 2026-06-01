@@ -98,8 +98,9 @@ public class VultureModel<T extends Mob> extends EntityModel<T> {
         this.legRight.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         this.legLeft.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
 
-        this.wingRight.zRot = ageInTicks;
-        this.wingLeft.zRot = -ageInTicks;
+        float flap = Mth.cos(ageInTicks * 0.3F) * 0.5F;
+        this.wingRight.zRot = flap;
+        this.wingLeft.zRot = -flap;
     }
 
     @Override
