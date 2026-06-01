@@ -16,6 +16,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,8 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
     private static final int TEXTURE_SIZE = 256;
 
     private static final int PAGE_WIDTH = 202;
+    private static final int OBJECTIVE_MAX_WIDTH = 186;
+    private static final int OBJECTIVE_LINE_HEIGHT = 11;
     private static final int PAGE_HEIGHT = 256;
     private static final int MENU_WIDTH = 65;
 
@@ -292,13 +295,28 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
 
         drawCentered(graphics, Component.literal("Current objective:"), SPINE_X, 37, PAGE_TEXT_SECONDARY);
         String objective = stage != null ? quest.getObjectiveByStage(stage) : "";
-        drawCentered(graphics, Component.literal(objective), SPINE_X, 51, PAGE_TEXT_PRIMARY);
+        List<FormattedCharSequence> objectiveLines = font.split(Component.literal(objective), OBJECTIVE_MAX_WIDTH);
+        for (int i = 0; i < objectiveLines.size(); i++) {
+            FormattedCharSequence line = objectiveLines.get(i);
+            graphics.drawString(
+                    font,
+                    line,
+                    leftPos + SPINE_X - font.width(line) / 2,
+                    topPos + 51 + i * OBJECTIVE_LINE_HEIGHT,
+                    PAGE_TEXT_PRIMARY,
+                    false);
+        }
 
+        int doneBaseY = 51 + objectiveLines.size() * OBJECTIVE_LINE_HEIGHT + 14;
         for (int j = currentIdx - 1; j >= 0; j--) {
             StageId prev = quest.getStageOrder().get(j);
             String prevText = quest.getObjectiveByStage(prev) + " - Done";
             drawCentered(
-                    graphics, Component.literal(prevText), SPINE_X, 63 + 13 * (currentIdx - j), PAGE_TEXT_SECONDARY);
+                    graphics,
+                    Component.literal(prevText),
+                    SPINE_X,
+                    doneBaseY + 13 * (currentIdx - 1 - j),
+                    PAGE_TEXT_SECONDARY);
         }
     }
 
