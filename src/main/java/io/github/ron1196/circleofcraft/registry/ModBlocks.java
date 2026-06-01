@@ -6,6 +6,7 @@ import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.block.*;
 import io.github.ron1196.circleofcraft.block.MushroomBlock;
 import io.github.ron1196.circleofcraft.world.dimension.Dimensions;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -46,20 +47,23 @@ public class ModBlocks {
             BLOCKS.register("corrupt_pride_pillar", () -> new RotatedPillarBlock(pillarProps(MapColor.COLOR_PURPLE)));
 
     // ========== Ores ==========
+    // XP ranges mirror vanilla tiers: coal 0–2, lapis/quartz 2–5, diamond/emerald 3–7.
+    // Silver/peacock/kivulite also grant XP at the furnace (they smelt), so their mining XP
+    // is deliberately kept at or below their vanilla resource-tier analog.
     public static final RegistryObject<Block> PRIDE_COAL_ORE =
-            BLOCKS.register("pride_coal_ore", () -> new DropExperienceBlock(oreProps()));
+            BLOCKS.register("pride_coal_ore", () -> new DropExperienceBlock(oreProps(), UniformInt.of(0, 2)));
 
     public static final RegistryObject<Block> SILVER_ORE =
-            BLOCKS.register("silver_ore", () -> new DropExperienceBlock(oreProps()));
+            BLOCKS.register("silver_ore", () -> new DropExperienceBlock(oreProps(), UniformInt.of(1, 3)));
 
     public static final RegistryObject<Block> PEACOCK_ORE =
-            BLOCKS.register("peacock_ore", () -> new DropExperienceBlock(oreProps()));
+            BLOCKS.register("peacock_ore", () -> new DropExperienceBlock(oreProps(), UniformInt.of(3, 7)));
 
     public static final RegistryObject<Block> KIVULITE_ORE =
-            BLOCKS.register("kivulite_ore", () -> new DropExperienceBlock(oreProps()));
+            BLOCKS.register("kivulite_ore", () -> new DropExperienceBlock(oreProps(), UniformInt.of(2, 5)));
 
     public static final RegistryObject<Block> NUKA_ORE =
-            BLOCKS.register("nuka_ore", () -> new DropExperienceBlock(oreProps()));
+            BLOCKS.register("nuka_ore", () -> new DropExperienceBlock(oreProps(), UniformInt.of(2, 5)));
 
     // ========== Storage Blocks ==========
     public static final RegistryObject<Block> SILVER_BLOCK =
