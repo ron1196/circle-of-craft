@@ -12,13 +12,13 @@
     "monster": [
       {
         "type": "circleofcraft:hyena",
-        "weight": 8,
+        "weight": 4,
         "minCount": 1,
         "maxCount": 2
       },
       {
         "type": "circleofcraft:crocodile",
-        "weight": 3,
+        "weight": 8,
         "minCount": 2,
         "maxCount": 4
       }
