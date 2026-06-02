@@ -203,7 +203,24 @@ Then patch-bump and tag each branch independently. The two tags may have differe
 
 ### Pre-release / beta
 
-Not currently set up. If wanted: extend the tag pattern to allow `v1.3.0-rc1-mc1.20.1`, have the workflow mark the GitHub Release as "pre-release" and use CurseForge/Modrinth "Beta" channels. Defer until there's a concrete reason to want this.
+A SemVer pre-release suffix on the mod version drives the release channel across all three platforms. The **tag is the single source of truth** — nothing else feeds the channel decision, so a "clean" tag can never end up flagged as a pre-release.
+
+| Tag | Channel | GitHub | CurseForge | Modrinth |
+|---|---|---|---|---|
+| `v1.3.0-alpha.1-mc1.20.1` | alpha | pre-release | Alpha | `alpha` |
+| `v1.3.0-beta.2-mc1.20.1` | beta | pre-release | Beta | `beta` |
+| `v1.3.0-mc1.20.1` | release | normal release | Release | `release` |
+
+- Only `-alpha` and `-beta` are recognised (each with an optional dot-number: `-beta`, `-beta.1`, `-beta.2`, …). Use the number to iterate pre-release builds — CurseForge/Modrinth reject duplicate version uploads and tags can't be reused, so `-beta.1` → `-beta.2` is how you ship a second beta before the stable `1.3.0`.
+- GitHub has only a single `prerelease` boolean (no alpha-vs-beta distinction), so both alpha and beta set it to `true`. The finer split lives on CurseForge/Modrinth.
+- Any other pre-release suffix (e.g. `-rc.1`) **fails the build** rather than silently publishing as a full release. If you ever want `rc`, map it to Beta in the workflow's channel `case`.
+
+Flow is otherwise unchanged — tag and push:
+
+```bash
+git tag v1.3.0-beta.1-mc1.20.1
+git push --tags
+```
 
 ### Re-running a failed publish
 

@@ -28,9 +28,22 @@ jobs:
           fi
           MOD_VERSION="${BASH_REMATCH[1]}"
           EXPECTED_MC="${BASH_REMATCH[3]}"
+          PRERELEASE_SUFFIX="${BASH_REMATCH[2]}"
+          case "$PRERELEASE_SUFFIX" in
+            "")                  CHANNEL="release" ;;
+            -alpha|-alpha.*)     CHANNEL="alpha" ;;
+            -beta|-beta.*)       CHANNEL="beta" ;;
+            *)
+              echo "Unrecognised pre-release suffix '$PRERELEASE_SUFFIX'. Only -alpha[.N] and -beta[.N] are supported." >&2
+              exit 1
+              ;;
+          esac
+          if [[ "$CHANNEL" == "release" ]]; then PRERELEASE="false"; else PRERELEASE="true"; fi
           echo "mod_version=$MOD_VERSION" >> "$GITHUB_OUTPUT"
           echo "expected_mc=$EXPECTED_MC" >> "$GITHUB_OUTPUT"
-          echo "Parsed: mod_version=$MOD_VERSION, expected_mc=$EXPECTED_MC"
+          echo "channel=$CHANNEL" >> "$GITHUB_OUTPUT"
+          echo "prerelease=$PRERELEASE" >> "$GITHUB_OUTPUT"
+          echo "Parsed: mod_version=$MOD_VERSION, expected_mc=$EXPECTED_MC, channel=$CHANNEL"
 
       - name: Validate MC version matches branch's gradle.properties
         id: validate
@@ -99,6 +112,9 @@ jobs:
           if [[ -n "${{ steps.prev.outputs.previous_tag }}" ]]; then
             ARGS+=(--notes-start-tag "${{ steps.prev.outputs.previous_tag }}")
           fi
+          if [[ "${{ steps.parse.outputs.prerelease }}" == "true" ]]; then
+            ARGS+=(--prerelease)
+          fi
           if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
             gh release delete "${GITHUB_REF_NAME}" --yes
           fi
@@ -116,6 +132,7 @@ jobs:
           LOADER: ${{ steps.validate.outputs.loader }}
           JAR: ${{ steps.jar.outputs.path }}
           NOTES: ${{ steps.gh_release.outputs.notes_path }}
+          CHANNEL: ${{ steps.parse.outputs.channel }}
         run: |
           GAME_VERSIONS_JSON=$(curl -fsS \
             -H "X-Api-Token: $CURSEFORGE_TOKEN" \
@@ -131,6 +148,7 @@ jobs:
           METADATA=$(jq -c -n \
             --arg changelog "$(cat "$NOTES")" \
             --arg displayName "${GITHUB_REF_NAME}" \
+            --arg channel "$CHANNEL" \
             --argjson mc "$MC_ID" \
             --argjson loader "$LOADER_ID" \
             '{
@@ -138,7 +156,7 @@ jobs:
               changelogType: "markdown",
               displayName: $displayName,
               gameVersions: [$mc, $loader],
-              releaseType: "release",
+              releaseType: $channel,
               relations: {
                 projects: [
                   { slug: "geckolib", type: "requiredDependency" },
@@ -169,6 +187,7 @@ jobs:
           JAR: ${{ steps.jar.outputs.path }}
           NOTES: ${{ steps.gh_release.outputs.notes_path }}
           MOD_VERSION: ${{ steps.parse.outputs.mod_version }}
+          CHANNEL: ${{ steps.parse.outputs.channel }}
         run: |
           fetch_modrinth_id() {
             local slug="$1"
@@ -190,6 +209,7 @@ jobs:
             --arg project_id "$PROJECT_ID" \
             --arg mc "$MC_VERSION" \
             --arg loader "$LOADER" \
+            --arg channel "$CHANNEL" \
             --arg filename "$(basename "$JAR")" \
             --arg geckolib_id "$GECKOLIB_ID" \
             --arg jei_id "$JEI_ID" \
@@ -204,7 +224,7 @@ jobs:
                 { project_id: $jade_id,     dependency_type: "optional" }
               ],
               game_versions: [$mc],
-              version_type: "release",
+              version_type: $channel,
               loaders: [$loader],
               featured: false,
               project_id: $project_id,
