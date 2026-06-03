@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "circleofcraft:vase"
+    },
+    {
+      "item": "circleofcraft:outshroom_glowing"
+    }
+  ],
+  "result": {
+    "id": "circleofcraft:vase_outshroom_glowing",
+    "count": 1
+  }
+}

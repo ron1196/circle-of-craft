@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "circleofcraft:pride_acacia_planks"
+    }
+  },
+  "result": {
+    "id": "circleofcraft:pride_acacia_stairs",
+    "count": 4
+  }
+}

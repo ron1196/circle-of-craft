@@ -1,0 +1,23 @@
+{
+  "parent": "circleofcraft:enter_pride_lands",
+  "display": {
+    "icon": {
+      "id": "circleofcraft:bug"
+    },
+    "title": {
+      "translate": "advancement.circleofcraft.hakuna_matata.title"
+    },
+    "description": {
+      "translate": "advancement.circleofcraft.hakuna_matata.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "circleofcraft:trade_pumbaa",
+      "conditions": {}
+    }
+  }
+}

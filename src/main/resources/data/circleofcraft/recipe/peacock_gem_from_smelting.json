@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "circleofcraft:peacock_ore"
+  },
+  "result": {
+    "id": "circleofcraft:peacock_gem"
+  },
+  "experience": 1.0,
+  "cookingtime": 200
+}

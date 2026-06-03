@@ -1,0 +1,23 @@
+{
+  "parent": "circleofcraft:peacock_ore",
+  "display": {
+    "icon": {
+      "id": "circleofcraft:bongo_drum"
+    },
+    "title": {
+      "translate": "advancement.circleofcraft.drum_enchant.title"
+    },
+    "description": {
+      "translate": "advancement.circleofcraft.drum_enchant.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "circleofcraft:play_bongo_drum",
+      "conditions": {}
+    }
+  }
+}

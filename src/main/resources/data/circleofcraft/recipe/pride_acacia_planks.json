@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "circleofcraft:pride_acacia_log"
+    }
+  ],
+  "result": {
+    "id": "circleofcraft:pride_acacia_planks",
+    "count": 4
+  }
+}

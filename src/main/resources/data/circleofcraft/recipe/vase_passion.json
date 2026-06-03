@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "circleofcraft:vase"
+    },
+    {
+      "item": "circleofcraft:passion_sapling"
+    }
+  ],
+  "result": {
+    "id": "circleofcraft:vase_passion",
+    "count": 1
+  }
+}

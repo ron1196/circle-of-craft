@@ -1,0 +1,31 @@
+{
+  "parent": "circleofcraft:enter_pride_lands",
+  "display": {
+    "icon": {
+      "id": "circleofcraft:chocolate_mufasa"
+    },
+    "title": {
+      "translate": "advancement.circleofcraft.chocolate_mufasa.title"
+    },
+    "description": {
+      "translate": "advancement.circleofcraft.chocolate_mufasa.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "get": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:chocolate_mufasa"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

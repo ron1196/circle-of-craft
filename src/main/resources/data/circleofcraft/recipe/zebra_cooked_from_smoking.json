@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "circleofcraft:zebra_raw"
+  },
+  "result": {
+    "id": "circleofcraft:zebra_cooked"
+  },
+  "experience": 0.35,
+  "cookingtime": 100
+}

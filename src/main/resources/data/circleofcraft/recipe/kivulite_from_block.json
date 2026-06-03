@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "circleofcraft:kivulite_block"
+    }
+  ],
+  "result": {
+    "id": "circleofcraft:kivulite",
+    "count": 9
+  }
+}

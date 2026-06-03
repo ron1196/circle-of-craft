@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "GGG",
+    "GGG"
+  ],
+  "key": {
+    "G": {
+      "item": "circleofcraft:peacock_gem"
+    }
+  },
+  "result": {
+    "id": "circleofcraft:peacock_block",
+    "count": 1
+  }
+}

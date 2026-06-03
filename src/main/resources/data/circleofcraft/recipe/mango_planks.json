@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "circleofcraft:mango_log"
+    }
+  ],
+  "result": {
+    "id": "circleofcraft:mango_planks",
+    "count": 4
+  }
+}

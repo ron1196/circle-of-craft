@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LLL",
+    "SWS",
+    "SWS"
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "W": {
+      "item": "circleofcraft:pride_acacia_planks"
+    }
+  },
+  "result": {
+    "id": "circleofcraft:bongo_drum",
+    "count": 1
+  }
+}

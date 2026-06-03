@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "Y"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:stick"
+    },
+    "Y": {
+      "item": "circleofcraft:pridestone"
+    }
+  },
+  "result": {
+    "id": "circleofcraft:pride_lever",
+    "count": 1
+  }
+}

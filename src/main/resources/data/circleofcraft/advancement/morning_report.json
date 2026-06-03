@@ -1,0 +1,23 @@
+{
+  "parent": "circleofcraft:enter_pride_lands",
+  "display": {
+    "icon": {
+      "id": "circleofcraft:feather_blue"
+    },
+    "title": {
+      "translate": "advancement.circleofcraft.morning_report.title"
+    },
+    "description": {
+      "translate": "advancement.circleofcraft.morning_report.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "circleofcraft:speak_to_zazu",
+      "conditions": {}
+    }
+  }
+}

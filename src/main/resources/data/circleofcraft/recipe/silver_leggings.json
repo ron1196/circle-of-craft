@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "X X",
+    "X X"
+  ],
+  "key": {
+    "X": {
+      "item": "circleofcraft:silver_ingot"
+    }
+  },
+  "result": {
+    "id": "circleofcraft:silver_leggings",
+    "count": 1
+  }
+}

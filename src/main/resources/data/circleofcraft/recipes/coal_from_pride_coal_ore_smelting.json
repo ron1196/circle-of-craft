@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": { "item": "circleofcraft:pride_coal_ore" },
-  "result": "minecraft:coal",
-  "experience": 0.1,
-  "cookingtime": 200
-}

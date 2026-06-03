@@ -1,0 +1,22 @@
+{
+  "parent": "circleofcraft:simba_quest",
+  "display": {
+    "icon": {
+      "id": "circleofcraft:wayward_feather"
+    },
+    "title": {
+      "translate": "advancement.circleofcraft.kill_zira.title"
+    },
+    "description": {
+      "translate": "advancement.circleofcraft.kill_zira.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "circleofcraft:kill_zira"
+    }
+  }
+}

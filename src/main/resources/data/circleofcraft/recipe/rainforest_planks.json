@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "circleofcraft:rainforest_log"
+    }
+  ],
+  "result": {
+    "id": "circleofcraft:rainforest_planks",
+    "count": 4
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S S",
+    "PPP"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "P": {
+      "item": "circleofcraft:pridestone"
+    }
+  },
+  "result": {
+    "id": "circleofcraft:grinding_bowl",
+    "count": 1
+  }
+}

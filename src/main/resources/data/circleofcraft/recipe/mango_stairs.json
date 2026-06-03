@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "circleofcraft:mango_planks"
+    }
+  },
+  "result": {
+    "id": "circleofcraft:mango_stairs",
+    "count": 4
+  }
+}

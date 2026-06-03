@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "circleofcraft:lion_raw",
+    "circleofcraft:lion_cooked",
+    "circleofcraft:zebra_raw",
+    "circleofcraft:zebra_cooked",
+    "circleofcraft:rhino_raw",
+    "circleofcraft:rhino_cooked",
+    "circleofcraft:outlander_meat",
+    "circleofcraft:crocodile_meat"
+  ]
+}

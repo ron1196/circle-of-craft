@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "circleofcraft:kivulite_ore"
+  },
+  "result": {
+    "id": "circleofcraft:kivulite"
+  },
+  "experience": 0.8,
+  "cookingtime": 100
+}

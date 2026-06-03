@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "SRS",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "item": "circleofcraft:silver_ingot"
+    },
+    "R": {
+      "item": "circleofcraft:rafiki_dust"
+    }
+  },
+  "result": {
+    "id": "circleofcraft:astral_charm",
+    "count": 1
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "parent": "circleofcraft:drum_enchant",
+  "display": {
+    "icon": {
+      "id": "circleofcraft:rhythm_staff"
+    },
+    "title": {
+      "translate": "advancement.circleofcraft.master_drummer.title"
+    },
+    "description": {
+      "translate": "advancement.circleofcraft.master_drummer.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "circleofcraft:play_bongo_drum",
+      "conditions": {}
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "parent": "circleofcraft:kill_hyena",
+  "display": {
+    "icon": {
+      "id": "circleofcraft:rhythm_staff"
+    },
+    "title": {
+      "translate": "advancement.circleofcraft.get_staff.title"
+    },
+    "description": {
+      "translate": "advancement.circleofcraft.get_staff.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "get": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rhythm_staff"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

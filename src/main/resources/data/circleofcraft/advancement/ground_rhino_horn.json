@@ -1,0 +1,22 @@
+{
+  "parent": "circleofcraft:craft_grinding_bowl",
+  "display": {
+    "icon": {
+      "id": "circleofcraft:ground_rhino_horn"
+    },
+    "title": {
+      "translate": "advancement.circleofcraft.ground_rhino_horn.title"
+    },
+    "description": {
+      "translate": "advancement.circleofcraft.ground_rhino_horn.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "circleofcraft:use_rhino_horn"
+    }
+  }
+}

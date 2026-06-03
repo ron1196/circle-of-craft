@@ -1,0 +1,261 @@
+{
+  "parent": "circleofcraft:craft_grinding_bowl",
+  "display": {
+    "icon": {
+      "id": "circleofcraft:rug_outlander"
+    },
+    "title": {
+      "translate": "advancement.circleofcraft.rug_collector.title"
+    },
+    "description": {
+      "translate": "advancement.circleofcraft.rug_collector.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "rug_lion": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rug_lion"
+            ]
+          }
+        ]
+      }
+    },
+    "rug_white": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rug_white"
+            ]
+          }
+        ]
+      }
+    },
+    "rug_light_gray": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rug_light_gray"
+            ]
+          }
+        ]
+      }
+    },
+    "rug_gray": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rug_gray"
+            ]
+          }
+        ]
+      }
+    },
+    "rug_black": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rug_black"
+            ]
+          }
+        ]
+      }
+    },
+    "rug_red": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rug_red"
+            ]
+          }
+        ]
+      }
+    },
+    "rug_orange": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rug_orange"
+            ]
+          }
+        ]
+      }
+    },
+    "rug_yellow": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rug_yellow"
+            ]
+          }
+        ]
+      }
+    },
+    "rug_light_green": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rug_light_green"
+            ]
+          }
+        ]
+      }
+    },
+    "rug_green": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rug_green"
+            ]
+          }
+        ]
+      }
+    },
+    "rug_light_blue": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rug_light_blue"
+            ]
+          }
+        ]
+      }
+    },
+    "rug_blue": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rug_blue"
+            ]
+          }
+        ]
+      }
+    },
+    "rug_violet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rug_violet"
+            ]
+          }
+        ]
+      }
+    },
+    "rug_purple": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rug_purple"
+            ]
+          }
+        ]
+      }
+    },
+    "rug_pink": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rug_pink"
+            ]
+          }
+        ]
+      }
+    },
+    "rug_outlander": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:rug_outlander"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "rug_lion"
+    ],
+    [
+      "rug_white"
+    ],
+    [
+      "rug_light_gray"
+    ],
+    [
+      "rug_gray"
+    ],
+    [
+      "rug_black"
+    ],
+    [
+      "rug_red"
+    ],
+    [
+      "rug_orange"
+    ],
+    [
+      "rug_yellow"
+    ],
+    [
+      "rug_light_green"
+    ],
+    [
+      "rug_green"
+    ],
+    [
+      "rug_light_blue"
+    ],
+    [
+      "rug_blue"
+    ],
+    [
+      "rug_violet"
+    ],
+    [
+      "rug_purple"
+    ],
+    [
+      "rug_pink"
+    ],
+    [
+      "rug_outlander"
+    ]
+  ]
+}

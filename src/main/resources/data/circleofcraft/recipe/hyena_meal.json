@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "circleofcraft:hyena_bone"
+    }
+  ],
+  "result": {
+    "id": "circleofcraft:hyena_meal",
+    "count": 3
+  }
+}

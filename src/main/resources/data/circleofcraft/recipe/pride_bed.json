@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FFF",
+    "PPP"
+  ],
+  "key": {
+    "F": {
+      "item": "circleofcraft:lion_fur"
+    },
+    "P": {
+      "item": "circleofcraft:pride_acacia_planks"
+    }
+  },
+  "result": {
+    "id": "circleofcraft:pride_bed",
+    "count": 1
+  }
+}

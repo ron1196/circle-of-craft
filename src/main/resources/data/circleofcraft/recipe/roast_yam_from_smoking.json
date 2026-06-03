@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "circleofcraft:yam"
+  },
+  "result": {
+    "id": "circleofcraft:roast_yam"
+  },
+  "experience": 0.35,
+  "cookingtime": 100
+}

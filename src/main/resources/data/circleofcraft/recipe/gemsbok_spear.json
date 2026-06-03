@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "H",
+    "S",
+    "S"
+  ],
+  "key": {
+    "H": {
+      "item": "circleofcraft:gemsbok_horn"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "id": "circleofcraft:gemsbok_spear",
+    "count": 1
+  }
+}

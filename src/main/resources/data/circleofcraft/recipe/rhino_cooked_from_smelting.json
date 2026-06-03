@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "circleofcraft:rhino_raw"
+  },
+  "result": {
+    "id": "circleofcraft:rhino_cooked"
+  },
+  "experience": 0.35,
+  "cookingtime": 200
+}

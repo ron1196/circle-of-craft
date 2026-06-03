@@ -1,0 +1,31 @@
+{
+  "parent": "circleofcraft:enter_outlands",
+  "display": {
+    "icon": {
+      "id": "circleofcraft:kivulite_pickaxe"
+    },
+    "title": {
+      "translate": "advancement.circleofcraft.fire_tool.title"
+    },
+    "description": {
+      "translate": "advancement.circleofcraft.fire_tool.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:kivulite_sword"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

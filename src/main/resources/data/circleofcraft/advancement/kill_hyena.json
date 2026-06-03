@@ -1,0 +1,27 @@
+{
+  "parent": "circleofcraft:enter_pride_lands",
+  "display": {
+    "icon": {
+      "id": "circleofcraft:hyena_bone"
+    },
+    "title": {
+      "translate": "advancement.circleofcraft.kill_hyena.title"
+    },
+    "description": {
+      "translate": "advancement.circleofcraft.kill_hyena.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "kill": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "circleofcraft:hyena"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "parent": "circleofcraft:enter_pride_lands",
+  "display": {
+    "icon": {
+      "id": "circleofcraft:giraffe_saddle"
+    },
+    "title": {
+      "translate": "advancement.circleofcraft.ride_giraffe.title"
+    },
+    "description": {
+      "translate": "advancement.circleofcraft.ride_giraffe.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "circleofcraft:ride_giraffe",
+      "conditions": {}
+    }
+  }
+}

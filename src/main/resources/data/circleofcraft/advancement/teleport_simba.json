@@ -1,0 +1,23 @@
+{
+  "parent": "circleofcraft:simba_quest",
+  "display": {
+    "icon": {
+      "id": "circleofcraft:astral_charm"
+    },
+    "title": {
+      "translate": "advancement.circleofcraft.teleport_simba.title"
+    },
+    "description": {
+      "translate": "advancement.circleofcraft.teleport_simba.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "circleofcraft:teleport_simba",
+      "conditions": {}
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "parent": "circleofcraft:enter_pride_lands",
+  "display": {
+    "icon": {
+      "id": "circleofcraft:peacock_gem"
+    },
+    "title": {
+      "translate": "advancement.circleofcraft.peacock_ore.title"
+    },
+    "description": {
+      "translate": "advancement.circleofcraft.peacock_ore.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "get": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:peacock_gem"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

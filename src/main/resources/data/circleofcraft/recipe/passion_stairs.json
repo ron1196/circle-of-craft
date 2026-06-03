@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "circleofcraft:passion_planks"
+    }
+  },
+  "result": {
+    "id": "circleofcraft:passion_stairs",
+    "count": 4
+  }
+}

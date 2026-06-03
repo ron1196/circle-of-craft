@@ -1,0 +1,23 @@
+{
+  "parent": "circleofcraft:enter_outlands",
+  "display": {
+    "icon": {
+      "id": "circleofcraft:termite_dust"
+    },
+    "title": {
+      "translate": "advancement.circleofcraft.simba_quest.title"
+    },
+    "description": {
+      "translate": "advancement.circleofcraft.simba_quest.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "circleofcraft:complete_rafiki_quest",
+      "conditions": {}
+    }
+  }
+}

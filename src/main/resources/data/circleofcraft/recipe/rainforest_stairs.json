@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "circleofcraft:rainforest_planks"
+    }
+  },
+  "result": {
+    "id": "circleofcraft:rainforest_stairs",
+    "count": 4
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "rug",
+  "ingredients": [
+    {
+      "tag": "circleofcraft:furs"
+    },
+    {
+      "item": "minecraft:green_dye"
+    }
+  ],
+  "result": {
+    "id": "circleofcraft:rug_green",
+    "count": 4
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "circleofcraft:peacock_block"
+    }
+  ],
+  "result": {
+    "id": "circleofcraft:peacock_gem",
+    "count": 9
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "F",
+    "S",
+    "F"
+  ],
+  "key": {
+    "F": {
+      "item": "circleofcraft:feather_flamingo"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "id": "circleofcraft:dart_pink",
+    "count": 4
+  }
+}

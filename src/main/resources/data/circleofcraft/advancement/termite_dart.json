@@ -1,0 +1,23 @@
+{
+  "parent": "circleofcraft:enter_outlands",
+  "display": {
+    "icon": {
+      "id": "circleofcraft:dart_outlandish"
+    },
+    "title": {
+      "translate": "advancement.circleofcraft.termite_dart.title"
+    },
+    "description": {
+      "translate": "advancement.circleofcraft.termite_dart.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "circleofcraft:shoot_dart",
+      "conditions": {}
+    }
+  }
+}

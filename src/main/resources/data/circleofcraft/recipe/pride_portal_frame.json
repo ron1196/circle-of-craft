@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SPS",
+    "PPP",
+    "SPS"
+  ],
+  "key": {
+    "S": {
+      "item": "circleofcraft:pridestone"
+    },
+    "P": {
+      "item": "circleofcraft:peacock_gem"
+    }
+  },
+  "result": {
+    "id": "circleofcraft:pride_portal_frame",
+    "count": 2
+  }
+}

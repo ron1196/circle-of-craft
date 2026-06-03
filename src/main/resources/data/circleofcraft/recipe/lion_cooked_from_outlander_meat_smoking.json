@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "circleofcraft:outlander_meat"
+  },
+  "result": {
+    "id": "circleofcraft:lion_cooked"
+  },
+  "experience": 0.2,
+  "cookingtime": 100
+}

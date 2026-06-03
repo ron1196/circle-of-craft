@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": { "item": "circleofcraft:rainforest_log" },
-  "result": "minecraft:charcoal",
-  "experience": 0.15,
-  "cookingtime": 200
-}

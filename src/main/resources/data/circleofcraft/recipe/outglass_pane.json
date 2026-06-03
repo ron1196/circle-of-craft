@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "GGG"
+  ],
+  "key": {
+    "G": {
+      "item": "circleofcraft:outglass"
+    }
+  },
+  "result": {
+    "id": "circleofcraft:outglass_pane",
+    "count": 16
+  }
+}

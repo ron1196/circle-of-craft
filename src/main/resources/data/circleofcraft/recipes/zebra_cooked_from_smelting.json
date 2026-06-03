@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": { "item": "circleofcraft:zebra_raw" },
-  "result": "circleofcraft:zebra_cooked",
-  "experience": 0.35,
-  "cookingtime": 200
-}

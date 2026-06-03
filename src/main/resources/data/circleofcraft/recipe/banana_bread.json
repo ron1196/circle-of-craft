@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BWB"
+  ],
+  "key": {
+    "B": {
+      "item": "circleofcraft:banana"
+    },
+    "W": {
+      "item": "minecraft:wheat"
+    }
+  },
+  "result": {
+    "id": "circleofcraft:banana_bread",
+    "count": 1
+  }
+}
