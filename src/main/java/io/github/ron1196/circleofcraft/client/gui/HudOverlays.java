@@ -12,12 +12,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 
-@Mod.EventBusSubscriber(modid = CircleOfCraftMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+@EventBusSubscriber(modid = CircleOfCraftMod.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
 public class HudOverlays {
 
     private static final ResourceLocation FLATULENCE_TEXTURE = CircleOfCraftMod.id("textures/gui/flatulence.png");
@@ -25,6 +25,7 @@ public class HudOverlays {
     private static final float PORTAL_OVERLAY_MAX_ALPHA = 0.8F;
     private static final double OVERLAY_Z_DEPTH = -90.0;
 
+    // TODO(Task 15): migrate RenderGuiEvent.Post -> RegisterGuiLayersEvent
     @SubscribeEvent
     public static void onRenderGui(RenderGuiEvent.Post event) {
         renderPortalOverlay();

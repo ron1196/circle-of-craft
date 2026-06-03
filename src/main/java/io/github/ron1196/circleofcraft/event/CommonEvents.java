@@ -8,18 +8,18 @@ import io.github.ron1196.circleofcraft.registry.EntityTypes;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 
-@Mod.EventBusSubscriber(modid = CircleOfCraftMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = CircleOfCraftMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class CommonEvents {
 
     private static final int WATER_SEARCH_RADIUS = 6;
@@ -78,12 +78,12 @@ public class CommonEvents {
     }
 
     @SubscribeEvent
-    public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
+    public static void registerSpawnPlacements(RegisterSpawnPlacementsEvent event) {
         registerPassiveSpawns(event);
         registerHostileSpawns(event);
     }
 
-    private static void registerPassiveSpawns(SpawnPlacementRegisterEvent event) {
+    private static void registerPassiveSpawns(RegisterSpawnPlacementsEvent event) {
         // Standard ground animals
         var groundAnimals = List.of(
                 EntityTypes.LION,
@@ -96,57 +96,57 @@ public class CommonEvents {
         for (var type : groundAnimals) {
             event.register(
                     type.get(),
-                    SpawnPlacements.Type.ON_GROUND,
+                    SpawnPlacementTypes.ON_GROUND,
                     Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                     Animal::checkAnimalSpawnRules,
-                    SpawnPlacementRegisterEvent.Operation.AND);
+                    RegisterSpawnPlacementsEvent.Operation.AND);
         }
 
         // DikDik — grass/sand only, light > 8 (old mod: cave creature list)
         event.register(
                 EntityTypes.DIKDIK.get(),
-                SpawnPlacements.Type.ON_GROUND,
+                SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 (type, level, spawnType, pos, random) ->
                         Animal.checkAnimalSpawnRules(type, level, spawnType, pos, random)
                                 && level.getRawBrightness(pos, 0) > DIKDIK_MIN_LIGHT
                                 && isGrassOrSand(level, pos.below()),
-                SpawnPlacementRegisterEvent.Operation.AND);
+                RegisterSpawnPlacementsEvent.Operation.AND);
 
         // Flamingo — Upendi only, needs water nearby (old mod: water check in 17x17x17)
         event.register(
                 EntityTypes.FLAMINGO.get(),
-                SpawnPlacements.Type.ON_GROUND,
+                SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 (type, level, spawnType, pos, random) ->
                         Animal.checkAnimalSpawnRules(type, level, spawnType, pos, random)
                                 && hasWaterNearby(level, pos, FLAMINGO_WATER_SEARCH_RADIUS),
-                SpawnPlacementRegisterEvent.Operation.AND);
+                RegisterSpawnPlacementsEvent.Operation.AND);
 
         // Bug is not a natural spawn (only from BugTrap)
     }
 
-    private static void registerHostileSpawns(SpawnPlacementRegisterEvent event) {
+    private static void registerHostileSpawns(RegisterSpawnPlacementsEvent event) {
         var prideLandsHostiles = List.of(EntityTypes.HYENA, EntityTypes.SKELETAL_HYENA);
 
         for (var type : prideLandsHostiles) {
             event.register(
                     type.get(),
-                    SpawnPlacements.Type.ON_GROUND,
+                    SpawnPlacementTypes.ON_GROUND,
                     Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                     Monster::checkMonsterSpawnRules,
-                    SpawnPlacementRegisterEvent.Operation.AND);
+                    RegisterSpawnPlacementsEvent.Operation.AND);
         }
 
         // Crocodile — must be near water
         event.register(
                 EntityTypes.CROCODILE.get(),
-                SpawnPlacements.Type.ON_GROUND,
+                SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 (type, level, spawnType, pos, random) ->
                         Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random)
                                 && hasWaterNearby(level, pos, WATER_SEARCH_RADIUS),
-                SpawnPlacementRegisterEvent.Operation.AND);
+                RegisterSpawnPlacementsEvent.Operation.AND);
 
         // Outlands ground hostiles
         var outlandsHostiles = List.of(EntityTypes.OUTLANDER);
@@ -154,21 +154,21 @@ public class CommonEvents {
         for (var type : outlandsHostiles) {
             event.register(
                     type.get(),
-                    SpawnPlacements.Type.ON_GROUND,
+                    SpawnPlacementTypes.ON_GROUND,
                     Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                     Monster::checkMonsterSpawnRules,
-                    SpawnPlacementRegisterEvent.Operation.AND);
+                    RegisterSpawnPlacementsEvent.Operation.AND);
         }
 
         // Vulture — Outlands, prefers high altitude (Y >= 60)
         event.register(
                 EntityTypes.VULTURE.get(),
-                SpawnPlacements.Type.ON_GROUND,
+                SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 (type, level, spawnType, pos, random) ->
                         Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random)
                                 && (pos.getY() >= VULTURE_MIN_Y || random.nextInt(3) == 0),
-                SpawnPlacementRegisterEvent.Operation.AND);
+                RegisterSpawnPlacementsEvent.Operation.AND);
     }
 
     private static boolean hasWaterNearby(ServerLevelAccessor level, BlockPos pos, int radius) {
