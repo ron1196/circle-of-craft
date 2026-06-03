@@ -8,6 +8,7 @@ import io.github.ron1196.circleofcraft.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.circleofcraft.quest.questline.QuestlineManager;
 import io.github.ron1196.circleofcraft.quest.questline.RafikiQuestline;
 import io.github.ron1196.circleofcraft.registry.Enchantments;
+import io.github.ron1196.circleofcraft.registry.ModDataComponents;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -48,7 +49,6 @@ import org.jetbrains.annotations.NotNull;
 public class RafikiStickItem extends Item {
 
     private static final int MAX_DAMAGE = 850;
-    private static final String TAG_THUNDER_COOLDOWN = "ThunderCooldown";
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
     public RafikiStickItem(Properties properties) {
@@ -124,7 +124,7 @@ public class RafikiStickItem extends Item {
 
         // Non-special block — start thunder charge if enchanted
         int thunderLevel = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.RAFIKI_THUNDER.get(), stack);
-        int cooldown = stack.getOrCreateTag().getInt(TAG_THUNDER_COOLDOWN);
+        int cooldown = stack.getOrDefault(ModDataComponents.THUNDER_COOLDOWN.get(), 0);
         if (thunderLevel > 0 && cooldown <= 0) {
             player.startUsingItem(context.getHand());
             return InteractionResult.CONSUME;
@@ -145,7 +145,7 @@ public class RafikiStickItem extends Item {
             return InteractionResultHolder.pass(stack);
         }
 
-        int cooldown = stack.getOrCreateTag().getInt(TAG_THUNDER_COOLDOWN);
+        int cooldown = stack.getOrDefault(ModDataComponents.THUNDER_COOLDOWN.get(), 0);
         if (cooldown > 0) {
             return InteractionResultHolder.pass(stack);
         }
@@ -185,7 +185,7 @@ public class RafikiStickItem extends Item {
                         level, target.getX(), target.getY(), target.getZ(), thunderLevel, player));
             }
             damageRafikiStick(stack, 10, player);
-            stack.getOrCreateTag().putInt(TAG_THUNDER_COOLDOWN, 12);
+            stack.set(ModDataComponents.THUNDER_COOLDOWN.get(), 12);
             return;
         }
 
@@ -199,7 +199,7 @@ public class RafikiStickItem extends Item {
                         level, target.getX(), target.getY(), target.getZ(), thunderLevel, player));
             }
             damageRafikiStick(stack, 10, player);
-            stack.getOrCreateTag().putInt(TAG_THUNDER_COOLDOWN, 12);
+            stack.set(ModDataComponents.THUNDER_COOLDOWN.get(), 12);
             return;
         }
 
@@ -231,11 +231,9 @@ public class RafikiStickItem extends Item {
         if (level.isClientSide) return;
 
         // Thunder cooldown
-        if (stack.hasTag()) {
-            int cooldown = stack.getOrCreateTag().getInt(TAG_THUNDER_COOLDOWN);
-            if (cooldown > 0) {
-                stack.getOrCreateTag().putInt(TAG_THUNDER_COOLDOWN, cooldown - 1);
-            }
+        int cooldown = stack.getOrDefault(ModDataComponents.THUNDER_COOLDOWN.get(), 0);
+        if (cooldown > 0) {
+            stack.set(ModDataComponents.THUNDER_COOLDOWN.get(), cooldown - 1);
         }
 
         // Scar tracking — only when held in hand during DEFEAT_SCAR quest stage
@@ -266,16 +264,13 @@ public class RafikiStickItem extends Item {
         }
         player.displayClientMessage(net.minecraft.network.chat.Component.literal(message), true);
 
-        // Set glint tag for nearby Scar
-        stack.getOrCreateTag().putBoolean(TAG_SCAR_NEARBY, distance < SCAR_NEAR_DISTANCE);
+        stack.set(ModDataComponents.SCAR_NEARBY.get(), distance < SCAR_NEAR_DISTANCE);
     }
-
-    private static final String TAG_SCAR_NEARBY = "ScarNearby";
 
     @Override
     public boolean isFoil(@NotNull ItemStack stack) {
         if (super.isFoil(stack)) return true;
-        return stack.hasTag() && stack.getOrCreateTag().getBoolean(TAG_SCAR_NEARBY);
+        return stack.getOrDefault(ModDataComponents.SCAR_NEARBY.get(), false);
     }
 
     @Override

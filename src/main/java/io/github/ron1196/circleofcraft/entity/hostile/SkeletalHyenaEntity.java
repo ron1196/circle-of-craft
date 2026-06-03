@@ -1,5 +1,6 @@
 package io.github.ron1196.circleofcraft.entity.hostile;
 
+import io.github.ron1196.circleofcraft.registry.BlockEntityTypes;
 import io.github.ron1196.circleofcraft.registry.ModBlocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
@@ -11,6 +12,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -49,8 +51,8 @@ public class SkeletalHyenaEntity extends Monster {
         if (this.random.nextInt(20) <= looting) {
             ItemStack head = new ItemStack(ModBlocks.HYENA_HEAD.get());
             CompoundTag blockEntityTag = new CompoundTag();
-            blockEntityTag.putInt("HyenaType", 3); // skeletal variant
-            head.getOrCreateTag().put("BlockEntityTag", blockEntityTag);
+            blockEntityTag.putInt("HyenaType", 3);
+            BlockItem.setBlockEntityData(head, BlockEntityTypes.HYENA_HEAD.get(), blockEntityTag);
             this.spawnAtLocation(head);
         }
     }

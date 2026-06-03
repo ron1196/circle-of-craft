@@ -38,9 +38,10 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LightningBoltRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -375,11 +376,8 @@ public class ClientEvents {
             // Hyena head item variant property
             ItemProperties.register(
                     ModItems.HYENA_HEAD_ITEM.get(), CircleOfCraftMod.id("hyena_type"), (stack, level, entity, seed) -> {
-                        CompoundTag tag = stack.getTag();
-                        if (tag != null && tag.contains("BlockEntityTag")) {
-                            return tag.getCompound("BlockEntityTag").getInt("HyenaType");
-                        }
-                        return 0.0F;
+                        CustomData beData = stack.getOrDefault(DataComponents.BLOCK_ENTITY_DATA, CustomData.EMPTY);
+                        return beData.copyTag().getInt("HyenaType");
                     });
 
             // Astral Charm active/inactive texture switch

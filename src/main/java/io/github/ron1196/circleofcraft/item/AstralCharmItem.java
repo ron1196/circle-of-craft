@@ -2,6 +2,7 @@ package io.github.ron1196.circleofcraft.item;
 
 import io.github.ron1196.circleofcraft.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.circleofcraft.registry.ModBlocks;
+import io.github.ron1196.circleofcraft.registry.ModDataComponents;
 import io.github.ron1196.circleofcraft.registry.ModItems;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -62,7 +63,7 @@ public class AstralCharmItem extends Item {
     }
 
     public static boolean isActive(ItemStack stack) {
-        return stack.getOrCreateTag().getBoolean("Active");
+        return stack.getOrDefault(ModDataComponents.ASTRAL_ACTIVE.get(), false);
     }
 
     @Override
@@ -72,7 +73,7 @@ public class AstralCharmItem extends Item {
 
     public static ItemStack createActive() {
         ItemStack stack = new ItemStack(ModItems.ASTRAL_CHARM.get());
-        stack.getOrCreateTag().putBoolean("Active", true);
+        stack.set(ModDataComponents.ASTRAL_ACTIVE.get(), true);
         return stack;
     }
 

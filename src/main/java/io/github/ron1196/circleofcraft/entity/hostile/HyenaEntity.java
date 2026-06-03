@@ -2,6 +2,7 @@ package io.github.ron1196.circleofcraft.entity.hostile;
 
 import io.github.ron1196.circleofcraft.entity.ai.HyenaFollowScarGoal;
 import io.github.ron1196.circleofcraft.entity.animal.*;
+import io.github.ron1196.circleofcraft.registry.BlockEntityTypes;
 import io.github.ron1196.circleofcraft.registry.ModBlocks;
 import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
@@ -21,6 +22,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -150,7 +152,7 @@ public class HyenaEntity extends Monster {
             ItemStack head = new ItemStack(ModBlocks.HYENA_HEAD.get());
             CompoundTag blockEntityTag = new CompoundTag();
             blockEntityTag.putInt("HyenaType", getVariant());
-            head.getOrCreateTag().put("BlockEntityTag", blockEntityTag);
+            BlockItem.setBlockEntityData(head, BlockEntityTypes.HYENA_HEAD.get(), blockEntityTag);
             this.spawnAtLocation(head);
         }
     }
