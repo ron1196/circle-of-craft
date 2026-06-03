@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Guards that every vanilla-recipe-book recipe has a companion advancement
- * under {@code advancements/recipes/}. Without that advancement the recipe
+ * under {@code advancement/recipes/}. Without that advancement the recipe
  * stays hidden from players in the in-game recipe book.
  *
  * <p>To regenerate the advancements after adding new recipes, run
@@ -23,8 +23,8 @@ import org.junit.jupiter.api.Test;
  */
 class RecipeAdvancementCoverageTest {
 
-    private static final Path RECIPES_DIR = Path.of("src/main/resources/data/circleofcraft/recipes");
-    private static final Path ADV_DIR = Path.of("src/main/resources/data/circleofcraft/advancements/recipes");
+    private static final Path RECIPES_DIR = Path.of("src/main/resources/data/circleofcraft/recipe");
+    private static final Path ADV_DIR = Path.of("src/main/resources/data/circleofcraft/advancement/recipes");
 
     private static final Set<String> VANILLA_RECIPE_BOOK_TYPES = Set.of(
             "minecraft:crafting_shaped",
