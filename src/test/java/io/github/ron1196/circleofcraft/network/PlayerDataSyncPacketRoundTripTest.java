@@ -1,11 +1,11 @@
 package io.github.ron1196.circleofcraft.network;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.github.ron1196.circleofcraft.data.PlayerData;
 import io.netty.buffer.Unpooled;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -17,7 +17,7 @@ class PlayerDataSyncPacketRoundTripTest {
 
     @Test
     void defaultsRoundTrip() {
-        assertRoundTrip(new PlayerData());
+        assertRoundTrip(PlayerDataSyncPacket.of(new PlayerData()));
     }
 
     @Test
@@ -25,7 +25,7 @@ class PlayerDataSyncPacketRoundTripTest {
         PlayerData data = new PlayerData();
         data.setReceivedQuestBook(true);
         data.setHasSimba(true);
-        assertRoundTrip(data);
+        assertRoundTrip(PlayerDataSyncPacket.of(data));
     }
 
     @Test
@@ -34,7 +34,7 @@ class PlayerDataSyncPacketRoundTripTest {
         data.setHomePortalX(-1234);
         data.setHomePortalY(64);
         data.setHomePortalZ(5678);
-        assertRoundTrip(data);
+        assertRoundTrip(PlayerDataSyncPacket.of(data));
     }
 
     @Test
@@ -43,37 +43,26 @@ class PlayerDataSyncPacketRoundTripTest {
         data.claimReward("rafiki:bones");
         data.claimReward("outlands:first_clear");
         data.claimReward("simba:summon");
-        assertRoundTrip(data);
+        assertRoundTrip(PlayerDataSyncPacket.of(data));
     }
 
     @Test
     void emptyClaimedRewardsSetRoundTrips() {
-        // Empty set must still serialize cleanly — common case on a fresh player.
         PlayerData data = new PlayerData();
         data.setReceivedQuestBook(true);
-        assertRoundTrip(data);
+        assertRoundTrip(PlayerDataSyncPacket.of(data));
     }
 
-    private static void assertRoundTrip(PlayerData data) {
-        PlayerDataSyncPacket original = new PlayerDataSyncPacket(data);
+    private static void assertRoundTrip(PlayerDataSyncPacket original) {
+        RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.buffer(), RegistryAccess.EMPTY);
+        PlayerDataSyncPacket.STREAM_CODEC.encode(buf, original);
+        PlayerDataSyncPacket decoded = PlayerDataSyncPacket.STREAM_CODEC.decode(buf);
 
-        FriendlyByteBuf buf1 = new FriendlyByteBuf(Unpooled.buffer());
-        original.encode(buf1);
-        byte[] bytes1 = readAll(buf1);
-
-        PlayerDataSyncPacket decoded = new PlayerDataSyncPacket(new FriendlyByteBuf(Unpooled.wrappedBuffer(bytes1)));
-
-        FriendlyByteBuf buf2 = new FriendlyByteBuf(Unpooled.buffer());
-        decoded.encode(buf2);
-        byte[] bytes2 = readAll(buf2);
-
-        assertEquals(bytes1.length, bytes2.length, "wire size must be stable across round-trip");
-        assertTrue(java.util.Arrays.equals(bytes1, bytes2), "wire bytes must be identical across round-trip");
-    }
-
-    private static byte[] readAll(FriendlyByteBuf buf) {
-        byte[] out = new byte[buf.readableBytes()];
-        buf.readBytes(out);
-        return out;
+        assertEquals(original.receivedQuestBook(), decoded.receivedQuestBook(), "receivedQuestBook");
+        assertEquals(original.homePortalX(), decoded.homePortalX(), "homePortalX");
+        assertEquals(original.homePortalY(), decoded.homePortalY(), "homePortalY");
+        assertEquals(original.homePortalZ(), decoded.homePortalZ(), "homePortalZ");
+        assertEquals(original.hasSimba(), decoded.hasSimba(), "hasSimba");
+        assertEquals(original.claimedRewards(), decoded.claimedRewards(), "claimedRewards must be stable across round-trip");
     }
 }

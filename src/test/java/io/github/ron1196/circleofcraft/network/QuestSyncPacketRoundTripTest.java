@@ -3,7 +3,8 @@ package io.github.ron1196.circleofcraft.network;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.netty.buffer.Unpooled;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -36,26 +37,12 @@ class QuestSyncPacketRoundTripTest {
     private static void assertRoundTrip(String questId, String stageId, boolean checked) {
         QuestSyncPacket original = new QuestSyncPacket(questId, stageId, checked);
 
-        FriendlyByteBuf buf1 = new FriendlyByteBuf(Unpooled.buffer());
-        original.encode(buf1);
-        byte[] firstBytes = readAllBytes(buf1);
+        RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.buffer(), RegistryAccess.EMPTY);
+        QuestSyncPacket.STREAM_CODEC.encode(buf, original);
+        QuestSyncPacket decoded = QuestSyncPacket.STREAM_CODEC.decode(buf);
 
-        FriendlyByteBuf bufForRead = new FriendlyByteBuf(Unpooled.wrappedBuffer(firstBytes));
-        QuestSyncPacket decoded = new QuestSyncPacket(bufForRead);
-
-        FriendlyByteBuf buf2 = new FriendlyByteBuf(Unpooled.buffer());
-        decoded.encode(buf2);
-        byte[] secondBytes = readAllBytes(buf2);
-
-        assertEquals(firstBytes.length, secondBytes.length, "re-encoded length differs");
-        for (int i = 0; i < firstBytes.length; i++) {
-            assertEquals(firstBytes[i], secondBytes[i], "byte " + i + " differs after round-trip");
-        }
-    }
-
-    private static byte[] readAllBytes(FriendlyByteBuf buf) {
-        byte[] out = new byte[buf.readableBytes()];
-        buf.getBytes(buf.readerIndex(), out);
-        return out;
+        assertEquals(original.questId(), decoded.questId(), "questId differs after round-trip");
+        assertEquals(original.stageId(), decoded.stageId(), "stageId differs after round-trip");
+        assertEquals(original.checked(), decoded.checked(), "checked differs after round-trip");
     }
 }

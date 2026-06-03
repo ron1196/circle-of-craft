@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import org.junit.jupiter.api.Test;
 
@@ -90,7 +91,7 @@ class PlayerDataNbtTest {
         CompoundTag legacyTag = new CompoundTag();
 
         PlayerData loaded = new PlayerData();
-        loaded.deserializeNBT(legacyTag);
+        loaded.deserializeNBT(RegistryAccess.EMPTY, legacyTag);
 
         assertFalse(loaded.hasReceivedQuestBook());
         assertEquals(0, loaded.getHomePortalX());
@@ -123,9 +124,9 @@ class PlayerDataNbtTest {
     }
 
     private static PlayerData roundTrip(PlayerData original) {
-        CompoundTag tag = original.serializeNBT();
+        CompoundTag tag = original.serializeNBT(RegistryAccess.EMPTY);
         PlayerData reloaded = new PlayerData();
-        reloaded.deserializeNBT(tag);
+        reloaded.deserializeNBT(RegistryAccess.EMPTY, tag);
         return reloaded;
     }
 }

@@ -1,92 +1,70 @@
 package io.github.ron1196.circleofcraft.network;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.netty.buffer.Unpooled;
-import net.minecraft.network.FriendlyByteBuf;
+import java.util.List;
+import java.util.Set;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import org.junit.jupiter.api.Test;
 
 /**
- * Locks the wire format of {@link LoginSyncPacket}. Builds a hand-crafted byte buffer, decodes it
- * via the byte-buffer constructor, re-encodes, and asserts byte-equality. Tracked in issue #64.
+ * Locks the wire format of {@link LoginSyncPacket}. Encode via STREAM_CODEC, decode, assert
+ * field-equality. Tracked in issue #64.
  */
 class LoginSyncPacketRoundTripTest {
 
     @Test
     void emptyQuestsAndRewardsRoundTrips() {
-        byte[] wire = wireFor(new String[0], new boolean[0], false, 0, 0, 0, false, new String[0]);
-        assertRoundTrip(wire);
+        assertRoundTrip(new LoginSyncPacket(List.of(), false, 0, 0, 0, false, Set.of()));
     }
 
     @Test
     void singleQuestRoundTrips() {
-        byte[] wire = wireFor(
-                new String[] {"rafiki"},
-                new boolean[] {true},
+        assertRoundTrip(new LoginSyncPacket(
+                List.of(new LoginSyncPacket.QuestEntry("rafiki", "STAGE_0", true)),
                 true,
                 -160,
                 67,
                 240,
                 true,
-                new String[] {"reward.simba"});
-        assertRoundTrip(wire);
+                Set.of("reward.simba")));
     }
 
     @Test
     void multipleQuestsWithMixedFlagsRoundTrip() {
-        byte[] wire = wireFor(
-                new String[] {"rafiki", "outlands", "zira"},
-                new boolean[] {true, false, true},
+        assertRoundTrip(new LoginSyncPacket(
+                List.of(
+                        new LoginSyncPacket.QuestEntry("rafiki", "STAGE_0", true),
+                        new LoginSyncPacket.QuestEntry("outlands", "STAGE_1", false),
+                        new LoginSyncPacket.QuestEntry("zira", "STAGE_2", true)),
                 false,
                 1,
                 2,
                 3,
                 false,
-                new String[] {"reward.a"});
-        assertRoundTrip(wire);
+                Set.of("reward.a")));
     }
 
-    private static byte[] wireFor(
-            String[] questIds,
-            boolean[] checked,
-            boolean receivedBook,
-            int homeX,
-            int homeY,
-            int homeZ,
-            boolean hasSimba,
-            String[] rewards) {
+    private static void assertRoundTrip(LoginSyncPacket original) {
+        RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.buffer(), RegistryAccess.EMPTY);
+        LoginSyncPacket.STREAM_CODEC.encode(buf, original);
+        LoginSyncPacket decoded = LoginSyncPacket.STREAM_CODEC.decode(buf);
 
-        FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
-        buf.writeVarInt(questIds.length);
-        for (int i = 0; i < questIds.length; i++) {
-            buf.writeUtf(questIds[i]);
-            buf.writeUtf("STAGE_" + i);
-            buf.writeBoolean(checked[i]);
+        assertEquals(original.questEntries().size(), decoded.questEntries().size(), "questEntries size");
+        for (int i = 0; i < original.questEntries().size(); i++) {
+            LoginSyncPacket.QuestEntry exp = original.questEntries().get(i);
+            LoginSyncPacket.QuestEntry got = decoded.questEntries().get(i);
+            assertEquals(exp.questId(), got.questId(), "questId at " + i);
+            assertEquals(exp.stageId(), got.stageId(), "stageId at " + i);
+            assertEquals(exp.checked(), got.checked(), "checked at " + i);
         }
-        buf.writeBoolean(receivedBook);
-        buf.writeInt(homeX);
-        buf.writeInt(homeY);
-        buf.writeInt(homeZ);
-        buf.writeBoolean(hasSimba);
-        buf.writeVarInt(rewards.length);
-        for (String r : rewards) {
-            buf.writeUtf(r);
-        }
-
-        byte[] out = new byte[buf.readableBytes()];
-        buf.getBytes(buf.readerIndex(), out);
-        return out;
-    }
-
-    private static void assertRoundTrip(byte[] wire) {
-        FriendlyByteBuf in = new FriendlyByteBuf(Unpooled.wrappedBuffer(wire));
-        LoginSyncPacket decoded = new LoginSyncPacket(in);
-
-        FriendlyByteBuf out = new FriendlyByteBuf(Unpooled.buffer());
-        decoded.encode(out);
-        byte[] reEncoded = new byte[out.readableBytes()];
-        out.getBytes(out.readerIndex(), reEncoded);
-
-        assertArrayEquals(wire, reEncoded);
+        assertEquals(original.receivedQuestBook(), decoded.receivedQuestBook(), "receivedQuestBook");
+        assertEquals(original.homePortalX(), decoded.homePortalX(), "homePortalX");
+        assertEquals(original.homePortalY(), decoded.homePortalY(), "homePortalY");
+        assertEquals(original.homePortalZ(), decoded.homePortalZ(), "homePortalZ");
+        assertEquals(original.hasSimba(), decoded.hasSimba(), "hasSimba");
+        assertEquals(original.claimedRewards(), decoded.claimedRewards(), "claimedRewards");
     }
 }

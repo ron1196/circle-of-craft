@@ -28,7 +28,7 @@ class DungeonFeaturePaletteTest {
 
     @Test
     void vanillaOverworldFallsBackToPridePalette() {
-        assertEquals(DungeonPalette.PRIDE, DungeonPalette.forDimension(new ResourceLocation("minecraft", "overworld")));
+        assertEquals(DungeonPalette.PRIDE, DungeonPalette.forDimension(ResourceLocation.fromNamespaceAndPath("minecraft", "overworld")));
     }
 
     @Test
