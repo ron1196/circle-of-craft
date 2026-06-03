@@ -49,7 +49,7 @@ public class CircleOfCraftMod {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            // TODO(Task 14): ModCriteriaTriggers now registered via DeferredRegister
+            io.github.ron1196.circleofcraft.data.ModCriteriaTriggers.register();
         });
     }
 }

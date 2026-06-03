@@ -1,52 +1,33 @@
 package io.github.ron1196.circleofcraft.data;
 
-import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.critereon.PlayerTrigger;
 
 public class ModCriteriaTriggers {
 
-    public static final PlayerTrigger SHOOT_DART = createTrigger("shoot_dart");
-    public static final PlayerTrigger QUEST_COMPLETE = createTrigger("quest_complete");
-    public static final PlayerTrigger COMPLETE_RAFIKI_QUEST = createTrigger("complete_rafiki_quest");
-    public static final PlayerTrigger TRADE_PUMBAA = createTrigger("trade_pumbaa");
-    public static final PlayerTrigger FEED_ANIMAL = createTrigger("feed_animal");
-    public static final PlayerTrigger TELEPORT_SIMBA = createTrigger("teleport_simba");
-    public static final UseGrindingBowlTrigger USE_GRINDING_BOWL = new UseGrindingBowlTrigger();
-    public static final PlayerTrigger RIDE_GIRAFFE = createTrigger("ride_giraffe");
-    public static final PlayerTrigger PLAY_BONGO_DRUM = createTrigger("play_bongo_drum");
-    public static final PlayerTrigger ENTER_PRIDE_LANDS = createTrigger("enter_pride_lands");
-    public static final PlayerTrigger ENTER_OUTLANDS = createTrigger("enter_outlands");
-    public static final PlayerTrigger ENTER_UPENDI = createTrigger("enter_upendi");
-    public static final PlayerTrigger BEHEAD_HYENA = createTrigger("behead_hyena");
-    public static final PlayerTrigger KILL_SCAR = createTrigger("kill_scar");
-    public static final PlayerTrigger KILL_ZIRA = createTrigger("kill_zira");
-    public static final PlayerTrigger USE_RHINO_HORN = createTrigger("use_rhino_horn");
-    public static final PlayerTrigger SPEAK_TO_ZAZU = createTrigger("speak_to_zazu");
-    public static final PlayerTrigger SIMBA_IN_WATER = createTrigger("simba_in_water");
+    public static final PlayerTrigger SHOOT_DART = register("shoot_dart", new PlayerTrigger());
+    public static final PlayerTrigger QUEST_COMPLETE = register("quest_complete", new PlayerTrigger());
+    public static final PlayerTrigger COMPLETE_RAFIKI_QUEST = register("complete_rafiki_quest", new PlayerTrigger());
+    public static final PlayerTrigger TRADE_PUMBAA = register("trade_pumbaa", new PlayerTrigger());
+    public static final PlayerTrigger FEED_ANIMAL = register("feed_animal", new PlayerTrigger());
+    public static final PlayerTrigger TELEPORT_SIMBA = register("teleport_simba", new PlayerTrigger());
+    public static final UseGrindingBowlTrigger USE_GRINDING_BOWL =
+            register("use_grinding_bowl", new UseGrindingBowlTrigger());
+    public static final PlayerTrigger RIDE_GIRAFFE = register("ride_giraffe", new PlayerTrigger());
+    public static final PlayerTrigger PLAY_BONGO_DRUM = register("play_bongo_drum", new PlayerTrigger());
+    public static final PlayerTrigger ENTER_PRIDE_LANDS = register("enter_pride_lands", new PlayerTrigger());
+    public static final PlayerTrigger ENTER_OUTLANDS = register("enter_outlands", new PlayerTrigger());
+    public static final PlayerTrigger ENTER_UPENDI = register("enter_upendi", new PlayerTrigger());
+    public static final PlayerTrigger BEHEAD_HYENA = register("behead_hyena", new PlayerTrigger());
+    public static final PlayerTrigger KILL_SCAR = register("kill_scar", new PlayerTrigger());
+    public static final PlayerTrigger KILL_ZIRA = register("kill_zira", new PlayerTrigger());
+    public static final PlayerTrigger USE_RHINO_HORN = register("use_rhino_horn", new PlayerTrigger());
+    public static final PlayerTrigger SPEAK_TO_ZAZU = register("speak_to_zazu", new PlayerTrigger());
+    public static final PlayerTrigger SIMBA_IN_WATER = register("simba_in_water", new PlayerTrigger());
 
-    private static PlayerTrigger createTrigger(String name) {
-        return new PlayerTrigger(CircleOfCraftMod.id(name));
+    private static <T extends net.minecraft.advancements.CriterionTrigger<?>> T register(String name, T trigger) {
+        return CriteriaTriggers.register("circleofcraft:" + name, trigger);
     }
 
-    public static void register() {
-        CriteriaTriggers.register(SHOOT_DART);
-        CriteriaTriggers.register(QUEST_COMPLETE);
-        CriteriaTriggers.register(COMPLETE_RAFIKI_QUEST);
-        CriteriaTriggers.register(TRADE_PUMBAA);
-        CriteriaTriggers.register(FEED_ANIMAL);
-        CriteriaTriggers.register(TELEPORT_SIMBA);
-        CriteriaTriggers.register(USE_GRINDING_BOWL);
-        CriteriaTriggers.register(RIDE_GIRAFFE);
-        CriteriaTriggers.register(PLAY_BONGO_DRUM);
-        CriteriaTriggers.register(ENTER_PRIDE_LANDS);
-        CriteriaTriggers.register(ENTER_OUTLANDS);
-        CriteriaTriggers.register(ENTER_UPENDI);
-        CriteriaTriggers.register(BEHEAD_HYENA);
-        CriteriaTriggers.register(KILL_SCAR);
-        CriteriaTriggers.register(KILL_ZIRA);
-        CriteriaTriggers.register(USE_RHINO_HORN);
-        CriteriaTriggers.register(SPEAK_TO_ZAZU);
-        CriteriaTriggers.register(SIMBA_IN_WATER);
-    }
+    public static void register() {}
 }
