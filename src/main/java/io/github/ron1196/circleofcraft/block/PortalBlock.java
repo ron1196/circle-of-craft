@@ -1,7 +1,6 @@
 package io.github.ron1196.circleofcraft.block;
 
 import io.github.ron1196.circleofcraft.data.PlayerData;
-import io.github.ron1196.circleofcraft.data.PlayerDataProvider;
 import io.github.ron1196.circleofcraft.entity.npc.SimbaEntity;
 import io.github.ron1196.circleofcraft.network.Networking;
 import io.github.ron1196.circleofcraft.network.PlayerDataSyncPacket;
@@ -216,7 +215,7 @@ public class PortalBlock extends Block {
     }
 
     private void saveHomePortalLocation(ServerPlayer player) {
-        PlayerData data = PlayerDataProvider.get(player);
+        PlayerData data = PlayerData.get(player);
         BlockPos pos = player.blockPosition();
         data.setHomePortalX(pos.getX());
         data.setHomePortalY(pos.getY());

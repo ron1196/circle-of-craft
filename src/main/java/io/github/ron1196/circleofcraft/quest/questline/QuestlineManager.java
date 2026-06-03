@@ -2,7 +2,6 @@ package io.github.ron1196.circleofcraft.quest.questline;
 
 import io.github.ron1196.circleofcraft.data.ModCriteriaTriggers;
 import io.github.ron1196.circleofcraft.data.PlayerData;
-import io.github.ron1196.circleofcraft.data.PlayerDataProvider;
 import io.github.ron1196.circleofcraft.network.Networking;
 import io.github.ron1196.circleofcraft.network.QuestSyncPacket;
 import io.github.ron1196.circleofcraft.quest.stage.ClaimableReward;
@@ -163,7 +162,7 @@ public class QuestlineManager implements QuestStateLookup {
     public int tryClaimNextReward(String questId, ServerPlayer player) {
         Questline quest = QuestlineRegistry.get(questId);
         if (quest == null) return -1;
-        PlayerData playerData = PlayerDataProvider.get(player);
+        PlayerData playerData = PlayerData.get(player);
         String currentStageId = getStageId(questId);
         List<StageId> stages = quest.getStageOrder();
         int currentIndex = quest.getStageIndex(currentStageId);
@@ -188,7 +187,7 @@ public class QuestlineManager implements QuestStateLookup {
         List<ClaimableReward> rewards = quest.getClaimableRewards(completedStage);
         if (rewards.isEmpty()) return;
         String rewardKey = quest.getId() + ":" + completedStage.name();
-        PlayerData playerData = PlayerDataProvider.get(player);
+        PlayerData playerData = PlayerData.get(player);
         if (playerData.hasClaimedReward(rewardKey)) return;
         for (ClaimableReward reward : rewards) {
             player.addItem(new ItemStack(reward.item().get(), reward.count()));

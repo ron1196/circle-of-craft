@@ -1,7 +1,6 @@
 package io.github.ron1196.circleofcraft.item;
 
 import io.github.ron1196.circleofcraft.data.PlayerData;
-import io.github.ron1196.circleofcraft.data.PlayerDataProvider;
 import io.github.ron1196.circleofcraft.data.WorldData;
 import io.github.ron1196.circleofcraft.entity.npc.SimbaEntity;
 import io.github.ron1196.circleofcraft.entity.projectile.LightningBoltEntity;
@@ -36,7 +35,7 @@ public class RafikiDustItem extends Item {
         }
 
         // Block if player already has a Simba
-        PlayerData playerData = PlayerDataProvider.get(player);
+        PlayerData playerData = PlayerData.get(player);
         if (playerData.hasSimba()) {
             return InteractionResult.PASS;
         }

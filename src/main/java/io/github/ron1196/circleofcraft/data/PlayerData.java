@@ -1,15 +1,22 @@
 package io.github.ron1196.circleofcraft.data;
 
+import io.github.ron1196.circleofcraft.registry.ModAttachments;
 import java.util.HashSet;
 import java.util.Set;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
-import net.minecraftforge.common.capabilities.AutoRegisterCapability;
+import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.common.util.INBTSerializable;
+import org.jetbrains.annotations.NotNull;
 
-@AutoRegisterCapability
-public class PlayerData {
+public class PlayerData implements INBTSerializable<CompoundTag> {
+
+    public static PlayerData get(Player player) {
+        return player.getData(ModAttachments.PLAYER_DATA.get());
+    }
 
     private boolean receivedQuestBook;
     private int homePortalX;
@@ -118,7 +125,8 @@ public class PlayerData {
 
     // ── NBT ─────────────────────────────────────────────────────────────────────
 
-    public CompoundTag serializeNBT() {
+    @Override
+    public @NotNull CompoundTag serializeNBT(@NotNull HolderLookup.Provider provider) {
         CompoundTag tag = new CompoundTag();
         tag.putBoolean("ReceivedQuestBook", receivedQuestBook);
         tag.putInt("HomePortalX", homePortalX);
@@ -140,7 +148,8 @@ public class PlayerData {
         tag.put("ClaimedRewards", rewardsList);
     }
 
-    public void deserializeNBT(CompoundTag tag) {
+    @Override
+    public void deserializeNBT(@NotNull HolderLookup.Provider provider, @NotNull CompoundTag tag) {
         receivedQuestBook = tag.getBoolean("ReceivedQuestBook");
         homePortalX = tag.getInt("HomePortalX");
         homePortalY = tag.getInt("HomePortalY");

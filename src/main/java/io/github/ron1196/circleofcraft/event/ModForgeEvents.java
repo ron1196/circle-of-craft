@@ -4,7 +4,6 @@ import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.command.ModCommands;
 import io.github.ron1196.circleofcraft.data.ModCriteriaTriggers;
 import io.github.ron1196.circleofcraft.data.PlayerData;
-import io.github.ron1196.circleofcraft.data.PlayerDataProvider;
 import io.github.ron1196.circleofcraft.data.WorldData;
 import io.github.ron1196.circleofcraft.entity.RugEntity;
 import io.github.ron1196.circleofcraft.entity.hostile.HyenaEntity;
@@ -104,7 +103,7 @@ public class ModForgeEvents {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             ServerLevel overworld = serverPlayer.server.overworld();
             WorldData worldData = WorldData.get(overworld);
-            PlayerData playerData = PlayerDataProvider.get(serverPlayer);
+            PlayerData playerData = PlayerData.get(serverPlayer);
             Networking.CHANNEL.send(
                     PacketDistributor.PLAYER.with(() -> serverPlayer), new LoginSyncPacket(worldData, playerData));
         }
@@ -280,7 +279,7 @@ public class ModForgeEvents {
         if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
         if (!serverPlayer.isAlive()) return;
 
-        PlayerData playerData = PlayerDataProvider.get(serverPlayer);
+        PlayerData playerData = PlayerData.get(serverPlayer);
 
         // Dimension entry triggers (fire once per player)
         if (serverPlayer.level().dimension() == Dimensions.PRIDE_LANDS_LEVEL && !playerData.hasEnteredPrideLands()) {

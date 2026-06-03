@@ -1,7 +1,6 @@
 package io.github.ron1196.circleofcraft.quest;
 
 import io.github.ron1196.circleofcraft.data.PlayerData;
-import io.github.ron1196.circleofcraft.data.PlayerDataProvider;
 import io.github.ron1196.circleofcraft.data.WorldData;
 import io.github.ron1196.circleofcraft.network.Networking;
 import io.github.ron1196.circleofcraft.network.PlayerDataSyncPacket;
@@ -40,7 +39,7 @@ public record NpcInteraction(
 
         WorldData worldData = WorldData.get(serverLevel);
         QuestlineManager quests = worldData.getQuestManager();
-        PlayerData playerData = PlayerDataProvider.get(serverPlayer);
+        PlayerData playerData = PlayerData.get(serverPlayer);
         return new NpcInteraction(serverPlayer, serverLevel, worldData, quests, playerData);
     }
 

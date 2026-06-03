@@ -6,7 +6,6 @@ import io.github.ron1196.circleofcraft.registry.BlockEntityTypes;
 import io.github.ron1196.circleofcraft.registry.RecipeTypes;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -21,9 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,8 +37,6 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
             syncToClient();
         }
     };
-
-    private final LazyOptional<ItemStackHandler> inventoryCap = LazyOptional.of(() -> inventory);
 
     private int grindTime = 0;
     private float stickRotation = 0;
@@ -85,20 +79,6 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
     @Override
     public AbstractContainerMenu createMenu(int containerId, @NotNull Inventory playerInv, @NotNull Player player) {
         return new GrindingBowlMenu(containerId, playerInv, inventory, data);
-    }
-
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return inventoryCap.cast();
-        }
-        return super.getCapability(cap, side);
-    }
-
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        inventoryCap.invalidate();
     }
 
     @Override
