@@ -11,7 +11,10 @@ import io.github.ron1196.circleofcraft.registry.Enchantments;
 import io.github.ron1196.circleofcraft.registry.ModDataComponents;
 import java.util.List;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
@@ -27,6 +30,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -123,7 +127,8 @@ public class RafikiStickItem extends Item {
         }
 
         // Non-special block — start thunder charge if enchanted
-        int thunderLevel = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.RAFIKI_THUNDER.get(), stack);
+        int thunderLevel =
+                EnchantmentHelper.getTagEnchantmentLevel(enchantment(level, Enchantments.RAFIKI_THUNDER), stack);
         int cooldown = stack.getOrDefault(ModDataComponents.THUNDER_COOLDOWN.get(), 0);
         if (thunderLevel > 0 && cooldown <= 0) {
             player.startUsingItem(context.getHand());
@@ -140,7 +145,8 @@ public class RafikiStickItem extends Item {
             @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        int thunderLevel = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.RAFIKI_THUNDER.get(), stack);
+        int thunderLevel =
+                EnchantmentHelper.getTagEnchantmentLevel(enchantment(level, Enchantments.RAFIKI_THUNDER), stack);
         if (thunderLevel <= 0) {
             return InteractionResultHolder.pass(stack);
         }
@@ -159,7 +165,8 @@ public class RafikiStickItem extends Item {
             @NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity, int timeLeft) {
         if (!(entity instanceof Player player)) return;
 
-        int thunderLevel = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.RAFIKI_THUNDER.get(), stack);
+        int thunderLevel =
+                EnchantmentHelper.getTagEnchantmentLevel(enchantment(level, Enchantments.RAFIKI_THUNDER), stack);
         if (thunderLevel <= 0) return;
 
         double range = 2.0D + Math.pow(4, thunderLevel + 1);
@@ -323,12 +330,17 @@ public class RafikiStickItem extends Item {
         if (!stack.isDamageableItem()) return;
 
         if (amount > 0 && entity instanceof Player) {
-            int durabilityLevel = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.RAFIKI_DURABILITY.get(), stack);
+            int durabilityLevel = EnchantmentHelper.getTagEnchantmentLevel(
+                    enchantment(entity.level(), Enchantments.RAFIKI_DURABILITY), stack);
             if (durabilityLevel > 0 && entity.level().random.nextInt(durabilityLevel + 1) > 0) {
                 return; // Durability enchantment prevented damage
             }
         }
 
         stack.hurtAndBreak(amount, entity, (e) -> e.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+    }
+
+    private static Holder<Enchantment> enchantment(Level level, ResourceKey<Enchantment> key) {
+        return level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(key);
     }
 }

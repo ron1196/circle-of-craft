@@ -3,11 +3,14 @@ package io.github.ron1196.circleofcraft.item;
 import io.github.ron1196.circleofcraft.registry.Enchantments;
 import io.github.ron1196.circleofcraft.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -39,10 +42,14 @@ public class TunnahDiggahItem extends PickaxeItem {
             return super.mineBlock(stack, level, state, pos, miner);
         }
 
-        int radius = 1 + EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BIGGAH_DIGGAH.get(), stack);
-        boolean hasPrecision = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PRECISION.get(), stack) > 0;
+        HolderLookup.RegistryLookup<Enchantment> enchantments =
+                serverLevel.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        int radius = 1
+                + EnchantmentHelper.getItemEnchantmentLevel(enchantments.getOrThrow(Enchantments.BIGGAH_DIGGAH), stack);
+        boolean hasPrecision =
+                EnchantmentHelper.getItemEnchantmentLevel(enchantments.getOrThrow(Enchantments.PRECISION), stack) > 0;
         boolean hasSilkTouch = EnchantmentHelper.getItemEnchantmentLevel(
-                        net.minecraft.world.item.enchantment.Enchantments.SILK_TOUCH, stack)
+                        enchantments.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.SILK_TOUCH), stack)
                 > 0;
 
         for (int dx = -radius; dx <= radius; dx++) {

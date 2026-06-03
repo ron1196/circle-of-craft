@@ -20,6 +20,7 @@ import io.github.ron1196.circleofcraft.registry.*;
 import io.github.ron1196.circleofcraft.util.LevelHelper;
 import io.github.ron1196.circleofcraft.world.dimension.Dimensions;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -195,7 +196,12 @@ public class ModForgeEvents {
         // Scourge of Hyenas enchantment bonus damage
         if (attacker instanceof Player player) {
             ItemStack weapon = player.getMainHandItem();
-            int scourgeLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SCOURGE_OF_HYENAS.get(), weapon);
+            int scourgeLevel = EnchantmentHelper.getItemEnchantmentLevel(
+                    target.level()
+                            .registryAccess()
+                            .lookupOrThrow(Registries.ENCHANTMENT)
+                            .getOrThrow(Enchantments.SCOURGE_OF_HYENAS),
+                    weapon);
 
             if (scourgeLevel > 0 && (target instanceof HyenaEntity || target instanceof SkeletalHyenaEntity)) {
                 event.setNewDamage(event.getNewDamage() + 2.5F * scourgeLevel);
@@ -213,7 +219,11 @@ public class ModForgeEvents {
         // Hyena special drop: hyena head with looting
         if (entity instanceof HyenaEntity && killer instanceof Player player) {
             int lootingLevel = EnchantmentHelper.getItemEnchantmentLevel(
-                    net.minecraft.world.item.enchantment.Enchantments.MOB_LOOTING, player.getMainHandItem());
+                    entity.level()
+                            .registryAccess()
+                            .lookupOrThrow(Registries.ENCHANTMENT)
+                            .getOrThrow(net.minecraft.world.item.enchantment.Enchantments.LOOTING),
+                    player.getMainHandItem());
 
             float dropChance = 0.05F + 0.03F * lootingLevel;
             if (entity.level().random.nextFloat() < dropChance) {

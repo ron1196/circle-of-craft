@@ -1,0 +1,10 @@
+{
+  "description": { "translate": "enchantment.circleofcraft.rafiki_thunder" },
+  "supported_items": "#circleofcraft:enchantable/rafiki_stick",
+  "weight": 2,
+  "max_level": 3,
+  "min_cost": { "base": 5, "per_level_above_first": 12 },
+  "max_cost": { "base": 55, "per_level_above_first": 12 },
+  "anvil_cost": 8,
+  "slots": [ "mainhand" ]
+}

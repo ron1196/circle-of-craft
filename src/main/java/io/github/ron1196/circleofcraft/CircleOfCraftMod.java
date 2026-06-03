@@ -28,7 +28,6 @@ public class CircleOfCraftMod {
         BlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
         EntityTypes.ENTITY_TYPES.register(modEventBus);
         MenuTypes.MENU_TYPES.register(modEventBus);
-        Enchantments.ENCHANTMENTS.register(modEventBus);
         Features.FEATURES.register(modEventBus);
         StructureTypes.STRUCTURE_TYPES.register(modEventBus);
         StructureTypes.STRUCTURE_PIECE_TYPES.register(modEventBus);

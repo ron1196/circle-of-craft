@@ -1,0 +1,10 @@
+{
+  "description": { "translate": "enchantment.circleofcraft.rafiki_durability" },
+  "supported_items": "#circleofcraft:enchantable/rafiki_stick",
+  "weight": 5,
+  "max_level": 3,
+  "min_cost": { "base": 4, "per_level_above_first": 10 },
+  "max_cost": { "base": 54, "per_level_above_first": 10 },
+  "anvil_cost": 4,
+  "slots": [ "mainhand" ]
+}

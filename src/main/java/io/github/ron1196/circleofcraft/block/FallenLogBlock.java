@@ -3,6 +3,7 @@ package io.github.ron1196.circleofcraft.block;
 import io.github.ron1196.circleofcraft.entity.animal.BugEntity;
 import io.github.ron1196.circleofcraft.registry.EntityTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
@@ -36,7 +37,12 @@ public class FallenLogBlock extends RotatedPillarBlock {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
         if (!(level instanceof ServerLevel serverLevel)) return;
 
-        int fortune = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool);
+        int fortune = EnchantmentHelper.getItemEnchantmentLevel(
+                serverLevel
+                        .registryAccess()
+                        .lookupOrThrow(Registries.ENCHANTMENT)
+                        .getOrThrow(Enchantments.FORTUNE),
+                tool);
         float chance = BASE_CHANCE + FORTUNE_BONUS * fortune;
         if (level.random.nextFloat() >= chance) return;
 
