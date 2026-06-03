@@ -31,9 +31,9 @@ public class SpearEntity extends AbstractArrow implements net.minecraft.world.en
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_POISONED, false);
+    protected void defineSynchedData(@NotNull SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_POISONED, false);
     }
 
     public boolean isPoisoned() {

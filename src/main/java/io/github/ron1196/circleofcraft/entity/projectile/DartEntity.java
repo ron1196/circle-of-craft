@@ -66,9 +66,9 @@ public class DartEntity extends AbstractArrow implements net.minecraft.world.ent
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_DART_TYPE, DartType.BLUE.getId());
+    protected void defineSynchedData(@NotNull SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_DART_TYPE, DartType.BLUE.getId());
     }
 
     public DartType getDartType() {

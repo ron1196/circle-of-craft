@@ -81,10 +81,10 @@ public class GiraffeEntity extends ModAnimal {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_SADDLED, false);
-        this.entityData.define(DATA_TIE, NO_TIE);
+    protected void defineSynchedData(@NotNull SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_SADDLED, false);
+        builder.define(DATA_TIE, NO_TIE);
     }
 
     @Override

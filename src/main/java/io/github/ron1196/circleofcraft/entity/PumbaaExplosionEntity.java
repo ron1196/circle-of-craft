@@ -11,6 +11,7 @@ import io.github.ron1196.circleofcraft.registry.ModSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -126,8 +127,8 @@ public class PumbaaExplosionEntity extends Entity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        // No synched data needed
+    protected void defineSynchedData(@NotNull SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
     }
 
     @Override

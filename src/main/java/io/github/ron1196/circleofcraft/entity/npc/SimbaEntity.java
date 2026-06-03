@@ -67,10 +67,10 @@ public class SimbaEntity extends TamableAnimal {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_BABY, false);
-        this.entityData.define(DATA_HAS_CHARM, false);
+    protected void defineSynchedData(@NotNull SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_BABY, false);
+        builder.define(DATA_HAS_CHARM, false);
     }
 
     public boolean hasCharm() {

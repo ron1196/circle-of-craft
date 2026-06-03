@@ -54,9 +54,9 @@ public class LionEntity extends ModAnimal implements GenderedAnimal {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_IS_FEMALE, false);
+    protected void defineSynchedData(@NotNull SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_IS_FEMALE, false);
     }
 
     @Override

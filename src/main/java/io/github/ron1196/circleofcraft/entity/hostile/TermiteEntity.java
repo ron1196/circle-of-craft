@@ -44,10 +44,10 @@ public class TermiteEntity extends Monster implements SwellGoal.Swellable {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_SWELL_DIR, -1);
-        this.entityData.define(DATA_EXPLODING, true);
+    protected void defineSynchedData(@NotNull SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_SWELL_DIR, -1);
+        builder.define(DATA_EXPLODING, true);
     }
 
     @Override
