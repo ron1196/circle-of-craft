@@ -6,6 +6,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -22,16 +23,15 @@ import org.jetbrains.annotations.NotNull;
  */
 public class KivuliteSwordItem extends SwordItem {
 
-    public KivuliteSwordItem(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
-        super(tier, attackDamage, attackSpeed, properties);
+    public KivuliteSwordItem(Tier tier, Properties properties) {
+        super(tier, properties);
     }
 
     @Override
     public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
         if (!target.fireImmune() && target.isAlive()) {
-            target.setSecondsOnFire(3 + attacker.level().random.nextInt(3));
+            target.igniteForSeconds(3 + attacker.level().random.nextInt(3));
 
-            // Flame particles
             Level level = target.level();
             for (int i = 0; i < 8; i++) {
                 double dx = level.random.nextGaussian() * 0.02D;
@@ -53,7 +53,7 @@ public class KivuliteSwordItem extends SwordItem {
     }
 
     @Override
-    public @NotNull InteractionResult useOn(UseOnContext context) {
+    public @NotNull InteractionResult useOn(@NotNull UseOnContext context) {
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         Direction face = context.getClickedFace();
@@ -73,8 +73,7 @@ public class KivuliteSwordItem extends SwordItem {
                     1.0F,
                     level.random.nextFloat() * 0.4F + 0.8F);
             level.setBlock(firePos, BaseFireBlock.getState(level, firePos), 11);
-            context.getItemInHand()
-                    .hurtAndBreak(1, context.getPlayer(), (p) -> p.broadcastBreakEvent(context.getHand()));
+            context.getItemInHand().hurtAndBreak(1, context.getPlayer(), EquipmentSlot.MAINHAND);
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 

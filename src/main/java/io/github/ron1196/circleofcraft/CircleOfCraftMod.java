@@ -24,6 +24,7 @@ public class CircleOfCraftMod {
 
     public CircleOfCraftMod(IEventBus modEventBus) {
         ModBlocks.BLOCKS.register(modEventBus);
+        io.github.ron1196.circleofcraft.item.tier.ModArmorMaterials.ARMOR_MATERIALS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         BlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
         EntityTypes.ENTITY_TYPES.register(modEventBus);

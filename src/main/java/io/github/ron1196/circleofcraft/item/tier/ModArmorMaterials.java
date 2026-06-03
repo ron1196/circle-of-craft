@@ -2,54 +2,63 @@ package io.github.ron1196.circleofcraft.item.tier;
 
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.registry.ModItems;
+import java.util.EnumMap;
+import java.util.List;
 import java.util.function.Supplier;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
-public enum ModArmorMaterials implements ArmorMaterial {
-    SILVER(
+public final class ModArmorMaterials {
+
+    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS =
+            DeferredRegister.create(Registries.ARMOR_MATERIAL, CircleOfCraftMod.MOD_ID);
+
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> SILVER = register(
             "silver",
-            19,
             new int[] {2, 5, 7, 2},
             16,
             SoundEvents.ARMOR_EQUIP_IRON,
             0.0F,
             0.0F,
-            () -> Ingredient.of(ModItems.SILVER_INGOT.get())),
-    GEMSBOK(
+            () -> Ingredient.of(ModItems.SILVER_INGOT.get()));
+
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> GEMSBOK = register(
             "gemsbok",
-            8,
             new int[] {1, 4, 5, 2},
             8,
             SoundEvents.ARMOR_EQUIP_LEATHER,
             0.0F,
             0.0F,
-            () -> Ingredient.of(ModItems.GEMSBOK_HIDE.get())),
-    PEACOCK(
+            () -> Ingredient.of(ModItems.GEMSBOK_HIDE.get()));
+
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> PEACOCK = register(
             "peacock",
-            31,
             new int[] {3, 6, 8, 3},
             9,
             SoundEvents.ARMOR_EQUIP_DIAMOND,
             1.0F,
             0.0F,
-            () -> Ingredient.of(ModItems.PEACOCK_GEM.get())),
-    OUTLANDS(
+            () -> Ingredient.of(ModItems.PEACOCK_GEM.get()));
+
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> OUTLANDS = register(
             "outlands",
-            12,
             new int[] {2, 5, 6, 2},
             0,
             SoundEvents.ARMOR_EQUIP_IRON,
             0.0F,
             0.0F,
-            () -> Ingredient.of(ModItems.OUTLANDER_FUR.get())),
-    TICKET_LION(
+            () -> Ingredient.of(ModItems.OUTLANDER_FUR.get()));
+
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> TICKET_LION = register(
             "ticket_lion",
-            0,
             new int[] {0, 0, 0, 0},
             0,
             SoundEvents.ARMOR_EQUIP_LEATHER,
@@ -57,72 +66,31 @@ public enum ModArmorMaterials implements ArmorMaterial {
             0.0F,
             () -> Ingredient.EMPTY);
 
-    private static final int[] HEALTH_PER_SLOT = new int[] {13, 15, 16, 11};
-    private final String name;
-    private final int durabilityMultiplier;
-    private final int[] slotProtections;
-    private final int enchantmentValue;
-    private final SoundEvent sound;
-    private final float toughness;
-    private final float knockbackResistance;
-    private final Supplier<Ingredient> repairIngredient;
+    private ModArmorMaterials() {}
 
-    ModArmorMaterials(
+    private static DeferredHolder<ArmorMaterial, ArmorMaterial> register(
             String name,
-            int durabilityMultiplier,
-            int[] slotProtections,
+            int[] defensePerSlot,
             int enchantmentValue,
-            SoundEvent sound,
+            Holder<SoundEvent> equipSound,
             float toughness,
             float knockbackResistance,
             Supplier<Ingredient> repairIngredient) {
-        this.name = name;
-        this.durabilityMultiplier = durabilityMultiplier;
-        this.slotProtections = slotProtections;
-        this.enchantmentValue = enchantmentValue;
-        this.sound = sound;
-        this.toughness = toughness;
-        this.knockbackResistance = knockbackResistance;
-        this.repairIngredient = repairIngredient;
-    }
-
-    @Override
-    public int getDurabilityForType(ArmorItem.Type type) {
-        return HEALTH_PER_SLOT[type.getSlot().getIndex()] * this.durabilityMultiplier;
-    }
-
-    @Override
-    public int getDefenseForType(ArmorItem.Type type) {
-        return this.slotProtections[type.getSlot().getIndex()];
-    }
-
-    @Override
-    public int getEnchantmentValue() {
-        return this.enchantmentValue;
-    }
-
-    @Override
-    public @NotNull SoundEvent getEquipSound() {
-        return this.sound;
-    }
-
-    @Override
-    public @NotNull Ingredient getRepairIngredient() {
-        return this.repairIngredient.get();
-    }
-
-    @Override
-    public @NotNull String getName() {
-        return CircleOfCraftMod.MOD_ID + ":" + this.name;
-    }
-
-    @Override
-    public float getToughness() {
-        return this.toughness;
-    }
-
-    @Override
-    public float getKnockbackResistance() {
-        return this.knockbackResistance;
+        EnumMap<ArmorItem.Type, Integer> defense = new EnumMap<>(ArmorItem.Type.class);
+        for (ArmorItem.Type type : ArmorItem.Type.values()) {
+            defense.put(type, defensePerSlot[type.getSlot().getIndex()]);
+        }
+        List<ArmorMaterial.Layer> layers =
+                List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(CircleOfCraftMod.MOD_ID, name)));
+        return ARMOR_MATERIALS.register(
+                name,
+                () -> new ArmorMaterial(
+                        defense,
+                        enchantmentValue,
+                        equipSound,
+                        repairIngredient,
+                        layers,
+                        toughness,
+                        knockbackResistance));
     }
 }

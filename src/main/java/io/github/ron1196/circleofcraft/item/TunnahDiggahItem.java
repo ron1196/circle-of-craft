@@ -23,8 +23,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public class TunnahDiggahItem extends PickaxeItem {
 
-    public TunnahDiggahItem(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
-        super(tier, attackDamage, attackSpeed, properties);
+    public TunnahDiggahItem(Tier tier, Properties properties) {
+        super(tier, properties);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class TunnahDiggahItem extends PickaxeItem {
                     }
 
                     level.destroyBlock(targetPos, false);
-                    stack.hurtAndBreak(1, miner, e -> e.broadcastBreakEvent(miner.getUsedItemHand()));
+                    stack.hurtAndBreak(1, miner, miner.getEquipmentSlotForItem(stack));
                 }
             }
         }

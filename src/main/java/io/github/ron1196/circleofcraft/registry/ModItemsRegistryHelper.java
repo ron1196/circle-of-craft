@@ -95,7 +95,17 @@ final class ModItemsRegistryHelper {
                 entityName + "_spawn_egg", () -> new DeferredSpawnEggItem(type, bg, fg, new Item.Properties()));
     }
 
-    static DeferredItem<ArmorItem> armorItem(String name, ArmorMaterial material, ArmorItem.Type type) {
-        return ModItems.ITEMS.register(name, () -> new ArmorItem(material, type, new Item.Properties()));
+    static DeferredItem<ArmorItem> armorItem(
+            String name,
+            net.minecraft.core.Holder<ArmorMaterial> material,
+            ArmorItem.Type type,
+            int durabilityMultiplier) {
+        return ModItems.ITEMS.register(name, () -> {
+            Item.Properties properties = new Item.Properties();
+            if (durabilityMultiplier > 0) {
+                properties.durability(type.getDurability(durabilityMultiplier));
+            }
+            return new ArmorItem(material, type, properties);
+        });
     }
 }

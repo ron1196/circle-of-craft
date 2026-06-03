@@ -143,15 +143,31 @@ public class ModItems {
 
     // ========== Kivulite Tools ==========
     public static final DeferredItem<SwordItem> KIVULITE_SWORD = ITEMS.register(
-            "kivulite_sword", () -> new KivuliteSwordItem(ModToolTiers.KIVULITE, 3, -2.4F, new Item.Properties()));
+            "kivulite_sword",
+            () -> new KivuliteSwordItem(
+                    ModToolTiers.KIVULITE,
+                    new Item.Properties().attributes(SwordItem.createAttributes(ModToolTiers.KIVULITE, 3, -2.4F))));
     public static final DeferredItem<PickaxeItem> KIVULITE_PICKAXE = ITEMS.register(
-            "kivulite_pickaxe", () -> new KivulitePickaxeItem(ModToolTiers.KIVULITE, 1, -2.8F, new Item.Properties()));
+            "kivulite_pickaxe",
+            () -> new KivulitePickaxeItem(
+                    ModToolTiers.KIVULITE,
+                    new Item.Properties()
+                            .attributes(PickaxeItem.createAttributes(ModToolTiers.KIVULITE, 1.0F, -2.8F))));
     public static final DeferredItem<AxeItem> KIVULITE_AXE = ITEMS.register(
-            "kivulite_axe", () -> new KivuliteAxeItem(ModToolTiers.KIVULITE, 6.0F, -3.1F, new Item.Properties()));
+            "kivulite_axe",
+            () -> new KivuliteAxeItem(
+                    ModToolTiers.KIVULITE,
+                    new Item.Properties().attributes(AxeItem.createAttributes(ModToolTiers.KIVULITE, 6.0F, -3.1F))));
     public static final DeferredItem<ShovelItem> KIVULITE_SHOVEL = ITEMS.register(
-            "kivulite_shovel", () -> new KivuliteShovelItem(ModToolTiers.KIVULITE, 1.5F, -3.0F, new Item.Properties()));
-    public static final DeferredItem<HoeItem> KIVULITE_HOE =
-            ITEMS.register("kivulite_hoe", () -> new HoeItem(ModToolTiers.KIVULITE, -2, -1.0F, new Item.Properties()));
+            "kivulite_shovel",
+            () -> new KivuliteShovelItem(
+                    ModToolTiers.KIVULITE,
+                    new Item.Properties().attributes(ShovelItem.createAttributes(ModToolTiers.KIVULITE, 1.5F, -3.0F))));
+    public static final DeferredItem<HoeItem> KIVULITE_HOE = ITEMS.register(
+            "kivulite_hoe",
+            () -> new HoeItem(
+                    ModToolTiers.KIVULITE,
+                    new Item.Properties().attributes(HoeItem.createAttributes(ModToolTiers.KIVULITE, -2.0F, -1.0F))));
 
     // ========== Corrupt Pridestone Tools ==========
     public static final DeferredItem<SwordItem> CORRUPT_SWORD = ITEMS.register(
@@ -168,37 +184,37 @@ public class ModItems {
 
     // ========== Silver Armor ==========
     public static final DeferredItem<ArmorItem> SILVER_HELMET =
-            armorItem("silver_helmet", ModArmorMaterials.SILVER, ArmorItem.Type.HELMET);
+            armorItem("silver_helmet", ModArmorMaterials.SILVER, ArmorItem.Type.HELMET, 19);
     public static final DeferredItem<ArmorItem> SILVER_CHESTPLATE =
-            armorItem("silver_chestplate", ModArmorMaterials.SILVER, ArmorItem.Type.CHESTPLATE);
+            armorItem("silver_chestplate", ModArmorMaterials.SILVER, ArmorItem.Type.CHESTPLATE, 19);
     public static final DeferredItem<ArmorItem> SILVER_LEGGINGS =
-            armorItem("silver_leggings", ModArmorMaterials.SILVER, ArmorItem.Type.LEGGINGS);
+            armorItem("silver_leggings", ModArmorMaterials.SILVER, ArmorItem.Type.LEGGINGS, 19);
     public static final DeferredItem<ArmorItem> SILVER_BOOTS =
-            armorItem("silver_boots", ModArmorMaterials.SILVER, ArmorItem.Type.BOOTS);
+            armorItem("silver_boots", ModArmorMaterials.SILVER, ArmorItem.Type.BOOTS, 19);
 
     // ========== Gemsbok Armor ==========
     public static final DeferredItem<ArmorItem> GEMSBOK_HELMET =
-            armorItem("gemsbok_helmet", ModArmorMaterials.GEMSBOK, ArmorItem.Type.HELMET);
+            armorItem("gemsbok_helmet", ModArmorMaterials.GEMSBOK, ArmorItem.Type.HELMET, 8);
     public static final DeferredItem<ArmorItem> GEMSBOK_CHESTPLATE =
-            armorItem("gemsbok_chestplate", ModArmorMaterials.GEMSBOK, ArmorItem.Type.CHESTPLATE);
+            armorItem("gemsbok_chestplate", ModArmorMaterials.GEMSBOK, ArmorItem.Type.CHESTPLATE, 8);
     public static final DeferredItem<ArmorItem> GEMSBOK_LEGGINGS =
-            armorItem("gemsbok_leggings", ModArmorMaterials.GEMSBOK, ArmorItem.Type.LEGGINGS);
+            armorItem("gemsbok_leggings", ModArmorMaterials.GEMSBOK, ArmorItem.Type.LEGGINGS, 8);
     public static final DeferredItem<ArmorItem> GEMSBOK_BOOTS =
-            armorItem("gemsbok_boots", ModArmorMaterials.GEMSBOK, ArmorItem.Type.BOOTS);
+            armorItem("gemsbok_boots", ModArmorMaterials.GEMSBOK, ArmorItem.Type.BOOTS, 8);
 
     // ========== Peacock Armor ==========
     public static final DeferredItem<ArmorItem> PEACOCK_HELMET =
-            armorItem("peacock_helmet", ModArmorMaterials.PEACOCK, ArmorItem.Type.HELMET);
+            armorItem("peacock_helmet", ModArmorMaterials.PEACOCK, ArmorItem.Type.HELMET, 31);
     public static final DeferredItem<ArmorItem> PEACOCK_CHESTPLATE =
-            armorItem("peacock_chestplate", ModArmorMaterials.PEACOCK, ArmorItem.Type.CHESTPLATE);
+            armorItem("peacock_chestplate", ModArmorMaterials.PEACOCK, ArmorItem.Type.CHESTPLATE, 31);
     public static final DeferredItem<ArmorItem> PEACOCK_LEGGINGS =
-            armorItem("peacock_leggings", ModArmorMaterials.PEACOCK, ArmorItem.Type.LEGGINGS);
+            armorItem("peacock_leggings", ModArmorMaterials.PEACOCK, ArmorItem.Type.LEGGINGS, 31);
     public static final DeferredItem<ArmorItem> PEACOCK_BOOTS =
-            armorItem("peacock_boots", ModArmorMaterials.PEACOCK, ArmorItem.Type.BOOTS);
+            armorItem("peacock_boots", ModArmorMaterials.PEACOCK, ArmorItem.Type.BOOTS, 31);
 
     // ========== Special Armor ==========
     public static final DeferredItem<ArmorItem> PEACOCK_WINGS =
-            armorItem("peacock_wings", ModArmorMaterials.GEMSBOK, ArmorItem.Type.CHESTPLATE);
+            armorItem("peacock_wings", ModArmorMaterials.GEMSBOK, ArmorItem.Type.CHESTPLATE, 8);
 
     // ========== Block Items ==========
     // Pridestone & Variants
@@ -450,17 +466,17 @@ public class ModItems {
 
     // ========== Outlands Armor ==========
     public static final DeferredItem<ArmorItem> OUTLANDS_HELMET =
-            armorItem("outlands_helmet", ModArmorMaterials.OUTLANDS, ArmorItem.Type.HELMET);
+            armorItem("outlands_helmet", ModArmorMaterials.OUTLANDS, ArmorItem.Type.HELMET, 12);
 
     // ========== Ticket Lion Suit ==========
     public static final DeferredItem<ArmorItem> TICKET_LION_HEAD =
-            armorItem("ticket_lion_head", ModArmorMaterials.TICKET_LION, ArmorItem.Type.HELMET);
+            armorItem("ticket_lion_head", ModArmorMaterials.TICKET_LION, ArmorItem.Type.HELMET, 0);
     public static final DeferredItem<ArmorItem> TICKET_LION_SUIT =
-            armorItem("ticket_lion_suit", ModArmorMaterials.TICKET_LION, ArmorItem.Type.CHESTPLATE);
+            armorItem("ticket_lion_suit", ModArmorMaterials.TICKET_LION, ArmorItem.Type.CHESTPLATE, 0);
     public static final DeferredItem<ArmorItem> TICKET_LION_LEGS =
-            armorItem("ticket_lion_legs", ModArmorMaterials.TICKET_LION, ArmorItem.Type.LEGGINGS);
+            armorItem("ticket_lion_legs", ModArmorMaterials.TICKET_LION, ArmorItem.Type.LEGGINGS, 0);
     public static final DeferredItem<ArmorItem> TICKET_LION_FEET =
-            armorItem("ticket_lion_feet", ModArmorMaterials.TICKET_LION, ArmorItem.Type.BOOTS);
+            armorItem("ticket_lion_feet", ModArmorMaterials.TICKET_LION, ArmorItem.Type.BOOTS, 0);
 
     // ========== Darts ==========
     public static final DeferredItem<Item> DART_BLUE = simpleItem("dart_blue");
@@ -544,7 +560,12 @@ public class ModItems {
 
     // ========== Tunnah Diggah ==========
     public static final DeferredItem<Item> TUNNAH_DIGGAH = ITEMS.register(
-            "tunnah_diggah", () -> new TunnahDiggahItem(Tiers.IRON, 1, -2.8F, new Item.Properties().durability(690)));
+            "tunnah_diggah",
+            () -> new TunnahDiggahItem(
+                    Tiers.IRON,
+                    new Item.Properties()
+                            .durability(690)
+                            .attributes(TunnahDiggahItem.createAttributes(Tiers.IRON, 1.0F, -2.8F))));
 
     // ========== Quest & Special Items ==========
     public static final DeferredItem<Item> AMULET = ITEMS.register(
