@@ -97,7 +97,6 @@ dependencies {
 
     compileOnly 'mezz.jei:jei-1.21.1-neoforge-api:19.27.0.340'
     runtimeOnly 'mezz.jei:jei-1.21.1-neoforge:19.27.0.340'
-    compileOnly 'curse.maven:jade-324717:7545219'
     runtimeOnly 'curse.maven:jade-324717:7545219'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
 }
