@@ -3,7 +3,7 @@ package io.github.ron1196.circleofcraft.registry;
 import io.github.ron1196.circleofcraft.block.ModLeavesBlock;
 import io.github.ron1196.circleofcraft.block.ModSaplingBlock;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -162,7 +162,7 @@ final class ModBlocksRegistryHelper {
         return ModBlocks.BLOCKS.register(name, () -> new ModLeavesBlock(leavesProps()));
     }
 
-    static DeferredBlock<Block> sapling(String name, AbstractTreeGrower grower) {
+    static DeferredBlock<Block> sapling(String name, TreeGrower grower) {
         return ModBlocks.BLOCKS.register(name, () -> new ModSaplingBlock(grower, saplingProps()));
     }
 

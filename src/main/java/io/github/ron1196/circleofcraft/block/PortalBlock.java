@@ -208,7 +208,7 @@ public class PortalBlock extends Block {
 
         teleportNearbySimba(player, destLevel);
 
-        player.changeDimension(destLevel, new Teleporter(this));
+        player.changeDimension(new Teleporter(this).createDimensionTransition(player, destLevel));
     }
 
     private void saveHomePortalLocation(ServerPlayer player) {
@@ -227,7 +227,7 @@ public class PortalBlock extends Block {
                         player.getBoundingBox().inflate(SIMBA_TELEPORT_RANGE),
                         e -> e instanceof SimbaEntity simba && simba.isOwnedBy(player) && simba.hasCharm())) {
             entity.setPortalCooldown();
-            entity.changeDimension(destLevel, new Teleporter(this));
+            entity.changeDimension(new Teleporter(this).createDimensionTransition(entity, destLevel));
         }
     }
 
@@ -236,7 +236,7 @@ public class PortalBlock extends Block {
         entity.setPortalCooldown();
         ServerLevel destLevel = resolveDestination(level);
         if (destLevel == null) return;
-        entity.changeDimension(destLevel, new Teleporter(this));
+        entity.changeDimension(new Teleporter(this).createDimensionTransition(entity, destLevel));
     }
 
     private boolean inInvalidDimension(Level level) {

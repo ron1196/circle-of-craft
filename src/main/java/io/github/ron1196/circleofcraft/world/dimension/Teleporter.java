@@ -2,7 +2,6 @@ package io.github.ron1196.circleofcraft.world.dimension;
 
 import io.github.ron1196.circleofcraft.block.PortalBlock;
 import io.github.ron1196.circleofcraft.util.LevelHelper;
-import java.util.function.Function;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -10,13 +9,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkStatus;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.portal.PortalInfo;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.ITeleporter;
 
-public class Teleporter implements ITeleporter {
+public class Teleporter {
 
     private static final int SEARCH_RADIUS_CHUNKS = 8;
     private static final int FRAME_WIDTH = 4;
@@ -29,28 +27,15 @@ public class Teleporter implements ITeleporter {
         this.portalBlock = portalBlock;
     }
 
-    // ── ITeleporter overrides ─────────────────────────────────────────────────
-
-    @Nullable
-    @Override
-    public PortalInfo getPortalInfo(
-            Entity entity, ServerLevel destWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
+    public DimensionTransition createDimensionTransition(Entity entity, ServerLevel destWorld) {
         BlockPos destPos = findOrCreatePortal(entity.blockPosition(), destWorld);
-        return new PortalInfo(
+        return new DimensionTransition(
+                destWorld,
                 new Vec3(destPos.getX() + 0.5, destPos.getY(), destPos.getZ() + 0.5),
                 Vec3.ZERO,
                 entity.getYRot(),
-                entity.getXRot());
-    }
-
-    @Override
-    public Entity placeEntity(
-            Entity entity,
-            ServerLevel currentWorld,
-            ServerLevel destWorld,
-            float yaw,
-            Function<Boolean, Entity> repositionEntity) {
-        return repositionEntity.apply(false);
+                entity.getXRot(),
+                DimensionTransition.PLAY_PORTAL_SOUND.then(DimensionTransition.PLACE_PORTAL_TICKET));
     }
 
     // ── Portal lookup ─────────────────────────────────────────────────────────

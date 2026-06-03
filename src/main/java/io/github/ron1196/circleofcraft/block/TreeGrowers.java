@@ -1,57 +1,30 @@
 package io.github.ron1196.circleofcraft.block;
 
 import io.github.ron1196.circleofcraft.registry.Features;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.grower.AbstractMegaTreeGrower;
-import net.minecraft.world.level.block.grower.AbstractTreeGrower;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import org.jetbrains.annotations.NotNull;
+import java.util.Optional;
+import net.minecraft.world.level.block.grower.TreeGrower;
 
 public class TreeGrowers {
 
-    public static final AbstractTreeGrower ACACIA = new AbstractTreeGrower() {
-        @Override
-        protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(
-                @NotNull RandomSource random, boolean bees) {
-            return Features.PRIDE_ACACIA_TREE_KEY;
-        }
-    };
+    public static final TreeGrower ACACIA = new TreeGrower(
+            "circleofcraft:acacia", Optional.empty(), Optional.of(Features.PRIDE_ACACIA_TREE_KEY), Optional.empty());
 
-    public static final AbstractMegaTreeGrower RAINFOREST = new AbstractMegaTreeGrower() {
-        @Override
-        protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(
-                @NotNull RandomSource random, boolean bees) {
-            return Features.RAINFOREST_TREE_KEY;
-        }
+    public static final TreeGrower RAINFOREST = new TreeGrower(
+            "circleofcraft:rainforest",
+            0.1F,
+            Optional.of(Features.MEGA_RAINFOREST_TREE_KEY),
+            Optional.empty(),
+            Optional.of(Features.RAINFOREST_TREE_KEY),
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty());
 
-        @Override
-        protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredMegaFeature(@NotNull RandomSource random) {
-            return Features.MEGA_RAINFOREST_TREE_KEY;
-        }
-    };
+    public static final TreeGrower MANGO = new TreeGrower(
+            "circleofcraft:mango", Optional.empty(), Optional.of(Features.MANGO_TREE_KEY), Optional.empty());
 
-    public static final AbstractTreeGrower MANGO = new AbstractTreeGrower() {
-        @Override
-        protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(
-                @NotNull RandomSource random, boolean bees) {
-            return Features.MANGO_TREE_KEY;
-        }
-    };
+    public static final TreeGrower PASSION = new TreeGrower(
+            "circleofcraft:passion", Optional.empty(), Optional.of(Features.PASSION_TREE_KEY), Optional.empty());
 
-    public static final AbstractTreeGrower PASSION = new AbstractTreeGrower() {
-        @Override
-        protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(
-                @NotNull RandomSource random, boolean bees) {
-            return Features.PASSION_TREE_KEY;
-        }
-    };
-
-    public static final AbstractTreeGrower BANANA = new AbstractTreeGrower() {
-        @Override
-        protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(
-                @NotNull RandomSource random, boolean bees) {
-            return Features.BANANA_TREE_KEY;
-        }
-    };
+    public static final TreeGrower BANANA = new TreeGrower(
+            "circleofcraft:banana", Optional.empty(), Optional.of(Features.BANANA_TREE_KEY), Optional.empty());
 }

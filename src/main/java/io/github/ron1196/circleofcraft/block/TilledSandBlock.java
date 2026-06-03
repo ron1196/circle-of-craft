@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.IPlantable;
+import net.neoforged.neoforge.common.util.TriState;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -147,13 +147,13 @@ public class TilledSandBlock extends Block {
     // ── Plant support ───────────────────────────────────────────────────────
 
     @Override
-    public boolean canSustainPlant(
+    public @NotNull TriState canSustainPlant(
             @NotNull BlockState state,
             @NotNull BlockGetter level,
             @NotNull BlockPos pos,
             @NotNull Direction facing,
-            @NotNull IPlantable plantable) {
-        return true;
+            @NotNull BlockState plant) {
+        return TriState.TRUE;
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────────
