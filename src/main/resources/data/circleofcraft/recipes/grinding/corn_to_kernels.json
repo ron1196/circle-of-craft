@@ -1,5 +1,5 @@
 {
   "type": "circleofcraft:grinding",
   "ingredient": { "item": "circleofcraft:corn" },
-  "result": { "item": "circleofcraft:corn_kernels" }
+  "result": { "id": "circleofcraft:corn_kernels" }
 }

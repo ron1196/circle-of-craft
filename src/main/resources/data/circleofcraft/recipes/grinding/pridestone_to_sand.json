@@ -1,5 +1,5 @@
 {
   "type": "circleofcraft:grinding",
   "ingredient": { "item": "circleofcraft:pridestone" },
-  "result": { "item": "minecraft:sand" }
+  "result": { "id": "minecraft:sand" }
 }

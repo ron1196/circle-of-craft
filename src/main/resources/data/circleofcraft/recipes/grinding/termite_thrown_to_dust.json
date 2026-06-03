@@ -1,5 +1,5 @@
 {
   "type": "circleofcraft:grinding",
   "ingredient": { "item": "circleofcraft:termite_thrown" },
-  "result": { "item": "circleofcraft:termite_dust" }
+  "result": { "id": "circleofcraft:termite_dust" }
 }

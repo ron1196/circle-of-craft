@@ -1,5 +1,5 @@
 {
   "type": "circleofcraft:grinding",
   "ingredient": { "item": "minecraft:cobblestone" },
-  "result": { "item": "minecraft:gravel" }
+  "result": { "id": "minecraft:gravel" }
 }

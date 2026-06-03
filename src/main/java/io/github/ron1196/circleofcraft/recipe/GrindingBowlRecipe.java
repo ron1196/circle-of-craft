@@ -1,37 +1,34 @@
 package io.github.ron1196.circleofcraft.recipe;
 
 import io.github.ron1196.circleofcraft.registry.RecipeTypes;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class GrindingBowlRecipe implements Recipe<Container> {
+public class GrindingBowlRecipe implements Recipe<SingleRecipeInput> {
 
-    private final ResourceLocation id;
     private final Ingredient ingredient;
     private final ItemStack result;
 
-    public GrindingBowlRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result) {
-        this.id = id;
+    public GrindingBowlRecipe(Ingredient ingredient, ItemStack result) {
         this.ingredient = ingredient;
         this.result = result;
     }
 
     @Override
-    public boolean matches(@NotNull Container container, @NotNull Level level) {
-        return ingredient.test(container.getItem(0));
+    public boolean matches(@NotNull SingleRecipeInput input, @NotNull Level level) {
+        return ingredient.test(input.item());
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull Container container, @NotNull RegistryAccess registryAccess) {
+    public @NotNull ItemStack assemble(@NotNull SingleRecipeInput input, @NotNull HolderLookup.Provider registries) {
         return result.copy();
     }
 
@@ -41,13 +38,8 @@ public class GrindingBowlRecipe implements Recipe<Container> {
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(@NotNull RegistryAccess registryAccess) {
+    public @NotNull ItemStack getResultItem(@NotNull HolderLookup.Provider registries) {
         return result.copy();
-    }
-
-    @Override
-    public @NotNull ResourceLocation getId() {
-        return id;
     }
 
     @Override

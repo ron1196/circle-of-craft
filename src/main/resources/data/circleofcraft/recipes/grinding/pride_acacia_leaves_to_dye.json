@@ -1,5 +1,5 @@
 {
   "type": "circleofcraft:grinding",
   "ingredient": { "item": "circleofcraft:pride_acacia_leaves" },
-  "result": { "item": "minecraft:green_dye" }
+  "result": { "id": "minecraft:green_dye" }
 }

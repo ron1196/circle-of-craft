@@ -1,36 +1,34 @@
 package io.github.ron1196.circleofcraft.recipe;
 
-import com.google.gson.JsonObject;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.ShapedRecipe;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class GrindingBowlRecipeSerializer implements RecipeSerializer<GrindingBowlRecipe> {
 
+    public static final MapCodec<GrindingBowlRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+                    Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(GrindingBowlRecipe::getIngredient),
+                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(GrindingBowlRecipe::getResult))
+            .apply(inst, GrindingBowlRecipe::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, GrindingBowlRecipe> STREAM_CODEC = StreamCodec.composite(
+            Ingredient.CONTENTS_STREAM_CODEC,
+            GrindingBowlRecipe::getIngredient,
+            ItemStack.STREAM_CODEC,
+            GrindingBowlRecipe::getResult,
+            GrindingBowlRecipe::new);
+
     @Override
-    public @NotNull GrindingBowlRecipe fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject json) {
-        Ingredient ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "ingredient"));
-        ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
-        return new GrindingBowlRecipe(recipeId, ingredient, result);
+    public MapCodec<GrindingBowlRecipe> codec() {
+        return CODEC;
     }
 
     @Override
-    public @Nullable GrindingBowlRecipe fromNetwork(
-            @NotNull ResourceLocation recipeId, @NotNull FriendlyByteBuf buffer) {
-        Ingredient ingredient = Ingredient.fromNetwork(buffer);
-        ItemStack result = buffer.readItem();
-        return new GrindingBowlRecipe(recipeId, ingredient, result);
-    }
-
-    @Override
-    public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull GrindingBowlRecipe recipe) {
-        recipe.getIngredient().toNetwork(buffer);
-        buffer.writeItem(recipe.getResult());
+    public StreamCodec<RegistryFriendlyByteBuf, GrindingBowlRecipe> streamCodec() {
+        return STREAM_CODEC;
     }
 }

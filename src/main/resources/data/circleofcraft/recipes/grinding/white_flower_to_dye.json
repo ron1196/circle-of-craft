@@ -1,5 +1,5 @@
 {
   "type": "circleofcraft:grinding",
   "ingredient": { "item": "circleofcraft:white_flower" },
-  "result": { "item": "minecraft:white_dye" }
+  "result": { "id": "minecraft:white_dye" }
 }

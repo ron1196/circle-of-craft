@@ -11,12 +11,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -142,13 +143,13 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
             return;
         }
 
-        Optional<GrindingBowlRecipe> recipe = findRecipe(level, input);
+        Optional<RecipeHolder<GrindingBowlRecipe>> recipe = findRecipe(level, input);
         if (recipe.isEmpty()) {
             entity.resetGrindTime();
             return;
         }
 
-        ItemStack resultStack = recipe.get().getResult();
+        ItemStack resultStack = recipe.get().value().getResult();
         ItemStack outputSlot = entity.inventory.getStackInSlot(SLOT_OUTPUT);
         if (!outputSlot.isEmpty()) {
             if (!outputSlot.is(resultStack.getItem()) || outputSlot.getCount() >= outputSlot.getMaxStackSize()) {
@@ -176,9 +177,9 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
         entity.resetGrindTime();
     }
 
-    private static Optional<GrindingBowlRecipe> findRecipe(Level level, ItemStack input) {
-        SimpleContainer container = new SimpleContainer(input);
-        return level.getRecipeManager().getRecipeFor(RecipeTypes.GRINDING_TYPE.get(), container, level);
+    private static Optional<RecipeHolder<GrindingBowlRecipe>> findRecipe(Level level, ItemStack input) {
+        SingleRecipeInput recipeInput = new SingleRecipeInput(input);
+        return level.getRecipeManager().getRecipeFor(RecipeTypes.GRINDING_TYPE.get(), recipeInput, level);
     }
 
     private void resetGrindTime() {
