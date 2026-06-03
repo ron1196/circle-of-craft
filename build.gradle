@@ -16,6 +16,22 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
+// NeoForge ships official (Mojmap) names that match the dev environment, so
+// mixins need no refmap and no SRG/notch remapping. The SpongePowered AP still
+// registers the legacy MCP obfuscation environments and treats a missing
+// obf-mapping for an injector target as a fatal error. With no SRG/notch
+// mapping files present, that lookup always fails. Downgrade those diagnostics
+// to notes so the AP can still validate targets without demanding obf data.
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += [
+        '-AMSG_NO_OBFDATA_FOR_TARGET=note',
+        '-AMSG_NO_OBFDATA_FOR_METHOD=note',
+        '-AMSG_NO_OBFDATA_FOR_FIELD=note',
+        '-AMSG_NO_OBFDATA_FOR_CLASS=note',
+        '-AMSG_NO_OBFDATA_FOR_CTOR=note'
+    ]
+}
+
 runs {
     configureEach {
         systemProperty 'forge.logging.markers', 'REGISTRIES'

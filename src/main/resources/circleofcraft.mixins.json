@@ -3,7 +3,6 @@
   "package": "io.github.ron1196.circleofcraft.mixin",
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
-  "refmap": "circleofcraft.refmap.json",
   "mixins": [
     "OutlandsFluidMixin"
   ],
