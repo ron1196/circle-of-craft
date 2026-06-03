@@ -1,7 +1,5 @@
 package io.github.ron1196.circleofcraft.item;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import io.github.ron1196.circleofcraft.data.WorldData;
 import io.github.ron1196.circleofcraft.entity.npc.ScarEntity;
 import io.github.ron1196.circleofcraft.entity.projectile.LightningBoltEntity;
@@ -22,13 +20,14 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -53,26 +52,26 @@ import org.jetbrains.annotations.NotNull;
 public class RafikiStickItem extends Item {
 
     private static final int MAX_DAMAGE = 850;
-    private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
     public RafikiStickItem(Properties properties) {
-        super(properties.stacksTo(1).durability(MAX_DAMAGE).rarity(Rarity.UNCOMMON));
-        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(
-                Attributes.ATTACK_DAMAGE,
-                new AttributeModifier(
-                        BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", 5.0D, AttributeModifier.Operation.ADDITION));
-        builder.put(
-                Attributes.ATTACK_SPEED,
-                new AttributeModifier(
-                        BASE_ATTACK_SPEED_UUID, "Weapon modifier", -2.4D, AttributeModifier.Operation.ADDITION));
-        this.defaultModifiers = builder.build();
+        super(properties
+                .stacksTo(1)
+                .durability(MAX_DAMAGE)
+                .rarity(Rarity.UNCOMMON)
+                .attributes(attackAttributes()));
     }
 
-    @Override
-    public @NotNull Multimap<Attribute, AttributeModifier> getAttributeModifiers(
-            @NotNull EquipmentSlot slot, @NotNull ItemStack stack) {
-        return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getAttributeModifiers(slot, stack);
+    private static ItemAttributeModifiers attackAttributes() {
+        return ItemAttributeModifiers.builder()
+                .add(
+                        Attributes.ATTACK_DAMAGE,
+                        new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 5.0D, AttributeModifier.Operation.ADD_VALUE),
+                        EquipmentSlotGroup.MAINHAND)
+                .add(
+                        Attributes.ATTACK_SPEED,
+                        new AttributeModifier(BASE_ATTACK_SPEED_ID, -2.4D, AttributeModifier.Operation.ADD_VALUE),
+                        EquipmentSlotGroup.MAINHAND)
+                .build();
     }
 
     @Override
@@ -103,7 +102,7 @@ public class RafikiStickItem extends Item {
 
         // Grow saplings and crops (anything bonemealable)
         if (block instanceof BonemealableBlock bonemealable) {
-            if (bonemealable.isValidBonemealTarget(level, pos, state, false)) {
+            if (bonemealable.isValidBonemealTarget(level, pos, state)) {
                 if (!level.isClientSide) {
                     if (bonemealable.isBonemealSuccess(level, level.random, pos, state)) {
                         bonemealable.performBonemeal((ServerLevel) level, level.random, pos, state);
@@ -286,7 +285,7 @@ public class RafikiStickItem extends Item {
     }
 
     @Override
-    public int getUseDuration(@NotNull ItemStack stack) {
+    public int getUseDuration(@NotNull ItemStack stack, @NotNull LivingEntity entity) {
         return 72000;
     }
 
@@ -337,7 +336,7 @@ public class RafikiStickItem extends Item {
             }
         }
 
-        stack.hurtAndBreak(amount, entity, (e) -> e.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+        stack.hurtAndBreak(amount, entity, EquipmentSlot.MAINHAND);
     }
 
     private static Holder<Enchantment> enchantment(Level level, ResourceKey<Enchantment> key) {

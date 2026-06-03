@@ -1,5 +1,6 @@
 package io.github.ron1196.circleofcraft.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -13,8 +14,15 @@ public class MushroomBlock extends BushBlock {
 
     private static final VoxelShape SHAPE = Block.box(4.8, 0.0, 4.8, 11.2, 10.0, 11.2);
 
+    public static final MapCodec<MushroomBlock> CODEC = simpleCodec(MushroomBlock::new);
+
     public MushroomBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected @NotNull MapCodec<? extends BushBlock> codec() {
+        return CODEC;
     }
 
     @Override

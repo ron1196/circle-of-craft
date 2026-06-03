@@ -88,6 +88,18 @@ public final class FeatureHelper {
         return entries.get(entries.size() - 1).factory().apply(random);
     }
 
+    public static void enchantWithTableEnchantments(
+            net.minecraft.core.RegistryAccess registryAccess, RandomSource random, ItemStack stack, int level) {
+        java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>> pool =
+                registryAccess
+                        .registryOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT)
+                        .getTag(net.minecraft.tags.EnchantmentTags.IN_ENCHANTING_TABLE)
+                        .map(named -> named.stream().map(h ->
+                                (net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>) h))
+                        .orElseGet(java.util.stream.Stream::empty);
+        net.minecraft.world.item.enchantment.EnchantmentHelper.enchantItem(random, stack, level, pool);
+    }
+
     /**
      * Places a block only if the position is within the current chunk's bounding box. Use this in
      * features that are called per-chunk via StructurePiece.

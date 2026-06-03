@@ -63,7 +63,7 @@ public class JarItem extends Item {
     private InteractionResultHolder<ItemStack> fillJar(
             Level level, Player player, ItemStack jar, BlockPos pos, BlockState state, Item filledJar) {
         if (state.getBlock() instanceof BucketPickup pickup) {
-            pickup.pickupBlock(level, pos, state);
+            pickup.pickupBlock(player, level, pos, state);
         } else {
             level.removeBlock(pos, false);
         }

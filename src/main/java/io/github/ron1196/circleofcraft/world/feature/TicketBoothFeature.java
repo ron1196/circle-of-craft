@@ -345,18 +345,21 @@ public class TicketBoothFeature extends Feature<NoneFeatureConfiguration> {
                         .setValue(WallSignBlock.FACING, Direction.WEST));
 
         if (level.getBlockEntity(signPos) instanceof SignBlockEntity sign) {
+            net.minecraft.core.HolderLookup.Provider provider = level.registryAccess();
             ListTag messages = new ListTag();
-            messages.add(StringTag.valueOf(Component.Serializer.toJson(Component.literal("---------------"))));
-            messages.add(StringTag.valueOf(Component.Serializer.toJson(Component.literal("Now showing:"))));
-            messages.add(StringTag.valueOf(Component.Serializer.toJson(Component.literal("The Lion King"))));
-            messages.add(StringTag.valueOf(Component.Serializer.toJson(Component.literal("---------------"))));
+            messages.add(
+                    StringTag.valueOf(Component.Serializer.toJson(Component.literal("---------------"), provider)));
+            messages.add(StringTag.valueOf(Component.Serializer.toJson(Component.literal("Now showing:"), provider)));
+            messages.add(StringTag.valueOf(Component.Serializer.toJson(Component.literal("The Lion King"), provider)));
+            messages.add(
+                    StringTag.valueOf(Component.Serializer.toJson(Component.literal("---------------"), provider)));
             CompoundTag frontText = new CompoundTag();
             frontText.put("messages", messages);
             frontText.put("color", StringTag.valueOf("black"));
             frontText.putBoolean("has_glowing_text", false);
-            CompoundTag tag = sign.saveWithId();
+            CompoundTag tag = sign.saveWithId(provider);
             tag.put("front_text", frontText);
-            sign.load(tag);
+            sign.loadWithComponents(tag, provider);
         }
 
         // ============================================================

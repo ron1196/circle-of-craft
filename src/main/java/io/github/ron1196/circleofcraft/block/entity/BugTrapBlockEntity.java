@@ -220,8 +220,7 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
                     spawnPos.getZ() + 0.5,
                     serverLevel.random.nextFloat() * 360.0F,
                     0.0F);
-            bug.finalizeSpawn(
-                    serverLevel, serverLevel.getCurrentDifficultyAt(spawnPos), MobSpawnType.NATURAL, null, null);
+            bug.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(spawnPos), MobSpawnType.NATURAL, null);
             Direction face = chooseNearestBaitedFace(bug.position());
             if (face == null) return;
             bug.targetTrap = worldPosition.immutable();

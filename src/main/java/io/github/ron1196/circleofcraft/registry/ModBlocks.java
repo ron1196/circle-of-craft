@@ -49,19 +49,19 @@ public class ModBlocks {
     // Silver/peacock/kivulite also grant XP at the furnace (they smelt), so their mining XP
     // is deliberately kept at or below their vanilla resource-tier analog.
     public static final DeferredBlock<Block> PRIDE_COAL_ORE =
-            BLOCKS.register("pride_coal_ore", () -> new DropExperienceBlock(oreProps(), UniformInt.of(0, 2)));
+            BLOCKS.register("pride_coal_ore", () -> new DropExperienceBlock(UniformInt.of(0, 2), oreProps()));
 
     public static final DeferredBlock<Block> SILVER_ORE =
-            BLOCKS.register("silver_ore", () -> new DropExperienceBlock(oreProps(), UniformInt.of(1, 3)));
+            BLOCKS.register("silver_ore", () -> new DropExperienceBlock(UniformInt.of(1, 3), oreProps()));
 
     public static final DeferredBlock<Block> PEACOCK_ORE =
-            BLOCKS.register("peacock_ore", () -> new DropExperienceBlock(oreProps(), UniformInt.of(3, 7)));
+            BLOCKS.register("peacock_ore", () -> new DropExperienceBlock(UniformInt.of(3, 7), oreProps()));
 
     public static final DeferredBlock<Block> KIVULITE_ORE =
-            BLOCKS.register("kivulite_ore", () -> new DropExperienceBlock(oreProps(), UniformInt.of(2, 5)));
+            BLOCKS.register("kivulite_ore", () -> new DropExperienceBlock(UniformInt.of(2, 5), oreProps()));
 
     public static final DeferredBlock<Block> NUKA_ORE =
-            BLOCKS.register("nuka_ore", () -> new DropExperienceBlock(oreProps(), UniformInt.of(2, 5)));
+            BLOCKS.register("nuka_ore", () -> new DropExperienceBlock(UniformInt.of(2, 5), oreProps()));
 
     // ========== Storage Blocks ==========
     public static final DeferredBlock<Block> SILVER_BLOCK =
@@ -146,18 +146,19 @@ public class ModBlocks {
     public static final DeferredBlock<PressurePlateBlock> PRIDESTONE_PRESSURE_PLATE = BLOCKS.register(
             "pridestone_pressure_plate",
             () -> new PressurePlateBlock(
-                    PressurePlateBlock.Sensitivity.MOBS,
+                    BlockSetType.STONE,
                     BlockBehaviour.Properties.of()
                             .mapColor(MapColor.STONE)
                             .strength(0.5F)
                             .noCollission()
-                            .requiresCorrectToolForDrops(),
-                    BlockSetType.STONE));
+                            .requiresCorrectToolForDrops()));
 
     public static final DeferredBlock<ButtonBlock> PRIDESTONE_BUTTON = BLOCKS.register(
             "pridestone_button",
             () -> new ButtonBlock(
-                    BlockBehaviour.Properties.of().strength(0.5F).noCollission(), BlockSetType.STONE, 20, false));
+                    BlockSetType.STONE,
+                    20,
+                    BlockBehaviour.Properties.of().strength(0.5F).noCollission()));
 
     // ========== Misc Blocks ==========
     public static final DeferredBlock<Block> DRIED_MAIZE_BLOCK = BLOCKS.register(
@@ -179,7 +180,7 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> OUTGLASS = BLOCKS.register(
             "outglass",
-            () -> new GlassBlock(BlockBehaviour.Properties.of()
+            () -> new TransparentBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.NONE)
                     .strength(0.4F)
                     .sound(SoundType.GLASS)
@@ -248,10 +249,10 @@ public class ModBlocks {
 
     // ========== Flowers ==========
     public static final DeferredBlock<Block> WHITE_FLOWER =
-            BLOCKS.register("white_flower", () -> new ModFlowerBlock(MobEffects.HEAL, 5, flowerProps()));
+            BLOCKS.register("white_flower", () -> new ModFlowerBlock(MobEffects.HEAL, 5.0F, flowerProps()));
 
     public static final DeferredBlock<Block> BLUE_FLOWER =
-            BLOCKS.register("blue_flower", () -> new ModFlowerBlock(MobEffects.NIGHT_VISION, 5, flowerProps()));
+            BLOCKS.register("blue_flower", () -> new ModFlowerBlock(MobEffects.NIGHT_VISION, 5.0F, flowerProps()));
 
     // ========== Tall Flowers ==========
     public static final DeferredBlock<Block> PURPLE_FLOWER =
@@ -280,23 +281,23 @@ public class ModBlocks {
     public static final DeferredBlock<Block> HYENA_TORCH = BLOCKS.register(
             "hyena_torch",
             () -> new TorchBlock(
+                    net.minecraft.core.particles.ParticleTypes.FLAME,
                     BlockBehaviour.Properties.of()
                             .noCollission()
                             .instabreak()
                             .sound(SoundType.WOOD)
-                            .lightLevel(s -> 14),
-                    net.minecraft.core.particles.ParticleTypes.FLAME));
+                            .lightLevel(s -> 14)));
 
     public static final DeferredBlock<Block> HYENA_WALL_TORCH = BLOCKS.register(
             "hyena_wall_torch",
             () -> new WallTorchBlock(
+                    net.minecraft.core.particles.ParticleTypes.FLAME,
                     BlockBehaviour.Properties.of()
                             .noCollission()
                             .instabreak()
                             .sound(SoundType.WOOD)
                             .lightLevel(s -> 14)
-                            .lootFrom(HYENA_TORCH),
-                    net.minecraft.core.particles.ParticleTypes.FLAME));
+                            .lootFrom(HYENA_TORCH)));
 
     // ========== Hanging Banana ==========
     public static final DeferredBlock<Block> HANGING_BANANA = BLOCKS.register(
@@ -495,7 +496,7 @@ public class ModBlocks {
 
     private static DeferredBlock<Block> filledVase(String name, String contentItemId, int lightLevel) {
         return BLOCKS.register(name, () -> {
-            BlockBehaviour.Properties props = BlockBehaviour.Properties.copy(VASE.get());
+            BlockBehaviour.Properties props = BlockBehaviour.Properties.ofFullCopy(VASE.get());
             if (lightLevel >= 0) {
                 final int level = lightLevel;
                 props = props.lightLevel(s -> level);

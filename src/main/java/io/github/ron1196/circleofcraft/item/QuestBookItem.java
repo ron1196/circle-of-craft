@@ -5,7 +5,6 @@ import io.github.ron1196.circleofcraft.network.ClientWorldState;
 import io.github.ron1196.circleofcraft.quest.questline.Questline;
 import io.github.ron1196.circleofcraft.quest.questline.QuestlineRegistry;
 import java.util.List;
-import javax.annotation.Nullable;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -55,7 +54,7 @@ public class QuestBookItem extends Item {
     @Override
     public void appendHoverText(
             @NotNull ItemStack stack,
-            @Nullable Level level,
+            @NotNull Item.TooltipContext context,
             @NotNull List<Component> tooltip,
             @NotNull TooltipFlag flag) {
         if (hasUncheckedQuests()) {

@@ -7,7 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -51,16 +51,16 @@ public class VaseBlock extends Block {
     }
 
     @Override
-    public @NotNull InteractionResult use(
+    public @NotNull ItemInteractionResult useItemOn(
+            @NotNull ItemStack stack,
             @NotNull BlockState state,
             @NotNull Level level,
             @NotNull BlockPos pos,
             @NotNull Player player,
             @NotNull InteractionHand hand,
             @NotNull BlockHitResult hit) {
-        ItemStack stack = player.getItemInHand(hand);
         FilledVaseBlock filled = contents().get(stack.getItem());
-        if (filled == null) return InteractionResult.PASS;
+        if (filled == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
         if (!level.isClientSide) {
             level.setBlock(pos, filled.defaultBlockState(), 3);
@@ -68,7 +68,7 @@ public class VaseBlock extends Block {
             level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
             level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override

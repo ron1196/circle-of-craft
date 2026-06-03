@@ -66,7 +66,12 @@ public class DartShooterItem extends Item {
             ModCriteriaTriggers.SHOOT_DART.trigger((ServerPlayer) player);
 
             // Damage the shooter item
-            shooterStack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(hand));
+            shooterStack.hurtAndBreak(
+                    1,
+                    player,
+                    hand == InteractionHand.MAIN_HAND
+                            ? net.minecraft.world.entity.EquipmentSlot.MAINHAND
+                            : net.minecraft.world.entity.EquipmentSlot.OFFHAND);
         }
 
         // Play shoot sound

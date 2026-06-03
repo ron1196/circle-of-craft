@@ -1,5 +1,6 @@
 package io.github.ron1196.circleofcraft.block;
 
+import com.mojang.serialization.MapCodec;
 import io.github.ron1196.circleofcraft.block.entity.HyenaHeadBlockEntity;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
@@ -22,9 +23,16 @@ public class HyenaHeadBlock extends BaseEntityBlock {
     public static final IntegerProperty ROTATION = IntegerProperty.create("rotation", 0, 15);
     private static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 8.0D, 12.0D);
 
+    public static final MapCodec<HyenaHeadBlock> CODEC = simpleCodec(HyenaHeadBlock::new);
+
     public HyenaHeadBlock(BlockBehaviour.Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(ROTATION, 0));
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     @Override

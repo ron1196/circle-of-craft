@@ -1,5 +1,6 @@
 package io.github.ron1196.circleofcraft.block;
 
+import com.mojang.serialization.MapCodec;
 import io.github.ron1196.circleofcraft.block.entity.OutlandsPoolBlockEntity;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
@@ -27,8 +28,15 @@ public class OutlandsPoolBlock extends BaseEntityBlock {
     private static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D);
     private static final int MIN_ITEM_AGE = 5;
 
+    public static final MapCodec<OutlandsPoolBlock> CODEC = simpleCodec(OutlandsPoolBlock::new);
+
     public OutlandsPoolBlock(BlockBehaviour.Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     @Override

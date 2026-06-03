@@ -82,7 +82,7 @@ public class CoinItem extends Item {
     }
 
     @Override
-    public int getUseDuration(@NotNull ItemStack stack) {
+    public int getUseDuration(@NotNull ItemStack stack, @NotNull net.minecraft.world.entity.LivingEntity entity) {
         return USE_DURATION_TICKS;
     }
 

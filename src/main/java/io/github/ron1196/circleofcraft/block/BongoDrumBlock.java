@@ -1,5 +1,6 @@
 package io.github.ron1196.circleofcraft.block;
 
+import com.mojang.serialization.MapCodec;
 import io.github.ron1196.circleofcraft.block.entity.BongoDrumBlockEntity;
 import io.github.ron1196.circleofcraft.data.ModCriteriaTriggers;
 import io.github.ron1196.circleofcraft.registry.ModItems;
@@ -12,7 +13,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -28,10 +31,17 @@ import org.jetbrains.annotations.NotNull;
 
 public class BongoDrumBlock extends BaseEntityBlock {
 
+    public static final MapCodec<BongoDrumBlock> CODEC = simpleCodec(BongoDrumBlock::new);
+
     private static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 12.0D, 15.0D);
 
     public BongoDrumBlock(BlockBehaviour.Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -56,28 +66,37 @@ public class BongoDrumBlock extends BaseEntityBlock {
 
     @Override
     @SuppressWarnings("deprecation")
-    public @NotNull InteractionResult use(
+    public @NotNull ItemInteractionResult useItemOn(
+            @NotNull ItemStack stack,
             @NotNull BlockState state,
             @NotNull Level level,
             @NotNull BlockPos pos,
             @NotNull Player player,
             @NotNull InteractionHand hand,
             @NotNull BlockHitResult hit) {
-        if (level.getBlockEntity(pos) instanceof BongoDrumBlockEntity drum) {
-            // If holding a staff, open enchanting GUI
-            if (player.getItemInHand(hand).is(ModItems.RHYTHM_STAFF.get())) {
-                if (!level.isClientSide()) {
-                    ((ServerPlayer) player).openMenu(drum, buf -> buf.writeBlockPos(pos));
-                }
-                return InteractionResult.sidedSuccess(level.isClientSide());
+        if (stack.is(ModItems.RHYTHM_STAFF.get()) && level.getBlockEntity(pos) instanceof BongoDrumBlockEntity drum) {
+            if (!level.isClientSide()) {
+                ((ServerPlayer) player).openMenu(drum, buf -> buf.writeBlockPos(pos));
             }
+            return ItemInteractionResult.sidedSuccess(level.isClientSide());
+        }
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
 
-            // Otherwise, play a note
+    @Override
+    @SuppressWarnings("deprecation")
+    public @NotNull InteractionResult useWithoutItem(
+            @NotNull BlockState state,
+            @NotNull Level level,
+            @NotNull BlockPos pos,
+            @NotNull Player player,
+            @NotNull BlockHitResult hit) {
+        if (level.getBlockEntity(pos) instanceof BongoDrumBlockEntity drum) {
             if (!level.isClientSide()) {
                 drum.cycleNote();
                 ModCriteriaTriggers.PLAY_BONGO_DRUM.trigger((ServerPlayer) player);
                 float pitch = (float) Math.pow(2.0D, (double) (drum.getNote() - 12) / 12.0D);
-                level.playSound(null, pos, SoundEvents.NOTE_BLOCK_BASEDRUM.get(), SoundSource.BLOCKS, 3.0F, pitch);
+                level.playSound(null, pos, SoundEvents.NOTE_BLOCK_BASEDRUM.value(), SoundSource.BLOCKS, 3.0F, pitch);
             }
             if (level.isClientSide()) {
                 double noteColor = (double) drum.getNote() / 24.0D;

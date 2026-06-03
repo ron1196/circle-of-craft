@@ -1,10 +1,10 @@
 package io.github.ron1196.circleofcraft.block;
 
+import com.mojang.serialization.MapCodec;
 import io.github.ron1196.circleofcraft.block.entity.GrindingBowlBlockEntity;
 import io.github.ron1196.circleofcraft.registry.BlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -26,8 +26,15 @@ public class GrindingBowlBlock extends BaseEntityBlock {
 
     private static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 10.0, 16.0);
 
+    public static final MapCodec<GrindingBowlBlock> CODEC = simpleCodec(GrindingBowlBlock::new);
+
     public GrindingBowlBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -52,12 +59,11 @@ public class GrindingBowlBlock extends BaseEntityBlock {
 
     @Override
     @SuppressWarnings("deprecation")
-    public @NotNull InteractionResult use(
+    public @NotNull InteractionResult useWithoutItem(
             @NotNull BlockState state,
             @NotNull Level level,
             @NotNull BlockPos pos,
             @NotNull Player player,
-            @NotNull InteractionHand hand,
             @NotNull BlockHitResult hit) {
         if (!level.isClientSide) {
             BlockEntity be = level.getBlockEntity(pos);

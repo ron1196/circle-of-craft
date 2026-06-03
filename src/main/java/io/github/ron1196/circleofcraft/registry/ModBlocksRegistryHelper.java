@@ -147,15 +147,15 @@ final class ModBlocksRegistryHelper {
     static DeferredBlock<StairBlock> stairs(String name, DeferredBlock<? extends Block> base) {
         return ModBlocks.BLOCKS.register(
                 name,
-                () -> new StairBlock(() -> base.get().defaultBlockState(), BlockBehaviour.Properties.copy(base.get())));
+                () -> new StairBlock(base.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(base.get())));
     }
 
     static DeferredBlock<SlabBlock> slab(String name, DeferredBlock<? extends Block> base) {
-        return ModBlocks.BLOCKS.register(name, () -> new SlabBlock(BlockBehaviour.Properties.copy(base.get())));
+        return ModBlocks.BLOCKS.register(name, () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(base.get())));
     }
 
     static DeferredBlock<WallBlock> wall(String name, DeferredBlock<? extends Block> base) {
-        return ModBlocks.BLOCKS.register(name, () -> new WallBlock(BlockBehaviour.Properties.copy(base.get())));
+        return ModBlocks.BLOCKS.register(name, () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(base.get())));
     }
 
     static DeferredBlock<LeavesBlock> leaves(String name) {

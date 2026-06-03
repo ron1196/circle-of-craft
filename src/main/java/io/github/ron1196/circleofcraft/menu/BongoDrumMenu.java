@@ -115,7 +115,15 @@ public class BongoDrumMenu extends AbstractContainerMenu {
 
         if (!player.level().isClientSide()) {
             // Apply enchantments
-            var enchantments = EnchantmentHelper.selectEnchantment(random, item, level, false);
+            java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>> pool =
+                    player.level()
+                            .registryAccess()
+                            .registryOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT)
+                            .getTag(net.minecraft.tags.EnchantmentTags.IN_ENCHANTING_TABLE)
+                            .map(named -> named.stream().map(h ->
+                                    (net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>) h))
+                            .orElseGet(java.util.stream.Stream::empty);
+            var enchantments = EnchantmentHelper.selectEnchantment(random, item, level, pool);
             if (!enchantments.isEmpty()) {
                 if (!player.isCreative()) {
                     player.giveExperienceLevels(-level);

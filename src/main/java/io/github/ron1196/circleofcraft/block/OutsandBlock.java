@@ -1,5 +1,6 @@
 package io.github.ron1196.circleofcraft.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -16,8 +17,15 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public class OutsandBlock extends FallingBlock {
 
+    public static final MapCodec<OutsandBlock> CODEC = simpleCodec(OutsandBlock::new);
+
     public OutsandBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected MapCodec<? extends FallingBlock> codec() {
+        return CODEC;
     }
 
     @Override

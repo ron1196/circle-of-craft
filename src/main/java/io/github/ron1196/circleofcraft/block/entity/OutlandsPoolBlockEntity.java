@@ -301,7 +301,7 @@ public class OutlandsPoolBlockEntity extends BlockEntity {
             level.playSound(
                     null,
                     spawnPos,
-                    SoundEvents.GENERIC_EXPLODE,
+                    SoundEvents.GENERIC_EXPLODE.value(),
                     SoundSource.BLOCKS,
                     1.5F,
                     0.5F + level.random.nextFloat() * 0.2F);

@@ -36,7 +36,7 @@ public final class ItemInfo {
         }
     }
 
-    private static void put(DeferredHolder<?, ? extends Item> reg, String... lines) {
+    private static void put(DeferredHolder<Item, ? extends Item> reg, String... lines) {
         Item item = reg.get();
         if (item != null) INFO.put(item, lines);
     }
@@ -1044,7 +1044,7 @@ public final class ItemInfo {
                 "furnace for use in building.");
 
         // Spawn eggs (one description, applies to all)
-        for (DeferredHolder<?, ? extends Item> egg : new DeferredHolder[] {
+        for (DeferredHolder<Item, ? extends Item> egg : new DeferredHolder[] {
             ModItems.LION_SPAWN_EGG, ModItems.ZEBRA_SPAWN_EGG,
             ModItems.GIRAFFE_SPAWN_EGG, ModItems.RHINO_SPAWN_EGG,
             ModItems.GEMSBOK_SPAWN_EGG, ModItems.DIKDIK_SPAWN_EGG,
@@ -1079,7 +1079,7 @@ public final class ItemInfo {
         put(ModItems.GIRAFFE_TIE_BLACK, "A dyed Giraffe Tie.");
 
         // Notes
-        for (DeferredHolder<?, ? extends Item> note : new DeferredHolder[] {
+        for (DeferredHolder<Item, ? extends Item> note : new DeferredHolder[] {
             ModItems.NOTE_C,
             ModItems.NOTE_D,
             ModItems.NOTE_E,

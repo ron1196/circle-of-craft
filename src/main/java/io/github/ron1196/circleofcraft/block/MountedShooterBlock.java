@@ -1,5 +1,6 @@
 package io.github.ron1196.circleofcraft.block;
 
+import com.mojang.serialization.MapCodec;
 import io.github.ron1196.circleofcraft.block.entity.MountedShooterBlockEntity;
 import io.github.ron1196.circleofcraft.block.entity.MountedShooterBlockEntity.FireMode;
 import io.github.ron1196.circleofcraft.registry.BlockEntityTypes;
@@ -8,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -39,9 +41,16 @@ public class MountedShooterBlock extends BaseEntityBlock {
     private static final VoxelShape SHAPE_NS = Block.box(4.0, 0.0, 0.0, 12.0, 12.0, 16.0);
     private static final VoxelShape SHAPE_EW = Block.box(0.0, 0.0, 4.0, 16.0, 12.0, 12.0);
 
+    public static final MapCodec<MountedShooterBlock> CODEC = simpleCodec(MountedShooterBlock::new);
+
     public MountedShooterBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -78,49 +87,59 @@ public class MountedShooterBlock extends BaseEntityBlock {
 
     @Override
     @SuppressWarnings("deprecation")
-    public @NotNull InteractionResult use(
+    public @NotNull ItemInteractionResult useItemOn(
+            @NotNull ItemStack heldItem,
             @NotNull BlockState state,
             @NotNull Level level,
             @NotNull BlockPos pos,
             @NotNull Player player,
             @NotNull InteractionHand hand,
             @NotNull BlockHitResult hit) {
+        if (player.isShiftKeyDown()) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+        if (heldItem.isEmpty() || !MountedShooterBlockEntity.isDartItem(heldItem.getItem())) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+        if (level.isClientSide()) return ItemInteractionResult.SUCCESS;
+        if (!(level.getBlockEntity(pos) instanceof MountedShooterBlockEntity be)) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+        if (be.hasDarts()) {
+            ItemStack old = be.unloadDarts();
+            if (!player.addItem(old)) {
+                player.drop(old, false);
+            }
+        }
+        be.loadDarts(heldItem);
+        player.setItemInHand(hand, ItemStack.EMPTY);
+        player.sendSystemMessage(
+                Component.literal("§7Loaded " + be.getDartStack().getCount() + " darts"));
+        return ItemInteractionResult.CONSUME;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public @NotNull InteractionResult useWithoutItem(
+            @NotNull BlockState state,
+            @NotNull Level level,
+            @NotNull BlockPos pos,
+            @NotNull Player player,
+            @NotNull BlockHitResult hit) {
         if (level.isClientSide()) return InteractionResult.SUCCESS;
         if (!(level.getBlockEntity(pos) instanceof MountedShooterBlockEntity be)) return InteractionResult.PASS;
 
-        // Shift+right-click: cycle fire mode
         if (player.isShiftKeyDown()) {
             FireMode newMode = be.cycleFireMode();
             player.sendSystemMessage(Component.literal("§7Mode: " + newMode.getDescription()));
             return InteractionResult.CONSUME;
         }
 
-        ItemStack heldItem = player.getItemInHand(hand);
-
-        // Right-click with darts: load
-        if (!heldItem.isEmpty() && MountedShooterBlockEntity.isDartItem(heldItem.getItem())) {
-            if (be.hasDarts()) {
-                // Swap: unload current, load new
-                ItemStack old = be.unloadDarts();
-                if (!player.addItem(old)) {
-                    player.drop(old, false);
-                }
-            }
-            be.loadDarts(heldItem);
-            player.setItemInHand(hand, ItemStack.EMPTY);
-            player.sendSystemMessage(
-                    Component.literal("§7Loaded " + be.getDartStack().getCount() + " darts"));
-            return InteractionResult.CONSUME;
-        }
-
-        // Right-click empty-handed when loaded
         if (be.hasDarts()) {
             if (be.getFireMode() == FireMode.MANUAL) {
-                // Manual mode: fire!
                 be.fireInDirection(level, pos, state.getValue(FACING));
                 return InteractionResult.CONSUME;
             } else {
-                // Other modes: unload
                 ItemStack darts = be.unloadDarts();
                 if (!player.addItem(darts)) {
                     player.drop(darts, false);

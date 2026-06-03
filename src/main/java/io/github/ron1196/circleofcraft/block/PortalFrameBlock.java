@@ -10,6 +10,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -59,21 +60,25 @@ public class PortalFrameBlock extends Block {
 
     @Override
     @SuppressWarnings("deprecation")
-    public @NotNull InteractionResult use(
+    public @NotNull ItemInteractionResult useItemOn(
+            @NotNull ItemStack stack,
             @NotNull BlockState state,
             @NotNull Level level,
             @NotNull BlockPos pos,
-            Player player,
+            @NotNull Player player,
             @NotNull InteractionHand hand,
             @NotNull BlockHitResult hit) {
-        ItemStack stack = player.getItemInHand(hand);
         PortalConfig config = ACTIVATION_KEYS.get(isOutlands);
         for (ActivationKey key : config.keys()) {
             if (stack.is(key.item().get())) {
-                return tryCreatePortal(level, pos, player, stack, key, config);
+                return switch (tryCreatePortal(level, pos, player, stack, key, config)) {
+                    case SUCCESS -> ItemInteractionResult.SUCCESS;
+                    case CONSUME -> ItemInteractionResult.CONSUME;
+                    default -> ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                };
             }
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     private InteractionResult tryCreatePortal(

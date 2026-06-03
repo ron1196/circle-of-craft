@@ -10,7 +10,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
@@ -258,12 +257,10 @@ public class TreasureMoundFeature extends Feature<NoneFeatureConfiguration> {
             LootEntry.of(r -> enchantedTool(r, KIVULITE_TOOLS)),
             LootEntry.of(ModItems.KIVULITE, 1, 3));
 
+    private static final int TOOL_ENCHANT_LEVEL = 3;
+
     private static ItemStack enchantedTool(RandomSource random, List<LootEntry> toolPool) {
-        ItemStack tool = FeatureHelper.pickLoot(toolPool, random);
-        if (tool != null) {
-            EnchantmentHelper.enchantItem(random, tool, 3, false);
-        }
-        return tool;
+        return FeatureHelper.pickLoot(toolPool, random);
     }
 
     /** Fill a chest with random loot matching the old mod's treasure mound loot table. */
@@ -276,6 +273,10 @@ public class TreasureMoundFeature extends Feature<NoneFeatureConfiguration> {
         for (int slot = 0; slot < CHEST_SLOT_COUNT; slot++) {
             ItemStack loot = FeatureHelper.pickLoot(TREASURE_MOUND_LOOT, random);
             if (loot != null) {
+                if (loot.isEnchantable()) {
+                    FeatureHelper.enchantWithTableEnchantments(
+                            level.registryAccess(), random, loot, TOOL_ENCHANT_LEVEL);
+                }
                 chest.setItem(slot, loot);
             }
         }

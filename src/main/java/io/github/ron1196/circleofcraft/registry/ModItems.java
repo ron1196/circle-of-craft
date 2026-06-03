@@ -76,7 +76,7 @@ public class ModItems {
             new Item.Properties()
                     .food(new FoodProperties.Builder()
                             .nutrition(8)
-                            .saturationMod(0.5F)
+                            .saturationModifier(0.5F)
                             .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 160, 0), 0.4F)
                             .effect(() -> new MobEffectInstance(MobEffects.POISON, 60, 0), 0.12F)
                             .build())
@@ -89,57 +89,104 @@ public class ModItems {
             new Item.Properties()
                     .food(new FoodProperties.Builder()
                             .nutrition(0)
-                            .saturationMod(0.0F)
-                            .alwaysEat()
+                            .saturationModifier(0.0F)
+                            .alwaysEdible()
                             .build()));
 
     // ========== Pridestone Tools ==========
     public static final DeferredItem<SwordItem> PRIDESTONE_SWORD = ITEMS.register(
-            "pridestone_sword", () -> new SwordItem(ModToolTiers.PRIDESTONE, 3, -2.4F, new Item.Properties()));
+            "pridestone_sword",
+            () -> new SwordItem(
+                    ModToolTiers.PRIDESTONE,
+                    new Item.Properties().attributes(SwordItem.createAttributes(ModToolTiers.PRIDESTONE, 3, -2.4F))));
 
     public static final DeferredItem<PickaxeItem> PRIDESTONE_PICKAXE = ITEMS.register(
-            "pridestone_pickaxe", () -> new PickaxeItem(ModToolTiers.PRIDESTONE, 1, -2.8F, new Item.Properties()));
+            "pridestone_pickaxe",
+            () -> new PickaxeItem(
+                    ModToolTiers.PRIDESTONE,
+                    new Item.Properties()
+                            .attributes(PickaxeItem.createAttributes(ModToolTiers.PRIDESTONE, 1.0F, -2.8F))));
 
     public static final DeferredItem<AxeItem> PRIDESTONE_AXE = ITEMS.register(
-            "pridestone_axe", () -> new AxeItem(ModToolTiers.PRIDESTONE, 6.0F, -3.1F, new Item.Properties()));
+            "pridestone_axe",
+            () -> new AxeItem(
+                    ModToolTiers.PRIDESTONE,
+                    new Item.Properties().attributes(AxeItem.createAttributes(ModToolTiers.PRIDESTONE, 6.0F, -3.1F))));
 
     public static final DeferredItem<ShovelItem> PRIDESTONE_SHOVEL = ITEMS.register(
-            "pridestone_shovel", () -> new ShovelItem(ModToolTiers.PRIDESTONE, 1.5F, -3.0F, new Item.Properties()));
+            "pridestone_shovel",
+            () -> new ShovelItem(
+                    ModToolTiers.PRIDESTONE,
+                    new Item.Properties()
+                            .attributes(ShovelItem.createAttributes(ModToolTiers.PRIDESTONE, 1.5F, -3.0F))));
 
     public static final DeferredItem<HoeItem> PRIDESTONE_HOE = ITEMS.register(
-            "pridestone_hoe", () -> new HoeItem(ModToolTiers.PRIDESTONE, -1, -2.0F, new Item.Properties()));
+            "pridestone_hoe",
+            () -> new HoeItem(
+                    ModToolTiers.PRIDESTONE,
+                    new Item.Properties().attributes(HoeItem.createAttributes(ModToolTiers.PRIDESTONE, -1.0F, -2.0F))));
 
     // ========== Silver Tools ==========
-    public static final DeferredItem<SwordItem> SILVER_SWORD =
-            ITEMS.register("silver_sword", () -> new SwordItem(ModToolTiers.SILVER, 3, -2.4F, new Item.Properties()));
+    public static final DeferredItem<SwordItem> SILVER_SWORD = ITEMS.register(
+            "silver_sword",
+            () -> new SwordItem(
+                    ModToolTiers.SILVER,
+                    new Item.Properties().attributes(SwordItem.createAttributes(ModToolTiers.SILVER, 3, -2.4F))));
 
     public static final DeferredItem<PickaxeItem> SILVER_PICKAXE = ITEMS.register(
-            "silver_pickaxe", () -> new PickaxeItem(ModToolTiers.SILVER, 1, -2.8F, new Item.Properties()));
+            "silver_pickaxe",
+            () -> new PickaxeItem(
+                    ModToolTiers.SILVER,
+                    new Item.Properties().attributes(PickaxeItem.createAttributes(ModToolTiers.SILVER, 1.0F, -2.8F))));
 
-    public static final DeferredItem<AxeItem> SILVER_AXE =
-            ITEMS.register("silver_axe", () -> new AxeItem(ModToolTiers.SILVER, 6.0F, -3.1F, new Item.Properties()));
+    public static final DeferredItem<AxeItem> SILVER_AXE = ITEMS.register(
+            "silver_axe",
+            () -> new AxeItem(
+                    ModToolTiers.SILVER,
+                    new Item.Properties().attributes(AxeItem.createAttributes(ModToolTiers.SILVER, 6.0F, -3.1F))));
 
     public static final DeferredItem<ShovelItem> SILVER_SHOVEL = ITEMS.register(
-            "silver_shovel", () -> new ShovelItem(ModToolTiers.SILVER, 1.5F, -3.0F, new Item.Properties()));
+            "silver_shovel",
+            () -> new ShovelItem(
+                    ModToolTiers.SILVER,
+                    new Item.Properties().attributes(ShovelItem.createAttributes(ModToolTiers.SILVER, 1.5F, -3.0F))));
 
-    public static final DeferredItem<HoeItem> SILVER_HOE =
-            ITEMS.register("silver_hoe", () -> new HoeItem(ModToolTiers.SILVER, -2, -1.0F, new Item.Properties()));
+    public static final DeferredItem<HoeItem> SILVER_HOE = ITEMS.register(
+            "silver_hoe",
+            () -> new HoeItem(
+                    ModToolTiers.SILVER,
+                    new Item.Properties().attributes(HoeItem.createAttributes(ModToolTiers.SILVER, -2.0F, -1.0F))));
 
     // ========== Peacock Tools ==========
-    public static final DeferredItem<SwordItem> PEACOCK_SWORD =
-            ITEMS.register("peacock_sword", () -> new SwordItem(ModToolTiers.PEACOCK, 3, -2.4F, new Item.Properties()));
+    public static final DeferredItem<SwordItem> PEACOCK_SWORD = ITEMS.register(
+            "peacock_sword",
+            () -> new SwordItem(
+                    ModToolTiers.PEACOCK,
+                    new Item.Properties().attributes(SwordItem.createAttributes(ModToolTiers.PEACOCK, 3, -2.4F))));
 
     public static final DeferredItem<PickaxeItem> PEACOCK_PICKAXE = ITEMS.register(
-            "peacock_pickaxe", () -> new PickaxeItem(ModToolTiers.PEACOCK, 1, -2.8F, new Item.Properties()));
+            "peacock_pickaxe",
+            () -> new PickaxeItem(
+                    ModToolTiers.PEACOCK,
+                    new Item.Properties().attributes(PickaxeItem.createAttributes(ModToolTiers.PEACOCK, 1.0F, -2.8F))));
 
-    public static final DeferredItem<AxeItem> PEACOCK_AXE =
-            ITEMS.register("peacock_axe", () -> new AxeItem(ModToolTiers.PEACOCK, 5.0F, -3.0F, new Item.Properties()));
+    public static final DeferredItem<AxeItem> PEACOCK_AXE = ITEMS.register(
+            "peacock_axe",
+            () -> new AxeItem(
+                    ModToolTiers.PEACOCK,
+                    new Item.Properties().attributes(AxeItem.createAttributes(ModToolTiers.PEACOCK, 5.0F, -3.0F))));
 
     public static final DeferredItem<ShovelItem> PEACOCK_SHOVEL = ITEMS.register(
-            "peacock_shovel", () -> new ShovelItem(ModToolTiers.PEACOCK, 1.5F, -3.0F, new Item.Properties()));
+            "peacock_shovel",
+            () -> new ShovelItem(
+                    ModToolTiers.PEACOCK,
+                    new Item.Properties().attributes(ShovelItem.createAttributes(ModToolTiers.PEACOCK, 1.5F, -3.0F))));
 
-    public static final DeferredItem<HoeItem> PEACOCK_HOE =
-            ITEMS.register("peacock_hoe", () -> new HoeItem(ModToolTiers.PEACOCK, -3, 0.0F, new Item.Properties()));
+    public static final DeferredItem<HoeItem> PEACOCK_HOE = ITEMS.register(
+            "peacock_hoe",
+            () -> new HoeItem(
+                    ModToolTiers.PEACOCK,
+                    new Item.Properties().attributes(HoeItem.createAttributes(ModToolTiers.PEACOCK, -3.0F, 0.0F))));
 
     // ========== Kivulite Tools ==========
     public static final DeferredItem<SwordItem> KIVULITE_SWORD = ITEMS.register(
@@ -171,16 +218,35 @@ public class ModItems {
 
     // ========== Corrupt Pridestone Tools ==========
     public static final DeferredItem<SwordItem> CORRUPT_SWORD = ITEMS.register(
-            "corrupt_sword", () -> new SwordItem(ModToolTiers.CORRUPT_PRIDESTONE, 3, -2.4F, new Item.Properties()));
+            "corrupt_sword",
+            () -> new SwordItem(
+                    ModToolTiers.CORRUPT_PRIDESTONE,
+                    new Item.Properties()
+                            .attributes(SwordItem.createAttributes(ModToolTiers.CORRUPT_PRIDESTONE, 3, -2.4F))));
     public static final DeferredItem<PickaxeItem> CORRUPT_PICKAXE = ITEMS.register(
-            "corrupt_pickaxe", () -> new PickaxeItem(ModToolTiers.CORRUPT_PRIDESTONE, 1, -2.8F, new Item.Properties()));
+            "corrupt_pickaxe",
+            () -> new PickaxeItem(
+                    ModToolTiers.CORRUPT_PRIDESTONE,
+                    new Item.Properties()
+                            .attributes(PickaxeItem.createAttributes(ModToolTiers.CORRUPT_PRIDESTONE, 1.0F, -2.8F))));
     public static final DeferredItem<AxeItem> CORRUPT_AXE = ITEMS.register(
-            "corrupt_axe", () -> new AxeItem(ModToolTiers.CORRUPT_PRIDESTONE, 6.0F, -3.1F, new Item.Properties()));
+            "corrupt_axe",
+            () -> new AxeItem(
+                    ModToolTiers.CORRUPT_PRIDESTONE,
+                    new Item.Properties()
+                            .attributes(AxeItem.createAttributes(ModToolTiers.CORRUPT_PRIDESTONE, 6.0F, -3.1F))));
     public static final DeferredItem<ShovelItem> CORRUPT_SHOVEL = ITEMS.register(
             "corrupt_shovel",
-            () -> new ShovelItem(ModToolTiers.CORRUPT_PRIDESTONE, 1.5F, -3.0F, new Item.Properties()));
+            () -> new ShovelItem(
+                    ModToolTiers.CORRUPT_PRIDESTONE,
+                    new Item.Properties()
+                            .attributes(ShovelItem.createAttributes(ModToolTiers.CORRUPT_PRIDESTONE, 1.5F, -3.0F))));
     public static final DeferredItem<HoeItem> CORRUPT_HOE = ITEMS.register(
-            "corrupt_hoe", () -> new HoeItem(ModToolTiers.CORRUPT_PRIDESTONE, -1, -2.0F, new Item.Properties()));
+            "corrupt_hoe",
+            () -> new HoeItem(
+                    ModToolTiers.CORRUPT_PRIDESTONE,
+                    new Item.Properties()
+                            .attributes(HoeItem.createAttributes(ModToolTiers.CORRUPT_PRIDESTONE, -1.0F, -2.0F))));
 
     // ========== Silver Armor ==========
     public static final DeferredItem<ArmorItem> SILVER_HELMET =

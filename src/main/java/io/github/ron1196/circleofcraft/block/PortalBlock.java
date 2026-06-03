@@ -151,7 +151,11 @@ public class PortalBlock extends Block {
     // ── Teleportation ────────────────────────────────────────────────────────
 
     private boolean canTeleport(Level level, Entity entity) {
-        if (level.isClientSide || entity.isPassenger() || entity.isVehicle() || !entity.canChangeDimensions()) {
+        if (level.isClientSide || entity.isPassenger() || entity.isVehicle()) {
+            return false;
+        }
+        ServerLevel destination = resolveDestination(level);
+        if (destination == null || !entity.canChangeDimensions(level, destination)) {
             return false;
         }
         if (entity.isOnPortalCooldown()) {

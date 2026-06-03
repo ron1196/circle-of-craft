@@ -1,6 +1,6 @@
 package io.github.ron1196.circleofcraft.world.structure;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
@@ -21,7 +21,7 @@ public class ModStructure extends Structure {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ModStructure.class);
 
-    public static final Codec<ModStructure> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<ModStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                     settingsCodec(instance),
                     ResourceLocation.CODEC.fieldOf("feature_id").forGetter(s -> s.featureId))
             .apply(instance, ModStructure::new));

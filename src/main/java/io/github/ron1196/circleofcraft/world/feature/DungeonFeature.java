@@ -15,7 +15,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -480,7 +479,7 @@ public class DungeonFeature extends Feature<NoneFeatureConfiguration> {
             ItemStack loot = FeatureHelper.pickLoot(lootTable, random);
             if (loot != null) {
                 if (loot.isEnchantable() && random.nextInt(ENCHANT_CHANCE) != 0) {
-                    EnchantmentHelper.enchantItem(random, loot, ENCHANT_LEVEL, false);
+                    FeatureHelper.enchantWithTableEnchantments(level.registryAccess(), random, loot, ENCHANT_LEVEL);
                 }
                 chest.setItem(random.nextInt(chest.getContainerSize()), loot);
             }

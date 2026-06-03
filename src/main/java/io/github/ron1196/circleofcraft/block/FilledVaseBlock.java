@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -31,16 +30,12 @@ public class FilledVaseBlock extends VaseBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(
+    public @NotNull InteractionResult useWithoutItem(
             @NotNull BlockState state,
             @NotNull Level level,
             @NotNull BlockPos pos,
             @NotNull Player player,
-            @NotNull InteractionHand hand,
             @NotNull BlockHitResult hit) {
-        ItemStack handStack = player.getItemInHand(hand);
-        if (!handStack.isEmpty()) return InteractionResult.PASS;
-
         if (!level.isClientSide) {
             ItemStack drop = new ItemStack(contentItem.get());
             if (!player.addItem(drop)) {

@@ -88,7 +88,7 @@ public class FilledJarItem extends Item {
         // Try to place into a waterloggable block
         if (existing.getBlock() instanceof LiquidBlockContainer container
                 && fluid == Fluids.WATER
-                && container.canPlaceLiquid(level, pos, existing, fluid)) {
+                && container.canPlaceLiquid(player, level, pos, existing, fluid)) {
             container.placeLiquid(level, pos, existing, Fluids.WATER.getSource(false));
             playPlaceSound(level, player, pos);
             return InteractionResultHolder.success(returnEmptyJar(jar, player));

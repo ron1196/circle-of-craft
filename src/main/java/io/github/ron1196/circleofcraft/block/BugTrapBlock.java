@@ -1,12 +1,12 @@
 package io.github.ron1196.circleofcraft.block;
 
+import com.mojang.serialization.MapCodec;
 import io.github.ron1196.circleofcraft.block.entity.BugTrapBlockEntity;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -54,12 +54,19 @@ public class BugTrapBlock extends BaseEntityBlock {
     private static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
     private static final VoxelShape COLLISION = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
+    public static final MapCodec<BugTrapBlock> CODEC = simpleCodec(BugTrapBlock::new);
+
     public BugTrapBlock(BlockBehaviour.Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition
                 .any()
                 .setValue(CLOSED_FACE, ClosedFace.NONE)
                 .setValue(CLOSURE_LEVEL, 0));
+    }
+
+    @Override
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -98,12 +105,11 @@ public class BugTrapBlock extends BaseEntityBlock {
 
     @Override
     @SuppressWarnings("deprecation")
-    public @NotNull InteractionResult use(
+    public @NotNull InteractionResult useWithoutItem(
             @NotNull BlockState state,
             @NotNull Level level,
             @NotNull BlockPos pos,
             @NotNull Player player,
-            @NotNull InteractionHand hand,
             @NotNull BlockHitResult hit) {
         if (!level.isClientSide() && level.getBlockEntity(pos) instanceof BugTrapBlockEntity be) {
             ((ServerPlayer) player).openMenu(be, buf -> buf.writeBlockPos(pos));

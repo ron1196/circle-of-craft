@@ -28,15 +28,14 @@ final class ModItemsRegistryHelper {
     static FoodProperties foodProps(int nutrition, float saturation) {
         return new FoodProperties.Builder()
                 .nutrition(nutrition)
-                .saturationMod(saturation)
+                .saturationModifier(saturation)
                 .build();
     }
 
     static FoodProperties meatProps(int nutrition, float saturation) {
         return new FoodProperties.Builder()
                 .nutrition(nutrition)
-                .saturationMod(saturation)
-                .meat()
+                .saturationModifier(saturation)
                 .build();
     }
 
@@ -80,8 +79,7 @@ final class ModItemsRegistryHelper {
                 new Item.Properties()
                         .food(new FoodProperties.Builder()
                                 .nutrition(nutrition)
-                                .saturationMod(saturation)
-                                .meat()
+                                .saturationModifier(saturation)
                                 .effect(() -> new MobEffectInstance(MobEffects.HUNGER, effectDuration, 0), effectChance)
                                 .build()));
     }

@@ -18,7 +18,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Astral Charm — reactivated by placing an inactive charm on a Star Altar. Spawns a visual
@@ -45,10 +44,10 @@ public class AstralCharmItem extends Item {
     @Override
     public void appendHoverText(
             @NotNull ItemStack stack,
-            @Nullable Level level,
+            @NotNull Item.TooltipContext context,
             @NotNull List<Component> tooltip,
             @NotNull TooltipFlag flag) {
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
         if (isActive(stack)) {
             tooltip.add(Component.translatable("item.circleofcraft.astral_charm.active.hint")
                     .withStyle(ChatFormatting.GRAY));

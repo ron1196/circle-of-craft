@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -18,7 +17,7 @@ public class RugItem extends Item {
     private final int rugType;
 
     public RugItem(int rugType, Properties properties) {
-        super(properties);
+        super(properties.rarity(Rarity.UNCOMMON));
         this.rugType = rugType;
     }
 
@@ -64,10 +63,5 @@ public class RugItem extends Item {
         }
 
         return InteractionResult.sidedSuccess(level.isClientSide);
-    }
-
-    @Override
-    public @NotNull Rarity getRarity(@NotNull ItemStack stack) {
-        return Rarity.UNCOMMON;
     }
 }

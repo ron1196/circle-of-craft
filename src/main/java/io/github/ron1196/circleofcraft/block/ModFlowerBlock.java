@@ -1,6 +1,7 @@
 package io.github.ron1196.circleofcraft.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.FlowerBlock;
@@ -10,8 +11,8 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("deprecation")
 public class ModFlowerBlock extends FlowerBlock {
 
-    public ModFlowerBlock(MobEffect effect, int duration, Properties properties) {
-        super(effect, duration, properties);
+    public ModFlowerBlock(Holder<MobEffect> effect, float seconds, Properties properties) {
+        super(effect, seconds, properties);
     }
 
     @Override

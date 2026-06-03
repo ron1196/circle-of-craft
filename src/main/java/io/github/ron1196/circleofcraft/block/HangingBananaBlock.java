@@ -1,5 +1,6 @@
 package io.github.ron1196.circleofcraft.block;
 
+import com.mojang.serialization.MapCodec;
 import io.github.ron1196.circleofcraft.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,9 +23,16 @@ public class HangingBananaBlock extends HorizontalDirectionalBlock {
     private static final VoxelShape WEST_SHAPE = Block.box(12, 3, 6, 16, 15, 10);
     private static final VoxelShape EAST_SHAPE = Block.box(0, 3, 6, 4, 15, 10);
 
+    public static final MapCodec<HangingBananaBlock> CODEC = simpleCodec(HangingBananaBlock::new);
+
     public HangingBananaBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return CODEC;
     }
 
     @Override

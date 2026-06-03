@@ -42,7 +42,7 @@ public class HyenaMealItem extends Item {
 
         // Grow saplings and crops (anything bonemealable)
         if (block instanceof BonemealableBlock bonemealable) {
-            if (bonemealable.isValidBonemealTarget(level, pos, state, false)) {
+            if (bonemealable.isValidBonemealTarget(level, pos, state)) {
                 if (bonemealable.isBonemealSuccess(level, level.random, pos, state)) {
                     bonemealable.performBonemeal((ServerLevel) level, level.random, pos, state);
                 }

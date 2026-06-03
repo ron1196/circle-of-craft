@@ -8,7 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -30,16 +30,16 @@ public class ZiraMoundGateBlock extends Block {
 
     @Override
     @SuppressWarnings("deprecation")
-    public @NotNull InteractionResult use(
+    public @NotNull ItemInteractionResult useItemOn(
+            @NotNull ItemStack held,
             @NotNull BlockState state,
             @NotNull Level level,
             @NotNull BlockPos pos,
             @NotNull Player player,
             @NotNull InteractionHand hand,
             @NotNull BlockHitResult hit) {
-        ItemStack held = player.getItemInHand(hand);
         if (!held.is(ModItems.RAFIKI_STICK.get())) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         if (!level.isClientSide) {
@@ -49,12 +49,12 @@ public class ZiraMoundGateBlock extends Block {
                         player,
                         "Rafiki's Stick",
                         "De gate resists your touch... de quest is not yet complete. De spirits say you are not ready.");
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
             breakGateChain(level, pos);
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     private void breakGateChain(Level level, BlockPos pos) {

@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -190,12 +189,11 @@ public class MaizeCropBlock extends Block {
 
     @Override
     @SuppressWarnings("deprecation")
-    public @NotNull InteractionResult use(
+    public @NotNull InteractionResult useWithoutItem(
             @NotNull BlockState state,
             @NotNull Level level,
             @NotNull BlockPos pos,
             @NotNull Player player,
-            @NotNull InteractionHand hand,
             @NotNull BlockHitResult hit) {
         if (!state.getValue(HAS_CORN)) {
             return InteractionResult.PASS;
@@ -215,16 +213,12 @@ public class MaizeCropBlock extends Block {
 
     @Override
     public @NotNull ItemStack getCloneItemStack(
-            @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull BlockState state) {
+            @NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state) {
         return new ItemStack(ModItems.MAIZE_STALKS.get());
     }
 
     @Override
-    public boolean isPathfindable(
-            @NotNull BlockState state,
-            @NotNull BlockGetter level,
-            @NotNull BlockPos pos,
-            @NotNull PathComputationType type) {
+    public boolean isPathfindable(@NotNull BlockState state, @NotNull PathComputationType type) {
         return false;
     }
 }
