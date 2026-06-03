@@ -3,8 +3,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
+    id 'net.neoforged.gradle.userdev' version '7.0.192'
     id 'com.diffplug.spotless' version '6.25.0'
 }
 
@@ -15,72 +14,41 @@ base {
     archivesName = 'circleofcraft'
 }
 
-tasks.named('jarJar').configure {
-    archiveClassifier = "mc${minecraft_version}"
-}
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+runs {
+    configureEach {
+        systemProperty 'forge.logging.markers', 'REGISTRIES'
+        systemProperty 'forge.logging.console.level', 'debug'
+        modSource project.sourceSets.main
+    }
 
-minecraft {
-    mappings channel: 'official', version: minecraft_version
-    copyIdeResources = true
+    client {
+        systemProperty 'neoforge.enabledGameTestNamespaces', 'circleofcraft'
+    }
 
-    runs {
-        configureEach {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            mods {
-                circleofcraft {
-                    source sourceSets.main
-                }
-            }
-        }
+    client2 {
+        configure runs.client
+        programArguments.addAll '--username', 'Dev2'
+    }
 
-        client {
-            property 'forge.enabledGameTestNamespaces', 'circleofcraft'
-        }
+    server {
+        systemProperty 'neoforge.enabledGameTestNamespaces', 'circleofcraft'
+        programArgument '--nogui'
+    }
 
-        client2 {
-            parent runs.client
-            workingDirectory project.file('runs/client2')
-            args '--username', 'Dev2'
-        }
+    gameTestServer {
+        systemProperty 'neoforge.enabledGameTestNamespaces', 'circleofcraft'
+    }
 
-        server {
-            property 'forge.enabledGameTestNamespaces', 'circleofcraft'
-            args '--nogui'
-        }
-
-        gameTestServer {
-            workingDirectory project.file('run-gametest')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'info'
-            property 'forge.enabledGameTestNamespaces', 'circleofcraft'
-            mods {
-                circleofcraft {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run-data')
-            args '--mod', 'circleofcraft', '--all',
-                 '--output', file('src/generated/resources/').getAbsolutePath(),
-                 '--existing', file('src/main/resources/').getAbsolutePath()
-        }
+    data {
+        programArguments.addAll '--mod', 'circleofcraft', '--all',
+            '--output', file('src/generated/resources/').getAbsolutePath(),
+            '--existing', file('src/main/resources/').getAbsolutePath()
     }
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-mixin {
-    add sourceSets.main, 'circleofcraft.refmap.json'
-    config 'circleofcraft.mixins.json'
-}
 
 repositories {
     maven {
@@ -118,24 +86,20 @@ repositories {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.20.1:4.8.3')
+    implementation "net.neoforged:neoforge:${neo_version}"
+    implementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.8.4'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-    // MixinExtras: provides @WrapOperation and friends. Forge 1.20.1 does not
-    // bundle it, so we ship the forge variant via JarInJar (production) and
-    // add it to the dev runtime classpath as well.
-    compileOnly 'io.github.llamalad7:mixinextras-common:0.3.5'
-    annotationProcessor 'io.github.llamalad7:mixinextras-common:0.3.5'
-    implementation(jarJar('io.github.llamalad7:mixinextras-forge:0.3.5')) {
-        jarJar.ranged(it, '[0.3.5,0.4.0)')
-    }
-    compileOnly fg.deobf('mezz.jei:jei-1.20.1-common-api:15.20.0.105')
-    compileOnly fg.deobf('mezz.jei:jei-1.20.1-forge-api:15.20.0.105')
-    runtimeOnly fg.deobf('mezz.jei:jei-1.20.1-forge:15.20.0.105')
-    compileOnly fg.deobf('curse.maven:jade-324717:6855440')
-    runtimeOnly fg.deobf('curse.maven:jade-324717:6855440')
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    // MixinExtras: provides @WrapOperation and friends. NeoForge bundles
+    // MixinExtras at runtime, so we only need the common variant for compile.
+    compileOnly 'io.github.llamalad7:mixinextras-common:0.4.1'
+    annotationProcessor 'io.github.llamalad7:mixinextras-common:0.4.1'
+
+    compileOnly 'mezz.jei:jei-1.21.1-neoforge-api:19.27.0.340'
+    runtimeOnly 'mezz.jei:jei-1.21.1-neoforge:19.27.0.340'
+    compileOnly 'curse.maven:jade-324717:7545219'
+    runtimeOnly 'curse.maven:jade-324717:7545219'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
 }
 
 test {
@@ -154,15 +118,14 @@ jar {
             'MixinConfigs'            : 'circleofcraft.mixins.json'
         ])
     }
-    finalizedBy 'reobfJar'
 }
 
 tasks.withType(ProcessResources).configureEach {
     def replaceProperties = [
             "minecraft_version"      : minecraft_version,
             "minecraft_version_range": minecraft_version_range,
-            "forge_version"          : forge_version,
-            "forge_version_range"    : forge_version_range,
+            "neo_version"            : neo_version,
+            "neo_version_range"      : neo_version_range,
             "loader_version_range"   : loader_version_range,
             "mod_id"                 : "circleofcraft",
             "mod_name"               : "Circle of Craft",
@@ -176,7 +139,7 @@ tasks.withType(ProcessResources).configureEach {
     ]
     inputs.properties(replaceProperties)
 
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+    filesMatching(['META-INF/neoforge.mods.toml', 'pack.mcmeta']) {
         expand replaceProperties + [project: project]
     }
 }
