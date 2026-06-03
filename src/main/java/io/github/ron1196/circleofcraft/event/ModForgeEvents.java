@@ -44,6 +44,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
@@ -172,10 +173,25 @@ public class ModForgeEvents {
         }
     }
 
-    // ── LivingIncomingDamageEvent ─────────────────────────────────────────────────
+    // ── LivingIncomingDamageEvent (pre-reduction cancels) ─────────────────────────
 
     @SubscribeEvent
-    public static void onLivingHurt(LivingIncomingDamageEvent event) {
+    public static void onIncomingDamage(LivingIncomingDamageEvent event) {
+        LivingEntity target = event.getEntity();
+
+        // Peacock boots negate fall damage
+        if (event.getSource().is(DamageTypes.FALL)) {
+            ItemStack boots = target.getItemBySlot(EquipmentSlot.FEET);
+            if (boots.is(ModItems.PEACOCK_BOOTS.get())) {
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    // ── LivingDamageEvent.Pre (post-reduction bonus damage) ───────────────────────
+
+    @SubscribeEvent
+    public static void onLivingDamagePre(LivingDamageEvent.Pre event) {
         LivingEntity target = event.getEntity();
         Entity attacker = event.getSource().getEntity();
 
@@ -185,15 +201,7 @@ public class ModForgeEvents {
             int scourgeLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SCOURGE_OF_HYENAS.get(), weapon);
 
             if (scourgeLevel > 0 && (target instanceof HyenaEntity || target instanceof SkeletalHyenaEntity)) {
-                event.setAmount(event.getAmount() + 2.5F * scourgeLevel);
-            }
-        }
-
-        // Peacock boots negate fall damage
-        if (event.getSource().is(DamageTypes.FALL)) {
-            ItemStack boots = target.getItemBySlot(EquipmentSlot.FEET);
-            if (boots.is(ModItems.PEACOCK_BOOTS.get())) {
-                event.setCanceled(true);
+                event.setNewDamage(event.getNewDamage() + 2.5F * scourgeLevel);
             }
         }
     }
