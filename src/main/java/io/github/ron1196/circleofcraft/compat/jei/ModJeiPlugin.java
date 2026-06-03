@@ -28,6 +28,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import org.jetbrains.annotations.NotNull;
 
@@ -55,7 +56,9 @@ public class ModJeiPlugin implements IModPlugin {
             return;
         }
         RecipeManager rm = level.getRecipeManager();
-        List<GrindingBowlRecipe> recipes = rm.getAllRecipesFor(RecipeTypes.GRINDING_TYPE.get());
+        List<GrindingBowlRecipe> recipes = rm.getAllRecipesFor(RecipeTypes.GRINDING_TYPE.get()).stream()
+                .map(RecipeHolder::value)
+                .toList();
         reg.addRecipes(GrindingBowlRecipeCategory.RECIPE_TYPE, recipes);
         reg.addRecipes(RafikiTradeRecipeCategory.RECIPE_TYPE, rafikiTrades());
     }

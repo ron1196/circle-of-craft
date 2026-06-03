@@ -1,43 +1,19 @@
 package io.github.ron1196.circleofcraft.compat.jade;
 
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
-import io.github.ron1196.circleofcraft.block.entity.MountedShooterBlockEntity;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import snownee.jade.api.BlockAccessor;
-import snownee.jade.api.IBlockComponentProvider;
-import snownee.jade.api.ITooltip;
-import snownee.jade.api.config.IPluginConfig;
 
-public enum MountedShooterProvider implements IBlockComponentProvider {
-    INSTANCE;
+/**
+ * TODO(jade compat): port to the Jade 15.x (1.21.1) API — see {@link ModJadePlugin} for why this is
+ * stubbed. Tracked as a GitHub issue.
+ *
+ * <p>Intended behaviour (client block tooltip): for a {@code MountedShooterBlockEntity}, render the
+ * loaded dart stack — {@code jade.circleofcraft.mounted_shooter.empty} in GRAY when empty, otherwise
+ * {@code ...ammo} (name, count) — and the current {@code FireMode} via {@code ...mode}.
+ */
+public final class MountedShooterProvider {
 
     public static final ResourceLocation UID = CircleOfCraftMod.id("mounted_shooter");
 
-    @Override
-    public void appendTooltip(
-            @NotNull ITooltip tooltip, @NotNull BlockAccessor accessor, @NotNull IPluginConfig config) {
-        if (!(accessor.getBlockEntity() instanceof MountedShooterBlockEntity shooter)) {
-            return;
-        }
-        ItemStack ammo = shooter.getDartStack();
-        if (ammo.isEmpty()) {
-            tooltip.add(Component.translatable("jade.circleofcraft.mounted_shooter.empty")
-                    .withStyle(ChatFormatting.GRAY));
-        } else {
-            tooltip.add(Component.translatable(
-                    "jade.circleofcraft.mounted_shooter.ammo", ammo.getHoverName(), ammo.getCount()));
-        }
-        MountedShooterBlockEntity.FireMode mode = shooter.getFireMode();
-        tooltip.add(Component.translatable(
-                "jade.circleofcraft.mounted_shooter.mode", Component.literal(mode.getDescription())));
-    }
-
-    @Override
-    public @NotNull ResourceLocation getUid() {
-        return UID;
-    }
+    private MountedShooterProvider() {}
 }
