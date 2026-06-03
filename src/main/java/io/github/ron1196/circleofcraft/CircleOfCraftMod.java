@@ -37,7 +37,7 @@ public class CircleOfCraftMod {
         RecipeTypes.RECIPE_SERIALIZERS.register(modEventBus);
         CreativeTabs.TABS.register(modEventBus);
         ModDataComponents.DATA_COMPONENTS.register(modEventBus);
-        // TODO(Task 9): ModAttachments.ATTACHMENTS.register(modEventBus);
+        ModAttachments.ATTACHMENTS.register(modEventBus);
         // TODO(Task 10): modEventBus.addListener(Networking::register); // payload registrar
 
         modEventBus.addListener(this::commonSetup);
