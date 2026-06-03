@@ -23,10 +23,6 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Astral Charm — reactivated by placing an inactive charm on a Star Altar. Spawns a visual
  * lightning bolt and particle effects, returns an active charm.
- *
- * <p>Damage 0 = active, Damage 1 = inactive. In 1.20.1 we don't use damage values for subtypes;
- * instead we check the item tag or register two items. For simplicity, we use a single item and
- * check for a custom NBT tag.
  */
 public class AstralCharmItem extends Item {
 
