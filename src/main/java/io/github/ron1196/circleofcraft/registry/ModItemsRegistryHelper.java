@@ -9,7 +9,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 
 /**
@@ -92,7 +92,7 @@ final class ModItemsRegistryHelper {
             int fg) {
         String entityName = Objects.requireNonNull(type.getId()).getPath();
         return ModItems.ITEMS.register(
-                entityName + "_spawn_egg", () -> new ForgeSpawnEggItem(type, bg, fg, new Item.Properties()));
+                entityName + "_spawn_egg", () -> new DeferredSpawnEggItem(type, bg, fg, new Item.Properties()));
     }
 
     static DeferredItem<ArmorItem> armorItem(String name, ArmorMaterial material, ArmorItem.Type type) {
