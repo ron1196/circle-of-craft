@@ -135,20 +135,17 @@ public class RafikiModel extends EntityModel<Mob> {
             @NotNull VertexConsumer buffer,
             int packedLight,
             int packedOverlay,
-            float red,
-            float green,
-            float blue,
-            float alpha) {
-        body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        rightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        rightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        tail1.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        tail2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        tail3.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        tail4.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        hair.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+            int color) {
+        body.render(poseStack, buffer, packedLight, packedOverlay, color);
+        rightArm.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leftArm.render(poseStack, buffer, packedLight, packedOverlay, color);
+        rightLeg.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leftLeg.render(poseStack, buffer, packedLight, packedOverlay, color);
+        tail1.render(poseStack, buffer, packedLight, packedOverlay, color);
+        tail2.render(poseStack, buffer, packedLight, packedOverlay, color);
+        tail3.render(poseStack, buffer, packedLight, packedOverlay, color);
+        tail4.render(poseStack, buffer, packedLight, packedOverlay, color);
+        head.render(poseStack, buffer, packedLight, packedOverlay, color);
+        hair.render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 }

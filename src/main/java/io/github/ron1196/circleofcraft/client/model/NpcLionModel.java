@@ -76,10 +76,7 @@ public class NpcLionModel extends EntityModel<Mob> {
             @NotNull VertexConsumer buffer,
             int packedLight,
             int packedOverlay,
-            float red,
-            float green,
-            float blue,
-            float alpha) {
-        root.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+            int color) {
+        root.render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 }

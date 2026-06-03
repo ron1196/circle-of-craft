@@ -115,17 +115,14 @@ public class OutlanderModel<T extends Mob> extends EntityModel<T> {
             @NotNull VertexConsumer buffer,
             int packedLight,
             int packedOverlay,
-            float red,
-            float green,
-            float blue,
-            float alpha) {
-        head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        headwear.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        mane.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leg1.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leg2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leg3.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leg4.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+            int color) {
+        head.render(poseStack, buffer, packedLight, packedOverlay, color);
+        headwear.render(poseStack, buffer, packedLight, packedOverlay, color);
+        mane.render(poseStack, buffer, packedLight, packedOverlay, color);
+        body.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leg1.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leg2.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leg3.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leg4.render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 }

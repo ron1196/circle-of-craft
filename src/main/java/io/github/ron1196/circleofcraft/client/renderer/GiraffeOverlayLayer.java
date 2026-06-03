@@ -41,16 +41,14 @@ public class GiraffeOverlayLayer extends RenderLayer<GiraffeEntity, GiraffeModel
             float headPitch) {
         // Render saddle overlay
         if (giraffe.isSaddled()) {
-            renderColoredCutoutModel(
-                    getParentModel(), SADDLE_TEXTURE, poseStack, buffer, packedLight, giraffe, 1.0F, 1.0F, 1.0F);
+            renderColoredCutoutModel(getParentModel(), SADDLE_TEXTURE, poseStack, buffer, packedLight, giraffe, -1);
         }
 
         // Render tie overlay
         int tie = giraffe.getTie();
         if (tie >= 0 && tie < TIE_NAMES.length) {
             ResourceLocation tieTexture = CircleOfCraftMod.id("textures/entity/giraffe/" + TIE_NAMES[tie] + ".png");
-            renderColoredCutoutModel(
-                    getParentModel(), tieTexture, poseStack, buffer, packedLight, giraffe, 1.0F, 1.0F, 1.0F);
+            renderColoredCutoutModel(getParentModel(), tieTexture, poseStack, buffer, packedLight, giraffe, -1);
         }
     }
 }

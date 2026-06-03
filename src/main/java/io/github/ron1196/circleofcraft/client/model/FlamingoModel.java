@@ -113,20 +113,13 @@ public class FlamingoModel<T extends ModAnimal> extends EntityModel<T> {
 
     @Override
     public void renderToBuffer(
-            PoseStack poseStack,
-            VertexConsumer buffer,
-            int packedLight,
-            int packedOverlay,
-            float red,
-            float green,
-            float blue,
-            float alpha) {
-        head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        tail.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        wingLeft.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        wingRight.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        legLeft.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        legRight.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+            PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+        head.render(poseStack, buffer, packedLight, packedOverlay, color);
+        body.render(poseStack, buffer, packedLight, packedOverlay, color);
+        tail.render(poseStack, buffer, packedLight, packedOverlay, color);
+        wingLeft.render(poseStack, buffer, packedLight, packedOverlay, color);
+        wingRight.render(poseStack, buffer, packedLight, packedOverlay, color);
+        legLeft.render(poseStack, buffer, packedLight, packedOverlay, color);
+        legRight.render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 }

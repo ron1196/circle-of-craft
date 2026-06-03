@@ -119,22 +119,15 @@ public class TimonModel extends EntityModel<Mob> {
 
     @Override
     public void renderToBuffer(
-            PoseStack poseStack,
-            VertexConsumer buffer,
-            int packedLight,
-            int packedOverlay,
-            float red,
-            float green,
-            float blue,
-            float alpha) {
-        head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        rightarm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leftarm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        rightleg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leftleg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        tail.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leftear.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        rightear.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+            PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+        head.render(poseStack, buffer, packedLight, packedOverlay, color);
+        body.render(poseStack, buffer, packedLight, packedOverlay, color);
+        rightarm.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leftarm.render(poseStack, buffer, packedLight, packedOverlay, color);
+        rightleg.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leftleg.render(poseStack, buffer, packedLight, packedOverlay, color);
+        tail.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leftear.render(poseStack, buffer, packedLight, packedOverlay, color);
+        rightear.render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 }

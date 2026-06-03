@@ -41,7 +41,7 @@ public class RugRenderer extends EntityRenderer<RugEntity> {
 
         var renderType = model.renderType(getTextureLocation(entity));
         var buffer = bufferSource.getBuffer(renderType);
-        model.renderToBuffer(poseStack, buffer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        model.renderToBuffer(poseStack, buffer, packedLight, OverlayTexture.NO_OVERLAY, -1);
 
         poseStack.popPose();
 

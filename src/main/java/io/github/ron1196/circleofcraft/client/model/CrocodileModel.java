@@ -130,20 +130,17 @@ public class CrocodileModel<T extends Mob> extends EntityModel<T> {
             @NotNull VertexConsumer buffer,
             int packedLight,
             int packedOverlay,
-            float red,
-            float green,
-            float blue,
-            float alpha) {
-        body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        tail1.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        tail2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        tail3.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        jaw.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        legFrontLeft.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        legBackLeft.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        legFrontRight.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        legBackRight.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        spines.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+            int color) {
+        body.render(poseStack, buffer, packedLight, packedOverlay, color);
+        tail1.render(poseStack, buffer, packedLight, packedOverlay, color);
+        tail2.render(poseStack, buffer, packedLight, packedOverlay, color);
+        tail3.render(poseStack, buffer, packedLight, packedOverlay, color);
+        jaw.render(poseStack, buffer, packedLight, packedOverlay, color);
+        head.render(poseStack, buffer, packedLight, packedOverlay, color);
+        legFrontLeft.render(poseStack, buffer, packedLight, packedOverlay, color);
+        legBackLeft.render(poseStack, buffer, packedLight, packedOverlay, color);
+        legFrontRight.render(poseStack, buffer, packedLight, packedOverlay, color);
+        legBackRight.render(poseStack, buffer, packedLight, packedOverlay, color);
+        spines.render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 }

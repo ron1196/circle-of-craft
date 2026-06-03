@@ -80,7 +80,7 @@ public class HyenaHeadBlockEntityRenderer implements BlockEntityRenderer<HyenaHe
         int hyenaType = blockEntity.getHyenaType();
         if (hyenaType < 0 || hyenaType >= TEXTURES.length) hyenaType = 0;
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURES[hyenaType]));
-        head.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        head.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
 
         poseStack.popPose();
     }

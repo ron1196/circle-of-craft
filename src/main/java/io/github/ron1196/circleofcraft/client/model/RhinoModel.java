@@ -117,23 +117,16 @@ public class RhinoModel<T extends ModAnimal> extends EntityModel<T> {
 
     @Override
     public void renderToBuffer(
-            PoseStack poseStack,
-            VertexConsumer buffer,
-            int packedLight,
-            int packedOverlay,
-            float red,
-            float green,
-            float blue,
-            float alpha) {
-        horn.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        backhorn.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leftear.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        rightear.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leg1.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leg2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leg3.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leg4.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+            PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+        horn.render(poseStack, buffer, packedLight, packedOverlay, color);
+        backhorn.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leftear.render(poseStack, buffer, packedLight, packedOverlay, color);
+        rightear.render(poseStack, buffer, packedLight, packedOverlay, color);
+        head.render(poseStack, buffer, packedLight, packedOverlay, color);
+        body.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leg1.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leg2.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leg3.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leg4.render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 }

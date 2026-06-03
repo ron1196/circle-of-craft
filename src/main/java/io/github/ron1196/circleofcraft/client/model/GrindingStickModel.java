@@ -41,10 +41,7 @@ public class GrindingStickModel extends Model {
             @NotNull VertexConsumer buffer,
             int packedLight,
             int packedOverlay,
-            float red,
-            float green,
-            float blue,
-            float alpha) {
-        stick.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+            int color) {
+        stick.render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 }

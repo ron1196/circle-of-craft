@@ -140,21 +140,18 @@ public class GemsbokModel<T extends ModAnimal> extends EntityModel<T> {
             @NotNull VertexConsumer buffer,
             int packedLight,
             int packedOverlay,
-            float red,
-            float green,
-            float blue,
-            float alpha) {
-        head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        tail.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        earLeft.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        earRight.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        neck.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leg1.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leg2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leg3.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leg4.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leftHorn.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        rightHorn.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+            int color) {
+        head.render(poseStack, buffer, packedLight, packedOverlay, color);
+        tail.render(poseStack, buffer, packedLight, packedOverlay, color);
+        earLeft.render(poseStack, buffer, packedLight, packedOverlay, color);
+        earRight.render(poseStack, buffer, packedLight, packedOverlay, color);
+        neck.render(poseStack, buffer, packedLight, packedOverlay, color);
+        body.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leg1.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leg2.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leg3.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leg4.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leftHorn.render(poseStack, buffer, packedLight, packedOverlay, color);
+        rightHorn.render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 }

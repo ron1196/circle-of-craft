@@ -65,7 +65,7 @@ public class HyenaHeadItemRenderer extends BlockEntityWithoutLevelRenderer {
         poseStack.translate(0.0F, -0.25F, 0.0F);
 
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURES[hyenaType]));
-        getHead().render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        getHead().render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
 
         poseStack.popPose();
     }

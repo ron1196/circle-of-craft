@@ -122,10 +122,7 @@ public class GrindingBowlRenderer implements BlockEntityRenderer<GrindingBowlBlo
                 bufferSource.getBuffer(RenderType.entitySolid(STICK_TEXTURE)),
                 packedLight,
                 OverlayTexture.NO_OVERLAY,
-                1.0F,
-                1.0F,
-                1.0F,
-                1.0F);
+                -1);
 
         poseStack.popPose();
     }

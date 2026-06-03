@@ -123,21 +123,14 @@ public class GiraffeModel<T extends ModAnimal> extends EntityModel<T> {
 
     @Override
     public void renderToBuffer(
-            PoseStack poseStack,
-            VertexConsumer buffer,
-            int packedLight,
-            int packedOverlay,
-            float red,
-            float green,
-            float blue,
-            float alpha) {
-        body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        neck.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        tail.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leg1.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leg2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leg3.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        leg4.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+            PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+        body.render(poseStack, buffer, packedLight, packedOverlay, color);
+        neck.render(poseStack, buffer, packedLight, packedOverlay, color);
+        head.render(poseStack, buffer, packedLight, packedOverlay, color);
+        tail.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leg1.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leg2.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leg3.render(poseStack, buffer, packedLight, packedOverlay, color);
+        leg4.render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 }
