@@ -35,8 +35,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -194,7 +194,7 @@ public class SimbaEntity extends TamableAnimal {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("Baby", isBaby());
         tag.putBoolean("HasCharm", hasCharm());
-        tag.put("Inventory", inventory.serializeNBT());
+        tag.put("Inventory", inventory.serializeNBT(this.registryAccess()));
     }
 
     @Override
@@ -202,6 +202,6 @@ public class SimbaEntity extends TamableAnimal {
         super.readAdditionalSaveData(tag);
         setBaby(tag.getBoolean("Baby"));
         setHasCharm(tag.getBoolean("HasCharm"));
-        if (tag.contains("Inventory")) inventory.deserializeNBT(tag.getCompound("Inventory"));
+        if (tag.contains("Inventory")) inventory.deserializeNBT(this.registryAccess(), tag.getCompound("Inventory"));
     }
 }

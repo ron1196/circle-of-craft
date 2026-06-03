@@ -7,6 +7,7 @@ import io.github.ron1196.circleofcraft.registry.RecipeTypes;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
@@ -23,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -101,23 +102,23 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.put("Inventory", inventory.serializeNBT());
+    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        tag.put("Inventory", inventory.serializeNBT(registries));
         tag.putInt("GrindTime", grindTime);
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
-        super.load(tag);
-        inventory.deserializeNBT(tag.getCompound("Inventory"));
+    protected void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        inventory.deserializeNBT(registries, tag.getCompound("Inventory"));
         grindTime = tag.getInt("GrindTime");
     }
 
     @Override
-    public @NotNull CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        tag.put("Inventory", inventory.serializeNBT());
+    public @NotNull CompoundTag getUpdateTag(@NotNull HolderLookup.Provider registries) {
+        CompoundTag tag = super.getUpdateTag(registries);
+        tag.put("Inventory", inventory.serializeNBT(registries));
         tag.putInt("GrindTime", grindTime);
         return tag;
     }
@@ -125,16 +126,6 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
     @Override
     public net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket getUpdatePacket() {
         return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    @Override
-    public void onDataPacket(
-            @NotNull net.minecraft.network.Connection net,
-            net.minecraft.network.protocol.game.@NotNull ClientboundBlockEntityDataPacket pkt) {
-        CompoundTag tag = pkt.getTag();
-        if (tag != null) {
-            load(tag);
-        }
     }
 
     public boolean isGrinding() {

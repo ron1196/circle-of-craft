@@ -2,6 +2,7 @@ package io.github.ron1196.circleofcraft.data;
 
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.quest.questline.QuestlineManager;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -90,10 +91,12 @@ public class WorldData extends SavedData {
     public static WorldData get(ServerLevel level) {
         // Always use overworld data storage so quest state is shared across all dimensions
         ServerLevel overworld = level.getServer().overworld();
-        return overworld.getDataStorage().computeIfAbsent(WorldData::load, WorldData::new, DATA_NAME);
+        return overworld
+                .getDataStorage()
+                .computeIfAbsent(new SavedData.Factory<>(WorldData::new, WorldData::load), DATA_NAME);
     }
 
-    public static WorldData load(CompoundTag tag) {
+    public static WorldData load(CompoundTag tag, HolderLookup.Provider lookup) {
         WorldData data = new WorldData();
         data.questManager.readFromNBT(tag);
         data.ziraTreeTalkCount = tag.getInt("ZiraTreeTalkCount");
@@ -104,7 +107,7 @@ public class WorldData extends SavedData {
     }
 
     @Override
-    public @NotNull CompoundTag save(CompoundTag tag) {
+    public @NotNull CompoundTag save(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider lookup) {
         questManager.writeToNBT(tag);
         tag.putInt("ZiraTreeTalkCount", ziraTreeTalkCount);
         tag.putInt("PumbaaTalkCount", pumbaaTalkCount);

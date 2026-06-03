@@ -6,6 +6,7 @@ import io.github.ron1196.circleofcraft.registry.ModItems;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -343,25 +344,23 @@ public class OutlandsPoolBlockEntity extends BlockEntity {
     // ── NBT ─────────────────────────────────────────────────────────────────
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
         ListTag list = new ListTag();
         for (ItemStack stack : items) {
-            CompoundTag itemTag = new CompoundTag();
-            stack.save(itemTag);
-            list.add(itemTag);
+            list.add(stack.save(registries));
         }
         tag.put("CollectedItems", list);
         tag.putInt("Timer", timer);
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
-        super.load(tag);
+    protected void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
         items.clear();
         ListTag list = tag.getList("CollectedItems", Tag.TAG_COMPOUND);
         for (int i = 0; i < list.size(); i++) {
-            ItemStack stack = ItemStack.of(list.getCompound(i));
+            ItemStack stack = ItemStack.parseOptional(registries, list.getCompound(i));
             if (!stack.isEmpty()) items.add(stack);
         }
         timer = tag.getInt("Timer");

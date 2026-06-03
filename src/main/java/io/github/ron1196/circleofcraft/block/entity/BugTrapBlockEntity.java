@@ -11,6 +11,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -32,7 +33,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
@@ -338,41 +339,31 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.put("Items", items.serializeNBT());
+    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        tag.put("Items", items.serializeNBT(registries));
         tag.putInt("TrapTimer", trapTimer);
         tag.putInt("ClosureTimer", closureTimer);
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
-        super.load(tag);
-        items.deserializeNBT(tag.getCompound("Items"));
+    protected void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        items.deserializeNBT(registries, tag.getCompound("Items"));
         trapTimer = tag.getInt("TrapTimer");
         closureTimer = tag.getInt("ClosureTimer");
     }
 
     @Override
-    public @NotNull CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        tag.put("Items", items.serializeNBT());
+    public @NotNull CompoundTag getUpdateTag(@NotNull HolderLookup.Provider registries) {
+        CompoundTag tag = super.getUpdateTag(registries);
+        tag.put("Items", items.serializeNBT(registries));
         return tag;
     }
 
     @Override
     public net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket getUpdatePacket() {
         return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    @Override
-    public void onDataPacket(
-            @NotNull net.minecraft.network.Connection net,
-            net.minecraft.network.protocol.game.@NotNull ClientboundBlockEntityDataPacket pkt) {
-        CompoundTag tag = pkt.getTag();
-        if (tag != null) {
-            load(tag);
-        }
     }
 
     private void syncToClient() {

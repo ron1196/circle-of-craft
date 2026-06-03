@@ -9,6 +9,7 @@ import io.github.ron1196.circleofcraft.registry.ModItems;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -247,27 +248,29 @@ public class MountedShooterBlockEntity extends BlockEntity {
     // ── NBT ────────────────────────────────────────────────────────────────
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
         tag.putInt("FireCounter", fireCounter);
         tag.putInt("FireMode", fireMode.ordinal());
         if (!dartStack.isEmpty()) {
-            tag.put("DartStack", dartStack.save(new CompoundTag()));
+            tag.put("DartStack", dartStack.save(registries));
         }
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
-        super.load(tag);
+    protected void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
         fireCounter = tag.getInt("FireCounter");
         fireMode = FireMode.byOrdinal(tag.getInt("FireMode"));
-        dartStack = tag.contains("DartStack") ? ItemStack.of(tag.getCompound("DartStack")) : ItemStack.EMPTY;
+        dartStack = tag.contains("DartStack")
+                ? ItemStack.parseOptional(registries, tag.getCompound("DartStack"))
+                : ItemStack.EMPTY;
     }
 
     @Override
-    public @NotNull CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        saveAdditional(tag);
+    public @NotNull CompoundTag getUpdateTag(@NotNull HolderLookup.Provider registries) {
+        CompoundTag tag = super.getUpdateTag(registries);
+        saveAdditional(tag, registries);
         return tag;
     }
 

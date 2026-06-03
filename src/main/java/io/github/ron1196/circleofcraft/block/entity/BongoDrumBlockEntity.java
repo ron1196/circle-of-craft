@@ -5,6 +5,7 @@ import io.github.ron1196.circleofcraft.menu.BongoDrumMenu;
 import io.github.ron1196.circleofcraft.registry.BlockEntityTypes;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -15,7 +16,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class BongoDrumBlockEntity extends BlockEntity implements MenuProvider {
 
@@ -71,16 +73,16 @@ public class BongoDrumBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.put("NoteSlots", noteSlots.serializeNBT());
+    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        tag.put("NoteSlots", noteSlots.serializeNBT(registries));
         tag.putInt("Note", note);
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        noteSlots.deserializeNBT(tag.getCompound("NoteSlots"));
+    protected void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        noteSlots.deserializeNBT(registries, tag.getCompound("NoteSlots"));
         note = tag.getInt("Note");
     }
 
