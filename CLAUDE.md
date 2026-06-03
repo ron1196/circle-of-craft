@@ -1,12 +1,12 @@
-# The Lion King Mod — Forge 1.20.1
+# The Lion King Mod — NeoForge 1.21.1
 
 ## Quick Reference
 
 - **Mod ID:** `circleofcraft`
 - **Package:** `io.github.ron1196.circleofcraft`
-- **Minecraft:** 1.20.1 | **Forge:** 47.4.18 | **Java:** 17
+- **Minecraft:** 1.21.1 | **NeoForge:** 21.1.x | **Java:** 21
 - **Mappings:** Official (Mojang)
-- **Future:** plan is to migrate to NeoForge when upgrading to 1.21.x
+- **Loader:** NeoForge (`net.neoforged`). Build: NeoGradle. JDK 21 required (`/opt/homebrew/opt/openjdk@21/...`).
 
 ## Build & Run
 
