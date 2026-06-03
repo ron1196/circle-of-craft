@@ -30,7 +30,7 @@ public enum AnimalFavorProvider implements IEntityComponentProvider, IServerData
         if (!data.contains(NBT_ITEM)) {
             return;
         }
-        Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(data.getString(NBT_ITEM)));
+        Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(data.getString(NBT_ITEM)));
         int amount = data.getInt(NBT_AMOUNT);
         tooltip.add(Component.translatable("jade.circleofcraft.animal_favor.wants", amount, item.getDescription())
                 .withStyle(ChatFormatting.GOLD));

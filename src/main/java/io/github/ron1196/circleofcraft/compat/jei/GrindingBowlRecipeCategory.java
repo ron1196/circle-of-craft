@@ -24,7 +24,7 @@ public class GrindingBowlRecipeCategory implements IRecipeCategory<GrindingBowlR
             RecipeType.create(CircleOfCraftMod.MOD_ID, "grinding_bowl", GrindingBowlRecipe.class);
 
     private static final ResourceLocation FURNACE_TEXTURE =
-            new ResourceLocation("minecraft", "textures/gui/container/furnace.png");
+            ResourceLocation.fromNamespaceAndPath("minecraft", "textures/gui/container/furnace.png");
 
     private static final int WIDTH = 82;
     private static final int HEIGHT = 26;

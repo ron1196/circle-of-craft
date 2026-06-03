@@ -92,7 +92,7 @@ public class ModStructurePiece extends StructurePiece {
 
     public ModStructurePiece(StructurePieceSerializationContext ctx, CompoundTag tag) {
         super(StructureTypes.LK_PIECE_TYPE.get(), tag);
-        this.featureId = new ResourceLocation(tag.getString("FeatureId"));
+        this.featureId = ResourceLocation.parse(tag.getString("FeatureId"));
     }
 
     @Override

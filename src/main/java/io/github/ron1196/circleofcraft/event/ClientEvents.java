@@ -324,7 +324,7 @@ public class ClientEvents {
                 EntityTypes.PUMBAA_EXPLOSION.get(), ctx -> new EntityRenderer<PumbaaExplosionEntity>(ctx) {
                     @Override
                     public @NotNull ResourceLocation getTextureLocation(@NotNull PumbaaExplosionEntity entity) {
-                        return new ResourceLocation("missingno");
+                        return ResourceLocation.parse("missingno");
                     }
                 });
 
@@ -390,7 +390,7 @@ public class ClientEvents {
 
             // Pride Compass needle angle — points to last-used portal in Pride Lands
             ItemProperties.register(
-                    ModItems.PRIDE_COMPASS.get(), new ResourceLocation("angle"), (stack, level, entity, seed) -> {
+                    ModItems.PRIDE_COMPASS.get(), ResourceLocation.parse("angle"), (stack, level, entity, seed) -> {
                         if (entity == null || level == null) {
                             return 0.0F;
                         }

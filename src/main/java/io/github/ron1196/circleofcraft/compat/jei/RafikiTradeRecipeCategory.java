@@ -23,7 +23,7 @@ public class RafikiTradeRecipeCategory implements IRecipeCategory<NpcTradeRecipe
             RecipeType.create(CircleOfCraftMod.MOD_ID, "rafiki_trade", NpcTradeRecipe.class);
 
     private static final ResourceLocation FURNACE_TEXTURE =
-            new ResourceLocation("minecraft", "textures/gui/container/furnace.png");
+            ResourceLocation.fromNamespaceAndPath("minecraft", "textures/gui/container/furnace.png");
 
     private static final int WIDTH = 100;
     private static final int HEIGHT = 26;

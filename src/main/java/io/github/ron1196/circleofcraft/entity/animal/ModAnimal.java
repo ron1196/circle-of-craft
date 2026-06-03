@@ -205,7 +205,7 @@ public abstract class ModAnimal extends Animal {
             CompoundTag questsTag = tag.getCompound("AnimalQuests");
             for (String key : questsTag.getAllKeys()) {
                 CompoundTag entryTag = questsTag.getCompound(key);
-                ResourceLocation itemId = new ResourceLocation(entryTag.getString("Item"));
+                ResourceLocation itemId = ResourceLocation.parse(entryTag.getString("Item"));
                 Item item = BuiltInRegistries.ITEM.get(itemId);
                 if (item == null) continue;
                 AnimalFavorEntry questEntry = new AnimalFavorEntry(item, entryTag.getInt("Amount"));
