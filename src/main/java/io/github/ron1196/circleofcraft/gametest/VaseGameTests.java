@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -38,7 +39,7 @@ public class VaseGameTests {
     }
 
     private static Player playerHolding(GameTestHelper helper, ItemStack stack) {
-        Player player = helper.makeMockPlayer();
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
         player.setItemInHand(InteractionHand.MAIN_HAND, stack);
         return player;
     }
@@ -77,7 +78,7 @@ public class VaseGameTests {
     public void vaseExtractReturnsPlant(GameTestHelper helper) {
         helper.setBlock(VASE_POS, ModBlocks.VASE_ACACIA.get());
         BlockPos abs = helper.absolutePos(VASE_POS);
-        Player player = helper.makeMockPlayer();
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
 
         helper.getLevel()
                 .getBlockState(abs)

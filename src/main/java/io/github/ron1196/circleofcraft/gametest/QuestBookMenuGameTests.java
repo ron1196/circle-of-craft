@@ -8,8 +8,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.gametest.GameTestHolder;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.minecraft.world.level.GameType;
+import net.neoforged.neoforge.gametest.GameTestHolder;
+import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
 /**
  * Pins down the {@link QuestBookMenu} container shape and shift-click behaviour. Tracked in
@@ -25,7 +26,7 @@ public class QuestBookMenuGameTests {
 
     @GameTest(template = EMPTY, timeoutTicks = 40)
     public void menuHasExactly37Slots(GameTestHelper helper) {
-        Player player = helper.makeMockSurvivalPlayer();
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
         QuestBookMenu menu = new QuestBookMenu(1, player.getInventory());
 
         if (menu.slots.size() != 37) {
@@ -36,7 +37,7 @@ public class QuestBookMenuGameTests {
 
     @GameTest(template = EMPTY, timeoutTicks = 40)
     public void slotZeroIsInfoSlotAtExpectedPosition(GameTestHelper helper) {
-        Player player = helper.makeMockSurvivalPlayer();
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
         QuestBookMenu menu = new QuestBookMenu(1, player.getInventory());
 
         Slot slot0 = menu.slots.get(0);
@@ -49,7 +50,7 @@ public class QuestBookMenuGameTests {
 
     @GameTest(template = EMPTY, timeoutTicks = 40)
     public void mainInventoryRowsMapToPlayerSlots9Through35(GameTestHelper helper) {
-        Player player = helper.makeMockSurvivalPlayer();
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
         QuestBookMenu menu = new QuestBookMenu(1, player.getInventory());
 
         for (int row = 0; row < 3; row++) {
@@ -69,7 +70,7 @@ public class QuestBookMenuGameTests {
 
     @GameTest(template = EMPTY, timeoutTicks = 40)
     public void hotbarRowMapsToPlayerSlots0Through8(GameTestHelper helper) {
-        Player player = helper.makeMockSurvivalPlayer();
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
         QuestBookMenu menu = new QuestBookMenu(1, player.getInventory());
 
         for (int col = 0; col < 9; col++) {
@@ -90,7 +91,7 @@ public class QuestBookMenuGameTests {
 
     @GameTest(template = EMPTY, timeoutTicks = 40)
     public void shiftClickFromHotbarMovesItemIntoInfoSlot(GameTestHelper helper) {
-        Player player = helper.makeMockSurvivalPlayer();
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
         player.getInventory().setItem(0, new ItemStack(Items.STICK));
 
         QuestBookMenu menu = new QuestBookMenu(1, player.getInventory());
@@ -105,7 +106,7 @@ public class QuestBookMenuGameTests {
 
     @GameTest(template = EMPTY, timeoutTicks = 40)
     public void shiftClickFromInfoSlotMovesItemBackToInventory(GameTestHelper helper) {
-        Player player = helper.makeMockSurvivalPlayer();
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
         QuestBookMenu menu = new QuestBookMenu(1, player.getInventory());
         menu.slots.get(0).set(new ItemStack(Items.APPLE));
 

@@ -12,8 +12,9 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.gametest.GameTestHolder;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.minecraft.world.level.GameType;
+import net.neoforged.neoforge.gametest.GameTestHolder;
+import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
 /**
  * Verifies {@link RafikiTrades} matching, stage-gating, and consumption — the single source of truth
@@ -34,7 +35,7 @@ public class RafikiTradesGameTests {
 
     @GameTest(template = EMPTY, timeoutTicks = 40)
     public void silverTradeConsumesExactlyThree(GameTestHelper helper) {
-        Player player = helper.makeMockSurvivalPlayer();
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
         player.getInventory().setItem(0, new ItemStack(ModItems.SILVER_INGOT.get(), 10));
 
         RafikiTrades.Trade trade = RafikiTrades.tryExecute(player, questsAt(helper, Stage.CRAFT_RAFIKI_STICK));
@@ -52,7 +53,7 @@ public class RafikiTradesGameTests {
 
     @GameTest(template = EMPTY, timeoutTicks = 40)
     public void silverTradeRefusedBelowThreshold(GameTestHelper helper) {
-        Player player = helper.makeMockSurvivalPlayer();
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
         player.getInventory().setItem(0, new ItemStack(ModItems.SILVER_INGOT.get(), 2));
 
         RafikiTrades.Trade trade = RafikiTrades.tryExecute(player, questsAt(helper, Stage.CRAFT_RAFIKI_STICK));
@@ -64,7 +65,7 @@ public class RafikiTradesGameTests {
 
     @GameTest(template = EMPTY, timeoutTicks = 40)
     public void silverTradeRefusedBeforeStageUnlock(GameTestHelper helper) {
-        Player player = helper.makeMockSurvivalPlayer();
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
         player.getInventory().setItem(0, new ItemStack(ModItems.SILVER_INGOT.get(), 3));
 
         RafikiTrades.Trade trade = RafikiTrades.tryExecute(player, questsAt(helper, Stage.FIND_RAFIKI));
@@ -78,7 +79,7 @@ public class RafikiTradesGameTests {
 
     @GameTest(template = EMPTY, timeoutTicks = 40)
     public void dustTradeIsSymmetric(GameTestHelper helper) {
-        Player termiteInHand = helper.makeMockSurvivalPlayer();
+        Player termiteInHand = helper.makeMockPlayer(GameType.SURVIVAL);
         termiteInHand.getInventory().setItem(0, new ItemStack(ModItems.TERMITE_DUST.get()));
         termiteInHand.getInventory().setItem(1, new ItemStack(ModItems.MANGO_DUST.get()));
         if (RafikiTrades.tryExecute(termiteInHand, questsAt(helper, Stage.USE_STAR_ALTAR)) == null) {
@@ -88,7 +89,7 @@ public class RafikiTradesGameTests {
             helper.fail("no Rafiki Dust from termite-in-hand ordering");
         }
 
-        Player mangoInHand = helper.makeMockSurvivalPlayer();
+        Player mangoInHand = helper.makeMockPlayer(GameType.SURVIVAL);
         mangoInHand.getInventory().setItem(0, new ItemStack(ModItems.MANGO_DUST.get()));
         mangoInHand.getInventory().setItem(1, new ItemStack(ModItems.TERMITE_DUST.get()));
         if (RafikiTrades.tryExecute(mangoInHand, questsAt(helper, Stage.USE_STAR_ALTAR)) == null) {
@@ -102,14 +103,14 @@ public class RafikiTradesGameTests {
 
     @GameTest(template = EMPTY, timeoutTicks = 40)
     public void bookTradeIsNotSymmetric(GameTestHelper helper) {
-        Player documented = helper.makeMockSurvivalPlayer();
+        Player documented = helper.makeMockPlayer(GameType.SURVIVAL);
         documented.getInventory().setItem(0, new ItemStack(Items.BOOK));
         documented.getInventory().setItem(1, new ItemStack(ModItems.LION_FUR.get()));
         if (RafikiTrades.tryExecute(documented, questsAt(helper, Stage.CRAFT_RAFIKI_STICK)) == null) {
             helper.fail("book+fur trade did not fire in the documented direction");
         }
 
-        Player reversed = helper.makeMockSurvivalPlayer();
+        Player reversed = helper.makeMockPlayer(GameType.SURVIVAL);
         reversed.getInventory().setItem(0, new ItemStack(ModItems.LION_FUR.get()));
         reversed.getInventory().setItem(1, new ItemStack(Items.BOOK));
         if (RafikiTrades.tryExecute(reversed, questsAt(helper, Stage.CRAFT_RAFIKI_STICK)) != null) {

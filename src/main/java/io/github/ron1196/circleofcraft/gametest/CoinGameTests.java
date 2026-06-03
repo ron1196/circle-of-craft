@@ -9,8 +9,9 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.gametest.GameTestHolder;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.minecraft.world.level.GameType;
+import net.neoforged.neoforge.gametest.GameTestHolder;
+import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
 /**
  * Pins the deliberate "coin is inert outside its target dimension" rule. The game-test server runs
@@ -24,7 +25,7 @@ public class CoinGameTests {
 
     @GameTest(template = EMPTY, timeoutTicks = 40)
     public void rafikiCoinInertOutsidePrideLands(GameTestHelper helper) {
-        Player player = helper.makeMockSurvivalPlayer();
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
         player.getInventory().setItem(0, new ItemStack(ModItems.RAFIKI_COIN.get(), 1));
 
         InteractionResultHolder<ItemStack> result =

@@ -2,11 +2,12 @@ package io.github.ron1196.circleofcraft.gametest;
 
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.data.WorldData;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.gametest.GameTestHolder;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.neoforged.neoforge.gametest.GameTestHolder;
+import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
 /**
  * Locks the on-disk NBT shape of {@link WorldData} so save files written by previous mod versions
@@ -22,7 +23,7 @@ public class WorldDataNbtGameTests {
 
     @GameTest(template = EMPTY, timeoutTicks = 40)
     public void freshWorldDataRoundTripsAsZeros(GameTestHelper helper) {
-        WorldData reloaded = roundTrip(new WorldData());
+        WorldData reloaded = roundTrip(new WorldData(), helper);
         expect(helper, 0, reloaded.getZiraTreeTalkCount(), "ZiraTreeTalkCount");
         expect(helper, 0, reloaded.getPumbaaTalkCount(), "PumbaaTalkCount");
         expect(helper, 0, reloaded.getTimonRafikiTalkCount(), "TimonRafikiTalkCount");
@@ -36,7 +37,7 @@ public class WorldDataNbtGameTests {
         data.incrementZiraTreeTalkCount();
         data.incrementZiraTreeTalkCount();
         data.incrementZiraTreeTalkCount();
-        expect(helper, 3, roundTrip(data).getZiraTreeTalkCount(), "ZiraTreeTalkCount");
+        expect(helper, 3, roundTrip(data, helper).getZiraTreeTalkCount(), "ZiraTreeTalkCount");
         helper.succeed();
     }
 
@@ -45,7 +46,7 @@ public class WorldDataNbtGameTests {
         WorldData data = new WorldData();
         data.incrementPumbaaTalkCount();
         data.incrementPumbaaTalkCount();
-        expect(helper, 2, roundTrip(data).getPumbaaTalkCount(), "PumbaaTalkCount");
+        expect(helper, 2, roundTrip(data, helper).getPumbaaTalkCount(), "PumbaaTalkCount");
         helper.succeed();
     }
 
@@ -56,7 +57,7 @@ public class WorldDataNbtGameTests {
         data.incrementTimonRafikiTalkCount();
         data.incrementTimonRafikiTalkCount();
         data.incrementTimonRafikiTalkCount();
-        expect(helper, 4, roundTrip(data).getTimonRafikiTalkCount(), "TimonRafikiTalkCount");
+        expect(helper, 4, roundTrip(data, helper).getTimonRafikiTalkCount(), "TimonRafikiTalkCount");
         helper.succeed();
     }
 
@@ -64,7 +65,7 @@ public class WorldDataNbtGameTests {
     public void rafikiCeremonyTickRoundTrips(GameTestHelper helper) {
         WorldData data = new WorldData();
         data.setRafikiCeremonyTick(120);
-        expect(helper, 120, roundTrip(data).getRafikiCeremonyTick(), "RafikiCeremonyTick");
+        expect(helper, 120, roundTrip(data, helper).getRafikiCeremonyTick(), "RafikiCeremonyTick");
         helper.succeed();
     }
 
@@ -78,7 +79,7 @@ public class WorldDataNbtGameTests {
         data.resetPumbaaTalkCount();
         data.resetTimonRafikiTalkCount();
 
-        WorldData reloaded = roundTrip(data);
+        WorldData reloaded = roundTrip(data, helper);
         expect(helper, 0, reloaded.getZiraTreeTalkCount(), "ZiraTreeTalkCount after reset");
         expect(helper, 0, reloaded.getPumbaaTalkCount(), "PumbaaTalkCount after reset");
         expect(helper, 0, reloaded.getTimonRafikiTalkCount(), "TimonRafikiTalkCount after reset");
@@ -89,7 +90,7 @@ public class WorldDataNbtGameTests {
     public void legacySaveWithoutCounterTagsDefaultsToZero(GameTestHelper helper) {
         // Saves from before the talk-count fields existed have no corresponding tags. Loading must
         // default to zero rather than crashing — guards forward compatibility.
-        WorldData loaded = WorldData.load(new CompoundTag());
+        WorldData loaded = WorldData.load(new CompoundTag(), helper.getLevel().registryAccess());
         expect(helper, 0, loaded.getZiraTreeTalkCount(), "ZiraTreeTalkCount on legacy save");
         expect(helper, 0, loaded.getPumbaaTalkCount(), "PumbaaTalkCount on legacy save");
         expect(helper, 0, loaded.getTimonRafikiTalkCount(), "TimonRafikiTalkCount on legacy save");
@@ -105,7 +106,7 @@ public class WorldDataNbtGameTests {
         for (int i = 0; i < 2; i++) data.incrementTimonRafikiTalkCount();
         data.setRafikiCeremonyTick(99);
 
-        WorldData reloaded = roundTrip(data);
+        WorldData reloaded = roundTrip(data, helper);
         expect(helper, 5, reloaded.getZiraTreeTalkCount(), "ZiraTreeTalkCount");
         expect(helper, 7, reloaded.getPumbaaTalkCount(), "PumbaaTalkCount");
         expect(helper, 2, reloaded.getTimonRafikiTalkCount(), "TimonRafikiTalkCount");
@@ -113,10 +114,11 @@ public class WorldDataNbtGameTests {
         helper.succeed();
     }
 
-    private static WorldData roundTrip(WorldData data) {
+    private static WorldData roundTrip(WorldData data, GameTestHelper helper) {
+        HolderLookup.Provider lookup = helper.getLevel().registryAccess();
         CompoundTag tag = new CompoundTag();
-        data.save(tag);
-        return WorldData.load(tag);
+        data.save(tag, lookup);
+        return WorldData.load(tag, lookup);
     }
 
     private static void expect(GameTestHelper helper, int expected, int actual, String field) {

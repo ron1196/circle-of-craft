@@ -1,6 +1,5 @@
 package io.github.ron1196.circleofcraft.gametest;
 
-import com.mojang.authlib.GameProfile;
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.data.WorldData;
 import io.github.ron1196.circleofcraft.entity.npc.ScarEntity;
@@ -11,19 +10,18 @@ import io.github.ron1196.circleofcraft.quest.questline.RafikiQuestline;
 import io.github.ron1196.circleofcraft.quest.questline.RafikiQuestline.Stage;
 import io.github.ron1196.circleofcraft.quest.stage.StageId;
 import io.netty.channel.embedded.EmbeddedChannel;
-import java.util.UUID;
 import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.PacketFlow;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.gametest.GameTestHolder;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.neoforged.neoforge.gametest.GameTestHolder;
+import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
 /**
  * Verifies that {@link Questline.Builder#customTransition} handlers fire and produce their
@@ -156,13 +154,14 @@ public class CustomTransitionGameTests {
      */
     private static ServerPlayer makeNetworkedMockPlayer(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
-        MinecraftServer server = level.getServer();
-        GameProfile profile = new GameProfile(UUID.randomUUID(), "test-mock-player");
-        ServerPlayer player = new ServerPlayer(server, level, profile);
+        CommonListenerCookie cookie = CommonListenerCookie.createInitial(
+                new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "test-mock-player"), false);
+        ServerPlayer player =
+                new ServerPlayer(level.getServer(), level, cookie.gameProfile(), cookie.clientInformation());
 
         Connection connection = new Connection(PacketFlow.SERVERBOUND);
         new EmbeddedChannel(connection);
-        server.getPlayerList().placeNewPlayer(connection, player);
+        level.getServer().getPlayerList().placeNewPlayer(connection, player, cookie);
         return player;
     }
 }
