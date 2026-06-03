@@ -8,8 +8,6 @@ import io.github.ron1196.circleofcraft.world.structure.StructureTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 
 @Mod(CircleOfCraftMod.MOD_ID)
@@ -41,16 +39,6 @@ public class CircleOfCraftMod {
         ModAttachments.ATTACHMENTS.register(modEventBus);
         modEventBus.addListener(Networking::register);
 
-        modEventBus.addListener(this::commonSetup);
-
-        NeoForge.EVENT_BUS.register(this);
-
         LOGGER.info("Circle of Craft is loading!");
-    }
-
-    private void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            io.github.ron1196.circleofcraft.data.ModCriteriaTriggers.register();
-        });
     }
 }
