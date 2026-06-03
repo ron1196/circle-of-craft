@@ -1,19 +1,15 @@
 package io.github.ron1196.circleofcraft;
 
 import com.mojang.logging.LogUtils;
-import io.github.ron1196.circleofcraft.data.ModCriteriaTriggers;
-import io.github.ron1196.circleofcraft.network.Networking;
 import io.github.ron1196.circleofcraft.registry.*;
 import io.github.ron1196.circleofcraft.registry.ModItems;
 import io.github.ron1196.circleofcraft.world.structure.StructureTypes;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
-import software.bernie.geckolib.GeckoLib;
 
 @Mod(CircleOfCraftMod.MOD_ID)
 public class CircleOfCraftMod {
@@ -25,11 +21,7 @@ public class CircleOfCraftMod {
         return new ResourceLocation(MOD_ID, path);
     }
 
-    public CircleOfCraftMod() {
-        GeckoLib.initialize();
-
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
+    public CircleOfCraftMod(IEventBus modEventBus) {
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         BlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
@@ -44,18 +36,21 @@ public class CircleOfCraftMod {
         RecipeTypes.RECIPE_TYPES.register(modEventBus);
         RecipeTypes.RECIPE_SERIALIZERS.register(modEventBus);
         CreativeTabs.TABS.register(modEventBus);
+        // TODO(Task 6): ModDataComponents.DATA_COMPONENTS.register(modEventBus);
+        // TODO(Task 9): ModAttachments.ATTACHMENTS.register(modEventBus);
+        // TODO(Task 10): modEventBus.addListener(Networking::register); // payload registrar
 
         modEventBus.addListener(this::commonSetup);
 
-        MinecraftForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(this);
 
         LOGGER.info("Circle of Craft is loading!");
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            Networking.register();
-            ModCriteriaTriggers.register();
+            // TODO(Task 10): payload networking now registered via modEventBus listener (see constructor)
+            // TODO(Task 14): ModCriteriaTriggers now registered via DeferredRegister
         });
     }
 }
