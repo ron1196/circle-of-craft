@@ -2,7 +2,6 @@ package io.github.ron1196.circleofcraft.block;
 
 import io.github.ron1196.circleofcraft.data.PlayerData;
 import io.github.ron1196.circleofcraft.entity.npc.SimbaEntity;
-import io.github.ron1196.circleofcraft.network.Networking;
 import io.github.ron1196.circleofcraft.network.PlayerDataSyncPacket;
 import io.github.ron1196.circleofcraft.network.PortalOverlayPacket;
 import io.github.ron1196.circleofcraft.world.dimension.Teleporter;
@@ -34,6 +33,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -178,10 +178,7 @@ public class PortalBlock extends Block {
 
     private void sendOverlayPacket(ServerPlayer player, int ticks) {
         ResourceLocation id = BuiltInRegistries.BLOCK.getKey(this);
-        Networking.CHANNEL.sendTo(
-                new PortalOverlayPacket(ticks, id.getPath()),
-                player.connection.connection,
-                net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT);
+        PacketDistributor.sendToPlayer(player, new PortalOverlayPacket(ticks, id.getPath()));
     }
 
     private static PortalCountdown advanceOrReset(@Nullable PortalCountdown existing, long currentTick) {
@@ -220,8 +217,7 @@ public class PortalBlock extends Block {
         data.setHomePortalX(pos.getX());
         data.setHomePortalY(pos.getY());
         data.setHomePortalZ(pos.getZ());
-        Networking.CHANNEL.send(
-                net.minecraftforge.network.PacketDistributor.PLAYER.with(() -> player), new PlayerDataSyncPacket(data));
+        PacketDistributor.sendToPlayer(player, PlayerDataSyncPacket.of(data));
     }
 
     private void teleportNearbySimba(ServerPlayer player, ServerLevel destLevel) {

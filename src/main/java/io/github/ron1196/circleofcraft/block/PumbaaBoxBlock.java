@@ -4,7 +4,6 @@ import io.github.ron1196.circleofcraft.data.ModCriteriaTriggers;
 import io.github.ron1196.circleofcraft.data.WorldData;
 import io.github.ron1196.circleofcraft.entity.PumbaaExplosionEntity;
 import io.github.ron1196.circleofcraft.network.FlatulencePacket;
-import io.github.ron1196.circleofcraft.network.Networking;
 import io.github.ron1196.circleofcraft.quest.questline.OutlandsQuestline;
 import io.github.ron1196.circleofcraft.quest.questline.QuestlineManager;
 import io.github.ron1196.circleofcraft.quest.stage.QuestTrigger;
@@ -21,7 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 public class PumbaaBoxBlock extends Block {
@@ -102,7 +101,7 @@ public class PumbaaBoxBlock extends Block {
         if (level instanceof ServerLevel serverLevel) {
             for (ServerPlayer nearby : serverLevel.players()) {
                 if (nearby.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 50 * 50) {
-                    Networking.CHANNEL.send(PacketDistributor.PLAYER.with(() -> nearby), new FlatulencePacket());
+                    PacketDistributor.sendToPlayer(nearby, FlatulencePacket.INSTANCE);
                 }
             }
         }

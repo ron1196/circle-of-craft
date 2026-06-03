@@ -2,7 +2,6 @@ package io.github.ron1196.circleofcraft.event;
 
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.entity.npc.SimbaEntity;
-import io.github.ron1196.circleofcraft.network.Networking;
 import io.github.ron1196.circleofcraft.network.SimbaSitPacket;
 import java.util.List;
 import net.minecraft.client.Minecraft;
@@ -13,6 +12,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 /** Game bus listener for client key input events. Handles the Simba sit toggle keybind. */
 @EventBusSubscriber(modid = CircleOfCraftMod.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
@@ -34,7 +34,7 @@ public class ClientKeyHandler {
                 level.getEntitiesOfClass(SimbaEntity.class, searchBox, simba -> simba.isOwnedBy(player));
 
         for (SimbaEntity simba : simbas) {
-            Networking.CHANNEL.sendToServer(new SimbaSitPacket(simba.getId()));
+            PacketDistributor.sendToServer(new SimbaSitPacket(simba.getId()));
         }
     }
 }

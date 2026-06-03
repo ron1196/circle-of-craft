@@ -2,7 +2,6 @@ package io.github.ron1196.circleofcraft.entity;
 
 import io.github.ron1196.circleofcraft.data.WorldData;
 import io.github.ron1196.circleofcraft.network.FlatulencePacket;
-import io.github.ron1196.circleofcraft.network.Networking;
 import io.github.ron1196.circleofcraft.quest.questline.OutlandsQuestline;
 import io.github.ron1196.circleofcraft.quest.questline.QuestlineManager;
 import io.github.ron1196.circleofcraft.quest.stage.QuestTrigger;
@@ -18,7 +17,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -81,7 +80,7 @@ public class PumbaaExplosionEntity extends Entity {
 
         // Green overlay for all players in this level
         for (ServerPlayer sp : level.players()) {
-            Networking.CHANNEL.send(PacketDistributor.PLAYER.with(() -> sp), new FlatulencePacket());
+            PacketDistributor.sendToPlayer(sp, FlatulencePacket.INSTANCE);
         }
 
         // Green gas cloud

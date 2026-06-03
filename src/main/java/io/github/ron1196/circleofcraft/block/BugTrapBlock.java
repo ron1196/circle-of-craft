@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
 public class BugTrapBlock extends BaseEntityBlock {
@@ -107,7 +106,7 @@ public class BugTrapBlock extends BaseEntityBlock {
             @NotNull InteractionHand hand,
             @NotNull BlockHitResult hit) {
         if (!level.isClientSide() && level.getBlockEntity(pos) instanceof BugTrapBlockEntity be) {
-            NetworkHooks.openScreen((ServerPlayer) player, be, pos);
+            ((ServerPlayer) player).openMenu(be, buf -> buf.writeBlockPos(pos));
         }
         return InteractionResult.sidedSuccess(level.isClientSide());
     }

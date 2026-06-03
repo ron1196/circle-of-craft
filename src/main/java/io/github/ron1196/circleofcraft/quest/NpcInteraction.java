@@ -2,7 +2,6 @@ package io.github.ron1196.circleofcraft.quest;
 
 import io.github.ron1196.circleofcraft.data.PlayerData;
 import io.github.ron1196.circleofcraft.data.WorldData;
-import io.github.ron1196.circleofcraft.network.Networking;
 import io.github.ron1196.circleofcraft.network.PlayerDataSyncPacket;
 import io.github.ron1196.circleofcraft.quest.questline.QuestlineManager;
 import io.github.ron1196.circleofcraft.quest.stage.QuestTrigger;
@@ -11,7 +10,7 @@ import java.util.function.Consumer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -95,7 +94,6 @@ public record NpcInteraction(
      * Syncs player data to the client via network packet.
      */
     public void syncPlayerData() {
-        Networking.CHANNEL.send(
-                PacketDistributor.PLAYER.with(() -> serverPlayer), new PlayerDataSyncPacket(playerData));
+        PacketDistributor.sendToPlayer(serverPlayer, PlayerDataSyncPacket.of(playerData));
     }
 }

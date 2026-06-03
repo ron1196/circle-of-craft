@@ -1,43 +1,23 @@
 package io.github.ron1196.circleofcraft.network;
 
-import io.github.ron1196.circleofcraft.entity.npc.SimbaEntity;
-import java.util.function.Supplier;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraftforge.network.NetworkEvent;
+import io.github.ron1196.circleofcraft.CircleOfCraftMod;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 
 /** Sent from client to server when the player right-clicks their Simba to toggle sit. */
-public class SimbaSitPacket {
+public record SimbaSitPacket(int entityId) implements CustomPacketPayload {
 
-    private final int entityId;
+    public static final Type<SimbaSitPacket> TYPE =
+            new Type<>(ResourceLocation.fromNamespaceAndPath(CircleOfCraftMod.MOD_ID, "simba_sit"));
 
-    public SimbaSitPacket(int entityId) {
-        this.entityId = entityId;
-    }
+    public static final StreamCodec<RegistryFriendlyByteBuf, SimbaSitPacket> STREAM_CODEC =
+            StreamCodec.composite(ByteBufCodecs.VAR_INT, SimbaSitPacket::entityId, SimbaSitPacket::new);
 
-    public SimbaSitPacket(FriendlyByteBuf buf) {
-        this.entityId = buf.readVarInt();
-    }
-
-    public void encode(FriendlyByteBuf buf) {
-        buf.writeVarInt(entityId);
-    }
-
-    public void handle(Supplier<NetworkEvent.Context> ctx) {
-        NetworkEvent.Context context = ctx.get();
-        context.enqueueWork(() -> {
-            ServerPlayer sender = context.getSender();
-            if (sender == null) return;
-
-            Entity entity = sender.serverLevel().getEntity(entityId);
-            if (!(entity instanceof SimbaEntity simba)) return;
-
-            // Only the owner can toggle sitting
-            if (simba.isOwnedBy(sender)) {
-                simba.toggleSitting(sender);
-            }
-        });
-        context.setPacketHandled(true);
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

@@ -1,37 +1,28 @@
 package io.github.ron1196.circleofcraft.network;
 
-import io.github.ron1196.circleofcraft.quest.questline.QuestlineState;
-import java.util.function.Supplier;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import io.github.ron1196.circleofcraft.CircleOfCraftMod;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 
-public class QuestSyncPacket {
+public record QuestSyncPacket(String questId, String stageId, boolean checked) implements CustomPacketPayload {
 
-    private final String questId;
-    private final String stageId;
-    private final boolean checked;
+    public static final Type<QuestSyncPacket> TYPE =
+            new Type<>(ResourceLocation.fromNamespaceAndPath(CircleOfCraftMod.MOD_ID, "quest_sync"));
 
-    public QuestSyncPacket(String questId, String stageId, boolean checked) {
-        this.questId = questId;
-        this.stageId = stageId;
-        this.checked = checked;
-    }
+    public static final StreamCodec<RegistryFriendlyByteBuf, QuestSyncPacket> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.STRING_UTF8,
+            QuestSyncPacket::questId,
+            ByteBufCodecs.STRING_UTF8,
+            QuestSyncPacket::stageId,
+            ByteBufCodecs.BOOL,
+            QuestSyncPacket::checked,
+            QuestSyncPacket::new);
 
-    public QuestSyncPacket(FriendlyByteBuf buf) {
-        this.questId = buf.readUtf();
-        this.stageId = buf.readUtf();
-        this.checked = buf.readBoolean();
-    }
-
-    public void encode(FriendlyByteBuf buf) {
-        buf.writeUtf(questId);
-        buf.writeUtf(stageId);
-        buf.writeBoolean(checked);
-    }
-
-    public void handle(Supplier<NetworkEvent.Context> ctx) {
-        NetworkEvent.Context context = ctx.get();
-        context.enqueueWork(() -> ClientWorldState.questStates.put(questId, new QuestlineState(stageId, checked)));
-        context.setPacketHandled(true);
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

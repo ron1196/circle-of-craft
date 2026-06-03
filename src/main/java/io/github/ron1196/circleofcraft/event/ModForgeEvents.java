@@ -12,7 +12,6 @@ import io.github.ron1196.circleofcraft.entity.npc.ScarEntity;
 import io.github.ron1196.circleofcraft.entity.npc.ZiraEntity;
 import io.github.ron1196.circleofcraft.item.GroundRhinoHornItem;
 import io.github.ron1196.circleofcraft.network.LoginSyncPacket;
-import io.github.ron1196.circleofcraft.network.Networking;
 import io.github.ron1196.circleofcraft.quest.actions.OutlandsQuestActions;
 import io.github.ron1196.circleofcraft.quest.questline.OutlandsQuestline;
 import io.github.ron1196.circleofcraft.quest.questline.QuestlineManager;
@@ -38,7 +37,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.network.PacketDistributor;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
@@ -52,6 +50,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.ChunkEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 @EventBusSubscriber(modid = CircleOfCraftMod.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class ModForgeEvents {
@@ -104,8 +103,7 @@ public class ModForgeEvents {
             ServerLevel overworld = serverPlayer.server.overworld();
             WorldData worldData = WorldData.get(overworld);
             PlayerData playerData = PlayerData.get(serverPlayer);
-            Networking.CHANNEL.send(
-                    PacketDistributor.PLAYER.with(() -> serverPlayer), new LoginSyncPacket(worldData, playerData));
+            PacketDistributor.sendToPlayer(serverPlayer, LoginSyncPacket.of(worldData, playerData));
         }
     }
 

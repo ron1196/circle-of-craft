@@ -5,7 +5,6 @@ import io.github.ron1196.circleofcraft.data.ItemInfo;
 import io.github.ron1196.circleofcraft.menu.QuestBookMenu;
 import io.github.ron1196.circleofcraft.network.ClientQuestStateLookup;
 import io.github.ron1196.circleofcraft.network.ClientWorldState;
-import io.github.ron1196.circleofcraft.network.Networking;
 import io.github.ron1196.circleofcraft.network.QuestCheckPacket;
 import io.github.ron1196.circleofcraft.quest.questline.Questline;
 import io.github.ron1196.circleofcraft.quest.questline.QuestlineRegistry;
@@ -19,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
@@ -101,7 +101,7 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
             addRenderableWidget(new QuestBookMenuButton(
                     buttonX, rowY, Component.literal(quest.getDisplayName()), quest.getId(), btn -> {
                         selectedQuest = questIdx;
-                        Networking.CHANNEL.sendToServer(new QuestCheckPacket(quest.getId()));
+                        PacketDistributor.sendToServer(new QuestCheckPacket(quest.getId()));
                     }));
         }
     }

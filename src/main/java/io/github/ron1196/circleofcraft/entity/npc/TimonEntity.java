@@ -22,7 +22,6 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
 public class TimonEntity extends PathfinderMob {
@@ -106,7 +105,7 @@ public class TimonEntity extends PathfinderMob {
         // Sneak+interact always opens the shop — no cooldown, no prerequisite
         if (player.isShiftKeyDown()) {
             if (player instanceof ServerPlayer serverPlayer) {
-                NetworkHooks.openScreen(serverPlayer, TimonMerchantMenu.PROVIDER);
+                serverPlayer.openMenu(TimonMerchantMenu.PROVIDER);
             }
             return InteractionResult.SUCCESS;
         }

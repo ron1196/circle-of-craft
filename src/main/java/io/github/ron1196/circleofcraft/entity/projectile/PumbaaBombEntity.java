@@ -1,7 +1,6 @@
 package io.github.ron1196.circleofcraft.entity.projectile;
 
 import io.github.ron1196.circleofcraft.network.FlatulencePacket;
-import io.github.ron1196.circleofcraft.network.Networking;
 import io.github.ron1196.circleofcraft.registry.EntityTypes;
 import io.github.ron1196.circleofcraft.registry.ModItems;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,7 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 public class PumbaaBombEntity extends ThrowableItemProjectile {
@@ -63,7 +62,7 @@ public class PumbaaBombEntity extends ThrowableItemProjectile {
                 getZ() + FLATULENCE_RANGE);
         for (Player player : level().getEntitiesOfClass(Player.class, range)) {
             if (player instanceof ServerPlayer serverPlayer) {
-                Networking.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new FlatulencePacket());
+                PacketDistributor.sendToPlayer(serverPlayer, FlatulencePacket.INSTANCE);
             }
         }
     }

@@ -1,6 +1,7 @@
 package io.github.ron1196.circleofcraft;
 
 import com.mojang.logging.LogUtils;
+import io.github.ron1196.circleofcraft.network.Networking;
 import io.github.ron1196.circleofcraft.registry.*;
 import io.github.ron1196.circleofcraft.registry.ModItems;
 import io.github.ron1196.circleofcraft.world.structure.StructureTypes;
@@ -38,7 +39,7 @@ public class CircleOfCraftMod {
         CreativeTabs.TABS.register(modEventBus);
         ModDataComponents.DATA_COMPONENTS.register(modEventBus);
         ModAttachments.ATTACHMENTS.register(modEventBus);
-        // TODO(Task 10): modEventBus.addListener(Networking::register); // payload registrar
+        modEventBus.addListener(Networking::register);
 
         modEventBus.addListener(this::commonSetup);
 
@@ -49,7 +50,6 @@ public class CircleOfCraftMod {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            // TODO(Task 10): payload networking now registered via modEventBus listener (see constructor)
             // TODO(Task 14): ModCriteriaTriggers now registered via DeferredRegister
         });
     }

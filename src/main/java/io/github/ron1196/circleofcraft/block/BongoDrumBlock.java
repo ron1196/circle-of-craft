@@ -24,7 +24,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
 public class BongoDrumBlock extends BaseEntityBlock {
@@ -68,7 +67,7 @@ public class BongoDrumBlock extends BaseEntityBlock {
             // If holding a staff, open enchanting GUI
             if (player.getItemInHand(hand).is(ModItems.RHYTHM_STAFF.get())) {
                 if (!level.isClientSide()) {
-                    NetworkHooks.openScreen((ServerPlayer) player, drum, pos);
+                    ((ServerPlayer) player).openMenu(drum, buf -> buf.writeBlockPos(pos));
                 }
                 return InteractionResult.sidedSuccess(level.isClientSide());
             }

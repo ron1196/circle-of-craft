@@ -67,9 +67,8 @@ public class RafikiDustItem extends Item {
             level.addFreshEntity(simba);
             playerData.setHasSimba(true);
             if (player instanceof ServerPlayer sp) {
-                io.github.ron1196.circleofcraft.network.Networking.CHANNEL.send(
-                        net.minecraftforge.network.PacketDistributor.PLAYER.with(() -> sp),
-                        new io.github.ron1196.circleofcraft.network.PlayerDataSyncPacket(playerData));
+                net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(
+                        sp, io.github.ron1196.circleofcraft.network.PlayerDataSyncPacket.of(playerData));
             }
         }
 

@@ -1,22 +1,26 @@
 package io.github.ron1196.circleofcraft.network;
 
-import java.util.function.Supplier;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import io.github.ron1196.circleofcraft.CircleOfCraftMod;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * Sent server→client when a Pumbaa bomb explodes near the player. Triggers the flatulence overlay.
  */
-public class FlatulencePacket {
+public record FlatulencePacket() implements CustomPacketPayload {
 
-    public FlatulencePacket() {}
+    public static final FlatulencePacket INSTANCE = new FlatulencePacket();
 
-    public FlatulencePacket(FriendlyByteBuf buf) {}
+    public static final Type<FlatulencePacket> TYPE =
+            new Type<>(ResourceLocation.fromNamespaceAndPath(CircleOfCraftMod.MOD_ID, "flatulence"));
 
-    public void encode(FriendlyByteBuf buf) {}
+    public static final StreamCodec<RegistryFriendlyByteBuf, FlatulencePacket> STREAM_CODEC =
+            StreamCodec.unit(INSTANCE);
 
-    public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> ClientWorldState.flatulenceTimer = 60);
-        ctx.get().setPacketHandled(true);
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

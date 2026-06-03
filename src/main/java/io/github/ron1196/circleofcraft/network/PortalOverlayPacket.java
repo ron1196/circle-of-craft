@@ -1,50 +1,30 @@
 package io.github.ron1196.circleofcraft.network;
 
-import java.util.function.Supplier;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import io.github.ron1196.circleofcraft.CircleOfCraftMod;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * Sent server→client every tick while a player stands in a Lion King portal. Drives the portal
  * overlay on the client, mirroring the old mod's gradual screen tint.
  */
-public class PortalOverlayPacket {
+public record PortalOverlayPacket(int ticks, String portalBlockName) implements CustomPacketPayload {
 
-    private final int ticks;
-    private final String portalBlockName;
+    public static final Type<PortalOverlayPacket> TYPE =
+            new Type<>(ResourceLocation.fromNamespaceAndPath(CircleOfCraftMod.MOD_ID, "portal_overlay"));
 
-    public PortalOverlayPacket(int ticks, String portalBlockName) {
-        this.ticks = ticks;
-        this.portalBlockName = portalBlockName;
-    }
+    public static final StreamCodec<RegistryFriendlyByteBuf, PortalOverlayPacket> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.VAR_INT,
+            PortalOverlayPacket::ticks,
+            ByteBufCodecs.STRING_UTF8,
+            PortalOverlayPacket::portalBlockName,
+            PortalOverlayPacket::new);
 
-    public PortalOverlayPacket(FriendlyByteBuf buf) {
-        this.ticks = buf.readVarInt();
-        this.portalBlockName = buf.readUtf();
-    }
-
-    public void encode(FriendlyByteBuf buf) {
-        buf.writeVarInt(ticks);
-        buf.writeUtf(portalBlockName);
-    }
-
-    private static final float SPINNING_RAMP_RATE = 0.0125F;
-
-    public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            ClientWorldState.portalOverlayTicks = ticks;
-            ClientWorldState.portalBlockName = portalBlockName;
-            Minecraft mc = Minecraft.getInstance();
-            if (mc.level != null) {
-                ClientWorldState.portalLastUpdateTick = mc.level.getGameTime();
-            }
-            if (mc.player != null) {
-                float intensity = Math.min(ticks * SPINNING_RAMP_RATE, 1.0F);
-                mc.player.oSpinningEffectIntensity = mc.player.spinningEffectIntensity;
-                mc.player.spinningEffectIntensity = intensity;
-            }
-        });
-        ctx.get().setPacketHandled(true);
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

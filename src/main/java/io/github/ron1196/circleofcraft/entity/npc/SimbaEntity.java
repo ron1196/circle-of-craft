@@ -35,7 +35,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraftforge.network.NetworkHooks;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -148,7 +147,7 @@ public class SimbaEntity extends TamableAnimal {
 
         // Sneak+interact opens Simba's inventory
         if (player.isShiftKeyDown() && player instanceof ServerPlayer serverPlayer) {
-            NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
+            serverPlayer.openMenu(new MenuProvider() {
                 @Override
                 public @NotNull Component getDisplayName() {
                     return Component.translatable("container.circleofcraft.simba_inventory");

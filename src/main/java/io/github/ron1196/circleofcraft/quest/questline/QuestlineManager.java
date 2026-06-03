@@ -2,7 +2,6 @@ package io.github.ron1196.circleofcraft.quest.questline;
 
 import io.github.ron1196.circleofcraft.data.ModCriteriaTriggers;
 import io.github.ron1196.circleofcraft.data.PlayerData;
-import io.github.ron1196.circleofcraft.network.Networking;
 import io.github.ron1196.circleofcraft.network.QuestSyncPacket;
 import io.github.ron1196.circleofcraft.quest.stage.ClaimableReward;
 import io.github.ron1196.circleofcraft.quest.stage.QuestObjective;
@@ -17,7 +16,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.saveddata.SavedData;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 public class QuestlineManager implements QuestStateLookup {
@@ -267,9 +266,8 @@ public class QuestlineManager implements QuestStateLookup {
     public void syncToPlayer(ServerPlayer player) {
         for (Questline quest : QuestlineRegistry.getOrdered()) {
             QuestlineState state = getState(quest.getId());
-            Networking.CHANNEL.send(
-                    PacketDistributor.PLAYER.with(() -> player),
-                    new QuestSyncPacket(quest.getId(), state.getCurrentStageId(), state.isChecked()));
+            PacketDistributor.sendToPlayer(
+                    player, new QuestSyncPacket(quest.getId(), state.getCurrentStageId(), state.isChecked()));
         }
     }
 
