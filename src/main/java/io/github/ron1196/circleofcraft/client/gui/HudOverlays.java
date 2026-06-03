@@ -1,85 +1,60 @@
 package io.github.ron1196.circleofcraft.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.block.PortalBlock;
 import io.github.ron1196.circleofcraft.network.ClientWorldState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraftforge.client.event.RenderGuiEvent;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 
-@EventBusSubscriber(modid = CircleOfCraftMod.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
-public class HudOverlays {
+@EventBusSubscriber(modid = CircleOfCraftMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+public final class HudOverlays {
 
     private static final ResourceLocation FLATULENCE_TEXTURE = CircleOfCraftMod.id("textures/gui/flatulence.png");
     private static final int FLATULENCE_DURATION = 60;
     private static final float PORTAL_OVERLAY_MAX_ALPHA = 0.8F;
-    private static final double OVERLAY_Z_DEPTH = -90.0;
+    private static final int OVERLAY_BLIT_OFFSET = -90;
 
-    // TODO(Task 15): migrate RenderGuiEvent.Post -> RegisterGuiLayersEvent
     @SubscribeEvent
-    public static void onRenderGui(RenderGuiEvent.Post event) {
-        renderPortalOverlay();
-        renderFlatulenceOverlay(event);
+    public static void registerGuiLayers(RegisterGuiLayersEvent event) {
+        event.registerAboveAll(
+                CircleOfCraftMod.id("portal_overlay"), (guiGraphics, deltaTracker) -> renderPortalOverlay(guiGraphics));
+        event.registerAboveAll(
+                CircleOfCraftMod.id("flatulence_overlay"),
+                (guiGraphics, deltaTracker) -> renderFlatulenceOverlay(guiGraphics));
     }
 
-    private static void renderPortalOverlay() {
+    private static void renderPortalOverlay(GuiGraphics guiGraphics) {
         if (ClientWorldState.portalOverlayTicks <= 0) return;
         if (ClientWorldState.portalBlockName.isEmpty()) return;
 
         Minecraft mc = Minecraft.getInstance();
         if (mc.screen != null) return;
 
-        // Reset overlay if server stopped sending updates (player left portal)
         if (mc.level != null && mc.level.getGameTime() - ClientWorldState.portalLastUpdateTick > 2) {
             ClientWorldState.portalOverlayTicks = 0;
             return;
         }
 
-        // Get the block's sprite from the stitched texture atlas (handles animation automatically)
-        var texture = CircleOfCraftMod.id("block/" + ClientWorldState.portalBlockName);
-        var sprite = mc.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(texture);
+        ResourceLocation texture = CircleOfCraftMod.id("block/" + ClientWorldState.portalBlockName);
+        TextureAtlasSprite sprite =
+                mc.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(texture);
 
-        int width = mc.getWindow().getGuiScaledWidth();
-        int height = mc.getWindow().getGuiScaledHeight();
-
+        int width = guiGraphics.guiWidth();
+        int height = guiGraphics.guiHeight();
         float alpha = portalOverlayAlpha(ClientWorldState.portalOverlayTicks);
 
-        RenderSystem.disableDepthTest();
-        RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
-        RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-
-        float u0 = sprite.getU0();
-        float u1 = sprite.getU1();
-        float v0 = sprite.getV0();
-        float v1 = sprite.getV1();
-
-        Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder buffer = tesselator.getBuilder();
-        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        buffer.vertex(0, height, OVERLAY_Z_DEPTH).uv(u0, v1).endVertex();
-        buffer.vertex(width, height, OVERLAY_Z_DEPTH).uv(u1, v1).endVertex();
-        buffer.vertex(width, 0, OVERLAY_Z_DEPTH).uv(u1, v0).endVertex();
-        buffer.vertex(0, 0, OVERLAY_Z_DEPTH).uv(u0, v0).endVertex();
-        tesselator.end();
-
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        guiGraphics.blit(0, 0, OVERLAY_BLIT_OFFSET, width, height, sprite, 1.0F, 1.0F, 1.0F, alpha);
         RenderSystem.disableBlend();
-        RenderSystem.depthMask(true);
-        RenderSystem.enableDepthTest();
     }
 
     private static float portalOverlayAlpha(int ticks) {
@@ -87,18 +62,17 @@ public class HudOverlays {
         return (float) Math.sqrt(progress) * PORTAL_OVERLAY_MAX_ALPHA;
     }
 
-    private static void renderFlatulenceOverlay(RenderGuiEvent.Post event) {
+    private static void renderFlatulenceOverlay(GuiGraphics guiGraphics) {
         if (ClientWorldState.flatulenceTimer <= 0) return;
 
-        Minecraft mc = Minecraft.getInstance();
-        int width = mc.getWindow().getGuiScaledWidth();
-        int height = mc.getWindow().getGuiScaledHeight();
+        int width = guiGraphics.guiWidth();
+        int height = guiGraphics.guiHeight();
         float alpha = ClientWorldState.flatulenceTimer / (float) FLATULENCE_DURATION;
 
         RenderSystem.enableBlend();
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
-        event.getGuiGraphics().blit(FLATULENCE_TEXTURE, 0, 0, 0, 0, width, height, width, height);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        guiGraphics.setColor(1.0F, 1.0F, 1.0F, alpha);
+        guiGraphics.blit(FLATULENCE_TEXTURE, 0, 0, 0, 0, width, height, width, height);
+        guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.disableBlend();
 
         ClientWorldState.flatulenceTimer--;
