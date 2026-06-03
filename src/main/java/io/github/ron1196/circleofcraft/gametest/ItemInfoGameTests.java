@@ -11,14 +11,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.gametest.GameTestHolder;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.gametest.GameTestHolder;
+import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 /**
  * Regression net for {@link ItemInfo} before #57 (lang-file refactor). Verifies the count of items
@@ -146,7 +146,7 @@ public class ItemInfoGameTests {
 
     private static int countItemsWithLore() {
         int count = 0;
-        for (RegistryObject<? extends Item> reg : ModItems.ITEMS.getEntries()) {
+        for (DeferredHolder<Item, ? extends Item> reg : ModItems.ITEMS.getEntries()) {
             String[] lore = ItemInfo.get(new ItemStack(reg.get()));
             if (lore != null) count++;
         }
@@ -155,8 +155,8 @@ public class ItemInfoGameTests {
 
     private static String serializeAllLore() {
         List<String> lines = new ArrayList<>();
-        for (RegistryObject<? extends Item> reg : ModItems.ITEMS.getEntries()) {
-            String key = ForgeRegistries.ITEMS.getKey(reg.get()).toString();
+        for (DeferredHolder<Item, ? extends Item> reg : ModItems.ITEMS.getEntries()) {
+            String key = BuiltInRegistries.ITEM.getKey(reg.get()).toString();
             String[] lore = ItemInfo.get(new ItemStack(reg.get()));
             String payload = lore == null ? "" : String.join("", lore);
             lines.add(key + "\t" + payload);
@@ -191,8 +191,8 @@ public class ItemInfoGameTests {
 
     private static List<String> collectAllLore() {
         List<String> out = new ArrayList<>();
-        for (RegistryObject<? extends Item> reg : ModItems.ITEMS.getEntries()) {
-            String key = ForgeRegistries.ITEMS.getKey(reg.get()).toString();
+        for (DeferredHolder<Item, ? extends Item> reg : ModItems.ITEMS.getEntries()) {
+            String key = BuiltInRegistries.ITEM.getKey(reg.get()).toString();
             String[] lore = ItemInfo.get(new ItemStack(reg.get()));
             if (lore != null) {
                 out.add(key + "=" + String.join("", lore));
@@ -203,10 +203,10 @@ public class ItemInfoGameTests {
     }
 
     private static void assertLoreEquals(
-            GameTestHelper helper, RegistryObject<? extends Item> item, String... expected) {
+            GameTestHelper helper, DeferredHolder<?, ? extends Item> item, String... expected) {
         String[] actual = ItemInfo.get(new ItemStack(item.get()));
         if (actual == null) {
-            helper.fail("ItemInfo.get returned null for " + ForgeRegistries.ITEMS.getKey(item.get()));
+            helper.fail("ItemInfo.get returned null for " + BuiltInRegistries.ITEM.getKey(item.get()));
             return;
         }
         if (actual.length != expected.length) {

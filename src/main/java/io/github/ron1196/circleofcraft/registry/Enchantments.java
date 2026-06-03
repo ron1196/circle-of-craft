@@ -3,17 +3,17 @@ package io.github.ron1196.circleofcraft.registry;
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.enchantment.ScourgeOfHyenasEnchantment;
 import io.github.ron1196.circleofcraft.item.RafikiStickItem;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class Enchantments {
 
     public static final DeferredRegister<Enchantment> ENCHANTMENTS =
-            DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, CircleOfCraftMod.MOD_ID);
+            DeferredRegister.create(Registries.ENCHANTMENT, CircleOfCraftMod.MOD_ID);
 
     private static final EquipmentSlot[] MAINHAND = new EquipmentSlot[] {EquipmentSlot.MAINHAND};
 
@@ -22,12 +22,12 @@ public class Enchantments {
             EnchantmentCategory.create("RAFIKI_STICK", item -> item instanceof RafikiStickItem);
 
     // Scourge of Hyenas - extra damage to hyenas, max level 5, weapon type
-    public static final RegistryObject<Enchantment> SCOURGE_OF_HYENAS =
+    public static final DeferredHolder<Enchantment, Enchantment> SCOURGE_OF_HYENAS =
             ENCHANTMENTS.register("scourge_of_hyenas", ScourgeOfHyenasEnchantment::new);
 
     // Rafiki Damage - sharpness for rafiki stick only, max level 5
     // Old mod: weight 5 (UNCOMMON), inherits Sharpness costs
-    public static final RegistryObject<Enchantment> RAFIKI_DAMAGE = ENCHANTMENTS.register(
+    public static final DeferredHolder<Enchantment, Enchantment> RAFIKI_DAMAGE = ENCHANTMENTS.register(
             "rafiki_damage", () -> new Enchantment(Enchantment.Rarity.UNCOMMON, RAFIKI_STICK_CATEGORY, MAINHAND) {
                 @Override
                 public int getMaxLevel() {
@@ -46,7 +46,7 @@ public class Enchantments {
             });
 
     // Rafiki Durability - unbreaking for rafiki stick only, max level 3
-    public static final RegistryObject<Enchantment> RAFIKI_DURABILITY = ENCHANTMENTS.register(
+    public static final DeferredHolder<Enchantment, Enchantment> RAFIKI_DURABILITY = ENCHANTMENTS.register(
             "rafiki_durability", () -> new Enchantment(Enchantment.Rarity.UNCOMMON, RAFIKI_STICK_CATEGORY, MAINHAND) {
                 @Override
                 public int getMaxLevel() {
@@ -66,7 +66,7 @@ public class Enchantments {
 
     // Rafiki Thunder - lightning on hit for rafiki stick only, max level 3
     // Old mod: weight 3 (between UNCOMMON=5 and RARE=2), minCost 5 + (lvl-1)*12
-    public static final RegistryObject<Enchantment> RAFIKI_THUNDER = ENCHANTMENTS.register(
+    public static final DeferredHolder<Enchantment, Enchantment> RAFIKI_THUNDER = ENCHANTMENTS.register(
             "rafiki_thunder", () -> new Enchantment(Enchantment.Rarity.RARE, RAFIKI_STICK_CATEGORY, MAINHAND) {
                 @Override
                 public int getMaxLevel() {
@@ -86,7 +86,7 @@ public class Enchantments {
 
     // Biggah Diggah - mining speed for tunnah diggah only, max level 1
     // Old mod: weight 25 (very common — closest modern equivalent is COMMON=10), minCost 5
-    public static final RegistryObject<Enchantment> BIGGAH_DIGGAH = ENCHANTMENTS.register(
+    public static final DeferredHolder<Enchantment, Enchantment> BIGGAH_DIGGAH = ENCHANTMENTS.register(
             "biggah_diggah", () -> new Enchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.DIGGER, MAINHAND) {
                 @Override
                 public int getMinCost(int level) {
@@ -101,7 +101,7 @@ public class Enchantments {
 
     // Precision - silk touch variant for tunnah diggah only, max level 1
     // Old mod: weight 10 (COMMON), minCost 5
-    public static final RegistryObject<Enchantment> PRECISION = ENCHANTMENTS.register(
+    public static final DeferredHolder<Enchantment, Enchantment> PRECISION = ENCHANTMENTS.register(
             "precision", () -> new Enchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.DIGGER, MAINHAND) {
                 @Override
                 public int getMinCost(int level) {

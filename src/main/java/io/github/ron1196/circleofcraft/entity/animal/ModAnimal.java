@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import javax.annotation.Nullable;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +32,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class ModAnimal extends Animal {
@@ -186,7 +186,8 @@ public abstract class ModAnimal extends Animal {
         CompoundTag questsTag = new CompoundTag();
         for (Map.Entry<UUID, AnimalFavorEntry> e : animalQuests.entrySet()) {
             CompoundTag entryTag = new CompoundTag();
-            ResourceLocation itemKey = ForgeRegistries.ITEMS.getKey(e.getValue().requiredItem());
+            ResourceLocation itemKey =
+                    BuiltInRegistries.ITEM.getKey(e.getValue().requiredItem());
             if (itemKey != null) {
                 entryTag.putString("Item", itemKey.toString());
                 entryTag.putInt("Amount", e.getValue().requiredAmount());
@@ -205,7 +206,7 @@ public abstract class ModAnimal extends Animal {
             for (String key : questsTag.getAllKeys()) {
                 CompoundTag entryTag = questsTag.getCompound(key);
                 ResourceLocation itemId = new ResourceLocation(entryTag.getString("Item"));
-                Item item = ForgeRegistries.ITEMS.getValue(itemId);
+                Item item = BuiltInRegistries.ITEM.get(itemId);
                 if (item == null) continue;
                 AnimalFavorEntry questEntry = new AnimalFavorEntry(item, entryTag.getInt("Amount"));
                 animalQuests.put(UUID.fromString(key), questEntry);

@@ -12,23 +12,23 @@ import io.github.ron1196.circleofcraft.entity.projectile.PumbaaBombEntity;
 import io.github.ron1196.circleofcraft.entity.projectile.SpearEntity;
 import io.github.ron1196.circleofcraft.entity.projectile.TermiteThrownEntity;
 import io.github.ron1196.circleofcraft.entity.projectile.ZazuEggEntity;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class EntityTypes {
 
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
-            DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, CircleOfCraftMod.MOD_ID);
+            DeferredRegister.create(Registries.ENTITY_TYPE, CircleOfCraftMod.MOD_ID);
 
     // ── Helpers ──────────────────────────────────────────────────────────────
 
-    private static <T extends Mob> RegistryObject<EntityType<T>> registerCreature(
+    private static <T extends Mob> DeferredHolder<EntityType<?>, EntityType<T>> registerCreature(
             String name, EntityType.EntityFactory<T> factory, float width, float height) {
         return ENTITY_TYPES.register(name, () -> EntityType.Builder.of(factory, MobCategory.CREATURE)
                 .sized(width, height)
@@ -36,7 +36,7 @@ public class EntityTypes {
                 .build(name));
     }
 
-    private static <T extends Mob> RegistryObject<EntityType<T>> registerCreature(
+    private static <T extends Mob> DeferredHolder<EntityType<?>, EntityType<T>> registerCreature(
             String name, EntityType.EntityFactory<T> factory, float width, float height, int trackingRange) {
         return ENTITY_TYPES.register(name, () -> EntityType.Builder.of(factory, MobCategory.CREATURE)
                 .sized(width, height)
@@ -44,7 +44,7 @@ public class EntityTypes {
                 .build(name));
     }
 
-    private static <T extends Mob> RegistryObject<EntityType<T>> registerMonster(
+    private static <T extends Mob> DeferredHolder<EntityType<?>, EntityType<T>> registerMonster(
             String name, EntityType.EntityFactory<T> factory, float width, float height) {
         return ENTITY_TYPES.register(name, () -> EntityType.Builder.of(factory, MobCategory.MONSTER)
                 .sized(width, height)
@@ -52,7 +52,7 @@ public class EntityTypes {
                 .build(name));
     }
 
-    private static <T extends Mob> RegistryObject<EntityType<T>> registerMonster(
+    private static <T extends Mob> DeferredHolder<EntityType<?>, EntityType<T>> registerMonster(
             String name, EntityType.EntityFactory<T> factory, float width, float height, int trackingRange) {
         return ENTITY_TYPES.register(name, () -> EntityType.Builder.of(factory, MobCategory.MONSTER)
                 .sized(width, height)
@@ -60,7 +60,7 @@ public class EntityTypes {
                 .build(name));
     }
 
-    private static <T extends Entity> RegistryObject<EntityType<T>> registerProjectile(
+    private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> registerProjectile(
             String name, EntityType.EntityFactory<T> factory, float size, int updateInterval) {
         return ENTITY_TYPES.register(name, () -> EntityType.Builder.<T>of(factory, MobCategory.MISC)
                 .sized(size, size)
@@ -71,72 +71,72 @@ public class EntityTypes {
 
     // ── Passive Entities ─────────────────────────────────────────────────────
 
-    public static final RegistryObject<EntityType<LionEntity>> LION =
+    public static final DeferredHolder<EntityType<?>, EntityType<LionEntity>> LION =
             registerCreature("lion", LionEntity::new, 1.3F, 1.6F);
-    public static final RegistryObject<EntityType<ZebraEntity>> ZEBRA =
+    public static final DeferredHolder<EntityType<?>, EntityType<ZebraEntity>> ZEBRA =
             registerCreature("zebra", ZebraEntity::new, 1.1F, 1.4F);
-    public static final RegistryObject<EntityType<GiraffeEntity>> GIRAFFE =
+    public static final DeferredHolder<EntityType<?>, EntityType<GiraffeEntity>> GIRAFFE =
             registerCreature("giraffe", GiraffeEntity::new, 1.7F, 2.8F);
-    public static final RegistryObject<EntityType<RhinoEntity>> RHINO =
+    public static final DeferredHolder<EntityType<?>, EntityType<RhinoEntity>> RHINO =
             registerCreature("rhino", RhinoEntity::new, 1.3F, 1.2F);
-    public static final RegistryObject<EntityType<GemsbokEntity>> GEMSBOK =
+    public static final DeferredHolder<EntityType<?>, EntityType<GemsbokEntity>> GEMSBOK =
             registerCreature("gemsbok", GemsbokEntity::new, 0.9F, 1.4F);
-    public static final RegistryObject<EntityType<DikDikEntity>> DIKDIK =
+    public static final DeferredHolder<EntityType<?>, EntityType<DikDikEntity>> DIKDIK =
             registerCreature("dikdik", DikDikEntity::new, 0.6F, 1.0F);
-    public static final RegistryObject<EntityType<FlamingoEntity>> FLAMINGO =
+    public static final DeferredHolder<EntityType<?>, EntityType<FlamingoEntity>> FLAMINGO =
             registerCreature("flamingo", FlamingoEntity::new, 0.6F, 1.8F);
-    public static final RegistryObject<EntityType<ZazuEntity>> ZAZU =
+    public static final DeferredHolder<EntityType<?>, EntityType<ZazuEntity>> ZAZU =
             registerCreature("zazu", ZazuEntity::new, 0.6F, 0.7F);
-    public static final RegistryObject<EntityType<BugEntity>> BUG =
+    public static final DeferredHolder<EntityType<?>, EntityType<BugEntity>> BUG =
             registerCreature("bug", BugEntity::new, 0.4F, 0.4F, 8);
 
     // ── Projectile Entities ──────────────────────────────────────────────────
 
-    public static final RegistryObject<EntityType<DartEntity>> DART =
+    public static final DeferredHolder<EntityType<?>, EntityType<DartEntity>> DART =
             registerProjectile("dart", DartEntity::new, 0.5F, 20);
-    public static final RegistryObject<EntityType<SpearEntity>> SPEAR =
+    public static final DeferredHolder<EntityType<?>, EntityType<SpearEntity>> SPEAR =
             registerProjectile("spear", SpearEntity::new, 0.5F, 20);
-    public static final RegistryObject<EntityType<PumbaaBombEntity>> PUMBAA_BOMB =
+    public static final DeferredHolder<EntityType<?>, EntityType<PumbaaBombEntity>> PUMBAA_BOMB =
             registerProjectile("pumbaa_bomb", PumbaaBombEntity::new, 0.25F, 10);
-    public static final RegistryObject<EntityType<TermiteThrownEntity>> TERMITE_THROWN =
+    public static final DeferredHolder<EntityType<?>, EntityType<TermiteThrownEntity>> TERMITE_THROWN =
             registerProjectile("termite_thrown", TermiteThrownEntity::new, 0.25F, 10);
-    public static final RegistryObject<EntityType<ZazuEggEntity>> ZAZU_EGG =
+    public static final DeferredHolder<EntityType<?>, EntityType<ZazuEggEntity>> ZAZU_EGG =
             registerProjectile("zazu_egg", ZazuEggEntity::new, 0.25F, 10);
 
     // ── Hostile Entities ─────────────────────────────────────────────────────
 
-    public static final RegistryObject<EntityType<HyenaEntity>> HYENA =
+    public static final DeferredHolder<EntityType<?>, EntityType<HyenaEntity>> HYENA =
             registerMonster("hyena", HyenaEntity::new, 0.6F, 0.8F);
-    public static final RegistryObject<EntityType<SkeletalHyenaEntity>> SKELETAL_HYENA =
+    public static final DeferredHolder<EntityType<?>, EntityType<SkeletalHyenaEntity>> SKELETAL_HYENA =
             registerMonster("skeletal_hyena", SkeletalHyenaEntity::new, 0.6F, 0.8F);
-    public static final RegistryObject<EntityType<SkeletalHyenaHeadEntity>> SKELETAL_HYENA_HEAD =
+    public static final DeferredHolder<EntityType<?>, EntityType<SkeletalHyenaHeadEntity>> SKELETAL_HYENA_HEAD =
             registerMonster("skeletal_hyena_head", SkeletalHyenaHeadEntity::new, 0.6F, 0.6F);
-    public static final RegistryObject<EntityType<OutlanderEntity>> OUTLANDER =
+    public static final DeferredHolder<EntityType<?>, EntityType<OutlanderEntity>> OUTLANDER =
             registerMonster("outlander", OutlanderEntity::new, 1.3F, 1.6F);
-    public static final RegistryObject<EntityType<VultureEntity>> VULTURE =
+    public static final DeferredHolder<EntityType<?>, EntityType<VultureEntity>> VULTURE =
             registerMonster("vulture", VultureEntity::new, 0.8F, 1.5F);
-    public static final RegistryObject<EntityType<CrocodileEntity>> CROCODILE =
+    public static final DeferredHolder<EntityType<?>, EntityType<CrocodileEntity>> CROCODILE =
             registerMonster("crocodile", CrocodileEntity::new, 3.0F, 0.7F);
-    public static final RegistryObject<EntityType<TermiteEntity>> TERMITE =
+    public static final DeferredHolder<EntityType<?>, EntityType<TermiteEntity>> TERMITE =
             registerMonster("termite", TermiteEntity::new, 0.5F, 0.4F, 8);
-    public static final RegistryObject<EntityType<TermiteQueenEntity>> TERMITE_QUEEN =
+    public static final DeferredHolder<EntityType<?>, EntityType<TermiteQueenEntity>> TERMITE_QUEEN =
             registerMonster("termite_queen", TermiteQueenEntity::new, 2.5F, 2.0F);
 
     // ── NPC Entities ─────────────────────────────────────────────────────────
 
-    public static final RegistryObject<EntityType<TicketLionEntity>> TICKET_LION =
+    public static final DeferredHolder<EntityType<?>, EntityType<TicketLionEntity>> TICKET_LION =
             registerCreature("ticket_lion", TicketLionEntity::new, 1.3F, 1.6F);
-    public static final RegistryObject<EntityType<RafikiEntity>> RAFIKI =
+    public static final DeferredHolder<EntityType<?>, EntityType<RafikiEntity>> RAFIKI =
             registerCreature(RafikiEntity.REGISTRY_NAME, RafikiEntity::new, 0.7F, 1.6F);
-    public static final RegistryObject<EntityType<SimbaEntity>> SIMBA =
+    public static final DeferredHolder<EntityType<?>, EntityType<SimbaEntity>> SIMBA =
             registerCreature(SimbaEntity.REGISTRY_NAME, SimbaEntity::new, 1.3F, 1.6F);
-    public static final RegistryObject<EntityType<TimonEntity>> TIMON =
+    public static final DeferredHolder<EntityType<?>, EntityType<TimonEntity>> TIMON =
             registerCreature(TimonEntity.REGISTRY_NAME, TimonEntity::new, 0.4F, 0.9F);
-    public static final RegistryObject<EntityType<PumbaaEntity>> PUMBAA =
+    public static final DeferredHolder<EntityType<?>, EntityType<PumbaaEntity>> PUMBAA =
             registerCreature(PumbaaEntity.REGISTRY_NAME, PumbaaEntity::new, 1.2F, 1.3F);
-    public static final RegistryObject<EntityType<ScarEntity>> SCAR =
+    public static final DeferredHolder<EntityType<?>, EntityType<ScarEntity>> SCAR =
             registerMonster(ScarEntity.REGISTRY_NAME, ScarEntity::new, 1.3F, 1.6F);
-    public static final RegistryObject<EntityType<ZiraEntity>> ZIRA = ENTITY_TYPES.register(
+    public static final DeferredHolder<EntityType<?>, EntityType<ZiraEntity>> ZIRA = ENTITY_TYPES.register(
             ZiraEntity.REGISTRY_NAME, () -> EntityType.Builder.of(ZiraEntity::new, MobCategory.MONSTER)
                     .sized(1.2F, 1.3F)
                     .clientTrackingRange(10)
@@ -145,7 +145,7 @@ public class EntityTypes {
 
     // ── Interactive Entities ─────────────────────────────────────────────────
 
-    public static final RegistryObject<EntityType<RugEntity>> RUG =
+    public static final DeferredHolder<EntityType<?>, EntityType<RugEntity>> RUG =
             ENTITY_TYPES.register("rug", () -> EntityType.Builder.<RugEntity>of(RugEntity::new, MobCategory.MISC)
                     .sized(1.2F, 0.2F)
                     .clientTrackingRange(10)
@@ -153,7 +153,7 @@ public class EntityTypes {
 
     // ── Transient Effects ────────────────────────────────────────────────────
 
-    public static final RegistryObject<EntityType<PumbaaExplosionEntity>> PUMBAA_EXPLOSION =
+    public static final DeferredHolder<EntityType<?>, EntityType<PumbaaExplosionEntity>> PUMBAA_EXPLOSION =
             ENTITY_TYPES.register("pumbaa_explosion", () -> EntityType.Builder.<PumbaaExplosionEntity>of(
                             PumbaaExplosionEntity::new, MobCategory.MISC)
                     .sized(0.0F, 0.0F)
@@ -167,7 +167,7 @@ public class EntityTypes {
     // ── Weather Effects ──────────────────────────────────────────────────────
 
     @SuppressWarnings("unchecked")
-    public static final RegistryObject<EntityType<LightningBoltEntity>> LIGHTNING_BOLT =
+    public static final DeferredHolder<EntityType<?>, EntityType<LightningBoltEntity>> LIGHTNING_BOLT =
             ENTITY_TYPES.register("lightning_bolt", () -> (EntityType<LightningBoltEntity>)
                     (EntityType<?>) EntityType.Builder.<LightningBolt>of(LightningBoltEntity::new, MobCategory.MISC)
                             .sized(0.0F, 0.0F)

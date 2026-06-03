@@ -12,7 +12,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
 
 public class TimonMerchantMenu extends AbstractContainerMenu {
@@ -32,7 +32,7 @@ public class TimonMerchantMenu extends AbstractContainerMenu {
         }
     };
 
-    private record TradeEntry(RegistryObject<Item> item, int bugCost) {}
+    private record TradeEntry(DeferredHolder<Item, Item> item, int bugCost) {}
 
     // Each entry is one trade slot: the item sold and its bug cost, matching old mod
     private static final List<TradeEntry> TRADES = List.of(

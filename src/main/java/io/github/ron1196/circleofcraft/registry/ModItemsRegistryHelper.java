@@ -10,7 +10,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredItem;
 
 /**
  * Shared property builders and registration shortcuts for {@link ModItems}.
@@ -42,36 +42,37 @@ final class ModItemsRegistryHelper {
 
     // ========== Registration Shortcuts ==========
 
-    static <T extends Item> RegistryObject<Item> registerItem(String name, Function<Item.Properties, T> factory) {
+    static <T extends Item> DeferredItem<Item> registerItem(String name, Function<Item.Properties, T> factory) {
         return ModItems.ITEMS.register(name, () -> factory.apply(new Item.Properties()));
     }
 
-    static <T extends Item> RegistryObject<Item> registerItem(
+    static <T extends Item> DeferredItem<Item> registerItem(
             String name, Function<Item.Properties, T> factory, Item.Properties properties) {
         return ModItems.ITEMS.register(name, () -> factory.apply(properties));
     }
 
-    static RegistryObject<Item> simpleItem(String name) {
+    static DeferredItem<Item> simpleItem(String name) {
         return registerItem(name, Item::new);
     }
 
-    static RegistryObject<Item> simpleItem(String name, int stackSize) {
+    static DeferredItem<Item> simpleItem(String name, int stackSize) {
         return registerItem(name, Item::new, itemProps(stackSize));
     }
 
-    static RegistryObject<BlockItem> registerBlockItem(String name, RegistryObject<? extends Block> block) {
+    static DeferredItem<BlockItem> registerBlockItem(
+            String name, net.neoforged.neoforge.registries.DeferredBlock<? extends Block> block) {
         return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 
-    static RegistryObject<Item> foodItem(String name, int nutrition, float saturation) {
+    static DeferredItem<Item> foodItem(String name, int nutrition, float saturation) {
         return registerItem(name, Item::new, new Item.Properties().food(foodProps(nutrition, saturation)));
     }
 
-    static RegistryObject<Item> meatItem(String name, int nutrition, float saturation) {
+    static DeferredItem<Item> meatItem(String name, int nutrition, float saturation) {
         return registerItem(name, Item::new, new Item.Properties().food(meatProps(nutrition, saturation)));
     }
 
-    static RegistryObject<Item> meatEffectItem(
+    static DeferredItem<Item> meatEffectItem(
             String name, int nutrition, float saturation, int effectDuration, float effectChance) {
         return registerItem(
                 name,
@@ -85,13 +86,16 @@ final class ModItemsRegistryHelper {
                                 .build()));
     }
 
-    static RegistryObject<Item> spawnEgg(RegistryObject<? extends EntityType<? extends Mob>> type, int bg, int fg) {
+    static DeferredItem<Item> spawnEgg(
+            net.neoforged.neoforge.registries.DeferredHolder<EntityType<?>, ? extends EntityType<? extends Mob>> type,
+            int bg,
+            int fg) {
         String entityName = Objects.requireNonNull(type.getId()).getPath();
         return ModItems.ITEMS.register(
                 entityName + "_spawn_egg", () -> new ForgeSpawnEggItem(type, bg, fg, new Item.Properties()));
     }
 
-    static RegistryObject<ArmorItem> armorItem(String name, ArmorMaterial material, ArmorItem.Type type) {
+    static DeferredItem<ArmorItem> armorItem(String name, ArmorMaterial material, ArmorItem.Type type) {
         return ModItems.ITEMS.register(name, () -> new ArmorItem(material, type, new Item.Properties()));
     }
 }

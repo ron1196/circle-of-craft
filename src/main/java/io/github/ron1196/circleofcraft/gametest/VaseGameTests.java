@@ -19,9 +19,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.gametest.GameTestHolder;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.gametest.GameTestHolder;
+import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 @GameTestHolder(CircleOfCraftMod.MOD_ID)
 @PrefixGameTestTemplate(false)
@@ -189,7 +189,7 @@ public class VaseGameTests {
 
     @GameTest(template = EMPTY, timeoutTicks = 100)
     public void allElevenContentsResolve(GameTestHelper helper) {
-        record Pair(RegistryObject<? extends Item> plant, RegistryObject<Block> filledVase, String name) {}
+        record Pair(DeferredHolder<?, ? extends Item> plant, DeferredHolder<Block, Block> filledVase, String name) {}
 
         List<Pair> pairs = List.of(
                 new Pair(ModItems.ACACIA_SAPLING_ITEM, ModBlocks.VASE_ACACIA, "acacia"),

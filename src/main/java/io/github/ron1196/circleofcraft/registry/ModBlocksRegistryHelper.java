@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredBlock;
 
 /**
  * Shared property builders and registration shortcuts for {@link ModBlocks}.
@@ -120,53 +120,53 @@ final class ModBlocksRegistryHelper {
 
     // ========== Registration Shortcuts ==========
 
-    static RegistryObject<Block> stoneBlock(String name) {
+    static DeferredBlock<Block> stoneBlock(String name) {
         return ModBlocks.BLOCKS.register(name, () -> new Block(stoneProps()));
     }
 
-    static RegistryObject<Block> stoneBlock(String name, MapColor color) {
+    static DeferredBlock<Block> stoneBlock(String name, MapColor color) {
         return ModBlocks.BLOCKS.register(name, () -> new Block(stoneProps(color)));
     }
 
-    static RegistryObject<Block> log(String name) {
+    static DeferredBlock<Block> log(String name) {
         return ModBlocks.BLOCKS.register(name, () -> new RotatedPillarBlock(logProps()));
     }
 
-    static RegistryObject<Block> log(String name, MapColor color) {
+    static DeferredBlock<Block> log(String name, MapColor color) {
         return ModBlocks.BLOCKS.register(name, () -> new RotatedPillarBlock(logProps(color)));
     }
 
-    static RegistryObject<Block> planks(String name) {
+    static DeferredBlock<Block> planks(String name) {
         return ModBlocks.BLOCKS.register(name, () -> new Block(planksProps()));
     }
 
-    static RegistryObject<Block> planks(String name, MapColor color) {
+    static DeferredBlock<Block> planks(String name, MapColor color) {
         return ModBlocks.BLOCKS.register(name, () -> new Block(planksProps(color)));
     }
 
-    static RegistryObject<StairBlock> stairs(String name, RegistryObject<? extends Block> base) {
+    static DeferredBlock<StairBlock> stairs(String name, DeferredBlock<? extends Block> base) {
         return ModBlocks.BLOCKS.register(
                 name,
                 () -> new StairBlock(() -> base.get().defaultBlockState(), BlockBehaviour.Properties.copy(base.get())));
     }
 
-    static RegistryObject<SlabBlock> slab(String name, RegistryObject<? extends Block> base) {
+    static DeferredBlock<SlabBlock> slab(String name, DeferredBlock<? extends Block> base) {
         return ModBlocks.BLOCKS.register(name, () -> new SlabBlock(BlockBehaviour.Properties.copy(base.get())));
     }
 
-    static RegistryObject<WallBlock> wall(String name, RegistryObject<? extends Block> base) {
+    static DeferredBlock<WallBlock> wall(String name, DeferredBlock<? extends Block> base) {
         return ModBlocks.BLOCKS.register(name, () -> new WallBlock(BlockBehaviour.Properties.copy(base.get())));
     }
 
-    static RegistryObject<LeavesBlock> leaves(String name) {
+    static DeferredBlock<LeavesBlock> leaves(String name) {
         return ModBlocks.BLOCKS.register(name, () -> new ModLeavesBlock(leavesProps()));
     }
 
-    static RegistryObject<Block> sapling(String name, AbstractTreeGrower grower) {
+    static DeferredBlock<Block> sapling(String name, AbstractTreeGrower grower) {
         return ModBlocks.BLOCKS.register(name, () -> new ModSaplingBlock(grower, saplingProps()));
     }
 
-    static RegistryObject<Block> lily(String name) {
+    static DeferredBlock<Block> lily(String name) {
         return ModBlocks.BLOCKS.register(name, () -> new WaterlilyBlock(lilyProps()));
     }
 
@@ -174,7 +174,7 @@ final class ModBlocksRegistryHelper {
         return BlockBehaviour.Properties.of().mapColor(color).strength(0.1F).sound(SoundType.WOOL);
     }
 
-    static RegistryObject<Block> carpet(String name, MapColor color) {
+    static DeferredBlock<Block> carpet(String name, MapColor color) {
         return ModBlocks.BLOCKS.register(name, () -> new CarpetBlock(carpetProps(color)));
     }
 }

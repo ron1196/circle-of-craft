@@ -5,15 +5,15 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class CreativeTabs {
 
     public static final DeferredRegister<CreativeModeTab> TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, CircleOfCraftMod.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> BLOCKS_TAB =
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> BLOCKS_TAB =
             TABS.register("blocks", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.circleofcraft.blocks"))
                     .icon(() -> new ItemStack(ModBlocks.PRIDE_BRICK.get()))
@@ -87,7 +87,7 @@ public class CreativeTabs {
                     })
                     .build());
 
-    public static final RegistryObject<CreativeModeTab> DECO_TAB =
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> DECO_TAB =
             TABS.register("decorations", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.circleofcraft.decorations"))
                     .icon(() -> new ItemStack(ModBlocks.ACACIA_LOG.get()))
@@ -195,36 +195,37 @@ public class CreativeTabs {
                     })
                     .build());
 
-    public static final RegistryObject<CreativeModeTab> FOOD_TAB = TABS.register("food", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.circleofcraft.food"))
-            .icon(() -> new ItemStack(ModItems.ZEBRA_RAW.get()))
-            .displayItems((params, output) -> {
-                output.accept(ModItems.LION_RAW.get());
-                output.accept(ModItems.LION_COOKED.get());
-                output.accept(ModItems.ZEBRA_RAW.get());
-                output.accept(ModItems.ZEBRA_COOKED.get());
-                output.accept(ModItems.RHINO_RAW.get());
-                output.accept(ModItems.RHINO_COOKED.get());
-                output.accept(ModItems.MANGO.get());
-                output.accept(ModItems.BANANA.get());
-                output.accept(ModItems.CORN.get());
-                output.accept(ModItems.POPCORN.get());
-                output.accept(ModItems.KIWANO.get());
-                output.accept(ModItems.OUTLANDER_MEAT.get());
-                output.accept(ModItems.CROCODILE_MEAT.get());
-                output.accept(ModItems.ROAST_YAM.get());
-                output.accept(ModItems.BANANA_BREAD.get());
-                output.accept(ModItems.CHOCOLATE_MUFASA.get());
-                output.accept(ModItems.BUG_STEW.get());
-                output.accept(ModItems.EXPERIENCE_GRUB.get());
-                output.accept(ModItems.BANANA_CAKE_ITEM.get());
-                output.accept(ModItems.MANGO_JUICE.get());
-                output.accept(ModItems.PASSION_FRUIT.get());
-                output.accept(ModItems.JAR_MILK.get());
-            })
-            .build());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FOOD_TAB =
+            TABS.register("food", () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.circleofcraft.food"))
+                    .icon(() -> new ItemStack(ModItems.ZEBRA_RAW.get()))
+                    .displayItems((params, output) -> {
+                        output.accept(ModItems.LION_RAW.get());
+                        output.accept(ModItems.LION_COOKED.get());
+                        output.accept(ModItems.ZEBRA_RAW.get());
+                        output.accept(ModItems.ZEBRA_COOKED.get());
+                        output.accept(ModItems.RHINO_RAW.get());
+                        output.accept(ModItems.RHINO_COOKED.get());
+                        output.accept(ModItems.MANGO.get());
+                        output.accept(ModItems.BANANA.get());
+                        output.accept(ModItems.CORN.get());
+                        output.accept(ModItems.POPCORN.get());
+                        output.accept(ModItems.KIWANO.get());
+                        output.accept(ModItems.OUTLANDER_MEAT.get());
+                        output.accept(ModItems.CROCODILE_MEAT.get());
+                        output.accept(ModItems.ROAST_YAM.get());
+                        output.accept(ModItems.BANANA_BREAD.get());
+                        output.accept(ModItems.CHOCOLATE_MUFASA.get());
+                        output.accept(ModItems.BUG_STEW.get());
+                        output.accept(ModItems.EXPERIENCE_GRUB.get());
+                        output.accept(ModItems.BANANA_CAKE_ITEM.get());
+                        output.accept(ModItems.MANGO_JUICE.get());
+                        output.accept(ModItems.PASSION_FRUIT.get());
+                        output.accept(ModItems.JAR_MILK.get());
+                    })
+                    .build());
 
-    public static final RegistryObject<CreativeModeTab> MATERIALS_TAB =
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MATERIALS_TAB =
             TABS.register("materials", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.circleofcraft.materials"))
                     .icon(() -> new ItemStack(ModItems.HYENA_BONE.get()))
@@ -291,7 +292,7 @@ public class CreativeTabs {
                     })
                     .build());
 
-    public static final RegistryObject<CreativeModeTab> TOOLS_TAB =
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TOOLS_TAB =
             TABS.register("tools", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.circleofcraft.tools"))
                     .icon(() -> new ItemStack(ModItems.SILVER_PICKAXE.get()))
@@ -331,7 +332,7 @@ public class CreativeTabs {
                     })
                     .build());
 
-    public static final RegistryObject<CreativeModeTab> COMBAT_TAB =
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> COMBAT_TAB =
             TABS.register("combat", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.circleofcraft.combat"))
                     .icon(() -> new ItemStack(ModItems.SILVER_SWORD.get()))
@@ -382,40 +383,41 @@ public class CreativeTabs {
                     })
                     .build());
 
-    public static final RegistryObject<CreativeModeTab> MISC_TAB = TABS.register("misc", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.circleofcraft.misc"))
-            .icon(() -> new ItemStack(ModItems.BUG.get()))
-            .displayItems((params, output) -> {
-                output.accept(ModItems.LION_SPAWN_EGG.get());
-                output.accept(ModItems.ZEBRA_SPAWN_EGG.get());
-                output.accept(ModItems.GIRAFFE_SPAWN_EGG.get());
-                output.accept(ModItems.RHINO_SPAWN_EGG.get());
-                output.accept(ModItems.GEMSBOK_SPAWN_EGG.get());
-                output.accept(ModItems.DIKDIK_SPAWN_EGG.get());
-                output.accept(ModItems.FLAMINGO_SPAWN_EGG.get());
-                output.accept(ModItems.ZAZU_SPAWN_EGG.get());
-                output.accept(ModItems.BUG_SPAWN_EGG.get());
-                // Hostile
-                output.accept(ModItems.HYENA_SPAWN_EGG.get());
-                output.accept(ModItems.SKELETAL_HYENA_SPAWN_EGG.get());
-                output.accept(ModItems.OUTLANDER_SPAWN_EGG.get());
-                output.accept(ModItems.VULTURE_SPAWN_EGG.get());
-                output.accept(ModItems.CROCODILE_SPAWN_EGG.get());
-                output.accept(ModItems.TERMITE_SPAWN_EGG.get());
-                // NPCs
-                output.accept(ModItems.RAFIKI_SPAWN_EGG.get());
-                output.accept(ModItems.SIMBA_SPAWN_EGG.get());
-                output.accept(ModItems.TIMON_SPAWN_EGG.get());
-                output.accept(ModItems.PUMBAA_SPAWN_EGG.get());
-                output.accept(ModItems.SCAR_SPAWN_EGG.get());
-                output.accept(ModItems.ZIRA_SPAWN_EGG.get());
-                output.accept(ModItems.TICKET_LION_SPAWN_EGG.get());
-                output.accept(ModItems.TERMITE_QUEEN_SPAWN_EGG.get());
-                output.accept(ModItems.SKELETAL_HYENA_HEAD_SPAWN_EGG.get());
-            })
-            .build());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MISC_TAB =
+            TABS.register("misc", () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.circleofcraft.misc"))
+                    .icon(() -> new ItemStack(ModItems.BUG.get()))
+                    .displayItems((params, output) -> {
+                        output.accept(ModItems.LION_SPAWN_EGG.get());
+                        output.accept(ModItems.ZEBRA_SPAWN_EGG.get());
+                        output.accept(ModItems.GIRAFFE_SPAWN_EGG.get());
+                        output.accept(ModItems.RHINO_SPAWN_EGG.get());
+                        output.accept(ModItems.GEMSBOK_SPAWN_EGG.get());
+                        output.accept(ModItems.DIKDIK_SPAWN_EGG.get());
+                        output.accept(ModItems.FLAMINGO_SPAWN_EGG.get());
+                        output.accept(ModItems.ZAZU_SPAWN_EGG.get());
+                        output.accept(ModItems.BUG_SPAWN_EGG.get());
+                        // Hostile
+                        output.accept(ModItems.HYENA_SPAWN_EGG.get());
+                        output.accept(ModItems.SKELETAL_HYENA_SPAWN_EGG.get());
+                        output.accept(ModItems.OUTLANDER_SPAWN_EGG.get());
+                        output.accept(ModItems.VULTURE_SPAWN_EGG.get());
+                        output.accept(ModItems.CROCODILE_SPAWN_EGG.get());
+                        output.accept(ModItems.TERMITE_SPAWN_EGG.get());
+                        // NPCs
+                        output.accept(ModItems.RAFIKI_SPAWN_EGG.get());
+                        output.accept(ModItems.SIMBA_SPAWN_EGG.get());
+                        output.accept(ModItems.TIMON_SPAWN_EGG.get());
+                        output.accept(ModItems.PUMBAA_SPAWN_EGG.get());
+                        output.accept(ModItems.SCAR_SPAWN_EGG.get());
+                        output.accept(ModItems.ZIRA_SPAWN_EGG.get());
+                        output.accept(ModItems.TICKET_LION_SPAWN_EGG.get());
+                        output.accept(ModItems.TERMITE_QUEEN_SPAWN_EGG.get());
+                        output.accept(ModItems.SKELETAL_HYENA_HEAD_SPAWN_EGG.get());
+                    })
+                    .build());
 
-    public static final RegistryObject<CreativeModeTab> QUEST_TAB =
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> QUEST_TAB =
             TABS.register("quest", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.circleofcraft.quest"))
                     .icon(() -> new ItemStack(ModItems.QUEST_BOOK.get()))
