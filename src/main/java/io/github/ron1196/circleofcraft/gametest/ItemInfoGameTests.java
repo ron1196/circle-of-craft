@@ -203,7 +203,7 @@ public class ItemInfoGameTests {
     }
 
     private static void assertLoreEquals(
-            GameTestHelper helper, DeferredHolder<?, ? extends Item> item, String... expected) {
+            GameTestHelper helper, DeferredHolder<Item, ? extends Item> item, String... expected) {
         String[] actual = ItemInfo.get(new ItemStack(item.get()));
         if (actual == null) {
             helper.fail("ItemInfo.get returned null for " + BuiltInRegistries.ITEM.getKey(item.get()));

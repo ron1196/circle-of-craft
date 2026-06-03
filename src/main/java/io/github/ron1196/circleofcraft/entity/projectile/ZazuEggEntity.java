@@ -63,7 +63,7 @@ public class ZazuEggEntity extends ThrowableItemProjectile {
     }
 
     @Override
-    protected float getGravity() {
-        return 0.05F;
+    protected double getDefaultGravity() {
+        return 0.05;
     }
 }

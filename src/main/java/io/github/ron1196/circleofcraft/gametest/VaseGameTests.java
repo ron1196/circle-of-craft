@@ -62,7 +62,7 @@ public class VaseGameTests {
 
         helper.getLevel()
                 .getBlockState(abs)
-                .use(helper.getLevel(), player, InteractionHand.MAIN_HAND, hitAt(helper, VASE_POS));
+                .useItemOn(stack, helper.getLevel(), player, InteractionHand.MAIN_HAND, hitAt(helper, VASE_POS));
 
         BlockState after = helper.getLevel().getBlockState(abs);
         if (!after.is(ModBlocks.VASE_PASSION.get())) {
@@ -80,9 +80,7 @@ public class VaseGameTests {
         BlockPos abs = helper.absolutePos(VASE_POS);
         Player player = helper.makeMockPlayer(GameType.SURVIVAL);
 
-        helper.getLevel()
-                .getBlockState(abs)
-                .use(helper.getLevel(), player, InteractionHand.MAIN_HAND, hitAt(helper, VASE_POS));
+        helper.getLevel().getBlockState(abs).useWithoutItem(helper.getLevel(), player, hitAt(helper, VASE_POS));
 
         BlockState after = helper.getLevel().getBlockState(abs);
         if (!after.is(ModBlocks.VASE.get())) {
@@ -105,7 +103,7 @@ public class VaseGameTests {
 
         helper.getLevel()
                 .getBlockState(abs)
-                .use(helper.getLevel(), player, InteractionHand.MAIN_HAND, hitAt(helper, VASE_POS));
+                .useItemOn(stack, helper.getLevel(), player, InteractionHand.MAIN_HAND, hitAt(helper, VASE_POS));
 
         BlockState after = helper.getLevel().getBlockState(abs);
         if (!after.is(ModBlocks.VASE_WHITE_FLOWER.get())) {
@@ -152,7 +150,7 @@ public class VaseGameTests {
 
         BlockPos minAbs = helper.absolutePos(ARENA_MIN);
         BlockPos maxAbs = helper.absolutePos(ARENA_MAX);
-        AABB bounds = new AABB(minAbs, maxAbs);
+        AABB bounds = AABB.encapsulatingFullBlocks(minAbs, maxAbs);
         List<ItemEntity> drops = helper.getLevel().getEntitiesOfClass(ItemEntity.class, bounds);
 
         boolean hasVase = drops.stream().anyMatch(e -> e.getItem().is(ModItems.VASE_ITEM.get()));
@@ -176,7 +174,7 @@ public class VaseGameTests {
 
         helper.getLevel()
                 .getBlockState(abs)
-                .use(helper.getLevel(), player, InteractionHand.MAIN_HAND, hitAt(helper, VASE_POS));
+                .useItemOn(stack, helper.getLevel(), player, InteractionHand.MAIN_HAND, hitAt(helper, VASE_POS));
 
         BlockState after = helper.getLevel().getBlockState(abs);
         if (!after.is(ModBlocks.VASE.get())) {
@@ -190,7 +188,7 @@ public class VaseGameTests {
 
     @GameTest(template = EMPTY, timeoutTicks = 100)
     public void allElevenContentsResolve(GameTestHelper helper) {
-        record Pair(DeferredHolder<?, ? extends Item> plant, DeferredHolder<Block, Block> filledVase, String name) {}
+        record Pair(DeferredHolder<Item, ? extends Item> plant, DeferredHolder<Block, Block> filledVase, String name) {}
 
         List<Pair> pairs = List.of(
                 new Pair(ModItems.ACACIA_SAPLING_ITEM, ModBlocks.VASE_ACACIA, "acacia"),
@@ -212,7 +210,7 @@ public class VaseGameTests {
             Player player = playerHolding(helper, stack);
             helper.getLevel()
                     .getBlockState(abs)
-                    .use(helper.getLevel(), player, InteractionHand.MAIN_HAND, hitAt(helper, VASE_POS));
+                    .useItemOn(stack, helper.getLevel(), player, InteractionHand.MAIN_HAND, hitAt(helper, VASE_POS));
             BlockState after = helper.getLevel().getBlockState(abs);
             if (!after.is(p.filledVase().get())) {
                 helper.fail(

@@ -126,9 +126,7 @@ public class PumbaaExplosionEntity extends Entity {
     }
 
     @Override
-    protected void defineSynchedData(@NotNull SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-    }
+    protected void defineSynchedData(@NotNull SynchedEntityData.Builder builder) {}
 
     @Override
     protected void readAdditionalSaveData(@NotNull CompoundTag tag) {

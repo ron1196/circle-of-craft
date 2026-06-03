@@ -155,7 +155,8 @@ public class RafikiQuestline {
 
         // Cosmetic explosion at the portal location + break gates + light portal
         RafikiQuestActions.ensureWorldState(level, Stage.COLLECT_TERMITES);
-        level.playSound(null, player.blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.playSound(
+                null, player.blockPosition(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
 
         ChatHelper.broadcastNpcMessage(
                 level,

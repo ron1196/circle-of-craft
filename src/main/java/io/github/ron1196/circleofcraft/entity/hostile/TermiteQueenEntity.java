@@ -186,8 +186,8 @@ public class TermiteQueenEntity extends Monster implements GeoEntity {
     }
 
     @Override
-    protected void dropCustomDeathLoot(@NotNull DamageSource source, int lootingLevel, boolean recentlyHit) {
-        super.dropCustomDeathLoot(source, lootingLevel, recentlyHit);
+    protected void dropCustomDeathLoot(@NotNull ServerLevel level, @NotNull DamageSource source, boolean recentlyHit) {
+        super.dropCustomDeathLoot(level, source, recentlyHit);
         int nukShardCount = MIN_NUKA_SHARDS + this.getRandom().nextInt(EXTRA_NUKA_SHARDS);
         for (int i = 0; i < nukShardCount; i++) {
             this.spawnAtLocation(new ItemStack(ModItems.NUKA_SHARD.get()));
@@ -211,7 +211,7 @@ public class TermiteQueenEntity extends Monster implements GeoEntity {
     }
 
     @Override
-    public boolean canChangeDimensions() {
+    public boolean canChangeDimensions(@NotNull Level from, @NotNull Level to) {
         return false;
     }
 

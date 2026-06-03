@@ -1,17 +1,19 @@
 package io.github.ron1196.circleofcraft.entity.animal;
 
+import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.entity.ai.LionAttackGoal;
 import io.github.ron1196.circleofcraft.quest.CharacterSpeech;
 import io.github.ron1196.circleofcraft.registry.EntityTypes;
 import io.github.ron1196.circleofcraft.registry.ModSoundEvents;
-import java.util.UUID;
 import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
@@ -41,8 +43,8 @@ public class LionEntity extends ModAnimal implements GenderedAnimal {
     private static final byte GENDER_MALE = 0;
     private static final byte GENDER_FEMALE = 1;
 
-    private static final UUID FEMALE_HEALTH_MODIFIER_UUID = UUID.fromString("b0767ea1-cf19-438d-b30d-ebe793542be5");
-    private static final UUID FEMALE_ATTACK_MODIFIER_UUID = UUID.fromString("2918936f-5a75-466f-a524-e7facbaa83bb");
+    private static final ResourceLocation FEMALE_HEALTH_MODIFIER_ID = CircleOfCraftMod.id("lion_female_health");
+    private static final ResourceLocation FEMALE_ATTACK_MODIFIER_ID = CircleOfCraftMod.id("lion_female_attack");
     private static final double FEMALE_HEALTH_DELTA = -4.0;
     private static final double FEMALE_ATTACK_DELTA = -1.0;
 
@@ -102,9 +104,7 @@ public class LionEntity extends ModAnimal implements GenderedAnimal {
 
     @Override
     public boolean isFood(@NotNull ItemStack stack) {
-        if (!stack.getItem().isEdible()) return false;
-        var food = stack.getItem().getFoodProperties();
-        return food != null && food.isMeat();
+        return stack.is(ItemTags.MEAT);
     }
 
     @Override
@@ -129,23 +129,17 @@ public class LionEntity extends ModAnimal implements GenderedAnimal {
     private void applyGenderModifiers() {
         AttributeInstance health = getAttribute(Attributes.MAX_HEALTH);
         AttributeInstance attack = getAttribute(Attributes.ATTACK_DAMAGE);
-        if (health != null) health.removeModifier(FEMALE_HEALTH_MODIFIER_UUID);
-        if (attack != null) attack.removeModifier(FEMALE_ATTACK_MODIFIER_UUID);
+        if (health != null) health.removeModifier(FEMALE_HEALTH_MODIFIER_ID);
+        if (attack != null) attack.removeModifier(FEMALE_ATTACK_MODIFIER_ID);
         if (getGender() == Gender.FEMALE) {
             if (health != null) {
                 health.addPermanentModifier(new AttributeModifier(
-                        FEMALE_HEALTH_MODIFIER_UUID,
-                        "lion_female_health",
-                        FEMALE_HEALTH_DELTA,
-                        AttributeModifier.Operation.ADDITION));
+                        FEMALE_HEALTH_MODIFIER_ID, FEMALE_HEALTH_DELTA, AttributeModifier.Operation.ADD_VALUE));
                 setHealth(Math.min(getHealth(), (float) health.getValue()));
             }
             if (attack != null) {
                 attack.addPermanentModifier(new AttributeModifier(
-                        FEMALE_ATTACK_MODIFIER_UUID,
-                        "lion_female_attack",
-                        FEMALE_ATTACK_DELTA,
-                        AttributeModifier.Operation.ADDITION));
+                        FEMALE_ATTACK_MODIFIER_ID, FEMALE_ATTACK_DELTA, AttributeModifier.Operation.ADD_VALUE));
             }
         }
     }
@@ -170,10 +164,9 @@ public class LionEntity extends ModAnimal implements GenderedAnimal {
             @NotNull ServerLevelAccessor level,
             @NotNull DifficultyInstance difficulty,
             @NotNull MobSpawnType spawnType,
-            @Nullable SpawnGroupData spawnData,
-            @Nullable CompoundTag dataTag) {
+            @Nullable SpawnGroupData spawnData) {
         initializeGender(level);
-        return super.finalizeSpawn(level, difficulty, spawnType, spawnData, dataTag);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnData);
     }
 
     @Nullable

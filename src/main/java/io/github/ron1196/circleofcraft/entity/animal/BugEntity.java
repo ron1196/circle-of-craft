@@ -11,6 +11,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,6 +59,11 @@ public class BugEntity extends ModAnimal {
         return ModAnimal.createLKAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 2.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.2);
+    }
+
+    @Override
+    public boolean isFood(@NotNull ItemStack stack) {
+        return false;
     }
 
     public void startPanic() {

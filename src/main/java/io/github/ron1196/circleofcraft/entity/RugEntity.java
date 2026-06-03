@@ -44,7 +44,6 @@ public class RugEntity extends Entity {
 
     @Override
     protected void defineSynchedData(@NotNull SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
         builder.define(DATA_TYPE, TYPE_SCAR);
     }
 

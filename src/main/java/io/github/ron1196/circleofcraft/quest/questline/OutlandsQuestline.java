@@ -125,7 +125,8 @@ public class OutlandsQuestline {
     private static void openPoolCover(ServerPlayer player, QuestlineManager manager) {
         ServerLevel level = player.serverLevel();
         OutlandsQuestActions.ensureWorldState(level, THROW_IN_OUTWATER);
-        level.playSound(null, player.blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.playSound(
+                null, player.blockPosition(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
     }
 
     private static void startMarch(ServerPlayer player, QuestlineManager manager) {

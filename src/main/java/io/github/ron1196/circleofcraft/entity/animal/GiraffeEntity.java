@@ -150,7 +150,7 @@ public class GiraffeEntity extends ModAnimal {
                 if (!player.getAbilities().instabuild) {
                     stack.shrink(1);
                 }
-                playSound(SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F, 1.0F);
+                playSound(SoundEvents.ARMOR_EQUIP_LEATHER.value(), 0.5F, 1.0F);
                 return InteractionResult.sidedSuccess(level().isClientSide);
             }
         }
@@ -167,8 +167,11 @@ public class GiraffeEntity extends ModAnimal {
     // ── Riding ──
 
     @Override
-    public double getPassengersRidingOffset() {
-        return getBbHeight() * 0.93;
+    protected @NotNull Vec3 getPassengerAttachmentPoint(
+            @NotNull net.minecraft.world.entity.Entity passenger,
+            @NotNull net.minecraft.world.entity.EntityDimensions dimensions,
+            float partialTick) {
+        return new Vec3(0.0, dimensions.height() * 0.93, 0.0);
     }
 
     @Override

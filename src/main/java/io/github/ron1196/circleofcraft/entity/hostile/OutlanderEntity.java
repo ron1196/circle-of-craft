@@ -81,9 +81,8 @@ public class OutlanderEntity extends Monster {
             @NotNull ServerLevelAccessor level,
             @NotNull DifficultyInstance difficulty,
             @NotNull MobSpawnType spawnType,
-            @Nullable SpawnGroupData spawnData,
-            @Nullable CompoundTag compoundTag) {
-        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
+            @Nullable SpawnGroupData spawnData) {
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
         setFemale(this.random.nextBoolean());
         return spawnData;
     }

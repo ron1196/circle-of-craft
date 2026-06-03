@@ -35,6 +35,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -81,8 +82,13 @@ public class SimbaEntity extends TamableAnimal {
     }
 
     @Override
-    public boolean canChangeDimensions() {
+    public boolean canChangeDimensions(@NotNull Level from, @NotNull Level to) {
         return hasCharm();
+    }
+
+    @Override
+    public boolean isFood(@NotNull ItemStack stack) {
+        return false;
     }
 
     @Override
@@ -90,7 +96,7 @@ public class SimbaEntity extends TamableAnimal {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new SimbaAttackGoal(this));
-        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.3D, 4.0F, 2.0F, false));
+        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.3D, 4.0F, 2.0F));
         this.goalSelector.addGoal(4, new SimbaFishingGoal(this));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -168,8 +174,8 @@ public class SimbaEntity extends TamableAnimal {
     }
 
     @Override
-    public @Nullable Entity changeDimension(@NotNull ServerLevel destination) {
-        Entity result = super.changeDimension(destination);
+    public @Nullable Entity changeDimension(@NotNull DimensionTransition transition) {
+        Entity result = super.changeDimension(transition);
         if (result != null && getOwner() instanceof ServerPlayer owner) {
             ModCriteriaTriggers.TELEPORT_SIMBA.trigger(owner);
         }

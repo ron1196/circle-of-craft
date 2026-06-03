@@ -90,7 +90,7 @@ public class LightningBoltEntity extends LightningBolt {
                     ? level().damageSources().playerAttack(castingPlayer)
                     : level().damageSources().inFire();
             entity.hurt(source, (power * 3) + (random.nextInt(3) * 2));
-            entity.setSecondsOnFire(power + random.nextInt(4));
+            entity.igniteForSeconds(power + random.nextInt(4));
         }
     }
 

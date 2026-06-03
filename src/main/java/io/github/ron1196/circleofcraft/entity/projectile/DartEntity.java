@@ -60,7 +60,7 @@ public class DartEntity extends AbstractArrow implements net.minecraft.world.ent
 
     // Convenience constructor for spawning with shooter and type
     public DartEntity(Level level, LivingEntity shooter, DartType dartType) {
-        super(EntityTypes.DART.get(), shooter, level);
+        super(EntityTypes.DART.get(), shooter, level, new ItemStack(ModItems.DART_BLUE.get()), null);
         setDartType(dartType);
         setBaseDamage(dartType.getDamage());
     }
@@ -98,7 +98,7 @@ public class DartEntity extends AbstractArrow implements net.minecraft.world.ent
             switch (type) {
                 case RED -> {
                     int fireDuration = silverShooter ? 5 : 3;
-                    target.setSecondsOnFire(fireDuration);
+                    target.igniteForSeconds(fireDuration);
                 }
                 case YELLOW -> {
                     // Knockback is applied via the base arrow logic, but we add extra
@@ -161,6 +161,11 @@ public class DartEntity extends AbstractArrow implements net.minecraft.world.ent
 
     @Override
     protected @NotNull ItemStack getPickupItem() {
+        return getDefaultPickupItem();
+    }
+
+    @Override
+    protected @NotNull ItemStack getDefaultPickupItem() {
         return switch (getDartType()) {
             case BLUE -> new ItemStack(ModItems.DART_BLUE.get());
             case RED -> new ItemStack(ModItems.DART_RED.get());

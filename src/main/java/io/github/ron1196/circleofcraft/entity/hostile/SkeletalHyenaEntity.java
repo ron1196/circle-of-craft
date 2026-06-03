@@ -2,7 +2,9 @@ package io.github.ron1196.circleofcraft.entity.hostile;
 
 import io.github.ron1196.circleofcraft.registry.BlockEntityTypes;
 import io.github.ron1196.circleofcraft.registry.ModBlocks;
+import io.github.ron1196.circleofcraft.util.LootingHelper;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -40,8 +42,9 @@ public class SkeletalHyenaEntity extends Monster {
     }
 
     @Override
-    protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
-        super.dropCustomDeathLoot(source, looting, recentlyHit);
+    protected void dropCustomDeathLoot(@NotNull ServerLevel level, @NotNull DamageSource source, boolean recentlyHit) {
+        super.dropCustomDeathLoot(level, source, recentlyHit);
+        int looting = LootingHelper.lootingLevel(level, source);
         if (this.random.nextInt(20) <= looting) {
             ItemStack head = new ItemStack(ModBlocks.HYENA_HEAD.get());
             CompoundTag blockEntityTag = new CompoundTag();

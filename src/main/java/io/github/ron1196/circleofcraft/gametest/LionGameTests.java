@@ -25,7 +25,7 @@ public class LionGameTests {
     private static long countCubsInArena(GameTestHelper helper) {
         BlockPos min = helper.absolutePos(ARENA_MIN);
         BlockPos max = helper.absolutePos(ARENA_MAX);
-        AABB bounds = new AABB(min, max);
+        AABB bounds = AABB.encapsulatingFullBlocks(min, max);
         return helper.getLevel()
                 .getEntitiesOfClass(LionEntity.class, bounds, LionEntity::isBaby)
                 .size();

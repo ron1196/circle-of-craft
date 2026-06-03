@@ -25,7 +25,7 @@ public class SpearEntity extends AbstractArrow implements net.minecraft.world.en
     }
 
     public SpearEntity(Level level, LivingEntity shooter, boolean isPoisoned) {
-        super(EntityTypes.SPEAR.get(), shooter, level);
+        super(EntityTypes.SPEAR.get(), shooter, level, new ItemStack(ModItems.GEMSBOK_SPEAR.get()), null);
         setPoisoned(isPoisoned);
         this.pickup = Pickup.ALLOWED;
     }
@@ -67,6 +67,11 @@ public class SpearEntity extends AbstractArrow implements net.minecraft.world.en
 
     @Override
     protected @NotNull ItemStack getPickupItem() {
+        return getDefaultPickupItem();
+    }
+
+    @Override
+    protected @NotNull ItemStack getDefaultPickupItem() {
         return isPoisoned()
                 ? new ItemStack(ModItems.POISONED_SPEAR.get())
                 : new ItemStack(ModItems.GEMSBOK_SPEAR.get());

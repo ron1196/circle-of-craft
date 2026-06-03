@@ -31,7 +31,6 @@ import io.github.ron1196.circleofcraft.registry.ModItems;
 import io.github.ron1196.circleofcraft.registry.ParticleTypes;
 import io.github.ron1196.circleofcraft.world.dimension.Dimensions;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.entity.ArrowRenderer;
@@ -49,6 +48,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
@@ -366,16 +366,19 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
+    public static void registerScreens(RegisterMenuScreensEvent event) {
+        event.register(MenuTypes.GRINDING_BOWL_MENU.get(), GrindingBowlScreen::new);
+        event.register(MenuTypes.BUG_TRAP_MENU.get(), BugTrapScreen::new);
+        event.register(MenuTypes.BONGO_DRUM_MENU.get(), BongoDrumScreen::new);
+        event.register(MenuTypes.QUIVER_MENU.get(), QuiverScreen::new);
+        event.register(MenuTypes.TIMON_MERCHANT_MENU.get(), TimonMerchantScreen::new);
+        event.register(MenuTypes.SIMBA_INVENTORY_MENU.get(), SimbaInventoryScreen::new);
+        event.register(MenuTypes.QUEST_BOOK_MENU.get(), QuestBookScreen::new);
+    }
+
+    @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            MenuScreens.register(MenuTypes.GRINDING_BOWL_MENU.get(), GrindingBowlScreen::new);
-            MenuScreens.register(MenuTypes.BUG_TRAP_MENU.get(), BugTrapScreen::new);
-            MenuScreens.register(MenuTypes.BONGO_DRUM_MENU.get(), BongoDrumScreen::new);
-            MenuScreens.register(MenuTypes.QUIVER_MENU.get(), QuiverScreen::new);
-            MenuScreens.register(MenuTypes.TIMON_MERCHANT_MENU.get(), TimonMerchantScreen::new);
-            MenuScreens.register(MenuTypes.SIMBA_INVENTORY_MENU.get(), SimbaInventoryScreen::new);
-            MenuScreens.register(MenuTypes.QUEST_BOOK_MENU.get(), QuestBookScreen::new);
-
             // Hyena head item variant property
             ItemProperties.register(
                     ModItems.HYENA_HEAD_ITEM.get(), CircleOfCraftMod.id("hyena_type"), (stack, level, entity, seed) -> {

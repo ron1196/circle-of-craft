@@ -18,7 +18,6 @@ public class CrocodileEntity extends Monster {
 
     public CrocodileEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
-        this.setMaxUpStep(1.0F);
     }
 
     @Override
@@ -62,6 +61,7 @@ public class CrocodileEntity extends Monster {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 18.0)
                 .add(Attributes.ATTACK_DAMAGE, 2.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.3);
+                .add(Attributes.MOVEMENT_SPEED, 0.3)
+                .add(Attributes.STEP_HEIGHT, 1.0);
     }
 }

@@ -15,6 +15,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
@@ -51,10 +52,14 @@ public class DikDikEntity extends ModAnimal {
             @NotNull ServerLevelAccessor level,
             @NotNull DifficultyInstance difficulty,
             @NotNull MobSpawnType spawnType,
-            @Nullable SpawnGroupData groupData,
-            @Nullable CompoundTag tag) {
+            @Nullable SpawnGroupData groupData) {
         setVariant(this.random.nextInt(3));
-        return super.finalizeSpawn(level, difficulty, spawnType, groupData, tag);
+        return super.finalizeSpawn(level, difficulty, spawnType, groupData);
+    }
+
+    @Override
+    public boolean isFood(@NotNull ItemStack stack) {
+        return false;
     }
 
     @Override

@@ -128,7 +128,8 @@ public class ModForgeEvents {
                         1.0F);
 
         if (!event.getEntity().getAbilities().instabuild) {
-            held.hurtAndBreak(1, event.getEntity(), player -> player.broadcastBreakEvent(event.getHand()));
+            held.hurtAndBreak(
+                    1, event.getEntity(), net.minecraft.world.entity.LivingEntity.getSlotForHand(event.getHand()));
         }
 
         event.setCancellationResult(InteractionResult.SUCCESS);

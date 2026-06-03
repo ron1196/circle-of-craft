@@ -4,11 +4,13 @@ import io.github.ron1196.circleofcraft.entity.ai.HyenaFollowScarGoal;
 import io.github.ron1196.circleofcraft.entity.animal.*;
 import io.github.ron1196.circleofcraft.registry.BlockEntityTypes;
 import io.github.ron1196.circleofcraft.registry.ModBlocks;
+import io.github.ron1196.circleofcraft.util.LootingHelper;
 import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -57,10 +59,9 @@ public class HyenaEntity extends Monster {
             @NotNull ServerLevelAccessor level,
             @NotNull DifficultyInstance difficulty,
             @NotNull MobSpawnType spawnType,
-            @Nullable SpawnGroupData groupData,
-            @Nullable CompoundTag tag) {
+            @Nullable SpawnGroupData groupData) {
         setVariant(this.random.nextInt(3));
-        return super.finalizeSpawn(level, difficulty, spawnType, groupData, tag);
+        return super.finalizeSpawn(level, difficulty, spawnType, groupData);
     }
 
     @Override
@@ -146,8 +147,9 @@ public class HyenaEntity extends Monster {
     }
 
     @Override
-    protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
-        super.dropCustomDeathLoot(source, looting, recentlyHit);
+    protected void dropCustomDeathLoot(@NotNull ServerLevel level, @NotNull DamageSource source, boolean recentlyHit) {
+        super.dropCustomDeathLoot(level, source, recentlyHit);
+        int looting = LootingHelper.lootingLevel(level, source);
         if (this.random.nextInt(20) <= looting) {
             ItemStack head = new ItemStack(ModBlocks.HYENA_HEAD.get());
             CompoundTag blockEntityTag = new CompoundTag();

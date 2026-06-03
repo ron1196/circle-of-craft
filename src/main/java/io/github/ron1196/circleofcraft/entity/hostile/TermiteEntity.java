@@ -75,7 +75,7 @@ public class TermiteEntity extends Monster implements SwellGoal.Swellable {
     }
 
     @Override
-    public int getExperienceReward() {
+    protected int getBaseExperienceReward() {
         return EXPERIENCE_REWARD;
     }
 

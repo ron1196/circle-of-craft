@@ -128,7 +128,7 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
     @Override
     public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         menu.slotsVisible = selectedQuest < 0;
-        renderBackground(graphics);
+        renderBackground(graphics, mouseX, mouseY, partialTick);
 
         double cx = leftPos + imageWidth / 2.0;
         double cy = topPos + imageHeight / 2.0;
@@ -162,8 +162,8 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-        return super.mouseScrolled(toLogicalX(mouseX), toLogicalY(mouseY), delta);
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+        return super.mouseScrolled(toLogicalX(mouseX), toLogicalY(mouseY), scrollX, scrollY);
     }
 
     @Override

@@ -4,6 +4,7 @@ import io.github.ron1196.circleofcraft.entity.ai.HeadHopGoal;
 import io.github.ron1196.circleofcraft.registry.BlockEntityTypes;
 import io.github.ron1196.circleofcraft.registry.ModItems;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Difficulty;
@@ -59,8 +60,8 @@ public class SkeletalHyenaHeadEntity extends Monster {
     }
 
     @Override
-    protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
-        super.dropCustomDeathLoot(source, looting, recentlyHit);
+    protected void dropCustomDeathLoot(@NotNull ServerLevel level, @NotNull DamageSource source, boolean recentlyHit) {
+        super.dropCustomDeathLoot(level, source, recentlyHit);
         if (recentlyHit && source.getEntity() instanceof Player && random.nextInt(40) == 0) {
             ItemStack headStack = new ItemStack(ModItems.HYENA_HEAD_ITEM.get());
             CompoundTag blockEntityTag = new CompoundTag();
