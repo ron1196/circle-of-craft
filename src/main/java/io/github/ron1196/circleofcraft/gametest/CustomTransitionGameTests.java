@@ -10,6 +10,7 @@ import io.github.ron1196.circleofcraft.quest.questline.RafikiQuestline;
 import io.github.ron1196.circleofcraft.quest.questline.RafikiQuestline.Stage;
 import io.github.ron1196.circleofcraft.quest.stage.StageId;
 import io.netty.channel.embedded.EmbeddedChannel;
+import java.util.List;
 import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
@@ -22,6 +23,7 @@ import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+import net.neoforged.neoforge.network.registration.NetworkRegistry;
 
 /**
  * Verifies that {@link Questline.Builder#customTransition} handlers fire and produce their
@@ -137,9 +139,17 @@ public class CustomTransitionGameTests {
                 origin.getX() + 80,
                 helper.getLevel().getMaxBuildHeight(),
                 origin.getZ() + 80);
-        if (helper.getLevel().getEntitiesOfClass(ScarEntity.class, sweep).isEmpty()) {
+        List<ScarEntity> spawned = helper.getLevel().getEntitiesOfClass(ScarEntity.class, sweep);
+        if (spawned.isEmpty()) {
             helper.fail("ScarEntity did not spawn after COLLECT_BONES customTransition fired");
             return;
+        }
+        // spawnScar places Scar up to 60 blocks away — outside this arena's footprint and well within
+        // the 100-block sweep RafikiQuestActionsGameTests uses to count Scars. Persisted, it would leak
+        // into a neighbouring arena and fail that test's idempotency count. Remove it now that the
+        // assertion has passed.
+        for (ScarEntity scar : spawned) {
+            scar.discard();
         }
         helper.succeed();
     }
@@ -151,6 +161,14 @@ public class CustomTransitionGameTests {
      * fires {@code channelActive}, which sets the connection's channel, so the login-packet sends in
      * {@code placeNewPlayer} (and later entity broadcasts) are accepted and discarded instead of
      * NPEing on a null channel.
+     *
+     * <p>{@code placeNewPlayer} fires {@code PlayerLoggedIn}, on which compat mods (e.g. Jade, a
+     * runtimeOnly dev dependency) send their own login custom-payloads. NeoForge's
+     * {@code NetworkRegistry.checkPacket} rejects those with {@code UnsupportedOperationException}
+     * unless the connection has a negotiated payload setup. {@link NetworkRegistry#configureMockConnection}
+     * is NeoForge's {@code @VisibleForTesting} helper that marks the connection a fully-negotiated
+     * {@code NEOFORGE} connection (payload setup populated from every registered payload), so those
+     * sends pass the check instead of aborting the test before the Scar assertion runs.
      */
     private static ServerPlayer makeNetworkedMockPlayer(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
@@ -161,6 +179,7 @@ public class CustomTransitionGameTests {
 
         Connection connection = new Connection(PacketFlow.SERVERBOUND);
         new EmbeddedChannel(connection);
+        NetworkRegistry.configureMockConnection(connection);
         level.getServer().getPlayerList().placeNewPlayer(connection, player, cookie);
         return player;
     }
