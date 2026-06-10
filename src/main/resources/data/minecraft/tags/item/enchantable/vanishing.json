@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:enchantable/armor",
+    "#minecraft:enchantable/mining",
+    "circleofcraft:pridestone_sword",
+    "circleofcraft:silver_sword",
+    "circleofcraft:peacock_sword",
+    "circleofcraft:kivulite_sword",
+    "circleofcraft:corrupt_sword",
+    "circleofcraft:gemsbok_spear",
+    "circleofcraft:poisoned_spear",
+    "circleofcraft:dart_shooter",
+    "circleofcraft:dart_shooter_silver",
+    "circleofcraft:rafiki_stick"
+  ]
+}

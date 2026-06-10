@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "circleofcraft:pridestone_sword",
+    "circleofcraft:silver_sword",
+    "circleofcraft:peacock_sword",
+    "circleofcraft:kivulite_sword",
+    "circleofcraft:corrupt_sword",
+    "circleofcraft:pridestone_axe",
+    "circleofcraft:silver_axe",
+    "circleofcraft:peacock_axe",
+    "circleofcraft:kivulite_axe",
+    "circleofcraft:corrupt_axe"
+  ]
+}

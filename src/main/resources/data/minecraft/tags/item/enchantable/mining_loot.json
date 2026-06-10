@@ -1,0 +1,26 @@
+{
+  "replace": false,
+  "values": [
+    "circleofcraft:pridestone_pickaxe",
+    "circleofcraft:silver_pickaxe",
+    "circleofcraft:peacock_pickaxe",
+    "circleofcraft:kivulite_pickaxe",
+    "circleofcraft:corrupt_pickaxe",
+    "circleofcraft:pridestone_axe",
+    "circleofcraft:silver_axe",
+    "circleofcraft:peacock_axe",
+    "circleofcraft:kivulite_axe",
+    "circleofcraft:corrupt_axe",
+    "circleofcraft:pridestone_shovel",
+    "circleofcraft:silver_shovel",
+    "circleofcraft:peacock_shovel",
+    "circleofcraft:kivulite_shovel",
+    "circleofcraft:corrupt_shovel",
+    "circleofcraft:pridestone_hoe",
+    "circleofcraft:silver_hoe",
+    "circleofcraft:peacock_hoe",
+    "circleofcraft:kivulite_hoe",
+    "circleofcraft:corrupt_hoe",
+    "circleofcraft:tunnah_diggah"
+  ]
+}
