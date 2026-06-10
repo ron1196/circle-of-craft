@@ -128,7 +128,11 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
     @Override
     public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         menu.slotsVisible = selectedQuest < 0;
-        renderBackground(graphics, mouseX, mouseY, partialTick);
+        // 1.21 folded renderBg into AbstractContainerScreen.renderBackground, so the full
+        // renderBackground() draws the book texture too. Draw only the full-screen dim here
+        // (unscaled, once); the book is drawn once inside the scaled super.render() pass, via the
+        // renderBackground() override below.
+        renderTransparentBackground(graphics);
 
         double cx = leftPos + imageWidth / 2.0;
         double cy = topPos + imageHeight / 2.0;
@@ -144,6 +148,13 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
         renderTooltip(graphics, adjMouseX, adjMouseY);
 
         graphics.pose().popPose();
+    }
+
+    @Override
+    public void renderBackground(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        // Dim is handled full-screen in render(); here draw only the book (renderBg) so the scaled
+        // super.render() pass renders it exactly once with no second dim.
+        renderBg(graphics, partialTick, mouseX, mouseY);
     }
 
     @Override
