@@ -130,6 +130,7 @@ test {
 }
 
 jar {
+    archiveClassifier = "mc${minecraft_version}"
     manifest {
         attributes([
             'Specification-Title'     : 'circleofcraft',
