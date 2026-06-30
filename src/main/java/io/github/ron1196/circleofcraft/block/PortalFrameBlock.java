@@ -48,7 +48,8 @@ public class PortalFrameBlock extends Block {
             PortalConfig.create(
                     ModBlocks.OUTLANDS_PORTAL,
                     ActivationKey.consumed(ModItems.TICKET),
-                    ActivationKey.kept(ModItems.ZIRA_COIN)));
+                    ActivationKey.kept(ModItems.ZIRA_COIN),
+                    ActivationKey.kept(ModItems.RAFIKI_STICK)));
 
     private final boolean isOutlands;
 

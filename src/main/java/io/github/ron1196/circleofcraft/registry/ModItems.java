@@ -634,6 +634,8 @@ public class ModItems {
     public static final RegistryObject<Item> RAFIKI_STICK = registerItem("rafiki_stick", RafikiStickItem::new);
 
     public static final RegistryObject<Item> RAFIKI_DUST = registerItem("rafiki_dust", RafikiDustItem::new);
+    public static final RegistryObject<Item> ANCESTORS_SIGHT =
+            registerItem("ancestors_sight", AncestorsSightItem::new, itemProps(1));
     public static final RegistryObject<Item> PRIDE_COMPASS = registerItem("pride_compass", PrideCompassItem::new);
 
     // ========== Phase 12: Missing Block Items ==========
