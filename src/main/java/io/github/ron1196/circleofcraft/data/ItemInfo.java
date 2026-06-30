@@ -112,6 +112,7 @@ public final class ItemInfo {
                 "",
                 "Can be used to dye rugs or in",
                 "place of gunpowder to craft TNT.");
+        put(ModItems.ANCESTORS_SIGHT, "Rafiki's gourd brew. Drink to reveal Scar through the world for a short time.");
         put(
                 ModItems.RAFIKI_DUST,
                 "Obtained from Rafiki in exchange",
