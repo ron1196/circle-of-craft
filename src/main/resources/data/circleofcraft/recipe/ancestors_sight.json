@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "circleofcraft:mango_juice"
+    },
+    {
+      "item": "circleofcraft:hyena_bone"
+    }
+  ],
+  "result": {
+    "id": "circleofcraft:ancestors_sight",
+    "count": 1
+  }
+}

@@ -36,7 +36,7 @@ public class ItemInfoGameTests {
     private static final String EMPTY = "empty";
 
     /** Expected count of items with lore. Update only when ItemInfo intentionally adds/removes. */
-    private static final int EXPECTED_LORE_ITEM_COUNT = 263;
+    private static final int EXPECTED_LORE_ITEM_COUNT = 264;
 
     @GameTest(template = EMPTY, timeoutTicks = 40)
     public void loreItemCountMatchesSnapshot(GameTestHelper helper) {

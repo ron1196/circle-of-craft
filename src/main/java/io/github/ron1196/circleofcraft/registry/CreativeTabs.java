@@ -440,6 +440,7 @@ public class CreativeTabs {
                         output.accept(ModItems.ZIRA_RUG.get());
                         output.accept(ModItems.RAFIKI_STICK.get());
                         output.accept(ModItems.RAFIKI_DUST.get());
+                        output.accept(ModItems.ANCESTORS_SIGHT.get());
                         output.accept(ModItems.PRIDE_COMPASS.get());
                     })
                     .build());
