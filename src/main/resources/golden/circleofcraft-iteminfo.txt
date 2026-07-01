@@ -1,5 +1,6 @@
 circleofcraft:acacia_bug_trap	
 circleofcraft:amulet	Obtained from Timon and Pumbaa.Allows the wearer to speak to theanimals of the Pride Lands.
+circleofcraft:ancestors_sight	Rafiki's gourd brew. Drink to reveal Scar through the world for a short time.
 circleofcraft:arid_grass	A type of tall grass that growsin arid savannah biomes.
 circleofcraft:astral_charm	Can be equipped to Simba toallow him to follow the playerthrough portals.
 circleofcraft:bamboo_bug_trap	

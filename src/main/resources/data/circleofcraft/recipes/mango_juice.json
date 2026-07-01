@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "circleofcraft:jar_water" },
+    { "item": "circleofcraft:mango" }
+  ],
+  "result": { "item": "circleofcraft:mango_juice", "count": 1 }
+}

@@ -243,7 +243,7 @@ public class RafikiEntity extends PathfinderMob {
 
         // DEFEAT_SCAR — Scar must be killed (SCAR_KILLED trigger), just give hints
         if (stage == Stage.DEFEAT_SCAR) {
-            sendSpeech(player, CharacterSpeech.MENTION_SCAR);
+            ChatHelper.sendNpcMessage(player, "Rafiki", getScarReminder(player));
             return InteractionResult.SUCCESS;
         }
 
@@ -298,19 +298,39 @@ public class RafikiEntity extends PathfinderMob {
         if (message != null) ChatHelper.sendNpcMessage(player, "Rafiki", message);
     }
 
+    private static final String[] SCAR_HINTS = {
+        "Watch de hyenas... dey always know where deir master hides. Follow dem, and you will find dat coward!",
+        "Brew old Rafiki's gourd — Ancestors' Sight, from mango juice and a hyena bone. Drink it down, and de great"
+                + " kings will reveal his shadow through de very stone!",
+        "Dat coward Scar is out dere still, lurkin' in de caves. Hunt him down and finish it!"
+    };
+
     private String getScarHint(Player player) {
-        String base = "Excellent! Here is old Rafiki's stick — it is de ONLY weapon dat can harm Scar! "
-                + "Watch de hyenas... dey always know where deir master hides. Follow dem, and you will find dat coward!";
-        if (level() instanceof ServerLevel serverLevel) {
-            List<ScarEntity> scars = serverLevel.getEntitiesOfClass(
-                    ScarEntity.class, player.getBoundingBox().inflate(250));
-            if (!scars.isEmpty()) {
-                String direction = DirectionHelper.getCompassDirection(
-                        player.blockPosition(), scars.get(0).blockPosition());
-                base += " Oho! I hear he was seen lurking in de caves " + direction + "!";
-            }
-        }
-        return base;
+        return "Excellent! Here is old Rafiki's stick — it is de ONLY weapon dat can harm Scar! "
+                + pickScarHint(player);
+    }
+
+    private String getScarReminder(Player player) {
+        return pickScarHint(player);
+    }
+
+    /** One random hint per click — the dynamic direction line joins the static pool when Scar is nearby. */
+    private String pickScarHint(Player player) {
+        String location = getScarLocationLine(player);
+        int extra = location.isEmpty() ? 0 : 1;
+        int idx = random.nextInt(SCAR_HINTS.length + extra);
+        return idx < SCAR_HINTS.length ? SCAR_HINTS[idx] : location;
+    }
+
+    private String getScarLocationLine(Player player) {
+        if (!(level() instanceof ServerLevel serverLevel)) return "";
+        List<ScarEntity> scars = serverLevel.getEntitiesOfClass(
+                ScarEntity.class, player.getBoundingBox().inflate(250));
+        if (scars.isEmpty()) return "";
+        BlockPos scarPos = scars.get(0).blockPosition();
+        String direction = DirectionHelper.getCompassDirection(player.blockPosition(), scarPos);
+        int distance = (int) Math.sqrt(player.blockPosition().distSqr(scarPos));
+        return "Oho! I hear he lurks in de caves " + direction + ", about " + distance + " blocks away!";
     }
 
     private void sendSpeech(Player player, CharacterSpeech speech) {

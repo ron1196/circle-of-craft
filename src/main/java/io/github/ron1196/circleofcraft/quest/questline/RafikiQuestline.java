@@ -5,6 +5,7 @@ import static io.github.ron1196.circleofcraft.quest.stage.QuestObjective.ItemReq
 import static io.github.ron1196.circleofcraft.quest.stage.QuestObjective.Source;
 import static io.github.ron1196.circleofcraft.quest.stage.QuestTrigger.*;
 
+import io.github.ron1196.circleofcraft.entity.hostile.HyenaEntity;
 import io.github.ron1196.circleofcraft.entity.npc.ScarEntity;
 import io.github.ron1196.circleofcraft.entity.projectile.LightningBoltEntity;
 import io.github.ron1196.circleofcraft.quest.actions.RafikiQuestActions;
@@ -101,10 +102,13 @@ public class RafikiQuestline {
 
     // ── Scar spawn constants ──────────────────────────────────────────────────
     private static final int SCAR_SEARCH_RADIUS = 60;
-    private static final int SCAR_MIN_Y = 10;
-    private static final int SCAR_MAX_Y = 40;
+    private static final int SCAR_MIN_Y = 40;
+    private static final int SCAR_MAX_Y = 60;
     private static final int SCAR_SEARCH_ATTEMPTS = 200;
     private static final int SCAR_FALLBACK_DISTANCE = 30;
+    private static final int SCAR_DEN_HYENAS = 4;
+    private static final int SCAR_DEN_SCATTER = 3;
+    private static final int SCAR_DEN_SCATTER_ATTEMPTS = 20;
 
     /**
      * When player brings 64 bones to Rafiki, spawn Scar underground nearby.
@@ -129,7 +133,36 @@ public class RafikiQuestline {
             level.addFreshEntity(scar);
             level.addFreshEntity(
                     new LightningBoltEntity(level, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 0, player));
+            spawnDen(level, spawnPos);
         }
+    }
+
+    /** Hyenas gather where Scar lurks — a visible pack that marks his cave and feeds the follow-trail behaviour. */
+    private static void spawnDen(ServerLevel level, BlockPos center) {
+        for (int i = 0; i < SCAR_DEN_HYENAS; i++) {
+            HyenaEntity hyena = EntityTypes.HYENA.get().create(level);
+            if (hyena == null) continue;
+            BlockPos pos = findDenSpawn(level, center);
+            hyena.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, level.random.nextFloat() * 360F, 0F);
+            hyena.setPersistenceRequired();
+            level.addFreshEntity(hyena);
+        }
+    }
+
+    /** A standable air block near {@code center}, falling back to Scar's own (already-verified) block. */
+    private static BlockPos findDenSpawn(ServerLevel level, BlockPos center) {
+        for (int attempt = 0; attempt < SCAR_DEN_SCATTER_ATTEMPTS; attempt++) {
+            BlockPos pos = center.offset(
+                    level.random.nextInt(SCAR_DEN_SCATTER * 2 + 1) - SCAR_DEN_SCATTER,
+                    level.random.nextInt(3) - 1,
+                    level.random.nextInt(SCAR_DEN_SCATTER * 2 + 1) - SCAR_DEN_SCATTER);
+            if (level.getBlockState(pos).isAir()
+                    && level.getBlockState(pos.above()).isAir()
+                    && level.getBlockState(pos.below()).isSolid()) {
+                return pos;
+            }
+        }
+        return center;
     }
 
     private static BlockPos findCaveSpawn(ServerLevel level, BlockPos center) {

@@ -20,6 +20,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -60,6 +61,14 @@ public class ScarEntity extends Monster {
 
     private static final int ROAR_INTERVAL_RANGE = 400;
     private static final float ROAR_VOLUME = 16.0F;
+
+    /** The closer a player is, the faster Scar roars — turning the roar into a hot/cold homing signal. */
+    private static final double ROAR_TRACK_RANGE = 128.0;
+
+    private static final double ROAR_DISTANCE_FACTOR = 4.0;
+    private static final int ROAR_CLOSE_MIN = 40;
+    private static final int ROAR_FAR_MAX = 400;
+    private static final int ROAR_JITTER = 20;
     private int roarCooldown = 100;
 
     public ScarEntity(EntityType<? extends ScarEntity> type, Level level) {
@@ -161,7 +170,7 @@ public class ScarEntity extends Monster {
                             SoundSource.HOSTILE,
                             ROAR_VOLUME,
                             0.8F + random.nextFloat() * 0.3F);
-            roarCooldown = ROAR_INTERVAL_MIN + random.nextInt(ROAR_INTERVAL_RANGE);
+            roarCooldown = nextRoarDelay();
         }
 
         if (hasSpoken) {
@@ -174,6 +183,15 @@ public class ScarEntity extends Monster {
         }
         ChatHelper.sendNpcMessage(nearest, "Scar", SCAR_GREETING);
         hasSpoken = true;
+    }
+
+    private int nextRoarDelay() {
+        Player nearest = level().getNearestPlayer(this, ROAR_TRACK_RANGE);
+        if (nearest == null) {
+            return ROAR_INTERVAL_MIN + random.nextInt(ROAR_INTERVAL_RANGE);
+        }
+        int base = (int) Mth.clamp(distanceTo(nearest) * ROAR_DISTANCE_FACTOR, ROAR_CLOSE_MIN, ROAR_FAR_MAX);
+        return base + random.nextInt(ROAR_JITTER);
     }
 
     private static final double DEATH_MESSAGE_RANGE = 50.0;
