@@ -19,6 +19,11 @@
   <a href="https://modrinth.com/mod/circle-of-craft">Modrinth</a>
 </p>
 
+<p align="center">
+  <b>Community:</b>
+  <a href="https://discord.gg/r6xs7HS8ce">Join the Discord</a>
+</p>
+
 ---
 
 ## About
