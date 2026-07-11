@@ -1,18 +1,24 @@
 package io.github.ron1196.circleofcraft.entity.npc;
 
 import io.github.ron1196.circleofcraft.data.ModCriteriaTriggers;
+import io.github.ron1196.circleofcraft.data.PlayerData;
+import io.github.ron1196.circleofcraft.data.PlayerDataProvider;
 import io.github.ron1196.circleofcraft.entity.ai.SimbaAttackGoal;
 import io.github.ron1196.circleofcraft.entity.ai.SimbaFishingGoal;
 import io.github.ron1196.circleofcraft.entity.ai.SimbaWanderGoal;
 import io.github.ron1196.circleofcraft.item.AstralCharmItem;
 import io.github.ron1196.circleofcraft.menu.SimbaInventoryMenu;
+import io.github.ron1196.circleofcraft.network.Networking;
+import io.github.ron1196.circleofcraft.network.PlayerDataSyncPacket;
 import io.github.ron1196.circleofcraft.registry.ModItems;
 import io.github.ron1196.circleofcraft.util.ChatHelper;
+import java.util.UUID;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -34,9 +40,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -168,6 +176,26 @@ public class SimbaEntity extends TamableAnimal {
         return InteractionResult.SUCCESS;
     }
 
+    /**
+     * Authoritative check for "this player already has a Simba" — searches loaded levels rather
+     * than trusting the persisted {@code hasSimba} flag, which can desync (missed death, old save).
+     * A Simba sitting in an unloaded chunk won't be found, trading a rare duplicate for never being
+     * locked out of re-summoning.
+     */
+    public static boolean playerHasLivingSimba(@NotNull ServerPlayer player) {
+        UUID id = player.getUUID();
+        MinecraftServer server = player.getServer();
+        if (server == null) return false;
+        for (ServerLevel level : server.getAllLevels()) {
+            boolean found = !level.getEntities(
+                            EntityTypeTest.forClass(SimbaEntity.class),
+                            simba -> simba.isAlive() && id.equals(simba.getOwnerUUID()))
+                    .isEmpty();
+            if (found) return true;
+        }
+        return false;
+    }
+
     @Override
     public @Nullable Entity changeDimension(@NotNull ServerLevel destination) {
         Entity result = super.changeDimension(destination);
@@ -186,6 +214,14 @@ public class SimbaEntity extends TamableAnimal {
             if (stack.isEmpty()) continue;
             spawnAtLocation(stack);
             inventory.setStackInSlot(i, ItemStack.EMPTY);
+        }
+        if (hasCharm()) {
+            spawnAtLocation(AstralCharmItem.createActive());
+        }
+        if (getOwner() instanceof ServerPlayer owner) {
+            PlayerData data = PlayerDataProvider.get(owner);
+            data.setHasSimba(false);
+            Networking.CHANNEL.send(PacketDistributor.PLAYER.with(() -> owner), new PlayerDataSyncPacket(data));
         }
     }
 
