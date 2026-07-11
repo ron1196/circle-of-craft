@@ -34,10 +34,16 @@ public class RafikiDustItem extends Item {
             return InteractionResult.PASS;
         }
 
-        // Block if player already has a Simba
+        // Block if player already has a living Simba. The persisted flag can desync (missed death,
+        // pre-fix save), so verify against the world and self-heal a stale flag instead of trusting it.
         PlayerData playerData = PlayerData.get(player);
-        if (playerData.hasSimba()) {
-            return InteractionResult.PASS;
+        if (playerData.hasSimba() && player instanceof ServerPlayer sp) {
+            if (SimbaEntity.playerHasLivingSimba(sp)) {
+                return InteractionResult.PASS;
+            }
+            playerData.setHasSimba(false);
+            net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(
+                    sp, io.github.ron1196.circleofcraft.network.PlayerDataSyncPacket.of(playerData));
         }
 
         // Must be used on a Star Altar
@@ -64,6 +70,7 @@ public class RafikiDustItem extends Item {
             simba.moveTo(x + 0.5, y + 1, z + 0.5, 0F, 0F);
             simba.setBaby(true);
             simba.setHealth(15.0F);
+            simba.tame(player);
             level.addFreshEntity(simba);
             playerData.setHasSimba(true);
             if (player instanceof ServerPlayer sp) {
