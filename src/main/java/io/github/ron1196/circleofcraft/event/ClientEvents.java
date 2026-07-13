@@ -55,6 +55,8 @@ import org.lwjgl.glfw.GLFW;
 @Mod.EventBusSubscriber(modid = CircleOfCraftMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
 
+    private static final CompassWobble PRIDE_COMPASS_WOBBLE = new CompassWobble();
+
     // Passive animal layers
     public static final ModelLayerLocation LION_LAYER = layer("lion");
     public static final ModelLayerLocation ZEBRA_LAYER = layer("zebra");
@@ -407,8 +409,29 @@ public class ClientEvents {
                         double targetAngle = Math.atan2(dz, dx) / (Math.PI * 2);
                         double playerAngle = Mth.positiveModulo(entity.getYRot() / 360.0, 1.0);
                         double compassAngle = 0.5 - (playerAngle - 0.25 - targetAngle);
-                        return Mth.positiveModulo((float) compassAngle, 1.0F);
+                        // Damp across the 1.0->0.0 seam (which sits at the target-facing heading)
+                        // so the needle doesn't flicker between frames when facing the portal.
+                        PRIDE_COMPASS_WOBBLE.update(level.getGameTime(), Mth.positiveModulo(compassAngle, 1.0));
+                        return (float) PRIDE_COMPASS_WOBBLE.rotation;
                     });
         });
+    }
+
+    // Vanilla CompassItem.CompassWobble is package-private, so mirror its damped-spring
+    // smoothing here. Shortest-path delta means it interpolates across the modulo seam.
+    private static final class CompassWobble {
+        private double rotation;
+        private double deltaRotation;
+        private long lastUpdateTick = -1;
+
+        void update(long gameTime, double target) {
+            if (lastUpdateTick == gameTime) {
+                return;
+            }
+            lastUpdateTick = gameTime;
+            double delta = Mth.positiveModulo(target - rotation + 0.5, 1.0) - 0.5;
+            deltaRotation = (deltaRotation + delta * 0.1) * 0.8;
+            rotation = Mth.positiveModulo(rotation + deltaRotation, 1.0);
+        }
     }
 }
