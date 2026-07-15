@@ -42,6 +42,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -250,8 +251,7 @@ public class ClientEvents {
         // NPCs — proper models ported from original mod (shadow, scale from old code)
         event.registerEntityRenderer(
                 EntityTypes.RAFIKI.get(),
-                ctx -> new NpcRenderer(
-                        ctx, new RafikiModel(ctx.bakeLayer(RAFIKI_LAYER)), RafikiEntity.REGISTRY_NAME, 0.35F));
+                ctx -> new RafikiRenderer(ctx, new RafikiModel(ctx.bakeLayer(RAFIKI_LAYER)), 0.35F, 1.0F));
         event.registerEntityRenderer(
                 EntityTypes.SIMBA.get(),
                 ctx -> new NpcRenderer(
@@ -397,23 +397,21 @@ public class ClientEvents {
                         if (entity == null || level == null) {
                             return 0.0F;
                         }
-                        boolean inPrideLands = level.dimension() == Dimensions.PRIDE_LANDS_LEVEL;
-                        if (!inPrideLands) {
+                        if (level.dimension() != Dimensions.PRIDE_LANDS_LEVEL) {
                             // Spin smoothly in non-Pride-Lands dimensions
-                            long time = level.getGameTime();
-                            return Mth.positiveModulo(time / 80.0F, 1.0F);
+                            return Mth.positiveModulo(level.getGameTime() / 80.0F, 1.0F);
                         }
-                        double targetX = ClientWorldState.playerHomePortalX;
-                        double targetZ = ClientWorldState.playerHomePortalZ;
-                        double dx = targetX - entity.getX();
-                        double dz = targetZ - entity.getZ();
-                        double targetAngle = Math.atan2(dz, dx) / (Math.PI * 2);
-                        double playerAngle = Mth.positiveModulo(entity.getYRot() / 360.0, 1.0);
-                        double compassAngle = 0.5 - (playerAngle - 0.25 - targetAngle);
-                        // Damp across the 1.0->0.0 seam (which sits at the target-facing heading)
-                        // so the needle doesn't flicker between frames when facing the portal.
-                        PRIDE_COMPASS_WOBBLE.update(level.getGameTime(), Mth.positiveModulo(compassAngle, 1.0));
-                        return (float) PRIDE_COMPASS_WOBBLE.rotation();
+                        double dx = ClientWorldState.playerHomePortalX - entity.getX();
+                        double dz = ClientWorldState.playerHomePortalZ - entity.getZ();
+                        double angleToTarget = Math.atan2(dz, dx) / (Math.PI * 2);
+                        // Body rotation (getVisualRotationYInDegrees), NOT getYRot — the held compass
+                        // is anchored to the body, so the head-look yaw would swing the needle wrongly.
+                        double viewY = Mth.positiveModulo(entity.getVisualRotationYInDegrees() / 360.0, 1.0);
+                        if (entity instanceof Player player && player.isLocalPlayer()) {
+                            PRIDE_COMPASS_WOBBLE.update(level.getGameTime(), 0.5 - (viewY - 0.25));
+                            return Mth.positiveModulo((float) (angleToTarget + PRIDE_COMPASS_WOBBLE.rotation()), 1.0F);
+                        }
+                        return Mth.positiveModulo((float) (0.5 - (viewY - 0.25 - angleToTarget)), 1.0F);
                     });
         });
     }
