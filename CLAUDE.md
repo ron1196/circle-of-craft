@@ -11,7 +11,7 @@
 ## Build & Run
 
 ```bash
-export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
+export JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home
 ./gradlew build          # Build the mod JAR
 ./gradlew compileJava    # Compile only (fast check)
 ./gradlew runClient      # Launch Minecraft with the mod
