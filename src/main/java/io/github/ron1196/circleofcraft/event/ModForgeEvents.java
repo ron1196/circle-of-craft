@@ -9,6 +9,7 @@ import io.github.ron1196.circleofcraft.entity.RugEntity;
 import io.github.ron1196.circleofcraft.entity.hostile.HyenaEntity;
 import io.github.ron1196.circleofcraft.entity.hostile.SkeletalHyenaEntity;
 import io.github.ron1196.circleofcraft.entity.npc.ScarEntity;
+import io.github.ron1196.circleofcraft.entity.npc.SimbaEntity;
 import io.github.ron1196.circleofcraft.entity.npc.ZiraEntity;
 import io.github.ron1196.circleofcraft.item.GroundRhinoHornItem;
 import io.github.ron1196.circleofcraft.network.LoginSyncPacket;
@@ -36,8 +37,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
@@ -275,6 +279,27 @@ public class ModForgeEvents {
         BlockPos spawn = prideLands.getSharedSpawnPos();
         int y = LevelHelper.surfaceY(prideLands, spawn.getX(), spawn.getZ()) + 1;
         player.teleportTo(prideLands, spawn.getX() + 0.5, y, spawn.getZ() + 0.5, player.getYRot(), player.getXRot());
+    }
+
+    @SubscribeEvent
+    public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+
+        ServerLevel from = player.server.getLevel(event.getFrom());
+        if (from == null) return;
+        ServerLevel to = player.serverLevel();
+
+        for (SimbaEntity simba : from.getEntities(
+                EntityTypeTest.forClass(SimbaEntity.class),
+                s -> s.isAlive() && player.getUUID().equals(s.getOwnerUUID()) && s.hasCharm() && !s.isOrderedToSit())) {
+            simba.changeDimension(new DimensionTransition(
+                    to,
+                    player.position(),
+                    Vec3.ZERO,
+                    simba.getYRot(),
+                    simba.getXRot(),
+                    DimensionTransition.DO_NOTHING));
+        }
     }
 
     // ── PlayerTickEvent.Post ─────────────────────────────────────────────────────

@@ -2,6 +2,7 @@ package io.github.ron1196.circleofcraft.event;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
+import io.github.ron1196.circleofcraft.client.CompassWobble;
 import io.github.ron1196.circleofcraft.client.gui.BongoDrumScreen;
 import io.github.ron1196.circleofcraft.client.gui.BugTrapScreen;
 import io.github.ron1196.circleofcraft.client.gui.GrindingBowlScreen;
@@ -58,6 +59,8 @@ import org.lwjgl.glfw.GLFW;
 
 @EventBusSubscriber(modid = CircleOfCraftMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
+
+    private static final CompassWobble PRIDE_COMPASS_WOBBLE = new CompassWobble();
 
     // Passive animal layers
     public static final ModelLayerLocation LION_LAYER = layer("lion");
@@ -411,7 +414,10 @@ public class ClientEvents {
                         double targetAngle = Math.atan2(dz, dx) / (Math.PI * 2);
                         double playerAngle = Mth.positiveModulo(entity.getYRot() / 360.0, 1.0);
                         double compassAngle = 0.5 - (playerAngle - 0.25 - targetAngle);
-                        return Mth.positiveModulo((float) compassAngle, 1.0F);
+                        // Damp across the 1.0->0.0 seam (which sits at the target-facing heading)
+                        // so the needle doesn't flicker between frames when facing the portal.
+                        PRIDE_COMPASS_WOBBLE.update(level.getGameTime(), Mth.positiveModulo(compassAngle, 1.0));
+                        return (float) PRIDE_COMPASS_WOBBLE.rotation();
                     });
         });
     }

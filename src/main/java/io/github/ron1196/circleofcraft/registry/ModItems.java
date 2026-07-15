@@ -645,7 +645,15 @@ public class ModItems {
     // Disabled pending rework — see https://github.com/ron1196/circle-of-craft/issues/78
     // public static final RegistryObject<Item> DART_QUIVER = registerItem("dart_quiver", QuiverItem::new,
     // itemProps(1));
-    public static final DeferredItem<Item> PASSION_FRUIT = foodItem("passion_fruit", 3, 0.3F);
+    public static final DeferredItem<Item> PASSION_FRUIT = registerItem(
+            "passion_fruit",
+            PassionFruitItem::new,
+            itemProps(64)
+                    .food(new FoodProperties.Builder()
+                            .nutrition(3)
+                            .saturationModifier(0.3F)
+                            .alwaysEdible()
+                            .build()));
     public static final DeferredItem<Item> ZAZU_EGG = ITEMS.register("zazu_egg", ZazuEggItem::new);
 
     // ========== Block Entity Items ==========
