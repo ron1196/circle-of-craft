@@ -205,12 +205,12 @@ public class QuestlineManager implements QuestStateLookup {
         return switch (req.source()) {
             case MAIN_HAND -> {
                 ItemStack held = player.getMainHandItem();
-                yield held.is(req.item().get()) && held.getCount() >= req.count();
+                yield req.matches(held) && held.getCount() >= req.count();
             }
             case INVENTORY -> {
                 int found = 0;
                 for (ItemStack stack : player.getInventory().items) {
-                    if (stack.is(req.item().get())) {
+                    if (req.matches(stack)) {
                         found += stack.getCount();
                         if (found >= req.count()) yield true;
                     }
@@ -234,7 +234,7 @@ public class QuestlineManager implements QuestStateLookup {
                 int remaining = req.count();
                 for (ItemStack stack : player.getInventory().items) {
                     if (remaining <= 0) break;
-                    if (stack.is(req.item().get())) {
+                    if (req.matches(stack)) {
                         int take = Math.min(remaining, stack.getCount());
                         stack.shrink(take);
                         remaining -= take;
