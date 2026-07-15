@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Passion fruit — a normal food that, eaten at full health, ferries the player between Upendi and
+ * Passion fruit — a normal food that, when eaten, ferries the player between Upendi and
  * the Pride Lands (in Upendi → out, anywhere else → in). This is the only survival passage to
  * Upendi, which is why passion trees also grow (very rarely) in the Pride Lands: the first fruit
  * must be obtainable before you can ever reach Upendi. Farming the dense Upendi trees provides the
@@ -29,9 +29,8 @@ public class PassionFruitItem extends Item {
     @Override
     public @NotNull ItemStack finishUsingItem(
             @NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity) {
-        boolean fullHealth = entity.getHealth() >= entity.getMaxHealth();
         ItemStack result = super.finishUsingItem(stack, level, entity);
-        if (!level.isClientSide() && fullHealth && entity instanceof ServerPlayer player) {
+        if (!level.isClientSide() && entity instanceof ServerPlayer player) {
             travel(player);
         }
         return result;
