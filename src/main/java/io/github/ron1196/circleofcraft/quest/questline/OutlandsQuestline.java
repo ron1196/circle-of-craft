@@ -23,9 +23,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
@@ -86,7 +86,7 @@ public class OutlandsQuestline {
                                 "Bring Pumbaa 16 bugs, planks, a jar of lava, and a thrown termite",
                                 List.of(
                                         new ItemRequirement(ModItems.BUG, 16, Source.INVENTORY),
-                                        new ItemRequirement(() -> Items.OAK_PLANKS, 1, Source.INVENTORY),
+                                        new ItemRequirement(ItemTags.PLANKS, 1, Source.INVENTORY),
                                         new ItemRequirement(ModItems.JAR_LAVA, 1, Source.INVENTORY),
                                         new ItemRequirement(ModItems.TERMITE_THROWN, 1, Source.INVENTORY))))
                 .stage(USE_PUMBAA_BOX, new QuestObjective("Expel the Outlanders from Rafiki's tree"))
