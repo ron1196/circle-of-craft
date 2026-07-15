@@ -127,7 +127,7 @@ public class ModForgeEvents {
         ITeleporter teleporter = new SimbaFollowTeleporter(player.position());
         for (SimbaEntity simba : from.getEntities(
                 EntityTypeTest.forClass(SimbaEntity.class),
-                s -> s.isAlive() && s.isOwnedBy(player) && s.hasCharm() && !s.isOrderedToSit())) {
+                s -> s.isAlive() && player.getUUID().equals(s.getOwnerUUID()) && s.hasCharm() && !s.isOrderedToSit())) {
             simba.setPortalCooldown();
             simba.changeDimension(to, teleporter);
         }
