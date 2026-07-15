@@ -17,6 +17,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -29,7 +31,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -353,14 +354,14 @@ public class PumbaaEntity extends PathfinderMob {
 
     private static boolean hasBoxIngredients(@NotNull Player player) {
         return countInInventory(player, ModItems.BUG.get()) >= REQUIRED_BUG_COUNT
-                && countInInventory(player, Items.OAK_PLANKS) >= 1
+                && countInInventory(player, ItemTags.PLANKS) >= 1
                 && countInInventory(player, ModItems.JAR_LAVA.get()) >= 1
                 && countInInventory(player, ModItems.TERMITE_THROWN.get()) >= 1;
     }
 
     private static void consumeBoxIngredients(@NotNull Player player) {
         shrinkFromInventory(player, ModItems.BUG.get(), REQUIRED_BUG_COUNT);
-        shrinkFromInventory(player, Items.OAK_PLANKS, 1);
+        shrinkFromInventory(player, ItemTags.PLANKS, 1);
         shrinkFromInventory(player, ModItems.JAR_LAVA.get(), 1);
         shrinkFromInventory(player, ModItems.TERMITE_THROWN.get(), 1);
     }
@@ -373,11 +374,31 @@ public class PumbaaEntity extends PathfinderMob {
         return total;
     }
 
+    private static int countInInventory(@NotNull Player player, TagKey<Item> tag) {
+        int total = 0;
+        for (ItemStack stack : player.getInventory().items) {
+            if (stack.is(tag)) total += stack.getCount();
+        }
+        return total;
+    }
+
     private static void shrinkFromInventory(@NotNull Player player, Item item, int amount) {
         int remaining = amount;
         for (ItemStack stack : player.getInventory().items) {
             if (remaining <= 0) break;
             if (stack.is(item)) {
+                int take = Math.min(remaining, stack.getCount());
+                stack.shrink(take);
+                remaining -= take;
+            }
+        }
+    }
+
+    private static void shrinkFromInventory(@NotNull Player player, TagKey<Item> tag, int amount) {
+        int remaining = amount;
+        for (ItemStack stack : player.getInventory().items) {
+            if (remaining <= 0) break;
+            if (stack.is(tag)) {
                 int take = Math.min(remaining, stack.getCount());
                 stack.shrink(take);
                 remaining -= take;
