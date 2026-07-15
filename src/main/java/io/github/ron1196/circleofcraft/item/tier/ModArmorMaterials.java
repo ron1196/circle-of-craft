@@ -57,6 +57,16 @@ public final class ModArmorMaterials {
             0.0F,
             () -> Ingredient.of(ModItems.OUTLANDER_FUR.get()));
 
+    // Shared cosmetic layer for the special wearables (Outlander helmet, animal-speak amulet,
+    // peacock wings) — mirrors the old mod's single special.png armor texture.
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> SPECIAL = register(
+            "special", new int[] {2, 5, 6, 2}, 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY);
+
+    // Animal-speak amulet — worn in the chest slot but should be invisible on the body
+    // (shares that slot with the peacock wings, so it needs its own transparent layer).
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> AMULET = register(
+            "amulet", new int[] {0, 0, 0, 0}, 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY);
+
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> TICKET_LION = register(
             "ticket_lion",
             new int[] {0, 0, 0, 0},

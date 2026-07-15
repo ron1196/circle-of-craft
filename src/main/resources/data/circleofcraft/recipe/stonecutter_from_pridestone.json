@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "circleofcraft:pridestone"
+    },
+    "I": {
+      "item": "circleofcraft:silver_ingot"
+    }
+  },
+  "pattern": [
+    " I ",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:stonecutter"
+  }
+}

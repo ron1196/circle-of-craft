@@ -2,15 +2,17 @@ package io.github.ron1196.circleofcraft.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.Mob;
 import org.jetbrains.annotations.NotNull;
 
-public class RafikiModel extends EntityModel<Mob> {
+public class RafikiModel extends EntityModel<Mob> implements ArmedModel {
 
     private final ModelPart body;
     private final ModelPart rightArm;
@@ -147,5 +149,13 @@ public class RafikiModel extends EntityModel<Mob> {
         tail4.render(poseStack, buffer, packedLight, packedOverlay, color);
         head.render(poseStack, buffer, packedLight, packedOverlay, color);
         hair.render(poseStack, buffer, packedLight, packedOverlay, color);
+    }
+
+    @Override
+    public void translateToHand(@NotNull HumanoidArm side, @NotNull PoseStack poseStack) {
+        // ItemInHandLayer already walks ~10px down the arm to the hand; only center on the arm box
+        // (its origin sits at the pivot corner, +1.5px in x/z), don't re-apply the descent.
+        this.rightArm.translateAndRotate(poseStack);
+        poseStack.translate(0.125F, 0.0F, 0.0625F);
     }
 }
