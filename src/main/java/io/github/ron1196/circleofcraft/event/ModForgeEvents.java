@@ -291,7 +291,7 @@ public class ModForgeEvents {
 
         for (SimbaEntity simba : from.getEntities(
                 EntityTypeTest.forClass(SimbaEntity.class),
-                s -> s.isAlive() && s.isOwnedBy(player) && s.hasCharm() && !s.isOrderedToSit())) {
+                s -> s.isAlive() && player.getUUID().equals(s.getOwnerUUID()) && s.hasCharm() && !s.isOrderedToSit())) {
             simba.changeDimension(new DimensionTransition(
                     to,
                     player.position(),
