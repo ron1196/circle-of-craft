@@ -2,6 +2,7 @@ package io.github.ron1196.circleofcraft.event;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
+import io.github.ron1196.circleofcraft.client.CompassWobble;
 import io.github.ron1196.circleofcraft.client.gui.BongoDrumScreen;
 import io.github.ron1196.circleofcraft.client.gui.BugTrapScreen;
 import io.github.ron1196.circleofcraft.client.gui.GrindingBowlScreen;
@@ -412,26 +413,8 @@ public class ClientEvents {
                         // Damp across the 1.0->0.0 seam (which sits at the target-facing heading)
                         // so the needle doesn't flicker between frames when facing the portal.
                         PRIDE_COMPASS_WOBBLE.update(level.getGameTime(), Mth.positiveModulo(compassAngle, 1.0));
-                        return (float) PRIDE_COMPASS_WOBBLE.rotation;
+                        return (float) PRIDE_COMPASS_WOBBLE.rotation();
                     });
         });
-    }
-
-    // Vanilla CompassItem.CompassWobble is package-private, so mirror its damped-spring
-    // smoothing here. Shortest-path delta means it interpolates across the modulo seam.
-    private static final class CompassWobble {
-        private double rotation;
-        private double deltaRotation;
-        private long lastUpdateTick = -1;
-
-        void update(long gameTime, double target) {
-            if (lastUpdateTick == gameTime) {
-                return;
-            }
-            lastUpdateTick = gameTime;
-            double delta = Mth.positiveModulo(target - rotation + 0.5, 1.0) - 0.5;
-            deltaRotation = (deltaRotation + delta * 0.1) * 0.8;
-            rotation = Mth.positiveModulo(rotation + deltaRotation, 1.0);
-        }
     }
 }
