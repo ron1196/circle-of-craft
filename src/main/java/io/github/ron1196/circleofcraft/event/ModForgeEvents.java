@@ -10,6 +10,7 @@ import io.github.ron1196.circleofcraft.entity.RugEntity;
 import io.github.ron1196.circleofcraft.entity.hostile.HyenaEntity;
 import io.github.ron1196.circleofcraft.entity.hostile.SkeletalHyenaEntity;
 import io.github.ron1196.circleofcraft.entity.npc.ScarEntity;
+import io.github.ron1196.circleofcraft.entity.npc.SimbaEntity;
 import io.github.ron1196.circleofcraft.entity.npc.ZiraEntity;
 import io.github.ron1196.circleofcraft.item.GroundRhinoHornItem;
 import io.github.ron1196.circleofcraft.network.LoginSyncPacket;
@@ -21,6 +22,7 @@ import io.github.ron1196.circleofcraft.quest.stage.QuestTrigger;
 import io.github.ron1196.circleofcraft.registry.*;
 import io.github.ron1196.circleofcraft.util.LevelHelper;
 import io.github.ron1196.circleofcraft.world.dimension.Dimensions;
+import java.util.function.Function;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -37,8 +39,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.portal.PortalInfo;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -105,6 +111,43 @@ public class ModForgeEvents {
             PlayerData playerData = PlayerDataProvider.get(serverPlayer);
             Networking.CHANNEL.send(
                     PacketDistributor.PLAYER.with(() -> serverPlayer), new LoginSyncPacket(worldData, playerData));
+        }
+    }
+
+    // ── Simba follows the player across ANY dimension change ───────────────────
+
+    @SubscribeEvent
+    public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+
+        ServerLevel from = player.server.getLevel(event.getFrom());
+        if (from == null) return;
+        ServerLevel to = player.serverLevel();
+
+        ITeleporter teleporter = new SimbaFollowTeleporter(player.position());
+        for (SimbaEntity simba : from.getEntities(
+                EntityTypeTest.forClass(SimbaEntity.class),
+                s -> s.isAlive() && player.getUUID().equals(s.getOwnerUUID()) && s.hasCharm() && !s.isOrderedToSit())) {
+            simba.setPortalCooldown();
+            simba.changeDimension(to, teleporter);
+        }
+    }
+
+    private record SimbaFollowTeleporter(Vec3 target) implements ITeleporter {
+        @Override
+        public PortalInfo getPortalInfo(
+                Entity entity, ServerLevel destWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
+            return new PortalInfo(target, Vec3.ZERO, entity.getYRot(), entity.getXRot());
+        }
+
+        @Override
+        public Entity placeEntity(
+                Entity entity,
+                ServerLevel currentWorld,
+                ServerLevel destWorld,
+                float yaw,
+                Function<Boolean, Entity> repositionEntity) {
+            return repositionEntity.apply(false);
         }
     }
 

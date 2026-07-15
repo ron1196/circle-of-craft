@@ -172,10 +172,17 @@ public class CommonEvents {
     }
 
     private static boolean hasWaterNearby(ServerLevelAccessor level, BlockPos pos, int radius) {
+        BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         for (int dx = -radius; dx <= radius; dx++) {
-            for (int dy = -radius; dy <= radius; dy++) {
-                for (int dz = -radius; dz <= radius; dz++) {
-                    if (level.getFluidState(pos.offset(dx, dy, dz)).is(net.minecraft.tags.FluidTags.WATER)) {
+            for (int dz = -radius; dz <= radius; dz++) {
+                // During worldgen `level` is a WorldGenRegion; reading a fluid in a chunk outside
+                // the region throws. Skip columns whose chunk isn't available.
+                if (!level.hasChunk((pos.getX() + dx) >> 4, (pos.getZ() + dz) >> 4)) {
+                    continue;
+                }
+                for (int dy = -radius; dy <= radius; dy++) {
+                    cursor.set(pos.getX() + dx, pos.getY() + dy, pos.getZ() + dz);
+                    if (level.getFluidState(cursor).is(net.minecraft.tags.FluidTags.WATER)) {
                         return true;
                     }
                 }
