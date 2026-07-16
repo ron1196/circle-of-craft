@@ -200,7 +200,7 @@ public class ModItems {
 
     // ========== Special Armor ==========
     public static final RegistryObject<ArmorItem> PEACOCK_WINGS =
-            armorItem("peacock_wings", ModArmorMaterials.GEMSBOK, ArmorItem.Type.CHESTPLATE);
+            armorItem("peacock_wings", ModArmorMaterials.SPECIAL, ArmorItem.Type.CHESTPLATE);
 
     // ========== Block Items ==========
     // Pridestone & Variants
@@ -462,7 +462,7 @@ public class ModItems {
 
     // ========== Outlands Armor ==========
     public static final RegistryObject<ArmorItem> OUTLANDS_HELMET =
-            armorItem("outlands_helmet", ModArmorMaterials.OUTLANDS, ArmorItem.Type.HELMET);
+            armorItem("outlands_helmet", ModArmorMaterials.SPECIAL, ArmorItem.Type.HELMET);
 
     // ========== Ticket Lion Suit ==========
     public static final RegistryObject<ArmorItem> TICKET_LION_HEAD =
@@ -564,7 +564,7 @@ public class ModItems {
     public static final RegistryObject<Item> AMULET = ITEMS.register(
             "amulet",
             () -> new ArmorItem(
-                    ModArmorMaterials.GEMSBOK,
+                    ModArmorMaterials.AMULET,
                     ArmorItem.Type.CHESTPLATE,
                     new Item.Properties().stacksTo(1).durability(0)));
     public static final RegistryObject<Item> ASTRAL_CHARM = registerItem("astral_charm", AstralCharmItem::new);

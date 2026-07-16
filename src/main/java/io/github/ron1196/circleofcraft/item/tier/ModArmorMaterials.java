@@ -55,7 +55,21 @@ public enum ModArmorMaterials implements ArmorMaterial {
             SoundEvents.ARMOR_EQUIP_LEATHER,
             0.0F,
             0.0F,
-            () -> Ingredient.EMPTY);
+            () -> Ingredient.EMPTY),
+    // Shared cosmetic layer for the special wearables (Outlander helmet, peacock wings) —
+    // mirrors the old mod's single special.png armor texture.
+    SPECIAL(
+            "special",
+            12,
+            new int[] {2, 5, 6, 2},
+            0,
+            SoundEvents.ARMOR_EQUIP_LEATHER,
+            0.0F,
+            0.0F,
+            () -> Ingredient.EMPTY),
+    // Animal-speak amulet — chest slot but invisible on the body (its own transparent layer,
+    // so it doesn't render the peacock-wings texture it would otherwise share the slot with).
+    AMULET("amulet", 0, new int[] {0, 0, 0, 0}, 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY);
 
     private static final int[] HEALTH_PER_SLOT = new int[] {13, 15, 16, 11};
     private final String name;
