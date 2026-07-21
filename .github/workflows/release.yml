@@ -141,8 +141,11 @@ jobs:
           LOADER_NAME="Forge"
           [[ "$LOADER" == "neoforge" ]] && LOADER_NAME="NeoForge"
           LOADER_ID=$(echo "$GAME_VERSIONS_JSON" | jq --arg v "$LOADER_NAME" '.[] | select(.name == $v) | .id' | head -n1)
-          if [[ -z "$MC_ID" || -z "$LOADER_ID" ]]; then
-            echo "Could not resolve CurseForge gameVersion IDs (mc=$MC_ID, loader=$LOADER_ID)." >&2
+          # CurseForge (errorCode 1021) requires at least one version from the environment group (Client/Server).
+          CLIENT_ID=$(echo "$GAME_VERSIONS_JSON" | jq '.[] | select(.name == "Client") | .id' | head -n1)
+          SERVER_ID=$(echo "$GAME_VERSIONS_JSON" | jq '.[] | select(.name == "Server") | .id' | head -n1)
+          if [[ -z "$MC_ID" || -z "$LOADER_ID" || -z "$CLIENT_ID" || -z "$SERVER_ID" ]]; then
+            echo "Could not resolve CurseForge gameVersion IDs (mc=$MC_ID, loader=$LOADER_ID, client=$CLIENT_ID, server=$SERVER_ID)." >&2
             exit 1
           fi
           METADATA=$(jq -c -n \
@@ -151,11 +154,13 @@ jobs:
             --arg channel "$CHANNEL" \
             --argjson mc "$MC_ID" \
             --argjson loader "$LOADER_ID" \
+            --argjson client "$CLIENT_ID" \
+            --argjson server "$SERVER_ID" \
             '{
               changelog: $changelog,
               changelogType: "markdown",
               displayName: $displayName,
-              gameVersions: [$mc, $loader],
+              gameVersions: [$mc, $loader, $client, $server],
               releaseType: $channel,
               relations: {
                 projects: [
