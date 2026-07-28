@@ -76,7 +76,9 @@ public class BananaTreeFeature extends Feature<NoneFeatureConfiguration> {
         for (Direction dir : dirs) {
             if (random.nextInt(3) == 0) continue; // skip some sides
             BlockPos bananaPos = pos.above(height - 1 - random.nextInt(2)).relative(dir);
-            if (level.getBlockState(bananaPos).isAir()) {
+            BlockState existing = level.getBlockState(bananaPos);
+            // The hanging leaf clusters above already occupy these slots — bananas replace them.
+            if (existing.isAir() || existing.is(ModBlocks.BANANA_LEAVES.get())) {
                 level.setBlock(
                         bananaPos,
                         ModBlocks.HANGING_BANANA
