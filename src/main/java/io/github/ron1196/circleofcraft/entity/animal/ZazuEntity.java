@@ -43,7 +43,7 @@ public class ZazuEntity extends ModAnimal {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.5));
-        addTemptGoal(2, 1.0, Items.WHEAT_SEEDS, ModItems.CORN_KERNELS.get());
+        addTemptGoal(3, 1.0, Items.WHEAT_SEEDS, ModItems.CORN_KERNELS.get());
         this.goalSelector.addGoal(3, new ZazuLayEggGoal(this));
     }
 

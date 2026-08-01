@@ -71,7 +71,7 @@ public class DikDikEntity extends ModAnimal {
         super.registerGoals();
         this.goalSelector.addGoal(1, new AmbientPanicGoal(this));
         this.goalSelector.addGoal(2, new AmbientAvoidGoal(this));
-        addTemptGoal(2, 1.0, Items.WHEAT, ModItems.CORN.get());
+        addTemptGoal(3, 1.0, Items.WHEAT, ModItems.CORN.get());
     }
 
     public static AttributeSupplier.Builder createAttributes() {

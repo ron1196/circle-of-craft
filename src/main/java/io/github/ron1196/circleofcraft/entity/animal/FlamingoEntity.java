@@ -29,7 +29,7 @@ public class FlamingoEntity extends ModAnimal {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.5));
-        addTemptGoal(2, 1.0, Items.COD, Items.SALMON);
+        addTemptGoal(3, 1.0, Items.COD, Items.SALMON);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

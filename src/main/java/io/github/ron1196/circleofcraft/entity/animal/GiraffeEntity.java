@@ -93,7 +93,7 @@ public class GiraffeEntity extends ModAnimal {
         this.goalSelector.addGoal(1, new AmbientPanicGoal(this));
         this.goalSelector.addGoal(
                 2, new AvoidEntityGoal<>(this, LivingEntity.class, 12.0F, 1.0D, 1.5D, e -> e instanceof LionEntity));
-        addTemptGoal(2, 1.0, ModBlocks.ACACIA_LEAVES.get().asItem());
+        addTemptGoal(3, 1.0, ModBlocks.ACACIA_LEAVES.get().asItem());
     }
 
     public static AttributeSupplier.Builder createAttributes() {
