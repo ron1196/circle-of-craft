@@ -90,7 +90,7 @@ circleofcraft:giraffe_tie_white	A whitened Giraffe Tie readyfor dyeing.
 circleofcraft:giraffe_tie_yellow	A dyed Giraffe Tie.
 circleofcraft:grinding_bowl	The Grinding Bowl is used toprocess items into their grounddown forms.Examples include turning HyenaBones into shards, Rhino Hornsand mangoes into powders, andvarious items into Rug Dyes.
 circleofcraft:ground_rhino_horn	Made by placing Rhino Hornin the Grinding Bowl.Can be fed to breeding animalsto make them produce moreoffspring, and can also dye rugs.
-circleofcraft:hanging_banana	Bunches of bananas hangingfrom a Banana Tree.
+circleofcraft:hanging_banana	Bunches of bananas hangingfrom a Banana Tree.Attaches to the side of a BananaLog. Pick it by hand to harvestthe bananas; the bunch regrows.
 circleofcraft:hyena_bone	Dropped by Hyenas.Used in crafting recipes,grinding, and breeding lions.
 circleofcraft:hyena_bone_shard	Made by placing Hyena Bones inthe Grinding Bowl.Used in crafting blue, yellowand red darts.
 circleofcraft:hyena_head	A rare decorative block sometimesdropped by Hyenas.
@@ -120,7 +120,7 @@ circleofcraft:lion_cooked	Can be eaten to restore hunger.
 circleofcraft:lion_fur	Dropped by Lions and Lionesses.Used in crafting beds and variousother items.
 circleofcraft:lion_raw	Dropped by Lions and Lionesses.Can be cooked to restoremore hunger.
 circleofcraft:lion_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
-circleofcraft:maize_stalks	Found in the Pride Lands, oftenby rivers or in rainforests.Can be grown on farmland whichis next to water, or dried in afurnace for use in building.
+circleofcraft:maize_stalks	Found in the Pride Lands, oftenby rivers or in rainforests.Can be planted on farmland ortilled sand, or on grass, dirtor sand next to water. Dry it ina furnace for use in building.
 circleofcraft:mango	Drops from Mango Trees.Can be eaten to restore hunger,used in food recipes, or grounddown in the Grinding Bowl.
 circleofcraft:mango_bug_trap	
 circleofcraft:mango_dust	Made by placing mangoes inthe Grinding Bowl.Used in crafting Dart Shootersand can also dye rugs.
@@ -280,7 +280,7 @@ circleofcraft:ticket_lion_head	A novelty item found inLion King Ticket Booths.
 circleofcraft:ticket_lion_legs	A novelty item found inLion King Ticket Booths.Collect the full set!
 circleofcraft:ticket_lion_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
 circleofcraft:ticket_lion_suit	A novelty item found inLion King Ticket Booths.Collect the full set!
-circleofcraft:tilled_sand	Made by using a hoe on ablock of sand in an aridsavannah biome.
+circleofcraft:tilled_sand	Made by using a hoe on ablock of sand.
 circleofcraft:timon_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
 circleofcraft:tunnah_diggah	Obtained from Timon and Pumbaa.Used to dig large tunnels veryquickly through dirt and stone.
 circleofcraft:vase	A decorative vase block.

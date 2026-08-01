@@ -756,7 +756,7 @@ public final class ItemInfo {
                 "and can be activated with a",
                 "Lion King Ticket.");
         put(ModItems.OUTLANDS_PORTAL_FRAME_ITEM, "The indestructible frame of an", "Outlands Portal.");
-        put(ModItems.TILLED_SAND_ITEM, "Made by using a hoe on a", "block of sand in an arid", "savannah biome.");
+        put(ModItems.TILLED_SAND_ITEM, "Made by using a hoe on a", "block of sand.");
         put(
                 ModItems.KIWANO_BLOCK_ITEM,
                 "Fruit found in the arid savannah",
@@ -1034,15 +1034,23 @@ public final class ItemInfo {
         put(ModItems.OUTSHROOM_ITEM, "Found in caves in the Outlands.", "", "Will grow if left in darkness.");
         put(ModItems.OUTSHROOM_GLOWING_ITEM, "A light source made from a Nuka", "Shard and a normal Outshroom.");
         put(ModItems.ARID_GRASS_ITEM, "A type of tall grass that grows", "in arid savannah biomes.");
-        put(ModItems.HANGING_BANANA_ITEM, "Bunches of bananas hanging", "from a Banana Tree.");
+        put(
+                ModItems.HANGING_BANANA_ITEM,
+                "Bunches of bananas hanging",
+                "from a Banana Tree.",
+                "",
+                "Attaches to the side of a Banana",
+                "Log. Pick it by hand to harvest",
+                "the bananas; the bunch regrows.");
         put(
                 ModItems.MAIZE_STALKS,
                 "Found in the Pride Lands, often",
                 "by rivers or in rainforests.",
                 "",
-                "Can be grown on farmland which",
-                "is next to water, or dried in a",
-                "furnace for use in building.");
+                "Can be planted on farmland or",
+                "tilled sand, or on grass, dirt",
+                "or sand next to water. Dry it in",
+                "a furnace for use in building.");
 
         // Spawn eggs (one description, applies to all)
         for (DeferredHolder<Item, ? extends Item> egg : new DeferredHolder[] {
