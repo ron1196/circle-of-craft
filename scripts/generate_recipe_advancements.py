@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Generate recipe-unlock advancement JSONs from existing recipe JSONs.
 
-Each recipe in src/main/resources/data/<ns>/recipes/*.json gets a companion
-advancement at src/main/resources/data/<ns>/advancements/recipes/<name>.json
+Each recipe in src/main/resources/data/<ns>/recipe/*.json gets a companion
+advancement at src/main/resources/data/<ns>/advancement/recipes/<name>.json
 that fires `recipe_unlocked` once the player obtains any input ingredient.
 
 The companion advancement is what makes the recipe show up in the in-game
@@ -17,8 +17,8 @@ from typing import Any
 
 MOD_ID = "circleofcraft"
 ROOT = Path(__file__).resolve().parent.parent
-RECIPES_DIR = ROOT / "src/main/resources/data" / MOD_ID / "recipes"
-ADV_DIR = ROOT / "src/main/resources/data" / MOD_ID / "advancements/recipes"
+RECIPES_DIR = ROOT / "src/main/resources/data" / MOD_ID / "recipe"
+ADV_DIR = ROOT / "src/main/resources/data" / MOD_ID / "advancement/recipes"
 
 # The vanilla recipe book only displays these recipe types. Custom types
 # (e.g. circleofcraft:grinding) have their own GUIs and don't need unlock advs.

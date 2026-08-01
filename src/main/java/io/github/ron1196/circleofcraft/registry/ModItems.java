@@ -281,6 +281,11 @@ public class ModItems {
     // ========== Special Armor ==========
     public static final DeferredItem<ArmorItem> PEACOCK_WINGS =
             armorItem("peacock_wings", ModArmorMaterials.SPECIAL, ArmorItem.Type.CHESTPLATE, 8);
+    public static final DeferredItem<ZebraBootsItem> ZEBRA_BOOTS = ITEMS.register(
+            "zebra_boots",
+            () -> new ZebraBootsItem(
+                    ModArmorMaterials.SPECIAL,
+                    new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(33))));
 
     // ========== Block Items ==========
     // Pridestone & Variants

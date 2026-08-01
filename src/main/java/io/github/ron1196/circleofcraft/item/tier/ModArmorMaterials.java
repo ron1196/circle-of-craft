@@ -57,8 +57,8 @@ public final class ModArmorMaterials {
             0.0F,
             () -> Ingredient.of(ModItems.OUTLANDER_FUR.get()));
 
-    // Shared cosmetic layer for the special wearables (Outlander helmet, animal-speak amulet,
-    // peacock wings) — mirrors the old mod's single special.png armor texture.
+    // Shared cosmetic layer for the special wearables (Outlander helmet, peacock wings,
+    // zebra boots) — mirrors the old mod's single special.png armor texture.
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> SPECIAL = register(
             "special", new int[] {2, 5, 6, 2}, 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY);
 

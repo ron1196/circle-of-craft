@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_zebra_hide": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "circleofcraft:zebra_hide"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "circleofcraft:zebra_boots"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_zebra_hide",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "circleofcraft:zebra_boots"
+    ]
+  },
+  "sends_telemetry_event": false
+}
