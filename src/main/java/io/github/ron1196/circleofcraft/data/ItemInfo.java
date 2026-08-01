@@ -388,6 +388,7 @@ public final class ItemInfo {
                 "the wearer the ability of",
                 "limited flight, and protection",
                 "against fall damage.");
+        put(ModItems.ZEBRA_BOOTS, "When equipped, these allow the", "wearer to run at extremely", "fast speeds.");
         put(ModItems.OUTLANDS_HELMET, "Protects against fire and", "Outlanders when in the Outlands.");
 
         // Weapons / projectiles

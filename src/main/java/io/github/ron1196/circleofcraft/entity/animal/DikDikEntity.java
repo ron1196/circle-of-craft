@@ -2,6 +2,8 @@ package io.github.ron1196.circleofcraft.entity.animal;
 
 import io.github.ron1196.circleofcraft.entity.ai.AmbientAvoidGoal;
 import io.github.ron1196.circleofcraft.entity.ai.AmbientPanicGoal;
+import io.github.ron1196.circleofcraft.registry.EntityTypes;
+import io.github.ron1196.circleofcraft.registry.ModItems;
 import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -16,6 +18,7 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
@@ -59,7 +62,7 @@ public class DikDikEntity extends ModAnimal {
 
     @Override
     public boolean isFood(@NotNull ItemStack stack) {
-        return false;
+        return stack.is(Items.WHEAT) || stack.is(ModItems.CORN.get());
     }
 
     @Override
@@ -67,6 +70,7 @@ public class DikDikEntity extends ModAnimal {
         super.registerGoals();
         this.goalSelector.addGoal(1, new AmbientPanicGoal(this));
         this.goalSelector.addGoal(2, new AmbientAvoidGoal(this));
+        addTemptGoal(3, 1.0, Items.WHEAT, ModItems.CORN.get());
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -78,7 +82,13 @@ public class DikDikEntity extends ModAnimal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob mate) {
-        return null;
+        DikDikEntity fawn = EntityTypes.DIKDIK.get().create(level);
+        if (fawn != null) {
+            // Breeding skips finalizeSpawn, where the variant is normally rolled.
+            DikDikEntity parent = this.random.nextBoolean() && mate instanceof DikDikEntity other ? other : this;
+            fawn.setVariant(parent.getVariant());
+        }
+        return fawn;
     }
 
     @Override
