@@ -309,7 +309,8 @@ public class ModBlocks {
                     .instabreak()
                     .sound(SoundType.WOOD)
                     .noCollission()
-                    .noOcclusion()));
+                    .noOcclusion()
+                    .randomTicks()));
 
     // ========== Crops ==========
     public static final RegistryObject<Block> MAIZE_CROP =

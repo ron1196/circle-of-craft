@@ -1,0 +1,78 @@
+{
+  "textures": {
+    "top": "circleofcraft:block/hanging_banana_age1_top",
+    "side": "circleofcraft:block/hanging_banana_age1_side",
+    "bottom": "circleofcraft:block/hanging_banana_age1_bottom",
+    "particle": "circleofcraft:block/hanging_banana_age1_side"
+  },
+  "elements": [
+    {
+      "from": [
+        6,
+        10,
+        13
+      ],
+      "to": [
+        9,
+        15,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6,
+            1,
+            9,
+            6
+          ],
+          "texture": "#side"
+        },
+        "south": {
+          "uv": [
+            6,
+            1,
+            9,
+            6
+          ],
+          "texture": "#side"
+        },
+        "east": {
+          "uv": [
+            0,
+            1,
+            3,
+            6
+          ],
+          "texture": "#side"
+        },
+        "west": {
+          "uv": [
+            13,
+            1,
+            16,
+            6
+          ],
+          "texture": "#side"
+        },
+        "up": {
+          "uv": [
+            6,
+            0,
+            9,
+            3
+          ],
+          "texture": "#top"
+        },
+        "down": {
+          "uv": [
+            6,
+            13,
+            9,
+            16
+          ],
+          "texture": "#bottom"
+        }
+      }
+    }
+  ]
+}
