@@ -358,6 +358,8 @@ public class CreativeTabs {
                         output.accept(ModItems.PEACOCK_LEGGINGS.get());
                         output.accept(ModItems.PEACOCK_BOOTS.get());
                         output.accept(ModItems.PEACOCK_WINGS.get());
+                        // Zebra Boots
+                        output.accept(ModItems.ZEBRA_BOOTS.get());
                         // Outlands Armor
                         output.accept(ModItems.OUTLANDS_HELMET.get());
                         // Ticket Lion Suit

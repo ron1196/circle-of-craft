@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    "X X"
+  ],
+  "key": {
+    "X": { "item": "circleofcraft:zebra_hide" }
+  },
+  "result": {
+    "item": "circleofcraft:zebra_boots",
+    "count": 1
+  }
+}

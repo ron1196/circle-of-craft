@@ -201,6 +201,8 @@ public class ModItems {
     // ========== Special Armor ==========
     public static final RegistryObject<ArmorItem> PEACOCK_WINGS =
             armorItem("peacock_wings", ModArmorMaterials.SPECIAL, ArmorItem.Type.CHESTPLATE);
+    public static final RegistryObject<ZebraBootsItem> ZEBRA_BOOTS =
+            ITEMS.register("zebra_boots", () -> new ZebraBootsItem(ModArmorMaterials.ZEBRA, new Item.Properties()));
 
     // ========== Block Items ==========
     // Pridestone & Variants
