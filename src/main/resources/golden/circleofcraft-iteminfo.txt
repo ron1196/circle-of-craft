@@ -302,6 +302,7 @@ circleofcraft:white_flower	A common flower foundin the Pride Lands.Can be gro
 circleofcraft:yam	A vegetable found growing insavannah biomes.Can be farmed, and roasted torestore more hunger. If eatenraw, it may cause food poisoning.
 circleofcraft:zazu_egg	Dropped by Zazus whenthey breed.May spawn a baby Zazuwhen thrown.
 circleofcraft:zazu_spawn_egg	Used to spawn a creature fromthe Lion King worlds.
+circleofcraft:zebra_boots	When equipped, these allow thewearer to run at extremelyfast speeds.
 circleofcraft:zebra_cooked	Can be eaten to restore hunger.
 circleofcraft:zebra_hide	Dropped by Zebras.Used to craft Zebra Boots anda few other items.
 circleofcraft:zebra_raw	Dropped by Zebras.Can be cooked to restoremore hunger.

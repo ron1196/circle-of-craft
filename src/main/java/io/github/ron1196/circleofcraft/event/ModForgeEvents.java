@@ -13,6 +13,7 @@ import io.github.ron1196.circleofcraft.entity.npc.ScarEntity;
 import io.github.ron1196.circleofcraft.entity.npc.SimbaEntity;
 import io.github.ron1196.circleofcraft.entity.npc.ZiraEntity;
 import io.github.ron1196.circleofcraft.item.GroundRhinoHornItem;
+import io.github.ron1196.circleofcraft.item.ZebraBootsItem;
 import io.github.ron1196.circleofcraft.network.LoginSyncPacket;
 import io.github.ron1196.circleofcraft.network.Networking;
 import io.github.ron1196.circleofcraft.quest.actions.OutlandsQuestActions;
@@ -316,6 +317,8 @@ public class ModForgeEvents {
 
         if (!(event.player instanceof ServerPlayer serverPlayer)) return;
         if (!serverPlayer.isAlive()) return;
+
+        ZebraBootsItem.tickWear(serverPlayer);
 
         PlayerData playerData = PlayerDataProvider.get(serverPlayer);
 

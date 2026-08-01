@@ -67,6 +67,17 @@ public enum ModArmorMaterials implements ArmorMaterial {
             0.0F,
             0.0F,
             () -> Ingredient.EMPTY),
+    // Zebra boots wear the same special.png layer, but need their own durability multiplier —
+    // getName() is only ever read to build the armor texture path, so sharing it is safe.
+    ZEBRA(
+            "special",
+            33,
+            new int[] {2, 5, 6, 2},
+            0,
+            SoundEvents.ARMOR_EQUIP_LEATHER,
+            0.0F,
+            0.0F,
+            () -> Ingredient.EMPTY),
     // Animal-speak amulet — chest slot but invisible on the body (its own transparent layer,
     // so it doesn't render the peacock-wings texture it would otherwise share the slot with).
     AMULET("amulet", 0, new int[] {0, 0, 0, 0}, 0, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY);
