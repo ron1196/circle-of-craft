@@ -31,7 +31,7 @@ public class RhinoEntity extends ModAnimal {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        addTemptGoal(2, 1.0, Items.WHEAT, ModItems.CORN.get());
+        addTemptGoal(3, 1.0, Items.WHEAT, ModItems.CORN.get());
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2, false));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }

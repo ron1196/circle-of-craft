@@ -32,7 +32,7 @@ public class GemsbokEntity extends ModAnimal {
         this.goalSelector.addGoal(1, new AmbientPanicGoal(this));
         this.goalSelector.addGoal(
                 2, new AvoidEntityGoal<>(this, LivingEntity.class, 12.0F, 1.0D, 1.5D, e -> e instanceof LionEntity));
-        addTemptGoal(2, 1.0, Items.WHEAT, ModItems.CORN.get());
+        addTemptGoal(3, 1.0, Items.WHEAT, ModItems.CORN.get());
     }
 
     public static AttributeSupplier.Builder createAttributes() {
