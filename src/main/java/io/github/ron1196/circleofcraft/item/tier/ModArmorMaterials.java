@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
@@ -91,7 +91,7 @@ public final class ModArmorMaterials {
             defense.put(type, defensePerSlot[type.getSlot().getIndex()]);
         }
         List<ArmorMaterial.Layer> layers =
-                List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(CircleOfCraftMod.MOD_ID, name)));
+                List.of(new ArmorMaterial.Layer(Identifier.fromNamespaceAndPath(CircleOfCraftMod.MOD_ID, name)));
         return ARMOR_MATERIALS.register(
                 name,
                 () -> new ArmorMaterial(

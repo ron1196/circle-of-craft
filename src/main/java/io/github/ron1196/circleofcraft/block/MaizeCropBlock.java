@@ -203,7 +203,7 @@ public class MaizeCropBlock extends Block {
             // Harvest corn: remove ear, drop 1-2 corn
             level.setBlock(pos, state.setValue(HAS_CORN, false), 3);
             popResource(level, pos, new ItemStack(ModItems.CORN.get()));
-            if (level.random.nextInt(BONUS_CORN_CHANCE) == 0) {
+            if (level.getRandom().nextInt(BONUS_CORN_CHANCE) == 0) {
                 popResource(level, pos, new ItemStack(ModItems.CORN.get()));
             }
         }

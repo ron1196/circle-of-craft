@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -23,17 +23,17 @@ public class ModStructure extends Structure {
 
     public static final MapCodec<ModStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                     settingsCodec(instance),
-                    ResourceLocation.CODEC.fieldOf("feature_id").forGetter(s -> s.featureId))
+                    Identifier.CODEC.fieldOf("feature_id").forGetter(s -> s.featureId))
             .apply(instance, ModStructure::new));
 
-    private final ResourceLocation featureId;
+    private final Identifier featureId;
 
-    public ModStructure(StructureSettings settings, ResourceLocation featureId) {
+    public ModStructure(StructureSettings settings, Identifier featureId) {
         super(settings);
         this.featureId = featureId;
     }
 
-    public ResourceLocation getFeatureId() {
+    public Identifier getFeatureId() {
         return featureId;
     }
 

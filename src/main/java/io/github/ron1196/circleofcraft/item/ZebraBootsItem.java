@@ -4,7 +4,7 @@ import com.google.common.base.Suppliers;
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import java.util.function.Supplier;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -18,8 +18,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class ZebraBootsItem extends ArmorItem {
 
-    private static final ResourceLocation SPEED_MODIFIER_ID =
-            ResourceLocation.fromNamespaceAndPath(CircleOfCraftMod.MOD_ID, "zebra_boots_speed");
+    private static final Identifier SPEED_MODIFIER_ID =
+            Identifier.fromNamespaceAndPath(CircleOfCraftMod.MOD_ID, "zebra_boots_speed");
     private static final double SPEED_BONUS = 0.6D;
     private static final int TICKS_PER_WEAR_POINT = 20;
 

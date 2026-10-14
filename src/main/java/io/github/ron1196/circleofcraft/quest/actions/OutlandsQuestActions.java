@@ -131,7 +131,7 @@ public final class OutlandsQuestActions {
 
         // Spawn Zira in front of the player, 10-12 blocks away
         float yawRad = (float) Math.toRadians(player.getYRot());
-        int distance = 10 + outlandsLevel.random.nextInt(3);
+        int distance = 10 + outlandsLevel.getRandom().getRandom().nextInt(3);
         int spawnX = px - Mth.floor(Math.sin(yawRad) * distance);
         int spawnZ = pz + Mth.floor(Math.cos(yawRad) * distance);
         int spawnY = outlandsLevel.getHeight(Heightmap.Types.MOTION_BLOCKING, spawnX, spawnZ);
@@ -339,7 +339,7 @@ public final class OutlandsQuestActions {
     private static void spawnNonHostileZira(ServerLevel level, BlockPos pos) {
         ZiraEntity zira = EntityTypes.ZIRA.get().create(level);
         if (zira == null) return;
-        zira.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, level.random.nextFloat() * 360F, 0F);
+        zira.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, level.getRandom().nextFloat() * 360F, 0F);
         zira.setHostile(false);
         zira.setPersistenceRequired();
         level.addFreshEntity(zira);
@@ -348,7 +348,7 @@ public final class OutlandsQuestActions {
     private static void spawnRafiki(ServerLevel level, BlockPos pos) {
         RafikiEntity rafiki = EntityTypes.RAFIKI.get().create(level);
         if (rafiki == null) return;
-        rafiki.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, level.random.nextFloat() * 360F, 0F);
+        rafiki.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, level.getRandom().nextFloat() * 360F, 0F);
         rafiki.setPersistenceRequired();
         level.addFreshEntity(rafiki);
     }
@@ -366,9 +366,9 @@ public final class OutlandsQuestActions {
         for (int i = 0; i < toSpawn; i++) {
             OutlanderEntity outlander = EntityTypes.OUTLANDER.get().create(level);
             if (outlander == null) continue;
-            double x = treePos.getX() + 0.5 + level.random.nextGaussian() * 2;
-            double z = treePos.getZ() + 0.5 + level.random.nextGaussian() * 2;
-            outlander.moveTo(x, treePos.getY(), z, level.random.nextFloat() * 360F, 0F);
+            double x = treePos.getX() + 0.5 + level.getRandom().nextGaussian() * 2;
+            double z = treePos.getZ() + 0.5 + level.getRandom().nextGaussian() * 2;
+            outlander.moveTo(x, treePos.getY(), z, level.getRandom().nextFloat() * 360F, 0F);
             outlander.setPersistenceRequired();
             level.addFreshEntity(outlander);
         }

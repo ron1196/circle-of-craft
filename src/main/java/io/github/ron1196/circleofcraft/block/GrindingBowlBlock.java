@@ -65,13 +65,13 @@ public class GrindingBowlBlock extends BaseEntityBlock {
             @NotNull BlockPos pos,
             @NotNull Player player,
             @NotNull BlockHitResult hit) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof GrindingBowlBlockEntity grindingBowl) {
                 ((ServerPlayer) player).openMenu(grindingBowl, buf -> buf.writeBlockPos(pos));
             }
         }
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     @Override
@@ -95,7 +95,7 @@ public class GrindingBowlBlock extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(
             @NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return createTickerHelper(type, BlockEntityTypes.GRINDING_BOWL.get(), GrindingBowlBlockEntity::clientTick);
         }
         return createTickerHelper(type, BlockEntityTypes.GRINDING_BOWL.get(), GrindingBowlBlockEntity::serverTick);

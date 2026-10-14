@@ -12,14 +12,14 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 
 public class HyenaHeadItemRenderer extends BlockEntityWithoutLevelRenderer {
 
-    private static final ResourceLocation[] TEXTURES = {
+    private static final Identifier[] TEXTURES = {
         CircleOfCraftMod.id("textures/entity/hyena_0.png"),
         CircleOfCraftMod.id("textures/entity/hyena_1.png"),
         CircleOfCraftMod.id("textures/entity/hyena_2.png"),

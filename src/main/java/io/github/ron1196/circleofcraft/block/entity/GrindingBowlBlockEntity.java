@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,6 +22,9 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -83,23 +87,25 @@ public class GrindingBowlBlockEntity extends BlockEntity implements MenuProvider
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        tag.put("Inventory", inventory.serializeNBT(registries));
-        tag.putInt("GrindTime", grindTime);
+    protected void saveAdditional(@NotNull ValueOutput output) {
+        super.saveAdditional(output);
+        inventory.serialize(output.child("Inventory"));
+        output.putInt("GrindTime", grindTime);
     }
 
     @Override
-    protected void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        inventory.deserializeNBT(registries, tag.getCompound("Inventory"));
-        grindTime = tag.getInt("GrindTime");
+    protected void loadAdditional(@NotNull ValueInput input) {
+        super.loadAdditional(input);
+        inventory.deserialize(input.childOrEmpty("Inventory"));
+        grindTime = input.getIntOr("GrindTime", 0);
     }
 
     @Override
     public @NotNull CompoundTag getUpdateTag(@NotNull HolderLookup.Provider registries) {
         CompoundTag tag = super.getUpdateTag(registries);
-        tag.put("Inventory", inventory.serializeNBT(registries));
+        TagValueOutput inventoryOutput = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, registries);
+        inventory.serialize(inventoryOutput);
+        tag.put("Inventory", inventoryOutput.buildResult());
         tag.putInt("GrindTime", grindTime);
         return tag;
     }

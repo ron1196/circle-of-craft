@@ -1,8 +1,14 @@
 package io.github.ron1196.circleofcraft.quest.questline;
 
-import net.minecraft.nbt.CompoundTag;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 public class QuestlineState {
+
+    public static final Codec<QuestlineState> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                    Codec.STRING.optionalFieldOf("Stage", "").forGetter(QuestlineState::getCurrentStageId),
+                    Codec.BOOL.optionalFieldOf("Checked", false).forGetter(QuestlineState::isChecked))
+            .apply(instance, QuestlineState::new));
 
     private String currentStageId;
     private boolean checked;
@@ -30,16 +36,5 @@ public class QuestlineState {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
-    }
-
-    public void writeToNBT(CompoundTag tag) {
-        tag.putString("Stage", currentStageId);
-        tag.putBoolean("Checked", checked);
-    }
-
-    public static QuestlineState readFromNBT(CompoundTag tag) {
-        String stageId = tag.contains("Stage", 8) ? tag.getString("Stage") : "";
-        boolean checked = tag.getBoolean("Checked");
-        return new QuestlineState(stageId, checked);
     }
 }

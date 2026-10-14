@@ -84,7 +84,7 @@ public class PortalFrameBlock extends Block {
 
     private InteractionResult tryCreatePortal(
             Level level, BlockPos pos, Player player, ItemStack stack, ActivationKey key, PortalConfig config) {
-        if (level.isClientSide) return InteractionResult.SUCCESS;
+        if (level.isClientSide()) return InteractionResult.SUCCESS;
 
         PortalBlock portalBlock = (PortalBlock) config.portal().get();
 

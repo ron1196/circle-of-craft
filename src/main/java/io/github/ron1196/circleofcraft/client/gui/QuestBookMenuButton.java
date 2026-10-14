@@ -3,10 +3,11 @@ package io.github.ron1196.circleofcraft.client.gui;
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.network.ClientWorldState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,7 +16,7 @@ public class QuestBookMenuButton extends Button {
     public static final int WIDTH = 135;
     public static final int HEIGHT = 20;
 
-    private static final ResourceLocation TEXTURE = CircleOfCraftMod.id("textures/gui/book_menu.png");
+    private static final Identifier TEXTURE = CircleOfCraftMod.id("textures/gui/book_menu.png");
 
     private static final int TEXTURE_SIZE = 256;
     private static final int LABEL_COLOR = 0x120C01;
@@ -38,17 +39,27 @@ public class QuestBookMenuButton extends Button {
     }
 
     @Override
-    protected void renderWidget(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+    protected void extractWidgetRenderState(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
         int half = WIDTH / 2;
         int v = isFlashing() ? STATE_V_FLASH : STATE_V_NORMAL;
-        graphics.blit(TEXTURE, getX(), getY(), STATE_U, v, half, HEIGHT, TEXTURE_SIZE, TEXTURE_SIZE);
-        graphics.blit(TEXTURE, getX() + half, getY(), TEXTURE_SIZE - half, v, half, HEIGHT, TEXTURE_SIZE, TEXTURE_SIZE);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, getX(), getY(), STATE_U, v, half, HEIGHT, TEXTURE_SIZE, TEXTURE_SIZE);
+        graphics.blit(
+                RenderPipelines.GUI_TEXTURED,
+                TEXTURE,
+                getX() + half,
+                getY(),
+                TEXTURE_SIZE - half,
+                v,
+                half,
+                HEIGHT,
+                TEXTURE_SIZE,
+                TEXTURE_SIZE);
 
         Minecraft mc = Minecraft.getInstance();
         String label = fitText(mc.font, getMessage().getString(), WIDTH - 8);
         int labelX = getX() + (WIDTH - mc.font.width(label)) / 2;
         int labelY = getY() + (HEIGHT - 8) / 2;
-        graphics.drawString(mc.font, label, labelX, labelY, LABEL_COLOR, false);
+        graphics.text(mc.font, label, labelX, labelY, LABEL_COLOR, false);
     }
 
     private boolean isFlashing() {

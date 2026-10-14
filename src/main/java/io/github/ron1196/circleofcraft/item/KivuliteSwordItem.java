@@ -30,20 +30,20 @@ public class KivuliteSwordItem extends SwordItem {
     @Override
     public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
         if (!target.fireImmune() && target.isAlive()) {
-            target.igniteForSeconds(3 + attacker.level().random.nextInt(3));
+            target.igniteForSeconds(3 + attacker.level().getRandom().nextInt(3));
 
             Level level = target.level();
             for (int i = 0; i < 8; i++) {
-                double dx = level.random.nextGaussian() * 0.02D;
-                double dy = level.random.nextGaussian() * 0.02D;
-                double dz = level.random.nextGaussian() * 0.02D;
+                double dx = level.getRandom().nextGaussian() * 0.02D;
+                double dy = level.getRandom().nextGaussian() * 0.02D;
+                double dz = level.getRandom().nextGaussian() * 0.02D;
                 level.addParticle(
                         ParticleTypes.FLAME,
                         target.getX()
-                                + (level.random.nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth()) * 0.75F,
-                        target.getY() + 0.25F + level.random.nextFloat() * target.getBbHeight(),
+                                + (level.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth()) * 0.75F,
+                        target.getY() + 0.25F + level.getRandom().nextFloat() * target.getBbHeight(),
                         target.getZ()
-                                + (level.random.nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth()) * 0.75F,
+                                + (level.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth()) * 0.75F,
                         dx,
                         dy,
                         dz);
@@ -71,10 +71,10 @@ public class KivuliteSwordItem extends SwordItem {
                     SoundEvents.FLINTANDSTEEL_USE,
                     SoundSource.BLOCKS,
                     1.0F,
-                    level.random.nextFloat() * 0.4F + 0.8F);
+                    level.getRandom().nextFloat() * 0.4F + 0.8F);
             level.setBlock(firePos, BaseFireBlock.getState(level, firePos), 11);
             context.getItemInHand().hurtAndBreak(1, context.getPlayer(), EquipmentSlot.MAINHAND);
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return InteractionResult.sidedSuccess(level.isClientSide());
         }
 
         return InteractionResult.PASS;

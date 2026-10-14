@@ -4,14 +4,14 @@ import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.client.model.OutlanderModel;
 import io.github.ron1196.circleofcraft.entity.hostile.OutlanderEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 public class OutlanderRenderer
         extends net.minecraft.client.renderer.entity.MobRenderer<OutlanderEntity, OutlanderModel<OutlanderEntity>> {
 
-    private static final ResourceLocation MALE_TEXTURE = CircleOfCraftMod.id("textures/entity/outlander_male.png");
-    private static final ResourceLocation FEMALE_TEXTURE = CircleOfCraftMod.id("textures/entity/outlander_female.png");
+    private static final Identifier MALE_TEXTURE = CircleOfCraftMod.id("textures/entity/outlander_male.png");
+    private static final Identifier FEMALE_TEXTURE = CircleOfCraftMod.id("textures/entity/outlander_female.png");
 
     private static final float MALE_SHADOW = 0.7F;
     private static final float FEMALE_SHADOW = 0.6F;
@@ -21,7 +21,7 @@ public class OutlanderRenderer
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull OutlanderEntity entity) {
+    public @NotNull Identifier getTextureLocation(@NotNull OutlanderEntity entity) {
         this.shadowRadius = entity.isFemale() ? FEMALE_SHADOW : MALE_SHADOW;
         return entity.isFemale() ? FEMALE_TEXTURE : MALE_TEXTURE;
     }

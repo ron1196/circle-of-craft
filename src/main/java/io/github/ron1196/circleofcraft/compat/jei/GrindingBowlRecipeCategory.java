@@ -12,9 +12,9 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,8 +23,8 @@ public class GrindingBowlRecipeCategory implements IRecipeCategory<GrindingBowlR
     public static final RecipeType<GrindingBowlRecipe> RECIPE_TYPE =
             RecipeType.create(CircleOfCraftMod.MOD_ID, "grinding_bowl", GrindingBowlRecipe.class);
 
-    private static final ResourceLocation FURNACE_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("minecraft", "textures/gui/container/furnace.png");
+    private static final Identifier FURNACE_TEXTURE =
+            Identifier.fromNamespaceAndPath("minecraft", "textures/gui/container/furnace.png");
 
     private static final int WIDTH = 82;
     private static final int HEIGHT = 26;
@@ -73,7 +73,7 @@ public class GrindingBowlRecipeCategory implements IRecipeCategory<GrindingBowlR
     public void draw(
             @NotNull GrindingBowlRecipe recipe,
             @NotNull IRecipeSlotsView slotsView,
-            @NotNull GuiGraphics graphics,
+            @NotNull GuiGraphicsExtractor graphics,
             double mouseX,
             double mouseY) {
         arrow.draw(graphics, 28, 4);

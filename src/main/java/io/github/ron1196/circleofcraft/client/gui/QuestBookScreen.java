@@ -11,10 +11,12 @@ import io.github.ron1196.circleofcraft.quest.questline.QuestlineRegistry;
 import io.github.ron1196.circleofcraft.quest.questline.QuestlineState;
 import io.github.ron1196.circleofcraft.quest.stage.StageId;
 import java.util.List;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -23,9 +25,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
 
-    private static final ResourceLocation BOOK_LEFT = CircleOfCraftMod.id("textures/gui/book_left.png");
-    private static final ResourceLocation BOOK_RIGHT = CircleOfCraftMod.id("textures/gui/book_right.png");
-    private static final ResourceLocation BOOK_MENU = CircleOfCraftMod.id("textures/gui/book_menu.png");
+    private static final Identifier BOOK_LEFT = CircleOfCraftMod.id("textures/gui/book_left.png");
+    private static final Identifier BOOK_RIGHT = CircleOfCraftMod.id("textures/gui/book_right.png");
+    private static final Identifier BOOK_MENU = CircleOfCraftMod.id("textures/gui/book_menu.png");
 
     private static final int X_SIZE = 450;
     private static final int Y_SIZE_TOTAL = 230;
@@ -76,9 +78,7 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
     static int flashTimer = 0;
 
     public QuestBookScreen(QuestBookMenu menu, Inventory playerInv, Component title) {
-        super(menu, playerInv, title);
-        this.imageWidth = X_SIZE;
-        this.imageHeight = Y_SIZE_TOTAL;
+        super(menu, playerInv, title, X_SIZE, Y_SIZE_TOTAL);
         this.titleLabelX = -10000;
         this.titleLabelY = -10000;
         this.inventoryLabelX = -10000;
@@ -126,47 +126,49 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+    public void extractBackground(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+        // Dim only, full-screen — never the full background (blur/panorama/menu bg), which would
+        // draw the book unscaled underneath the scaled copy drawn in extractRenderState().
+        extractTransparentBackground(graphics);
+    }
+
+    @Override
+    public void extractRenderState(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
         menu.slotsVisible = selectedQuest < 0;
-        // Dim only, full-screen — never the full renderBackground(), which in 1.21 also draws the
-        // book and would render it twice (the book is drawn scaled via the override + super.render()).
-        renderTransparentBackground(graphics);
 
         double cx = leftPos + imageWidth / 2.0;
         double cy = topPos + imageHeight / 2.0;
-        graphics.pose().pushPose();
-        graphics.pose().translate(cx, cy, 0);
-        graphics.pose().scale(RENDER_SCALE, RENDER_SCALE, 1f);
-        graphics.pose().translate(-cx, -cy, 0);
+        graphics.pose().pushMatrix();
+        graphics.pose().translate((float) cx, (float) cy);
+        graphics.pose().scale(RENDER_SCALE, RENDER_SCALE);
+        graphics.pose().translate((float) -cx, (float) -cy);
+
+        renderBookBackground(graphics);
 
         int adjMouseX = (int) toLogicalX(mouseX);
         int adjMouseY = (int) toLogicalY(mouseY);
-        super.render(graphics, adjMouseX, adjMouseY, partialTick);
+        super.extractRenderState(graphics, adjMouseX, adjMouseY, partialTick);
 
-        renderTooltip(graphics, adjMouseX, adjMouseY);
-
-        graphics.pose().popPose();
+        graphics.pose().popMatrix();
     }
 
     @Override
-    public void renderBackground(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        // Book only — the dim is drawn full-screen (unscaled) in render().
-        renderBg(graphics, partialTick, mouseX, mouseY);
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        return super.mouseClicked(
+                new MouseButtonEvent(toLogicalX(event.x()), toLogicalY(event.y()), event.buttonInfo()), doubleClick);
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        return super.mouseClicked(toLogicalX(mouseX), toLogicalY(mouseY), button);
+    public boolean mouseReleased(MouseButtonEvent event) {
+        return super.mouseReleased(new MouseButtonEvent(toLogicalX(event.x()), toLogicalY(event.y()), event.buttonInfo()));
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        return super.mouseReleased(toLogicalX(mouseX), toLogicalY(mouseY), button);
-    }
-
-    @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dx, double dy) {
-        return super.mouseDragged(toLogicalX(mouseX), toLogicalY(mouseY), button, dx / RENDER_SCALE, dy / RENDER_SCALE);
+    public boolean mouseDragged(MouseButtonEvent event, double dx, double dy) {
+        return super.mouseDragged(
+                new MouseButtonEvent(toLogicalX(event.x()), toLogicalY(event.y()), event.buttonInfo()),
+                dx / RENDER_SCALE,
+                dy / RENDER_SCALE);
     }
 
     @Override
@@ -174,13 +176,13 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
         return super.mouseScrolled(toLogicalX(mouseX), toLogicalY(mouseY), scrollX, scrollY);
     }
 
-    @Override
-    protected void renderBg(@NotNull GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
+    private void renderBookBackground(@NotNull GuiGraphicsExtractor graphics) {
         renderRibbon(graphics);
         renderPanels(graphics);
 
         if (selectedQuest < 0) {
             graphics.blit(
+                    RenderPipelines.GUI_TEXTURED,
                     BOOK_MENU,
                     leftPos + INFO_FRAME_X,
                     topPos + INFO_FRAME_Y,
@@ -192,6 +194,7 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
                     TEXTURE_SIZE);
 
             graphics.blit(
+                    RenderPipelines.GUI_TEXTURED,
                     BOOK_MENU,
                     leftPos + INV_GRID_X,
                     topPos + INV_GRID_Y,
@@ -206,7 +209,7 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
         renderForeground(graphics);
     }
 
-    private void renderForeground(@NotNull GuiGraphics graphics) {
+    private void renderForeground(@NotNull GuiGraphicsExtractor graphics) {
         if (selectedQuest < 0) {
             renderMainPage(graphics);
         } else {
@@ -217,7 +220,7 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
         }
     }
 
-    private void renderMainPage(@NotNull GuiGraphics graphics) {
+    private void renderMainPage(@NotNull GuiGraphicsExtractor graphics) {
         drawCentered(graphics, Component.literal("The Pride Lands Book of Quests"), SPINE_X, 9, PAGE_TEXT_PRIMARY);
 
         renderCornerIcons(graphics, ItemStack.EMPTY);
@@ -242,7 +245,7 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
 
         ItemStack inspected = menu.getInspectedStack();
         if (!inspected.isEmpty()) {
-            graphics.drawString(
+            graphics.text(
                     font,
                     inspected.getHoverName(),
                     leftPos + 208 + CONTENT_X_SHIFT,
@@ -264,7 +267,7 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
         }
     }
 
-    private void renderQuestPage(@NotNull GuiGraphics graphics, @NotNull Questline quest) {
+    private void renderQuestPage(@NotNull GuiGraphicsExtractor graphics, @NotNull Questline quest) {
         drawCentered(graphics, Component.literal(quest.getDisplayName()), SPINE_X, 9, PAGE_TEXT_PRIMARY);
 
         renderCornerIcons(graphics, quest.getIcon());
@@ -306,7 +309,7 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
         List<FormattedCharSequence> objectiveLines = font.split(Component.literal(objective), OBJECTIVE_MAX_WIDTH);
         for (int i = 0; i < objectiveLines.size(); i++) {
             FormattedCharSequence line = objectiveLines.get(i);
-            graphics.drawString(
+            graphics.text(
                     font,
                     line,
                     leftPos + SPINE_X - font.width(line) / 2,
@@ -328,55 +331,59 @@ public class QuestBookScreen extends AbstractContainerScreen<QuestBookMenu> {
         }
     }
 
-    private void renderCornerIcons(@NotNull GuiGraphics graphics, ItemStack icon) {
+    private void renderCornerIcons(@NotNull GuiGraphicsExtractor graphics, ItemStack icon) {
         if (icon == null || icon.isEmpty()) return;
-        graphics.renderItem(icon, leftPos + 182 + CONTENT_X_SHIFT, topPos + 5);
-        graphics.renderItem(icon, leftPos + 507 + CONTENT_X_SHIFT, topPos + 5);
+        graphics.item(icon, leftPos + 182 + CONTENT_X_SHIFT, topPos + 5);
+        graphics.item(icon, leftPos + 507 + CONTENT_X_SHIFT, topPos + 5);
     }
 
-    private void drawCentered(@NotNull GuiGraphics graphics, @NotNull Component text, int centerX, int y, int color) {
+    private void drawCentered(
+            @NotNull GuiGraphicsExtractor graphics, @NotNull Component text, int centerX, int y, int color) {
         int x = leftPos + centerX - font.width(text) / 2;
-        graphics.drawString(font, text, x, topPos + y, color, false);
+        graphics.text(font, text, x, topPos + y, color, false);
     }
 
-    private void renderPanels(@NotNull GuiGraphics graphics) {
+    private void renderPanels(@NotNull GuiGraphicsExtractor graphics) {
         int bgY = topPos + BACKGROUND_Y_OFFSET;
         graphics.blit(
+                RenderPipelines.GUI_TEXTURED,
                 BOOK_LEFT,
                 leftPos + LEFT_PAGE_X,
                 bgY,
+                0f,
+                0f,
                 PAGE_WIDTH,
                 PAGE_HEIGHT,
-                0f,
-                0f,
                 PAGE_WIDTH,
                 PAGE_HEIGHT,
                 TEXTURE_SIZE,
                 TEXTURE_SIZE);
         graphics.blit(
+                RenderPipelines.GUI_TEXTURED,
                 BOOK_RIGHT,
                 leftPos + RIGHT_PAGE_X,
                 bgY,
+                0f,
+                0f,
                 PAGE_WIDTH,
                 PAGE_HEIGHT,
-                0f,
-                0f,
                 PAGE_WIDTH,
                 PAGE_HEIGHT,
                 TEXTURE_SIZE,
                 TEXTURE_SIZE);
     }
 
-    private void renderRibbon(@NotNull GuiGraphics graphics) {
+    private void renderRibbon(@NotNull GuiGraphicsExtractor graphics) {
         int bgY = topPos + BACKGROUND_Y_OFFSET;
         graphics.blit(
+                RenderPipelines.GUI_TEXTURED,
                 BOOK_MENU,
                 leftPos + MENU_STRIP_X,
                 bgY,
+                0f,
+                0f,
                 MENU_WIDTH,
                 PAGE_HEIGHT,
-                0f,
-                0f,
                 MENU_WIDTH,
                 PAGE_HEIGHT,
                 TEXTURE_SIZE,

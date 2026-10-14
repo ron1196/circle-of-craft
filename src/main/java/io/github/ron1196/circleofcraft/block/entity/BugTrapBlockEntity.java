@@ -20,8 +20,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -31,6 +32,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -201,12 +205,12 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
 
     private void tryAttractBug(@NotNull ServerLevel serverLevel) {
         float chance = ATTRACT_PER_WEIGHT * totalBaitWeight();
-        if (serverLevel.random.nextFloat() >= chance) return;
+        if (serverLevel.getRandom().nextFloat() >= chance) return;
 
         for (int attempts = 0; attempts < SPAWN_ATTEMPTS; attempts++) {
-            int dx = serverLevel.random.nextInt(SPAWN_RADIUS_XZ * 2 + 1) - SPAWN_RADIUS_XZ;
-            int dy = serverLevel.random.nextInt(SPAWN_RADIUS_Y * 2 + 1) - SPAWN_RADIUS_Y;
-            int dz = serverLevel.random.nextInt(SPAWN_RADIUS_XZ * 2 + 1) - SPAWN_RADIUS_XZ;
+            int dx = serverLevel.getRandom().nextInt(SPAWN_RADIUS_XZ * 2 + 1) - SPAWN_RADIUS_XZ;
+            int dy = serverLevel.getRandom().nextInt(SPAWN_RADIUS_Y * 2 + 1) - SPAWN_RADIUS_Y;
+            int dz = serverLevel.getRandom().nextInt(SPAWN_RADIUS_XZ * 2 + 1) - SPAWN_RADIUS_XZ;
             BlockPos spawnPos = worldPosition.offset(dx, dy, dz);
             if (!serverLevel.isEmptyBlock(spawnPos)) continue;
             BlockState below = serverLevel.getBlockState(spawnPos.below());
@@ -218,9 +222,9 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
                     spawnPos.getX() + 0.5,
                     spawnPos.getY(),
                     spawnPos.getZ() + 0.5,
-                    serverLevel.random.nextFloat() * 360.0F,
+                    serverLevel.getRandom().nextFloat() * 360.0F,
                     0.0F);
-            bug.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(spawnPos), MobSpawnType.NATURAL, null);
+            bug.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(spawnPos), EntitySpawnReason.NATURAL, null);
             Direction face = chooseNearestBaitedFace(bug.position());
             if (face == null) return;
             bug.targetTrap = worldPosition.immutable();
@@ -277,7 +281,7 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
                         SoundEvents.SILVERFISH_HURT,
                         SoundSource.BLOCKS,
                         0.4F,
-                        0.8F + serverLevel.random.nextFloat() * 0.4F);
+                        0.8F + serverLevel.getRandom().nextFloat() * 0.4F);
             }
 
             if (bug.trapTick >= 34) {
@@ -338,25 +342,27 @@ public class BugTrapBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        tag.put("Items", items.serializeNBT(registries));
-        tag.putInt("TrapTimer", trapTimer);
-        tag.putInt("ClosureTimer", closureTimer);
+    protected void saveAdditional(@NotNull ValueOutput output) {
+        super.saveAdditional(output);
+        items.serialize(output.child("Items"));
+        output.putInt("TrapTimer", trapTimer);
+        output.putInt("ClosureTimer", closureTimer);
     }
 
     @Override
-    protected void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        items.deserializeNBT(registries, tag.getCompound("Items"));
-        trapTimer = tag.getInt("TrapTimer");
-        closureTimer = tag.getInt("ClosureTimer");
+    protected void loadAdditional(@NotNull ValueInput input) {
+        super.loadAdditional(input);
+        items.deserialize(input.childOrEmpty("Items"));
+        trapTimer = input.getIntOr("TrapTimer", 0);
+        closureTimer = input.getIntOr("ClosureTimer", 0);
     }
 
     @Override
     public @NotNull CompoundTag getUpdateTag(@NotNull HolderLookup.Provider registries) {
         CompoundTag tag = super.getUpdateTag(registries);
-        tag.put("Items", items.serializeNBT(registries));
+        TagValueOutput itemsOutput = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, registries);
+        items.serialize(itemsOutput);
+        tag.put("Items", itemsOutput.buildResult());
         return tag;
     }
 

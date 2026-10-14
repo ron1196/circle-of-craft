@@ -15,7 +15,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -151,7 +151,7 @@ public class PortalBlock extends Block {
     // ── Teleportation ────────────────────────────────────────────────────────
 
     private boolean canTeleport(Level level, Entity entity) {
-        if (level.isClientSide || entity.isPassenger() || entity.isVehicle()) {
+        if (level.isClientSide() || entity.isPassenger() || entity.isVehicle()) {
             return false;
         }
         ServerLevel destination = resolveDestination(level);
@@ -181,7 +181,7 @@ public class PortalBlock extends Block {
     }
 
     private void sendOverlayPacket(ServerPlayer player, int ticks) {
-        ResourceLocation id = BuiltInRegistries.BLOCK.getKey(this);
+        Identifier id = BuiltInRegistries.BLOCK.getKey(this);
         PacketDistributor.sendToPlayer(player, new PortalOverlayPacket(ticks, id.getPath()));
     }
 

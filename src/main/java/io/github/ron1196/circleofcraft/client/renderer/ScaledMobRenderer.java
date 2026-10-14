@@ -5,13 +5,13 @@ import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Mob;
 import org.jetbrains.annotations.NotNull;
 
 public class ScaledMobRenderer<T extends Mob, M extends EntityModel<T>> extends MobRenderer<T, M> {
 
-    private final ResourceLocation texture;
+    private final Identifier texture;
     private final float scale;
 
     public ScaledMobRenderer(
@@ -27,7 +27,7 @@ public class ScaledMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull T entity) {
+    public @NotNull Identifier getTextureLocation(@NotNull T entity) {
         return texture;
     }
 }

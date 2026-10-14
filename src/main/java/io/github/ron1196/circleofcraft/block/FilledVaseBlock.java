@@ -36,7 +36,7 @@ public class FilledVaseBlock extends VaseBlock {
             @NotNull BlockPos pos,
             @NotNull Player player,
             @NotNull BlockHitResult hit) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             ItemStack drop = new ItemStack(contentItem.get());
             if (!player.addItem(drop)) {
                 player.drop(drop, false);
@@ -45,6 +45,6 @@ public class FilledVaseBlock extends VaseBlock {
             level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
             level.playSound(null, pos, SoundEvents.GRASS_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 }

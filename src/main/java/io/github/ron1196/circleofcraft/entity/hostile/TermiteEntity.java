@@ -102,7 +102,7 @@ public class TermiteEntity extends Monster implements SwellGoal.Swellable {
             }
             if (this.timeSinceIgnited >= FUSE_TIME) {
                 this.timeSinceIgnited = FUSE_TIME;
-                if (!this.level().isClientSide) {
+                if (!this.level().isClientSide()) {
                     this.level()
                             .explode(
                                     this,

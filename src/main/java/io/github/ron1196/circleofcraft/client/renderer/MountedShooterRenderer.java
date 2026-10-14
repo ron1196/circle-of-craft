@@ -12,12 +12,12 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 public class MountedShooterRenderer implements BlockEntityRenderer<MountedShooterBlockEntity> {
 
-    private static final ResourceLocation TEXTURE = CircleOfCraftMod.id("textures/entity/mounted_shooter.png");
+    private static final Identifier TEXTURE = CircleOfCraftMod.id("textures/entity/mounted_shooter.png");
 
     private final MountedShooterModel model;
 

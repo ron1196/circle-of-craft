@@ -143,7 +143,7 @@ public class RafikiQuestline {
             HyenaEntity hyena = EntityTypes.HYENA.get().create(level);
             if (hyena == null) continue;
             BlockPos pos = findDenSpawn(level, center);
-            hyena.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, level.random.nextFloat() * 360F, 0F);
+            hyena.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, level.getRandom().nextFloat() * 360F, 0F);
             hyena.setPersistenceRequired();
             level.addFreshEntity(hyena);
         }
@@ -153,9 +153,9 @@ public class RafikiQuestline {
     private static BlockPos findDenSpawn(ServerLevel level, BlockPos center) {
         for (int attempt = 0; attempt < SCAR_DEN_SCATTER_ATTEMPTS; attempt++) {
             BlockPos pos = center.offset(
-                    level.random.nextInt(SCAR_DEN_SCATTER * 2 + 1) - SCAR_DEN_SCATTER,
-                    level.random.nextInt(3) - 1,
-                    level.random.nextInt(SCAR_DEN_SCATTER * 2 + 1) - SCAR_DEN_SCATTER);
+                    level.getRandom().nextInt(SCAR_DEN_SCATTER * 2 + 1) - SCAR_DEN_SCATTER,
+                    level.getRandom().nextInt(3) - 1,
+                    level.getRandom().nextInt(SCAR_DEN_SCATTER * 2 + 1) - SCAR_DEN_SCATTER);
             if (level.getBlockState(pos).isAir()
                     && level.getBlockState(pos.above()).isAir()
                     && level.getBlockState(pos.below()).isSolid()) {
@@ -167,9 +167,9 @@ public class RafikiQuestline {
 
     private static BlockPos findCaveSpawn(ServerLevel level, BlockPos center) {
         for (int attempt = 0; attempt < SCAR_SEARCH_ATTEMPTS; attempt++) {
-            int x = center.getX() + level.random.nextInt(SCAR_SEARCH_RADIUS * 2) - SCAR_SEARCH_RADIUS;
-            int z = center.getZ() + level.random.nextInt(SCAR_SEARCH_RADIUS * 2) - SCAR_SEARCH_RADIUS;
-            int y = SCAR_MIN_Y + level.random.nextInt(SCAR_MAX_Y - SCAR_MIN_Y);
+            int x = center.getX() + level.getRandom().nextInt(SCAR_SEARCH_RADIUS * 2) - SCAR_SEARCH_RADIUS;
+            int z = center.getZ() + level.getRandom().nextInt(SCAR_SEARCH_RADIUS * 2) - SCAR_SEARCH_RADIUS;
+            int y = SCAR_MIN_Y + level.getRandom().nextInt(SCAR_MAX_Y - SCAR_MIN_Y);
 
             BlockPos pos = new BlockPos(x, y, z);
             if (level.getBlockState(pos).isAir()

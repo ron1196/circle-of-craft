@@ -45,7 +45,7 @@ public class LightningBoltEntity extends LightningBolt {
     @Override
     public void tick() {
         // Spawn fires on first tick for powered bolts
-        if (!firedSpawned && power > 0 && !level().isClientSide) {
+        if (!firedSpawned && power > 0 && !level().isClientSide()) {
             firedSpawned = true;
             spawnFires();
         }
@@ -54,7 +54,7 @@ public class LightningBoltEntity extends LightningBolt {
         super.tick();
 
         // Apply custom damage each active tick
-        if (!level().isClientSide && power > 0) {
+        if (!level().isClientSide() && power > 0) {
             damageNearbyEntities();
         }
     }

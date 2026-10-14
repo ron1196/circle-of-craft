@@ -79,7 +79,7 @@ public class OutlandsPoolBlock extends BaseEntityBlock {
                     SoundEvents.FIRE_EXTINGUISH,
                     SoundSource.BLOCKS,
                     0.7F,
-                    1.6F + (level.random.nextFloat() - level.random.nextFloat()) * 0.4F);
+                    1.6F + (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.4F);
         }
 
         // Damage living entities (fire damage)

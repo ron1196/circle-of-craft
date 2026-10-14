@@ -7,13 +7,13 @@ import io.github.ron1196.circleofcraft.entity.npc.RafikiEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Mob;
 import org.jetbrains.annotations.NotNull;
 
 public class RafikiRenderer extends MobRenderer<Mob, RafikiModel> {
 
-    private static final ResourceLocation TEXTURE =
+    private static final Identifier TEXTURE =
             CircleOfCraftMod.id("textures/entity/" + RafikiEntity.REGISTRY_NAME + ".png");
 
     private final float scale;
@@ -30,7 +30,7 @@ public class RafikiRenderer extends MobRenderer<Mob, RafikiModel> {
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull Mob entity) {
+    public @NotNull Identifier getTextureLocation(@NotNull Mob entity) {
         return TEXTURE;
     }
 }

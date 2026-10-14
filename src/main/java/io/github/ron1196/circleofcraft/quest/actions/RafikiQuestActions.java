@@ -131,8 +131,8 @@ public final class RafikiQuestActions {
      */
     private static BlockPos findCaveSpawn(ServerLevel level, BlockPos center) {
         for (int attempt = 0; attempt < CAVE_SEARCH_ATTEMPTS; attempt++) {
-            int dx = level.random.nextInt(CAVE_SEARCH_RADIUS * 2) - CAVE_SEARCH_RADIUS;
-            int dz = level.random.nextInt(CAVE_SEARCH_RADIUS * 2) - CAVE_SEARCH_RADIUS;
+            int dx = level.getRandom().nextInt(CAVE_SEARCH_RADIUS * 2) - CAVE_SEARCH_RADIUS;
+            int dz = level.getRandom().nextInt(CAVE_SEARCH_RADIUS * 2) - CAVE_SEARCH_RADIUS;
 
             // Enforce minimum distance from center
             if (Math.abs(dx) < CAVE_MIN_DISTANCE && Math.abs(dz) < CAVE_MIN_DISTANCE) {
@@ -141,7 +141,7 @@ public final class RafikiQuestActions {
 
             int x = center.getX() + dx;
             int z = center.getZ() + dz;
-            int y = CAVE_MIN_Y + level.random.nextInt(CAVE_MAX_Y - CAVE_MIN_Y);
+            int y = CAVE_MIN_Y + level.getRandom().nextInt(CAVE_MAX_Y - CAVE_MIN_Y);
 
             BlockPos pos = new BlockPos(x, y, z);
             if (level.getBlockState(pos).isAir()

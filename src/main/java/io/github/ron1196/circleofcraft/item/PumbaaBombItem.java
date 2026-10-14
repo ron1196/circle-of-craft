@@ -22,7 +22,7 @@ public class PumbaaBombItem extends Item {
             @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             PumbaaBombEntity bomb = new PumbaaBombEntity(level, player);
             bomb.setItem(stack);
             bomb.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);

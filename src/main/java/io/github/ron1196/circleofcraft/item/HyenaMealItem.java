@@ -29,7 +29,7 @@ public class HyenaMealItem extends Item {
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return InteractionResult.PASS;
         }
 
@@ -43,8 +43,8 @@ public class HyenaMealItem extends Item {
         // Grow saplings and crops (anything bonemealable)
         if (block instanceof BonemealableBlock bonemealable) {
             if (bonemealable.isValidBonemealTarget(level, pos, state)) {
-                if (bonemealable.isBonemealSuccess(level, level.random, pos, state)) {
-                    bonemealable.performBonemeal((ServerLevel) level, level.random, pos, state);
+                if (bonemealable.isBonemealSuccess(level, level.getRandom(), pos, state)) {
+                    bonemealable.performBonemeal((ServerLevel) level, level.getRandom(), pos, state);
                 }
                 context.getItemInHand().shrink(1);
                 level.levelEvent(2005, pos, 0);

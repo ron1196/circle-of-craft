@@ -67,7 +67,7 @@ public class ZazuEntity extends ModAnimal {
         if (isFood(held)) {
             return super.mobInteract(player, hand);
         }
-        if (level().isClientSide || isBaby()) {
+        if (level().isClientSide() || isBaby()) {
             return super.mobInteract(player, hand);
         }
         if (talkTick >= TALK_COOLDOWN) {

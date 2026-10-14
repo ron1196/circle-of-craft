@@ -35,7 +35,7 @@ public class ZebraMilkItem extends Item {
             serverPlayer.awardStat(Stats.ITEM_USED.get(this));
         }
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             entity.removeAllEffects();
         }
 

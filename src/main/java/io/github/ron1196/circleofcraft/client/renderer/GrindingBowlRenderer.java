@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class GrindingBowlRenderer implements BlockEntityRenderer<GrindingBowlBlockEntity> {
 
-    private static final ResourceLocation STICK_TEXTURE = CircleOfCraftMod.id("textures/entity/grinding_stick.png");
+    private static final Identifier STICK_TEXTURE = CircleOfCraftMod.id("textures/entity/grinding_stick.png");
 
     // Item rendering
     private static final double ITEM_BASE_X = 0.5;

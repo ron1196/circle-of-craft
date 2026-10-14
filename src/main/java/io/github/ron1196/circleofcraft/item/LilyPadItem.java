@@ -47,13 +47,13 @@ public class LilyPadItem extends BlockItem {
             return InteractionResultHolder.fail(player.getItemInHand(hand));
         }
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             level.setBlock(placePos, state, Block.UPDATE_ALL_IMMEDIATE);
             if (!player.getAbilities().instabuild) {
                 player.getItemInHand(hand).shrink(1);
             }
         }
 
-        return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide);
+        return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
     }
 }

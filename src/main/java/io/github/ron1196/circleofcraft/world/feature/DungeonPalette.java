@@ -3,7 +3,7 @@ package io.github.ron1196.circleofcraft.world.feature;
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.registry.ModBlocks;
 import java.util.function.Supplier;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 
 /**
@@ -29,7 +29,7 @@ public enum DungeonPalette {
             () -> ModBlocks.CORRUPT_PRIDE_BRICK.get(),
             () -> ModBlocks.CORRUPT_PRIDE_PILLAR.get());
 
-    private static final ResourceLocation OUTLANDS_DIMENSION_ID = CircleOfCraftMod.id("outlands");
+    private static final Identifier OUTLANDS_DIMENSION_ID = CircleOfCraftMod.id("outlands");
 
     final Supplier<? extends Block> floorPrimary;
     final Supplier<? extends Block> floorAccent;
@@ -50,7 +50,7 @@ public enum DungeonPalette {
         this.pillar = pillar;
     }
 
-    public static DungeonPalette forDimension(ResourceLocation dimensionId) {
+    public static DungeonPalette forDimension(Identifier dimensionId) {
         return OUTLANDS_DIMENSION_ID.equals(dimensionId) ? OUTLANDS : PRIDE;
     }
 }

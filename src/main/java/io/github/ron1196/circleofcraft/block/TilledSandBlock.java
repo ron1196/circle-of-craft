@@ -109,7 +109,7 @@ public class TilledSandBlock extends Block {
             @NotNull BlockPos pos,
             @NotNull Entity entity,
             float fallDistance) {
-        if (!level.isClientSide && level.random.nextFloat() < fallDistance - 0.5F) {
+        if (!level.isClientSide() && level.getRandom().nextFloat() < fallDistance - 0.5F) {
             turnToSand(level, pos);
         }
         entity.causeFallDamage(fallDistance, 1.0F, entity.damageSources().fall());

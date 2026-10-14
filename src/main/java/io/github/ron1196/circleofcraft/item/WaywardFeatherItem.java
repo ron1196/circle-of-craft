@@ -60,7 +60,7 @@ public class WaywardFeatherItem extends Item {
                 SoundEvents.PORTAL_TRIGGER,
                 SoundSource.PLAYERS,
                 1.0F,
-                level.random.nextFloat() * 0.4F + 0.8F);
+                level.getRandom().nextFloat() * 0.4F + 0.8F);
 
         serverPlayer.teleportTo(destLevel, x + 0.5, y, z + 0.5, player.getYRot(), player.getXRot());
 

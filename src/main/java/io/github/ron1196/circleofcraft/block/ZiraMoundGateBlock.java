@@ -42,7 +42,7 @@ public class ZiraMoundGateBlock extends Block {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             ServerLevel serverLevel = (ServerLevel) level;
             if (!WorldData.get(serverLevel).getQuestManager().isComplete(RafikiQuestline.QUEST_ID)) {
                 ChatHelper.sendNpcMessage(
@@ -54,7 +54,7 @@ public class ZiraMoundGateBlock extends Block {
             breakGateChain(level, pos);
         }
 
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide());
     }
 
     private void breakGateChain(Level level, BlockPos pos) {

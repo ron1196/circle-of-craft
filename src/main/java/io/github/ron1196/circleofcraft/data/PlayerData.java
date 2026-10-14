@@ -1,18 +1,16 @@
 package io.github.ron1196.circleofcraft.data;
 
+import com.mojang.serialization.Codec;
 import io.github.ron1196.circleofcraft.registry.ModAttachments;
 import java.util.HashSet;
 import java.util.Set;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 import org.jetbrains.annotations.NotNull;
 
-public class PlayerData implements INBTSerializable<CompoundTag> {
+public class PlayerData implements ValueIOSerializable {
 
     public static PlayerData get(Player player) {
         return player.getData(ModAttachments.PLAYER_DATA.get());
@@ -123,49 +121,37 @@ public class PlayerData implements INBTSerializable<CompoundTag> {
         this.claimedRewards.addAll(other.claimedRewards);
     }
 
-    // ── NBT ─────────────────────────────────────────────────────────────────────
+    // ── ValueIO ─────────────────────────────────────────────────────────────────
 
     @Override
-    public @NotNull CompoundTag serializeNBT(@NotNull HolderLookup.Provider provider) {
-        CompoundTag tag = new CompoundTag();
-        tag.putBoolean("ReceivedQuestBook", receivedQuestBook);
-        tag.putInt("HomePortalX", homePortalX);
-        tag.putInt("HomePortalY", homePortalY);
-        tag.putInt("HomePortalZ", homePortalZ);
-        tag.putBoolean("HasSimba", hasSimba);
-        tag.putBoolean("EnteredPrideLands", enteredPrideLands);
-        tag.putBoolean("EnteredOutlands", enteredOutlands);
-        tag.putBoolean("EnteredUpendi", enteredUpendi);
-        serializeClaimedRewards(tag);
-        return tag;
-    }
-
-    private void serializeClaimedRewards(CompoundTag tag) {
-        ListTag rewardsList = new ListTag();
+    public void serialize(@NotNull ValueOutput output) {
+        output.putBoolean("ReceivedQuestBook", receivedQuestBook);
+        output.putInt("HomePortalX", homePortalX);
+        output.putInt("HomePortalY", homePortalY);
+        output.putInt("HomePortalZ", homePortalZ);
+        output.putBoolean("HasSimba", hasSimba);
+        output.putBoolean("EnteredPrideLands", enteredPrideLands);
+        output.putBoolean("EnteredOutlands", enteredOutlands);
+        output.putBoolean("EnteredUpendi", enteredUpendi);
+        ValueOutput.TypedOutputList<String> rewardsList = output.list("ClaimedRewards", Codec.STRING);
         for (String reward : claimedRewards) {
-            rewardsList.add(StringTag.valueOf(reward));
+            rewardsList.add(reward);
         }
-        tag.put("ClaimedRewards", rewardsList);
     }
 
     @Override
-    public void deserializeNBT(@NotNull HolderLookup.Provider provider, @NotNull CompoundTag tag) {
-        receivedQuestBook = tag.getBoolean("ReceivedQuestBook");
-        homePortalX = tag.getInt("HomePortalX");
-        homePortalY = tag.getInt("HomePortalY");
-        homePortalZ = tag.getInt("HomePortalZ");
-        hasSimba = tag.getBoolean("HasSimba");
-        enteredPrideLands = tag.getBoolean("EnteredPrideLands");
-        enteredOutlands = tag.getBoolean("EnteredOutlands");
-        enteredUpendi = tag.getBoolean("EnteredUpendi");
-        deserializeClaimedRewards(tag);
-    }
-
-    private void deserializeClaimedRewards(CompoundTag tag) {
+    public void deserialize(@NotNull ValueInput input) {
+        receivedQuestBook = input.getBooleanOr("ReceivedQuestBook", false);
+        homePortalX = input.getIntOr("HomePortalX", 0);
+        homePortalY = input.getIntOr("HomePortalY", 0);
+        homePortalZ = input.getIntOr("HomePortalZ", 0);
+        hasSimba = input.getBooleanOr("HasSimba", false);
+        enteredPrideLands = input.getBooleanOr("EnteredPrideLands", false);
+        enteredOutlands = input.getBooleanOr("EnteredOutlands", false);
+        enteredUpendi = input.getBooleanOr("EnteredUpendi", false);
         claimedRewards.clear();
-        ListTag rewardsList = tag.getList("ClaimedRewards", Tag.TAG_STRING);
-        for (int i = 0; i < rewardsList.size(); i++) {
-            claimedRewards.add(rewardsList.getString(i));
+        for (String reward : input.listOrEmpty("ClaimedRewards", Codec.STRING)) {
+            claimedRewards.add(reward);
         }
     }
 }

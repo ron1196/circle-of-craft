@@ -13,7 +13,7 @@ import java.util.Set;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public record LoginSyncPacket(
         List<QuestEntry> questEntries,
@@ -28,7 +28,7 @@ public record LoginSyncPacket(
     public record QuestEntry(String questId, String stageId, boolean checked) {}
 
     public static final Type<LoginSyncPacket> TYPE =
-            new Type<>(ResourceLocation.fromNamespaceAndPath(CircleOfCraftMod.MOD_ID, "login_sync"));
+            new Type<>(Identifier.fromNamespaceAndPath(CircleOfCraftMod.MOD_ID, "login_sync"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, LoginSyncPacket> STREAM_CODEC = StreamCodec.of(
             (buf, pkt) -> {

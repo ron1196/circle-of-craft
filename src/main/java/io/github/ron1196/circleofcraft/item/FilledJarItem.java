@@ -69,13 +69,13 @@ public class FilledJarItem extends Item {
                     SoundEvents.FIRE_EXTINGUISH,
                     SoundSource.BLOCKS,
                     0.5F,
-                    2.6F + (level.random.nextFloat() - level.random.nextFloat()) * 0.8F);
+                    2.6F + (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.8F);
             for (int i = 0; i < NETHER_PARTICLE_COUNT; i++) {
                 level.addParticle(
                         ParticleTypes.LARGE_SMOKE,
-                        pos.getX() + level.random.nextDouble(),
-                        pos.getY() + level.random.nextDouble(),
-                        pos.getZ() + level.random.nextDouble(),
+                        pos.getX() + level.getRandom().nextDouble(),
+                        pos.getY() + level.getRandom().nextDouble(),
+                        pos.getZ() + level.getRandom().nextDouble(),
                         0.0,
                         0.0,
                         0.0);

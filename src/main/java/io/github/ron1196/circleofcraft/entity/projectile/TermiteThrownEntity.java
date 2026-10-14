@@ -4,7 +4,7 @@ import io.github.ron1196.circleofcraft.registry.EntityTypes;
 import io.github.ron1196.circleofcraft.registry.ModItems;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
@@ -28,7 +28,7 @@ public class TermiteThrownEntity extends ThrowableItemProjectile {
     @Override
     protected void onHit(@NotNull HitResult result) {
         super.onHit(result);
-        if (this.level().isClientSide) return;
+        if (this.level().isClientSide()) return;
         this.level().explode(this, this.getX(), this.getY(), this.getZ(), 1.8F, Level.ExplosionInteraction.BLOCK);
         this.discard();
     }

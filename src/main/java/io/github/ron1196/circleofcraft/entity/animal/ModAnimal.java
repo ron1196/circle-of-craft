@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -186,7 +186,7 @@ public abstract class ModAnimal extends Animal {
         CompoundTag questsTag = new CompoundTag();
         for (Map.Entry<UUID, AnimalFavorEntry> e : animalQuests.entrySet()) {
             CompoundTag entryTag = new CompoundTag();
-            ResourceLocation itemKey =
+            Identifier itemKey =
                     BuiltInRegistries.ITEM.getKey(e.getValue().requiredItem());
             if (itemKey != null) {
                 entryTag.putString("Item", itemKey.toString());
@@ -205,7 +205,7 @@ public abstract class ModAnimal extends Animal {
             CompoundTag questsTag = tag.getCompound("AnimalQuests");
             for (String key : questsTag.getAllKeys()) {
                 CompoundTag entryTag = questsTag.getCompound(key);
-                ResourceLocation itemId = ResourceLocation.parse(entryTag.getString("Item"));
+                Identifier itemId = Identifier.parse(entryTag.getString("Item"));
                 Item item = BuiltInRegistries.ITEM.get(itemId);
                 if (item == null) continue;
                 AnimalFavorEntry questEntry = new AnimalFavorEntry(item, entryTag.getInt("Amount"));

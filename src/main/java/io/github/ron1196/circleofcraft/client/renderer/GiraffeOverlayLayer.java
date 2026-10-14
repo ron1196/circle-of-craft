@@ -7,7 +7,7 @@ import io.github.ron1196.circleofcraft.entity.animal.GiraffeEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class GiraffeOverlayLayer extends RenderLayer<GiraffeEntity, GiraffeModel<GiraffeEntity>> {
 
-    private static final ResourceLocation SADDLE_TEXTURE = CircleOfCraftMod.id("textures/entity/giraffe/saddle.png");
+    private static final Identifier SADDLE_TEXTURE = CircleOfCraftMod.id("textures/entity/giraffe/saddle.png");
 
     private static final String[] TIE_NAMES = {
         "tie", "tie_white", "tie_blue", "tie_yellow",
@@ -47,7 +47,7 @@ public class GiraffeOverlayLayer extends RenderLayer<GiraffeEntity, GiraffeModel
         // Render tie overlay
         int tie = giraffe.getTie();
         if (tie >= 0 && tie < TIE_NAMES.length) {
-            ResourceLocation tieTexture = CircleOfCraftMod.id("textures/entity/giraffe/" + TIE_NAMES[tie] + ".png");
+            Identifier tieTexture = CircleOfCraftMod.id("textures/entity/giraffe/" + TIE_NAMES[tie] + ".png");
             renderColoredCutoutModel(getParentModel(), tieTexture, poseStack, buffer, packedLight, giraffe, -1);
         }
     }

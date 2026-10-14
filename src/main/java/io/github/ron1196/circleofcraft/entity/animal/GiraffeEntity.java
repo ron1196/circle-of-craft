@@ -139,7 +139,7 @@ public class GiraffeEntity extends ModAnimal {
             if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
                 ModCriteriaTriggers.RIDE_GIRAFFE.trigger(serverPlayer);
             }
-            return InteractionResult.sidedSuccess(level().isClientSide);
+            return InteractionResult.sidedSuccess(level().isClientSide());
         }
 
         // Apply tie (must be saddled, adult, no existing tie, holding a tie item)
@@ -151,14 +151,14 @@ public class GiraffeEntity extends ModAnimal {
                     stack.shrink(1);
                 }
                 playSound(SoundEvents.ARMOR_EQUIP_LEATHER.value(), 0.5F, 1.0F);
-                return InteractionResult.sidedSuccess(level().isClientSide);
+                return InteractionResult.sidedSuccess(level().isClientSide());
             }
         }
 
         // Mount the saddled giraffe
-        if (!level().isClientSide && isSaddled() && (getFirstPassenger() == null || getFirstPassenger() == player)) {
+        if (!level().isClientSide() && isSaddled() && (getFirstPassenger() == null || getFirstPassenger() == player)) {
             player.startRiding(this);
-            return InteractionResult.sidedSuccess(level().isClientSide);
+            return InteractionResult.sidedSuccess(level().isClientSide());
         }
 
         return super.mobInteract(player, hand);

@@ -72,7 +72,7 @@ public final class NpcBehavior {
         if (talkCooldown > 0) talkCooldown--;
 
         Level level = owner.level();
-        if (level.isClientSide) return false;
+        if (level.isClientSide()) return false;
         if (!(level instanceof ServerLevel serverLevel)) return false;
 
         if (homePos == null) {

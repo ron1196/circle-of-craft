@@ -5,12 +5,12 @@ import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Mob;
 
 public class NpcRenderer extends MobRenderer<Mob, EntityModel<Mob>> {
 
-    private final ResourceLocation texture;
+    private final Identifier texture;
     private final float scale;
 
     public NpcRenderer(
@@ -37,7 +37,7 @@ public class NpcRenderer extends MobRenderer<Mob, EntityModel<Mob>> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Mob entity) {
+    public Identifier getTextureLocation(Mob entity) {
         return texture;
     }
 }

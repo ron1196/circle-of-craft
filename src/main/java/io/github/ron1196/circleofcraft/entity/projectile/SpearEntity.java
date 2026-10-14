@@ -9,7 +9,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
@@ -52,7 +52,7 @@ public class SpearEntity extends AbstractArrow implements net.minecraft.world.en
 
         super.onHitEntity(result);
 
-        if (!this.level().isClientSide && poisoned && result.getEntity() instanceof LivingEntity target) {
+        if (!this.level().isClientSide() && poisoned && result.getEntity() instanceof LivingEntity target) {
             if (this.random.nextFloat() < 0.75F) {
                 int duration = 60 + this.random.nextInt(61); // 60-120 ticks
                 target.addEffect(new MobEffectInstance(MobEffects.POISON, duration, 0));

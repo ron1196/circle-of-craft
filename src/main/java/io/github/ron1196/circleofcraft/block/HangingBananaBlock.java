@@ -71,7 +71,7 @@ public class HangingBananaBlock extends HorizontalDirectionalBlock {
 
         if (!level.isClientSide()) {
             level.setBlock(pos, state.setValue(AGE, 0), 3);
-            popResource(level, pos, new ItemStack(ModItems.BANANA.get(), 1 + level.random.nextInt(MAX_HARVEST)));
+            popResource(level, pos, new ItemStack(ModItems.BANANA.get(), 1 + level.getRandom().nextInt(MAX_HARVEST)));
         }
 
         return InteractionResult.sidedSuccess(level.isClientSide());

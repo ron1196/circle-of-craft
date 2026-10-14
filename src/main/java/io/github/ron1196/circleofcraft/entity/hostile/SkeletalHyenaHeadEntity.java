@@ -44,7 +44,7 @@ public class SkeletalHyenaHeadEntity extends Monster {
 
     @Override
     public void tick() {
-        if (!level().isClientSide && level().getDifficulty() == Difficulty.PEACEFUL) {
+        if (!level().isClientSide() && level().getDifficulty() == Difficulty.PEACEFUL) {
             discard();
             return;
         }

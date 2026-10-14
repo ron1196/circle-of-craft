@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.BrightnessCombiner;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.ChestBlock;
@@ -27,7 +27,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class PrideBedRenderer implements BlockEntityRenderer<PrideBedBlockEntity> {
 
-    private static final ResourceLocation TEXTURE = CircleOfCraftMod.id("textures/entity/pride_bed.png");
+    private static final Identifier TEXTURE = CircleOfCraftMod.id("textures/entity/pride_bed.png");
 
     private final ModelPart headRoot;
     private final ModelPart footRoot;

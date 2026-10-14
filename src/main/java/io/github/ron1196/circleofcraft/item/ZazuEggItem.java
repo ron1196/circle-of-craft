@@ -22,7 +22,7 @@ public class ZazuEggItem extends Item {
             @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             ZazuEggEntity egg = new ZazuEggEntity(level, player);
             egg.setItem(stack);
             egg.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);

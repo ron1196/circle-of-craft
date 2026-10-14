@@ -5,9 +5,7 @@ import io.github.ron1196.circleofcraft.menu.BongoDrumMenu;
 import io.github.ron1196.circleofcraft.registry.BlockEntityTypes;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -16,6 +14,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -73,17 +73,17 @@ public class BongoDrumBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        tag.put("NoteSlots", noteSlots.serializeNBT(registries));
-        tag.putInt("Note", note);
+    protected void saveAdditional(@NotNull ValueOutput output) {
+        super.saveAdditional(output);
+        noteSlots.serialize(output.child("NoteSlots"));
+        output.putInt("Note", note);
     }
 
     @Override
-    protected void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        noteSlots.deserializeNBT(registries, tag.getCompound("NoteSlots"));
-        note = tag.getInt("Note");
+    protected void loadAdditional(@NotNull ValueInput input) {
+        super.loadAdditional(input);
+        noteSlots.deserialize(input.childOrEmpty("NoteSlots"));
+        note = input.getIntOr("Note", 0);
     }
 
     @Override

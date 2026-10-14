@@ -62,13 +62,13 @@ public class VaseBlock extends Block {
         FilledVaseBlock filled = contents().get(stack.getItem());
         if (filled == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             level.setBlock(pos, filled.defaultBlockState(), 3);
             if (!player.getAbilities().instabuild) stack.shrink(1);
             level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
             level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide());
     }
 
     @Override

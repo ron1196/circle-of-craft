@@ -97,7 +97,7 @@ public class TermiteQueenEntity extends Monster implements GeoEntity {
         }
         float healthBefore = this.getHealth();
         boolean result = super.hurt(source, amount);
-        if (result && this.getHealth() < healthBefore && !this.level().isClientSide) {
+        if (result && this.getHealth() < healthBefore && !this.level().isClientSide()) {
             termiteDamageAccumulator += healthBefore - this.getHealth();
             while (termiteDamageAccumulator >= DAMAGE_PER_TERMITE) {
                 spawnTermite(true);
@@ -110,7 +110,7 @@ public class TermiteQueenEntity extends Monster implements GeoEntity {
     @Override
     public void aiStep() {
         super.aiStep();
-        if (!this.level().isClientSide) {
+        if (!this.level().isClientSide()) {
             this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
 
             if (this.getTarget() != null && this.isAlive()) {

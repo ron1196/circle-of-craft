@@ -76,9 +76,9 @@ public class PumbaaBoxBlock extends Block {
             for (int i = 0; i < 40; i++) {
                 serverLevel.sendParticles(
                         ParticleTypes.CAMPFIRE_COSY_SMOKE,
-                        pos.getX() + 0.5 + level.random.nextGaussian() * 3,
-                        pos.getY() + 1.0 + level.random.nextFloat() * 4,
-                        pos.getZ() + 0.5 + level.random.nextGaussian() * 3,
+                        pos.getX() + 0.5 + level.getRandom().nextGaussian() * 3,
+                        pos.getY() + 1.0 + level.getRandom().nextFloat() * 4,
+                        pos.getZ() + 0.5 + level.getRandom().nextGaussian() * 3,
                         1,
                         0,
                         0.05,
@@ -93,7 +93,7 @@ public class PumbaaBoxBlock extends Block {
                 ModSoundEvents.FLATULENCE.get(),
                 SoundSource.BLOCKS,
                 4.0F,
-                (1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F);
+                (1.0F + (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F) * 0.7F);
 
         // Send green overlay to all nearby players
         if (level instanceof ServerLevel serverLevel) {
@@ -117,14 +117,14 @@ public class PumbaaBoxBlock extends Block {
 
     private static void spawnSmokeParticles(@NotNull Level level, @NotNull BlockPos pos) {
         for (int i = 0; i < 8; i++) {
-            double dx = level.random.nextGaussian() * 0.02;
-            double dy = level.random.nextGaussian() * 0.02;
-            double dz = level.random.nextGaussian() * 0.02;
+            double dx = level.getRandom().nextGaussian() * 0.02;
+            double dy = level.getRandom().nextGaussian() * 0.02;
+            double dz = level.getRandom().nextGaussian() * 0.02;
             level.addParticle(
                     ParticleTypes.SMOKE,
-                    pos.getX() + 0.5 + (level.random.nextFloat() - 0.5) * 1.5,
-                    pos.getY() + 0.9 + level.random.nextFloat(),
-                    pos.getZ() + 0.5 + (level.random.nextFloat() - 0.5) * 1.5,
+                    pos.getX() + 0.5 + (level.getRandom().nextFloat() - 0.5) * 1.5,
+                    pos.getY() + 0.9 + level.getRandom().nextFloat(),
+                    pos.getZ() + 0.5 + (level.getRandom().nextFloat() - 0.5) * 1.5,
                     dx,
                     dy,
                     dz);

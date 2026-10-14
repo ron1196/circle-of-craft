@@ -25,7 +25,7 @@ public class SpearItem extends Item {
             @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             SpearEntity spear = new SpearEntity(level, player, isPoisoned);
             spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
             level.addFreshEntity(spear);

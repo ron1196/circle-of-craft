@@ -7,7 +7,7 @@ import io.github.ron1196.circleofcraft.entity.npc.ZiraEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import snownee.jade.api.EntityAccessor;
@@ -19,7 +19,7 @@ import snownee.jade.api.config.IPluginConfig;
 public enum TermiteQueenProvider implements IEntityComponentProvider, IServerDataProvider<EntityAccessor> {
     INSTANCE;
 
-    public static final ResourceLocation UID = CircleOfCraftMod.id("termite_queen");
+    public static final Identifier UID = CircleOfCraftMod.id("termite_queen");
     private static final String NBT_SPAWN_COOLDOWN = "JadeTQ_SpawnCooldown";
     private static final int TICKS_PER_SECOND = 20;
 
@@ -66,7 +66,7 @@ public enum TermiteQueenProvider implements IEntityComponentProvider, IServerDat
     }
 
     @Override
-    public @NotNull ResourceLocation getUid() {
+    public @NotNull Identifier getUid() {
         return UID;
     }
 }

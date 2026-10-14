@@ -59,7 +59,7 @@ public class PumbaaExplosionEntity extends Entity {
         }
 
         if (serverLevel.players().isEmpty()) return;
-        if (serverLevel.random.nextInt(TICK_CHANCE) != 0) return;
+        if (serverLevel.getRandom().nextInt(TICK_CHANCE) != 0) return;
 
         spawnExplosionEffects(serverLevel);
         explosionsRemaining--;
@@ -71,9 +71,9 @@ public class PumbaaExplosionEntity extends Entity {
     }
 
     private void spawnExplosionEffects(ServerLevel level) {
-        double x = getX() + level.random.nextGaussian() * SPREAD;
-        double y = getY() + 2.0 + level.random.nextFloat() * 4;
-        double z = getZ() + level.random.nextGaussian() * SPREAD;
+        double x = getX() + level.getRandom().nextGaussian() * SPREAD;
+        double y = getY() + 2.0 + level.getRandom().nextFloat() * 4;
+        double z = getZ() + level.getRandom().nextGaussian() * SPREAD;
 
         // Explosion particle
         level.sendParticles(ParticleTypes.EXPLOSION, x, y, z, 1, 0, 0, 0, 0);
@@ -87,9 +87,9 @@ public class PumbaaExplosionEntity extends Entity {
         for (int i = 0; i < GAS_CLOUD_PARTICLES; i++) {
             level.sendParticles(
                     ParticleTypes.CAMPFIRE_COSY_SMOKE,
-                    x + level.random.nextGaussian() * 2,
-                    y + level.random.nextFloat() * 2,
-                    z + level.random.nextGaussian() * 2,
+                    x + level.getRandom().nextGaussian() * 2,
+                    y + level.getRandom().nextFloat() * 2,
+                    z + level.getRandom().nextGaussian() * 2,
                     1,
                     0,
                     0.05,
@@ -104,7 +104,7 @@ public class PumbaaExplosionEntity extends Entity {
                 ModSoundEvents.FLATULENCE.get(),
                 SoundSource.BLOCKS,
                 4.0F,
-                (1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F);
+                (1.0F + (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F) * 0.7F);
     }
 
     private void tryAdvanceQuest(ServerLevel level) {

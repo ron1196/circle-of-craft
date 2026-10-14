@@ -49,7 +49,7 @@ public class DartShooterItem extends Item {
             return InteractionResultHolder.fail(shooterStack);
         }
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             // Consume one dart
             if (!player.getAbilities().instabuild) {
                 player.getInventory().getItem(dartSlot).shrink(1);

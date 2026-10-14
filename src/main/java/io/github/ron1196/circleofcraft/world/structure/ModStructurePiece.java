@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -83,16 +83,16 @@ public class ModStructurePiece extends StructurePiece {
         return box == null || box.isInside(x, y, z);
     }
 
-    private final ResourceLocation featureId;
+    private final Identifier featureId;
 
-    public ModStructurePiece(BlockPos pos, ResourceLocation featureId) {
+    public ModStructurePiece(BlockPos pos, Identifier featureId) {
         super(StructureTypes.LK_PIECE_TYPE.get(), 0, computeBoundingBox(pos, featureId));
         this.featureId = featureId;
     }
 
     public ModStructurePiece(StructurePieceSerializationContext ctx, CompoundTag tag) {
         super(StructureTypes.LK_PIECE_TYPE.get(), tag);
-        this.featureId = ResourceLocation.parse(tag.getString("FeatureId"));
+        this.featureId = Identifier.parse(tag.getString("FeatureId"));
     }
 
     @Override
@@ -131,7 +131,7 @@ public class ModStructurePiece extends StructurePiece {
         }
     }
 
-    private static BoundingBox computeBoundingBox(BlockPos pos, ResourceLocation featureId) {
+    private static BoundingBox computeBoundingBox(BlockPos pos, Identifier featureId) {
         StructureConfig config = configFor(featureId.getPath());
         int originY = pos.getY() + config.yOffset();
         return new BoundingBox(

@@ -53,7 +53,7 @@ public class GroundRhinoHornItem extends Item {
      * @return SUCCESS if breeding occurred or failed with smoke, CONSUME if conditions not met
      */
     public static InteractionResult tryBreed(Animal animal, Player player, ItemStack stack) {
-        if (player.level().isClientSide) {
+        if (player.level().isClientSide()) {
             return InteractionResult.CONSUME;
         }
 

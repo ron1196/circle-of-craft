@@ -125,7 +125,7 @@ public class CustomTransitionGameTests {
             return;
         }
 
-        // spawnScar picks a random air-air-solid spot within 60 blocks (level.random, so the exact
+        // spawnScar picks a random air-air-solid spot within 60 blocks (level.getRandom(), so the exact
         // spot shifts with how many other parallel arenas have drawn from the shared RNG). Force-load
         // the whole search radius so Scar's chunk is always loaded when we sweep — otherwise an entity
         // landing in an unloaded chunk is invisible to getEntitiesOfClass and the test flakes on CI.

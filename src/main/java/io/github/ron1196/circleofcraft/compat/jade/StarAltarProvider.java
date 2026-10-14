@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -25,7 +25,7 @@ import snownee.jade.api.config.IPluginConfig;
 public enum StarAltarProvider implements IBlockComponentProvider {
     INSTANCE;
 
-    public static final ResourceLocation UID = CircleOfCraftMod.id("star_altar");
+    public static final Identifier UID = CircleOfCraftMod.id("star_altar");
 
     @Override
     public void appendTooltip(
@@ -70,7 +70,7 @@ public enum StarAltarProvider implements IBlockComponentProvider {
     }
 
     @Override
-    public @NotNull ResourceLocation getUid() {
+    public @NotNull Identifier getUid() {
         return UID;
     }
 

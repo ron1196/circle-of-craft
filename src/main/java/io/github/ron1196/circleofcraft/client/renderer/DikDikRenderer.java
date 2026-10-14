@@ -6,12 +6,12 @@ import io.github.ron1196.circleofcraft.entity.animal.DikDikEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 public class DikDikRenderer extends MobRenderer<DikDikEntity, EntityModel<DikDikEntity>> {
 
-    private static final ResourceLocation[] TEXTURES = {
+    private static final Identifier[] TEXTURES = {
         CircleOfCraftMod.id("textures/entity/dikdik_0.png"),
         CircleOfCraftMod.id("textures/entity/dikdik_1.png"),
         CircleOfCraftMod.id("textures/entity/dikdik_2.png")
@@ -36,7 +36,7 @@ public class DikDikRenderer extends MobRenderer<DikDikEntity, EntityModel<DikDik
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull DikDikEntity entity) {
+    public @NotNull Identifier getTextureLocation(@NotNull DikDikEntity entity) {
         int variant = entity.getVariant();
         if (variant < 0 || variant >= TEXTURES.length) variant = 0;
         return TEXTURES[variant];

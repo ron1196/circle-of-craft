@@ -4,7 +4,7 @@ import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.junit.jupiter.api.Test;
 
 class DungeonFeaturePaletteTest {
@@ -28,7 +28,7 @@ class DungeonFeaturePaletteTest {
 
     @Test
     void vanillaOverworldFallsBackToPridePalette() {
-        assertEquals(DungeonPalette.PRIDE, DungeonPalette.forDimension(ResourceLocation.fromNamespaceAndPath("minecraft", "overworld")));
+        assertEquals(DungeonPalette.PRIDE, DungeonPalette.forDimension(Identifier.fromNamespaceAndPath("minecraft", "overworld")));
     }
 
     @Test

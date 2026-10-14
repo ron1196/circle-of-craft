@@ -7,7 +7,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 import snownee.jade.api.EntityAccessor;
@@ -19,7 +19,7 @@ import snownee.jade.api.config.IPluginConfig;
 public enum AnimalFavorProvider implements IEntityComponentProvider, IServerDataProvider<EntityAccessor> {
     INSTANCE;
 
-    public static final ResourceLocation UID = CircleOfCraftMod.id("animal_favor");
+    public static final Identifier UID = CircleOfCraftMod.id("animal_favor");
     private static final String NBT_ITEM = "JadeAF_Item";
     private static final String NBT_AMOUNT = "JadeAF_Amount";
 
@@ -30,7 +30,7 @@ public enum AnimalFavorProvider implements IEntityComponentProvider, IServerData
         if (!data.contains(NBT_ITEM)) {
             return;
         }
-        Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(data.getString(NBT_ITEM)));
+        Item item = BuiltInRegistries.ITEM.get(Identifier.parse(data.getString(NBT_ITEM)));
         int amount = data.getInt(NBT_AMOUNT);
         tooltip.add(Component.translatable("jade.circleofcraft.animal_favor.wants", amount, item.getDescription())
                 .withStyle(ChatFormatting.GOLD));
@@ -48,13 +48,13 @@ public enum AnimalFavorProvider implements IEntityComponentProvider, IServerData
         if (entry == null) {
             return;
         }
-        ResourceLocation itemKey = BuiltInRegistries.ITEM.getKey(entry.requiredItem());
+        Identifier itemKey = BuiltInRegistries.ITEM.getKey(entry.requiredItem());
         data.putString(NBT_ITEM, itemKey.toString());
         data.putInt(NBT_AMOUNT, entry.requiredAmount());
     }
 
     @Override
-    public @NotNull ResourceLocation getUid() {
+    public @NotNull Identifier getUid() {
         return UID;
     }
 }

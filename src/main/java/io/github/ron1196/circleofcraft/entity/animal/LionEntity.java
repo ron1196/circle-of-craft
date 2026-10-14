@@ -10,7 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.ItemTags;
@@ -18,7 +18,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -43,8 +43,8 @@ public class LionEntity extends ModAnimal implements GenderedAnimal {
     private static final byte GENDER_MALE = 0;
     private static final byte GENDER_FEMALE = 1;
 
-    private static final ResourceLocation FEMALE_HEALTH_MODIFIER_ID = CircleOfCraftMod.id("lion_female_health");
-    private static final ResourceLocation FEMALE_ATTACK_MODIFIER_ID = CircleOfCraftMod.id("lion_female_attack");
+    private static final Identifier FEMALE_HEALTH_MODIFIER_ID = CircleOfCraftMod.id("lion_female_health");
+    private static final Identifier FEMALE_ATTACK_MODIFIER_ID = CircleOfCraftMod.id("lion_female_attack");
     private static final double FEMALE_HEALTH_DELTA = -4.0;
     private static final double FEMALE_ATTACK_DELTA = -1.0;
 
@@ -163,7 +163,7 @@ public class LionEntity extends ModAnimal implements GenderedAnimal {
     public SpawnGroupData finalizeSpawn(
             @NotNull ServerLevelAccessor level,
             @NotNull DifficultyInstance difficulty,
-            @NotNull MobSpawnType spawnType,
+            @NotNull EntitySpawnReason spawnType,
             @Nullable SpawnGroupData spawnData) {
         initializeGender(level);
         return super.finalizeSpawn(level, difficulty, spawnType, spawnData);

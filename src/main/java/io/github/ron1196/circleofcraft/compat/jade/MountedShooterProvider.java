@@ -4,7 +4,7 @@ import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.block.entity.MountedShooterBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import snownee.jade.api.BlockAccessor;
@@ -15,7 +15,7 @@ import snownee.jade.api.config.IPluginConfig;
 public enum MountedShooterProvider implements IBlockComponentProvider {
     INSTANCE;
 
-    public static final ResourceLocation UID = CircleOfCraftMod.id("mounted_shooter");
+    public static final Identifier UID = CircleOfCraftMod.id("mounted_shooter");
 
     @Override
     public void appendTooltip(
@@ -37,7 +37,7 @@ public enum MountedShooterProvider implements IBlockComponentProvider {
     }
 
     @Override
-    public @NotNull ResourceLocation getUid() {
+    public @NotNull Identifier getUid() {
         return UID;
     }
 }

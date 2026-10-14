@@ -134,7 +134,7 @@ public class ZiraEntity extends Monster {
         if (isHostile()) {
             // Hostile mode: skip quest behavior, handle combat mechanics
             Level level = level();
-            if (level.isClientSide) return;
+            if (level.isClientSide()) return;
 
             tryRemountQueen();
             if (!lowHpRage && getHealth() <= 120F && !isPassenger()) {

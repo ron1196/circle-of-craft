@@ -34,7 +34,7 @@ public class TunnahDiggahItem extends PickaxeItem {
             @NotNull BlockState state,
             @NotNull BlockPos pos,
             @NotNull LivingEntity miner) {
-        if (level.isClientSide || !(level instanceof ServerLevel serverLevel)) {
+        if (level.isClientSide() || !(level instanceof ServerLevel serverLevel)) {
             return super.mineBlock(stack, level, state, pos, miner);
         }
 
@@ -63,7 +63,7 @@ public class TunnahDiggahItem extends PickaxeItem {
                     if (!isAoETarget(targetState)) continue;
 
                     // Drop with chance: 33% normally, 66% with Precision
-                    boolean shouldDrop = hasPrecision ? level.random.nextInt(3) > 0 : level.random.nextInt(3) == 0;
+                    boolean shouldDrop = hasPrecision ? level.getRandom().nextInt(3) > 0 : level.getRandom().nextInt(3) == 0;
 
                     if (shouldDrop) {
                         BlockState dropState = getDropState(targetState, hasSilkTouch);

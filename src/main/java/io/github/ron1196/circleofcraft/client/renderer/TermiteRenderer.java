@@ -6,13 +6,13 @@ import io.github.ron1196.circleofcraft.entity.hostile.TermiteEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
 public class TermiteRenderer<M extends EntityModel<TermiteEntity>> extends MobRenderer<TermiteEntity, M> {
 
-    private static final ResourceLocation TEXTURE = CircleOfCraftMod.id("textures/entity/termite.png");
+    private static final Identifier TEXTURE = CircleOfCraftMod.id("textures/entity/termite.png");
     private static final float SCALE = 0.4F;
 
     public TermiteRenderer(EntityRendererProvider.Context context, M model, float shadowRadius) {
@@ -31,7 +31,7 @@ public class TermiteRenderer<M extends EntityModel<TermiteEntity>> extends MobRe
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull TermiteEntity entity) {
+    public @NotNull Identifier getTextureLocation(@NotNull TermiteEntity entity) {
         return TEXTURE;
     }
 }

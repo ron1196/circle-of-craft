@@ -52,7 +52,7 @@ public class OutsandBlock extends FallingBlock {
     }
 
     private void damageEntity(Level level, Entity entity) {
-        if (entity instanceof LivingEntity && !entity.fireImmune() && level.random.nextBoolean()) {
+        if (entity instanceof LivingEntity && !entity.fireImmune() && level.getRandom().nextBoolean()) {
             entity.hurt(level.damageSources().inFire(), 2.0F);
         }
     }

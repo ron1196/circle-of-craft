@@ -105,12 +105,12 @@ public class RugEntity extends Entity {
                             SoundSource.NEUTRAL,
                             1.0F,
                             (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
-            if (!level().isClientSide) {
+            if (!level().isClientSide()) {
                 CharacterSpeech speech = getSpeech();
                 player.sendSystemMessage(Component.literal(CharacterSpeech.giveSpeech(speech)));
             }
             talkCooldown = 0;
-            return InteractionResult.sidedSuccess(level().isClientSide);
+            return InteractionResult.sidedSuccess(level().isClientSide());
         }
         return InteractionResult.PASS;
     }
@@ -133,7 +133,7 @@ public class RugEntity extends Entity {
                         SoundSource.NEUTRAL,
                         1.0F,
                         (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             spawnAtLocation(getRugItemStack(), 0.0F);
         }
         discard();

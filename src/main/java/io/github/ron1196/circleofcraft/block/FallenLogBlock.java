@@ -44,11 +44,11 @@ public class FallenLogBlock extends RotatedPillarBlock {
                         .getOrThrow(Enchantments.FORTUNE),
                 tool);
         float chance = BASE_CHANCE + FORTUNE_BONUS * fortune;
-        if (level.random.nextFloat() >= chance) return;
+        if (level.getRandom().nextFloat() >= chance) return;
 
         BugEntity bug = EntityTypes.BUG.get().create(serverLevel);
         if (bug == null) return;
-        bug.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, level.random.nextFloat() * 360.0F, 0.0F);
+        bug.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, level.getRandom().nextFloat() * 360.0F, 0.0F);
         bug.finalizeSpawn(serverLevel, level.getCurrentDifficultyAt(pos), MobSpawnType.NATURAL, null);
         bug.startPanic();
         serverLevel.addFreshEntity(bug);

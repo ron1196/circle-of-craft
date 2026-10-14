@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -277,26 +276,18 @@ public class QuestlineManager implements QuestStateLookup {
         }
     }
 
-    // -- NBT ----------------------------------------------------------------
+    // -- Save/load ------------------------------------------------------------
 
-    public void writeToNBT(CompoundTag tag) {
-        CompoundTag questsTag = new CompoundTag();
-        for (Map.Entry<String, QuestlineState> entry : states.entrySet()) {
-            CompoundTag questTag = new CompoundTag();
-            entry.getValue().writeToNBT(questTag);
-            questsTag.put(entry.getKey(), questTag);
-        }
-        tag.put("Quests", questsTag);
+    /**
+     * Snapshot of quest states for WorldData's codec. Only quests present in this map at load
+     * time override the fresh defaults seeded by the constructor — a quest added by a mod update
+     * after this save was written keeps its default state.
+     */
+    public Map<String, QuestlineState> getStatesForSave() {
+        return states;
     }
 
-    public void readFromNBT(CompoundTag tag) {
-        if (!tag.contains("Quests")) {
-            return;
-        }
-        CompoundTag questsTag = tag.getCompound("Quests");
-        for (String key : questsTag.getAllKeys()) {
-            QuestlineState state = QuestlineState.readFromNBT(questsTag.getCompound(key));
-            states.put(key, state);
-        }
+    public void loadStates(Map<String, QuestlineState> loaded) {
+        states.putAll(loaded);
     }
 }

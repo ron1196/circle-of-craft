@@ -7,7 +7,7 @@ import io.github.ron1196.circleofcraft.registry.RecipeTypes;
 import java.util.Optional;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
@@ -20,7 +20,7 @@ import snownee.jade.api.config.IPluginConfig;
 public enum GrindingBowlProvider implements IBlockComponentProvider {
     INSTANCE;
 
-    public static final ResourceLocation UID = CircleOfCraftMod.id("grinding_bowl");
+    public static final Identifier UID = CircleOfCraftMod.id("grinding_bowl");
 
     @Override
     public void appendTooltip(
@@ -49,7 +49,7 @@ public enum GrindingBowlProvider implements IBlockComponentProvider {
     }
 
     @Override
-    public @NotNull ResourceLocation getUid() {
+    public @NotNull Identifier getUid() {
         return UID;
     }
 }

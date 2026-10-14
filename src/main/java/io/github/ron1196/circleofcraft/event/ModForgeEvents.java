@@ -232,7 +232,7 @@ public class ModForgeEvents {
                     player.getMainHandItem());
 
             float dropChance = 0.05F + 0.03F * lootingLevel;
-            if (entity.level().random.nextFloat() < dropChance) {
+            if (entity.level().getRandom().nextFloat() < dropChance) {
                 entity.spawnAtLocation(new ItemStack(ModItems.HYENA_HEAD_ITEM.get()));
                 ModCriteriaTriggers.BEHEAD_HYENA.trigger((ServerPlayer) player);
             }
@@ -390,7 +390,7 @@ public class ModForgeEvents {
      * Exposed for game tests so they can call it directly without staging a real Outlands chunk.
      */
     public static void convertSandToOutsand(ServerLevel level, BlockPos center) {
-        int radius = level.random.nextInt(OUTSAND_MAX_RADIUS - OUTSAND_MIN_RADIUS + 1) + OUTSAND_MIN_RADIUS;
+        int radius = level.getRandom().nextInt(OUTSAND_MAX_RADIUS - OUTSAND_MIN_RADIUS + 1) + OUTSAND_MIN_RADIUS;
         int radiusSq = radius * radius;
 
         for (int dx = -radius; dx <= radius; dx++) {
@@ -403,7 +403,7 @@ public class ModForgeEvents {
                     level.setBlock(pos, ModBlocks.OUTSAND.get().defaultBlockState(), 3);
 
                     BlockPos above = pos.above();
-                    if (level.random.nextInt(OUTSAND_FIRE_CHANCE) == 0 && level.isEmptyBlock(above)) {
+                    if (level.getRandom().nextInt(OUTSAND_FIRE_CHANCE) == 0 && level.isEmptyBlock(above)) {
                         level.setBlock(above, BaseFireBlock.getState(level, above), 3);
                     }
                 }
@@ -418,16 +418,16 @@ public class ModForgeEvents {
      */
     private static void handleDryLightning(ServerLevel level) {
         if (level.players().isEmpty()) return;
-        if (level.random.nextInt(DRY_LIGHTNING_CHANCE) != 0) return;
+        if (level.getRandom().nextInt(DRY_LIGHTNING_CHANCE) != 0) return;
 
         // Pick a random player
-        Player player = level.players().get(level.random.nextInt(level.players().size()));
+        Player player = level.players().get(level.getRandom().nextInt(level.players().size()));
 
         int px = Mth.floor(player.getX());
         int pz = Mth.floor(player.getZ());
 
-        int strikeX = px + level.random.nextInt(DRY_LIGHTNING_RANGE * 2 + 1) - DRY_LIGHTNING_RANGE;
-        int strikeZ = pz + level.random.nextInt(DRY_LIGHTNING_RANGE * 2 + 1) - DRY_LIGHTNING_RANGE;
+        int strikeX = px + level.getRandom().nextInt(DRY_LIGHTNING_RANGE * 2 + 1) - DRY_LIGHTNING_RANGE;
+        int strikeZ = pz + level.getRandom().nextInt(DRY_LIGHTNING_RANGE * 2 + 1) - DRY_LIGHTNING_RANGE;
         int strikeY = level.getHeight(Heightmap.Types.MOTION_BLOCKING, strikeX, strikeZ);
 
         // Must be a surface block that can see the sky

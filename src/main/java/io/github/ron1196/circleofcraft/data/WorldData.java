@@ -1,16 +1,30 @@
 package io.github.ron1196.circleofcraft.data;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.quest.questline.QuestlineManager;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
+import io.github.ron1196.circleofcraft.quest.questline.QuestlineState;
+import java.util.Map;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.level.saveddata.SavedDataType;
 
 public class WorldData extends SavedData {
 
-    private static final String DATA_NAME = CircleOfCraftMod.MOD_ID + "_data";
+    public static final Codec<WorldData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                    Codec.unboundedMap(Codec.STRING, QuestlineState.CODEC)
+                            .optionalFieldOf("Quests", Map.of())
+                            .forGetter(data -> data.questManager.getStatesForSave()),
+                    Codec.INT.optionalFieldOf("ZiraTreeTalkCount", 0).forGetter(data -> data.ziraTreeTalkCount),
+                    Codec.INT.optionalFieldOf("PumbaaTalkCount", 0).forGetter(data -> data.pumbaaTalkCount),
+                    Codec.INT.optionalFieldOf("TimonRafikiTalkCount", 0)
+                            .forGetter(data -> data.timonRafikiTalkCount),
+                    Codec.INT.optionalFieldOf("RafikiCeremonyTick", 0).forGetter(data -> data.rafikiCeremonyTick))
+            .apply(instance, WorldData::fromSaved));
+
+    public static final SavedDataType<WorldData> TYPE =
+            new SavedDataType<>(CircleOfCraftMod.id("data"), WorldData::new, CODEC);
 
     private final QuestlineManager questManager = new QuestlineManager(this);
     public static final int TIMON_RALLY_INTRO_LINE_COUNT = 3;
@@ -91,28 +105,21 @@ public class WorldData extends SavedData {
     public static WorldData get(ServerLevel level) {
         // Always use overworld data storage so quest state is shared across all dimensions
         ServerLevel overworld = level.getServer().overworld();
-        return overworld
-                .getDataStorage()
-                .computeIfAbsent(new SavedData.Factory<>(WorldData::new, WorldData::load), DATA_NAME);
+        return overworld.getDataStorage().computeIfAbsent(TYPE);
     }
 
-    public static WorldData load(CompoundTag tag, HolderLookup.Provider lookup) {
+    private static WorldData fromSaved(
+            Map<String, QuestlineState> quests,
+            int ziraTreeTalkCount,
+            int pumbaaTalkCount,
+            int timonRafikiTalkCount,
+            int rafikiCeremonyTick) {
         WorldData data = new WorldData();
-        data.questManager.readFromNBT(tag);
-        data.ziraTreeTalkCount = tag.getInt("ZiraTreeTalkCount");
-        data.pumbaaTalkCount = tag.getInt("PumbaaTalkCount");
-        data.timonRafikiTalkCount = tag.getInt("TimonRafikiTalkCount");
-        data.rafikiCeremonyTick = tag.getInt("RafikiCeremonyTick");
+        data.questManager.loadStates(quests);
+        data.ziraTreeTalkCount = ziraTreeTalkCount;
+        data.pumbaaTalkCount = pumbaaTalkCount;
+        data.timonRafikiTalkCount = timonRafikiTalkCount;
+        data.rafikiCeremonyTick = rafikiCeremonyTick;
         return data;
-    }
-
-    @Override
-    public @NotNull CompoundTag save(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider lookup) {
-        questManager.writeToNBT(tag);
-        tag.putInt("ZiraTreeTalkCount", ziraTreeTalkCount);
-        tag.putInt("PumbaaTalkCount", pumbaaTalkCount);
-        tag.putInt("TimonRafikiTalkCount", timonRafikiTalkCount);
-        tag.putInt("RafikiCeremonyTick", rafikiCeremonyTick);
-        return tag;
     }
 }

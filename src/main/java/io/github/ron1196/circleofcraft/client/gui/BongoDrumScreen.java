@@ -1,26 +1,27 @@
 package io.github.ron1196.circleofcraft.client.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.menu.BongoDrumMenu;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class BongoDrumScreen extends AbstractContainerScreen<BongoDrumMenu> {
 
-    private static final ResourceLocation TEXTURE = CircleOfCraftMod.id("textures/gui/drum.png");
+    private static final Identifier TEXTURE = CircleOfCraftMod.id("textures/gui/drum.png");
 
     public BongoDrumScreen(BongoDrumMenu menu, Inventory playerInv, Component title) {
         super(menu, playerInv, title);
     }
 
     @Override
-    protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+        super.extractBackground(graphics, mouseX, mouseY, partialTick);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
         // Render 3 enchantment buttons
         for (int i = 0; i < 3; i++) {
@@ -36,39 +37,33 @@ public class BongoDrumScreen extends AbstractContainerScreen<BongoDrumMenu> {
             } else {
                 texV = 18; // available
             }
-            graphics.blit(TEXTURE, buttonX, buttonY, 183, texV, 73, 17);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, buttonX, buttonY, 183, texV, 73, 17, 256, 256);
 
             if (level > 0) {
                 String levelStr = String.valueOf(level);
                 int textX = buttonX + 70 - this.font.width(levelStr);
-                graphics.drawString(this.font, levelStr, textX, buttonY + 5, 0x1F190B, false);
+                graphics.text(this.font, levelStr, textX, buttonY + 5, 0x1F190B, false);
             }
         }
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        super.render(graphics, mouseX, mouseY, partialTick);
-        renderTooltip(graphics, mouseX, mouseY);
+    protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        graphics.text(this.font, this.title, 60, 7, 0x1F190B, false);
     }
 
     @Override
-    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-        graphics.drawString(this.font, this.title, 60, 7, 0x1F190B, false);
-    }
-
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
         for (int i = 0; i < 3; i++) {
             int buttonX = this.leftPos + 72;
             int buttonY = this.topPos + 25 + i * 18;
-            if (mouseX >= buttonX && mouseX < buttonX + 73 && mouseY >= buttonY && mouseY < buttonY + 17) {
+            if (event.x() >= buttonX && event.x() < buttonX + 73 && event.y() >= buttonY && event.y() < buttonY + 17) {
                 if (this.menu.enchantLevels[i] > 0) {
                     this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, i);
                     return true;
                 }
             }
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(event, doubleClick);
     }
 }

@@ -5,7 +5,7 @@ import io.github.ron1196.circleofcraft.block.entity.BugTrapBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
@@ -16,7 +16,7 @@ import snownee.jade.api.config.IPluginConfig;
 public enum BugTrapProvider implements IBlockComponentProvider, IServerDataProvider<BlockAccessor> {
     INSTANCE;
 
-    public static final ResourceLocation UID = CircleOfCraftMod.id("bug_trap");
+    public static final Identifier UID = CircleOfCraftMod.id("bug_trap");
     private static final String NBT_NEXT_ATTRACT = "JadeBT_NextAttract";
     private static final int TICKS_PER_SECOND = 20;
 
@@ -46,7 +46,7 @@ public enum BugTrapProvider implements IBlockComponentProvider, IServerDataProvi
     }
 
     @Override
-    public @NotNull ResourceLocation getUid() {
+    public @NotNull Identifier getUid() {
         return UID;
     }
 }

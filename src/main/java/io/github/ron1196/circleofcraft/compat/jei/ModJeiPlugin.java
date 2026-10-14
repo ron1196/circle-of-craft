@@ -24,7 +24,7 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -35,10 +35,10 @@ import org.jetbrains.annotations.NotNull;
 @JeiPlugin
 public class ModJeiPlugin implements IModPlugin {
 
-    private static final ResourceLocation ID = CircleOfCraftMod.id("jei_plugin");
+    private static final Identifier ID = CircleOfCraftMod.id("jei_plugin");
 
     @Override
-    public @NotNull ResourceLocation getPluginUid() {
+    public @NotNull Identifier getPluginUid() {
         return ID;
     }
 

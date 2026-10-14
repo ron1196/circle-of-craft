@@ -6,12 +6,12 @@ import io.github.ron1196.circleofcraft.client.model.GiraffeModel;
 import io.github.ron1196.circleofcraft.entity.animal.GiraffeEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 public class GiraffeRenderer extends MobRenderer<GiraffeEntity, GiraffeModel<GiraffeEntity>> {
 
-    private static final ResourceLocation TEXTURE = CircleOfCraftMod.id("textures/entity/giraffe.png");
+    private static final Identifier TEXTURE = CircleOfCraftMod.id("textures/entity/giraffe.png");
 
     private final float babyScale;
 
@@ -29,7 +29,7 @@ public class GiraffeRenderer extends MobRenderer<GiraffeEntity, GiraffeModel<Gir
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull GiraffeEntity entity) {
+    public @NotNull Identifier getTextureLocation(@NotNull GiraffeEntity entity) {
         return TEXTURE;
     }
 }

@@ -40,7 +40,7 @@ import net.minecraft.client.renderer.entity.LightningBoltRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.component.CustomData;
@@ -297,14 +297,14 @@ public class ClientEvents {
 
         // Projectiles
         event.registerEntityRenderer(EntityTypes.DART.get(), ctx -> new ArrowRenderer<>(ctx) {
-            private final ResourceLocation BLUE = CircleOfCraftMod.id("textures/entity/dart_blue.png");
-            private final ResourceLocation RED = CircleOfCraftMod.id("textures/entity/dart_red.png");
-            private final ResourceLocation YELLOW = CircleOfCraftMod.id("textures/entity/dart_yellow.png");
-            private final ResourceLocation PINK = CircleOfCraftMod.id("textures/entity/dart_pink.png");
-            private final ResourceLocation BLACK = CircleOfCraftMod.id("textures/entity/dart_black.png");
+            private final Identifier BLUE = CircleOfCraftMod.id("textures/entity/dart_blue.png");
+            private final Identifier RED = CircleOfCraftMod.id("textures/entity/dart_red.png");
+            private final Identifier YELLOW = CircleOfCraftMod.id("textures/entity/dart_yellow.png");
+            private final Identifier PINK = CircleOfCraftMod.id("textures/entity/dart_pink.png");
+            private final Identifier BLACK = CircleOfCraftMod.id("textures/entity/dart_black.png");
 
             @Override
-            public @NotNull ResourceLocation getTextureLocation(@NotNull DartEntity entity) {
+            public @NotNull Identifier getTextureLocation(@NotNull DartEntity entity) {
                 return switch (entity.getDartType()) {
                     case RED -> RED;
                     case YELLOW -> YELLOW;
@@ -315,10 +315,10 @@ public class ClientEvents {
             }
         });
         event.registerEntityRenderer(EntityTypes.SPEAR.get(), ctx -> new ArrowRenderer<>(ctx) {
-            private final ResourceLocation SPEAR = CircleOfCraftMod.id("textures/entity/spear.png");
+            private final Identifier SPEAR = CircleOfCraftMod.id("textures/entity/spear.png");
 
             @Override
-            public @NotNull ResourceLocation getTextureLocation(@NotNull SpearEntity entity) {
+            public @NotNull Identifier getTextureLocation(@NotNull SpearEntity entity) {
                 return SPEAR;
             }
         });
@@ -330,8 +330,8 @@ public class ClientEvents {
         event.registerEntityRenderer(
                 EntityTypes.PUMBAA_EXPLOSION.get(), ctx -> new EntityRenderer<PumbaaExplosionEntity>(ctx) {
                     @Override
-                    public @NotNull ResourceLocation getTextureLocation(@NotNull PumbaaExplosionEntity entity) {
-                        return ResourceLocation.parse("missingno");
+                    public @NotNull Identifier getTextureLocation(@NotNull PumbaaExplosionEntity entity) {
+                        return Identifier.parse("missingno");
                     }
                 });
 
@@ -397,7 +397,7 @@ public class ClientEvents {
 
             // Pride Compass needle angle — points to last-used portal in Pride Lands
             ItemProperties.register(
-                    ModItems.PRIDE_COMPASS.get(), ResourceLocation.parse("angle"), (stack, level, entity, seed) -> {
+                    ModItems.PRIDE_COMPASS.get(), Identifier.parse("angle"), (stack, level, entity, seed) -> {
                         if (entity == null || level == null) {
                             return 0.0F;
                         }

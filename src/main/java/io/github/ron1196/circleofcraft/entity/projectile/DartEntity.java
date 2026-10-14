@@ -7,7 +7,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -118,7 +118,7 @@ public class DartEntity extends AbstractArrow implements net.minecraft.world.ent
                     }
                 }
                 case BLACK -> {
-                    if (!this.level().isClientSide) {
+                    if (!this.level().isClientSide()) {
                         float explosionRadius = silverShooter ? 4.0F : 3.0F;
                         this.level()
                                 .explode(

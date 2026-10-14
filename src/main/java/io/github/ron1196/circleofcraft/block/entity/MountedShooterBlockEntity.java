@@ -16,12 +16,16 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -156,7 +160,7 @@ public class MountedShooterBlockEntity extends BlockEntity {
                 SoundEvents.ARROW_SHOOT,
                 SoundSource.BLOCKS,
                 1.0F,
-                1.0F / (level.random.nextFloat() * 0.4F + 1.2F) + 0.25F);
+                1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + 0.25F);
 
         consumeOneDart();
         onFired();
@@ -248,29 +252,29 @@ public class MountedShooterBlockEntity extends BlockEntity {
     // ── NBT ────────────────────────────────────────────────────────────────
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        tag.putInt("FireCounter", fireCounter);
-        tag.putInt("FireMode", fireMode.ordinal());
+    protected void saveAdditional(@NotNull ValueOutput output) {
+        super.saveAdditional(output);
+        output.putInt("FireCounter", fireCounter);
+        output.putInt("FireMode", fireMode.ordinal());
         if (!dartStack.isEmpty()) {
-            tag.put("DartStack", dartStack.save(registries));
+            output.store("DartStack", ItemStack.CODEC, dartStack);
         }
     }
 
     @Override
-    protected void loadAdditional(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        fireCounter = tag.getInt("FireCounter");
-        fireMode = FireMode.byOrdinal(tag.getInt("FireMode"));
-        dartStack = tag.contains("DartStack")
-                ? ItemStack.parseOptional(registries, tag.getCompound("DartStack"))
-                : ItemStack.EMPTY;
+    protected void loadAdditional(@NotNull ValueInput input) {
+        super.loadAdditional(input);
+        fireCounter = input.getIntOr("FireCounter", 0);
+        fireMode = FireMode.byOrdinal(input.getIntOr("FireMode", FireMode.REDSTONE.ordinal()));
+        dartStack = input.read("DartStack", ItemStack.CODEC).orElse(ItemStack.EMPTY);
     }
 
     @Override
     public @NotNull CompoundTag getUpdateTag(@NotNull HolderLookup.Provider registries) {
         CompoundTag tag = super.getUpdateTag(registries);
-        saveAdditional(tag, registries);
+        TagValueOutput output = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, registries);
+        saveAdditional(output);
+        tag.merge(output.buildResult());
         return tag;
     }
 

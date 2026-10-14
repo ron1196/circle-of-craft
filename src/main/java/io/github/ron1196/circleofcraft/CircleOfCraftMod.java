@@ -5,7 +5,7 @@ import io.github.ron1196.circleofcraft.network.Networking;
 import io.github.ron1196.circleofcraft.registry.*;
 import io.github.ron1196.circleofcraft.registry.ModItems;
 import io.github.ron1196.circleofcraft.world.structure.StructureTypes;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import org.slf4j.Logger;
@@ -16,8 +16,8 @@ public class CircleOfCraftMod {
     public static final String MOD_ID = "circleofcraft";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static ResourceLocation id(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    public static Identifier id(String path) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, path);
     }
 
     public CircleOfCraftMod(IEventBus modEventBus) {

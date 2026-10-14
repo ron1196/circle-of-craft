@@ -2,10 +2,12 @@ package io.github.ron1196.circleofcraft.gametest;
 
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.data.WorldData;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.RegistryOps;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
@@ -90,7 +92,8 @@ public class WorldDataNbtGameTests {
     public void legacySaveWithoutCounterTagsDefaultsToZero(GameTestHelper helper) {
         // Saves from before the talk-count fields existed have no corresponding tags. Loading must
         // default to zero rather than crashing — guards forward compatibility.
-        WorldData loaded = WorldData.load(new CompoundTag(), helper.getLevel().registryAccess());
+        RegistryOps<Tag> ops = helper.getLevel().registryAccess().createSerializationContext(NbtOps.INSTANCE);
+        WorldData loaded = WorldData.CODEC.parse(ops, new CompoundTag()).getOrThrow();
         expect(helper, 0, loaded.getZiraTreeTalkCount(), "ZiraTreeTalkCount on legacy save");
         expect(helper, 0, loaded.getPumbaaTalkCount(), "PumbaaTalkCount on legacy save");
         expect(helper, 0, loaded.getTimonRafikiTalkCount(), "TimonRafikiTalkCount on legacy save");
@@ -115,10 +118,9 @@ public class WorldDataNbtGameTests {
     }
 
     private static WorldData roundTrip(WorldData data, GameTestHelper helper) {
-        HolderLookup.Provider lookup = helper.getLevel().registryAccess();
-        CompoundTag tag = new CompoundTag();
-        data.save(tag, lookup);
-        return WorldData.load(tag, lookup);
+        RegistryOps<Tag> ops = helper.getLevel().registryAccess().createSerializationContext(NbtOps.INSTANCE);
+        Tag tag = WorldData.CODEC.encodeStart(ops, data).getOrThrow();
+        return WorldData.CODEC.parse(ops, tag).getOrThrow();
     }
 
     private static void expect(GameTestHelper helper, int expected, int actual, String field) {

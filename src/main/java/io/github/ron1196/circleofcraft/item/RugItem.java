@@ -40,7 +40,7 @@ public class RugItem extends Item {
             return InteractionResult.FAIL;
         }
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             RugEntity rug = new RugEntity(level, rugType);
             float yaw = (context.getPlayer().getYRot() % 360.0F) + 180.0F;
             rug.absMoveTo(abovePos.getX() + 0.5D, abovePos.getY(), abovePos.getZ() + 0.5D, yaw, 0.0F);
@@ -54,7 +54,7 @@ public class RugItem extends Item {
                         ModSoundEvents.LION_AMBIENT.get(),
                         SoundSource.NEUTRAL,
                         1.0F,
-                        (level.random.nextFloat() - level.random.nextFloat()) * 0.2F + 1.0F);
+                        (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F + 1.0F);
                 context.getItemInHand().shrink(1);
                 return InteractionResult.CONSUME;
             } else {
@@ -62,6 +62,6 @@ public class RugItem extends Item {
             }
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 }

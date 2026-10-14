@@ -6,11 +6,7 @@ import io.github.ron1196.circleofcraft.registry.ModItems;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -18,6 +14,8 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -194,18 +192,18 @@ public class OutlandsPoolBlockEntity extends BlockEntity {
         float progress = 1.0F - (float) timer / maxTimer;
         int bubbleFrequency = Math.max(1, (int) (6 - progress * 5));
 
-        if (level.random.nextInt(bubbleFrequency) == 0) {
-            double bx = x + (level.random.nextFloat() - 0.5) * 0.8;
-            double bz = z + (level.random.nextFloat() - 0.5) * 0.8;
+        if (level.getRandom().nextInt(bubbleFrequency) == 0) {
+            double bx = x + (level.getRandom().nextFloat() - 0.5) * 0.8;
+            double bz = z + (level.getRandom().nextFloat() - 0.5) * 0.8;
             serverLevel.sendParticles(ParticleTypes.BUBBLE_COLUMN_UP, bx, y + 0.9, bz, 1, 0, 0.1, 0, 0.02);
         }
 
-        if (level.random.nextInt(Math.max(1, 4 - (int) (progress * 3))) == 0) {
+        if (level.getRandom().nextInt(Math.max(1, 4 - (int) (progress * 3))) == 0) {
             serverLevel.sendParticles(
                     ParticleTypes.SMOKE,
-                    x + (level.random.nextFloat() - 0.5) * 0.6,
+                    x + (level.getRandom().nextFloat() - 0.5) * 0.6,
                     y + 0.8 + progress * 0.4,
-                    z + (level.random.nextFloat() - 0.5) * 0.6,
+                    z + (level.getRandom().nextFloat() - 0.5) * 0.6,
                     1,
                     0,
                     0.05,
@@ -217,14 +215,14 @@ public class OutlandsPoolBlockEntity extends BlockEntity {
             serverLevel.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y + 1.0, z, 2, 0.2, 0.3, 0.2, 0.01);
         }
 
-        if (level.random.nextInt(60) == 0) {
+        if (level.getRandom().nextInt(60) == 0) {
             level.playSound(
                     null,
                     worldPosition,
                     SoundEvents.FIRE_EXTINGUISH,
                     SoundSource.BLOCKS,
                     0.7F,
-                    1.6F + (level.random.nextFloat() - level.random.nextFloat()) * 0.4F);
+                    1.6F + (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.4F);
         }
     }
 
@@ -304,7 +302,7 @@ public class OutlandsPoolBlockEntity extends BlockEntity {
                     SoundEvents.GENERIC_EXPLODE.value(),
                     SoundSource.BLOCKS,
                     1.5F,
-                    0.5F + level.random.nextFloat() * 0.2F);
+                    0.5F + level.getRandom().nextFloat() * 0.2F);
         }
 
         // Spit back leftovers at the altar
@@ -324,19 +322,19 @@ public class OutlandsPoolBlockEntity extends BlockEntity {
     private void spawnResult(BlockPos pos, ItemStack stack) {
         if (level == null || stack.isEmpty()) return;
         ItemEntity entity = new ItemEntity(level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, stack);
-        entity.setDeltaMovement(0.0, 0.4 + level.random.nextFloat() * 0.1, 0.0);
+        entity.setDeltaMovement(0.0, 0.4 + level.getRandom().nextFloat() * 0.1, 0.0);
         entity.setPickUpDelay(10);
         level.addFreshEntity(entity);
     }
 
     private void spawnLeftover(BlockPos pos, ItemStack stack) {
         if (level == null || stack.isEmpty()) return;
-        double offsetX = (level.random.nextBoolean() ? 1 : -1) * 0.5;
-        double offsetZ = (level.random.nextBoolean() ? 1 : -1) * 0.5;
+        double offsetX = (level.getRandom().nextBoolean() ? 1 : -1) * 0.5;
+        double offsetZ = (level.getRandom().nextBoolean() ? 1 : -1) * 0.5;
         Vec3 spawnItem = new Vec3(pos.getX() + 0.5 + offsetX, pos.getY(), pos.getZ() + 0.5 + offsetZ);
 
         ItemEntity entity = new ItemEntity(level, spawnItem.x, spawnItem.y, spawnItem.z, stack);
-        entity.setDeltaMovement(0.0, 0.3 + level.random.nextFloat() * 0.1, 0.0);
+        entity.setDeltaMovement(0.0, 0.3 + level.getRandom().nextFloat() * 0.1, 0.0);
         entity.setPickUpDelay(10);
         level.addFreshEntity(entity);
     }

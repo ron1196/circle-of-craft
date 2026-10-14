@@ -1,18 +1,18 @@
 package io.github.ron1196.circleofcraft.client.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.block.entity.BugTrapBlockEntity;
 import io.github.ron1196.circleofcraft.menu.BugTrapMenu;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class BugTrapScreen extends AbstractContainerScreen<BugTrapMenu> {
 
-    private static final ResourceLocation TEXTURE = CircleOfCraftMod.id("textures/gui/trap.png");
+    private static final Identifier TEXTURE = CircleOfCraftMod.id("textures/gui/trap.png");
 
     private static final int PROGRESS_X = 91;
     private static final int PROGRESS_Y = 30;
@@ -26,9 +26,9 @@ public class BugTrapScreen extends AbstractContainerScreen<BugTrapMenu> {
     }
 
     @Override
-    protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+        super.extractBackground(graphics, mouseX, mouseY, partialTick);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
         int x = this.leftPos + PROGRESS_X;
         int y = this.topPos + PROGRESS_Y;
@@ -43,15 +43,9 @@ public class BugTrapScreen extends AbstractContainerScreen<BugTrapMenu> {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        super.render(graphics, mouseX, mouseY, partialTick);
-        renderTooltip(graphics, mouseX, mouseY);
-    }
-
-    @Override
-    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-        graphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 0xFFFFFF, false);
-        graphics.drawString(
+    protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        graphics.text(this.font, this.title, this.titleLabelX, this.titleLabelY, 0xFFFFFF, false);
+        graphics.text(
                 this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0xFFFFFF, false);
     }
 }

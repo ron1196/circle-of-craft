@@ -156,7 +156,7 @@ public class OutlandsQuestline {
                 SoundEvents.PORTAL_TRAVEL,
                 SoundSource.HOSTILE,
                 1.0F,
-                level.random.nextFloat() * 0.4F + 0.8F);
+                level.getRandom().nextFloat() * 0.4F + 0.8F);
         sendNpcMessage(player, "Rafiki", "No! De Outlanders have marched to de Pride Lands! You must follow dem!");
     }
 
@@ -179,14 +179,14 @@ public class OutlandsQuestline {
 
     private static void spawnFlameParticles(ServerLevel level, Mob entity) {
         for (int i = 0; i < FLAME_PARTICLE_COUNT; i++) {
-            double dx = level.random.nextGaussian() * 0.02;
-            double dy = level.random.nextGaussian() * 0.02 + level.random.nextFloat() * 0.5;
-            double dz = level.random.nextGaussian() * 0.02;
+            double dx = level.getRandom().nextGaussian() * 0.02;
+            double dy = level.getRandom().nextGaussian() * 0.02 + level.getRandom().nextFloat() * 0.5;
+            double dz = level.getRandom().nextGaussian() * 0.02;
             level.sendParticles(
                     ParticleTypes.FLAME,
-                    entity.getX() + level.random.nextGaussian() * 0.5,
-                    entity.getY() + 0.25 + level.random.nextFloat(),
-                    entity.getZ() + level.random.nextGaussian() * 0.5,
+                    entity.getX() + level.getRandom().nextGaussian() * 0.5,
+                    entity.getY() + 0.25 + level.getRandom().nextFloat(),
+                    entity.getZ() + level.getRandom().nextGaussian() * 0.5,
                     1,
                     dx,
                     dy,

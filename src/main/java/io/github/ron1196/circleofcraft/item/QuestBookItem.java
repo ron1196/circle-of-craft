@@ -29,7 +29,7 @@ public class QuestBookItem extends Item {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(
             Level level, @NotNull Player player, @NotNull InteractionHand hand) {
-        if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
+        if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
             serverPlayer.openMenu(new MenuProvider() {
                 @Override
                 public @NotNull Component getDisplayName() {

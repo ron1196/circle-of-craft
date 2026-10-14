@@ -9,13 +9,13 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 public class RugRenderer extends EntityRenderer<RugEntity> {
 
-    private static final ResourceLocation TEXTURE_SCAR = CircleOfCraftMod.id("textures/entity/rug_scar.png");
-    private static final ResourceLocation TEXTURE_ZIRA = CircleOfCraftMod.id("textures/entity/rug_zira.png");
+    private static final Identifier TEXTURE_SCAR = CircleOfCraftMod.id("textures/entity/rug_scar.png");
+    private static final Identifier TEXTURE_ZIRA = CircleOfCraftMod.id("textures/entity/rug_zira.png");
 
     private final RugModel model;
 
@@ -49,7 +49,7 @@ public class RugRenderer extends EntityRenderer<RugEntity> {
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull RugEntity entity) {
+    public @NotNull Identifier getTextureLocation(@NotNull RugEntity entity) {
         return entity.getRugType() == RugEntity.TYPE_ZIRA ? TEXTURE_ZIRA : TEXTURE_SCAR;
     }
 }

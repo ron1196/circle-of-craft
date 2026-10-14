@@ -15,12 +15,12 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 public class HyenaHeadBlockEntityRenderer implements BlockEntityRenderer<HyenaHeadBlockEntity> {
 
-    private static final ResourceLocation[] TEXTURES = {
+    private static final Identifier[] TEXTURES = {
         CircleOfCraftMod.id("textures/entity/hyena_0.png"),
         CircleOfCraftMod.id("textures/entity/hyena_1.png"),
         CircleOfCraftMod.id("textures/entity/hyena_2.png"),

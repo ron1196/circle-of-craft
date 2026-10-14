@@ -7,7 +7,7 @@ import java.util.Set;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Sent server to client when player data changes (reward claimed, quest book received, simba
@@ -23,7 +23,7 @@ public record PlayerDataSyncPacket(
         implements CustomPacketPayload {
 
     public static final Type<PlayerDataSyncPacket> TYPE =
-            new Type<>(ResourceLocation.fromNamespaceAndPath(CircleOfCraftMod.MOD_ID, "player_data_sync"));
+            new Type<>(Identifier.fromNamespaceAndPath(CircleOfCraftMod.MOD_ID, "player_data_sync"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, PlayerDataSyncPacket> STREAM_CODEC = StreamCodec.of(
             (buf, pkt) -> {

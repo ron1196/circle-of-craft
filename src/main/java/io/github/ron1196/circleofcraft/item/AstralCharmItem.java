@@ -82,7 +82,7 @@ public class AstralCharmItem extends Item {
         Player player = context.getPlayer();
         ItemStack stack = context.getItemInHand();
 
-        if (level.isClientSide || player == null) {
+        if (level.isClientSide() || player == null) {
             return InteractionResult.PASS;
         }
 
@@ -105,12 +105,12 @@ public class AstralCharmItem extends Item {
         ItemStack activeCharm = createActive();
         ItemEntity item = new ItemEntity(
                 level,
-                x + ITEM_HORIZONTAL_OFFSET + (level.random.nextFloat() / ITEM_HORIZONTAL_JITTER_DIVISOR),
+                x + ITEM_HORIZONTAL_OFFSET + (level.getRandom().nextFloat() / ITEM_HORIZONTAL_JITTER_DIVISOR),
                 y,
-                z + ITEM_HORIZONTAL_OFFSET + (level.random.nextFloat() / ITEM_HORIZONTAL_JITTER_DIVISOR),
+                z + ITEM_HORIZONTAL_OFFSET + (level.getRandom().nextFloat() / ITEM_HORIZONTAL_JITTER_DIVISOR),
                 activeCharm);
         item.setPickUpDelay(PICKUP_DELAY_TICKS);
-        item.setDeltaMovement(0.0D, ITEM_UPWARD_SPEED + (level.random.nextFloat() / ITEM_UPWARD_JITTER_DIVISOR), 0.0D);
+        item.setDeltaMovement(0.0D, ITEM_UPWARD_SPEED + (level.getRandom().nextFloat() / ITEM_UPWARD_JITTER_DIVISOR), 0.0D);
         level.addFreshEntity(item);
 
         // Visual lightning bolt (no damage)
@@ -119,12 +119,12 @@ public class AstralCharmItem extends Item {
         // Spawn star particles
         if (level instanceof ServerLevel serverLevel) {
             for (int i = 0; i < STAR_PARTICLE_COUNT; i++) {
-                double px = x - PARTICLE_OFFSET + level.random.nextFloat() * PARTICLE_SPREAD;
-                double py = y - PARTICLE_OFFSET + level.random.nextFloat() * PARTICLE_SPREAD;
-                double pz = z - PARTICLE_OFFSET + level.random.nextFloat() * PARTICLE_SPREAD;
-                double dx = (level.random.nextFloat() - PARTICLE_OFFSET) * PARTICLE_VELOCITY_SPREAD;
-                double dy = (level.random.nextFloat() - PARTICLE_OFFSET) * PARTICLE_VELOCITY_SPREAD;
-                double dz = (level.random.nextFloat() - PARTICLE_OFFSET) * PARTICLE_VELOCITY_SPREAD;
+                double px = x - PARTICLE_OFFSET + level.getRandom().nextFloat() * PARTICLE_SPREAD;
+                double py = y - PARTICLE_OFFSET + level.getRandom().nextFloat() * PARTICLE_SPREAD;
+                double pz = z - PARTICLE_OFFSET + level.getRandom().nextFloat() * PARTICLE_SPREAD;
+                double dx = (level.getRandom().nextFloat() - PARTICLE_OFFSET) * PARTICLE_VELOCITY_SPREAD;
+                double dy = (level.getRandom().nextFloat() - PARTICLE_OFFSET) * PARTICLE_VELOCITY_SPREAD;
+                double dz = (level.getRandom().nextFloat() - PARTICLE_OFFSET) * PARTICLE_VELOCITY_SPREAD;
                 serverLevel.sendParticles(ParticleTypes.END_ROD, px, py, pz, 1, dx, dy, dz, PARTICLE_SPEED);
             }
         }

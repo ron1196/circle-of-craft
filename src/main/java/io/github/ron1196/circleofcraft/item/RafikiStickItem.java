@@ -103,9 +103,9 @@ public class RafikiStickItem extends Item {
         // Grow saplings and crops (anything bonemealable)
         if (block instanceof BonemealableBlock bonemealable) {
             if (bonemealable.isValidBonemealTarget(level, pos, state)) {
-                if (!level.isClientSide) {
-                    if (bonemealable.isBonemealSuccess(level, level.random, pos, state)) {
-                        bonemealable.performBonemeal((ServerLevel) level, level.random, pos, state);
+                if (!level.isClientSide()) {
+                    if (bonemealable.isBonemealSuccess(level, level.getRandom(), pos, state)) {
+                        bonemealable.performBonemeal((ServerLevel) level, level.getRandom(), pos, state);
                     }
                     damageRafikiStick(stack, 4, player);
                 }
@@ -117,8 +117,8 @@ public class RafikiStickItem extends Item {
         if (block instanceof BonemealableBlock grassBonemealable && block == Blocks.GRASS_BLOCK) {
             if (level instanceof ServerLevel serverLevel) {
                 BlockState grassState = level.getBlockState(pos);
-                if (grassBonemealable.isBonemealSuccess(serverLevel, serverLevel.random, pos, grassState)) {
-                    grassBonemealable.performBonemeal(serverLevel, serverLevel.random, pos, grassState);
+                if (grassBonemealable.isBonemealSuccess(serverLevel, serverLevel.getRandom(), pos, grassState)) {
+                    grassBonemealable.performBonemeal(serverLevel, serverLevel.getRandom(), pos, grassState);
                 }
                 damageRafikiStick(stack, 3, player);
             }
@@ -186,7 +186,7 @@ public class RafikiStickItem extends Item {
 
         if (entityHit != null) {
             Entity target = entityHit.getEntity();
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 level.addFreshEntity(new LightningBoltEntity(
                         level, target.getX(), target.getY(), target.getZ(), thunderLevel, player));
             }
@@ -200,7 +200,7 @@ public class RafikiStickItem extends Item {
 
         if (farHit instanceof BlockHitResult blockHit) {
             BlockPos target = blockHit.getBlockPos();
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 level.addFreshEntity(new LightningBoltEntity(
                         level, target.getX(), target.getY(), target.getZ(), thunderLevel, player));
             }
@@ -211,14 +211,14 @@ public class RafikiStickItem extends Item {
 
         // Failed to aim — show smoke particles
         for (int i = 0; i < 7; i++) {
-            double dx = level.random.nextGaussian() * 0.02D;
-            double dy = level.random.nextGaussian() * 0.02D;
-            double dz = level.random.nextGaussian() * 0.02D;
+            double dx = level.getRandom().nextGaussian() * 0.02D;
+            double dy = level.getRandom().nextGaussian() * 0.02D;
+            double dz = level.getRandom().nextGaussian() * 0.02D;
             level.addParticle(
                     ParticleTypes.SMOKE,
-                    player.getX() + (level.random.nextFloat() * player.getBbWidth() * 2.0F) - player.getBbWidth(),
-                    player.getY() - 0.5D + (level.random.nextFloat() * (player.getBbHeight() / 2)),
-                    player.getZ() + (level.random.nextFloat() * player.getBbWidth() * 2.0F) - player.getBbWidth(),
+                    player.getX() + (level.getRandom().nextFloat() * player.getBbWidth() * 2.0F) - player.getBbWidth(),
+                    player.getY() - 0.5D + (level.getRandom().nextFloat() * (player.getBbHeight() / 2)),
+                    player.getZ() + (level.getRandom().nextFloat() * player.getBbWidth() * 2.0F) - player.getBbWidth(),
                     dx,
                     dy,
                     dz);
@@ -234,7 +234,7 @@ public class RafikiStickItem extends Item {
     @Override
     public void inventoryTick(
             @NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
-        if (level.isClientSide) return;
+        if (level.isClientSide()) return;
 
         // Thunder cooldown
         int cooldown = stack.getOrDefault(ModDataComponents.THUNDER_COOLDOWN.get(), 0);
@@ -331,7 +331,7 @@ public class RafikiStickItem extends Item {
         if (amount > 0 && entity instanceof Player) {
             int durabilityLevel = EnchantmentHelper.getTagEnchantmentLevel(
                     enchantment(entity.level(), Enchantments.RAFIKI_DURABILITY), stack);
-            if (durabilityLevel > 0 && entity.level().random.nextInt(durabilityLevel + 1) > 0) {
+            if (durabilityLevel > 0 && entity.level().getRandom().nextInt(durabilityLevel + 1) > 0) {
                 return; // Durability enchantment prevented damage
             }
         }

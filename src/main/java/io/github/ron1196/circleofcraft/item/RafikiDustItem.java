@@ -30,7 +30,7 @@ public class RafikiDustItem extends Item {
         Level level = context.getLevel();
         Player player = context.getPlayer();
 
-        if (level.isClientSide || player == null) {
+        if (level.isClientSide() || player == null) {
             return InteractionResult.PASS;
         }
 

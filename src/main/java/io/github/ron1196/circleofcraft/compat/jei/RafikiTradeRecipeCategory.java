@@ -11,9 +11,9 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,8 +22,8 @@ public class RafikiTradeRecipeCategory implements IRecipeCategory<NpcTradeRecipe
     public static final RecipeType<NpcTradeRecipe> RECIPE_TYPE =
             RecipeType.create(CircleOfCraftMod.MOD_ID, "rafiki_trade", NpcTradeRecipe.class);
 
-    private static final ResourceLocation FURNACE_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("minecraft", "textures/gui/container/furnace.png");
+    private static final Identifier FURNACE_TEXTURE =
+            Identifier.fromNamespaceAndPath("minecraft", "textures/gui/container/furnace.png");
 
     private static final int WIDTH = 100;
     private static final int HEIGHT = 26;
@@ -81,7 +81,7 @@ public class RafikiTradeRecipeCategory implements IRecipeCategory<NpcTradeRecipe
     public void draw(
             @NotNull NpcTradeRecipe recipe,
             @NotNull IRecipeSlotsView slotsView,
-            @NotNull GuiGraphics graphics,
+            @NotNull GuiGraphicsExtractor graphics,
             double mouseX,
             double mouseY) {
         arrow.draw(graphics, ARROW_X, ARROW_Y);

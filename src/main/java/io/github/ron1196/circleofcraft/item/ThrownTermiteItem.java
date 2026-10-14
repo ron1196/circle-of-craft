@@ -22,7 +22,7 @@ public class ThrownTermiteItem extends Item {
             @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             TermiteThrownEntity termite = new TermiteThrownEntity(level, player);
             termite.setItem(stack);
             termite.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);

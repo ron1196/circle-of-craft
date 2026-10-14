@@ -40,7 +40,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.pathfinder.PathType;
-import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.level.portal.TeleportTransition;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -199,8 +199,8 @@ public class SimbaEntity extends TamableAnimal {
     }
 
     @Override
-    public @Nullable Entity changeDimension(@NotNull DimensionTransition transition) {
-        Entity result = super.changeDimension(transition);
+    public @Nullable Entity teleport(@NotNull TeleportTransition transition) {
+        Entity result = super.teleport(transition);
         if (result != null && getOwner() instanceof ServerPlayer owner) {
             ModCriteriaTriggers.TELEPORT_SIMBA.trigger(owner);
         }

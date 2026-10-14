@@ -38,7 +38,7 @@ public class CoinItem extends Item {
             @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (level.dimension() != targetDimension) {
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 player.displayClientMessage(Component.literal("The coin feels inert here."), true);
             }
             return InteractionResultHolder.fail(stack);

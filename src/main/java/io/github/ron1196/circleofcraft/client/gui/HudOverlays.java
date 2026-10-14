@@ -5,9 +5,11 @@ import io.github.ron1196.circleofcraft.CircleOfCraftMod;
 import io.github.ron1196.circleofcraft.block.PortalBlock;
 import io.github.ron1196.circleofcraft.network.ClientWorldState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -17,10 +19,9 @@ import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 @EventBusSubscriber(modid = CircleOfCraftMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class HudOverlays {
 
-    private static final ResourceLocation FLATULENCE_TEXTURE = CircleOfCraftMod.id("textures/gui/flatulence.png");
+    private static final Identifier FLATULENCE_TEXTURE = CircleOfCraftMod.id("textures/gui/flatulence.png");
     private static final int FLATULENCE_DURATION = 60;
     private static final float PORTAL_OVERLAY_MAX_ALPHA = 0.8F;
-    private static final int OVERLAY_BLIT_OFFSET = -90;
 
     @SubscribeEvent
     public static void registerGuiLayers(RegisterGuiLayersEvent event) {
@@ -31,7 +32,7 @@ public final class HudOverlays {
                 (guiGraphics, deltaTracker) -> renderFlatulenceOverlay(guiGraphics));
     }
 
-    private static void renderPortalOverlay(GuiGraphics guiGraphics) {
+    private static void renderPortalOverlay(GuiGraphicsExtractor guiGraphics) {
         if (ClientWorldState.portalOverlayTicks <= 0) return;
         if (ClientWorldState.portalBlockName.isEmpty()) return;
 
@@ -43,7 +44,7 @@ public final class HudOverlays {
             return;
         }
 
-        ResourceLocation texture = CircleOfCraftMod.id("block/" + ClientWorldState.portalBlockName);
+        Identifier texture = CircleOfCraftMod.id("block/" + ClientWorldState.portalBlockName);
         TextureAtlasSprite sprite =
                 mc.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(texture);
 
@@ -53,7 +54,7 @@ public final class HudOverlays {
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        guiGraphics.blit(0, 0, OVERLAY_BLIT_OFFSET, width, height, sprite, 1.0F, 1.0F, 1.0F, alpha);
+        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, 0, 0, width, height, ARGB.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F));
         RenderSystem.disableBlend();
     }
 
@@ -62,7 +63,7 @@ public final class HudOverlays {
         return (float) Math.sqrt(progress) * PORTAL_OVERLAY_MAX_ALPHA;
     }
 
-    private static void renderFlatulenceOverlay(GuiGraphics guiGraphics) {
+    private static void renderFlatulenceOverlay(GuiGraphicsExtractor guiGraphics) {
         if (ClientWorldState.flatulenceTimer <= 0) return;
 
         int width = guiGraphics.guiWidth();
@@ -70,9 +71,18 @@ public final class HudOverlays {
         float alpha = ClientWorldState.flatulenceTimer / (float) FLATULENCE_DURATION;
 
         RenderSystem.enableBlend();
-        guiGraphics.setColor(1.0F, 1.0F, 1.0F, alpha);
-        guiGraphics.blit(FLATULENCE_TEXTURE, 0, 0, 0, 0, width, height, width, height);
-        guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+        guiGraphics.blit(
+                RenderPipelines.GUI_TEXTURED,
+                FLATULENCE_TEXTURE,
+                0,
+                0,
+                0,
+                0,
+                width,
+                height,
+                width,
+                height,
+                ARGB.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F));
         RenderSystem.disableBlend();
 
         ClientWorldState.flatulenceTimer--;
