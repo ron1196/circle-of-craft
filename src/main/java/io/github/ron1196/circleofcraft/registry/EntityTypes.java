@@ -129,7 +129,7 @@ public class EntityTypes {
     public static final RegistryObject<EntityType<RafikiEntity>> RAFIKI =
             registerCreature(RafikiEntity.REGISTRY_NAME, RafikiEntity::new, 0.7F, 1.6F);
     public static final RegistryObject<EntityType<SimbaEntity>> SIMBA =
-            registerCreature(SimbaEntity.REGISTRY_NAME, SimbaEntity::new, 1.3F, 1.6F);
+            registerCreature(SimbaEntity.REGISTRY_NAME, SimbaEntity::new, 0.9F, 1.6F);
     public static final RegistryObject<EntityType<TimonEntity>> TIMON =
             registerCreature(TimonEntity.REGISTRY_NAME, TimonEntity::new, 0.4F, 0.9F);
     public static final RegistryObject<EntityType<PumbaaEntity>> PUMBAA =
