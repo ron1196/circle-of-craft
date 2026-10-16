@@ -99,7 +99,7 @@ public class SimbaEntity extends TamableAnimal {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new SimbaAttackGoal(this));
-        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.3D, 4.0F, 2.0F, false));
+        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(4, new SimbaFishingGoal(this));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
