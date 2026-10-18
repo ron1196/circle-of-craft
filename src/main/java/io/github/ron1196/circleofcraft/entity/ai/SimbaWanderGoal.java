@@ -26,4 +26,9 @@ public class SimbaWanderGoal extends RandomStrollGoal {
         if (owner != null && simba.distanceToSqr(owner) < OWNER_PROXIMITY_SQ) return false;
         return super.canUse();
     }
+
+    @Override
+    public void start() {
+        mob.getNavigation().moveTo(wantedX, wantedY, wantedZ, simba.strollSpeedModifier());
+    }
 }
