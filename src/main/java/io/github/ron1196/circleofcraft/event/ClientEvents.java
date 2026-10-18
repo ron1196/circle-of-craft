@@ -16,9 +16,7 @@ import io.github.ron1196.circleofcraft.client.renderer.*;
 import io.github.ron1196.circleofcraft.entity.PumbaaExplosionEntity;
 import io.github.ron1196.circleofcraft.entity.animal.*;
 import io.github.ron1196.circleofcraft.entity.npc.PumbaaEntity;
-import io.github.ron1196.circleofcraft.entity.npc.RafikiEntity;
 import io.github.ron1196.circleofcraft.entity.npc.ScarEntity;
-import io.github.ron1196.circleofcraft.entity.npc.SimbaEntity;
 import io.github.ron1196.circleofcraft.entity.npc.TimonEntity;
 import io.github.ron1196.circleofcraft.entity.npc.ZiraEntity;
 import io.github.ron1196.circleofcraft.entity.projectile.DartEntity;
@@ -83,8 +81,6 @@ public class ClientEvents {
     public static final ModelLayerLocation TERMITE_LAYER = layer("termite");
 
     // NPC layers (reuse animal mesh definitions)
-    public static final ModelLayerLocation RAFIKI_LAYER = layer(RafikiEntity.REGISTRY_NAME);
-    public static final ModelLayerLocation SIMBA_LAYER = layer(SimbaEntity.REGISTRY_NAME);
     public static final ModelLayerLocation TIMON_LAYER = layer(TimonEntity.REGISTRY_NAME);
     public static final ModelLayerLocation PUMBAA_LAYER = layer(PumbaaEntity.REGISTRY_NAME);
     public static final ModelLayerLocation SCAR_LAYER = layer(ScarEntity.REGISTRY_NAME);
@@ -139,8 +135,6 @@ public class ClientEvents {
         event.registerLayerDefinition(TERMITE_LAYER, TermiteModel::createBodyLayer);
 
         // NPC layers (proper models ported from original mod)
-        event.registerLayerDefinition(RAFIKI_LAYER, RafikiModel::createBodyLayer);
-        event.registerLayerDefinition(SIMBA_LAYER, SimbaModel::createBodyLayer);
         event.registerLayerDefinition(TIMON_LAYER, TimonModel::createBodyLayer);
         event.registerLayerDefinition(PUMBAA_LAYER, PumbaaModel::createBodyLayer);
         event.registerLayerDefinition(SCAR_LAYER, LionModel::createBodyLayer);
@@ -253,13 +247,8 @@ public class ClientEvents {
         event.registerEntityRenderer(EntityTypes.TERMITE_QUEEN.get(), TermiteQueenRenderer::new);
 
         // NPCs — proper models ported from original mod (shadow, scale from old code)
-        event.registerEntityRenderer(
-                EntityTypes.RAFIKI.get(),
-                ctx -> new RafikiRenderer(ctx, new RafikiModel(ctx.bakeLayer(RAFIKI_LAYER)), 0.35F, 1.0F));
-        event.registerEntityRenderer(
-                EntityTypes.SIMBA.get(),
-                ctx -> new NpcRenderer(
-                        ctx, new SimbaModel(ctx.bakeLayer(SIMBA_LAYER)), SimbaEntity.REGISTRY_NAME, 0.5F));
+        event.registerEntityRenderer(EntityTypes.RAFIKI.get(), RafikiRenderer::new);
+        event.registerEntityRenderer(EntityTypes.SIMBA.get(), SimbaRenderer::new);
         event.registerEntityRenderer(
                 EntityTypes.TIMON.get(),
                 ctx -> new NpcRenderer(
