@@ -38,8 +38,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class RafikiEntity extends PathfinderMob {
+public class RafikiEntity extends PathfinderMob implements GeoEntity {
 
     public static final String REGISTRY_NAME = "rafiki";
 
@@ -68,7 +74,11 @@ public class RafikiEntity extends PathfinderMob {
     // Caps the vase count we bother tallying — more vases past this don't grow the heart burst further.
     private static final int HEART_VASE_TALLY_CAP = 8;
 
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("animation.rafiki.idle");
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("animation.rafiki.walk");
+
     private final NpcBehavior questBehavior = new NpcBehavior(this, 16, this::onQuestCheck);
+    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
     public RafikiEntity(EntityType<? extends RafikiEntity> type, Level level) {
         super(type, level);
@@ -81,7 +91,9 @@ public class RafikiEntity extends PathfinderMob {
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 100.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.2D);
+                // The walk clip covers 2.0 blocks/s at render scale, and AI ground speed is about
+                // 57.3 * attribute^2 blocks/s, so 0.1866 keeps the planted foot from sliding.
+                .add(Attributes.MOVEMENT_SPEED, 0.1866D);
     }
 
     @Override
@@ -95,6 +107,17 @@ public class RafikiEntity extends PathfinderMob {
         this.goalSelector.addGoal(1, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+    }
+
+    @Override
+    public void registerControllers(@NotNull AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(
+                this, "main", 5, state -> state.setAndContinue(state.isMoving() ? WALK : IDLE)));
+    }
+
+    @Override
+    public @NotNull AnimatableInstanceCache getAnimatableInstanceCache() {
+        return geoCache;
     }
 
     @Override
