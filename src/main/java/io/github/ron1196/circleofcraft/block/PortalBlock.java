@@ -229,7 +229,10 @@ public class PortalBlock extends Block {
                 .getEntities(
                         (Entity) null,
                         player.getBoundingBox().inflate(SIMBA_TELEPORT_RANGE),
-                        e -> e instanceof SimbaEntity simba && simba.isOwnedBy(player) && simba.hasCharm())) {
+                        e -> e instanceof SimbaEntity simba
+                                && simba.isOwnedBy(player)
+                                && simba.hasCharm()
+                                && !simba.isOrderedToSit())) {
             entity.setPortalCooldown();
             entity.changeDimension(new Teleporter(this).createDimensionTransition(entity, destLevel));
         }
