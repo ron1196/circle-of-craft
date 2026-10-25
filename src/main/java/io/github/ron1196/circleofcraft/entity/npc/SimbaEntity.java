@@ -91,7 +91,7 @@ public class SimbaEntity extends TamableAnimal {
 
     @Override
     public boolean canChangeDimensions() {
-        return hasCharm();
+        return hasCharm() && !isOrderedToSit();
     }
 
     @Override
